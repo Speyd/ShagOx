@@ -5,13 +5,14 @@ using System.Text;
 
 namespace ShagOxServer.Domain.Entities;
 
-public class Region : BaseEntity
+public class City : BaseEntity
 {
     public string Name { get; set; } = "";
-    public List<City> Cities { get; set; } = new List<City>();
+    public int RegionId { get; set; }
+    public Region? Region { get; set; } = null;
 
     public override string ToString()
     {
-        return Name;
+        return $"{Name}(${(Region is null? "Unknow": Region.Name)})";
     }
 }

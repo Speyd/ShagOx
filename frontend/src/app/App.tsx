@@ -1,10 +1,10 @@
-import { Router } from "./routing/router";
+import Router from "./routing";
 import "./styles/index.css";
 
-export function App() {
+export default function App() {
   return (
-    <div>
+    <>
       <Router />
-    </div>
+    </>
   );
 }

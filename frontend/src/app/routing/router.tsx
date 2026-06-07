@@ -1,9 +1,10 @@
+import HomePage from "@/pages/HomePage";
+import LoginPage from "@/pages/LoginPage";
+import RegisterPage from "@/pages/RegisterPage";
 import { Routes, Route } from "react-router-dom";
-import { HomePage } from "../../pages/HomePage/HomePage";
-import { LoginPage } from "../../pages/LoginPage/LoginPage";
-import { RegisterPage } from "../../pages/RegisterPage/RegisterPage";
 
-export function Router() {
+
+export default function Router() {
   return (
     <>
       <Routes>

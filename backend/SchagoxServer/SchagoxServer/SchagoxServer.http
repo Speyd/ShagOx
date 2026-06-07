@@ -1,0 +1,6 @@
+@SchagoxServer_HostAddress = http://localhost:5013
+
+GET {{SchagoxServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -17,6 +17,13 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.8" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShagOxServer.Application\ShagOxServer.Application.csproj" />
+    <ProjectReference Include="..\ShagOxServer.Domain\ShagOxServer.Domain.csproj" />
+    <ProjectReference Include="..\ShagOxServer.Infrastructure\ShagOxServer.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

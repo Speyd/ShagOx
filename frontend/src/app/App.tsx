@@ -1,9 +1,10 @@
+import { Router } from "./routing/router";
 import "./styles/index.css";
 
 export function App() {
   return (
-    <>
-      <h1>Hello Frontend</h1>
-    </>
+    <div>
+      <Router />
+    </div>
   );
 }

@@ -1,8 +1,7 @@
 ﻿
 using ShagOxServer.Domain.Base;
 
-namespace ShagOxServer.Domain.Entities.Accounts;
-
+namespace ShagOxServer.Domain.Entities.Account;
 public class Role : BaseEntity
 {
     public string Name { get; set; } = "";

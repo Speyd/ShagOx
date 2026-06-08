@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Entities.Location;
 
 public class AppDbContext : DbContext
 {

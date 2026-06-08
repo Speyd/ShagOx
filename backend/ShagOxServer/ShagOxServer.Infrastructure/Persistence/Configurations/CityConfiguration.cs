@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations;
 public class CityConfiguration : IEntityTypeConfiguration<City>

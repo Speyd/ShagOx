@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="SchagoxServer/SchagoxServer.csproj" />
+  <Project Path="ShagOxServer.Api/ShagOxServer.Api.csproj" />
   <Project Path="ShagOxServer.Application/ShagOxServer.Application.csproj" />
   <Project Path="ShagOxServer.Domain/ShagOxServer.Domain.csproj" />
   <Project Path="ShagOxServer.Infrastructure/ShagOxServer.Infrastructure.csproj" />

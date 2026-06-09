@@ -12,6 +12,11 @@ public class ImageConfiguration : IEntityTypeConfiguration<Image>
                .IsRequired()
                .HasColumnType("text");
 
+        builder.HasOne(x => x.Advertisement)
+           .WithMany(x => x.Images)
+           .HasForeignKey(x => x.AdvertisementId)
+           .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasIndex(x => new { x.AdvertisementId, x.Order })
                .IsUnique();
     }

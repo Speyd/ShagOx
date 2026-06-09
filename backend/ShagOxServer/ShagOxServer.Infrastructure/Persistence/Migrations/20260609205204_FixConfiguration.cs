@@ -18,10 +18,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                 name: "FK_Advertisements_Currencies_CurrencyId",
                 table: "Advertisements");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Users_RegisteredAt",
-                table: "Users");
-
             migrationBuilder.AlterColumn<int>(
                 name: "BuyerId",
                 table: "Advertisements",

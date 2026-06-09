@@ -21,8 +21,9 @@ public class User : BaseEntity
 
     public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
-    public List<Advertisement> Advertisements { get; set; }
-        = new List<Advertisement>();
+    public List<Advertisement> SoldAdvertisements { get; set; } = new();
+
+    public List<Advertisement> BoughtAdvertisements { get; set; } = new();
 
     public override string ToString()
     {

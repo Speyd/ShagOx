@@ -39,11 +39,15 @@ public class Advertisement : BaseEntity
     /// </summary>
     public List<Image> Images { get; set; } = [];
 
+
+    public int SellerId { get; set; }
     /// <summary>
     /// User who published the product listing.
     /// </summary>
     public required User Seller { get; set; }
 
+
+    public int BuyerId { get; set; }
     /// <summary>
     /// User who purchased the product. Null if the product has not been sold.
     /// </summary>

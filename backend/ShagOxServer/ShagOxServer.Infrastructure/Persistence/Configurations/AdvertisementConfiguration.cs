@@ -23,5 +23,15 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
         builder.HasOne(x => x.Category)
                .WithMany(x => x.Advertisements)
                .HasForeignKey(x => x.CategoryId);
+
+        builder.HasOne(x => x.Seller)
+               .WithMany(x => x.SoldAdvertisements)
+               .HasForeignKey(x => x.SellerId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Buyer)
+               .WithMany(x => x.BoughtAdvertisements)
+               .HasForeignKey(x => x.BuyerId)
+               .OnDelete(DeleteBehavior.Restrict);
     }
 }

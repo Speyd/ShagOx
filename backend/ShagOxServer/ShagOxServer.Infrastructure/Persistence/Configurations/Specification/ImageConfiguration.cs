@@ -11,5 +11,8 @@ public class ImageConfiguration : IEntityTypeConfiguration<Image>
         builder.Property(x => x.Url)
                .IsRequired()
                .HasColumnType("text");
+
+        builder.HasIndex(x => new { x.AdvertisementId, x.Order })
+               .IsUnique();
     }
 }

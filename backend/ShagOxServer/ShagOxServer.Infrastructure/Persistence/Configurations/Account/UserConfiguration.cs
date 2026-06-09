@@ -53,7 +53,5 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(x => x.Phone)
                .IsUnique();
-
-        builder.HasIndex(x => x.RegisteredAt);
     }
 }

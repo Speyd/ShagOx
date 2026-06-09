@@ -47,7 +47,7 @@ public class Advertisement : BaseEntity
     public required User Seller { get; set; }
 
 
-    public int BuyerId { get; set; }
+    public int? BuyerId { get; set; }
     /// <summary>
     /// User who purchased the product. Null if the product has not been sold.
     /// </summary>

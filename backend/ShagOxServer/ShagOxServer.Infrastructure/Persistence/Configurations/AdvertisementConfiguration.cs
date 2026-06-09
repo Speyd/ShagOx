@@ -49,6 +49,5 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
         builder.HasIndex(x => new { x.CategoryId, x.Price });
         builder.HasIndex(x => new { x.CategoryId, x.CreatedAt });
         builder.HasIndex(x => new { x.CategoryId, x.Popularity });
-
     }
 }

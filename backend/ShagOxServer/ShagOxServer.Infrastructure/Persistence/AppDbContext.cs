@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Domain.Entities.Specification;
 
 public class AppDbContext : DbContext
 {
@@ -13,8 +15,14 @@ public class AppDbContext : DbContext
     public DbSet<UserRole> UserRoles { get; set; }
 
 
-    public DbSet<Category> Category { get; set; }
-    public DbSet<AttributeDefinition> AttributeDefinition { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<AttributeDefinition> AttributeDefinitions { get; set; }
+
+    public DbSet<Condition> Conditions { get; set; }
+    public DbSet<Currency> Currencies { get; set; }
+    public DbSet<Image> Images { get; set; }
+
+    public DbSet<Advertisement> Advertisements { get; set; }
 
 
 

@@ -20,7 +20,11 @@ public class User : BaseEntity
     public DateTime RegisteredAt { get; set; }
 
     public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
-    
+
+    public List<Advertisement> SoldAdvertisements { get; set; } = new();
+
+    public List<Advertisement> BoughtAdvertisements { get; set; } = new();
+
     public override string ToString()
     {
         return $"{Name} {Surname}";

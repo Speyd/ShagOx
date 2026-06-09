@@ -18,15 +18,17 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
 
         builder.Property(x => x.Properties)
                .IsRequired()
-               .HasColumnType("jsonb");  
+               .HasColumnType("jsonb");
 
         builder.HasOne(x => x.Currency)
                .WithMany(x => x.Advertisements)
-               .HasForeignKey(x => x.CurrencyId);
+               .HasForeignKey(x => x.CurrencyId)
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Category)
                .WithMany(x => x.Advertisements)
-               .HasForeignKey(x => x.CategoryId);
+               .HasForeignKey(x => x.CategoryId)
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Seller)
                .WithMany(x => x.SoldAdvertisements)

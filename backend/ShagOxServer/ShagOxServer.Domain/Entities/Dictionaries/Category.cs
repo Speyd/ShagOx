@@ -1,11 +1,16 @@
-﻿
+﻿using ShagOxServer.Domain.Base;
+
 namespace ShagOxServer.Domain.Entities.Dictionaries;
-public class Category
+public class Category : BaseEntity
 {
-    public int Id { get; set; }
     public string Name { get; set; } = null!;
     public ProductType ProductType { get; set; }
 
     public List<AttributeDefinition> Attributes { get; set; }
         = new List<AttributeDefinition>();
+
+    public override string ToString()
+    {
+        return Name;
+    }
 }

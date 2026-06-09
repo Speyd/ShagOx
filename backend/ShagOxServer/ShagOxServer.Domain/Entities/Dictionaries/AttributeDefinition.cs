@@ -1,9 +1,9 @@
 ﻿
-namespace ShagOxServer.Domain.Entities.Dictionaries;
-public class AttributeDefinition
-{
-    public int Id { get; set; }
+using ShagOxServer.Domain.Base;
 
+namespace ShagOxServer.Domain.Entities.Dictionaries;
+public class AttributeDefinition : BaseEntity
+{
     public int CategoryId { get; set; }
     public Category Category { get; set; } = null!;
 
@@ -13,4 +13,9 @@ public class AttributeDefinition
 
     public int? Min { get; set; }
     public int? Max { get; set; }
+
+    public override string ToString()
+    {
+        return $"{Key}(type: {Type} | req: {Required} | min: {Min} | max: {Max})";
+    }
 }

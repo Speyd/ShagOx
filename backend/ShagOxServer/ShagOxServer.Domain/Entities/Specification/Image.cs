@@ -6,6 +6,8 @@ public class Image : BaseEntity
     public string Url { get; set; } = "";
     public int Order { get; set; }
 
+    public Advertisement? Advertisement { get; set; } = null;
+
     public override string ToString()
     {
         return $"Order: {Order} | Url: {Url}";

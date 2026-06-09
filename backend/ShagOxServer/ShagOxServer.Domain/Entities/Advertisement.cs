@@ -29,10 +29,10 @@ public class Advertisement : BaseEntity
     /// <summary>
     /// Currency in which the product price is specified.
     /// </summary>
-    public required Currency Currency { get; set; }
+    public Currency? Currency { get; set; } = null;
 
     public int CategoryId { get; set; }
-    public required Category Category { get; set; }
+    public Category? Category { get; set; } = null;
 
     /// <summary>
     /// Collection of product images displayed in the product gallery.
@@ -42,12 +42,12 @@ public class Advertisement : BaseEntity
     /// <summary>
     /// User who published the product listing.
     /// </summary>
-    public User Seller { get; set; } = null!;
+    public required User Seller { get; set; }
 
     /// <summary>
     /// User who purchased the product. Null if the product has not been sold.
     /// </summary>
-    public User? Buyer { get; set; }
+    public User? Buyer { get; set; } = null;
 
     /// <summary>
     /// Date and time when the product was marked as sold.

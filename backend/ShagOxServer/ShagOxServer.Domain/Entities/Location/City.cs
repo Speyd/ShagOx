@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Domain.Entities.Location;
 
@@ -8,8 +9,10 @@ public class City : BaseEntity
     public int RegionId { get; set; }
     public Region? Region { get; set; } = null;
 
+    public List<User> Users { get; set; } = new List<User>();
+
     public override string ToString()
     {
-        return $"{Name}(${(Region is null? "Unknow": Region.Name)})";
+        return $"{Name} ({Region?.Name ?? "Unknown"})";
     }
 }

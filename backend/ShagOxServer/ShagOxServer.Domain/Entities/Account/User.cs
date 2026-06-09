@@ -14,6 +14,7 @@ public class User : BaseEntity
 
     public string Avatar { get; set; } = "";
 
+    public int CityId { get; set; }
     public required City City { get; set; }
 
     public DateTime? LastSeenAt { get; set; }

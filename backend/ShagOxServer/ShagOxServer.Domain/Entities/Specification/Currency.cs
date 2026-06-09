@@ -5,6 +5,9 @@ public class Currency : BaseEntity
 {
     public string Name { get; set; } = "";
 
+    public List<Advertisement> Advertisements { get; set; } 
+        = new List<Advertisement>();
+
     public override string ToString()
     {
         return Name;

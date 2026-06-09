@@ -3,9 +3,11 @@ import styles from "./Footer.module.css";
 
 export default function Footer() {
   return (
-    <footer>
+    <footer className={styles.footer}>
       <Container>
-        <div>© 2026 ShagOx</div>
+        <div className={styles.content}>
+          <p>© 2026 ShagOx</p>
+        </div>
       </Container>
     </footer>
   );

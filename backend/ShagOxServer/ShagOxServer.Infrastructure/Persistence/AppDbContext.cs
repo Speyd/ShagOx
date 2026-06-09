@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
 
 public class AppDbContext : DbContext
@@ -10,6 +11,11 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
+
+
+    public DbSet<Category> Category { get; set; }
+    public DbSet<AttributeDefinition> AttributeDefinition { get; set; }
+
 
 
     public AppDbContext(DbContextOptions<AppDbContext> options)

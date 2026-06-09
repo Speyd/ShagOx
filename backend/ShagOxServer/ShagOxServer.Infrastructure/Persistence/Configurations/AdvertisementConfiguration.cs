@@ -16,6 +16,10 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
                .IsRequired()
                .HasColumnType("text");
 
+        builder.Property(x => x.Properties)
+               .IsRequired()
+               .HasColumnType("jsonb");  
+
         builder.HasOne(x => x.Currency)
                .WithMany(x => x.Advertisements)
                .HasForeignKey(x => x.CurrencyId);
@@ -33,5 +37,18 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
                .WithMany(x => x.BoughtAdvertisements)
                .HasForeignKey(x => x.BuyerId)
                .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => x.SellerId);
+        builder.HasIndex(x => x.CategoryId);
+        builder.HasIndex(x => x.CurrencyId);
+
+        builder.HasIndex(x => x.Price);
+        builder.HasIndex(x => x.CreatedAt);
+        builder.HasIndex(x => x.Popularity);
+
+        builder.HasIndex(x => new { x.CategoryId, x.Price });
+        builder.HasIndex(x => new { x.CategoryId, x.CreatedAt });
+        builder.HasIndex(x => new { x.CategoryId, x.Popularity });
+
     }
 }

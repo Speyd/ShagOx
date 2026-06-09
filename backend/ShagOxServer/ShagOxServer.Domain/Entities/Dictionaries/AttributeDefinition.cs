@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace ShagOxServer.Domain.Entities.Dictionaries;
 public class AttributeDefinition
 {
     public int Id { get; set; }
+
+    public int CategoryId { get; set; }
+    public Category Category { get; set; } = null!;
 
     public string Key { get; set; } = null!;
     public string Type { get; set; } = null!;

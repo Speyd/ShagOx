@@ -98,8 +98,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Phone")
                         .IsUnique();
 
-                    b.HasIndex("RegisteredAt");
-
                     b.ToTable("Users");
                 });
 
@@ -129,7 +127,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BuyerId")
+                    b.Property<int?>("BuyerId")
                         .HasColumnType("integer");
 
                     b.Property<int>("CategoryId")
@@ -398,19 +396,18 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Buyer")
                         .WithMany("BoughtAdvertisements")
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Category", "Category")
                         .WithMany("Advertisements")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
                         .WithMany("Advertisements")
                         .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Seller")

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ShagOxServer.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260609204254_FixConfiguration")]
+    [Migration("20260609205204_FixConfiguration")]
     partial class FixConfiguration
     {
         /// <inheritdoc />
@@ -101,8 +101,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Phone")
                         .IsUnique();
 
-                    b.HasIndex("RegisteredAt");
-
                     b.ToTable("Users");
                 });
 
@@ -132,7 +130,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BuyerId")
+                    b.Property<int?>("BuyerId")
                         .HasColumnType("integer");
 
                     b.Property<int>("CategoryId")
@@ -401,19 +399,18 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Buyer")
                         .WithMany("BoughtAdvertisements")
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Category", "Category")
                         .WithMany("Advertisements")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
                         .WithMany("Advertisements")
                         .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Seller")

@@ -8,32 +8,44 @@ namespace ShagOxServer.Application.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly IUserRepository _repository;
+    private readonly IUserRepository _userRepository;
+    private readonly IRoleRepository _roleRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
 
+
     public AuthService(
-    IUserRepository repository,
+    IUserRepository userRepository,
+    IRoleRepository roleRepository,
     IPasswordHasher<User> passwordHasher,
     IContactValidator contactValidator)
     {
-        _repository = repository;
+        _userRepository = userRepository;
+        _roleRepository = roleRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
     }
 
 
     public async Task<RegisterResponse> RegisterAsync(
-        RegisterRequest request)
+    RegisterRequest request)
+    {
+        var user = CreateUser(request);
+
+        await AddDefaultRole(user);
+
+        await _userRepository.AddAsync(user);
+
+        await SetDefaultName(user);
+
+        return CreateResponse(user);
+    }
+
+    private User CreateUser(RegisterRequest request)
     {
         var user = new User();
 
-
-        var contactType =
-            ApplyContact(
-                user,
-                request
-            );
+        ApplyContact(user, request);
 
 
         user.PasswordHash =
@@ -42,32 +54,47 @@ public class AuthService : IAuthService
                 request.Password
             );
 
-
-        await _repository.AddAsync(user);
-
-
-        if (string.IsNullOrEmpty(user.Name))
-        {
-            user.Name = $"user-{user.Id}";
-
-            await _repository.UpdateAsync(user);
-        }
-
-
-        var contact = GetContact(
-            user,
-            contactType
-        );
-
-
-        return new RegisterResponse(
-            user.Id,
-            contact,
-            user.Name
-        );
+        return user;
     }
 
+    private async Task AddDefaultRole(User user)
+    {
+        var role =
+            await _roleRepository.GetByNameAsync("User");
 
+
+        if (role == null)
+            throw new Exception("User role not found");
+
+
+        user.UserRoles.Add(
+            new UserRole
+            {
+                RoleId = role.Id,
+                Role = role
+            });
+    }
+
+    private async Task SetDefaultName(User user)
+    {
+        if (!string.IsNullOrEmpty(user.Name))
+            return;
+
+
+        user.Name = $"user-{user.Id}";
+
+
+        await _userRepository.UpdateAsync(user);
+    }
+
+    private RegisterResponse CreateResponse(User user)
+    {
+        return new RegisterResponse(
+            user.Id,
+            user.Email ?? user.Phone!,
+            user.Name!
+        );
+    }
 
     private UserContactType ApplyContact(
         User user,
@@ -98,8 +125,6 @@ public class AuthService : IAuthService
 
         return type;
     }
-
-
 
     private string GetContact(
         User user,

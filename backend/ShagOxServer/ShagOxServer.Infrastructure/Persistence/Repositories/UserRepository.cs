@@ -33,4 +33,19 @@ public class UserRepository : IUserRepository
     {
         return await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<bool> UpdateAsync(User user)
+    {
+        bool exists = await _db.Users
+            .AnyAsync(x => x.Id == user.Id);
+
+        if(!exists)
+            return false;
+
+        _db.Users.Update(user);
+
+        await _db.SaveChangesAsync();
+
+        return true;
+    }
 }

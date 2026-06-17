@@ -9,3 +9,10 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.logo {
+  text-decoration: none;
+  color: inherit;
+  font-size: 32px;
+  font-weight: 700;
+}

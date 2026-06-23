@@ -3,5 +3,7 @@
 public sealed record RegisterResponse(
     int Id,
     string EmailOrPhone,
-    string UserName
+    string UserName,
+    bool Success,
+    string Message = ""
 );

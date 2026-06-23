@@ -25,28 +25,35 @@ public class LoginService : ILoginService
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
-        _jwtService = jwtService;
+        _jwtService = jwtService; 
     }
 
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
-        var type = _contactValidator.Detect(request.EmailOrPhone);
+        try
+        {
+            var type = _contactValidator.Detect(request.EmailOrPhone);
 
-        var user = await GetUserAsync(request.EmailOrPhone, type);
+            var user = await GetUserAsync(request.EmailOrPhone, type);
 
-        if (user is null)
-            return Fail("User not found");
+            if (user is null)
+                return Fail("User not found");
 
-        var result = _passwordHasher.VerifyHashedPassword(
-            user,
-            user.PasswordHash,
-            request.Password
-        );
+            var result = _passwordHasher.VerifyHashedPassword(
+                user,
+                user.PasswordHash,
+                request.Password
+            );
 
-        if (result == PasswordVerificationResult.Failed)
-            return Fail("Invalid password");
+            if (result == PasswordVerificationResult.Failed)
+                return Fail("Invalid password");
 
-        return Success(_jwtService.GenerateToken(user), "Login successful");
+            return Success(_jwtService.GenerateToken(user), "Login successful");
+        }
+        catch (Exception ex)
+        {
+            return Fail(ex.Message);
+        }
     }
 
     private async Task<User?> GetUserAsync(string data, UserContactType type)

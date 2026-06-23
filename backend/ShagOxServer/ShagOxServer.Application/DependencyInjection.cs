@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces;
-using ShagOxServer.Application.Services;
+using ShagOxServer.Application.Interfaces.Auth;
+using ShagOxServer.Application.Services.Auth;
 using ShagOxServer.Application.Validators;
 using ShagOxServer.Domain.Entities.Account;
 
@@ -21,6 +22,9 @@ public static class DependencyInjection
             ILoginService,
             LoginService>();
 
+        services.AddScoped<
+            IJwtService,
+            JwtService>();
 
         services.AddScoped<
             IPasswordHasher<User>,

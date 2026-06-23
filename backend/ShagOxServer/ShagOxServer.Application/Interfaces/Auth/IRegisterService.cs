@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Domain.Entities.Account;
 
-namespace ShagOxServer.Application.Interfaces;
+namespace ShagOxServer.Application.Interfaces.Auth;
 
 public interface IRegisterService
 {

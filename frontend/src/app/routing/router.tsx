@@ -4,6 +4,7 @@ import RegisterPage from "@/pages/RegisterPage";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "../layouts";
 import NotFoundPage from "@/pages/NotFoundPage";
+import AdvertisementPage from "@/pages/AdvertisementPage";
 
 export default function Router() {
   return (
@@ -13,6 +14,7 @@ export default function Router() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/advertisement/:id" element={<AdvertisementPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

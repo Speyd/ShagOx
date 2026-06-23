@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShagOxServer.Application.DTOs.Auth;
+using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces;
 using ShagOxServer.Application.Validators;
 using ShagOxServer.Domain.Entities.Account;

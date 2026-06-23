@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Auth;
+using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces;
 
 namespace ShagOxServer.Api.Controllers;

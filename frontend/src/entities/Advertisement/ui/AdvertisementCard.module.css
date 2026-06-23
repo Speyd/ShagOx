@@ -10,6 +10,7 @@
 }
 
 .imageContainer {
+  cursor: pointer;
   width: 215px;
   height: 100%;
 }

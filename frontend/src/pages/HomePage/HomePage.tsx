@@ -8,7 +8,7 @@ export default function HomePage() {
       <h1>HomePage</h1>
       <div className={styles.advertisementContainer}>
         {advertisements.map((advertisement) => (
-          <AdvertisementCard {...advertisement} />
+          <AdvertisementCard key={advertisement.id} {...advertisement} />
         ))}
       </div>
     </div>

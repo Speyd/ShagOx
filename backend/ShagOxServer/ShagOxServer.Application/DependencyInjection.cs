@@ -14,8 +14,12 @@ public static class DependencyInjection
     {
 
         services.AddScoped<
-            IAuthService,
-            AuthService>();
+            IRegisterService,
+            RegisterService>();
+
+        services.AddScoped<
+            ILoginService,
+            LoginService>();
 
 
         services.AddScoped<

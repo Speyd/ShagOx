@@ -1,5 +1,4 @@
-﻿
-namespace ShagOxServer.Application.DTOs.Auth;
+﻿namespace ShagOxServer.Application.DTOs.Auth.Register;
 
 public sealed record RegisterResponse(
     int Id,

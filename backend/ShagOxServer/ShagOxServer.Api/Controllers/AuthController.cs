@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.DTOs.Auth;
+using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces;
 
@@ -9,13 +9,15 @@ namespace ShagOxServer.Api.Controllers;
 [Route("auth")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _authService;
-
+    private readonly IRegisterService _registerService;
+    private readonly ILoginService _loginService;
 
     public AuthController(
-        IAuthService authService)
+        IRegisterService registerService,
+        ILoginService loginService)
     {
-        _authService = authService;
+        _registerService = registerService;
+        _loginService = loginService;
     }
 
 
@@ -24,7 +26,17 @@ public class AuthController : ControllerBase
         RegisterRequest request)
     {
         var result =
-            await _authService.RegisterAsync(request);
+            await _registerService.RegisterAsync(request);
+
+        return Ok(result);
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<LoginResponse>> Login(
+        LoginRequest request)
+    {
+        var result =
+            await _loginService.LoginAsync(request);
 
         return Ok(result);
     }

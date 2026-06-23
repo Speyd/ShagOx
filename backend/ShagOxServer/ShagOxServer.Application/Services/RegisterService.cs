@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using ShagOxServer.Application.DTOs.Auth;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces;
 using ShagOxServer.Application.Validators;
@@ -7,7 +6,7 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces;
 namespace ShagOxServer.Application.Services;
 
-public class AuthService : IAuthService
+public class RegisterService : IRegisterService
 {
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
@@ -15,11 +14,11 @@ public class AuthService : IAuthService
     private readonly IContactValidator _contactValidator;
 
 
-    public AuthService(
-    IUserRepository userRepository,
-    IRoleRepository roleRepository,
-    IPasswordHasher<User> passwordHasher,
-    IContactValidator contactValidator)
+    public RegisterService(
+        IUserRepository userRepository,
+        IRoleRepository roleRepository,
+        IPasswordHasher<User> passwordHasher,
+        IContactValidator contactValidator)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
@@ -29,7 +28,7 @@ public class AuthService : IAuthService
 
 
     public async Task<RegisterResponse> RegisterAsync(
-    RegisterRequest request)
+        RegisterRequest request)
     {
         var user = CreateUser(request);
 
@@ -41,7 +40,6 @@ public class AuthService : IAuthService
 
         return CreateResponse(user);
     }
-
     private User CreateUser(RegisterRequest request)
     {
         var user = new User();
@@ -125,23 +123,5 @@ public class AuthService : IAuthService
 
 
         return type;
-    }
-
-    private string GetContact(
-        User user,
-        UserContactType type)
-    {
-        return type switch
-        {
-            UserContactType.Email
-                => user.Email!,
-
-            UserContactType.Phone
-                => user.Phone!,
-
-            _ => throw new Exception(
-                "Unknown contact type"
-            )
-        };
     }
 }

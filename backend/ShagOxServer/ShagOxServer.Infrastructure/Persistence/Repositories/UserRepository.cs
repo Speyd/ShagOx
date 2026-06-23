@@ -30,6 +30,11 @@ public class UserRepository : IUserRepository
         return await _db.Users.FirstOrDefaultAsync(x => x.Email == email);
     }
 
+    public async Task<User?> GetByPhoneAsync(string phone)
+    {
+        return await _db.Users.FirstOrDefaultAsync(x => x.Phone == phone);
+    }
+
     public async Task<User?> GetByIdAsync(int id)
     {
         return await _db.Users.FirstOrDefaultAsync(x => x.Id == id);

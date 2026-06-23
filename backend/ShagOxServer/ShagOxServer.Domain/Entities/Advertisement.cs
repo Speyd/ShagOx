@@ -59,7 +59,7 @@ public class Advertisement : BaseEntity
     /// </summary>
     public DateTime? SoldAt { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     /// Flexible JSON storage for category-specific product attributes.

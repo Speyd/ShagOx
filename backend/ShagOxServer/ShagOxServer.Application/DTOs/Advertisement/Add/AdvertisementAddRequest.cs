@@ -8,6 +8,7 @@ public sealed record AdvertisementAddRequest
     int CurrencyId,
     int CategoryId,
     int SellerId,
+    Dictionary<string, string> Property,
     string? Description = null,
-    int Populrity = 0
+    int Popularity = 0
 );

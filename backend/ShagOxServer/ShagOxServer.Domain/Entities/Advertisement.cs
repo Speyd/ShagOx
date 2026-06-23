@@ -1,5 +1,4 @@
-﻿
-using ShagOxServer.Domain.Base;
+﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
@@ -64,7 +63,7 @@ public class Advertisement : BaseEntity
     /// <summary>
     /// Flexible JSON storage for category-specific product attributes.
     /// </summary>
-    public string Properties { get; set; } = "{}";
+    public Dictionary<string, string> Properties { get; set; } = new();
 
     public override string ToString()
     {

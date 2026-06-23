@@ -12,16 +12,20 @@ public class LoginService : ILoginService
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
+    private readonly IJwtService _jwtService;
+
 
 
     public LoginService(
         IUserRepository userRepository,
         IPasswordHasher<User> passwordHasher,
-        IContactValidator contactValidator)
+        IContactValidator contactValidator,
+        IJwtService jwtService)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
+        _jwtService = jwtService;
     }
 
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
@@ -42,7 +46,7 @@ public class LoginService : ILoginService
         if (result == PasswordVerificationResult.Failed)
             return Fail("Invalid password");
 
-        return Success("jwt", "Login successful");
+        return Success(_jwtService.GenerateToken(user), "Login successful");
     }
 
     private async Task<User?> GetUserAsync(string data, UserContactType type)

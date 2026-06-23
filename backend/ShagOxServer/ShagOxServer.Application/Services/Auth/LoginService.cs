@@ -66,9 +66,9 @@ public class LoginService : ILoginService
         };
     }
 
-    public static LoginResponse Success(string token, string message)
-       => new(true, token, message);
+    public static LoginResponse Success(string message, string token)
+       => new(true, message, token);
 
     public static LoginResponse Fail(string message)
-        => new(false, null, message);
+        => new(false, message);
 }

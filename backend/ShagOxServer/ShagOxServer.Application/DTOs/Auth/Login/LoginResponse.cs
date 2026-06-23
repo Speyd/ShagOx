@@ -2,6 +2,6 @@
 
 public sealed record LoginResponse(
     bool Success,
-    string? Token,
-    string Message
+    string Message,
+    string? Token = null
 );

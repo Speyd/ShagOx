@@ -4,10 +4,10 @@ namespace ShagOxServer.Domain.Entities.Account;
 public class UserRole : BaseEntity
 {
     public int UserId { get; set; }
-    public required User User { get; set; }
+    public User? User { get; set; } = null;
 
     public int RoleId { get; set; }
-    public required Role Role { get; set; }
+    public Role? Role { get; set; } = null;
 
 
     public override string ToString()

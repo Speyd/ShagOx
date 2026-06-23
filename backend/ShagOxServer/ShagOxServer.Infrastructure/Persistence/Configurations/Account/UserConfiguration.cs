@@ -9,19 +9,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.Property(x => x.Name)
-               .IsRequired()
                .HasMaxLength(35);
 
         builder.Property(x => x.Surname)
-               .IsRequired()
                .HasMaxLength(35);
 
         builder.Property(x => x.Phone)
-               .IsRequired()
                .HasMaxLength(20);
+                
 
         builder.Property(x => x.Email)
-               .IsRequired()
                .HasMaxLength(254);
 
         builder.Property(x => x.PasswordHash)
@@ -49,9 +46,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(x => x.CityId);
 
         builder.HasIndex(x => x.Email)
-               .IsUnique();
+               .IsUnique()
+               .HasFilter("\"Email\" IS NOT NULL");
+
 
         builder.HasIndex(x => x.Phone)
-               .IsUnique();
+               .IsUnique()
+               .HasFilter("\"Phone\" IS NOT NULL");
     }
 }

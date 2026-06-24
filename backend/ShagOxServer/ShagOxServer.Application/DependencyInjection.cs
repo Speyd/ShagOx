@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Common.Validators;
+using ShagOxServer.Application.Interfaces.Advertisements.Create;
+using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Interfaces.Auth;
 using ShagOxServer.Application.Interfaces.Jwt;
 using ShagOxServer.Application.Interfaces.Validators;
+using ShagOxServer.Application.Services.Advertisements.Create;
+using ShagOxServer.Application.Services.Advertisements.Query;
 using ShagOxServer.Application.Services.Auth;
 using ShagOxServer.Domain.Entities.Account;
 
@@ -15,6 +19,7 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
 
+        #region Auth
         services.AddScoped<
             IRegisterService,
             RegisterService>();
@@ -22,7 +27,26 @@ public static class DependencyInjection
         services.AddScoped<
             ILoginService,
             LoginService>();
+        #endregion
 
+        #region Advertisement
+        services.AddScoped<
+           IAdvertisementCreateService,
+           AdvertisementCreateService>();
+
+        services.AddScoped<
+           IAdvertisementQueryService,
+           AdvertisementQueryService>();
+        #endregion
+
+
+        #region Common
+        services.AddScoped<
+            IContactValidator,
+            ContactValidator>();
+        #endregion
+
+        #region Settings
         services.AddScoped<
             IJwtService,
             JwtService>();
@@ -30,12 +54,7 @@ public static class DependencyInjection
         services.AddScoped<
             IPasswordHasher<User>,
             PasswordHasher<User>>();
-
-
-        services.AddScoped<
-            IContactValidator,
-            ContactValidator>();
-
+        #endregion
 
         return services;
     }

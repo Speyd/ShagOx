@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Advertisement.Add;
-using ShagOxServer.Application.Interfaces.Advertisement.Add;
+using ShagOxServer.Application.DTOs.Advertisements.Create;
+using ShagOxServer.Application.Interfaces.Advertisements.Create;
 using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -10,8 +10,8 @@ using ShagOxServer.Infrastructure.Interfaces.Auth;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
 
-namespace ShagOxServer.Application.Services.Advertisements.Add;
-public class AdvertisementAddService : IAdvertisementAddService
+namespace ShagOxServer.Application.Services.Advertisements.Create;
+public class AdvertisementCreateService : IAdvertisementCreateService
 {
     private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IUserRepository _userRepository;
@@ -19,7 +19,7 @@ public class AdvertisementAddService : IAdvertisementAddService
     private readonly ICategoryRepository _categoryRepository;
 
 
-    public AdvertisementAddService(
+    public AdvertisementCreateService(
         IAdvertisementRepository advertisementRepository,
         IUserRepository userRepository,
         ICurrencyRepository currencyRepository,

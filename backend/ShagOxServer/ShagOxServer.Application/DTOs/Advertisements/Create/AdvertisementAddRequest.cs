@@ -1,6 +1,4 @@
-﻿using ShagOxServer.Domain.Entities.Dictionaries;
-
-namespace ShagOxServer.Application.DTOs.Advertisement.Add;
+﻿namespace ShagOxServer.Application.DTOs.Advertisements.Create;
 public sealed record AdvertisementAddRequest
 (
     string Title,

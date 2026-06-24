@@ -4,6 +4,6 @@ using ShagOxServer.Application.DTOs.Advertisements.Create;
 namespace ShagOxServer.Application.Interfaces.Advertisements.Create;
 public interface IAdvertisementCreateService
 {
-    Task<Result<AdvertisementAddResponse>> AddAdvertisement(
+    Task<Result<AdvertisementAddResponse>> AddAdvertisementAsync(
         AdvertisementAddRequest request);
 }

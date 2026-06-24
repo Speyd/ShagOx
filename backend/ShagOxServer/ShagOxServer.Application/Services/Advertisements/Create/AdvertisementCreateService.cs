@@ -31,7 +31,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         _categoryRepository = categoryRepository;     
     }
 
-    public async Task<Result<AdvertisementAddResponse>> AddAdvertisement(
+    public async Task<Result<AdvertisementAddResponse>> AddAdvertisementAsync(
     AdvertisementAddRequest request)
     {
         var validation = await ValidateAsync(request);

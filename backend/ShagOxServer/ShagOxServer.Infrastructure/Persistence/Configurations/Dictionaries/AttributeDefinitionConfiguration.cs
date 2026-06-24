@@ -6,16 +6,6 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
 
 public class AttributeDefinitionConfiguration : IEntityTypeConfiguration<AttributeDefinition>
 {
-    public int CategoryId { get; set; }
-    public Category Category { get; set; } = null!;
-
-    public string Key { get; set; } = null!;
-    public string Type { get; set; } = null!;
-    public bool Required { get; set; }
-
-    public int? Min { get; set; }
-    public int? Max { get; set; }
-
     public void Configure(EntityTypeBuilder<AttributeDefinition> builder)
     {
         builder.Property(x => x.Key)

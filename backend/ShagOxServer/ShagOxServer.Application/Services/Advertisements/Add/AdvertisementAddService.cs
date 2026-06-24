@@ -1,9 +1,10 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisement.Add;
 using ShagOxServer.Application.Interfaces.Advertisement.Add;
 using ShagOxServer.Application.Interfaces.Validators;
+using ShagOxServer.Domain.Entities;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 
-namespace ShagOxServer.Application.Services.Advertisement.Add;
+namespace ShagOxServer.Application.Services.Advertisements.Add;
 public class AdvertisementAddService : IAdvertisementAddService
 {
     private readonly IUserRepository _userRepository;
@@ -29,7 +30,7 @@ public class AdvertisementAddService : IAdvertisementAddService
             throw new ArgumentNullException(nameof(seller));
 
 
-        ShagOxServer.Domain.Entities.Advertisement advert = new ShagOxServer.Domain.Entities.Advertisement()
+        Advertisement advert = new Advertisement()
         {
             Title = request.Title,
             Description = request.Description ?? "",

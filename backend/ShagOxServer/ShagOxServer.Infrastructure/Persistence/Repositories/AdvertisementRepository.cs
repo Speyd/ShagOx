@@ -17,8 +17,39 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<Advertisement?> GetByIdAsync(int id)
+    private IQueryable<Advertisement> Query()
     {
-        return await _db.Advertisements.FirstOrDefaultAsync(a => a.Id == id);
+        return _db.Advertisements
+            .Include(x => x.Currency)
+            .Include(x => x.Category)
+            .Include(x => x.Seller)
+            .Include(x => x.Images);
+    }
+
+    public async Task<List<Advertisement>> GetPagedAsync(int page, int pageSize)
+    {
+        return await Query()
+            .OrderByDescending(x => x.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
+
+    public async Task<List<Advertisement>> GetByCategoryAsync(int categoryId)
+    {
+        return await Query()
+            .Where(x => x.CategoryId == categoryId)
+            .OrderByDescending(x => x.CreatedAt)
+            .ToListAsync();
+    }
+
+    public async Task<List<Advertisement>> SearchAsync(string query)
+    {
+        return await Query()
+            .Where(x =>
+                x.Title.Contains(query) ||
+                x.Description.Contains(query))
+            .OrderByDescending(x => x.Popularity)
+            .ToListAsync();
     }
 }

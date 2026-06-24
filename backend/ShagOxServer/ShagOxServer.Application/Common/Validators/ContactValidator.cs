@@ -1,8 +1,8 @@
-﻿using ShagOxServer.Application.Interfaces;
+﻿using ShagOxServer.Application.Interfaces.Validators;
 using System;
 using System.Text.RegularExpressions;
 
-namespace ShagOxServer.Application.Validators;
+namespace ShagOxServer.Application.Common.Validators;
 
 
 public class ContactValidator : IContactValidator

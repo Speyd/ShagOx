@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;
 public class Category : BaseEntity

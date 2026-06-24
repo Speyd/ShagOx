@@ -1,5 +1,4 @@
-﻿
-using ShagOxServer.Domain.Base;
+﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
@@ -44,7 +43,7 @@ public class Advertisement : BaseEntity
     /// <summary>
     /// User who published the product listing.
     /// </summary>
-    public required User Seller { get; set; }
+    public User Seller { get; set; } = null!;
 
 
     public int? BuyerId { get; set; }
@@ -59,12 +58,12 @@ public class Advertisement : BaseEntity
     /// </summary>
     public DateTime? SoldAt { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     /// Flexible JSON storage for category-specific product attributes.
     /// </summary>
-    public string Properties { get; set; } = "{}";
+    public Dictionary<string, string> Properties { get; set; } = new();
 
     public override string ToString()
     {

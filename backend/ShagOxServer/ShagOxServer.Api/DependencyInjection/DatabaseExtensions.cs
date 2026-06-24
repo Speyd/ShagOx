@@ -28,4 +28,35 @@ public static class DatabaseExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddEnumConverter(
+        this IServiceCollection services)
+    {
+        services.AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(
+                new System.Text.Json.Serialization.JsonStringEnumConverter()
+            );
+        });
+
+        return services;
+    }
+
+    public static IServiceCollection AddFrontendPolicy(
+        this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("Frontend", policy =>
+            {
+                policy
+                    .WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+
+        return services;
+    }
 }

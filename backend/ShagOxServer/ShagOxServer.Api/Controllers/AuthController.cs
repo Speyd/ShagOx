@@ -2,6 +2,7 @@
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Auth;
+using ShagOxServer.Application.Common.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers;
 
@@ -22,22 +23,20 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("register")]
-    public async Task<ActionResult<RegisterResponse>> Register(
+    public async Task<IActionResult> Register(
         RegisterRequest request)
     {
-        var result =
-            await _registerService.RegisterAsync(request);
+        var result = await _registerService.RegisterAsync(request);
 
-        return Ok(result);
+        return result.ToActionResult();
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<LoginResponse>> Login(
+    public async Task<IActionResult> Login(
         LoginRequest request)
     {
-        var result =
-            await _loginService.LoginAsync(request);
+        var result = await _loginService.LoginAsync(request);
 
-        return Ok(result);
+        return result.ToActionResult();
     }
 }

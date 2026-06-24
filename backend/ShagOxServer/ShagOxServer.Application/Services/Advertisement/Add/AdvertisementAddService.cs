@@ -1,7 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisement.Add;
 using ShagOxServer.Application.Interfaces.Advertisement.Add;
 using ShagOxServer.Application.Interfaces.Validators;
-using ShagOxServer.Infrastructure.Interfaces;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 
 namespace ShagOxServer.Application.Services.Advertisement.Add;

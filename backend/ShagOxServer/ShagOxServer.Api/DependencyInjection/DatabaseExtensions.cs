@@ -42,4 +42,21 @@ public static class DatabaseExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddFrontendPolicy(
+        this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("Frontend", policy =>
+            {
+                policy
+                    .WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+
+        return services;
+    }
 }

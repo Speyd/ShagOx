@@ -6,6 +6,7 @@ using ShagOxServer.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddJWT(builder.Configuration);
+builder.Services.AddEnumConverter();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 builder.Services.AddControllers();

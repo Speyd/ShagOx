@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces;
+using ShagOxServer.Infrastructure.Interfaces.Auth;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
 
-public class UserRepository : IUserRepository
+public class UserRepository : BaseRepository, IUserRepository
 {
-    private readonly AppDbContext _db;
     public UserRepository(AppDbContext db)
-    {
-        _db = db;
-    }
+        :base(db)
+    {}
 
     public async Task AddAsync(User user)
     {

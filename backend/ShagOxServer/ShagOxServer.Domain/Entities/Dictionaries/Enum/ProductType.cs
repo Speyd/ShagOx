@@ -1,5 +1,4 @@
-﻿
-namespace ShagOxServer.Domain.Entities.Dictionaries;
+﻿namespace ShagOxServer.Domain.Entities.Dictionaries.Enum;
 public enum ProductType
 {
     Automotive,

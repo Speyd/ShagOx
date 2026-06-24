@@ -23,8 +23,8 @@ public class AttributeDefinitionConfiguration : IEntityTypeConfiguration<Attribu
             .HasMaxLength(150);
 
         builder.Property(x => x.Type)
-            .IsRequired()
-            .HasMaxLength(50);
+            .HasConversion<string>()
+            .IsRequired();
 
         builder.HasOne(x => x.Category)
             .WithMany(x => x.Attributes)

@@ -1,5 +1,6 @@
 ﻿
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;
 public class AttributeDefinition : BaseEntity
@@ -8,7 +9,7 @@ public class AttributeDefinition : BaseEntity
     public Category Category { get; set; } = null!;
 
     public string Key { get; set; } = null!;
-    public string Type { get; set; } = null!;
+    public AttributeType Type { get; set; }
     public bool Required { get; set; }
 
     public int? Min { get; set; }

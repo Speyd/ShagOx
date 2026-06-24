@@ -28,4 +28,18 @@ public static class DatabaseExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddEnumConverter(
+        this IServiceCollection services)
+    {
+        services.AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(
+                new System.Text.Json.Serialization.JsonStringEnumConverter()
+            );
+        });
+
+        return services;
+    }
 }

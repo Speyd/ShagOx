@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Domain.Entities.Account;
 
-namespace ShagOxServer.Infrastructure.Interfaces;
+namespace ShagOxServer.Infrastructure.Interfaces.Auth;
 public interface IUserRepository
 {
     Task<User?> GetByEmailAsync(string email);

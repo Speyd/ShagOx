@@ -43,7 +43,7 @@ public class Advertisement : BaseEntity
     /// <summary>
     /// User who published the product listing.
     /// </summary>
-    public required User Seller { get; set; }
+    public User Seller { get; set; } = null!;
 
 
     public int? BuyerId { get; set; }

@@ -1,11 +1,9 @@
-﻿using ShagOxServer.Application.DTOs.Advertisement.Add;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ShagOxServer.Application.Common.Results;
+using ShagOxServer.Application.DTOs.Advertisement.Add;
 
 namespace ShagOxServer.Application.Interfaces.Advertisement.Add;
 public interface IAdvertisementAddService
 {
-    Task<AdvertisementAddResponse> AddAdvertisement(
+    Task<Result<AdvertisementAddResponse>> AddAdvertisement(
         AdvertisementAddRequest request);
 }

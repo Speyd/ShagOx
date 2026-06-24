@@ -54,6 +54,7 @@ public class RegisterService : IRegisterService
         }
         catch (Exception ex)
         {
+            _ = ex;
             return Result<RegisterResponse>.Fail("Unknown Exception");
         }
     }

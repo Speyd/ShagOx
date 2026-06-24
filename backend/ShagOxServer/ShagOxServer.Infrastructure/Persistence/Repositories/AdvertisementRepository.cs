@@ -52,4 +52,10 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
             .OrderByDescending(x => x.Popularity)
             .ToListAsync();
     }
+
+    public async Task<Advertisement?> GetByIdAsync(int id)
+    {
+        return await Query()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
 }

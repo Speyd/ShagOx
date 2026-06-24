@@ -35,6 +35,10 @@ public static class DependencyInjection
         services.AddScoped<
             ICurrencyRepository,
             CurrencyRepository>();
+
+        services.AddScoped<
+            IImageRepository,
+            ImageRepository>();
         #endregion
 
         #region Dictionaries

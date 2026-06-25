@@ -13,5 +13,7 @@ public interface IAdvertisementRepository
 
     Task AddAsync(Advertisement advertisement);
 
+    Task DeleteAsync(Advertisement advertisement);
+
     Task<bool> UpdateAsync (Advertisement advertisement);
 }

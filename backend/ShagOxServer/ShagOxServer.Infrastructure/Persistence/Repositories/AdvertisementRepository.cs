@@ -17,6 +17,13 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
         await _db.SaveChangesAsync();
     }
 
+    public async Task DeleteAsync(Advertisement advertisement)
+    {
+        _db.Advertisements.Remove(advertisement);
+
+        await _db.SaveChangesAsync();
+    }
+
     public async Task<bool> UpdateAsync(Advertisement advertisement)
     {
         _db.Advertisements.Update(advertisement);

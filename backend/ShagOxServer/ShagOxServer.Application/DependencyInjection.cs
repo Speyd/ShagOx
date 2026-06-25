@@ -41,13 +41,13 @@ public static class DependencyInjection
 
 
         #region Common
-        services.AddScoped<
+        services.AddSingleton<
             IContactValidator,
             ContactValidator>();
         #endregion
 
         #region Settings
-        services.AddScoped<
+        services.AddSingleton<
             IJwtService,
             JwtService>();
 

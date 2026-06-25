@@ -2,12 +2,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.Interfaces.Advertisements.Create;
+using ShagOxServer.Application.Interfaces.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Auth;
 using ShagOxServer.Application.Interfaces.Jwt;
 using ShagOxServer.Application.Interfaces.Validators;
 using ShagOxServer.Application.Services.Advertisements.Create;
+using ShagOxServer.Application.Services.Advertisements.Delete;
 using ShagOxServer.Application.Services.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Update;
 using ShagOxServer.Application.Services.Auth;
@@ -35,6 +37,10 @@ public static class DependencyInjection
         services.AddScoped<
            IAdvertisementCreateService,
            AdvertisementCreateService>();
+
+        services.AddScoped<
+           IAdvertisementDeleteService,
+           AdvertisementDeleteService>();
 
         services.AddScoped<
            IAdvertisementQueryService,

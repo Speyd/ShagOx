@@ -3,6 +3,7 @@ using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Advertisements.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Advertisements.Create;
+using ShagOxServer.Application.Interfaces.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
 
@@ -15,16 +16,19 @@ public class AdvertisementController : ControllerBase
     private readonly IAdvertisementCreateService _createService;
     private readonly IAdvertisementQueryService _queryService;
     private readonly IAdvertisementUpdateService _updateService;
+    private readonly IAdvertisementDeleteService _deleteService;
 
 
     public AdvertisementController(
         IAdvertisementCreateService createService,
         IAdvertisementQueryService queryService,
-        IAdvertisementUpdateService updateService)
+        IAdvertisementUpdateService updateService,
+        IAdvertisementDeleteService deleteService)
     {
         _createService = createService;
         _queryService = queryService;
         _updateService = updateService;
+        _deleteService = deleteService;
     }
 
     [HttpPost]
@@ -45,6 +49,13 @@ public class AdvertisementController : ControllerBase
     public async Task<IActionResult> Update(AdvertisementUpdateRequest request)
     {
         var result = await _updateService.UpdateAdvertisementAsync(request);
+        return result.ToActionResult();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await _deleteService.DeleteAdvertisementAsync(id);
         return result.ToActionResult();
     }
 

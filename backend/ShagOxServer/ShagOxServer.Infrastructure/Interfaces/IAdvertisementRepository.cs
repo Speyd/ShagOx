@@ -12,4 +12,8 @@ public interface IAdvertisementRepository
     Task<List<Advertisement>> SearchAsync(string query);
 
     Task AddAsync(Advertisement advertisement);
+
+    Task DeleteAsync(Advertisement advertisement);
+
+    Task<bool> UpdateAsync (Advertisement advertisement);
 }

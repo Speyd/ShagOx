@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Advertisements.Delete;
 
 namespace ShagOxServer.Application.Interfaces.Advertisements.Delete;
-public interface IAdvertisementDeleteyService
+public interface IAdvertisementDeleteService
 {
     Task<Result<AdvertisementDeleteResponse>> DeleteAdvertisementAsync(
         int id);

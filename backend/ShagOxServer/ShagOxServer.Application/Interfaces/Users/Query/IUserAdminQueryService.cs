@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Users;
 
 namespace ShagOxServer.Application.Interfaces.Users.Query;
-public interface IAdminUserQueryService
+public interface IUserAdminQueryService
 {
     Task<Result<UserDto>> GetByEmailAsync(string email);
 

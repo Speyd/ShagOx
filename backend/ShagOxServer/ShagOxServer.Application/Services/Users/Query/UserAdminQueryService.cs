@@ -6,11 +6,11 @@ using ShagOxServer.Application.Services.Users.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 
 namespace ShagOxServer.Application.Services.Users.Query;
-public class AdminUserQueryService : IAdminUserQueryService
+public class UserAdminQueryService : IUserAdminQueryService
 {
     private readonly IUserRepository _repository;
 
-    public AdminUserQueryService(
+    public UserAdminQueryService(
         IUserRepository userRepository)
     {
         _repository = userRepository;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 
@@ -109,5 +110,12 @@ public class UserRepository : BaseRepository, IUserRepository
         _db.Users.Update(user);
         await _db.SaveChangesAsync();
         return true;
+    }
+
+    public async Task DeleteAsync(User user)
+    {
+        _db.Users.Remove(user);
+
+        await _db.SaveChangesAsync();
     }
 }

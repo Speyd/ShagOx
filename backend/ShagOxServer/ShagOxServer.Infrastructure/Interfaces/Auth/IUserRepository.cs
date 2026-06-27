@@ -29,4 +29,6 @@ public interface IUserRepository
     Task AddAsync(User user);
 
     Task<bool> UpdateAsync(User user);
+
+    Task DeleteAsync(User user);
 }

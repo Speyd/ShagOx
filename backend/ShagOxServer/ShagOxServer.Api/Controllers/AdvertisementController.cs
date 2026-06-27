@@ -31,6 +31,7 @@ public class AdvertisementController : ControllerBase
         _deleteService = deleteService;
     }
 
+
     [HttpPost]
     public async Task<IActionResult> Add(AdvertisementAddRequest request)
     {

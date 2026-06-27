@@ -16,11 +16,11 @@ public class UserAdminQueryService : IUserAdminQueryService
         _repository = userRepository;
     }
 
-    public async Task<Result<List<UserDto>>> GetByCityAsync(int cityId)
+    public async Task<Result<UserDto>> GetByContactAsync(string? email, string? phone)
     {
-        var users = await _repository.GetByCityAsync(cityId);
+        var user = await _repository.GetByContactAsync(email, phone);
 
-        return users.ToResultList(UserMapper.ToDto);
+        return user.ToResult(UserMapper.ToDto);
     }
 
     public async Task<Result<UserDto>> GetByEmailAsync(string email)
@@ -37,9 +37,9 @@ public class UserAdminQueryService : IUserAdminQueryService
         return user.ToResult(UserMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> GetByRoleAsync(int roleId)
+    public async Task<Result<List<UserDto>>> GetByCityAsync(int cityId)
     {
-        var users = await _repository.GetByRoleAsync(roleId);
+        var users = await _repository.GetByCityAsync(cityId);
 
         return users.ToResultList(UserMapper.ToDto);
     }

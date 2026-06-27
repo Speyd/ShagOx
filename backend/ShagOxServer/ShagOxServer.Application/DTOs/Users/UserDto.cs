@@ -1,4 +1,6 @@
 ﻿
+using ShagOxServer.Application.DTOs.Roles;
+
 namespace ShagOxServer.Application.DTOs.Users;
 public sealed record UserDto
 (
@@ -12,8 +14,7 @@ public sealed record UserDto
     int? CityId,
     string? CityName,
 
-    List<int> RolesId,
-    List<string> RolesName,
+    List<RoleDto> Roles,
 
     DateTime? LastSeenAt,
     DateTime RegisteredAt

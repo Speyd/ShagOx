@@ -3,16 +3,15 @@
 namespace ShagOxServer.Infrastructure.Interfaces.Auth;
 public interface IUserRepository
 {
-
     Task<User?> GetByIdAsync(int id);
+
+    Task<User?> GetByContactAsync(string? email, string? phone);
 
     Task<User?> GetByEmailAsync(string email);
 
     Task<User?> GetByPhoneAsync(string phone);
 
     Task<List<User>> GetByCityAsync(int cityId);
-
-    Task<List<User>> GetByRoleAsync(int roleId);
 
     Task<List<User>> GetUsersRegisteredAfterAsync(DateTime date);
 

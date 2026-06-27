@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Common.Context;
 using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.Interfaces.Advertisements.Create;
 using ShagOxServer.Application.Interfaces.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Auth;
+using ShagOxServer.Application.Interfaces.Common.Context;
+using ShagOxServer.Application.Interfaces.Common.Validators;
 using ShagOxServer.Application.Interfaces.Jwt;
-using ShagOxServer.Application.Interfaces.Validators;
 using ShagOxServer.Application.Services.Advertisements.Create;
 using ShagOxServer.Application.Services.Advertisements.Delete;
 using ShagOxServer.Application.Services.Advertisements.Query;
@@ -51,6 +53,11 @@ public static class DependencyInjection
            AdvertisementUpdateService>();
         #endregion
 
+        #region User
+        services.AddScoped<
+          IUserContext,
+          UserContext>();
+        #endregion
 
         #region Common
         services.AddSingleton<

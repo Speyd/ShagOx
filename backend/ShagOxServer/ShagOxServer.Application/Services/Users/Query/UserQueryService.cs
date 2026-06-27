@@ -14,9 +14,12 @@ public class UserQueryService : IUserQueryService
         _repository = userRepository;
     }
 
-    public Task<Result<UserDto>> GetByIdAsync(int id)
+    public async Task<Result<UserDto>> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var user = await _repository.GetByIdAsync(id);
+        if (user is null)
+            Result<UserDto>.Fail("User not found");
+
     }
 
     public Task<Result<UserDto>> GetMyProfileAsync()

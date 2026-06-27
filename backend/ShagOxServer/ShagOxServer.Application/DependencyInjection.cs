@@ -10,13 +10,17 @@ using ShagOxServer.Application.Interfaces.Auth;
 using ShagOxServer.Application.Interfaces.Common.Context;
 using ShagOxServer.Application.Interfaces.Common.Validators;
 using ShagOxServer.Application.Interfaces.Jwt;
+using ShagOxServer.Application.Interfaces.Users.Delete;
 using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.Application.Interfaces.Users.Update;
 using ShagOxServer.Application.Services.Advertisements.Create;
 using ShagOxServer.Application.Services.Advertisements.Delete;
 using ShagOxServer.Application.Services.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Update;
 using ShagOxServer.Application.Services.Auth;
+using ShagOxServer.Application.Services.Users.Delete;
 using ShagOxServer.Application.Services.Users.Query;
+using ShagOxServer.Application.Services.Users.Update;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application;
@@ -67,6 +71,14 @@ public static class DependencyInjection
         services.AddScoped<
           IUserAdminQueryService,
           UserAdminQueryService>();
+
+        services.AddScoped<
+          IUserUpdateService,
+          UserUpdateService>();
+
+        services.AddScoped<
+          IUserDeleteService,
+          UserDeleteService>();
         #endregion
 
         #region Common

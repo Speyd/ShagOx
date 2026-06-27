@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Users.Create;
-using ShagOxServer.Application.Interfaces.Users.Create;
+using ShagOxServer.Application.DTOs.Users.Update;
+using ShagOxServer.Application.Interfaces.Users.Update;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 

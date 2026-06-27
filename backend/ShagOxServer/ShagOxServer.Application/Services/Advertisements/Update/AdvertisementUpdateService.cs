@@ -3,8 +3,8 @@ using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
 using ShagOxServer.Domain.Entities;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
-namespace ShagOxServer.Application.Services.Advertisements.Update;
 
+namespace ShagOxServer.Application.Services.Advertisements.Update;
 public class AdvertisementUpdateService : IAdvertisementUpdateService
 {
     private readonly IAdvertisementRepository _repository;

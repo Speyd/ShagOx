@@ -1,5 +1,5 @@
 ﻿
-namespace ShagOxServer.Application.DTOs.Users.Create;
+namespace ShagOxServer.Application.DTOs.Users.Update;
 public sealed record UserUpdateRequest
 (
     int Id,

@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Advertisements;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Mapping;
-using ShagOxServer.Infrastructure.Interfaces;
+using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Query;
 

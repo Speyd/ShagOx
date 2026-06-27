@@ -37,6 +37,19 @@ public class AuthController : ControllerBase
     {
         var result = await _loginService.LoginAsync(request);
 
-        return result.ToActionResult();
+        if (!result.IsSuccess || result.Value?.Token is null)
+            return BadRequest(result.Error);
+
+        Response.Cookies.Append(
+            "access_token",
+            result.Value.Token,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                Expires = DateTimeOffset.UtcNow.AddDays(7)
+            });
+
+        return Ok();
     }
 }

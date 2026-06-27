@@ -1,31 +1,32 @@
 using SchagoxServer.Api.DependencyInjection;
+using ShagOxServer.Api.DependencyInjection;
 using ShagOxServer.Application;
 using ShagOxServer.Infrastructure;
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDatabase(builder.Configuration);
-builder.Services.AddJWT(builder.Configuration);
-builder.Services.AddEnumConverter();
-builder.Services.AddFrontendPolicy();
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+#region Services
+
+builder.Services
+    .AddDatabase(builder.Configuration)
+    .AddJWT(builder.Configuration)
+    .AddFrontendPolicy()
+    .AddControllersWithJson()
+    .AddSwaggerDocumentation()
+    .AddApplication()
+    .AddInfrastructure();
+
+builder.Services.AddHttpContextAccessor();
+
+#endregion
+
 var app = builder.Build();
 
+#region Pipeline
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.ConfigurePipeline();
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+#endregion
 
 app.Run();

@@ -1,6 +1,8 @@
 ﻿using ShagOxServer.Application.Common.Results;
+using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Users;
 using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.Application.Services.Users.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 
 namespace ShagOxServer.Application.Services.Users.Query;
@@ -14,33 +16,45 @@ public class AdminUserQueryService : IAdminUserQueryService
         _repository = userRepository;
     }
 
-    public Task<Result<List<UserDto>>> GetByCityAsync(int cityId)
+    public async Task<Result<List<UserDto>>> GetByCityAsync(int cityId)
     {
-        throw new NotImplementedException();
+        var users = await _repository.GetByCityAsync(cityId);
+
+        return users.ToResultList(UserMapper.ToDto);
     }
 
-    public Task<Result<UserDto>> GetByEmailAsync(string email)
+    public async Task<Result<UserDto>> GetByEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        var user = await _repository.GetByEmailAsync(email);
+
+        return user.ToResult(UserMapper.ToDto);
     }
 
-    public Task<Result<UserDto>> GetByPhoneAsync(string phone)
+    public async Task<Result<UserDto>> GetByPhoneAsync(string phone)
     {
-        throw new NotImplementedException();
+        var user = await _repository.GetByEmailAsync(phone);
+
+        return user.ToResult(UserMapper.ToDto);
     }
 
-    public Task<Result<List<UserDto>>> GetByRoleAsync(int roleId)
+    public async Task<Result<List<UserDto>>> GetByRoleAsync(int roleId)
     {
-        throw new NotImplementedException();
+        var users = await _repository.GetByRoleAsync(roleId);
+
+        return users.ToResultList(UserMapper.ToDto);
     }
 
-    public Task<Result<List<UserDto>>> GetUsersActiveAfterAsync(DateTime date)
+    public async Task<Result<List<UserDto>>> GetUsersActiveAfterAsync(DateTime date)
     {
-        throw new NotImplementedException();
+        var users = await _repository.GetUsersActiveAfterAsync(date);
+
+        return users.ToResultList(UserMapper.ToDto);
     }
 
-    public Task<Result<List<UserDto>>> GetUsersRegisteredAfterAsync(DateTime date)
+    public async Task<Result<List<UserDto>>> GetUsersRegisteredAfterAsync(DateTime date)
     {
-        throw new NotImplementedException();
+        var users = await _repository.GetUsersRegisteredAfterAsync(date);
+
+        return users.ToResultList(UserMapper.ToDto);
     }
 }

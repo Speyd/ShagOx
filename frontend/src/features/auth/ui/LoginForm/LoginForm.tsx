@@ -1,25 +1,21 @@
 import Input from "@/shared/ui/Input";
 import styles from "./LoginForm.module.css";
 import Button from "@/shared/ui/Button";
-import { login } from "../../api/login";
 import { useState } from "react";
+import { useLogin } from "../../hooks/useLogin";
 
 export default function LoginForm() {
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
+  const loginMutation = useLogin();
 
   const handleSubmit = async () => {
-    const result = await login({
-      emailOrPhone,
-      password,
-    });
-
-    console.log(result);
+    loginMutation.mutate({ emailOrPhone, password });
   };
 
   return (
     <form
-      className={styles.loginForm} 
+      className={styles.loginForm}
       onSubmit={(e) => {
         e.preventDefault();
         handleSubmit();
@@ -36,7 +32,9 @@ export default function LoginForm() {
         onChange={(e) => setPassword(e.target.value)}
         type="password"
       />
-      <Button>Login</Button>
+      <Button type="submit">
+        {loginMutation.isPending ? "Loading..." : "Login"}
+      </Button>
     </form>
   );
 }

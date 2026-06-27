@@ -1,17 +1,17 @@
 import Input from "@/shared/ui/Input";
 import styles from "./RegisterForm.module.css";
 import Button from "@/shared/ui/Button";
-import { register } from "../../api/register";
 import { useState } from "react";
+import { useRegister } from "../../hooks/useRegister";
 
 export default function RegisterForm() {
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async () => {
-    const result = await register({ emailOrPhone, password });
+  const registerMutation = useRegister();
 
-    console.log(result);
+  const handleSubmit = async () => {
+    registerMutation.mutate({ emailOrPhone, password });
   };
 
   return (
@@ -22,7 +22,6 @@ export default function RegisterForm() {
         handleSubmit();
       }}
     >
-      
       <Input
         placeholder="Email"
         value={emailOrPhone}
@@ -36,7 +35,9 @@ export default function RegisterForm() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <Button>Register</Button>
+      <Button type="submit">
+        {registerMutation.isPending ? "Loading..." : "Register"}
+      </Button>
     </form>
   );
 }

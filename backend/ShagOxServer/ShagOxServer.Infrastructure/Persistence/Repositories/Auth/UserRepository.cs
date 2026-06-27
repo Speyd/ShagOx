@@ -25,6 +25,19 @@ public class UserRepository : BaseRepository, IUserRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<User?> GetByContactAsync(string? email, string? phone)
+    {
+        var query = Query();
+
+        if (!string.IsNullOrWhiteSpace(email))
+            query = query.Where(x => x.Email == email);
+
+        if (!string.IsNullOrWhiteSpace(phone))
+            query = query.Where(x => x.Phone == phone);
+
+        return await query.FirstOrDefaultAsync();
+    }
+
     public async Task<User?> GetByEmailAsync(string email)
     {
         return await Query()

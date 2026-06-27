@@ -4,9 +4,9 @@ using ShagOxServer.Domain.Entities;
 namespace ShagOxServer.Application.Services.Advertisements.Mapping;
 public static class AdvertisementMapper
 {
-    public static UserDto ToDto(Advertisement x)
+    public static AdvertisementDto ToDto(Advertisement x)
     {
-        return new UserDto
+        return new AdvertisementDto
         (
             x.Id,
             x.Title,

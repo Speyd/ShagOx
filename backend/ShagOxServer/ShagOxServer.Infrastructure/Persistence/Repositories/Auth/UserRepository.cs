@@ -10,12 +10,67 @@ public class UserRepository : BaseRepository, IUserRepository
         :base(db)
     {}
 
-    public async Task AddAsync(User user)
+    public IQueryable<User> Query()
     {
-        await _db.Users.AddAsync(user);
-
-        await _db.SaveChangesAsync();
+        return _db.Users
+            .Include(x => x.City)
+            .Include(x => x.UserRoles)
+                .ThenInclude(r => r.Role);
     }
+
+    public async Task<User?> GetByIdAsync(int id)
+    {
+        return await Query()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        return await Query()
+            .FirstOrDefaultAsync(x => x.Email == email);
+    }
+
+    public async Task<User?> GetByPhoneAsync(string phone)
+    {
+        return await Query()
+            .FirstOrDefaultAsync(x => x.Phone == phone);
+    }
+
+    public async Task<List<User>> GetByCityAsync(int cityId)
+    {
+        return await Query()
+            .Where(x => x.CityId == cityId)
+            .ToListAsync();
+    }
+
+    public async Task<List<User>> GetByRoleAsync(int roleId)
+    {
+        return await Query()
+            .Where(x => x.UserRoles
+                .Any(ur => ur.RoleId == roleId))
+            .ToListAsync();
+    }
+
+    public async Task<List<User>> GetUsersRegisteredAfterAsync(DateTime date)
+    {
+        var dayStart = date.Date;              
+        var dayEnd = dayStart.AddDays(1); 
+
+        return await Query()
+            .Where(x => x.RegisteredAt >= dayStart && x.RegisteredAt < dayEnd)
+            .ToListAsync();
+    }
+
+    public async Task<List<User>> GetUsersActiveAfterAsync(DateTime date)
+    {
+        var dayStart = date.Date;
+        var dayEnd = dayStart.AddDays(1);
+
+        return await Query()
+            .Where(x => x.LastSeenAt >= dayStart && x.LastSeenAt < dayEnd)
+            .ToListAsync();
+    }
+
 
     public async Task<bool> ExistsAsync(string? email, string? phone)
     {
@@ -39,20 +94,15 @@ public class UserRepository : BaseRepository, IUserRepository
         );
     }
 
-    public async Task<User?> GetByEmailAsync(string email)
+   
+
+    public async Task AddAsync(User user)
     {
-        return await _db.Users.FirstOrDefaultAsync(x => x.Email == email);
+        await _db.Users.AddAsync(user);
+
+        await _db.SaveChangesAsync();
     }
 
-    public async Task<User?> GetByPhoneAsync(string phone)
-    {
-        return await _db.Users.FirstOrDefaultAsync(x => x.Phone == phone);
-    }
-
-    public async Task<User?> GetByIdAsync(int id)
-    {
-        return await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
-    }
 
     public async Task<bool> UpdateAsync(User user)
     {

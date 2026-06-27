@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.Common.Results;
 using ShagOxServer.Application.DTOs.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Advertisements.Delete;
-using ShagOxServer.Infrastructure.Interfaces;
+using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Delete;
 public class AdvertisementDeleteService : IAdvertisementDeleteService

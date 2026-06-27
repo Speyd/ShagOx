@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities;
-using ShagOxServer.Infrastructure.Interfaces;
+using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories;
 
@@ -10,6 +10,14 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
         : base(db)
     {}
 
+    private IQueryable<Advertisement> Query()
+    {
+        return _db.Advertisements
+            .Include(x => x.Currency)
+            .Include(x => x.Category)
+            .Include(x => x.Seller)
+            .Include(x => x.Images);
+    }
     public async Task AddAsync(Advertisement advertisement)
     {
         await _db.Advertisements.AddAsync(advertisement);
@@ -30,15 +38,6 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
 
         await _db.SaveChangesAsync();
         return true;
-    }
-
-    private IQueryable<Advertisement> Query()
-    {
-        return _db.Advertisements
-            .Include(x => x.Currency)
-            .Include(x => x.Category)
-            .Include(x => x.Seller)
-            .Include(x => x.Images);
     }
 
     public async Task<List<Advertisement>> GetPagedAsync(int page, int pageSize)

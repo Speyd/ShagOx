@@ -1,8 +1,5 @@
 ﻿using ShagOxServer.Application.Common.Results;
 using ShagOxServer.Application.DTOs.Users;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ShagOxServer.Application.Interfaces.Users.Query;
 public interface IAdminUserQueryService

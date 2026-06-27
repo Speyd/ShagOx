@@ -26,6 +26,11 @@ public class JwtService : IJwtService
             new Claim("phone", user.Phone ?? ""),
         };
 
+        foreach (var role in user.UserRoles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role.Role!.Name));
+        }
+
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_settings.Key)
         );

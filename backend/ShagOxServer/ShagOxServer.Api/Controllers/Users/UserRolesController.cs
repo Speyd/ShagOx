@@ -33,7 +33,7 @@ public class UserRolesController : ControllerBase
         return Ok(roles);
     }
 
-    [Authorize(Roles = "Admin")]
+
     [HttpGet("api/users/{id}/roles")]
     public async Task<IActionResult> GetUserRoles(int id)
     {
@@ -42,7 +42,8 @@ public class UserRolesController : ControllerBase
         if (!result.IsSuccess || result.Value is null)
             return BadRequest(result.Error);
 
-        return result.ToActionResult();
+        var roles = result.Value.Roles;
+        return Ok(roles);
     }
 
     [Authorize(Roles = "Admin")]

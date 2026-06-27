@@ -19,8 +19,4 @@
     <ProjectReference Include="..\ShagOxServer.Infrastructure\ShagOxServer.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\Role\" />
-  </ItemGroup>
-
 </Project>

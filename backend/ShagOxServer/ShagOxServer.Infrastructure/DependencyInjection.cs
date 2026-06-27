@@ -23,6 +23,10 @@ public static class DependencyInjection
         services.AddScoped<
             IRoleRepository,
             RoleRepository>();
+
+        services.AddScoped<
+            IUserRoleRepository,
+            UserRoleRepository>();
         #endregion
 
         #region Advertisement

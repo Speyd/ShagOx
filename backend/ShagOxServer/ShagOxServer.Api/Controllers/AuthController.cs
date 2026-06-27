@@ -52,4 +52,12 @@ public class AuthController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete("access_token");
+
+        return Ok(new { message = "Logged out successfully" });
+    }
 }

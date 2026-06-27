@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
 using ShagOxServer.Domain.Entities;
-using ShagOxServer.Infrastructure.Interfaces;
+using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 namespace ShagOxServer.Application.Services.Advertisements.Update;
 
 public class AdvertisementUpdateService : IAdvertisementUpdateService

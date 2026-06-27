@@ -1,0 +1,21 @@
+﻿using ShagOxServer.Application.Common.Results;
+using ShagOxServer.Application.DTOs.Users;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ShagOxServer.Application.Interfaces.Users.Query;
+public interface IAdminUserQueryService
+{
+    Task<Result<UserDto>> GetByEmailAsync(string email);
+
+    Task<Result<UserDto>> GetByPhoneAsync(string phone);
+
+    Task<Result<List<UserDto>>> GetByCityAsync(int cityId);
+
+    Task<Result<List<UserDto>>> GetByRoleAsync(int roleId);
+
+    Task<Result<List<UserDto>>> GetUsersRegisteredAfterAsync(DateTime date);
+
+    Task<Result<List<UserDto>>> GetUsersActiveAfterAsync(DateTime date);
+}

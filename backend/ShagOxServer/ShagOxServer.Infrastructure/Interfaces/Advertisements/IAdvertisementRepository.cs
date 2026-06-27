@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Domain.Entities;
 
-namespace ShagOxServer.Infrastructure.Interfaces;
+namespace ShagOxServer.Infrastructure.Interfaces.Advertisements;
 public interface IAdvertisementRepository
 {
     Task<Advertisement?> GetByIdAsync(int id);

@@ -1,5 +1,4 @@
 ﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Advertisements;
 using ShagOxServer.Application.DTOs.Users;
 
 namespace ShagOxServer.Application.Interfaces.Users.Query;

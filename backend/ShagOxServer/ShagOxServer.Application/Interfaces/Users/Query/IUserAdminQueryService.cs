@@ -10,8 +10,6 @@ public interface IUserAdminQueryService
 
     Task<Result<List<UserDto>>> GetByCityAsync(int cityId);
 
-    Task<Result<List<UserDto>>> GetByRoleAsync(int roleId);
-
     Task<Result<List<UserDto>>> GetUsersRegisteredAfterAsync(DateTime date);
 
     Task<Result<List<UserDto>>> GetUsersActiveAfterAsync(DateTime date);

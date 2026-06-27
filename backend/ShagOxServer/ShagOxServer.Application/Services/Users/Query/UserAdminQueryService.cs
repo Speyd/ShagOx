@@ -37,13 +37,6 @@ public class UserAdminQueryService : IUserAdminQueryService
         return user.ToResult(UserMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> GetByRoleAsync(int roleId)
-    {
-        var users = await _repository.GetByRoleAsync(roleId);
-
-        return users.ToResultList(UserMapper.ToDto);
-    }
-
     public async Task<Result<List<UserDto>>> GetUsersActiveAfterAsync(DateTime date)
     {
         var users = await _repository.GetUsersActiveAfterAsync(date);

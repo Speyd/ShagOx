@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Users.Query;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.Application.Interfaces.Users.Query;
 
 namespace ShagOxServer.Api.Controllers.Users;
 
 [ApiController]
 [Route("api/admin/users")]
+[Authorize(Roles = "Admin")]
 public class AdminUsersController : ControllerBase
 {
     private readonly IUserAdminQueryService _queryAdminService;

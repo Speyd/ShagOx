@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.Interfaces.UserRoles;
 using ShagOxServer.Application.Interfaces.Users.Query;
-using ShagOxServer.Application.Common.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users;
 
@@ -19,6 +20,7 @@ public class UserRolesController : ControllerBase
         _queryUserRoleService = queryUserRoleService;
     }
 
+    [Authorize]
     [HttpGet("api/users/me/role")]
     public async Task<IActionResult> GetMyRole()
     {
@@ -31,6 +33,7 @@ public class UserRolesController : ControllerBase
         return Ok(roles);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("api/users/{id}/roles")]
     public async Task<IActionResult> GetUserRoles(int id)
     {
@@ -42,6 +45,7 @@ public class UserRolesController : ControllerBase
         return result.ToActionResult();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("api/admin/users/by-role/{roleId}")]
     public async Task<IActionResult> GetByRole(int roleId)
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Users.Update;
 using ShagOxServer.Application.Interfaces.Users.Delete;
@@ -32,6 +33,7 @@ public class UserController : ControllerBase
         return result.ToActionResult();
     }
 
+    [Authorize]
     [HttpGet("me")]
     public async Task<IActionResult> GetMyProfile()
     {
@@ -39,6 +41,7 @@ public class UserController : ControllerBase
         return result.ToActionResult();
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(UserUpdateRequest request)
     {
@@ -46,6 +49,7 @@ public class UserController : ControllerBase
         return result.ToActionResult();
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

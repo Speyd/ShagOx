@@ -44,14 +44,6 @@ public class UserRepository : BaseRepository, IUserRepository
             .ToListAsync();
     }
 
-    public async Task<List<User>> GetByRoleAsync(int roleId)
-    {
-        return await Query()
-            .Where(x => x.UserRoles
-                .Any(ur => ur.RoleId == roleId))
-            .ToListAsync();
-    }
-
     public async Task<List<User>> GetUsersRegisteredAfterAsync(DateTime date)
     {
         var dayStart = date.Date;              

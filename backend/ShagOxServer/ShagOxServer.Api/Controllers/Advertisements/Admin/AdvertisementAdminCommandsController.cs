@@ -29,7 +29,7 @@ public class AdvertisementAdminCommandsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(AdvertisementAddRequest request)
+    public async Task<IActionResult> Add(AdvertisementCreateRequest request)
     {
         var result = await _createService.AddAdvertisementAsync(request);
         return result.ToActionResult();

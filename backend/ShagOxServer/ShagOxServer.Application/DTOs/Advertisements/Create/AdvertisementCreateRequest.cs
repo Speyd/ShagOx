@@ -1,5 +1,5 @@
 ﻿namespace ShagOxServer.Application.DTOs.Advertisements.Create;
-public sealed record AdvertisementAddRequest
+public sealed record AdvertisementCreateRequest
 (
     string Title,
     int Price,

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using ShagOxServer.Application.DTOs.Auth.Login;
+using ShagOxServer.Application.Common.Results;
+using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.DTOs.Auth.Register;
-using ShagOxServer.Application.Interfaces;
 using ShagOxServer.Application.Interfaces.Auth;
-using ShagOxServer.Application.Validators;
+using ShagOxServer.Application.Interfaces.Common.Validators;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces;
+using ShagOxServer.Infrastructure.Interfaces.Auth;
 namespace ShagOxServer.Application.Services.Auth;
 
 public class RegisterService : IRegisterService
@@ -29,7 +29,7 @@ public class RegisterService : IRegisterService
     }
 
 
-    public async Task<RegisterResponse> RegisterAsync(
+    public async Task<Result<RegisterResponse>> RegisterAsync(
         RegisterRequest request)
     {
         try
@@ -39,7 +39,7 @@ public class RegisterService : IRegisterService
             var exists = await _userRepository.ExistsAsync(user.Email, user.Phone);
 
             if (exists)
-                return Fail("User already exists");
+                return Result<RegisterResponse>.Fail("User already exists");
 
 
             await AddDefaultRole(user);
@@ -48,11 +48,14 @@ public class RegisterService : IRegisterService
 
             await SetDefaultName(user);
 
-            return Success(user, "Register successful");
+            return Result<RegisterResponse>.Success(
+               new RegisterResponse(user)
+            );
         }
         catch (Exception ex)
         {
-            return Fail("Unknown Exception");
+            _ = ex;
+            return Result<RegisterResponse>.Fail("Unknown Exception");
         }
     }
     private User CreateUser(RegisterRequest request)
@@ -130,22 +133,4 @@ public class RegisterService : IRegisterService
 
         return type;
     }
-
-    public static RegisterResponse Success(User user, string message)
-       => new(
-            user.Id,
-            user.Email ?? user.Phone ?? "",
-            user.Name ?? "",
-            true,
-            message
-        );
-
-    public static RegisterResponse Fail(string message, User? user = null)
-        => new(
-            user?.Id ?? -1, 
-            user?.Email ?? user?.Phone ?? "Unknown Id", 
-            user?.Name ?? "Unknown Name",
-            false,
-            message
-        );
 }

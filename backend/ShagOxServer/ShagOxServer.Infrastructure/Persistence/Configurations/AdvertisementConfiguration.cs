@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShagOxServer.Domain.Entities;
+using System.Text.Json;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations;
 
@@ -16,9 +18,15 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
                .IsRequired()
                .HasColumnType("text");
 
+        var converter = new ValueConverter<Dictionary<string, string>, string>(
+            v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+            v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, (JsonSerializerOptions?)null)!
+        );
+
         builder.Property(x => x.Properties)
-               .IsRequired()
-               .HasColumnType("jsonb");
+            .HasConversion(converter)
+            .HasColumnType("jsonb")
+            .IsRequired();
 
         builder.HasOne(x => x.Currency)
                .WithMany(x => x.Advertisements)

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using ShagOxServer.Application.Common.Results;
+using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.DTOs.Auth.Login;
-using ShagOxServer.Application.Interfaces;
 using ShagOxServer.Application.Interfaces.Auth;
-using ShagOxServer.Application.Validators;
+using ShagOxServer.Application.Interfaces.Common.Validators;
+using ShagOxServer.Application.Interfaces.Jwt;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces;
+using ShagOxServer.Infrastructure.Interfaces.Auth;
 
 namespace ShagOxServer.Application.Services.Auth;
 public class LoginService : ILoginService
@@ -13,8 +15,6 @@ public class LoginService : ILoginService
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
     private readonly IJwtService _jwtService;
-
-
 
     public LoginService(
         IUserRepository userRepository,
@@ -28,7 +28,7 @@ public class LoginService : ILoginService
         _jwtService = jwtService; 
     }
 
-    public async Task<LoginResponse> LoginAsync(LoginRequest request)
+    public async Task<Result<LoginResponse>> LoginAsync(LoginRequest request)
     {
         try
         {
@@ -37,7 +37,7 @@ public class LoginService : ILoginService
             var user = await GetUserAsync(request.EmailOrPhone, type);
 
             if (user is null)
-                return Fail("User not found");
+                return Result<LoginResponse>.Fail("User not found");
 
             var result = _passwordHasher.VerifyHashedPassword(
                 user,
@@ -46,13 +46,15 @@ public class LoginService : ILoginService
             );
 
             if (result == PasswordVerificationResult.Failed)
-                return Fail("Invalid password");
+                return Result<LoginResponse>.Fail("Invalid password");
 
-            return Success(_jwtService.GenerateToken(user), "Login successful");
+            return Result<LoginResponse>.Success(
+                new LoginResponse(_jwtService.GenerateToken(user))
+            );
         }
         catch (Exception ex)
         {
-            return Fail(ex.Message);
+            return Result<LoginResponse>.Fail(ex.Message);
         }
     }
 
@@ -65,10 +67,4 @@ public class LoginService : ILoginService
             _ => null
         };
     }
-
-    public static LoginResponse Success(string message, string token)
-       => new(true, message, token);
-
-    public static LoginResponse Fail(string message)
-        => new(false, message);
 }

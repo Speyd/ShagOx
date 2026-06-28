@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ShagOxServer.Api.Settings;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace SchagoxServer.Api.DependencyInjection;
 
@@ -14,17 +15,6 @@ public static class DatabaseExtensions
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
-
-        return services;
-    }
-
-    public static IServiceCollection AddJWT(
-        this IServiceCollection services,
-        IConfiguration config)
-    {
-        services.Configure<JwtSettings>(
-            config.GetSection("Jwt")
-        );
 
         return services;
     }

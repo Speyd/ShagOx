@@ -6,16 +6,6 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
 
 public class AttributeDefinitionConfiguration : IEntityTypeConfiguration<AttributeDefinition>
 {
-    public int CategoryId { get; set; }
-    public Category Category { get; set; } = null!;
-
-    public string Key { get; set; } = null!;
-    public string Type { get; set; } = null!;
-    public bool Required { get; set; }
-
-    public int? Min { get; set; }
-    public int? Max { get; set; }
-
     public void Configure(EntityTypeBuilder<AttributeDefinition> builder)
     {
         builder.Property(x => x.Key)
@@ -23,8 +13,8 @@ public class AttributeDefinitionConfiguration : IEntityTypeConfiguration<Attribu
             .HasMaxLength(150);
 
         builder.Property(x => x.Type)
-            .IsRequired()
-            .HasMaxLength(50);
+            .HasConversion<string>()
+            .IsRequired();
 
         builder.HasOne(x => x.Category)
             .WithMany(x => x.Attributes)

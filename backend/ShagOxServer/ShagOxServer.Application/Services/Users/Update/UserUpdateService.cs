@@ -17,9 +17,11 @@ public class UserUpdateService : IUserUpdateService
         _repository = userRepository;
     }
 
-    public async Task<Result<UserUpdateResponse>> UpdateUserAsync(UserUpdateRequest request)
+    public async Task<Result<UserUpdateResponse>> UpdateUserAsync(
+        int userId,
+        UserUpdateRequest request)
     {
-        var user = await _repository.GetByIdAsync(request.Id);
+        var user = await _repository.GetByIdAsync(userId);
 
         if (user is null)
             return Result<UserUpdateResponse>.Fail("User not found");

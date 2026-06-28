@@ -7,5 +7,8 @@ public interface IUserRoleRepository
 
     Task<List<Role>> GetRolesByUserIdAsync(int userId);
 
-    Task<List<User>> GetUsersByRoleIdAsync(int roleId);
+    Task<List<User>> GetUsersByRoleIdAsync(
+        int roleId,
+        int page = 1,
+        int pageSize = 20);
 }

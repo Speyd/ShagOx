@@ -17,9 +17,10 @@ public class RoleUpdateService : IRoleUpdateService
     }
 
     public async Task<Result<RoleUpdateResponse>> UpdateRoleAsync(
+        int roleId,
         RoleUpdateRequest request)
     {
-        var role = await _repository.GetByIdAsync(request.Id);
+        var role = await _repository.GetByIdAsync(roleId);
 
         if (role is null)
             return Result<RoleUpdateResponse>.Fail(

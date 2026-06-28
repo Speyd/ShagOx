@@ -1,7 +1,6 @@
 ﻿namespace ShagOxServer.Application.DTOs.Advertisements.Update;
 public sealed record AdvertisementUpdateRequest
 (
-    int Id,
     string? Title = null,
     string? Description = null,
     int? Price = null,

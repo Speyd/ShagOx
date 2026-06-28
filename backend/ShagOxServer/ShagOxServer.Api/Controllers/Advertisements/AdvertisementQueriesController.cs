@@ -16,8 +16,13 @@ public class AdvertisementQueriesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(int page = 1, int pageSize = 20)
+    public async Task<IActionResult> GetAll(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
     {
+        page = Math.Max(1, page);
+        pageSize = Math.Clamp(pageSize, 1, 100);
+
         var result = await _queryService.GetAllAsync(page, pageSize);
         return result.ToActionResult();
     }

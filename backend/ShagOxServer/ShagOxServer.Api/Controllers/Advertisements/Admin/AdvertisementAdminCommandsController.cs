@@ -42,10 +42,10 @@ public class AdvertisementAdminCommandsController : ControllerBase
         return result.ToActionResult();
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Update(AdvertisementUpdateRequest request)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, AdvertisementUpdateRequest request)
     {
-        var result = await _updateService.UpdateAdvertisementAsync(request);
+        var result = await _updateService.UpdateAdvertisementAsync(id, request);
         return result.ToActionResult();
     }
 }

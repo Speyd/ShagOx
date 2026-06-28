@@ -44,14 +44,14 @@ public class AdvertisementCommandsController : ControllerBase
         return result.ToActionResult();
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Update(AdvertisementUpdateRequest request)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, AdvertisementUpdateRequest request)
     {
-        var forbidden = await CheckAccess(request.Id);
+        var forbidden = await CheckAccess(id);
         if (forbidden is not null)
             return forbidden;
 
-        var result = await _updateService.UpdateAdvertisementAsync(request);
+        var result = await _updateService.UpdateAdvertisementAsync(id, request);
         return result.ToActionResult();
     }
 

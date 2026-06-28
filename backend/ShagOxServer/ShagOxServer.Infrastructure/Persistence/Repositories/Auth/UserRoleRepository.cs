@@ -24,12 +24,16 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
             .ToListAsync();
     }
 
-    public async Task<List<User>> GetUsersByRoleIdAsync(int roleId)
+    public async Task<List<User>> GetUsersByRoleIdAsync(
+        int roleId,
+        int page = 1,
+        int pageSize = 20)
     {
         return await _db.Set<UserRole>()
             .Where(x => x.RoleId == roleId)
-            .Include(x => x.User)
             .Select(x => x.User!)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
     }
 }

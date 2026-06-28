@@ -40,13 +40,13 @@ public class UserController : ControllerBase
 
     [Authorize]
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(UserUpdateRequest request)
+    public async Task<IActionResult> Update(int id, UserUpdateRequest request)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value); 
-        if(userId != request.Id)
+        if(userId != id)
             return Forbid();
 
-        var result = await _updateService.UpdateUserAsync(request);
+        var result = await _updateService.UpdateUserAsync(id, request);
         return result.ToActionResult();
     }
 }

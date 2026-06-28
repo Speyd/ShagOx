@@ -32,9 +32,9 @@ public class UserAdminCommandsController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(UserUpdateRequest request)
+    public async Task<IActionResult> Update(int id, UserUpdateRequest request)
     {
-        var result = await _updateService.UpdateUserAsync(request);
+        var result = await _updateService.UpdateUserAsync(id, request);
         return result.ToActionResult();
     }
 }

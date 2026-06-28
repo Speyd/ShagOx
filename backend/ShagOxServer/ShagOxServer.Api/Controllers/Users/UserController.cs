@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Users.Update;
-using ShagOxServer.Application.Interfaces.Users.Delete;
 using ShagOxServer.Application.Interfaces.Users.Query;
 using ShagOxServer.Application.Interfaces.Users.Update;
+using System.Security.Claims;
 
 namespace ShagOxServer.Api.Controllers.Users;
 
@@ -14,19 +14,16 @@ public class UserController : ControllerBase
 {
     private readonly IUserQueryService _queryService;
     private readonly IUserUpdateService _updateService;
-    private readonly IUserDeleteService _deleteService;
 
     public UserController(
         IUserQueryService queryService,
-        IUserUpdateService updateService,
-        IUserDeleteService deleteService)
+        IUserUpdateService updateService)
     {
         _queryService = queryService;
         _updateService = updateService;
-        _deleteService = deleteService;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await _queryService.GetByIdAsync(id);
@@ -42,18 +39,14 @@ public class UserController : ControllerBase
     }
 
     [Authorize]
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(UserUpdateRequest request)
     {
-        var result = await _updateService.UpdateUserAsync(request);
-        return result.ToActionResult();
-    }
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value); 
+        if(userId != request.Id)
+            return Forbid();
 
-    [Authorize]
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var result = await _deleteService.DeleteUserAsync(id);
+        var result = await _updateService.UpdateUserAsync(request);
         return result.ToActionResult();
     }
 }

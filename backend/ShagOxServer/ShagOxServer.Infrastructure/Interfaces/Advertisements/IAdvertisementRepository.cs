@@ -5,6 +5,10 @@ public interface IAdvertisementRepository
 {
     Task<Advertisement?> GetByIdAsync(int id);
 
+    Task<Advertisement?> GetSellerAdvertisementsAsync(int userId);
+
+    Task<Advertisement?> GetPurchasedAdvertisementsAsync(int userId);
+
     Task<List<Advertisement>> GetPagedAsync(int page, int pageSize);
 
     Task<List<Advertisement>> GetByCategoryAsync(int categoryId);

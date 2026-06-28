@@ -4,7 +4,7 @@ using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.Interfaces.UserRoles;
 using ShagOxServer.Application.Interfaces.Users.Query;
 
-namespace ShagOxServer.Api.Controllers.Users;
+namespace ShagOxServer.Api.Controllers.Users.Roles;
 
 [ApiController]
 public class UserRolesController : ControllerBase
@@ -33,8 +33,8 @@ public class UserRolesController : ControllerBase
         return Ok(roles);
     }
 
-
-    [HttpGet("api/users/{id}/roles")]
+    [Authorize(Roles = "Admin")]
+    [HttpGet("api/users/{id:int}/roles")]
     public async Task<IActionResult> GetUserRoles(int id)
     {
         var result = await _queryService.GetByIdAsync(id);
@@ -47,7 +47,7 @@ public class UserRolesController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpGet("api/admin/users/by-role/{roleId}")]
+    [HttpGet("api/admin/users/by-role/{roleId:int}")]
     public async Task<IActionResult> GetByRole(int roleId)
     {
         var result = await _queryUserRoleService.GetUsersByRoleIdAsync(roleId);

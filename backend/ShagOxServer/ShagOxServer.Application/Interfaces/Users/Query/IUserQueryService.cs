@@ -7,4 +7,5 @@ public interface IUserQueryService
     Task<Result<UserDto>> GetByIdAsync(int id);
 
     Task<Result<UserDto>> GetMyProfileAsync();
+
 }

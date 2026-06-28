@@ -86,6 +86,19 @@ public class UserRepository : BaseRepository, IUserRepository
         );
     }
 
+    public async Task<bool> ExistsAsync(int id)
+    {
+        return await _db.Users.AnyAsync(x => x.Id == id);
+    }
+
+    public async Task<bool> ExistsAdvertisementAsync(int userId, int advertId)
+    {
+        var result = await _db.Advertisements.AnyAsync(x => 
+            x.Id == advertId  && x.SellerId == userId);
+
+        return result;
+    }
+
     public async Task<bool> ExistsEmailAsync(string? email)
     {
         return await _db.Users.AnyAsync(x =>

@@ -4,11 +4,15 @@ using ShagOxServer.Application.DTOs.Advertisements;
 namespace ShagOxServer.Application.Interfaces.Advertisements.Query;
 public interface IAdvertisementQueryService
 {
-    public Task<Result<AdvertisementDto>> GetByIdAsync(int id);
+    Task<Result<AdvertisementDto>> GetByIdAsync(int id);
 
-    public Task<Result<List<AdvertisementDto>>> GetByCategoryAsync(int categoryId);
+    Task<Result<AdvertisementDto>> GetSellerAdvertisementsAsync(int userId);
 
-    public Task<Result<List<AdvertisementDto>>> GetAllAsync(int page, int pageSize);
+    Task<Result<AdvertisementDto>> GetPurchasedAdvertisementsAsync(int userId);
 
-    public Task<Result<List<AdvertisementDto>>> SearchAsync(string query);
+    Task<Result<List<AdvertisementDto>>> GetByCategoryAsync(int categoryId);
+
+    Task<Result<List<AdvertisementDto>>> GetAllAsync(int page, int pageSize);
+
+    Task<Result<List<AdvertisementDto>>> SearchAsync(string query);
 }

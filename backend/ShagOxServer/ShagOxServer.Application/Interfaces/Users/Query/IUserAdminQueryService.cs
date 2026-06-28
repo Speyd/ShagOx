@@ -1,6 +1,5 @@
 ﻿using ShagOxServer.Application.Common.Results;
 using ShagOxServer.Application.DTOs.Users;
-using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Interfaces.Users.Query;
 public interface IUserAdminQueryService
@@ -16,4 +15,9 @@ public interface IUserAdminQueryService
     Task<Result<List<UserDto>>> GetUsersRegisteredAfterAsync(DateTime date);
 
     Task<Result<List<UserDto>>> GetUsersActiveAfterAsync(DateTime date);
+
+
+    Task<bool> ExistsAsync(int id);
+
+    Task<bool> ExistsAdvertisementAsync(int userId, int AdvertId);
 }

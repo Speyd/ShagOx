@@ -72,4 +72,15 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
         return await Query()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<Advertisement?> GetSellerAdvertisementsAsync(int userId)
+    {
+        return await Query()
+            .FirstOrDefaultAsync(x => x.SellerId == userId);
+    }
+    public async Task<Advertisement?> GetPurchasedAdvertisementsAsync(int userId)
+    {
+        return await Query()
+            .FirstOrDefaultAsync(x => x.BuyerId == userId);
+    }
 }

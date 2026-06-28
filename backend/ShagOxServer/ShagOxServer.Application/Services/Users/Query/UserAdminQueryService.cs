@@ -57,4 +57,19 @@ public class UserAdminQueryService : IUserAdminQueryService
 
         return users.ToResultList(UserMapper.ToDto);
     }
+
+
+    public async Task<bool> ExistsAsync(int id)
+    {
+        var result = await _repository.ExistsAsync(id);
+
+        return result;
+    }
+
+    public async Task<bool> ExistsAdvertisementAsync(int userId, int AdvertId)
+    {
+        var result = await _repository.ExistsAdvertismentAsync(userId, AdvertId);
+
+        return result;
+    }
 }

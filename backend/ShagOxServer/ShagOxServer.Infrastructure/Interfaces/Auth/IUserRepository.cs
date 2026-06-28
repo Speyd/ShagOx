@@ -20,6 +20,8 @@ public interface IUserRepository
 
     Task<bool> ExistsAsync(string? email, string? phone);
 
+    Task<bool> ExistsAsync(int id);
+
     Task<bool> ExistsEmailAsync(string? email);
 
     Task<bool> ExistsPhoneAsync(string? phone);

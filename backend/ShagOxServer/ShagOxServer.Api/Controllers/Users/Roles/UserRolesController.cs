@@ -4,9 +4,10 @@ using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.Interfaces.UserRoles;
 using ShagOxServer.Application.Interfaces.Users.Query;
 
-namespace ShagOxServer.Api.Controllers.Users;
+namespace ShagOxServer.Api.Controllers.Users.Roles;
 
 [ApiController]
+[Route("api/users")]
 public class UserRolesController : ControllerBase
 {
     private readonly IUserQueryService _queryService;
@@ -21,7 +22,7 @@ public class UserRolesController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("api/users/me/role")]
+    [HttpGet("me/role")]
     public async Task<IActionResult> GetMyRole()
     {
         var result = await _queryService.GetMyProfileAsync();
@@ -33,8 +34,8 @@ public class UserRolesController : ControllerBase
         return Ok(roles);
     }
 
-
-    [HttpGet("api/users/{id}/roles")]
+    [Authorize(Roles = "Admin")]
+    [HttpGet("{id:int}/roles")]
     public async Task<IActionResult> GetUserRoles(int id)
     {
         var result = await _queryService.GetByIdAsync(id);
@@ -44,13 +45,5 @@ public class UserRolesController : ControllerBase
 
         var roles = result.Value.Roles;
         return Ok(roles);
-    }
-
-    [Authorize(Roles = "Admin")]
-    [HttpGet("api/admin/users/by-role/{roleId}")]
-    public async Task<IActionResult> GetByRole(int roleId)
-    {
-        var result = await _queryUserRoleService.GetUsersByRoleIdAsync(roleId);
-        return result.ToActionResult();
     }
 }

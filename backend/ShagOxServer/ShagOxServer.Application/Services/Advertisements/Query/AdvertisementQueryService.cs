@@ -16,7 +16,8 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         _repository = advertisementRepository;
     }
 
-    public async Task<Result<List<AdvertisementDto>>> GetAllAsync(int page, int pageSize)
+    public async Task<Result<List<AdvertisementDto>>> GetAllAsync(
+        int page, int pageSize)
     {
         var adverts = await _repository.GetPagedAsync(page, pageSize);
 
@@ -25,7 +26,8 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         );
     }
 
-    public async Task<Result<List<AdvertisementDto>>> GetByCategoryAsync(int categoryId)
+    public async Task<Result<List<AdvertisementDto>>> GetByCategoryAsync(
+        int categoryId)
     {
         var adverts = await _repository.GetByCategoryAsync(categoryId);
 
@@ -34,7 +36,8 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         );
     }
 
-    public async Task<Result<AdvertisementDto>> GetByIdAsync(int id)
+    public async Task<Result<AdvertisementDto>> GetByIdAsync(
+        int id)
     {
         var advert = await _repository.GetByIdAsync(id);
 
@@ -44,7 +47,29 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         return Result<AdvertisementDto>.Success(AdvertisementMapper.ToDto(advert));
     }
 
-    public async Task<Result<List<AdvertisementDto>>> SearchAsync(string query)
+    public async Task<Result<AdvertisementDto>> GetSellerAdvertisementsAsync(
+        int userId)
+    {
+        var advert = await _repository.GetSellerAdvertisementsAsync(userId);
+
+        if (advert is null)
+            return Result<AdvertisementDto>.Fail("Advertisement not found");
+
+        return Result<AdvertisementDto>.Success(AdvertisementMapper.ToDto(advert));
+    }
+    public async Task<Result<AdvertisementDto>> GetPurchasedAdvertisementsAsync(
+        int userId)
+    {
+        var advert = await _repository.GetSellerAdvertisementsAsync(userId);
+
+        if (advert is null)
+            return Result<AdvertisementDto>.Fail("Advertisement not found");
+
+        return Result<AdvertisementDto>.Success(AdvertisementMapper.ToDto(advert));
+    }
+
+    public async Task<Result<List<AdvertisementDto>>> SearchAsync(
+        string query)
     {
         var adverts = await _repository.SearchAsync(query);
 

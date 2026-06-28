@@ -31,13 +31,13 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         _categoryRepository = categoryRepository;     
     }
 
-    public async Task<Result<AdvertisementAddResponse>> AddAdvertisementAsync(
-    AdvertisementAddRequest request)
+    public async Task<Result<AdvertisementCreateResponse>> CreateAdvertisementAsync(
+    AdvertisementCreateRequest request)
     {
         var validation = await ValidateAsync(request);
 
         if (!validation.IsSuccess)
-            return Result<AdvertisementAddResponse>.Fail(validation.Error!);
+            return Result<AdvertisementCreateResponse>.Fail(validation.Error!);
 
         var (seller, currency, category) = validation.Value!;
 
@@ -45,15 +45,15 @@ public class AdvertisementCreateService : IAdvertisementCreateService
 
         await _advertisementRepository.AddAsync(advert);
 
-        var response = new AdvertisementAddResponse(
+        var response = new AdvertisementCreateResponse(
             advert.Id,
             advert.CreatedAt
         );
 
-        return Result<AdvertisementAddResponse>.Success(response);
+        return Result<AdvertisementCreateResponse>.Success(response);
     }
 
-    private async Task<Result<(User seller, Currency currency, Category category)>> ValidateAsync(AdvertisementAddRequest request)
+    private async Task<Result<(User seller, Currency currency, Category category)>> ValidateAsync(AdvertisementCreateRequest request)
     {
         var seller = await _userRepository.GetByIdAsync(request.SellerId);
         if (seller is null)
@@ -71,7 +71,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
     }
 
     private Advertisement CreateAdvertisement(
-        AdvertisementAddRequest request,
+        AdvertisementCreateRequest request,
         User seller,
         Currency currency,
         Category category)

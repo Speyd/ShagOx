@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Auth;
 using ShagOxServer.Application.Common.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers;
+namespace ShagOxServer.Api.Controllers.Auth;
 
 [ApiController]
 [Route("auth")]

@@ -15,21 +15,31 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
             .AnyAsync(x => x.UserId == userId && x.RoleId == roleId);
     }
 
-    public async Task<List<Role>> GetRolesByUserIdAsync(int userId)
+    public async Task<List<Role>> GetRolesByUserIdAsync(
+        int userId,
+        int page = 1,
+        int pageSize = 20)
     {
-        return await _db.Set<UserRole>()
-            .Where(x => x.UserId == userId)
-            .Include(x => x.Role)
-            .Select(x => x.Role!)
+        return await _db.Roles
+            .Where(u => u.UserRoles.Any(ur => ur.UserId == userId))
+            .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.User)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
     }
 
-    public async Task<List<User>> GetUsersByRoleIdAsync(int roleId)
+    public async Task<List<User>> GetUsersByRoleIdAsync(
+        int roleId,
+        int page = 1,
+        int pageSize = 20)
     {
-        return await _db.Set<UserRole>()
-            .Where(x => x.RoleId == roleId)
-            .Include(x => x.User)
-            .Select(x => x.User!)
+        return await _db.Users
+            .Where(u => u.UserRoles.Any(ur => ur.RoleId == roleId))
+            .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
     }
 }

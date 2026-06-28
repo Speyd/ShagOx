@@ -8,6 +8,11 @@ public interface IRoleRepository
     Task<Role?> GetByNameAsync(string name);
 
 
+    Task<bool> ExistsAsync(int id);
+
+    Task<bool> ExistsAsync(string name);
+
+
     Task AddAsync(Role role);
 
     Task<bool> UpdateAsync(Role role);

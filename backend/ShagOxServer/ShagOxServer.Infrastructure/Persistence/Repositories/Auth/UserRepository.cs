@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 
@@ -86,6 +85,11 @@ public class UserRepository : BaseRepository, IUserRepository
         );
     }
 
+    public async Task<bool> ExistsAsync(int id)
+    {
+        return await _db.Users.AnyAsync(x => x.Id == id);
+    }
+
     public async Task<bool> ExistsEmailAsync(string? email)
     {
         return await _db.Users.AnyAsync(x =>
@@ -99,8 +103,6 @@ public class UserRepository : BaseRepository, IUserRepository
             (phone != null && x.Phone == phone)
         );
     }
-
-   
 
     public async Task AddAsync(User user)
     {

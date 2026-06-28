@@ -5,7 +5,13 @@ using ShagOxServer.Application.DTOs.Users;
 namespace ShagOxServer.Application.Interfaces.UserRoles;
 public interface IUserRoleService
 {
-    Task<Result<List<RoleDto>>> GetRolesByUserIdAsync(int userId);
+    Task<Result<List<RoleDto>>> GetRolesByUserIdAsync(
+        int userId,
+        int page = 1,
+        int pageSize = 20);
 
-    Task<Result<List<UserDto>>> GetUsersByRoleIdAsync(int roleId);
+    Task<Result<List<UserDto>>> GetUsersByRoleIdAsync(
+        int roleId,
+        int page = 1,
+        int pageSize = 20);
 }

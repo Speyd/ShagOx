@@ -3,18 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Users.Query;
 
-namespace ShagOxServer.Api.Controllers.Users;
+namespace ShagOxServer.Api.Controllers.Users.Admin;
 
 [ApiController]
 [Route("api/admin/users")]
 [Authorize(Roles = "Admin")]
-public class AdminUsersController : ControllerBase
+public class UserAdminQueriesController : ControllerBase
 {
-    private readonly IUserAdminQueryService _queryAdminService;
+    private readonly IUserAdminQueryService _queryService;
 
-    public AdminUsersController(IUserAdminQueryService queryAdminService)
+    public UserAdminQueriesController(
+        IUserAdminQueryService queryService)
     {
-        _queryAdminService = queryAdminService;
+        _queryService = queryService;
     }
 
     [HttpGet("by-contact")]
@@ -22,14 +23,14 @@ public class AdminUsersController : ControllerBase
         [FromQuery] string? email,
         [FromQuery] string? phone)
     {
-        var result = await _queryAdminService.GetByContactAsync(email, phone);
+        var result = await _queryService.GetByContactAsync(email, phone);
         return result.ToActionResult();
     }
 
-    [HttpGet("by-city/{cityId}")]
+    [HttpGet("by-city/{cityId:int}")]
     public async Task<IActionResult> GetByCity(int cityId)
     {
-        var result = await _queryAdminService.GetByCityAsync(cityId);
+        var result = await _queryService.GetByCityAsync(cityId);
         return result.ToActionResult();
     }
 
@@ -37,7 +38,7 @@ public class AdminUsersController : ControllerBase
     public async Task<IActionResult> GetRegisteredAfter(
         [FromQuery] DateTime date)
     {
-        var result = await _queryAdminService.GetUsersRegisteredAfterAsync(date);
+        var result = await _queryService.GetUsersRegisteredAfterAsync(date);
         return result.ToActionResult();
     }
 
@@ -45,7 +46,7 @@ public class AdminUsersController : ControllerBase
     public async Task<IActionResult> GetActiveAfter(
         [FromQuery] DateTime date)
     {
-        var result = await _queryAdminService.GetUsersActiveAfterAsync(date);
+        var result = await _queryService.GetUsersActiveAfterAsync(date);
         return result.ToActionResult();
     }
 }

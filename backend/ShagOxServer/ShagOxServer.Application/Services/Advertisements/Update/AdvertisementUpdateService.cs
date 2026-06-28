@@ -16,9 +16,10 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
     }
 
     public async Task<Result<AdvertisementUpdateResponse>> UpdateAdvertisementAsync(
+        int advertId,
         AdvertisementUpdateRequest request)
     {
-        var advert = await _repository.GetByIdAsync(request.Id);
+        var advert = await _repository.GetByIdAsync(advertId);
 
         if (advert is null)
             return Result<AdvertisementUpdateResponse>.Fail(

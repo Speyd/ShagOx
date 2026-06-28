@@ -18,16 +18,22 @@ public class UserRoleService : IUserRoleService
         _repository = userRoleRepository;
     }
 
-    public async Task<Result<List<RoleDto>>> GetRolesByUserIdAsync(int userId)
+    public async Task<Result<List<RoleDto>>> GetRolesByUserIdAsync(
+        int userId,
+        int page = 1,
+        int pageSize = 20)
     {
-        var roles = await _repository.GetRolesByUserIdAsync(userId);
+        var roles = await _repository.GetRolesByUserIdAsync(userId, page, pageSize);
 
         return roles.ToResultList(RoleMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> GetUsersByRoleIdAsync(int roleId)
+    public async Task<Result<List<UserDto>>> GetUsersByRoleIdAsync(
+        int roleId,
+        int page = 1,
+        int pageSize = 20)
     {
-        var users = await _repository.GetUsersByRoleIdAsync(roleId);
+        var users = await _repository.GetUsersByRoleIdAsync(roleId, page, pageSize);
 
         return users.ToResultList(UserMapper.ToDto);
     }

@@ -23,6 +23,17 @@ public class RoleRepository : BaseRepository, IRoleRepository
     }
 
 
+    public async Task<bool> ExistsAsync(int id)
+    {
+        return await _db.Roles.AnyAsync(r => r.Id == id);
+    }
+
+    public async Task<bool> ExistsAsync(string name)
+    {
+        return await _db.Roles.AnyAsync(r => r.Name == name);
+    }
+
+
     public async Task AddAsync(Role role)
     {
         await _db.Roles.AddAsync(role);

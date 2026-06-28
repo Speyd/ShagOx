@@ -40,7 +40,7 @@ public class AdvertisementCommandsController : ControllerBase
         if (request.SellerId != userId)
             return Forbid();
 
-        var result = await _createService.AddAdvertisementAsync(request);
+        var result = await _createService.CreateAdvertisementAsync(request);
         return result.ToActionResult();
     }
 

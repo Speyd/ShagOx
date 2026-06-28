@@ -29,7 +29,6 @@ public class RoleQueriesController : ControllerBase
         return result.ToActionResult();
     }
 
-    [Authorize(Roles = "Admin")]
     [HttpGet("{roleId:int}/users")]
     public async Task<IActionResult> GetByRole(
         int roleId,

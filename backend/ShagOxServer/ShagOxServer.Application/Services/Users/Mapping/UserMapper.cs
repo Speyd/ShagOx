@@ -25,7 +25,6 @@ public static class UserMapper
     private static List<RoleDto> MapRoles(List<UserRole> userRoles)
     {
         return userRoles
-            .Where(x => x.Role != null)
             .Select(x => new RoleDto(
                 x.Role!.Id,
                 x.Role.Name,

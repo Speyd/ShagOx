@@ -5,5 +5,6 @@ namespace ShagOxServer.Application.Interfaces.Users.Update;
 public interface IUserUpdateService
 {
     Task<Result<UserUpdateResponse>> UpdateUserAsync(
-       UserUpdateRequest request);
+        int userId,
+        UserUpdateRequest request);
 }

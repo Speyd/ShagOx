@@ -19,9 +19,11 @@ public class UserRoleService : IUserRoleService
     }
 
     public async Task<Result<List<RoleDto>>> GetRolesByUserIdAsync(
-        int userId)
+        int userId,
+        int page = 1,
+        int pageSize = 20)
     {
-        var roles = await _repository.GetRolesByUserIdAsync(userId);
+        var roles = await _repository.GetRolesByUserIdAsync(userId, page, pageSize);
 
         return roles.ToResultList(RoleMapper.ToDto);
     }

@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Advertisements;
 public interface IAdvertisementRepository
@@ -14,6 +15,8 @@ public interface IAdvertisementRepository
     Task<List<Advertisement>> GetByCategoryAsync(int categoryId);
 
     Task<List<Advertisement>> SearchAsync(string query);
+
+    Task<bool> IsOwnerAsync(int adId, int userId);
 
     Task AddAsync(Advertisement advertisement);
 

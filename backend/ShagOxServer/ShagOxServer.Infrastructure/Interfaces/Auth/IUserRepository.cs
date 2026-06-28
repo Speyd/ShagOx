@@ -22,8 +22,6 @@ public interface IUserRepository
 
     Task<bool> ExistsAsync(int id);
 
-    Task<bool> ExistsAdvertismentAsync(int userId, int advertId);
-
     Task<bool> ExistsEmailAsync(string? email);
 
     Task<bool> ExistsPhoneAsync(string? phone);

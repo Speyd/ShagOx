@@ -19,5 +19,5 @@ public interface IUserAdminQueryService
 
     Task<bool> ExistsAsync(int id);
 
-    Task<bool> ExistsAdvertisementAsync(int userId, int AdvertId);
+    Task<bool> IsAdvertisementOwnerAsync(int userId, int AdvertId);
 }

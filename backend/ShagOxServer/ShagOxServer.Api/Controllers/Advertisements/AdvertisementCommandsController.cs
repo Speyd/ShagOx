@@ -72,7 +72,7 @@ public class AdvertisementCommandsController : ControllerBase
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
         var hasNoAccess =
-            await _userService.ExistsAdvertisementAsync(userId, advertisementId);
+            await _userService.IsAdvertisementOwnerAsync(userId, advertisementId);
 
         if (hasNoAccess)
             return Forbid();

@@ -67,6 +67,14 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
             .ToListAsync();
     }
 
+    public async Task<bool> IsOwnerAsync(int adId, int userId)
+    {
+        var result = await _db.Advertisements.AnyAsync(x =>
+           x.Id == adId && x.SellerId == userId);
+
+        return result;
+    }
+
     public async Task<Advertisement?> GetByIdAsync(int id)
     {
         return await Query()

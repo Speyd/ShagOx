@@ -9,7 +9,19 @@ using ShagOxServer.Application.Interfaces.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Auth;
 using ShagOxServer.Application.Interfaces.Common.Context;
 using ShagOxServer.Application.Interfaces.Common.Validators;
+using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Create;
+using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Delete;
+using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Query;
+using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Update;
+using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Create;
+using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Delete;
+using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
+using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Interfaces.Jwt;
+using ShagOxServer.Application.Interfaces.Location.Cities.Create;
+using ShagOxServer.Application.Interfaces.Location.Cities.Delete;
+using ShagOxServer.Application.Interfaces.Location.Cities.Query;
+using ShagOxServer.Application.Interfaces.Location.Cities.Update;
 using ShagOxServer.Application.Interfaces.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Location.Regions.Query;
@@ -24,6 +36,18 @@ using ShagOxServer.Application.Services.Advertisements.Delete;
 using ShagOxServer.Application.Services.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Update;
 using ShagOxServer.Application.Services.Auth;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Create;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Delete;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Query;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Create;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Query;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Update;
+using ShagOxServer.Application.Services.Location.Cities.Create;
+using ShagOxServer.Application.Services.Location.Cities.Delete;
+using ShagOxServer.Application.Services.Location.Cities.Query;
+using ShagOxServer.Application.Services.Location.Cities.Update;
 using ShagOxServer.Application.Services.Location.Regions.Create;
 using ShagOxServer.Application.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Services.Location.Regions.Query;
@@ -71,6 +95,24 @@ public static class DependencyInjection
         services.AddScoped<
             IRegionDeleteService,
             RegionDeleteService>();
+        #endregion
+
+        #region City
+        services.AddScoped<
+            ICityQueryService,
+            CityQueryService>();
+
+        services.AddScoped<
+            ICityCreateService,
+            CityCreateService>();
+
+        services.AddScoped<
+            ICityUpdateService,
+            CityUpdateService>();
+
+        services.AddScoped<
+            ICityDeleteService,
+            CityDeleteService>();
         #endregion
 
         #endregion
@@ -125,6 +167,46 @@ public static class DependencyInjection
         services.AddScoped<
          IUserRoleService,
          UserRoleService>();
+        #endregion
+
+        #region Dictionaries
+
+        #region Category
+        services.AddScoped<
+           ICategoryQueryService,
+           CategoryQueryService>();
+
+        services.AddScoped<
+            ICategoryCreateService,
+            CategoryCreateService>();
+
+        services.AddScoped<
+            ICategoryUpdateService,
+            CategoryUpdateService>();
+
+        services.AddScoped<
+            ICategoryDeleteService,
+            CategoryDeleteService>();
+        #endregion
+
+        #region AttributeDefinition
+        services.AddScoped<
+           IAttributeDefinitionQueryService,
+           AttributeDefinitionQueryService>();
+
+        services.AddScoped<
+            IAttributeDefinitionCreateService,
+            AttributeDefinitionCreateService>();
+
+        services.AddScoped<
+            IAttributeDefinitionUpdateService,
+            AttributeDefinitionUpdateService>();
+
+        services.AddScoped<
+            IAttributeDefinitionDeleteService,
+            AttributeDefinitionDeleteService>();
+        #endregion
+
         #endregion
 
         #region Common

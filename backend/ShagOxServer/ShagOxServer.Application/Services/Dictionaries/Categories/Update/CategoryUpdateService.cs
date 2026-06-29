@@ -32,7 +32,6 @@ public class CategoryUpdateService : ICategoryUpdateService
         if(category is null)
             return Result<CategoryUpdateResponse>.NotFound("Category");
 
-
         var attributes = new List<AttributeDefinition>();
         if (ValidateAttributes(category, request))
             attributes = await _attributeRepository.GetByIdsAsync(request.Attributes);

@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import MainLayout from "../layouts";
 import NotFoundPage from "@/pages/NotFoundPage";
 import AdvertisementPage from "@/pages/AdvertisementPage";
+import { PublicRoute } from "./PublicRoute";
 
 export default function Router() {
   return (
@@ -12,8 +13,22 @@ export default function Router() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <RegisterPage />
+              </PublicRoute>
+            }
+          />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />
         </Route>
 

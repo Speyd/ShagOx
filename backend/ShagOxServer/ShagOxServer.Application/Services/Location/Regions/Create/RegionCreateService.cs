@@ -1,5 +1,4 @@
 ﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Advertisements.Create;
 using ShagOxServer.Application.DTOs.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Location.Regions.Create;
 using ShagOxServer.Domain.Entities.Location;
@@ -27,12 +26,12 @@ public class RegionCreateService : IRegionCreateService
 
         await _repository.AddAsync(region);
 
-        var response = new AdvertisementCreateResponse(
+        var response = new RegionCreateResponse(
             region.Id,
             DateTime.UtcNow
         );
 
-        return Result<AdvertisementCreateResponse>.Success(response);
+        return Result<RegionCreateResponse>.Success(response);
     }
 
     private Region CreateRegion(

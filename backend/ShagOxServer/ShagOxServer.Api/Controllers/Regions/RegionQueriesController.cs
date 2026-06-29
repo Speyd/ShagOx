@@ -6,7 +6,7 @@ using ShagOxServer.Application.Interfaces.Location.Regions.Query;
 namespace ShagOxServer.Api.Controllers.Regions;
 
 [ApiController]
-[Route("api/regions")]
+[Route("api/admin/regions")]
 [Authorize(Roles = "Admin")]
 public class RegionQueriesController : ControllerBase
 {
@@ -27,7 +27,8 @@ public class RegionQueriesController : ControllerBase
     }
 
     [HttpGet("by-name/{name}")]
-    public async Task<IActionResult> GetByName(string name)
+    public async Task<IActionResult> GetByName(
+         [FromRoute] string name)
     {
         var result = await _queryService.GetByNameAsync(name);
         return result.ToActionResult();

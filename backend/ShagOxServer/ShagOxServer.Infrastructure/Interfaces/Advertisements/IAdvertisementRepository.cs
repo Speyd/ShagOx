@@ -1,10 +1,13 @@
 ﻿using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Advertisements;
 public interface IAdvertisementRepository
 {
     Task<Advertisement?> GetByIdAsync(int id);
+
+    Task<List<Advertisement>> GetByIdsAsync(List<int> ids);
 
     Task<Advertisement?> GetSellerAdvertisementsAsync(int userId);
 

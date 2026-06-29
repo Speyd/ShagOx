@@ -2,11 +2,13 @@
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
+using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
 using ShagOxServer.Infrastructure.Persistence.Repositories;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification;
 
@@ -39,6 +41,12 @@ public static class DependencyInjection
             RegionRepository>();
         #endregion
 
+        #region City
+        services.AddScoped<
+            ICityRepository,
+            CityRepository>();
+        #endregion
+
         #endregion
 
         #region Advertisement
@@ -61,6 +69,10 @@ public static class DependencyInjection
         services.AddScoped<
             ICategoryRepository,
             CategoryRepository>();
+
+        services.AddScoped<
+            IAttributeDefinitionRepository,
+            AttributeDefinitionRepository>();
         #endregion
 
         return services;

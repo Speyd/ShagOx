@@ -9,6 +9,7 @@ using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create;
 public class AdvertisementCreateService : IAdvertisementCreateService
@@ -41,6 +42,8 @@ public class AdvertisementCreateService : IAdvertisementCreateService
 
         var (seller, currency, category) = validation.Value!;
 
+        Console.WriteLine(
+            JsonSerializer.Serialize(request.Properties));
         var advert = CreateAdvertisement(request, seller, currency, category);
 
         await _advertisementRepository.AddAsync(advert);
@@ -87,7 +90,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
             CategoryId = category.Id,
             SellerId = seller.Id,
 
-            Properties = request.Property
+            Properties = request.Properties
         };
     }
 }

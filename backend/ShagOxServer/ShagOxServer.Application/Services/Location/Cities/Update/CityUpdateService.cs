@@ -35,20 +35,19 @@ public class CityUpdateService : ICityUpdateService
         if (exists)
             return Result<CityUpdateResponse>.AlreadyExists("City");
 
+
         var updatedCount = ApplyUpdates(city, request);
+        var result = new CityUpdateResponse(
+                DateTime.UtcNow,
+                updatedCount
+            );
 
         if (updatedCount == 0)
-            return Result<CityUpdateResponse>.Fail(
-                "No fields to update");
+            return Result<CityUpdateResponse>.Success(result);
 
         await _repository.UpdateAsync(city);
 
-        return Result<CityUpdateResponse>.Success(
-            new CityUpdateResponse(
-                DateTime.UtcNow,
-                updatedCount
-            )
-        );
+        return Result<CityUpdateResponse>.Success(result);
     }
 
     private static int ApplyUpdates(

@@ -25,19 +25,17 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
             return Result<AdvertisementUpdateResponse>.NotFound("Advertisement");
 
         var updatedCount = ApplyUpdates(advert, request);
+        var result = new AdvertisementUpdateResponse(
+                DateTime.UtcNow,
+                updatedCount
+            );
 
         if (updatedCount == 0)
-            return Result<AdvertisementUpdateResponse>.Fail(
-                "No fields to update");
+            return Result<AdvertisementUpdateResponse>.Success(result);
 
         await _repository.UpdateAsync(advert);
 
-        return Result<AdvertisementUpdateResponse>.Success(
-            new AdvertisementUpdateResponse(
-                DateTime.UtcNow,
-                updatedCount
-            )
-        );
+        return Result<AdvertisementUpdateResponse>.Success(result);
     }
 
     private static int ApplyUpdates(

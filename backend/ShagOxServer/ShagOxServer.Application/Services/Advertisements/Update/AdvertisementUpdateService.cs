@@ -22,8 +22,7 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
         var advert = await _repository.GetByIdAsync(advertId);
 
         if (advert is null)
-            return Result<AdvertisementUpdateResponse>.Fail(
-                "Advertisement not found");
+            return Result<AdvertisementUpdateResponse>.NotFound("Advertisement");
 
         var updatedCount = ApplyUpdates(advert, request);
 

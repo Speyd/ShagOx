@@ -10,6 +10,10 @@ using ShagOxServer.Application.Interfaces.Auth;
 using ShagOxServer.Application.Interfaces.Common.Context;
 using ShagOxServer.Application.Interfaces.Common.Validators;
 using ShagOxServer.Application.Interfaces.Jwt;
+using ShagOxServer.Application.Interfaces.Location.Regions.Create;
+using ShagOxServer.Application.Interfaces.Location.Regions.Delete;
+using ShagOxServer.Application.Interfaces.Location.Regions.Query;
+using ShagOxServer.Application.Interfaces.Location.Regions.Update;
 using ShagOxServer.Application.Interfaces.Roles.Query;
 using ShagOxServer.Application.Interfaces.UserRoles;
 using ShagOxServer.Application.Interfaces.Users.Delete;
@@ -20,6 +24,10 @@ using ShagOxServer.Application.Services.Advertisements.Delete;
 using ShagOxServer.Application.Services.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Update;
 using ShagOxServer.Application.Services.Auth;
+using ShagOxServer.Application.Services.Location.Regions.Create;
+using ShagOxServer.Application.Services.Location.Regions.Delete;
+using ShagOxServer.Application.Services.Location.Regions.Query;
+using ShagOxServer.Application.Services.Location.Regions.Update;
 using ShagOxServer.Application.Services.Roles.Query;
 using ShagOxServer.Application.Services.UserRoles;
 using ShagOxServer.Application.Services.Users.Delete;
@@ -43,6 +51,28 @@ public static class DependencyInjection
         services.AddScoped<
             ILoginService,
             LoginService>();
+        #endregion
+
+        #region Location
+
+        #region Region
+        services.AddScoped<
+            IRegionQueryService,
+            RegionQueryService>();
+
+        services.AddScoped<
+            IRegionCreateService,
+            RegionCreateService>();
+
+        services.AddScoped<
+            IRegionUpdateService,
+            RegionUpdateService>();
+
+        services.AddScoped<
+            IRegionDeleteService,
+            RegionDeleteService>();
+        #endregion
+
         #endregion
 
         #region Advertisement

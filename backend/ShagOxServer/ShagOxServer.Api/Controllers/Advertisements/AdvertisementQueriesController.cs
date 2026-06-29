@@ -10,7 +10,8 @@ public class AdvertisementQueriesController : ControllerBase
 {
     private readonly IAdvertisementQueryService _queryService;
 
-    public AdvertisementQueriesController(IAdvertisementQueryService queryService)
+    public AdvertisementQueriesController(
+        IAdvertisementQueryService queryService)
     {
         _queryService = queryService;
     }

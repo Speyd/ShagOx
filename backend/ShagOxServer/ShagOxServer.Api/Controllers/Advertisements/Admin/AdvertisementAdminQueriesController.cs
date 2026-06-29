@@ -5,9 +5,9 @@ using ShagOxServer.Application.Interfaces.Users.Query;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 
-[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/admin/advertisements")]
+[Authorize(Roles = "Admin")]
 public class AdvertisementAdminQueriesController : ControllerBase
 {
     private readonly IAdvertisementQueryService _queryAdvertService;

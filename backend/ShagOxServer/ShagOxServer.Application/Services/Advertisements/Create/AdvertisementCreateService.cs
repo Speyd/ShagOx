@@ -32,7 +32,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
     }
 
     public async Task<Result<AdvertisementCreateResponse>> CreateAdvertisementAsync(
-    AdvertisementCreateRequest request)
+        AdvertisementCreateRequest request)
     {
         var validation = await ValidateAsync(request);
 
@@ -53,19 +53,20 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         return Result<AdvertisementCreateResponse>.Success(response);
     }
 
-    private async Task<Result<(User seller, Currency currency, Category category)>> ValidateAsync(AdvertisementCreateRequest request)
+    private async Task<Result<(User seller, Currency currency, Category category)>> ValidateAsync(
+        AdvertisementCreateRequest request)
     {
         var seller = await _userRepository.GetByIdAsync(request.SellerId);
         if (seller is null)
-            return Result<(User, Currency, Category)>.Fail("Seller not found");
+            return Result<(User, Currency, Category)>.NotFound("Seller");
 
         var currency = await _currencyRepository.GetByIdAsync(request.CurrencyId);
         if (currency is null)
-            return Result<(User, Currency, Category)>.Fail("Currency not found");
+            return Result<(User, Currency, Category)>.NotFound("Currency");
 
         var category = await _categoryRepository.GetByIdAsync(request.CategoryId);
         if (category is null)
-            return Result<(User, Currency, Category)>.Fail("Category not found");
+            return Result<(User, Currency, Category)>.NotFound("Category");
 
         return Result<(User, Currency, Category)>.Success((seller, currency, category));
     }

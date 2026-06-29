@@ -18,6 +18,7 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
             .Include(x => x.Seller)
             .Include(x => x.Images);
     }
+
     public async Task AddAsync(Advertisement advertisement)
     {
         await _db.Advertisements.AddAsync(advertisement);

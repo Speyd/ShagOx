@@ -5,5 +5,5 @@ namespace ShagOxServer.Application.Interfaces.Advertisements.Create;
 public interface IAdvertisementCreateService
 {
     Task<Result<AdvertisementCreateResponse>> CreateAdvertisementAsync(
-        AdvertisementCreateRequest request);
+       AdvertisementCreateRequest request);
 }

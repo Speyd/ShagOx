@@ -24,20 +24,20 @@ public class UserUpdateService : IUserUpdateService
         var user = await _repository.GetByIdAsync(userId);
 
         if (user is null)
-            return Result<UserUpdateResponse>.Fail("User not found");
+            return Result<UserUpdateResponse>.NotFound("User");
 
         if (request.Phone is not null)
         {
             var exists = await _repository.ExistsPhoneAsync(request.Phone);
             if (exists)
-                return Result<UserUpdateResponse>.Fail("Phone already exists");
+                return Result<UserUpdateResponse>.AlreadyExists("Phone");
         }
 
         if (request.Email is not null)
         {
             var exists = await _repository.ExistsEmailAsync(request.Email);
             if (exists)
-                return Result<UserUpdateResponse>.Fail("Email already exists");
+                return Result<UserUpdateResponse>.AlreadyExists("Email");
         }
 
         var updatedCount = ApplyUpdates(user, request);

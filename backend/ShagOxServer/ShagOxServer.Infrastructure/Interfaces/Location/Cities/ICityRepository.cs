@@ -13,7 +13,9 @@ public interface ICityRepository
         int pageSize = 20);
 
 
-    Task<bool> ExistsAsync(int regionId, string name);
+    Task<bool> ExistsAsync(
+        int regionId,
+        string cityName);
 
 
     Task AddAsync(City city);

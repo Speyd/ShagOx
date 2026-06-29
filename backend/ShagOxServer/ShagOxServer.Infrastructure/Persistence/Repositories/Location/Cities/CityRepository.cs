@@ -35,7 +35,9 @@ public class CityRepository : BaseRepository, ICityRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<bool> ExistsAsync(int regionId, string name)
+    public async Task<bool> ExistsAsync(
+        int regionId,
+        string cityName)
     {
         return await _db.Cities.AnyAsync(
             x => (x.RegionId == regionId && x.Name == x.Name));

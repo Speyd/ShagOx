@@ -7,6 +7,7 @@ public static class RegionMapper
     public static RegionDto ToDto(Region region)
     {
         return new RegionDto(
+            region.Id
             region.Name
         );
     }

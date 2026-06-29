@@ -7,6 +7,7 @@ public static class CityMapper
     public static CityDto ToDto(City city)
     {
         return new CityDto(
+            city.Id,
             city.Name,
             city.RegionId,
             city.Region?.Name ?? "Unknown region name"

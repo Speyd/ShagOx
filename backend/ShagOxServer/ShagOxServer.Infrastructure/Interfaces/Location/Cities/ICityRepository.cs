@@ -7,7 +7,7 @@ public interface ICityRepository
 
     Task<City?> GetByNameAsync(string name);
 
-    Task<List<City>?> GetByRegionAsync(
+    Task<List<City>> GetByRegionAsync(
         int regionId,
         int page = 1,
         int pageSize = 20);

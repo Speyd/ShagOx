@@ -55,7 +55,7 @@ public class CityRepository : BaseRepository, ICityRepository
             .FirstOrDefaultAsync(x => x.Name == name);
     }
 
-    public async Task<List<City>?> GetByRegionAsync(
+    public async Task<List<City>> GetByRegionAsync(
         int regionId,
         int paage = 1,
         int pageSize = 20)

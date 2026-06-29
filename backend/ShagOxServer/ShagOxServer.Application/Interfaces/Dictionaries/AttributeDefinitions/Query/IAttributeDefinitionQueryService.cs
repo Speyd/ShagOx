@@ -8,5 +8,4 @@ public interface IAttributeDefinitionQueryService
 
     Task<Result<List<AttributeDefinitionDto>>> GetByCategoryAsync(
         int attributeId);
-
 }

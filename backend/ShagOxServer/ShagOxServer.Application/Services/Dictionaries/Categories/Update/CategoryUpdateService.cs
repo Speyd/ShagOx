@@ -50,7 +50,7 @@ public class CategoryUpdateService : ICategoryUpdateService
         if (updatedCount == 0)
             return Result<CategoryUpdateResponse>.Success(result);
 
-        await _attributeRepository.UpdateAsync(category);
+        await _categoryRepository.UpdateAsync(category);
 
         return Result<CategoryUpdateResponse>.Success(result);
     }

@@ -36,7 +36,7 @@ public class CityQueryService : ICityQueryService
         int page = 1,
         int pageSize = 20)
     {
-        var cities = await _repository.GetByRegionAsync(regionId) ?? new List<City>();
+        var cities = await _repository.GetByRegionAsync(regionId);
 
         return cities.ToResultList(CityMapper.ToDto);
     }

@@ -34,9 +34,17 @@ public class CityQueriesController : ControllerBase
     }
 
     [HttpGet("by-region/{regionId:int}")]
-    public async Task<IActionResult> GetByRegion(int regionId)
+    public async Task<IActionResult> GetByRegion(
+        int regionId,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20
+        )
     {
-        var result = await _queryService.GetByRegionAsync(regionId);
+        var result = await _queryService.GetByRegionAsync(
+            regionId, 
+            page, 
+            pageSize);
+
         return result.ToActionResult();
     }
 }

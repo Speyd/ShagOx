@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories;
@@ -80,6 +81,14 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
     {
         return await Query()
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<Advertisement>> GetByIdsAsync(
+        List<int> ids)
+    {
+        return await Query()
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync();
     }
 
     public async Task<Advertisement?> GetSellerAdvertisementsAsync(int userId)

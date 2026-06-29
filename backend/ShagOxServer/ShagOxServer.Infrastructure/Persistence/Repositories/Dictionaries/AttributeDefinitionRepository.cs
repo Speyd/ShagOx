@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Dictionaries;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries;
@@ -30,20 +31,44 @@ public class AttributeDefinitionRepository : BaseRepository, IAttributeDefinitio
         await _db.SaveChangesAsync();
     }
 
-   
+    private IQueryable<AttributeDefinition> Query()
+    {
+        return _db.AttributeDefinitions
+               .Include(x => x.Category);
+    }
+
+    public async Task<bool> ExistsByIdAsync(int id)
+    {
+        return await _db.AttributeDefinitions
+            .AnyAsync(x => x.Id == id);
+    }
 
     public async Task<bool> ExistsByCategoryAsync(int attributeId, int categoryId)
     {
-        throw new NotImplementedException();
+        return await _db.AttributeDefinitions
+            .AnyAsync(x => 
+            (x.Id == attributeId &&
+            x.CategoryId == categoryId));
     }
 
-    public async Task<List<AttributeDefinition>> GetByCategoryAsync(int id)
+    public async Task<List<AttributeDefinition>> GetByCategoryAsync(int categoryId)
     {
-        throw new NotImplementedException();
+        return await Query().
+            Where(x => x.CategoryId == categoryId)
+            .ToListAsync();
     }
 
     public async Task<AttributeDefinition?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await Query()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<AttributeDefinition>> GetByIdsAsync(
+        List<int> ids)
+    {
+        return await Query()
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync();
     }
 }

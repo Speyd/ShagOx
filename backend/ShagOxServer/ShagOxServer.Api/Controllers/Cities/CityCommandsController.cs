@@ -10,7 +10,7 @@ using ShagOxServer.Application.Interfaces.Location.Cities.Update;
 namespace ShagOxServer.Api.Controllers.Cities;
 
 [ApiController]
-[Route("api/cities")]
+[Route("api/admin/cities")]
 [Authorize(Roles = "Admin")]
 public class CityCommandsController : ControllerBase
 {

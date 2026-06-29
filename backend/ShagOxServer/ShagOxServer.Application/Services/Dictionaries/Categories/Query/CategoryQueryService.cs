@@ -27,6 +27,15 @@ public class CategoryQueryService : ICategoryQueryService
         return category.ToResult(CategoryMapper.ToDto);
     }
 
+    public async Task<Result<CategoryDto>> GetByNameAsync(string name)
+    {
+        var category = await _repository.GetByNameAsync(name);
+        if (category is null)
+            return Result<CategoryDto>.NotFound("Category");
+
+        return category.ToResult(CategoryMapper.ToDto);
+    }
+
     public async Task<Result<List<CategoryDto>>> GetByProductTypeAsync(
         ProductType type)
     {

@@ -1,0 +1,54 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
+using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Create;
+using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Delete;
+using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Update;
+
+namespace ShagOxServer.Api.Controllers.Category;
+
+[ApiController]
+[Route("api/admin/categories")]
+[Authorize(Roles = "Admin")]
+public class CategoryCommandsController : ControllerBase
+{
+    private readonly ICategoryCreateService _createService;
+    private readonly ICategoryUpdateService _updateService;
+    private readonly ICategoryDeleteService _deleteService;
+
+    public CategoryCommandsController(
+        ICategoryCreateService createService,
+        ICategoryUpdateService updateService,
+        ICategoryDeleteService deleteService
+        )
+    {
+        _createService = createService;
+        _updateService = updateService;
+        _deleteService = deleteService;
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CategoryCreateRequest request)
+    {
+        var result = await _createService.CreateCategoryAsync(request);
+        return result.ToActionResult();
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, CategoryUpdateRequest request)
+    {
+        var result = await _updateService.UpdateCategoryAsync(id, request);
+        return result.ToActionResult();
+    }
+
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await _deleteService.DeleteCategoryAsync(id);
+        return result.ToActionResult();
+    }
+}

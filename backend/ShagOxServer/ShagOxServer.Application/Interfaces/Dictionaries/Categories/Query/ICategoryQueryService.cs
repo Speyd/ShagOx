@@ -7,6 +7,8 @@ public interface ICategoryQueryService
 {
     Task<Result<CategoryDto>> GetByIdAsync(int id);
 
+    Task<Result<CategoryDto>> GetByNameAsync(string name);
+
     Task<Result<List<CategoryDto>>> GetByProductTypeAsync(
         ProductType type);
 }

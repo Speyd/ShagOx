@@ -10,7 +10,7 @@ using ShagOxServer.Application.Interfaces.Location.Regions.Update;
 namespace ShagOxServer.Api.Controllers.Regions;
 
 [ApiController]
-[Route("api/regions")]
+[Route("api/admin/regions")]
 [Authorize(Roles = "Admin")]
 public class RegionCommandsController : ControllerBase
 {

@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Common.Results.Extensions;
-using ShagOxServer.Application.Interfaces.Location.Regions.Query;
+using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
+using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 
-namespace ShagOxServer.Api.Controllers.Regions;
+namespace ShagOxServer.Api.Controllers.Category;
 
 [ApiController]
-[Route("api/admin/regions")]
+[Route("api/admin/categories")]
 [Authorize(Roles = "Admin")]
-public class RegionQueriesController : ControllerBase
+public class CategoryQueriesController : ControllerBase
 {
-    private readonly IRegionQueryService _queryService;
+    private readonly ICategoryQueryService _queryService;
 
-    public RegionQueriesController(
-        IRegionQueryService queryService)
+    public CategoryQueriesController(
+        ICategoryQueryService queryService)
     {
         _queryService = queryService;
     }
@@ -23,6 +24,13 @@ public class RegionQueriesController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var result = await _queryService.GetByIdAsync(id);
+        return result.ToActionResult();
+    }
+
+    [HttpGet("by-product-type/{name}")]
+    public async Task<IActionResult> GetByName(ProductType type)
+    {
+        var result = await _queryService.GetByProductTypeAsync(type);
         return result.ToActionResult();
     }
 

@@ -6,7 +6,7 @@ using ShagOxServer.Application.Common.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Cities;
 
 [ApiController]
-[Route("api/cities")]
+[Route("api/admin/cities")]
 [Authorize(Roles = "Admin")]
 public class CityQueriesController : ControllerBase
 {

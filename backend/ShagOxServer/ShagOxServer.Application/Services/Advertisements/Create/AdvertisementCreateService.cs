@@ -58,15 +58,15 @@ public class AdvertisementCreateService : IAdvertisementCreateService
     {
         var seller = await _userRepository.GetByIdAsync(request.SellerId);
         if (seller is null)
-            return Result<(User, Currency, Category)>.Fail("Seller not found");
+            return Result<(User, Currency, Category)>.NotFound("Seller");
 
         var currency = await _currencyRepository.GetByIdAsync(request.CurrencyId);
         if (currency is null)
-            return Result<(User, Currency, Category)>.Fail("Currency not found");
+            return Result<(User, Currency, Category)>.NotFound("Currency");
 
         var category = await _categoryRepository.GetByIdAsync(request.CategoryId);
         if (category is null)
-            return Result<(User, Currency, Category)>.Fail("Category not found");
+            return Result<(User, Currency, Category)>.NotFound("Category");
 
         return Result<(User, Currency, Category)>.Success((seller, currency, category));
     }

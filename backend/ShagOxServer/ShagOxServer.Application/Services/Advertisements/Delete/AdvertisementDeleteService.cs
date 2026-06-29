@@ -18,7 +18,7 @@ public class AdvertisementDeleteService : IAdvertisementDeleteService
     {
         var advert = await _repository.GetByIdAsync(id);
         if (advert is null)
-            return Result<AdvertisementDeleteResponse>.Fail("Advertisement not found");
+            return Result<AdvertisementDeleteResponse>.NotFound("Advertisement");
 
         await _repository.DeleteAsync(advert);
         return Result<AdvertisementDeleteResponse>.Success(

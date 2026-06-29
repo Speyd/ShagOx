@@ -19,7 +19,7 @@ public class RegionDeleteService : IRegionDeleteService
     {
         var region = await _repository.GetByIdAsync(id);
         if (region is null)
-            return Result<RegionDeleteResponse>.Fail("Region not found");
+            return Result<RegionDeleteResponse>.NotFound("Region");
 
         await _repository.DeleteAsync(region);
         return Result<RegionDeleteResponse>.Success(

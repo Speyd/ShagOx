@@ -20,7 +20,7 @@ public class RegionCreateService : IRegionCreateService
     {
         var validation = await _repository.ExistsAsync(request.Name);
         if (validation)
-            return Result<RegionCreateResponse>.Fail("A region with that name has already been created");
+            return Result<RegionCreateResponse>.AlreadyExists("Region");
 
         var region = CreateRegion(request);
 

@@ -20,7 +20,7 @@ public class RoleCreateService : IRoleCreateService
     {
         var validation = await _repository.ExistsAsync(request.Name);
         if (validation)
-            return Result<RoleCreateResponse>.Fail("Role ist exists");
+            return Result<RoleCreateResponse>.AlreadyExists("Role");
 
         var role = CreateRole(request);
 

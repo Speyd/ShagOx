@@ -11,4 +11,16 @@ public class Result<T>
 
     public static Result<T> Fail(string error)
         => new() { IsSuccess = false, Error = error };
+
+    public static Result<T> NotFound(string objectName)
+        => new() { IsSuccess = false, Error =  $"{objectName} not found" };
+
+    public static Result<T> Unauthorized()
+        => new() { IsSuccess = false, Error = "Unauthorized" };
+
+    public static Result<T> Forbidden()
+        => new() { IsSuccess = false,  Error = "Access denied" };
+
+    public static Result<T> AlreadyExists(string objectName)
+        => new() { IsSuccess = false, Error = $"{objectName} already exists" };
 }

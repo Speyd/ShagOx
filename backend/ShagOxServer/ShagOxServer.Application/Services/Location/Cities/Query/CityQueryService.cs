@@ -11,9 +11,9 @@ public class CityQueryService : ICityQueryService
     private readonly ICityRepository _repository;
 
     public CityQueryService(
-        ICityRepository regionRepository)
+        ICityRepository cityRepository)
     {
-        _repository = regionRepository;
+        _repository = cityRepository;
     }
 
     public async Task<Result<CityDto>> GetByIdAsync(int id)

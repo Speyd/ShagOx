@@ -23,8 +23,7 @@ public class RoleUpdateService : IRoleUpdateService
         var role = await _repository.GetByIdAsync(roleId);
 
         if (role is null)
-            return Result<RoleUpdateResponse>.Fail(
-                "Role not found");
+            return Result<RoleUpdateResponse>.NotFound("Role");
 
         var updatedCount = ApplyUpdates(role, request);
         if (updatedCount == 0)

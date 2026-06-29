@@ -23,11 +23,11 @@ public class RegionUpdateService : IRegionUpdateService
         var region = await _repository.GetByIdAsync(regionId);
 
         if (region is null)
-            return Result<RegionUpdateResponse>.Fail(
-                "Region not found");
+            return Result<RegionUpdateResponse>.NotFound("Region");
 
         var valid = await _repository.ExistsAsync(request.Name);
-        if (valid  && request is not null)
+        if (valid && request.Name is not null ||
+            request.Name is null)
             return Result<RegionUpdateResponse>.Fail(
                 "Name ist exists or null");
 

@@ -18,7 +18,7 @@ public class RoleDeleteService : IRoleDeleteService
     {
         var role = await _repository.GetByIdAsync(id);
         if (role is null)
-            return Result<RoleDeleteResponse>.Fail("Advertisement not found");
+            return Result<RoleDeleteResponse>.NotFound("Advertisement");
 
         await _repository.DeleteAsync(role);
         return Result<RoleDeleteResponse>.Success(

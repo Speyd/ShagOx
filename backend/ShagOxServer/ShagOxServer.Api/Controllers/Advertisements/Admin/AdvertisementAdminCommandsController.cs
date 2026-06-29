@@ -9,9 +9,9 @@ using ShagOxServer.Application.Common.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 
-[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/admin/advertisements")]
+[Authorize(Roles = "Admin")]
 public class AdvertisementAdminCommandsController : ControllerBase
 {
     private readonly IAdvertisementCreateService _createService;
@@ -29,7 +29,8 @@ public class AdvertisementAdminCommandsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(AdvertisementCreateRequest request)
+    public async Task<IActionResult> Add(
+        AdvertisementCreateRequest request)
     {
         var result = await _createService.CreateAdvertisementAsync(request);
         return result.ToActionResult();

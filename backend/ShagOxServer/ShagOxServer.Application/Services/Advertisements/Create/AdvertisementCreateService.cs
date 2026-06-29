@@ -32,7 +32,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
     }
 
     public async Task<Result<AdvertisementCreateResponse>> CreateAdvertisementAsync(
-    AdvertisementCreateRequest request)
+        AdvertisementCreateRequest request)
     {
         var validation = await ValidateAsync(request);
 
@@ -53,7 +53,8 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         return Result<AdvertisementCreateResponse>.Success(response);
     }
 
-    private async Task<Result<(User seller, Currency currency, Category category)>> ValidateAsync(AdvertisementCreateRequest request)
+    private async Task<Result<(User seller, Currency currency, Category category)>> ValidateAsync(
+        AdvertisementCreateRequest request)
     {
         var seller = await _userRepository.GetByIdAsync(request.SellerId);
         if (seller is null)

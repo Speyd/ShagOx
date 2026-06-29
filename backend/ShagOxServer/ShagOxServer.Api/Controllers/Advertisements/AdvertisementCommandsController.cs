@@ -34,7 +34,8 @@ public class AdvertisementCommandsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(AdvertisementCreateRequest request)
+    public async Task<IActionResult> Create(
+        AdvertisementCreateRequest request)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         if (request.SellerId != userId)

@@ -27,15 +27,17 @@ public class CategoryQueriesController : ControllerBase
         return result.ToActionResult();
     }
 
-    [HttpGet("by-product-type/{name}")]
-    public async Task<IActionResult> GetByName(ProductType type)
+    [HttpGet("by-product-type/{type}")]
+    public async Task<IActionResult> GetByProductType(
+        [FromRoute] ProductType type)
     {
         var result = await _queryService.GetByProductTypeAsync(type);
         return result.ToActionResult();
     }
 
-    [HttpGet("by-name/{name}")]
-    public async Task<IActionResult> GetByName(string name)
+    [HttpGet("by-name")]
+    public async Task<IActionResult> GetByName(
+        [FromQuery] string name)
     {
         var result = await _queryService.GetByNameAsync(name);
         return result.ToActionResult();

@@ -33,11 +33,14 @@ public class AdvertisementCommandsController : ControllerBase
         _userService = userService;
     }
 
+    
     [HttpPost]
     public async Task<IActionResult> Create(
-        AdvertisementCreateRequest request)
+    AdvertisementCreateRequest request)
     {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var userId = int.Parse(
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
         if (request.SellerId != userId)
             return Forbid();
 

@@ -27,7 +27,8 @@ public class RegionQueriesController : ControllerBase
     }
 
     [HttpGet("by-name/{name}")]
-    public async Task<IActionResult> GetByName(string name)
+    public async Task<IActionResult> GetByName(
+         [FromRoute] string name)
     {
         var result = await _queryService.GetByNameAsync(name);
         return result.ToActionResult();

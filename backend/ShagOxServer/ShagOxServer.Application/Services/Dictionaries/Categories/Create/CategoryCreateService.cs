@@ -30,7 +30,8 @@ public class CategoryCreateService : ICategoryCreateService
     {
         var attributes = await _attributeRepository.GetByIdsAsync(request.Attributes);
 
-        if (attributes.Count != request.Attributes.Count)
+        if (request.Attributes.Count != 0 &&
+            attributes.Count != request.Attributes.Count)
         {
             var missing = request.Attributes.Except(attributes.Select(x => x.Id));
             return Result<CategoryCreateResponse>
@@ -41,7 +42,8 @@ public class CategoryCreateService : ICategoryCreateService
         var advertisements = await _advertisementRepository
             .GetByIdsAsync(request.Advertisements);
 
-        if (advertisements.Count != request.Advertisements.Count)
+        if (request.Advertisements.Count != 0 && 
+            advertisements.Count != request.Advertisements.Count)
         {
             var missing = request.Advertisements.Except(advertisements.Select(x => x.Id));
             return Result<CategoryCreateResponse>

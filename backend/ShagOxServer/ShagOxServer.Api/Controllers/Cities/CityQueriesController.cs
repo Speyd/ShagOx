@@ -27,7 +27,8 @@ public class CityQueriesController : ControllerBase
     }
 
     [HttpGet("by-name/{name}")]
-    public async Task<IActionResult> GetByName(string name)
+    public async Task<IActionResult> GetByName(
+         [FromRoute] string name)
     {
         var result = await _queryService.GetByNameAsync(name);
         return result.ToActionResult();
@@ -35,7 +36,7 @@ public class CityQueriesController : ControllerBase
 
     [HttpGet("by-region/{regionId:int}")]
     public async Task<IActionResult> GetByRegion(
-        int regionId,
+        [FromRoute] int regionId,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20
         )

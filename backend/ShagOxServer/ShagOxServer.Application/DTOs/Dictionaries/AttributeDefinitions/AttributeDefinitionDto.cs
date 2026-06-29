@@ -1,7 +1,4 @@
 ﻿using ShagOxServer.Domain.Entities.Dictionaries.Enum;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
 

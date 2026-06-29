@@ -1,14 +1,14 @@
 ﻿using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Location.Regions;
-internal interface IRegionRepository
+public interface IRegionRepository
 {
     Task<Region?> GetByIdAsync(int id);
 
     Task<Region?> GetByNameAsync(string name);
 
 
-    Task<bool> ExistsAsync(string name);
+    Task<bool> ExistsAsync(string? name);
 
 
     Task AddAsync(Region region);

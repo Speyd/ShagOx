@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Location;
-using ShagOxServer.Infrastructure.Interfaces.Location;
+using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 public class RegionRepository : BaseRepository, IRegionRepository
 {
     public RegionRepository(AppDbContext db)
@@ -32,10 +32,11 @@ public class RegionRepository : BaseRepository, IRegionRepository
     }
 
 
-    public async Task<bool> ExistsAsync(string name)
+    public async Task<bool> ExistsAsync(string? name)
     {
         return await _db.Regions
-          .AnyAsync(x => x.Name == name);
+          .AnyAsync(x => 
+            (name != null && x.Name == name));
     }
 
     public async Task<Region?> GetByIdAsync(int id)

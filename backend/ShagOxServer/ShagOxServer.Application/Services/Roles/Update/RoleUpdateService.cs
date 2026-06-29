@@ -26,18 +26,17 @@ public class RoleUpdateService : IRoleUpdateService
             return Result<RoleUpdateResponse>.NotFound("Role");
 
         var updatedCount = ApplyUpdates(role, request);
+        var result = new RoleUpdateResponse(
+                DateTime.UtcNow,
+                updatedCount
+            );
+
         if (updatedCount == 0)
-            return Result<RoleUpdateResponse>.Fail(
-                "No fields to update");
+            return Result<RoleUpdateResponse>.Success(result);
 
         await _repository.UpdateAsync(role);
 
-        return Result<RoleUpdateResponse>.Success(
-            new RoleUpdateResponse(
-                DateTime.UtcNow,
-                updatedCount
-            )
-        );
+        return Result<RoleUpdateResponse>.Success(result);
     }
 
     private static int ApplyUpdates(

@@ -8,17 +8,20 @@ using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Query;
 public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
 {
-    private readonly IAttributeDefinitionRepository _repository;
+    private readonly IAttributeDefinitionRepository _attributeRepository;
+    private readonly ICategoryRepository _categoryRepository;
 
     public AttributeDefinitionQueryService(
-        IAttributeDefinitionRepository attributeRepository)
+        IAttributeDefinitionRepository attributeRepository,
+        ICategoryRepository categoryRepository)
     {
-        _repository = attributeRepository;
+        _attributeRepository = attributeRepository;
+        _categoryRepository = categoryRepository;
     }
 
     public async Task<Result<AttributeDefinitionDto>> GetByIdAsync(int id)
     {
-        var attribute = await _repository.GetByIdAsync(id);
+        var attribute = await _attributeRepository.GetByIdAsync(id);
         if (attribute is null)
             Result<AttributeDefinitionDto>.NotFound("Attribute Definition");
 
@@ -28,7 +31,11 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
     public async Task<Result<List<AttributeDefinitionDto>>> GetByCategoryAsync(
         int categoryId)
     {
-        var attributes = await _repository.GetByCategoryAsync(categoryId);
+        var categoryExists = await _categoryRepository.ExistsIdAsync(categoryId);
+        if (!categoryExists)
+            return Result<List<AttributeDefinitionDto>>.NotFound("Category");
+
+        var attributes = await _attributeRepository.GetByCategoryAsync(categoryId);
         if (attributes is null || !attributes.Any())
             return Result<List<AttributeDefinitionDto>>.NotFound("Attribute Definition");
 

@@ -41,15 +41,17 @@ public class UserUpdateService : IUserUpdateService
         }
 
         var updatedCount = ApplyUpdates(user, request);
+        var result = new UserUpdateResponse(
+            DateTime.UtcNow,
+            updatedCount
+            );
 
         if (updatedCount == 0)
-            return Result<UserUpdateResponse>.Fail("No fields to update");
+            return Result<UserUpdateResponse>.Success(result);
 
         await _repository.UpdateAsync(user);
 
-        return Result<UserUpdateResponse>.Success(
-            new UserUpdateResponse(DateTime.UtcNow, updatedCount)
-        );
+        return Result<UserUpdateResponse>.Success(result);
     }
 
     private static int ApplyUpdates(User user, UserUpdateRequest request)

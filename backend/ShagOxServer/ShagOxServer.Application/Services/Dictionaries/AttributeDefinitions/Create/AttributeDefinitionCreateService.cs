@@ -7,20 +7,27 @@ using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Create;
 public class AttributeDefinitionCreateService : IAttributeDefinitionCreateService
 {
-    private readonly IAttributeDefinitionRepository _repository;
+    private readonly IAttributeDefinitionRepository _attributeRepository;
+    private readonly ICategoryRepository _categoryRepository;
+
 
     public AttributeDefinitionCreateService(
-        IAttributeDefinitionRepository attributeRepository)
+        IAttributeDefinitionRepository attributeRepository,
+        ICategoryRepository categoryRepository)
     {
-        _repository = attributeRepository;
+        _attributeRepository = attributeRepository;
+        _categoryRepository = categoryRepository;
     }
 
     public async Task<Result<AttributeDefinitionCreateResponse>> CreateAttributeDefinitionAsync(
         AttributeDefinitionCreateRequest request)
     {
-        var attribute = CreateAttributeDefinition(request);
+        var categoryExists = await _categoryRepository.ExistsIdAsync(request.CategoryId);
+        if (!categoryExists)
+            return Result<AttributeDefinitionCreateResponse>.NotFound("Category");
 
-        await _repository.AddAsync(attribute);
+        var attribute = CreateAttributeDefinition(request);
+        await _attributeRepository.AddAsync(attribute);
 
         var response = new AttributeDefinitionCreateResponse(
             attribute.Id,

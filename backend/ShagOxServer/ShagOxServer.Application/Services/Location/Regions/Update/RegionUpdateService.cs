@@ -33,18 +33,17 @@ public class RegionUpdateService : IRegionUpdateService
 
         var updatedCount = ApplyUpdates(region, request);
 
+        var result = new RegionUpdateResponse(
+                DateTime.UtcNow,
+                updatedCount
+            );
+
         if (updatedCount == 0)
-            return Result<RegionUpdateResponse>.Fail(
-                "No fields to update");
+            return Result<RegionUpdateResponse>.Success(result);
 
         await _repository.UpdateAsync(region);
 
-        return Result<RegionUpdateResponse>.Success(
-            new RegionUpdateResponse(
-                DateTime.UtcNow,
-                updatedCount
-            )
-        );
+        return Result<RegionUpdateResponse>.Success(result);
     }
     
     private static int ApplyUpdates(

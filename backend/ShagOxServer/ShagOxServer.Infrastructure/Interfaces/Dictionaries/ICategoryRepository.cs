@@ -1,5 +1,4 @@
-﻿using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Dictionaries;
+﻿using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Dictionaries;
@@ -11,6 +10,8 @@ public interface ICategoryRepository
 
     Task<List<Category>> GetByProductTypeAsync(ProductType type);
 
+
+    Task<bool> ExistsIdAsync(int id);
 
     Task<bool> ExistsNameAsync(string name);
 

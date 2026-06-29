@@ -1,9 +1,31 @@
 .loginForm {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  background-color: #b2e4b5;
-  padding: 20px;
+  gap: 20px;
+  background-color: #ffffff;
+  padding: 30px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
 }
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.error {
+  color: red;
+  font-weight: 600;
+  font-size: 12px;
+}
+

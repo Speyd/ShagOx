@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 export default function LoginPage() {
   return (
     <div className={styles.loginPage}>
-      <h2>LoginPage</h2>
+      <h2>Увійти</h2>
       <LoginForm />
-      <Link to="/register">Don't have an account</Link>
+      <Link to="/register" className={styles.link}>
+        Ще немає аккаунту? Зареєструватись
+      </Link>
     </div>
   );
 }

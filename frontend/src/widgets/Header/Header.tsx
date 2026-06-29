@@ -2,9 +2,23 @@ import Container from "@/shared/ui/Container";
 import styles from "./Header.module.css";
 import Button from "@/shared/ui/Button";
 import { Link, useNavigate } from "react-router-dom";
+import { useLogout } from "@/features/auth/hooks/useLogout";
+import { useMe } from "@/features/auth/hooks/useMe";
 
 export default function Header() {
   const navigate = useNavigate();
+
+  const { data: user } = useMe();
+
+  const logoutMutation = useLogout();
+
+  const handleLogout = () => {
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        navigate("/", { replace: true });
+      },
+    });
+  };
 
   return (
     <header className={styles.header}>
@@ -14,7 +28,12 @@ export default function Header() {
             ShagOx
           </Link>
 
-          <Button onClick={() => navigate("/login")}>Login</Button>
+          {user && <p className={styles.username}>{user.name}</p>}
+
+          <div className={styles.buttons}>
+            <Button onClick={() => navigate("/login")}>Увійти</Button>
+            <Button onClick={() => handleLogout()}>Вийти</Button>
+          </div>
         </div>
       </Container>
     </header>

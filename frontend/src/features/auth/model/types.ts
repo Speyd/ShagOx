@@ -17,7 +17,19 @@ export interface RegisterRequest {
 export interface RegisterResponse {
   id: number;
   emailOrPhone: string;
-  userName: string;
+  name: string;
+  success: boolean;
+  message: string;
+}
+
+export interface User {
+  id: number;
+  emailOrPhone: string;
+  name: string;
+  role: string;
+}
+
+export interface LogoutResponse {
   success: boolean;
   message: string;
 }

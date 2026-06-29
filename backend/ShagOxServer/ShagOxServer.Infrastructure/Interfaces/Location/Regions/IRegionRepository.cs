@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Domain.Entities.Location;
 
-namespace ShagOxServer.Infrastructure.Interfaces.Location;
+namespace ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 internal interface IRegionRepository
 {
     Task<Region?> GetByIdAsync(int id);

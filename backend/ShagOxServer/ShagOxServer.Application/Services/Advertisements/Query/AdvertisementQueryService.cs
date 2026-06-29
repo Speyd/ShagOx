@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.Common.Results;
+using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Advertisements;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Mapping;
@@ -21,9 +22,7 @@ public class AdvertisementQueryService : IAdvertisementQueryService
     {
         var adverts = await _repository.GetPagedAsync(page, pageSize);
 
-        return Result<List<AdvertisementDto>>.Success(
-            adverts.Select(AdvertisementMapper.ToDto).ToList()
-        );
+        return adverts.ToResultList(AdvertisementMapper.ToDto);
     }
 
     public async Task<Result<List<AdvertisementDto>>> GetByCategoryAsync(
@@ -31,9 +30,7 @@ public class AdvertisementQueryService : IAdvertisementQueryService
     {
         var adverts = await _repository.GetByCategoryAsync(categoryId);
 
-        return Result<List<AdvertisementDto>>.Success(
-            adverts.Select(AdvertisementMapper.ToDto).ToList()
-        );
+        return adverts.ToResultList(AdvertisementMapper.ToDto);
     }
 
     public async Task<Result<AdvertisementDto>> GetByIdAsync(
@@ -41,10 +38,7 @@ public class AdvertisementQueryService : IAdvertisementQueryService
     {
         var advert = await _repository.GetByIdAsync(id);
 
-        if (advert is null)
-            return Result<AdvertisementDto>.Fail("Advertisement not found");
-
-        return Result<AdvertisementDto>.Success(AdvertisementMapper.ToDto(advert));
+        return advert.ToResult(AdvertisementMapper.ToDto);
     }
 
     public async Task<Result<AdvertisementDto>> GetSellerAdvertisementsAsync(
@@ -52,20 +46,14 @@ public class AdvertisementQueryService : IAdvertisementQueryService
     {
         var advert = await _repository.GetSellerAdvertisementsAsync(userId);
 
-        if (advert is null)
-            return Result<AdvertisementDto>.Fail("Advertisement not found");
-
-        return Result<AdvertisementDto>.Success(AdvertisementMapper.ToDto(advert));
+        return advert.ToResult(AdvertisementMapper.ToDto);
     }
     public async Task<Result<AdvertisementDto>> GetPurchasedAdvertisementsAsync(
         int userId)
     {
         var advert = await _repository.GetSellerAdvertisementsAsync(userId);
 
-        if (advert is null)
-            return Result<AdvertisementDto>.Fail("Advertisement not found");
-
-        return Result<AdvertisementDto>.Success(AdvertisementMapper.ToDto(advert));
+        return advert.ToResult(AdvertisementMapper.ToDto);
     }
 
     public async Task<Result<List<AdvertisementDto>>> SearchAsync(
@@ -73,8 +61,6 @@ public class AdvertisementQueryService : IAdvertisementQueryService
     {
         var adverts = await _repository.SearchAsync(query);
 
-        return Result<List<AdvertisementDto>>.Success(
-            adverts.Select(AdvertisementMapper.ToDto).ToList()
-        );
+        return adverts.ToResultList(AdvertisementMapper.ToDto);
     }
 }

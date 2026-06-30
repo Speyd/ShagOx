@@ -27,6 +27,10 @@ using ShagOxServer.Application.Interfaces.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Location.Regions.Query;
 using ShagOxServer.Application.Interfaces.Location.Regions.Update;
 using ShagOxServer.Application.Interfaces.Roles.Query;
+using ShagOxServer.Application.Interfaces.Specification.Currencies.Create;
+using ShagOxServer.Application.Interfaces.Specification.Currencies.Delete;
+using ShagOxServer.Application.Interfaces.Specification.Currencies.Query;
+using ShagOxServer.Application.Interfaces.Specification.Currencies.Update;
 using ShagOxServer.Application.Interfaces.UserRoles;
 using ShagOxServer.Application.Interfaces.Users.Delete;
 using ShagOxServer.Application.Interfaces.Users.Query;
@@ -53,6 +57,10 @@ using ShagOxServer.Application.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Services.Location.Regions.Query;
 using ShagOxServer.Application.Services.Location.Regions.Update;
 using ShagOxServer.Application.Services.Roles.Query;
+using ShagOxServer.Application.Services.Specification.Currencies.Create;
+using ShagOxServer.Application.Services.Specification.Currencies.Delete;
+using ShagOxServer.Application.Services.Specification.Currencies.Query;
+using ShagOxServer.Application.Services.Specification.Currencies.Update;
 using ShagOxServer.Application.Services.UserRoles;
 using ShagOxServer.Application.Services.Users.Delete;
 using ShagOxServer.Application.Services.Users.Query;
@@ -205,6 +213,28 @@ public static class DependencyInjection
         services.AddScoped<
             IAttributeDefinitionDeleteService,
             AttributeDefinitionDeleteService>();
+        #endregion
+
+        #endregion
+
+        #region Specification
+
+        #region Currency
+        services.AddScoped<
+           ICurrencyQueryService,
+           CurrencyQueryService>();
+
+        services.AddScoped<
+            ICurrencyCreateService,
+            CurrencyCreateService>();
+
+        services.AddScoped<
+            ICurrencyUpdateService,
+            CurrencyUpdateService>();
+
+        services.AddScoped<
+            ICurrencyDeleteService,
+            CurrencyDeleteService>();
         #endregion
 
         #endregion

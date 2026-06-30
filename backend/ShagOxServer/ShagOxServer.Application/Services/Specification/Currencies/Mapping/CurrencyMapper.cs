@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Currencies;
 using ShagOxServer.Domain.Entities.Specification;
 
-namespace ShagOxServer.Application.Services.Currencies.Mapping;
+namespace ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 public static class CurrencyMapper
 {
     public static CurrencyDto ToDto(Currency x)

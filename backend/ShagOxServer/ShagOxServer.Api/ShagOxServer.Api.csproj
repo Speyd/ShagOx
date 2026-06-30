@@ -27,4 +27,8 @@
     <ProjectReference Include="..\ShagOxServer.Infrastructure\ShagOxServer.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Currencies\" />
+  </ItemGroup>
+
 </Project>

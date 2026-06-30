@@ -34,6 +34,7 @@ public class ImageRepository : BaseRepository, IImageRepository
 
     public async Task<Image?> GetByIdAsync(int id)
     {
-        return await _db.Images.FirstOrDefaultAsync(i => i.Id == id);
+        return await _db.Images
+            .FirstOrDefaultAsync(i => i.Id == id);
     }
 }

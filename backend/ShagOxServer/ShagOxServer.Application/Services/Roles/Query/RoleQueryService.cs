@@ -10,7 +10,6 @@ public class RoleQueryService : IRoleQueryService
 {
     private readonly IRoleRepository _repository;
 
-
     public RoleQueryService(
         IRoleRepository roleRepository)
     {

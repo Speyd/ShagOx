@@ -8,10 +8,10 @@ using ShagOxServer.Infrastructure.Interfaces.Specification;
 namespace ShagOxServer.Application.Services.Specification.Currencies.Query;
 public class CurrencyQueryService : ICurrencyQueryService
 {
-    private readonly IConditionRepository _repository;
+    private readonly ICurrencyRepository _repository;
 
     public CurrencyQueryService(
-        IConditionRepository currencyRepository)
+        ICurrencyRepository currencyRepository)
     {
         _repository = currencyRepository;
     }

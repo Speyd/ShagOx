@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
-using System.Xml.Linq;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification;
 public class ConditionRepository : BaseRepository, IConditionRepository

@@ -16,14 +16,14 @@ public class AdvertisementCreateService : IAdvertisementCreateService
 {
     private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IUserRepository _userRepository;
-    private readonly IConditionRepository _currencyRepository;
+    private readonly ICurrencyRepository _currencyRepository;
     private readonly ICategoryRepository _categoryRepository;
 
 
     public AdvertisementCreateService(
         IAdvertisementRepository advertisementRepository,
         IUserRepository userRepository,
-        IConditionRepository currencyRepository,
+        ICurrencyRepository currencyRepository,
         ICategoryRepository categoryRepository)
     {
         _advertisementRepository = advertisementRepository;

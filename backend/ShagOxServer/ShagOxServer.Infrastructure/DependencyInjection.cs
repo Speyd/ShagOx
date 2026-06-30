@@ -57,7 +57,7 @@ public static class DependencyInjection
 
         #region Specification
         services.AddScoped<
-            ICurrencyRepository,
+            IConditionRepository,
             CurrencyRepository>();
 
         services.AddScoped<

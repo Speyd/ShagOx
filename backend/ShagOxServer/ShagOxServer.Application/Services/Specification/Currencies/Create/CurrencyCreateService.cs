@@ -7,10 +7,10 @@ using ShagOxServer.Infrastructure.Interfaces.Specification;
 namespace ShagOxServer.Application.Services.Specification.Currencies.Create;
 public class CurrencyCreateService : ICurrencyCreateService
 {
-    private readonly ICurrencyRepository _repository;
+    private readonly IConditionRepository _repository;
 
     public CurrencyCreateService(
-        ICurrencyRepository currencyRepository)
+        IConditionRepository currencyRepository)
     {
         _repository = currencyRepository;
     }

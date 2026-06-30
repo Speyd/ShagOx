@@ -6,10 +6,10 @@ using ShagOxServer.Infrastructure.Interfaces.Specification;
 namespace ShagOxServer.Application.Services.Specification.Currencies.Delete;
 public class CurrencyDeleteService : ICurrencyDeleteService
 {
-    private readonly ICurrencyRepository _repository;
+    private readonly IConditionRepository _repository;
 
     public CurrencyDeleteService(
-        ICurrencyRepository currencyRepository)
+        IConditionRepository currencyRepository)
     {
         _repository = currencyRepository;
     }

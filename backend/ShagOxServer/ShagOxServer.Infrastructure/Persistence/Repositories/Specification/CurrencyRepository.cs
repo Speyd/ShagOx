@@ -16,15 +16,20 @@ public class CurrencyRepository : BaseRepository, ICurrencyRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<bool> ExistsCodeAsync(string code)
+    public async Task<bool> UpdateAsync(Currency currency)
     {
-        return await _db.Currencies.AnyAsync(c => c.Code == code);
+        _db.Currencies.Update(currency);
+        await _db.SaveChangesAsync();
+        return true;
     }
 
-    public async Task<bool> ExistsSymbolAsync(string symbol)
+    public async Task DeleteAsync(Currency currency)
     {
-        return await _db.Currencies.AnyAsync(c => c.Symbol == symbol);
+        _db.Currencies.Remove(currency);
+
+        await _db.SaveChangesAsync();
     }
+
 
     public async Task<Currency?> GetByCodeAsync(string code)
     {
@@ -41,10 +46,18 @@ public class CurrencyRepository : BaseRepository, ICurrencyRepository
         return await _db.Currencies.FirstOrDefaultAsync(c => c.Symbol == symbol);
     }
 
-    public async Task<bool> UpdateAsync(Currency currency)
+    public async Task<bool> ExistsByCodeAsync(string? code)
     {
-        _db.Currencies.Update(currency);
-        await _db.SaveChangesAsync();
-        return true;
+        return await _db.Currencies.AnyAsync(c => c.Code == code);
+    }
+
+    public async Task<bool> ExistsBySymbolAsync(string? symbol)
+    {
+        return await _db.Currencies.AnyAsync(c => c.Symbol == symbol);
+    }
+
+    public async Task<bool> ExistsByNameAsync(string? name)
+    {
+        return await _db.Currencies.AnyAsync(c => c.Name == name);
     }
 }

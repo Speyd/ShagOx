@@ -7,5 +7,7 @@ export function useMe() {
     queryKey: ["me"],
     queryFn: me,
     retry: false,
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 }

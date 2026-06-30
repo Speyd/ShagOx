@@ -9,7 +9,6 @@ public class CurrencyUpdateService : ICurrencyUpdateService
 {
     private readonly ICurrencyRepository _repository;
 
-
     public CurrencyUpdateService(
         ICurrencyRepository currencyRepository)
     {

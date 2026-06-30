@@ -8,6 +8,10 @@ using ShagOxServer.Application.Interfaces.Specification.Currencies.Delete;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Update;
 
 namespace ShagOxServer.Api.Controllers.Currencies;
+
+[ApiController]
+[Route("api/admin/currencies")]
+[Authorize(Roles = "Admin")]
 public class CurrencyCommandsController : ControllerBase
 {
     private readonly ICurrencyCreateService _createService;

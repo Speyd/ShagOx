@@ -16,16 +16,24 @@ public class ImageRepository : BaseRepository, IImageRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<Image?> GetByIdAsync(int id)
-    {
-       return await _db.Images.FirstOrDefaultAsync(i => i.Id == id);
-    }
-
     public async Task<bool> UpdateAsync(Image image)
     {
         _db.Images.Update(image);
 
         await _db.SaveChangesAsync();
         return true;
+    }
+
+    public async Task DeleteAsync(Image image)
+    {
+        _db.Images.Remove(image);
+
+        await _db.SaveChangesAsync();
+    }
+
+
+    public async Task<Image?> GetByIdAsync(int id)
+    {
+        return await _db.Images.FirstOrDefaultAsync(i => i.Id == id);
     }
 }

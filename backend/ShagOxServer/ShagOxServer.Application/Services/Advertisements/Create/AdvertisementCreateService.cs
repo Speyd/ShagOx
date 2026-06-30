@@ -42,8 +42,6 @@ public class AdvertisementCreateService : IAdvertisementCreateService
 
         var (seller, currency, category) = validation.Value!;
 
-        Console.WriteLine(
-            JsonSerializer.Serialize(request.Properties));
         var advert = CreateAdvertisement(request, seller, currency, category);
 
         await _advertisementRepository.AddAsync(advert);
@@ -90,7 +88,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
             CategoryId = category.Id,
             SellerId = seller.Id,
 
-            Properties = request.Properties
+            Properties = request.Properties ?? new()
         };
     }
 }

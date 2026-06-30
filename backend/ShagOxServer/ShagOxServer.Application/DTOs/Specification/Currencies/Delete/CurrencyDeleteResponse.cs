@@ -1,6 +1,6 @@
 ﻿namespace ShagOxServer.Application.DTOs.Specification.Currencies.Delete;
 public sealed record CurrencyDeleteResponse
 (
-     int Id,
+    int Id,
     DateTime DeleteTime
 );

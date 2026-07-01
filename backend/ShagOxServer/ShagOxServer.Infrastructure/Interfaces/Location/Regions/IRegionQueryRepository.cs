@@ -7,4 +7,8 @@ public interface IRegionQueryRepository
 
     Task<Region?> GetByNameAsync(string name);
 
+    Task<List<Region>> SearchByName(
+       string name,
+       int page,
+       int pageSize);
 }

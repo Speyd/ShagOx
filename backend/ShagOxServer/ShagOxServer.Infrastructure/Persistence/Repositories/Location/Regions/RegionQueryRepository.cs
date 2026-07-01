@@ -20,4 +20,14 @@ public class RegionQueryRepository : BaseRepository, IRegionQueryRepository
         return await _db.Regions
             .FirstOrDefaultAsync(x => x.Name == name);
     }
+
+    public async Task<List<Region>> SearchByName(
+       string name,
+       int page,
+       int pageSize)
+    {
+        return await _db.Regions
+            .Where(x => x.Name.Contains(name))
+            .ToListAsync();
+    }
 }

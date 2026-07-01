@@ -5,19 +5,24 @@ using ShagOxServer.Application.Interfaces.Users.Query;
 using ShagOxServer.Application.Services.Users.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 
 namespace ShagOxServer.Application.Services.Users.Query;
 public class UserAdminQueryService : IUserAdminQueryService
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUserQueryRepository _userRepository;
+    private readonly IUserExistsRepository _userExistsRepository;
+
     private readonly IAdvertisementRepository _advertRepository;
 
 
     public UserAdminQueryService(
-        IUserRepository userRepository,
+        IUserQueryRepository userRepository,
+        IUserExistsRepository userExistsRepository,
         IAdvertisementRepository advertRepository)
     {
         _userRepository = userRepository;
+        _userExistsRepository = userExistsRepository;
         _advertRepository = advertRepository;
     }
 
@@ -66,7 +71,7 @@ public class UserAdminQueryService : IUserAdminQueryService
 
     public async Task<bool> ExistsAsync(int id)
     {
-        var result = await _userRepository.ExistsAsync(id);
+        var result = await _userExistsRepository.ExistsAsync(id);
 
         return result;
     }

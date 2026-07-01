@@ -7,11 +7,14 @@ using ShagOxServer.Application.Interfaces.Common.Validators;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 namespace ShagOxServer.Application.Services.Auth;
 
 public class RegisterService : IRegisterService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IUserExistsRepository _userExistsRepository;
+
     private readonly IRoleRepository _roleRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
@@ -19,11 +22,13 @@ public class RegisterService : IRegisterService
 
     public RegisterService(
         IUserRepository userRepository,
+        IUserExistsRepository userExistsRepository,
         IRoleRepository roleRepository,
         IPasswordHasher<User> passwordHasher,
         IContactValidator contactValidator)
     {
         _userRepository = userRepository;
+        _userExistsRepository = userExistsRepository;
         _roleRepository = roleRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
@@ -37,7 +42,7 @@ public class RegisterService : IRegisterService
         {
             var user = CreateUser(request);
 
-            var exists = await _userRepository.ExistsAsync(user.Email, user.Phone);
+            var exists = await _userExistsRepository.ExistsAsync(user.Email, user.Phone);
 
             if (exists)
                 return Result<RegisterResponse>.Fail("User already exists");

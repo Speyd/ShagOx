@@ -10,11 +10,14 @@ namespace ShagOxServer.Application.Services.Users.Update;
 public class UserUpdateService : IUserUpdateService
 {
     private readonly IUserRepository _repository;
-
+    private readonly IUserExistsRepository _existsRepository;
+    
     public UserUpdateService(
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        IUserExistsRepository existsRepository)
     {
         _repository = userRepository;
+        _existsRepository = existsRepository;
     }
 
     public async Task<Result<UserUpdateResponse>> UpdateUserAsync(
@@ -28,14 +31,14 @@ public class UserUpdateService : IUserUpdateService
 
         if (request.Phone is not null)
         {
-            var exists = await _repository.ExistsPhoneAsync(request.Phone);
+            var exists = await _existsRepository.ExistsPhoneAsync(request.Phone);
             if (exists)
                 return Result<UserUpdateResponse>.AlreadyExists("Phone");
         }
 
         if (request.Email is not null)
         {
-            var exists = await _repository.ExistsEmailAsync(request.Email);
+            var exists = await _existsRepository.ExistsEmailAsync(request.Email);
             if (exists)
                 return Result<UserUpdateResponse>.AlreadyExists("Email");
         }

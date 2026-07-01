@@ -10,14 +10,17 @@ namespace ShagOxServer.Application.Services.Users.Query;
 public class UserQueryService : IUserQueryService
 {
     private readonly IUserRepository _repository;
+    private readonly IUserQueryRepository _queryRepository;
     private readonly IUserContext _context;
 
 
     public UserQueryService(
         IUserRepository userRepository,
+        IUserQueryRepository userQueryRepository,
         IUserContext userContext)
     {
         _repository = userRepository;
+        _queryRepository = userQueryRepository;
         _context = userContext;
     }
 
@@ -33,5 +36,40 @@ public class UserQueryService : IUserQueryService
         var user = await _repository.GetByIdAsync(_context.UserId);
 
         return user.ToResult(UserMapper.ToDto);
+    }
+
+    public async Task<Result<List<UserDto>>> SearchByFullName(
+       string fullName,
+       int page,
+       int pageSize)
+    {
+        var users = await _queryRepository.SearchByFullName(
+            fullName, page, pageSize);
+
+        return users.ToResultList(UserMapper.ToDto);
+    }
+
+    public async Task<Result<List<UserDto>>> SearchByEmail(
+        string email,
+        int page,
+        int pageSize)
+    {
+        var users = await _queryRepository.SearchByEmail(
+             email, page, pageSize);
+
+
+        return users.ToResultList(UserMapper.ToDto);
+    }
+
+    public async Task<Result<List<UserDto>>> SearchByPhone(
+        string phone,
+        int page,
+        int pageSize)
+    {
+        var users = await _queryRepository.SearchByPhone(
+            phone, page, pageSize);
+
+
+        return users.ToResultList(UserMapper.ToDto);
     }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
+﻿namespace ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 public interface IUserExistsRepository
 {
     Task<bool> ExistsAsync(int id);

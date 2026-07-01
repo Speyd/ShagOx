@@ -8,6 +8,7 @@ using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
@@ -26,9 +27,17 @@ public static class DependencyInjection
             UserRepository>();
 
         services.AddScoped<
+            IUserQueryRepository,
+            UserQueryRepository>();
+
+        services.AddScoped<
+            IUserExistsRepository,
+            UserExistsRepository>();
+
+        services.AddScoped<
             IRoleRepository,
             RoleRepository>();
-
+        
         services.AddScoped<
             IUserRoleRepository,
             UserRoleRepository>();

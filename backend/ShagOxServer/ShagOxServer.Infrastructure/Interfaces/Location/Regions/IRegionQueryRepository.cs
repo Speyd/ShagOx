@@ -1,13 +1,10 @@
 ﻿using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Location.Regions;
-public interface IRegionRepository
+public interface IRegionQueryRepository
 {
     Task<Region?> GetByIdAsync(int id);
 
-    Task AddAsync(Region region);
+    Task<Region?> GetByNameAsync(string name);
 
-    Task<bool> UpdateAsync(Region region);
-
-    Task DeleteAsync(Region region);
 }

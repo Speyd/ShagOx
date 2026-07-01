@@ -49,6 +49,7 @@ public class CityQueriesController : ControllerBase
         return result.ToActionResult();
     }
 
+    //TODO: make PaginationQuery
     [HttpGet("search/name")]
     public async Task<IActionResult> SearchByName(
        [FromQuery] string name,

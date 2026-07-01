@@ -20,13 +20,24 @@ public class ImageCreateService : IImageCreateService
         _advertisementRepository = advertisementRepository;
     }
 
-    public async Task<Result<ImageCreateResponse>> CreateImageAsync(ImageCreateRequest request)
+    public async Task<Result<ImageCreateResponse>> CreateImageAsync(
+        ImageCreateRequest request)
     {
-        var exists = await _advertisementRepository.ExistsById(request.AdvertisementId);
-        if (!exists)
-            Result<ImageCreateResponse>.NotFound("Advertisement");
+        var advert = await _advertisementRepository.GetByIdAsync(request.AdvertisementId);
+        if (advert is null)
+            return Result<ImageCreateResponse>.NotFound("Advertisement");
 
-        var image = CreateImage(request);
+        var orderExists = advert.Images.Any(x => x.Order == request.Order);
+        var newOrder = request.Order;
+        if (orderExists)
+        {
+            newOrder = advert.Images
+                .Select( x => x.Order)
+                .DefaultIfEmpty(0)
+                .Max() + 1;
+        }
+
+        var image = CreateImage(newOrder, request);
 
         await _imageRepository.AddAsync(image);
 
@@ -39,12 +50,13 @@ public class ImageCreateService : IImageCreateService
     }
 
     private Image CreateImage(
-       ImageCreateRequest request)
+        int newOrder,
+        ImageCreateRequest request)
     {
         return new Image
         {
             Url = request.Url,
-            Order = request.Order,
+            Order = newOrder,
             AdvertisementId = request.AdvertisementId,
         };
     }

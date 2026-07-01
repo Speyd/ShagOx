@@ -2,28 +2,29 @@
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Create;
 public class AttributeDefinitionCreateService : IAttributeDefinitionCreateService
 {
     private readonly IAttributeDefinitionRepository _attributeRepository;
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ICategoryExistsRepository _categoryExistsRepository;
+
 
 
     public AttributeDefinitionCreateService(
         IAttributeDefinitionRepository attributeRepository,
-        ICategoryRepository categoryRepository)
+        ICategoryExistsRepository categoryExistsRepository)
     {
         _attributeRepository = attributeRepository;
-        _categoryRepository = categoryRepository;
+        _categoryExistsRepository = categoryExistsRepository;
     }
 
     public async Task<Result<AttributeDefinitionCreateResponse>> CreateAttributeDefinitionAsync(
         AttributeDefinitionCreateRequest request)
     {
-        var categoryExists = await _categoryRepository.ExistsIdAsync(request.CategoryId);
+        var categoryExists = await _categoryExistsRepository.ExistsIdAsync(request.CategoryId);
         if (!categoryExists)
             return Result<AttributeDefinitionCreateResponse>.NotFound("Category");
 

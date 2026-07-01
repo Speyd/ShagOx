@@ -4,8 +4,8 @@ using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Create;
 using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Create;

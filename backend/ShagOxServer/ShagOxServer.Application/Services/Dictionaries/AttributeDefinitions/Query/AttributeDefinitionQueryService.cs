@@ -3,21 +3,20 @@ using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Query;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Mapping;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Query;
 public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
 {
     private readonly IAttributeDefinitionQueryRepository _attributeRepository;
-    private readonly ICategoryRepository _categoryRepository;
-
+    private readonly ICategoryExistsRepository _categoryExistsRepository;
     public AttributeDefinitionQueryService(
         IAttributeDefinitionQueryRepository attributeRepository,
-        ICategoryRepository categoryRepository)
+        ICategoryExistsRepository categoryExistsRepository)
     {
         _attributeRepository = attributeRepository;
-        _categoryRepository = categoryRepository;
+        _categoryExistsRepository = categoryExistsRepository;
     }
 
     public async Task<Result<AttributeDefinitionDto>> GetByIdAsync(int id)
@@ -30,7 +29,7 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
     public async Task<Result<List<AttributeDefinitionDto>>> GetByCategoryAsync(
         int categoryId)
     {
-        var categoryExists = await _categoryRepository.ExistsIdAsync(categoryId);
+        var categoryExists = await _categoryExistsRepository.ExistsIdAsync(categoryId);
         if (!categoryExists)
             return Result<List<AttributeDefinitionDto>>.NotFound("Category");
 

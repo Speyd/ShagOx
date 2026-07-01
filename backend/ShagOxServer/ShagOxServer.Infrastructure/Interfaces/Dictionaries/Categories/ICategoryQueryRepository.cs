@@ -9,4 +9,9 @@ public interface ICategoryQueryRepository
     Task<Category?> GetByNameAsync(string name);
 
     Task<List<Category>> GetByProductTypeAsync(ProductType type);
+
+    Task<List<Category>> SearchByName(
+       string name,
+       int page,
+       int pageSize);
 }

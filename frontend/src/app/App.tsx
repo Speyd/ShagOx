@@ -4,6 +4,7 @@ import "./styles/index.css";
 
 import { useMe } from "@/features/auth/hooks/useMe";
 import { useAuthStore } from "@/features/auth/store/useAuthStore";
+import { Toaster } from "sonner";
 
 export default function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -31,5 +32,9 @@ export default function App() {
     );
   }
 
-  return <Router />;
+  return (
+    <>
+      <Router /> <Toaster />
+    </>
+  );
 }

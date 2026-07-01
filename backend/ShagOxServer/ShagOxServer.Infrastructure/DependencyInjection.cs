@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;

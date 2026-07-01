@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Auth;
 using ShagOxServer.Application.Interfaces.Common.Validators;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 namespace ShagOxServer.Application.Services.Auth;
 
 public class RegisterService : IRegisterService

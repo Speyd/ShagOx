@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.Common.Results;
 using ShagOxServer.Application.DTOs.Users.Delete;
 using ShagOxServer.Application.Interfaces.Users.Delete;
-using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 
 namespace ShagOxServer.Application.Services.Users.Delete;
 

@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Users.Update;
 using ShagOxServer.Application.Interfaces.Users.Update;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 
 
 namespace ShagOxServer.Application.Services.Users.Update;

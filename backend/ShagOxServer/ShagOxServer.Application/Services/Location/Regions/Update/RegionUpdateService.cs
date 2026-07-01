@@ -9,11 +9,15 @@ namespace ShagOxServer.Application.Services.Location.Regions.Update;
 public class RegionUpdateService : IRegionUpdateService
 {
     private readonly IRegionRepository _repository;
+    private readonly IRegionExistsRepository _existsRepository;
+
 
     public RegionUpdateService(
-        IRegionRepository regionRepository)
+        IRegionRepository regionRepository,
+        IRegionExistsRepository existsRepository)
     {
         _repository = regionRepository;
+        _existsRepository = existsRepository;
     }
 
     public async Task<Result<RegionUpdateResponse>> UpdateRegionAsync(
@@ -25,7 +29,7 @@ public class RegionUpdateService : IRegionUpdateService
         if (region is null)
             return Result<RegionUpdateResponse>.NotFound("Region");
 
-        var valid = await _repository.ExistsAsync(request.Name);
+        var valid = await _existsRepository.ExistsAsync(request.Name);
         if (valid && request.Name is not null ||
             request.Name is null)
             return Result<RegionUpdateResponse>.Fail(

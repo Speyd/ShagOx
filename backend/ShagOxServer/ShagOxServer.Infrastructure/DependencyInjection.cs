@@ -61,6 +61,14 @@ public static class DependencyInjection
         services.AddScoped<
             IRegionRepository,
             RegionRepository>();
+
+        services.AddScoped<
+            IRegionQueryRepository,
+            RegionQueryRepository>();
+
+        services.AddScoped<
+            IRegionExistsRepository,
+            RegionExistsRepository>();
         #endregion
 
         #region City

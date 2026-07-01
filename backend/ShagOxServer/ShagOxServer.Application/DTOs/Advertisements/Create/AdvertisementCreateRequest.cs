@@ -2,11 +2,13 @@
 public sealed record AdvertisementCreateRequest
 (
     string Title,
+    string Description,
+    int Popularity,
     int Price,
     int CurrencyId,
+    int ConditionId,
     int CategoryId,
     int SellerId,
-    Dictionary<string, string>? Properties = null,
-    string? Description = null,
-    int Popularity = 0
+    List<int> Images,
+    Dictionary<string, string>? Properties = null
 );

@@ -9,7 +9,6 @@ using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
-using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create;
 public class AdvertisementCreateService : IAdvertisementCreateService
@@ -18,18 +17,23 @@ public class AdvertisementCreateService : IAdvertisementCreateService
     private readonly IUserRepository _userRepository;
     private readonly ICurrencyRepository _currencyRepository;
     private readonly ICategoryRepository _categoryRepository;
-
+    private readonly IConditionRepository _conditionRepository;
+    private readonly IImageRepository _imageRepository;
 
     public AdvertisementCreateService(
         IAdvertisementRepository advertisementRepository,
         IUserRepository userRepository,
         ICurrencyRepository currencyRepository,
-        ICategoryRepository categoryRepository)
+        ICategoryRepository categoryRepository,
+        IImageRepository imageRepository,
+        IConditionRepository conditionRepository)
     {
         _advertisementRepository = advertisementRepository;
         _userRepository = userRepository;
         _currencyRepository = currencyRepository;
-        _categoryRepository = categoryRepository;     
+        _categoryRepository = categoryRepository;
+        _imageRepository = imageRepository;
+        _conditionRepository = conditionRepository;
     }
 
     public async Task<Result<AdvertisementCreateResponse>> CreateAdvertisementAsync(
@@ -40,9 +44,9 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         if (!validation.IsSuccess)
             return Result<AdvertisementCreateResponse>.Fail(validation.Error!);
 
-        var (seller, currency, category) = validation.Value!;
+        var (seller, currency, condition, category, images) = validation.Value!;
 
-        var advert = CreateAdvertisement(request, seller, currency, category);
+        var advert = CreateAdvertisement(images, request);
 
         await _advertisementRepository.AddAsync(advert);
 
@@ -54,29 +58,51 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         return Result<AdvertisementCreateResponse>.Success(response);
     }
 
-    private async Task<Result<(User seller, Currency currency, Category category)>> ValidateAsync(
+    private async Task<Result<(
+        User seller,
+        Currency currency,
+        Condition condition,
+        Category category,
+    List<Image> images)>> ValidateAsync(
         AdvertisementCreateRequest request)
     {
         var seller = await _userRepository.GetByIdAsync(request.SellerId);
         if (seller is null)
-            return Result<(User, Currency, Category)>.NotFound("Seller");
+            return Result<(User, Currency, Condition, Category, List<Image>)>
+                .NotFound("Seller");
 
         var currency = await _currencyRepository.GetByIdAsync(request.CurrencyId);
         if (currency is null)
-            return Result<(User, Currency, Category)>.NotFound("Currency");
+            return Result<(User, Currency, Condition, Category, List<Image>)>
+                .NotFound("Currency");
+
+        var condition = await _conditionRepository.GetByIdAsync(request.ConditionId);
+        if (condition is null)
+            return Result<(User, Currency, Condition, Category, List<Image>)>
+                .NotFound("Condition");
 
         var category = await _categoryRepository.GetByIdAsync(request.CategoryId);
         if (category is null)
-            return Result<(User, Currency, Category)>.NotFound("Category");
+            return Result<(User, Currency, Condition, Category, List<Image>)>
+                .NotFound("Category");
 
-        return Result<(User, Currency, Category)>.Success((seller, currency, category));
+        var images = await _imageRepository.GetByIdsAsync(request.Images);
+
+        if (images.Count != request.Images.Count)
+        {
+            var missing = request.Images.Except(images.Select(x => x.Id));
+
+            return Result<(User, Currency, Condition, Category, List<Image>)>
+                .NotFound($"Images: {string.Join(", ", missing)}");
+        }
+
+        return Result<(User, Currency, Condition, Category, List<Image>)>
+            .Success((seller, currency, condition, category, images));
     }
 
     private Advertisement CreateAdvertisement(
-        AdvertisementCreateRequest request,
-        User seller,
-        Currency currency,
-        Category category)
+        List<Image> images,
+        AdvertisementCreateRequest request)
     {
         return new Advertisement
         {
@@ -84,9 +110,11 @@ public class AdvertisementCreateService : IAdvertisementCreateService
             Description = request.Description ?? "",
             Popularity = request.Popularity,
 
-            CurrencyId = currency.Id,
-            CategoryId = category.Id,
-            SellerId = seller.Id,
+            CurrencyId = request.CurrencyId,
+            CategoryId = request.CategoryId,
+            SellerId = request.SellerId,
+
+            Images = images,
 
             Properties = request.Properties ?? new()
         };

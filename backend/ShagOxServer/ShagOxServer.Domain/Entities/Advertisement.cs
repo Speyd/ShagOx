@@ -24,6 +24,9 @@ public class Advertisement : BaseEntity
     /// </summary>
     public int PreviousPrice { get; set; }
 
+    public int ConditionId { get; set; }
+    public Condition? Condition { get; set; } = null;
+
     public int CurrencyId { get; set; }
     /// <summary>
     /// Currency in which the product price is specified.

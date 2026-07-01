@@ -1,11 +1,13 @@
 ﻿namespace ShagOxServer.Application.DTOs.Advertisements.Update;
 public sealed record AdvertisementUpdateRequest
 (
-    string? Title = null,
-    string? Description = null,
-    int? Price = null,
-    int? Popularity = null,
-    int? CurrencyId = null,
-    int? CategoryId = null,
-    Dictionary<string, string>? Properties = null
+    string? Title,
+    string? Description,
+    int? Popularity,
+    int? Price,
+    int? CurrencyId,
+    int? ConditionId,
+    int? CategoryId,
+    List<int>? Images,
+    Dictionary<string, string>? Properties
 );

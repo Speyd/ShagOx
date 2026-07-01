@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Specification;
+﻿using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Specification;
 public interface IImageRepository
@@ -9,5 +10,8 @@ public interface IImageRepository
 
     Task DeleteAsync(Image image);
 
+
     Task<Image?> GetByIdAsync(int id);
+
+    Task<List<Image>> GetByIdsAsync(List<int> ids);
 }

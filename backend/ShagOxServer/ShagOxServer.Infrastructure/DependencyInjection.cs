@@ -8,6 +8,7 @@ using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
@@ -17,6 +18,7 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categori
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
 
 namespace ShagOxServer.Infrastructure;
 
@@ -68,7 +70,7 @@ public static class DependencyInjection
 
         services.AddScoped<
             IRegionExistsRepository,
-            RegionExistsRepository>();
+            Persistence.Repositories.Location.Regions.RegionExistsRepository>();
         #endregion
 
         #region City
@@ -101,6 +103,14 @@ public static class DependencyInjection
         services.AddScoped<
             IConditionRepository,
             ConditionRepository>();
+
+        services.AddScoped<
+            IConditionQueryRepository,
+            ConditionQueryRepository>();
+
+        services.AddScoped<
+            IConditionExistsRepository,
+            ConditionExistsRepository>();
 
         services.AddScoped<
             IImageRepository,

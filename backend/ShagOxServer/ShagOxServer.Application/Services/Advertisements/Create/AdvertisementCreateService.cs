@@ -9,6 +9,7 @@ using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create;
 public class AdvertisementCreateService : IAdvertisementCreateService

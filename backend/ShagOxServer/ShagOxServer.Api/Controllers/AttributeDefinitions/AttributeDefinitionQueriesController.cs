@@ -31,4 +31,13 @@ public class AttributeDefinitionQueriesController : ControllerBase
         var result = await _queryService.GetByCategoryAsync(categoryId);
         return result.ToActionResult();
     }
+    [HttpGet("search/name")]
+    public async Task<IActionResult> SearchByKey(
+        [FromQuery] string key,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
+    {
+        var result = await _queryService.SearchByKey(key, page, pageSize);
+        return result.ToActionResult();
+    }
 }

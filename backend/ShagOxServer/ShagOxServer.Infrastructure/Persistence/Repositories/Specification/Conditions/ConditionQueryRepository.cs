@@ -20,4 +20,14 @@ public class ConditionQueryRepository : BaseRepository, IConditionQueryRepositor
         return await _db.Conditions
             .FirstOrDefaultAsync(x => x.Name == name);
     }
+
+    public async Task<List<Condition>> SearchByName(
+       string name,
+       int page,
+       int pageSize)
+    {
+        return await _db.Conditions
+            .Where(x => x.Name.Contains(name))
+            .ToListAsync();
+    }
 }

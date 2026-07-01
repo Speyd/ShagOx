@@ -7,7 +7,7 @@ using ShagOxServer.Application.Interfaces.UserRoles;
 namespace ShagOxServer.Api.Controllers.Role;
 
 [ApiController]
-[Route("api/admin/role")]
+[Route("api/admin/roles")]
 [Authorize(Roles = "Admin")]
 public class RoleQueriesController : ControllerBase
 {

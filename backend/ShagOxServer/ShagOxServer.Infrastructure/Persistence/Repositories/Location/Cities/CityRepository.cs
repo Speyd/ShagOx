@@ -12,7 +12,7 @@ public class CityRepository : BaseRepository, ICityRepository
     private IQueryable<City> Query()
     {
         return _db.Cities
-            .Include(x => x.RegionId);
+            .Include(x => x.Region);
     }
 
     public async Task AddAsync(City city)

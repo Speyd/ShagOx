@@ -5,6 +5,6 @@ public sealed record CategoryUpdateRequest
 (
     string? Name,
     ProductType? ProductType,
-    List<int> Attributes,
-    List<int> Advertisements
+    List<int>? Attributes,
+    List<int>? Advertisements
 );

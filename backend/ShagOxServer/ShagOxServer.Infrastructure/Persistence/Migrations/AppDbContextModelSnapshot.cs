@@ -130,6 +130,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("ConditionId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -170,6 +173,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ConditionId");
+
                     b.HasIndex("CreatedAt");
 
                     b.HasIndex("CurrencyId");
@@ -185,6 +190,10 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("CategoryId", "Popularity");
 
                     b.HasIndex("CategoryId", "Price");
+
+                    b.HasIndex("SellerId", "CreatedAt");
+
+                    b.HasIndex("CategoryId", "ConditionId", "CreatedAt");
 
                     b.ToTable("Advertisements");
                 });
@@ -412,6 +421,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ShagOxServer.Domain.Entities.Specification.Condition", "Condition")
+                        .WithMany("Advertisements")
+                        .HasForeignKey("ConditionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
                         .WithMany("Advertisements")
                         .HasForeignKey("CurrencyId")
@@ -427,6 +442,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Buyer");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Condition");
 
                     b.Navigation("Currency");
 
@@ -500,6 +517,11 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Region", b =>
                 {
                     b.Navigation("Cities");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>
+                {
+                    b.Navigation("Advertisements");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Currency", b =>

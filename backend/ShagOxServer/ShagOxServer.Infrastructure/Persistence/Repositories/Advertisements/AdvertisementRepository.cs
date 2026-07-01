@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 
 public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
 {
@@ -73,6 +74,14 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
     {
         var result = await _db.Advertisements.AnyAsync(x =>
            x.Id == adId && x.SellerId == userId);
+
+        return result;
+    }
+
+    public async Task<bool> ExistsById(int Id)
+    {
+        var result = await _db.Advertisements
+            .AnyAsync(x => x.Id == Id);
 
         return result;
     }

@@ -1,6 +1,6 @@
 using SchagoxServer.Api.DependencyInjection;
 using ShagOxServer.Api.DependencyInjection;
-using ShagOxServer.Application;
+using ShagOxServer.Application.DependencyInjections.Base;
 using ShagOxServer.Infrastructure;
 
 

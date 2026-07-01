@@ -21,6 +21,8 @@ public interface IAdvertisementRepository
 
     Task<bool> IsOwnerAsync(int adId, int userId);
 
+    Task<bool> ExistsById(int Id);
+
     Task AddAsync(Advertisement advertisement);
 
     Task DeleteAsync(Advertisement advertisement);

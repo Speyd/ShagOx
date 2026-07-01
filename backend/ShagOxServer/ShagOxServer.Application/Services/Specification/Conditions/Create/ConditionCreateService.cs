@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
 using ShagOxServer.Application.Interfaces.Specification.Conditions.Create;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Create;
 public class ConditionCreateService : IConditionCreateService

@@ -34,15 +34,17 @@ public class UserQueriesController : ControllerBase
         return result.ToActionResult();
     }
 
+    [HttpGet("search/full-name")]
     public async Task<IActionResult> SearchByFullName(
-        string fullName,
-        int page,
-        int pageSize)
+        [FromQuery] string fullName,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
     {
         var result = await _queryService.SearchByFullName(fullName, page, pageSize);
         return result.ToActionResult();
     }
 
+    [HttpGet("search/email")]
     public async Task<IActionResult> SearchByEmail(
         string email,
         int page,
@@ -52,6 +54,7 @@ public class UserQueriesController : ControllerBase
         return result.ToActionResult();
     }
 
+    [HttpGet("search/phone")]
     public async Task<IActionResult> SearchByPhone(
         string phone,
         int page,

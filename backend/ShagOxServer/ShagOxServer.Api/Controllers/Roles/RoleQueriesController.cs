@@ -41,4 +41,14 @@ public class RoleQueriesController : ControllerBase
         var result = await _queryUserRoleService.GetUsersByRoleIdAsync(roleId, page, pageSize);
         return result.ToActionResult();
     }
+
+    [HttpGet("search/name")]
+    public async Task<IActionResult> SearchByName(
+        [FromQuery] string name,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
+    {
+        var result = await _queryService.SearchByName(name, page, pageSize);
+        return result.ToActionResult();
+    }
 }

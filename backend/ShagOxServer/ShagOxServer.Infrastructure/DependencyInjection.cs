@@ -41,7 +41,15 @@ public static class DependencyInjection
         services.AddScoped<
             IRoleRepository,
             RoleRepository>();
-        
+
+        services.AddScoped<
+           IRoleQueryRepository,
+           RoleQueryRepository>();
+
+        services.AddScoped<
+           IRoleExistsRepository,
+           RoleExistsRepository>();
+
         services.AddScoped<
             IUserRoleRepository,
             UserRoleRepository>();

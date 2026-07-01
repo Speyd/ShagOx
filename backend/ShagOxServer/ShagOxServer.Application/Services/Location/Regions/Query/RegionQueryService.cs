@@ -8,10 +8,10 @@ using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 namespace ShagOxServer.Application.Services.Location.Regions.Query;
 public class RegionQueryService : IRegionQueryService
 {
-    private readonly IRegionRepository _repository;
+    private readonly IRegionQueryRepository _repository;
 
     public RegionQueryService(
-        IRegionRepository regionRepository)
+        IRegionQueryRepository regionRepository)
     {
         _repository = regionRepository;
     }
@@ -28,5 +28,15 @@ public class RegionQueryService : IRegionQueryService
         var region = await _repository.GetByNameAsync(name);
 
         return region.ToResult(RegionMapper.ToDto);
+    }
+
+    public async Task<Result<List<RegionDto>>> SearchByName(
+      string name,
+      int page,
+      int pageSize)
+    {
+        var regions = await _repository.SearchByName(name, page, pageSize);
+
+        return regions.ToResultList(RegionMapper.ToDto);
     }
 }

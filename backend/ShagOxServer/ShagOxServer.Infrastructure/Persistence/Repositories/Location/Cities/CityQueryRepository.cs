@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
@@ -32,6 +33,16 @@ public class CityQueryRepository : BaseRepository, ICityQueryRepository
             .Where(x => x.RegionId == regionId)
             .Skip((pageSize - 1) * pageSize)
             .Take(pageSize)
+            .ToListAsync();
+    }
+
+    public async Task<List<City>> SearchByName(
+        string name,
+        int page,
+        int pageSize)
+    {
+        return await _db.Cities.WithIncludes()
+            .Where(x => x.Name.Contains(name))
             .ToListAsync();
     }
 }

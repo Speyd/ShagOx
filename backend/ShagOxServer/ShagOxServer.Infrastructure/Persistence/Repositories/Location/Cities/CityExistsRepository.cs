@@ -15,5 +15,4 @@ public class CityExistsRepository : BaseRepository, ICityExistsRepository
         return await _db.Cities.AnyAsync(
             x => (x.RegionId == regionId && x.Name == x.Name));
     }
-
 }

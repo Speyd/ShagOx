@@ -12,4 +12,8 @@ public interface ICityQueryRepository
         int page = 1,
         int pageSize = 20);
 
+    Task<List<City>> SearchByName(
+        string name,
+        int page,
+        int pageSize);
 }

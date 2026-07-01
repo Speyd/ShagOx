@@ -11,13 +11,13 @@ namespace ShagOxServer.Application.Services.Dictionaries.Categories.Update;
 public class CategoryUpdateService : ICategoryUpdateService
 {
     private readonly ICategoryRepository _categoryRepository;
-    private readonly IAttributeDefinitionRepository _attributeRepository;
+    private readonly IAttributeDefinitionQueryRepository _attributeRepository;
     private readonly IAdvertisementRepository _advertisementRepository;
 
 
     public CategoryUpdateService(
         ICategoryRepository categoryRepository,
-        IAttributeDefinitionRepository attributeRepository,
+        IAttributeDefinitionQueryRepository attributeRepository,
         IAdvertisementRepository advertisementRepository)
     {
         _categoryRepository = categoryRepository;

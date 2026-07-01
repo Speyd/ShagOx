@@ -1,5 +1,5 @@
 ﻿namespace ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
-internal interface IRoleExistsRepository
+public interface IRoleExistsRepository
 {
     Task<bool> ExistsAsync(int id);
 

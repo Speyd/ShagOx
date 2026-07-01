@@ -33,4 +33,6 @@ public class RegionQueriesController : ControllerBase
         var result = await _queryService.GetByNameAsync(name);
         return result.ToActionResult();
     }
+
+
 }

@@ -8,17 +8,21 @@ namespace ShagOxServer.Application.Services.Roles.Create;
 public class RoleCreateService : IRoleCreateService
 {
     private readonly IRoleRepository _repository;
+    private readonly IRoleExistsRepository _existsRepository;
+
 
     public RoleCreateService(
-        IRoleRepository roleRepository)
+        IRoleRepository roleRepository,
+        IRoleExistsRepository existsRepository)
     {
         _repository = roleRepository;
+        _existsRepository = existsRepository;
     }
 
     public async Task<Result<RoleCreateResponse>> CreateRoleAsync(
         RoleCreateRequest request)
     {
-        var validation = await _repository.ExistsAsync(request.Name);
+        var validation = await _existsRepository.ExistsAsync(request.Name);
         if (validation)
             return Result<RoleCreateResponse>.AlreadyExists("Role");
 

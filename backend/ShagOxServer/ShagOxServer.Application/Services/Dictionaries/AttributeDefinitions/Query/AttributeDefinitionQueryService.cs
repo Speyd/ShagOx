@@ -9,11 +9,11 @@ using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Query;
 public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
 {
-    private readonly IAttributeDefinitionRepository _attributeRepository;
+    private readonly IAttributeDefinitionQueryRepository _attributeRepository;
     private readonly ICategoryRepository _categoryRepository;
 
     public AttributeDefinitionQueryService(
-        IAttributeDefinitionRepository attributeRepository,
+        IAttributeDefinitionQueryRepository attributeRepository,
         ICategoryRepository categoryRepository)
     {
         _attributeRepository = attributeRepository;
@@ -23,8 +23,6 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
     public async Task<Result<AttributeDefinitionDto>> GetByIdAsync(int id)
     {
         var attribute = await _attributeRepository.GetByIdAsync(id);
-        if (attribute is null)
-            Result<AttributeDefinitionDto>.NotFound("Attribute Definition");
 
         return attribute.ToResult(AttributeDefinitionMapper.ToDto);
     }
@@ -37,8 +35,16 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
             return Result<List<AttributeDefinitionDto>>.NotFound("Category");
 
         var attributes = await _attributeRepository.GetByCategoryAsync(categoryId);
-        if (attributes is null || !attributes.Any())
-            return Result<List<AttributeDefinitionDto>>.NotFound("Attribute Definition");
+
+        return attributes.ToResultList(AttributeDefinitionMapper.ToDto);
+    }
+
+    public async Task<Result<List<AttributeDefinitionDto>>> SearchByKey(
+       string key,
+       int page,
+       int pageSize)
+    {
+        var attributes = await _attributeRepository.SearchByKey(key, page, pageSize);
 
         return attributes.ToResultList(AttributeDefinitionMapper.ToDto);
     }

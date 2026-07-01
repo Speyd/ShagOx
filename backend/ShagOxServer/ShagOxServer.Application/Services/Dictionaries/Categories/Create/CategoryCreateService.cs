@@ -12,13 +12,13 @@ namespace ShagOxServer.Application.Services.Dictionaries.Categories.Create;
 public class CategoryCreateService : ICategoryCreateService
 {
     private readonly ICategoryRepository _categoryRepository;
-    private readonly IAttributeDefinitionRepository _attributeRepository;
+    private readonly IAttributeDefinitionQueryRepository _attributeRepository;
     private readonly IAdvertisementRepository _advertisementRepository;
 
 
     public CategoryCreateService(
         ICategoryRepository categoryRepository,
-        IAttributeDefinitionRepository attributeRepository,
+        IAttributeDefinitionQueryRepository attributeRepository,
         IAdvertisementRepository advertisementRepository)
     {
         _categoryRepository = categoryRepository;

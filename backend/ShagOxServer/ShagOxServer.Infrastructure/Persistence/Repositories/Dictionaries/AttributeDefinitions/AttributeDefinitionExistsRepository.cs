@@ -1,0 +1,24 @@
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
+
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions;
+public class AttributeDefinitionExistsRepository : BaseRepository, IAttributeDefinitionExistsRepository
+{
+    public AttributeDefinitionExistsRepository(AppDbContext db)
+        : base(db)
+    { }
+
+    public async Task<bool> ExistsByIdAsync(int id)
+    {
+        return await _db.AttributeDefinitions
+            .AnyAsync(x => x.Id == id);
+    }
+
+    public async Task<bool> ExistsByCategoryAsync(int attributeId, int categoryId)
+    {
+        return await _db.AttributeDefinitions
+            .AnyAsync(x =>
+            (x.Id == attributeId &&
+            x.CategoryId == categoryId));
+    }
+}

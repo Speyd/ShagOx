@@ -8,6 +8,7 @@ public sealed record AdvertisementUpdateRequest
     int? CurrencyId,
     int? ConditionId,
     int? CategoryId,
+    int? BuyerId,
     List<int>? Images,
     Dictionary<string, string>? Properties
 );

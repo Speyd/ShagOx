@@ -5,7 +5,7 @@ using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
-using ShagOxServer.Infrastructure.Persistence.Repositories;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
@@ -59,6 +59,10 @@ public static class DependencyInjection
         services.AddScoped<
             ICurrencyRepository,
             CurrencyRepository>();
+
+        services.AddScoped<
+            IConditionRepository,
+            ConditionRepository>();
 
         services.AddScoped<
             IImageRepository,

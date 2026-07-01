@@ -2,13 +2,13 @@
 using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
 using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
-
 
 namespace ShagOxServer.Application.Services.Advertisements.Update;
 public class AdvertisementUpdateService : IAdvertisementUpdateService
@@ -29,11 +29,11 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
         IConditionRepository conditionRepository)
     {
         _advertisementRepository = advertisementRepository;
-        _userRepository = userRepository;
         _currencyRepository = currencyRepository;
         _categoryRepository = categoryRepository;
         _imageRepository = imageRepository;
         _conditionRepository = conditionRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<Result<AdvertisementUpdateResponse>> UpdateAdvertisementAsync(
@@ -49,7 +49,7 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
         if (!validation.IsSuccess)
             return Result<AdvertisementUpdateResponse>.Fail(validation.Error!);
 
-        var (currency, condition, category, images) = validation.Value!;
+        var (buyer, currency, condition, category, images) = validation.Value!;
 
         var updatedCount = ApplyUpdates(advert, images, request);
         var result = new AdvertisementUpdateResponse(
@@ -66,18 +66,28 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
     }
 
     private async Task<Result<(
+        User? buyer,
         Currency? currency,
         Condition? condition,
         Category? category,
     List<Image>? images)>> ValidateAsync(
         AdvertisementUpdateRequest request)
     {
+        User? buyer = null;
+        if (request.BuyerId is not null)
+        {
+            buyer = await _userRepository.GetByIdAsync(request.BuyerId.Value);
+            if (buyer is null)
+                return Result<(User?, Currency?, Condition?, Category?, List<Image>?)>
+                    .NotFound("Buyer");
+        }
+
         Currency? currency = null;
         if (request.CurrencyId is not null)
         {
             currency = await _currencyRepository.GetByIdAsync(request.CurrencyId.Value);
             if (currency is null)
-                return Result<(Currency?, Condition?, Category?, List<Image>?)>
+                return Result<(User?, Currency ?, Condition?, Category?, List<Image>?)>
                     .NotFound("Currency");
         }
 
@@ -86,7 +96,7 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
         {
              condition = await _conditionRepository.GetByIdAsync(request.ConditionId.Value);
             if (condition is null)
-                return Result<(Currency?, Condition?, Category?, List<Image>?)>
+                return Result<(User?, Currency?, Condition?, Category?, List<Image>?)>
                     .NotFound("Condition");
         }
 
@@ -95,7 +105,7 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
         {
             category = await _categoryRepository.GetByIdAsync(request.CategoryId.Value);
             if (category is null)
-                return Result<(Currency?, Condition?, Category?, List<Image>?)>
+                return Result<(User?, Currency?, Condition?, Category?, List<Image>?)>
                     .NotFound("Category");
         }
 
@@ -108,12 +118,12 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
             {
                 var missing = request.Images.Except(images.Select(x => x.Id));
 
-                return Result<(Currency?, Condition?, Category?, List<Image>?)>
+                return Result<(User?, Currency?, Condition?, Category?, List<Image>?)>
                     .NotFound($"Images: {string.Join(", ", missing)}");
             }
         }
-        return Result<(Currency?, Condition?, Category?, List<Image>?)>
-            .Success((currency, condition, category, images));
+        return Result<(User?, Currency?, Condition?, Category?, List<Image>?)>
+            .Success((buyer, currency, condition, category, images));
     }
 
     private static int ApplyUpdates(
@@ -169,6 +179,12 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
         if (request.CategoryId is not null)
         {
             advert.CategoryId = request.CategoryId.Value;
+            countUpdated++;
+        }
+
+        if (request.BuyerId is not null)
+        {
+            advert.BuyerId = request.BuyerId.Value;
             countUpdated++;
         }
 

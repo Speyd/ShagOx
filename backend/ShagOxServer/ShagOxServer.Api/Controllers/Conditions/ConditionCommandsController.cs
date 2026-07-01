@@ -8,6 +8,10 @@ using ShagOxServer.Application.Interfaces.Specification.Conditions.Delete;
 using ShagOxServer.Application.Interfaces.Specification.Conditions.Update;
 
 namespace ShagOxServer.Api.Controllers.Conditions;
+
+[ApiController]
+[Route("api/admin/conditions")]
+[Authorize(Roles = "Admin")]
 public class ConditionCommandsController : ControllerBase
 {
     private readonly IConditionCreateService _createService;

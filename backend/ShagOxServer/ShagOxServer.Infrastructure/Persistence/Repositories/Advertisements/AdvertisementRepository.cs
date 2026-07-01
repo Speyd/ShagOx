@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 
 public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
 {

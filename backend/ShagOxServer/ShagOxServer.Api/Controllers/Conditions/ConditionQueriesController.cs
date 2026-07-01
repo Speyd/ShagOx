@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Specification.Conditions.Query;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.Application.Interfaces.Specification.Conditions.Query;
 
 namespace ShagOxServer.Api.Controllers.Conditions;
+
+[ApiController]
+[Route("api/admin/conditions")]
+[Authorize(Roles = "Admin")]
 public class ConditionQueriesController : ControllerBase
 {
     private readonly IConditionQueryService _queryService;

@@ -12,7 +12,7 @@ public class AttributeDefinitionRepository : BaseRepository, IAttributeDefinitio
 
     public async Task<AttributeDefinition?> GetByIdAsync(int id)
     {
-        return await _db.AttributeDefinitions.WithIncludes()
+        return await _db.AttributeDefinitions
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 

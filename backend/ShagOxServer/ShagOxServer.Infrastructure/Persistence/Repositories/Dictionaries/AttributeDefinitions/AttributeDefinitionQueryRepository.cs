@@ -31,4 +31,14 @@ public class AttributeDefinitionQueryRepository : BaseRepository, IAttributeDefi
             .Where(x => ids.Contains(x.Id))
             .ToListAsync();
     }
+
+    public async Task<List<AttributeDefinition>> SearchByKey(
+        string key,
+        int page,
+        int pageSize)
+    {
+        return await _db.AttributeDefinitions.WithIncludes()
+            .Where(x => x.Key.Contains(key))
+            .ToListAsync();
+    }
 }

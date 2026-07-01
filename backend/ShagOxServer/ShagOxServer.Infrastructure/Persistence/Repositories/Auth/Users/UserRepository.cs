@@ -14,7 +14,7 @@ public class UserRepository : BaseRepository, IUserRepository
 
     public async Task<User?> GetByIdAsync(int id)
     {
-        return await _db.Users.WithIncludes()
+        return await _db.Users
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 

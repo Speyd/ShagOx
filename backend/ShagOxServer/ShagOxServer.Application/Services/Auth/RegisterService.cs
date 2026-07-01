@@ -5,9 +5,9 @@ using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Auth;
 using ShagOxServer.Application.Interfaces.Common.Validators;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
 namespace ShagOxServer.Application.Services.Auth;
 
 public class RegisterService : IRegisterService
@@ -16,6 +16,7 @@ public class RegisterService : IRegisterService
     private readonly IUserExistsRepository _userExistsRepository;
 
     private readonly IRoleRepository _roleRepository;
+    private readonly IRoleQueryRepository _roleQueryRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
 
@@ -24,12 +25,14 @@ public class RegisterService : IRegisterService
         IUserRepository userRepository,
         IUserExistsRepository userExistsRepository,
         IRoleRepository roleRepository,
+        IRoleQueryRepository roleQueryRepository,
         IPasswordHasher<User> passwordHasher,
         IContactValidator contactValidator)
     {
         _userRepository = userRepository;
         _userExistsRepository = userExistsRepository;
         _roleRepository = roleRepository;
+        _roleQueryRepository = roleQueryRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
     }
@@ -83,7 +86,7 @@ public class RegisterService : IRegisterService
     private async Task AddDefaultRole(User user)
     {
         var role =
-            await _roleRepository.GetByNameAsync("User");
+            await _roleQueryRepository.GetByNameAsync("User");
 
 
         if (role == null)
@@ -94,7 +97,6 @@ public class RegisterService : IRegisterService
             new UserRole
             {
                 RoleId = role.Id,
-                Role = role
             });
     }
 

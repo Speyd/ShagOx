@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Roles.Create;
 using ShagOxServer.Application.Interfaces.Roles.Create;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 
 namespace ShagOxServer.Application.Services.Roles.Create;
 public class RoleCreateService : IRoleCreateService

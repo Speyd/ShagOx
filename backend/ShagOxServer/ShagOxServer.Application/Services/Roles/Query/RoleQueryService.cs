@@ -3,7 +3,7 @@ using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Roles;
 using ShagOxServer.Application.Interfaces.Roles.Query;
 using ShagOxServer.Application.Services.Roles.Mapping;
-using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 
 namespace ShagOxServer.Application.Services.Roles.Query;
 public class RoleQueryService : IRoleQueryService

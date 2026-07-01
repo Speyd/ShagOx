@@ -1,17 +1,9 @@
 ﻿using ShagOxServer.Domain.Entities.Account;
 
-namespace ShagOxServer.Infrastructure.Interfaces.Auth;
+namespace ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 public interface IRoleRepository
 {
     Task<Role?> GetByIdAsync(int id);
-
-    Task<Role?> GetByNameAsync(string name);
-
-
-    Task<bool> ExistsAsync(int id);
-
-    Task<bool> ExistsAsync(string name);
-
 
     Task AddAsync(Role role);
 

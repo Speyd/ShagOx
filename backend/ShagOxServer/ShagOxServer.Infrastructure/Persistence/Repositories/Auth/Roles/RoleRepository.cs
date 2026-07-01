@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
 
 public class RoleRepository : BaseRepository, IRoleRepository
 {
@@ -15,24 +15,6 @@ public class RoleRepository : BaseRepository, IRoleRepository
         return await _db.Roles
             .FirstOrDefaultAsync(x => x.Id == id);
     }
-
-    public async Task<Role?> GetByNameAsync(string name)
-    {
-        return await _db.Roles
-            .FirstOrDefaultAsync(x => x.Name == name);
-    }
-
-
-    public async Task<bool> ExistsAsync(int id)
-    {
-        return await _db.Roles.AnyAsync(r => r.Id == id);
-    }
-
-    public async Task<bool> ExistsAsync(string name)
-    {
-        return await _db.Roles.AnyAsync(r => r.Name == name);
-    }
-
 
     public async Task AddAsync(Role role)
     {

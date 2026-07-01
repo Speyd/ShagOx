@@ -15,4 +15,14 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
             .FirstOrDefaultAsync(x => x.Name == name);
     }
 
+    public async Task<List<Role>> SearchByName(
+        string name,
+        int page,
+        int pageSize)
+    {
+        return await _db.Roles
+            .Where(x => x.Name.Contains(name))
+            .ToListAsync();
+    }
+
 }

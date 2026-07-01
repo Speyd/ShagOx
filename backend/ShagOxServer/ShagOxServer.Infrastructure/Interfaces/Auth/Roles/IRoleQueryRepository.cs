@@ -4,4 +4,9 @@ namespace ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 public interface IRoleQueryRepository
 {
     Task<Role?> GetByNameAsync(string name);
+
+    Task<List<Role>> SearchByName(
+        string name,
+        int page,
+        int pageSize);
 }

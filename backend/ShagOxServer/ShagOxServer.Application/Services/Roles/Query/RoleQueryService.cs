@@ -8,16 +8,13 @@ using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 namespace ShagOxServer.Application.Services.Roles.Query;
 public class RoleQueryService : IRoleQueryService
 {
-    private readonly IRoleRepository _repository;
-    private readonly IRoleQueryRepository _queryRepository;
+    private readonly IRoleQueryRepository _repository;
 
 
     public RoleQueryService(
-        IRoleRepository roleRepository,
-        IRoleQueryRepository queryRepository)
+        IRoleQueryRepository roleRepository)
     {
         _repository = roleRepository;
-        _queryRepository = queryRepository;
     }
 
     public async Task<Result<RoleDto>> GetByIdAsync(int id)
@@ -29,7 +26,7 @@ public class RoleQueryService : IRoleQueryService
 
     public async Task<Result<RoleDto>> GetByNameAsync(string name)
     {
-        var role = await _queryRepository.GetByNameAsync(name);
+        var role = await _repository.GetByNameAsync(name);
 
         return role.ToResult(RoleMapper.ToDto);
     }
@@ -39,7 +36,7 @@ public class RoleQueryService : IRoleQueryService
        int page,
        int pageSize)
     {
-        var roles = await _queryRepository.SearchByName(name, page, pageSize);
+        var roles = await _repository.SearchByName(name, page, pageSize);
 
         return roles.ToResultList(RoleMapper.ToDto);
     }

@@ -9,18 +9,15 @@ using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 namespace ShagOxServer.Application.Services.Users.Query;
 public class UserQueryService : IUserQueryService
 {
-    private readonly IUserRepository _repository;
-    private readonly IUserQueryRepository _queryRepository;
+    private readonly IUserQueryRepository _repository;
     private readonly IUserContext _context;
 
 
     public UserQueryService(
-        IUserRepository userRepository,
-        IUserQueryRepository userQueryRepository,
+        IUserQueryRepository userRepository,
         IUserContext userContext)
     {
         _repository = userRepository;
-        _queryRepository = userQueryRepository;
         _context = userContext;
     }
 
@@ -43,7 +40,7 @@ public class UserQueryService : IUserQueryService
        int page,
        int pageSize)
     {
-        var users = await _queryRepository.SearchByFullName(
+        var users = await _repository.SearchByFullName(
             fullName, page, pageSize);
 
         return users.ToResultList(UserMapper.ToDto);
@@ -54,7 +51,7 @@ public class UserQueryService : IUserQueryService
         int page,
         int pageSize)
     {
-        var users = await _queryRepository.SearchByEmail(
+        var users = await _repository.SearchByEmail(
              email, page, pageSize);
 
 
@@ -66,7 +63,7 @@ public class UserQueryService : IUserQueryService
         int page,
         int pageSize)
     {
-        var users = await _queryRepository.SearchByPhone(
+        var users = await _repository.SearchByPhone(
             phone, page, pageSize);
 
 

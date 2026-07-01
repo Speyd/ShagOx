@@ -10,6 +10,12 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
         : base(db)
     { }
 
+
+    public async Task<User?> GetByIdAsync(int id)
+    {
+        return await _db.Users.WithIncludes()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
     public async Task<User?> GetByContactAsync(string? email, string? phone)
     {
         var query = _db.Users.WithIncludes();

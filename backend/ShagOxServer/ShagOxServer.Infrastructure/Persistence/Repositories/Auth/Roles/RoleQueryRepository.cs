@@ -9,6 +9,12 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
         : base(db)
     { }
 
+    public async Task<Role?> GetByIdAsync(int id)
+    {
+        return await _db.Roles
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task<Role?> GetByNameAsync(string name)
     {
         return await _db.Roles
@@ -24,5 +30,4 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
             .Where(x => x.Name.Contains(name))
             .ToListAsync();
     }
-
 }

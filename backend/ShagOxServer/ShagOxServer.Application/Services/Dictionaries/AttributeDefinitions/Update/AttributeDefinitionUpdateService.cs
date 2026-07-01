@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;

@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Create;
 public class AttributeDefinitionCreateService : IAttributeDefinitionCreateService

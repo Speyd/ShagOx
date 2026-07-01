@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Query;

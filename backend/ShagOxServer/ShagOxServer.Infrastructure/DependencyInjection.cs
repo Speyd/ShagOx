@@ -3,8 +3,8 @@ using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
@@ -12,8 +12,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification;
@@ -89,8 +89,24 @@ public static class DependencyInjection
             CategoryRepository>();
 
         services.AddScoped<
+            ICategoryQueryRepository,
+            CategoryQueryRepository>();
+
+        services.AddScoped<
+            ICategoryExistsRepository,
+            CategoryExistsRepository>();
+
+        services.AddScoped<
             IAttributeDefinitionRepository,
             AttributeDefinitionRepository>();
+
+        services.AddScoped<
+            IAttributeDefinitionQueryRepository,
+            AttributeDefinitionQueryRepository>();
+
+        services.AddScoped<
+            IAttributeDefinitionExistsRepository,
+            AttributeDefinitionExistsRepository>();
         #endregion
 
         return services;

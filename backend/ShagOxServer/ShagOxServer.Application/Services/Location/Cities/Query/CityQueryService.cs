@@ -3,16 +3,15 @@ using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Location.Cities;
 using ShagOxServer.Application.Interfaces.Location.Cities.Query;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
-using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Query;
 public class CityQueryService : ICityQueryService
 {
-    private readonly ICityRepository _repository;
+    private readonly ICityQueryRepository _repository;
 
     public CityQueryService(
-        ICityRepository cityRepository)
+        ICityQueryRepository cityRepository)
     {
         _repository = cityRepository;
     }
@@ -37,6 +36,16 @@ public class CityQueryService : ICityQueryService
         int pageSize = 20)
     {
         var cities = await _repository.GetByRegionAsync(regionId);
+
+        return cities.ToResultList(CityMapper.ToDto);
+    }
+
+    public async Task<Result<List<CityDto>>> SearchByName(
+       string name,
+       int page,
+       int pageSize)
+    {
+        var cities = await _repository.SearchByName(name, page, pageSize);
 
         return cities.ToResultList(CityMapper.ToDto);
     }

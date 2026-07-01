@@ -36,7 +36,7 @@ public class AdvertisementCommandsController : ControllerBase
     
     [HttpPost]
     public async Task<IActionResult> Create(
-    AdvertisementCreateRequest request)
+        [FromBody] AdvertisementCreateRequest request)
     {
         var userId = int.Parse(
             User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
@@ -49,7 +49,9 @@ public class AdvertisementCommandsController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, AdvertisementUpdateRequest request)
+    public async Task<IActionResult> Update(
+        [FromRoute] int id,
+        [FromBody] AdvertisementUpdateRequest request)
     {
         var forbidden = await CheckAccess(id);
         if (forbidden is not null)
@@ -61,7 +63,8 @@ public class AdvertisementCommandsController : ControllerBase
 
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var forbidden = await CheckAccess(id);
         if (forbidden is not null)

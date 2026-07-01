@@ -19,21 +19,24 @@ public class CurrencyQueriesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
     }
 
-    [HttpGet("by-code/{code}")]
-    public async Task<IActionResult> GetById(string code)
+    [HttpGet("by-code")]
+    public async Task<IActionResult> GetById(
+        [FromQuery] string code)
     {
         var result = await _queryService.GetByCodeAsync(code);
         return result.ToActionResult();
     }
 
-    [HttpGet("by-symbol/{symbol}")]
-    public async Task<IActionResult> GetBySymbol(string symbol)
+    [HttpGet("by-symbol")]
+    public async Task<IActionResult> GetBySymbol(
+        [FromQuery] string symbol)
     {
         var result = await _queryService.GetBySymbolAsync(symbol);
         return result.ToActionResult();

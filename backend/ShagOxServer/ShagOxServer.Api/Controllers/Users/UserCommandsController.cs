@@ -25,7 +25,9 @@ public class UserCommandsController : ControllerBase
 
     [Authorize]
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, UserUpdateRequest request)
+    public async Task<IActionResult> Update(
+        [FromRoute] int id,
+        [FromBody] UserUpdateRequest request)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         if (userId != id)

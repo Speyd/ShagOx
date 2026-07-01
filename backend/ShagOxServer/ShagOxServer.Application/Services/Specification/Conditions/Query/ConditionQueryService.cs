@@ -2,9 +2,7 @@
 using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Specification.Conditions.Query;
-using ShagOxServer.Application.Services.Location.Regions.Mapping;
 using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
-using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Query;

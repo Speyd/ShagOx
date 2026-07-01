@@ -20,8 +20,10 @@ public class UserAdvertisementsController : ControllerBase
         _userQuery = userQuery;
     }
 
+    //TODO: Refactore code 'exists'
     [HttpGet]
-    public async Task<IActionResult> GetUserAdvertisements(int userId)
+    public async Task<IActionResult> GetUserAdvertisements(
+        [FromRoute] int userId)
     {
         var exists = await _userQuery.ExistsAsync(userId);
 
@@ -34,7 +36,7 @@ public class UserAdvertisementsController : ControllerBase
     [Authorize(Roles = "Admin")]
     [HttpGet("purchases")]
     public async Task<IActionResult> GetPurchasedAdvertisements(
-      int userId)
+      [FromRoute] int userId)
     {
         var exists = await _userQuery.ExistsAsync(userId);
 

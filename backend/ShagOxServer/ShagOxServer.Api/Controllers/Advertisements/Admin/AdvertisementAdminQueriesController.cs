@@ -23,7 +23,7 @@ public class AdvertisementAdminQueriesController : ControllerBase
 
     [HttpGet("purchases/{userId:int}")]
     public async Task<IActionResult> GetPurchasedAdvertisements(
-        int userId)
+        [FromRoute] int userId)
     {
         var exists = await _queryUserService.ExistsAsync(userId);
 

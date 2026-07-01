@@ -21,15 +21,16 @@ public class CategoryQueriesController : ControllerBase
 
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
     }
 
-    [HttpGet("by-product-type/{type}")]
+    [HttpGet("by-product-type")]
     public async Task<IActionResult> GetByProductType(
-        [FromRoute] ProductType type)
+        [FromQuery] ProductType type)
     {
         var result = await _queryService.GetByProductTypeAsync(type);
         return result.ToActionResult();
@@ -43,7 +44,7 @@ public class CategoryQueriesController : ControllerBase
         return result.ToActionResult();
     }
 
-    [HttpGet("search/name")]
+    [HttpGet("search")]
     public async Task<IActionResult> SearchByName(
        [FromQuery] string name,
        [FromQuery] int page = 1,

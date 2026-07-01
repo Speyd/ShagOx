@@ -29,21 +29,24 @@ public class AdvertisementQueriesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
     }
 
     [HttpGet("category/{categoryId:int}")]
-    public async Task<IActionResult> GetByCategory(int categoryId)
+    public async Task<IActionResult> GetByCategory(
+        [FromRoute] int categoryId)
     {
         var result = await _queryService.GetByCategoryAsync(categoryId);
         return result.ToActionResult();
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> Search(string query)
+    public async Task<IActionResult> Search(
+        [FromQuery] string query)
     {
         var result = await _queryService.SearchAsync(query);
         return result.ToActionResult();

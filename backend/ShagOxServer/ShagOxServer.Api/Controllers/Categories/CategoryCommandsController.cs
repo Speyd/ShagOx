@@ -31,14 +31,17 @@ public class CategoryCommandsController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> Create(CategoryCreateRequest request)
+    public async Task<IActionResult> Create(
+        [FromBody] CategoryCreateRequest request)
     {
         var result = await _createService.CreateCategoryAsync(request);
         return result.ToActionResult();
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, CategoryUpdateRequest request)
+    public async Task<IActionResult> Update(
+        [FromRoute] int id,
+        [FromBody] CategoryUpdateRequest request)
     {
         var result = await _updateService.UpdateCategoryAsync(id, request);
         return result.ToActionResult();
@@ -46,7 +49,8 @@ public class CategoryCommandsController : ControllerBase
 
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var result = await _deleteService.DeleteCategoryAsync(id);
         return result.ToActionResult();

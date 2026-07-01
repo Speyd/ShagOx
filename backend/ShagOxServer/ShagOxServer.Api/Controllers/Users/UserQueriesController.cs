@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Users.Query;
-using ShagOxServer.Application.Interfaces.Users.Update;
 using ShagOxServer.Application.Common.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users;
@@ -20,7 +19,8 @@ public class UserQueriesController : ControllerBase
 
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
@@ -46,9 +46,9 @@ public class UserQueriesController : ControllerBase
 
     [HttpGet("search/email")]
     public async Task<IActionResult> SearchByEmail(
-        string email,
-        int page,
-        int pageSize)
+        [FromQuery]  string email,
+        [FromQuery]  int page,
+        [FromQuery]  int pageSize)
     {
         var result = await _queryService.SearchByEmail(email, page, pageSize);
         return result.ToActionResult();
@@ -56,9 +56,9 @@ public class UserQueriesController : ControllerBase
 
     [HttpGet("search/phone")]
     public async Task<IActionResult> SearchByPhone(
-        string phone,
-        int page,
-        int pageSize)
+        [FromQuery] string phone,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
         var result = await _queryService.SearchByPhone(phone, page, pageSize);
         return result.ToActionResult();

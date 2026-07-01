@@ -16,15 +16,9 @@ export default function AdvertisementCard(props: Advertisement) {
         </div>
 
         <div className={styles.info}>
-          <h2>
-            {props.title}, {props.id}
-          </h2>
+          <h2>{props.title}</h2>
 
-          <div className={styles.conditionContainer}>
-            <p className={styles.conditionText}>{props.condition}</p>
-          </div>
-
-          <p>{props.category}</p>
+          <p>{props.properties[0]}</p>
         </div>
       </div>
 

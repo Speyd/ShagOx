@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import styles from "./AdvertisementPage.module.css";
-import advertisements from "@/data/advertisements.json";
+import { useGetAdvertisements } from "@/entities/Advertisement/hooks/useGetAdvertisements";
 
 export default function AdvertisementPage() {
   const { id } = useParams<{ id: string }>();
-
+  const advertisements = useGetAdvertisements().data ?? [];
   const advertisement = advertisements.find((item) => item.id === Number(id));
 
   if (!advertisement) {

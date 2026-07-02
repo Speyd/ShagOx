@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.Domain.Filters.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -35,30 +36,12 @@ public class UserQueriesController : ControllerBase
         return result.ToActionResult();
     }
 
-    [HttpGet("search/full-name")]
-    public async Task<IActionResult> SearchByFullName(
-        [FromQuery] string fullName,
+    [HttpGet("search")]
+    public async Task<IActionResult> Search(
+        [FromQuery] UserSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByFullName(fullName, pagination);
-        return result.ToActionResult();
-    }
-
-    [HttpGet("search/email")]
-    public async Task<IActionResult> SearchByEmail(
-        [FromQuery] string email,
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService.SearchByEmail(email, pagination);
-        return result.ToActionResult();
-    }
-
-    [HttpGet("search/phone")]
-    public async Task<IActionResult> SearchByPhone(
-        [FromQuery] string phone,
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService.SearchByPhone(phone, pagination);
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

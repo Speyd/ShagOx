@@ -1,4 +1,8 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
+using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
+using ShagOxServer.Application.Services.Specification.Images.Mapping;
+using ShagOxServer.Application.Services.Users.Mapping;
 using ShagOxServer.Domain.Entities;
 
 namespace ShagOxServer.Application.Services.Advertisements.Mapping;
@@ -13,17 +17,14 @@ public static class AdvertisementMapper
             x.Description,
             x.Price,
             x.PreviousPrice,
-            x.CurrencyId,
-            x.Currency?.Code ?? "",
-            x.CategoryId,
-            x.Category?.Name ?? "",
-            x.SellerId,
-            x.BuyerId,
-            x.Images?
+            CurrencyMapper.ToDto(x.Currency),
+            CategoryMapper.ToDto(x.Category),
+            UserShortMapper.ToDto(x.Seller),
+            (x.Buyer is not null ? UserShortMapper.ToDto(x.Buyer) : null),
+            x.Images
                 .OrderBy(i => i.Order)
-                .Select(i => i.Url)
-                .ToList()
-                ?? new List<string>(),
+                .Select(ImageMapper.ToDto)
+                .ToList(),
             x.Properties,
             x.SoldAt,
             x.CreatedAt

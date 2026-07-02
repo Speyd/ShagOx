@@ -1,4 +1,9 @@
 ﻿
+using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+using ShagOxServer.Application.DTOs.Specification.Currencies;
+using ShagOxServer.Application.DTOs.Specification.Images;
+using ShagOxServer.Application.DTOs.Users;
+
 namespace ShagOxServer.Application.DTOs.Advertisements;
 
 public sealed record AdvertisementDto
@@ -8,13 +13,11 @@ public sealed record AdvertisementDto
     string Description,
     int Price,
     int PreviousPrice,
-    int CurrencyId,
-    string Currency,
-    int CategoryId,
-    string Category,
-    int SellerId,
-    int? BuyerId,
-    List<string> Images,
+    CurrencyDto Currency,
+    CategoryDto Category,
+    UserShortDto Seller,
+    UserShortDto? Buyer,
+    List<ImageDto> Images,
     Dictionary<string, string> Properties,
     DateTime? SoldAt,
     DateTime CreatedAt

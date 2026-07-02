@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import type { Advertisement } from "../model/types";
 import styles from "./AdvertisementCard.module.css";
+import DeleteAdvertisementButton from "@/features/delete-advertisement";
 
 export default function AdvertisementCard(props: Advertisement) {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ export default function AdvertisementCard(props: Advertisement) {
       </div>
 
       <div className={styles.price}>{props.price}</div>
+
+      <DeleteAdvertisementButton id={props.id} />
     </div>
   );
 }

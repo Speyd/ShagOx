@@ -1,11 +1,19 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./AdvertisementPage.module.css";
-import { useGetAdvertisements } from "@/entities/Advertisement/hooks/useGetAdvertisements";
+import DeleteAdvertisementButton from "@/features/delete-advertisement";
+import Button from "@/shared/ui/Button";
+import { useGetAdvertisement } from "@/entities/Advertisement/hooks/useGetAdvertisement";
 
 export default function AdvertisementPage() {
   const { id } = useParams<{ id: string }>();
-  const advertisements = useGetAdvertisements().data ?? [];
-  const advertisement = advertisements.find((item) => item.id === Number(id));
+
+  const { data: advertisement, isLoading } = useGetAdvertisement(Number(id));
+
+  const navigate = useNavigate();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!advertisement) {
     return <div>Advertisement not found</div>;
@@ -18,6 +26,14 @@ export default function AdvertisementPage() {
         <img src={advertisement.images[0]} alt="" className={styles.image} />
       </div>
       <p>{advertisement.description}</p>
+      <DeleteAdvertisementButton id={advertisement.id} />
+      <Button
+        onClick={() => {
+          navigate(`/update-advertisement/${advertisement.id}`);
+        }}
+      >
+        Змінити
+      </Button>
       <p>{advertisement.price}</p>
     </div>
   );

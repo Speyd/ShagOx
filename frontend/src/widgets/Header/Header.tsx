@@ -33,6 +33,9 @@ export default function Header() {
           {user && <p className={styles.username}>{user.name}</p>}
 
           <div className={styles.buttons}>
+            <Button onClick={() => navigate("/create-advertisement")}>
+              Додати оголошення
+            </Button>
             <Button onClick={() => navigate("/login")}>Увійти</Button>
             <Button onClick={() => handleLogout()}>Вийти</Button>
           </div>

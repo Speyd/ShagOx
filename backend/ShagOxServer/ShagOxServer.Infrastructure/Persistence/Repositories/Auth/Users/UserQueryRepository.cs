@@ -2,6 +2,7 @@
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 public class UserQueryRepository : BaseRepository, IUserQueryRepository
@@ -68,33 +69,39 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
             .ToListAsync();
     }
 
-    public async Task<List<User>> SearchByFullName(string fullName, int page, int pageSize)
+    public async Task<List<User>> SearchByFullName(
+        string fullName, 
+        PaginationParams pagination)
     {
         return await _db.Users.WithIncludes()
              .Where(x =>
                 (x.Name + " " + x.Surname).Contains(fullName))
-             .Skip((page - 1) * pageSize)
-             .Take(pageSize)
+             .Skip((pagination.Page - 1) * pagination.PageSize)
+             .Take(pagination.PageSize)
              .ToListAsync();
     }
 
-    public async Task<List<User>> SearchByEmail(string email, int page, int pageSize)
+    public async Task<List<User>> SearchByEmail(
+        string email,
+        PaginationParams pagination)
     {
         return await _db.Users.WithIncludes()
              .Where(x =>
                 (x.Email != null && x.Email.Contains(email)))
-             .Skip((page - 1) * pageSize)
-             .Take(pageSize)
+             .Skip((pagination.Page - 1) * pagination.PageSize)
+             .Take(pagination.PageSize)
              .ToListAsync();
     }
 
-    public async Task<List<User>> SearchByPhone(string phone, int page, int pageSize)
+    public async Task<List<User>> SearchByPhone(
+        string phone,
+        PaginationParams pagination)
     {
         return await _db.Users.WithIncludes()
             .Where(x =>
                (x.Phone != null && x.Phone.Contains(phone)))
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((pagination.Page - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 }

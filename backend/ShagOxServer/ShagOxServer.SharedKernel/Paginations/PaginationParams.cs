@@ -1,6 +1,6 @@
 ﻿namespace ShagOxServer.SharedKernel.Paginations;
 public sealed record PaginationParams
 (
-    int page = 1,
-    int pageSize = 20
+    int Page = 1,
+    int PageSize = 20
 );

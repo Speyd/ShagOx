@@ -1,5 +1,6 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Users;
+﻿using ShagOxServer.Application.DTOs.Users;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Users.Query;
 public interface IUserQueryService
@@ -10,16 +11,13 @@ public interface IUserQueryService
 
     Task<Result<List<UserDto>>> SearchByFullName(
         string fullName,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 
     Task<Result<List<UserDto>>> SearchByEmail(
         string email,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 
     Task<Result<List<UserDto>>> SearchByPhone(
         string phone,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 }

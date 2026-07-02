@@ -1,10 +1,11 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.SharedKernel.Results.Extensions;
-using ShagOxServer.Application.DTOs.Users;
+﻿using ShagOxServer.Application.DTOs.Users;
 using ShagOxServer.Application.Interfaces.Common.Context;
 using ShagOxServer.Application.Interfaces.Users.Query;
 using ShagOxServer.Application.Services.Users.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Services.Users.Query;
 public class UserQueryService : IUserQueryService
@@ -37,22 +38,20 @@ public class UserQueryService : IUserQueryService
 
     public async Task<Result<List<UserDto>>> SearchByFullName(
        string fullName,
-       int page,
-       int pageSize)
+	   PaginationParams pagination)
     {
         var users = await _repository.SearchByFullName(
-            fullName, page, pageSize);
+            fullName, pagination);
 
         return users.ToResultList(UserMapper.ToDto);
     }
 
     public async Task<Result<List<UserDto>>> SearchByEmail(
         string email,
-        int page,
-        int pageSize)
+		PaginationParams pagination)
     {
         var users = await _repository.SearchByEmail(
-             email, page, pageSize);
+             email, pagination);
 
 
         return users.ToResultList(UserMapper.ToDto);
@@ -60,11 +59,10 @@ public class UserQueryService : IUserQueryService
 
     public async Task<Result<List<UserDto>>> SearchByPhone(
         string phone,
-        int page,
-        int pageSize)
+		PaginationParams pagination)
     {
         var users = await _repository.SearchByPhone(
-            phone, page, pageSize);
+            phone, pagination);
 
 
         return users.ToResultList(UserMapper.ToDto);

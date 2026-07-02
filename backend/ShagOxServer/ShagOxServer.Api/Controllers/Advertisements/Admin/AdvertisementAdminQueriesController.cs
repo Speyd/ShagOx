@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 
@@ -24,8 +26,7 @@ public class AdvertisementAdminQueriesController : ControllerBase
     [HttpGet("purchases/{userId:int}")]
     public async Task<IActionResult> GetPurchasedAdvertisements(
         [FromRoute] int userId,
-        [FromQuery] int page,
-        [FromQuery] int pageSize)
+        [FromQuery] PaginationParams pagination)
     {
         var exists = await _queryUserService.ExistsAsync(userId);
 
@@ -33,8 +34,8 @@ public class AdvertisementAdminQueriesController : ControllerBase
             return NotFound("User not found");
 
         var advertisements =
-            await _queryAdvertService.GetPurchasedAdvertisementsAsync(userId, page, pageSize);
+            await _queryAdvertService.GetPurchasedAdvertisementsAsync(userId, pagination);
 
-        return Ok(advertisements);
+        return advertisements.ToActionResult();
     }
 }

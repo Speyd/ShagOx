@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -43,10 +44,9 @@ public class CategoryQueryService : ICategoryQueryService
 
     public async Task<Result<List<CategoryDto>>> SearchByName(
         string name,
-        int page,
-        int pageSize)
+        PaginationParams pagination)
     {
-        var categories = await _repository.SearchByName(name, page, pageSize);
+        var categories = await _repository.SearchByName(name, pagination);
 
         return categories.ToResultList(CategoryMapper.ToDto);
     }

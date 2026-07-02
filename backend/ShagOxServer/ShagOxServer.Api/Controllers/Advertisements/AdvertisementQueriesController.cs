@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements;
@@ -18,13 +19,9 @@ public class AdvertisementQueriesController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAll(
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+        [FromQuery] PaginationParams pagination)
     {
-        page = Math.Max(1, page);
-        pageSize = Math.Clamp(pageSize, 1, 100);
-
-        var result = await _queryService.GetAllAsync(page, pageSize);
+        var result = await _queryService.GetAllAsync(pagination);
         return result.ToActionResult();
     }
 
@@ -39,30 +36,27 @@ public class AdvertisementQueriesController : ControllerBase
     [HttpGet("category/{categoryId:int}")]
     public async Task<IActionResult> GetByCategory(
         [FromRoute] int categoryId,
-        [FromQuery] int page,
-        [FromQuery] int pageSize)
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetByCategoryAsync(categoryId, page, pageSize);
+        var result = await _queryService.GetByCategoryAsync(categoryId, pagination);
         return result.ToActionResult();
     }
 
     [HttpGet("search/title")]
     public async Task<IActionResult> SearchByTitle(
         [FromQuery] string title,
-        [FromQuery] int page,
-        [FromQuery] int pageSize)
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByTitle(title, page, pageSize);
+        var result = await _queryService.SearchByTitle(title, pagination);
         return result.ToActionResult();
     }
 
     [HttpGet("search/description")]
     public async Task<IActionResult> SearchByDescription(
        [FromQuery] string query,
-        [FromQuery] int page,
-        [FromQuery] int pageSize)
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByDescription(query, page, pageSize);
+        var result = await _queryService.SearchByDescription(query, pagination);
         return result.ToActionResult();
     }
 }

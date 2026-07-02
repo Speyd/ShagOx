@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Advertisements;
 public interface IAdvertisementQueryRepository
@@ -9,28 +10,24 @@ public interface IAdvertisementQueryRepository
 
     Task<List<Advertisement>> GetSellerAdvertisementsAsync(
         int userId,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 
     Task<List<Advertisement>> GetPurchasedAdvertisementsAsync(
         int userId,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 
-    Task<List<Advertisement>> GetPagedAsync(int page, int pageSize);
+    Task<List<Advertisement>> GetPagedAsync(
+        PaginationParams pagination);
 
     Task<List<Advertisement>> GetByCategoryAsync(
         int categoryId,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 
     Task<List<Advertisement>> SearchByTitle(
         string title,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 
     Task<List<Advertisement>> SearchByDescription(
         string query,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 }

@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
@@ -14,6 +15,5 @@ public interface ICategoryQueryService
 
     Task<Result<List<CategoryDto>>> SearchByName(
         string name,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 }

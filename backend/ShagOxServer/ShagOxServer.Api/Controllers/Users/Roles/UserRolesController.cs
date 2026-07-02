@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 using ShagOxServer.Application.Interfaces.UserRoles;
 using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users.Roles;
 
@@ -30,8 +32,7 @@ public class UserRolesController : ControllerBase
         if (!result.IsSuccess || result.Value is null)
             return BadRequest(result.Error);
 
-        var roles = result.Value.Roles;
-        return Ok(roles);
+        return result.ToActionResult();
     }
 
     [Authorize(Roles = "Admin")]

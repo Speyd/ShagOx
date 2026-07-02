@@ -3,6 +3,7 @@ using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Extensions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 public class CityQueryRepository : BaseRepository, ICityQueryRepository
@@ -26,23 +27,23 @@ public class CityQueryRepository : BaseRepository, ICityQueryRepository
 
     public async Task<List<City>> GetByRegionAsync(
         int regionId,
-        int paage = 1,
-        int pageSize = 20)
+        PaginationParams pagination)
     {
         return await _db.Cities.WithIncludes()
             .Where(x => x.RegionId == regionId)
-            .Skip((pageSize - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((pagination.PageSize - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 
     public async Task<List<City>> SearchByName(
         string name,
-        int page,
-        int pageSize)
+        PaginationParams pagination)
     {
         return await _db.Cities.WithIncludes()
             .Where(x => x.Name.Contains(name))
+            .Skip((pagination.PageSize - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 }

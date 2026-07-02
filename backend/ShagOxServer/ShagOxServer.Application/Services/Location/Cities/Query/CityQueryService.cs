@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Location.Cities.Query;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -32,20 +33,18 @@ public class CityQueryService : ICityQueryService
 
     public async Task<Result<List<CityDto>>> GetByRegionAsync(
         int regionId,
-        int page = 1,
-        int pageSize = 20)
+        PaginationParams pagination)
     {
-        var cities = await _repository.GetByRegionAsync(regionId);
+        var cities = await _repository.GetByRegionAsync(regionId, pagination);
 
         return cities.ToResultList(CityMapper.ToDto);
     }
 
     public async Task<Result<List<CityDto>>> SearchByName(
        string name,
-       int page,
-       int pageSize)
+       PaginationParams pagination)
     {
-        var cities = await _repository.SearchByName(name, page, pageSize);
+        var cities = await _repository.SearchByName(name, pagination);
 
         return cities.ToResultList(CityMapper.ToDto);
     }

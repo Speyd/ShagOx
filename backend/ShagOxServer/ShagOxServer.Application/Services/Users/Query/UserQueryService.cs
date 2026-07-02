@@ -3,9 +3,9 @@ using ShagOxServer.Application.Interfaces.Common.Context;
 using ShagOxServer.Application.Interfaces.Users.Query;
 using ShagOxServer.Application.Services.Users.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Services.Users.Query;
 public class UserQueryService : IUserQueryService

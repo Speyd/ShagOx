@@ -2,7 +2,7 @@
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
-using ShagOxServer.SharedKernel.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 public class UserQueryRepository : BaseRepository, IUserQueryRepository

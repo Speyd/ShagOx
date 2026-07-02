@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Roles;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Roles.Query;
 public interface IRoleQueryService

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
-using ShagOxServer.SharedKernel.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
 public class UserRoleRepository : BaseRepository, IUserRoleRepository

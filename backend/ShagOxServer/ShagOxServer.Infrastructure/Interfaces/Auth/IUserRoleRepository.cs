@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.SharedKernel.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Auth;
 public interface IUserRoleRepository

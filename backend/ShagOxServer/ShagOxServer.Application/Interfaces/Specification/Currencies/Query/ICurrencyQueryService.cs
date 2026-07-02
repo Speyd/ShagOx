@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Currencies;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Specification.Currencies.Query;
 public interface ICurrencyQueryService

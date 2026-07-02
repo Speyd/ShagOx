@@ -2,9 +2,9 @@
 using ShagOxServer.Application.Interfaces.Specification.Conditions.Query;
 using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Query;
 public class ConditionQueryService : IConditionQueryService

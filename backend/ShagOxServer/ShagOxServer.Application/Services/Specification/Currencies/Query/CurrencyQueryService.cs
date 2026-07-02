@@ -2,9 +2,9 @@
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Query;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Query;
 public class CurrencyQueryService : ICurrencyQueryService

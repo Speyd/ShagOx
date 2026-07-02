@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.SharedKernel.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 public interface ICurrencyQueryRepository

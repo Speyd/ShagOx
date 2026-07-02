@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.SharedKernel.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 public interface IConditionQueryRepository

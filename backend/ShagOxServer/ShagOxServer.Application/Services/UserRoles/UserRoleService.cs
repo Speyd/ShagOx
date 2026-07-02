@@ -4,9 +4,9 @@ using ShagOxServer.Application.Interfaces.UserRoles;
 using ShagOxServer.Application.Services.Roles.Mapping;
 using ShagOxServer.Application.Services.Users.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Services.UserRoles;
 public class UserRoleService : IUserRoleService

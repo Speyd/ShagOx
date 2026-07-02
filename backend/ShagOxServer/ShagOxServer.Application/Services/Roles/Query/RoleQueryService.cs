@@ -2,9 +2,9 @@
 using ShagOxServer.Application.Interfaces.Roles.Query;
 using ShagOxServer.Application.Services.Roles.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Services.Roles.Query;
 public class RoleQueryService : IRoleQueryService

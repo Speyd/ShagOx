@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
-using ShagOxServer.SharedKernel.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
 public class ConditionQueryRepository : BaseRepository, IConditionQueryRepository

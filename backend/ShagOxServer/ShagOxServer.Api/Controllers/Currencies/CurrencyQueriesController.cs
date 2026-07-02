@@ -41,4 +41,24 @@ public class CurrencyQueriesController : ControllerBase
         var result = await _queryService.GetBySymbolAsync(symbol);
         return result.ToActionResult();
     }
+
+    [HttpGet("search/code")]
+    public async Task<IActionResult> SearchByCode(
+       [FromQuery] string code,
+       [FromQuery] int page = 1,
+       [FromQuery] int pageSize = 20)
+    {
+        var result = await _queryService.SearchByCode(code, page, pageSize);
+        return result.ToActionResult();
+    }
+
+    [HttpGet("search/name")]
+    public async Task<IActionResult> SearchByName(
+       [FromQuery] string name,
+       [FromQuery] int page = 1,
+       [FromQuery] int pageSize = 20)
+    {
+        var result = await _queryService.SearchByName(name, page, pageSize);
+        return result.ToActionResult();
+    }
 }

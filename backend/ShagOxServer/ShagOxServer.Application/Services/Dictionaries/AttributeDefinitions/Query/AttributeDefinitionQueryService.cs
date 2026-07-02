@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Quer
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -40,10 +41,9 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
 
     public async Task<Result<List<AttributeDefinitionDto>>> SearchByKey(
        string key,
-       int page,
-       int pageSize)
+       PaginationParams pagination)
     {
-        var attributes = await _attributeRepository.SearchByKey(key, page, pageSize);
+        var attributes = await _attributeRepository.SearchByKey(key, pagination);
 
         return attributes.ToResultList(AttributeDefinitionMapper.ToDto);
     }

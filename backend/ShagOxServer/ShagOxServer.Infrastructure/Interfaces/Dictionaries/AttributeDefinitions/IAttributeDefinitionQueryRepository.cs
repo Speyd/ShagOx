@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Dictionaries;
+﻿using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 public interface IAttributeDefinitionQueryRepository
@@ -12,6 +12,5 @@ public interface IAttributeDefinitionQueryRepository
 
     Task<List<AttributeDefinition>> SearchByKey(
         string key,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 }

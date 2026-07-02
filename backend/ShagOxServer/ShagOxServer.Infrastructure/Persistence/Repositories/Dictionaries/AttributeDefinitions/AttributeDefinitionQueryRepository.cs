@@ -3,6 +3,7 @@ using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions.Extensions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions;
 public class AttributeDefinitionQueryRepository : BaseRepository, IAttributeDefinitionQueryRepository
@@ -34,11 +35,12 @@ public class AttributeDefinitionQueryRepository : BaseRepository, IAttributeDefi
 
     public async Task<List<AttributeDefinition>> SearchByKey(
         string key,
-        int page,
-        int pageSize)
+        PaginationParams pagination)
     {
         return await _db.AttributeDefinitions.WithIncludes()
             .Where(x => x.Key.Contains(key))
+            .Skip((pagination.PageSize - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 }

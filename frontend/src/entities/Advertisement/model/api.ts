@@ -5,3 +5,7 @@ export async function getAdvertisements() {
   return response.data;
 }
 
+export async function getAdvertisement(id: number) {
+  const response = await api.get(`/api/advertisements/${id}`);
+  return response.data;
+}

@@ -1,5 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Advertisements.Update;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
 using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Account;
@@ -11,6 +10,7 @@ using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Update;
 public class AdvertisementUpdateService : IAdvertisementUpdateService

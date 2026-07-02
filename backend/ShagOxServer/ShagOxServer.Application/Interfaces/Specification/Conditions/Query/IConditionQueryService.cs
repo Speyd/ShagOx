@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Specification.Conditions;
+﻿using ShagOxServer.Application.DTOs.Specification.Conditions;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Interfaces.Specification.Conditions.Query;
 public interface IConditionQueryService

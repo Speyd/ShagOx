@@ -1,25 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace ShagOxServer.Application.Common.Results.Extensions;
-public static class ResultExtensions
+﻿namespace ShagOxServer.SharedKernel.Results.Extensions;
+public static class ResultMappingExtensions
 {
-    public static IActionResult ToActionResult<T>(
-        this Result<T> result)
-    {
-        if (result.IsSuccess)
-            return new OkObjectResult(result.Value);
-
-        return new BadRequestObjectResult(result.Error);
-    }
-    public static IActionResult ToActionListResult<T>(
-        this Result<IEnumerable<T>> result)
-    {
-        if (result.IsSuccess)
-            return new OkObjectResult(result.Value);
-
-        return new BadRequestObjectResult(result.Error);
-    }
-
     public static Result<TDto> ToResult<T, TDto>(
        this T? entity,
        Func<T, TDto> map,

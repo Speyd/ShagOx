@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
+﻿using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Create;
 using ShagOxServer.Domain.Entities;

@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Users.Update;
 using ShagOxServer.Application.Interfaces.Users.Delete;
 using ShagOxServer.Application.Interfaces.Users.Query;
 using ShagOxServer.Application.Interfaces.Users.Update;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.SharedKernel.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users.Admin;
 

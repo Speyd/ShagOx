@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
+﻿using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.DTOs.Location.Cities.Update;
 using ShagOxServer.Application.Interfaces.Location.Cities.Update;
 using ShagOxServer.Domain.Entities.Location;

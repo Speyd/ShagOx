@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Roles.Update;
 using ShagOxServer.Application.Interfaces.Roles.Create;
 using ShagOxServer.Application.Interfaces.Roles.Delete;
 using ShagOxServer.Application.Interfaces.Roles.Update;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.SharedKernel.Results.Extensions;
 using ShagOxServer.Application.DTOs.Roles.Create;
 
 namespace ShagOxServer.Api.Controllers.Role;

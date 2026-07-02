@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.SharedKernel.Results.Extensions;
 using ShagOxServer.Application.DTOs.Specification.Images.Create;
 using ShagOxServer.Application.DTOs.Specification.Images.Update;
 using ShagOxServer.Application.Interfaces.Specification.Images.Create;

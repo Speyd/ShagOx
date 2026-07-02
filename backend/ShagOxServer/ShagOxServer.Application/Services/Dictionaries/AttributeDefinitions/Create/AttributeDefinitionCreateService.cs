@@ -1,17 +1,15 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Create;
 public class AttributeDefinitionCreateService : IAttributeDefinitionCreateService
 {
     private readonly IAttributeDefinitionRepository _attributeRepository;
     private readonly ICategoryExistsRepository _categoryExistsRepository;
-
-
 
     public AttributeDefinitionCreateService(
         IAttributeDefinitionRepository attributeRepository,

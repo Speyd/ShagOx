@@ -5,7 +5,7 @@ using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Advertisements.Create;
 using ShagOxServer.Application.Interfaces.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.SharedKernel.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 

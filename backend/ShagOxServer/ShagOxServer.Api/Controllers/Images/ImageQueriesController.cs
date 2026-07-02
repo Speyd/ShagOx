@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.SharedKernel.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Specification.Images.Query;
 
 namespace ShagOxServer.Api.Controllers.Images;

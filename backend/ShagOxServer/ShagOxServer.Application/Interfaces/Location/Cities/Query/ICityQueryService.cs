@@ -1,6 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Location.Cities;
-using ShagOxServer.Domain.Entities.Location;
+﻿using ShagOxServer.Application.DTOs.Location.Cities;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Interfaces.Location.Cities.Query;
 public interface ICityQueryService

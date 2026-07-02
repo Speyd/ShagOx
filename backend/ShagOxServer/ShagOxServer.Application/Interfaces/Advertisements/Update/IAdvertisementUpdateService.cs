@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Advertisements.Update;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Update;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Interfaces.Advertisements.Update;
 public interface IAdvertisementUpdateService

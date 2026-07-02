@@ -1,6 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Location.Regions;
-using ShagOxServer.Domain.Entities.Location;
+﻿using ShagOxServer.Application.DTOs.Location.Regions;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Interfaces.Location.Regions.Query;
 public interface IRegionQueryService

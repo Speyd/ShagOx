@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
+﻿using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Create;
 using ShagOxServer.Domain.Entities.Specification;

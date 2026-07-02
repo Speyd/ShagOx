@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Advertisements.Create;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Create;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Interfaces.Advertisements.Create;
 public interface IAdvertisementCreateService

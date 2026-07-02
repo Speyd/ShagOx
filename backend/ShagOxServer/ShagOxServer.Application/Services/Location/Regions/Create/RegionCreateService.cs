@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
+﻿using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.DTOs.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Location.Regions.Create;
 using ShagOxServer.Domain.Entities.Location;

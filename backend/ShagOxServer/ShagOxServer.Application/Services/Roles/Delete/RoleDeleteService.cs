@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
+﻿using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.DTOs.Roles.Delete;
 using ShagOxServer.Application.Interfaces.Roles.Delete;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;

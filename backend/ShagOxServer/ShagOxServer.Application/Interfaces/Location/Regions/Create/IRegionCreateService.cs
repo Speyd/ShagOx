@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Location.Regions.Create;
+﻿using ShagOxServer.Application.DTOs.Location.Regions.Create;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Interfaces.Location.Regions.Create;
 public interface IRegionCreateService

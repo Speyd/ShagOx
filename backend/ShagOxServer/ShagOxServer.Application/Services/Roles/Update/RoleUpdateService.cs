@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
+﻿using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.DTOs.Roles.Update;
 using ShagOxServer.Application.Interfaces.Roles.Update;
 using ShagOxServer.Domain.Entities.Account;

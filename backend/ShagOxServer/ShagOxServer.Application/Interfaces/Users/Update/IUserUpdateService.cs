@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
+﻿using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.DTOs.Users.Update;
 
 namespace ShagOxServer.Application.Interfaces.Users.Update;

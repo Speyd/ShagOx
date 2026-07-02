@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ShagOxServer.Domain\ShagOxServer.Domain.csproj" />
     <ProjectReference Include="..\ShagOxServer.Infrastructure\ShagOxServer.Infrastructure.csproj" />
+    <ProjectReference Include="..\ShagOxServer.SharedKernel\ShagOxServer.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

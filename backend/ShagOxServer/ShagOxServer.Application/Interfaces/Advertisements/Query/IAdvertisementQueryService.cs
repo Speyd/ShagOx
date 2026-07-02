@@ -1,6 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Advertisements;
-using ShagOxServer.Domain.Entities;
+﻿using ShagOxServer.Application.DTOs.Advertisements;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Interfaces.Advertisements.Query;
 public interface IAdvertisementQueryService

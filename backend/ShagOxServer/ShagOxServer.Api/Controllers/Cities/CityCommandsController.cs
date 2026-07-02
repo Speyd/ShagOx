@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Location.Cities.Create;
 using ShagOxServer.Application.DTOs.Location.Cities.Update;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.SharedKernel.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Location.Cities.Create;
 using ShagOxServer.Application.Interfaces.Location.Cities.Delete;
 using ShagOxServer.Application.Interfaces.Location.Cities.Update;

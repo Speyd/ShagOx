@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Create;
 public interface IAttributeDefinitionCreateService

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
+﻿using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.DTOs.Specification.Images.Create;
 using ShagOxServer.Application.Interfaces.Specification.Images.Create;
 using ShagOxServer.Domain.Entities.Specification;

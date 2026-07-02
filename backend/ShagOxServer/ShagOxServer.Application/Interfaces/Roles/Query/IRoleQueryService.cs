@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Roles;
+﻿using ShagOxServer.Application.DTOs.Roles;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Interfaces.Roles.Query;
 public interface IRoleQueryService

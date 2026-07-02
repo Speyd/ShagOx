@@ -1,5 +1,5 @@
 ﻿using Npgsql;
-using ShagOxServer.Application.Common.Results;
+using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Update;
 using ShagOxServer.Domain.Entities;

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
+﻿using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.DTOs.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Location.Regions.Delete;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;

@@ -1,6 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
-using ShagOxServer.Domain.Entities.Dictionaries;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
+using ShagOxServer.SharedKernel.Results;
 
 namespace ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Query;
 public interface IAttributeDefinitionQueryService

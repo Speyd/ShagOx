@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 public interface IRegionQueryRepository
@@ -9,6 +10,5 @@ public interface IRegionQueryRepository
 
     Task<List<Region>> SearchByName(
        string name,
-       int page,
-       int pageSize);
+       PaginationParams pagination);
 }

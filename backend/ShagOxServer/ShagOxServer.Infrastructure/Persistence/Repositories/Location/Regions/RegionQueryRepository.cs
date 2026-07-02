@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 public class RegionQueryRepository : BaseRepository, IRegionQueryRepository
@@ -22,12 +23,13 @@ public class RegionQueryRepository : BaseRepository, IRegionQueryRepository
     }
 
     public async Task<List<Region>> SearchByName(
-       string name,
-       int page,
-       int pageSize)
+        string name,
+        PaginationParams pagination)
     {
         return await _db.Regions
             .Where(x => x.Name.Contains(name))
+            .Skip((pagination.PageSize - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 }

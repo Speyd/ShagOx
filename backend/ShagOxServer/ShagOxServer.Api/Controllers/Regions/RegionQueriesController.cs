@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Location.Regions.Query;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Regions;
@@ -38,10 +39,9 @@ public class RegionQueriesController : ControllerBase
     [HttpGet("search")]
     public async Task<IActionResult> SearchByName(
        [FromQuery] string name,
-       [FromQuery] int page = 1,
-       [FromQuery] int pageSize = 20)
+       [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByName(name, page, pageSize);
+        var result = await _queryService.SearchByName(name, pagination);
         return result.ToActionResult();
     }
 }

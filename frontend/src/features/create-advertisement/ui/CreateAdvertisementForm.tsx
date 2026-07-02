@@ -1,25 +1,36 @@
-import { useState } from "react";
-
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateAdvertisement } from "../hooks/useCreateAdvertisement";
+import {
+  createAdvertisementSchema,
+  type CreateAdvertisementDto,
+} from "../model/schema";
+import styles from "./CreateAdvertisementForm.module.css";
+import Input from "@/shared/ui/Input";
+import TextArea from "@/shared/ui/TextArea";
+import Button from "@/shared/ui/Button";
 
-export function CreateAdvertisementForm() {
+export default function CreateAdvertisementForm() {
   const mutation = useCreateAdvertisement();
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateAdvertisementDto>({
+    resolver: zodResolver(createAdvertisementSchema),
+  });
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
+  const onSubmit = (data: CreateAdvertisementDto) => {
     mutation.mutate({
-      title,
-      description,
+      ...data,
 
-      price: 100,
-      previousPrice: 120,
+      previousPrice: data.price,
 
-      currencyId: 0,
+      currencyId: 1,
       categoryId: 1,
+
+      sellerId: 8,
 
       images: [],
 
@@ -27,25 +38,45 @@ export function CreateAdvertisementForm() {
         Brand: "Apple",
       },
     });
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title"
-      />
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <div className={styles.inputWrapper}>
+        <label className={styles.label}>Назва</label>
 
-      <textarea
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description"
-      />
+        <Input {...register("title")} />
 
-      <button type="submit" disabled={mutation.isPending}>
-        Create
-      </button>
+        {errors.title && <p className="error">{errors.title.message}</p>}
+      </div>
+
+      <div className={styles.inputWrapper}>
+        <label className={styles.label}>Опис</label>
+
+        <TextArea {...register("description")} />
+
+        {errors.description && (
+          <p className="error">{errors.description.message}</p>
+        )}
+      </div>
+
+      <div className={styles.inputWrapper}>
+        <label className={styles.label}>Ціна</label>
+
+        <Input
+          type="number"
+          {...(register("price"),
+          {
+            valueAsNumber: true,
+          })}
+        />
+
+        {errors.price && <p className="error">{errors.price.message}</p>}
+      </div>
+
+      <Button type="submit" disabled={mutation.isPending}>
+        {mutation.isPending ? "Створюємо..." : "Створити"}
+      </Button>
     </form>
   );
 }

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAdvertisement } from "../model/api";
+import { toast } from "sonner";
 
 export function useCreateAdvertisement() {
   const queryClient = useQueryClient();
@@ -11,6 +12,11 @@ export function useCreateAdvertisement() {
       queryClient.invalidateQueries({
         queryKey: ["advertisements"],
       });
+      toast.success("Advertisement created!");
+    },
+
+    onError: () => {
+      toast.error("Failed to create advertisement");
     },
   });
 }

@@ -4,7 +4,9 @@ export interface CreateAdvertisementDto {
   price: number;
   previousPrice: number;
   currencyId: number;
+  sellerId: number;
   categoryId: number;
   properties: Record<string, string>;
   images: string[];
 }
+

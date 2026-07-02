@@ -70,6 +70,6 @@ public class Advertisement : BaseEntity
 
     public override string ToString()
     {
-        throw new NotImplementedException();
+        return Title ?? string.Empty;
     }
 }

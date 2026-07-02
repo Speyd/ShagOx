@@ -20,14 +20,14 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
     private readonly ICurrencyRepository _currencyRepository;
     private readonly ICategoryRepository _categoryRepository;
     private readonly IConditionRepository _conditionRepository;
-    private readonly IImageRepository _imageRepository;
+    private readonly IImageQueryRepository _imageRepository;
 
     public AdvertisementUpdateService(
         IAdvertisementRepository advertisementRepository,
         IUserRepository userRepository,
         ICurrencyRepository currencyRepository,
         ICategoryRepository categoryRepository,
-        IImageRepository imageRepository,
+        IImageQueryRepository imageRepository,
         IConditionRepository conditionRepository)
     {
         _advertisementRepository = advertisementRepository;

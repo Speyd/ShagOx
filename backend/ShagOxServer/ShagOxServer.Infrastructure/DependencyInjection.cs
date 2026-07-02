@@ -95,6 +95,14 @@ public static class DependencyInjection
         services.AddScoped<
             IAdvertisementRepository,
             AdvertisementRepository>();
+
+        services.AddScoped<
+           IAdvertisementQueryRepository,
+           AdvertisementQueryRepository>();
+
+        services.AddScoped<
+           IAdvertisementExistsRepository,
+           AdvertisementExistsRepository>();
         #endregion
 
         #region Specification

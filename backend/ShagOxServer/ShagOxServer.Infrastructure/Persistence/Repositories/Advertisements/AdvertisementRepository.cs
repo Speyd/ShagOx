@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
@@ -19,6 +17,13 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
             .Include(x => x.Category)
             .Include(x => x.Seller)
             .Include(x => x.Images);
+    }
+
+
+    public async Task<Advertisement?> GetByIdAsync(int id)
+    {
+        return await _db.Advertisements
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task AddAsync(Advertisement advertisement)
@@ -41,73 +46,5 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
 
         await _db.SaveChangesAsync();
         return true;
-    }
-
-    public async Task<List<Advertisement>> GetPagedAsync(int page, int pageSize)
-    {
-        return await Query()
-            .OrderByDescending(x => x.CreatedAt)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
-    }
-
-    public async Task<List<Advertisement>> GetByCategoryAsync(int categoryId)
-    {
-        return await Query()
-            .Where(x => x.CategoryId == categoryId)
-            .OrderByDescending(x => x.CreatedAt)
-            .ToListAsync();
-    }
-
-    public async Task<List<Advertisement>> SearchAsync(string query)
-    {
-        return await Query()
-            .Where(x =>
-                x.Title.Contains(query) ||
-                x.Description.Contains(query))
-            .OrderByDescending(x => x.Popularity)
-            .ToListAsync();
-    }
-
-    public async Task<bool> IsOwnerAsync(int adId, int userId)
-    {
-        var result = await _db.Advertisements.AnyAsync(x =>
-           x.Id == adId && x.SellerId == userId);
-
-        return result;
-    }
-
-    public async Task<bool> ExistsById(int Id)
-    {
-        var result = await _db.Advertisements
-            .AnyAsync(x => x.Id == Id);
-
-        return result;
-    }
-
-    public async Task<Advertisement?> GetByIdAsync(int id)
-    {
-        return await Query()
-            .FirstOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<List<Advertisement>> GetByIdsAsync(
-        List<int> ids)
-    {
-        return await Query()
-            .Where(x => ids.Contains(x.Id))
-            .ToListAsync();
-    }
-
-    public async Task<Advertisement?> GetSellerAdvertisementsAsync(int userId)
-    {
-        return await Query()
-            .FirstOrDefaultAsync(x => x.SellerId == userId);
-    }
-    public async Task<Advertisement?> GetPurchasedAdvertisementsAsync(int userId)
-    {
-        return await Query()
-            .FirstOrDefaultAsync(x => x.BuyerId == userId);
     }
 }

@@ -8,11 +8,15 @@ namespace ShagOxServer.Application.Services.Specification.Currencies.Update;
 public class CurrencyUpdateService : ICurrencyUpdateService
 {
     private readonly ICurrencyRepository _repository;
+    private readonly ICurrencyExistsRepository _existsRepository;
+
 
     public CurrencyUpdateService(
-        ICurrencyRepository currencyRepository)
+        ICurrencyRepository currencyRepository,
+        ICurrencyExistsRepository existsRepository)
     {
         _repository = currencyRepository;
+        _existsRepository = existsRepository;
     }
 
     public async Task<Result<CurrencyUpdateResponse>> UpdateCurrencyAsync(
@@ -20,13 +24,13 @@ public class CurrencyUpdateService : ICurrencyUpdateService
         CurrencyUpdateRequest request)
     {
         if (request.Code is not null &&
-            await _repository.ExistsByCodeAsync(request.Code))
+            await _existsRepository.ExistsByCodeAsync(request.Code))
         {
             return Result<CurrencyUpdateResponse>
                 .AlreadyExists("Currency code");
         }
         if (request.Name is not null &&
-            await _repository.ExistsByNameAsync(request.Name))
+            await _existsRepository.ExistsByNameAsync(request.Name))
         {
             return Result<CurrencyUpdateResponse>
                 .AlreadyExists("Currency name");

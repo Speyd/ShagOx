@@ -38,17 +38,31 @@ public class AdvertisementQueriesController : ControllerBase
 
     [HttpGet("category/{categoryId:int}")]
     public async Task<IActionResult> GetByCategory(
-        [FromRoute] int categoryId)
+        [FromRoute] int categoryId,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
-        var result = await _queryService.GetByCategoryAsync(categoryId);
+        var result = await _queryService.GetByCategoryAsync(categoryId, page, pageSize);
         return result.ToActionResult();
     }
 
-    [HttpGet("search")]
-    public async Task<IActionResult> Search(
-        [FromQuery] string query)
+    [HttpGet("search/title")]
+    public async Task<IActionResult> SearchByTitle(
+        [FromQuery] string title,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
-        var result = await _queryService.SearchAsync(query);
+        var result = await _queryService.SearchByTitle(title, page, pageSize);
+        return result.ToActionResult();
+    }
+
+    [HttpGet("search/description")]
+    public async Task<IActionResult> SearchByDescription(
+       [FromQuery] string query,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
+    {
+        var result = await _queryService.SearchByDescription(query, page, pageSize);
         return result.ToActionResult();
     }
 }

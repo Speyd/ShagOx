@@ -23,20 +23,24 @@ public class UserAdvertisementsController : ControllerBase
     //TODO: Refactore code 'exists'
     [HttpGet]
     public async Task<IActionResult> GetUserAdvertisements(
-        [FromRoute] int userId)
+        [FromRoute] int userId,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
         var exists = await _userQuery.ExistsAsync(userId);
 
         if (!exists)
             return NotFound();
 
-        return Ok(await _queryService.GetSellerAdvertisementsAsync(userId));
+        return Ok(await _queryService.GetSellerAdvertisementsAsync(userId, page, pageSize));
     }
 
     [Authorize(Roles = "Admin")]
     [HttpGet("purchases")]
     public async Task<IActionResult> GetPurchasedAdvertisements(
-      [FromRoute] int userId)
+      [FromRoute] int userId,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
         var exists = await _userQuery.ExistsAsync(userId);
 
@@ -44,7 +48,7 @@ public class UserAdvertisementsController : ControllerBase
             return NotFound("User not found");
 
         var advertisements =
-            await _queryService.GetPurchasedAdvertisementsAsync(userId);
+            await _queryService.GetPurchasedAdvertisementsAsync(userId, page, pageSize);
 
         return Ok(advertisements);
     }

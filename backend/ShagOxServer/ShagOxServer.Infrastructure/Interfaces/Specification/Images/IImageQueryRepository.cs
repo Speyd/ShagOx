@@ -6,4 +6,6 @@ public interface IImageQueryRepository
     Task<Image?> GetByIdAsync(int id);
 
     Task<List<Image>> GetByIdsAsync(List<int> ids);
+
+
 }

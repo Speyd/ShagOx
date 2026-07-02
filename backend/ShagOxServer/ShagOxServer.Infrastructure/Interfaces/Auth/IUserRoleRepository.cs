@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Auth;
 public interface IUserRoleRepository
@@ -7,11 +8,9 @@ public interface IUserRoleRepository
 
     Task<List<Role>> GetRolesByUserIdAsync(
         int userId,
-        int page = 1,
-        int pageSize = 20);
+        PaginationParams pagination);
 
     Task<List<User>> GetUsersByRoleIdAsync(
         int roleId,
-        int page = 1,
-        int pageSize = 20);
+        PaginationParams pagination);
 }

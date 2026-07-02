@@ -1,11 +1,12 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.SharedKernel.Results.Extensions;
-using ShagOxServer.Application.DTOs.Roles;
+﻿using ShagOxServer.Application.DTOs.Roles;
 using ShagOxServer.Application.DTOs.Users;
 using ShagOxServer.Application.Interfaces.UserRoles;
 using ShagOxServer.Application.Services.Roles.Mapping;
 using ShagOxServer.Application.Services.Users.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Services.UserRoles;
 public class UserRoleService : IUserRoleService
@@ -20,20 +21,18 @@ public class UserRoleService : IUserRoleService
 
     public async Task<Result<List<RoleDto>>> GetRolesByUserIdAsync(
         int userId,
-        int page = 1,
-        int pageSize = 20)
+		PaginationParams pagination)
     {
-        var roles = await _repository.GetRolesByUserIdAsync(userId, page, pageSize);
+        var roles = await _repository.GetRolesByUserIdAsync(userId, pagination);
 
         return roles.ToResultList(RoleMapper.ToDto);
     }
 
     public async Task<Result<List<UserDto>>> GetUsersByRoleIdAsync(
         int roleId,
-        int page = 1,
-        int pageSize = 20)
+		PaginationParams pagination)
     {
-        var users = await _repository.GetUsersByRoleIdAsync(roleId, page, pageSize);
+        var users = await _repository.GetUsersByRoleIdAsync(roleId, pagination);
 
         return users.ToResultList(UserMapper.ToDto);
     }

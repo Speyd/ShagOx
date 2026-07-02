@@ -34,13 +34,9 @@ public class RoleQueriesController : ControllerBase
     [HttpGet("{roleId:int}/users")]
     public async Task<IActionResult> GetByRole(
         [FromRoute] int roleId,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+        [FromQuery] PaginationParams pagination)
     {
-        page = Math.Max(1, page);
-        pageSize = Math.Clamp(pageSize, 1, 100);
-
-        var result = await _queryUserRoleService.GetUsersByRoleIdAsync(roleId, page, pageSize);
+        var result = await _queryUserRoleService.GetUsersByRoleIdAsync(roleId, pagination);
         return result.ToActionResult();
     }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
 public class UserRoleRepository : BaseRepository, IUserRoleRepository
@@ -17,29 +18,27 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
 
     public async Task<List<Role>> GetRolesByUserIdAsync(
         int userId,
-        int page = 1,
-        int pageSize = 20)
+        PaginationParams pagination)
     {
         return await _db.Roles
             .Where(u => u.UserRoles.Any(ur => ur.UserId == userId))
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.User)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((pagination.Page - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 
     public async Task<List<User>> GetUsersByRoleIdAsync(
         int roleId,
-        int page = 1,
-        int pageSize = 20)
+        PaginationParams pagination)
     {
         return await _db.Users
             .Where(u => u.UserRoles.Any(ur => ur.RoleId == roleId))
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((pagination.Page - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 }

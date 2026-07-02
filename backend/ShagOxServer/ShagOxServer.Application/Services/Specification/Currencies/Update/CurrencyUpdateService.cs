@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Update;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Update;
 public class CurrencyUpdateService : ICurrencyUpdateService

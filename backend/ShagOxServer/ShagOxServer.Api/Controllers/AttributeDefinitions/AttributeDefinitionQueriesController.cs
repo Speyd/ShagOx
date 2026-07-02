@@ -19,14 +19,16 @@ public class AttributeDefinitionQueriesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
     }
 
     [HttpGet("by-category/{categoryId:int}")]
-    public async Task<IActionResult> GetByName(int categoryId)
+    public async Task<IActionResult> GetByName(
+        [FromRoute] int categoryId)
     {
         var result = await _queryService.GetByCategoryAsync(categoryId);
         return result.ToActionResult();

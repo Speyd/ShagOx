@@ -10,6 +10,7 @@ using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Interfaces.Specification;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 
 namespace ShagOxServer.Application.Services.Advertisements.Update;
 public class AdvertisementUpdateService : IAdvertisementUpdateService

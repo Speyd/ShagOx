@@ -3,7 +3,7 @@ using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Query;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Query;
 public class CurrencyQueryService : ICurrencyQueryService

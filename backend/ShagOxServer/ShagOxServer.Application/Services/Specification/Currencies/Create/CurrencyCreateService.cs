@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Create;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Create;
 public class CurrencyCreateService : ICurrencyCreateService

@@ -1,4 +1,4 @@
-﻿
+﻿using ShagOxServer.Application.DTOs.Location.Cities;
 using ShagOxServer.Application.DTOs.Roles;
 
 namespace ShagOxServer.Application.DTOs.Users;
@@ -11,8 +11,7 @@ public sealed record UserDto
     string? Email,
     string? Avatar,
 
-    int? CityId,
-    string? CityName,
+    CityDto City,
 
     List<RoleDto> Roles,
 

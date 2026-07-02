@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Conditions;
-using ShagOxServer.SharedKernel.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Specification.Conditions.Query;
 public interface IConditionQueryService
@@ -10,6 +11,5 @@ public interface IConditionQueryService
 
     Task<Result<List<ConditionDto>>> SearchByName(
        string name,
-       int page,
-       int pageSize);
+       PaginationParams pagination);
 }

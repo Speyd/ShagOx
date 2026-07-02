@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 public interface IConditionQueryRepository
@@ -9,6 +10,5 @@ public interface IConditionQueryRepository
 
     Task<List<Condition>> SearchByName(
         string name,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 }

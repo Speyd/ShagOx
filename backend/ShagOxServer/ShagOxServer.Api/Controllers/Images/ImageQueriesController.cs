@@ -18,7 +18,8 @@ public class ImageQueriesController : ControllerBase
 
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();

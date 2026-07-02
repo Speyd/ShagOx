@@ -30,14 +30,17 @@ public class CityCommandsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CityCreateRequest request)
+    public async Task<IActionResult> Create(
+        [FromBody] CityCreateRequest request)
     {
         var result = await _createService.CreateCityAsync(request);
         return result.ToActionResult();
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, CityUpdateRequest request)
+    public async Task<IActionResult> Update(
+        [FromRoute] int id,
+        [FromBody] CityUpdateRequest request)
     {
         var result = await _updateService.UpdateCityAsync(id, request);
         return result.ToActionResult();
@@ -45,7 +48,8 @@ public class CityCommandsController : ControllerBase
 
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var result = await _deleteService.DeleteCityAsync(id);
         return result.ToActionResult();

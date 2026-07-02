@@ -3,15 +3,15 @@ using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Specification.Conditions.Query;
 using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Query;
 public class ConditionQueryService : IConditionQueryService
 {
-    private readonly IConditionRepository _repository;
+    private readonly IConditionQueryRepository _repository;
 
     public ConditionQueryService(
-        IConditionRepository conditionRepository)
+        IConditionQueryRepository conditionRepository)
     {
         _repository = conditionRepository;
     }
@@ -28,5 +28,15 @@ public class ConditionQueryService : IConditionQueryService
         var condition = await _repository.GetByNameAsync(name);
 
         return condition.ToResult(ConditionMapper.ToDto);
+    }
+
+    public async Task<Result<List<ConditionDto>>> SearchByName(
+      string name,
+      int page,
+      int pageSize)
+    {
+        var conditions = await _repository.SearchByName(name, page, pageSize);
+
+        return conditions.ToResultList(ConditionMapper.ToDto);
     }
 }

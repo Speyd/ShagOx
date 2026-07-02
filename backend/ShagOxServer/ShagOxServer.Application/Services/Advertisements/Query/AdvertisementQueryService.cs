@@ -9,10 +9,10 @@ namespace ShagOxServer.Application.Services.Advertisements.Query;
 
 public class AdvertisementQueryService : IAdvertisementQueryService
 {
-    private readonly IAdvertisementRepository _repository;
+    private readonly IAdvertisementQueryRepository _repository;
 
     public AdvertisementQueryService(
-        IAdvertisementRepository advertisementRepository)
+        IAdvertisementQueryRepository advertisementRepository)
     {
         _repository = advertisementRepository;
     }
@@ -26,9 +26,11 @@ public class AdvertisementQueryService : IAdvertisementQueryService
     }
 
     public async Task<Result<List<AdvertisementDto>>> GetByCategoryAsync(
-        int categoryId)
+        int categoryId,
+        int page,
+        int pageSize)
     {
-        var adverts = await _repository.GetByCategoryAsync(categoryId);
+        var adverts = await _repository.GetByCategoryAsync(categoryId, page, pageSize);
 
         return adverts.ToResultList(AdvertisementMapper.ToDto);
     }
@@ -41,26 +43,42 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         return advert.ToResult(AdvertisementMapper.ToDto);
     }
 
-    public async Task<Result<AdvertisementDto>> GetSellerAdvertisementsAsync(
-        int userId)
+    public async Task<Result<List<AdvertisementDto>>> GetSellerAdvertisementsAsync(
+        int userId,
+        int page,
+        int pageSize)
     {
-        var advert = await _repository.GetSellerAdvertisementsAsync(userId);
+        var advert = await _repository.GetSellerAdvertisementsAsync(userId, page, pageSize);
 
-        return advert.ToResult(AdvertisementMapper.ToDto);
+        return advert.ToResultList(AdvertisementMapper.ToDto);
     }
-    public async Task<Result<AdvertisementDto>> GetPurchasedAdvertisementsAsync(
-        int userId)
+    public async Task<Result<List<AdvertisementDto>>> GetPurchasedAdvertisementsAsync(
+        int userId,
+        int page,
+        int pageSize)
     {
-        var advert = await _repository.GetSellerAdvertisementsAsync(userId);
+        var advert = await _repository.GetSellerAdvertisementsAsync(userId, page, pageSize);
 
-        return advert.ToResult(AdvertisementMapper.ToDto);
+        return advert.ToResultList(AdvertisementMapper.ToDto);
     }
 
-    public async Task<Result<List<AdvertisementDto>>> SearchAsync(
-        string query)
+    public async Task<Result<List<AdvertisementDto>>> SearchByTitle(
+        string title,
+        int page,
+        int pageSize)
     {
-        var adverts = await _repository.SearchAsync(query);
+        var advert = await _repository.SearchByTitle(title, page, pageSize);
 
-        return adverts.ToResultList(AdvertisementMapper.ToDto);
+        return advert.ToResultList(AdvertisementMapper.ToDto);
+    }
+
+    public async Task<Result<List<AdvertisementDto>>> SearchByDescription(
+        string query,
+        int page,
+        int pageSize)
+    {
+        var advert = await _repository.SearchByDescription(query, page, pageSize);
+
+        return advert.ToResultList(AdvertisementMapper.ToDto);
     }
 }

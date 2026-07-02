@@ -23,7 +23,8 @@ public class RoleQueriesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
@@ -31,7 +32,7 @@ public class RoleQueriesController : ControllerBase
 
     [HttpGet("{roleId:int}/users")]
     public async Task<IActionResult> GetByRole(
-        int roleId,
+        [FromRoute] int roleId,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20)
     {
@@ -39,6 +40,16 @@ public class RoleQueriesController : ControllerBase
         pageSize = Math.Clamp(pageSize, 1, 100);
 
         var result = await _queryUserRoleService.GetUsersByRoleIdAsync(roleId, page, pageSize);
+        return result.ToActionResult();
+    }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchByName(
+        [FromQuery] string name,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
+    {
+        var result = await _queryService.SearchByName(name, page, pageSize);
         return result.ToActionResult();
     }
 }

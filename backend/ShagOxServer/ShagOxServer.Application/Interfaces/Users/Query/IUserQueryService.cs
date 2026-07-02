@@ -8,4 +8,18 @@ public interface IUserQueryService
 
     Task<Result<UserDto>> GetMyProfileAsync();
 
+    Task<Result<List<UserDto>>> SearchByFullName(
+        string fullName,
+        int page,
+        int pageSize);
+
+    Task<Result<List<UserDto>>> SearchByEmail(
+        string email,
+        int page,
+        int pageSize);
+
+    Task<Result<List<UserDto>>> SearchByPhone(
+        string phone,
+        int page,
+        int pageSize);
 }

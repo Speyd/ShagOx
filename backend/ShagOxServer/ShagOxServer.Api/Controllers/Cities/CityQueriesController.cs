@@ -20,15 +20,16 @@ public class CityQueriesController : ControllerBase
 
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
     }
 
-    [HttpGet("by-name/{name}")]
+    [HttpGet("by-name")]
     public async Task<IActionResult> GetByName(
-         [FromRoute] string name)
+         [FromQuery] string name)
     {
         var result = await _queryService.GetByNameAsync(name);
         return result.ToActionResult();
@@ -46,6 +47,17 @@ public class CityQueriesController : ControllerBase
             page, 
             pageSize);
 
+        return result.ToActionResult();
+    }
+
+    //TODO: make PaginationQuery
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchByName(
+       [FromQuery] string name,
+       [FromQuery] int page = 1,
+       [FromQuery] int pageSize = 20)
+    {
+        var result = await _queryService.SearchByName(name, page, pageSize);
         return result.ToActionResult();
     }
 }

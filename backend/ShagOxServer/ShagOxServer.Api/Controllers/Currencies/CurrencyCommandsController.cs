@@ -40,8 +40,8 @@ public class CurrencyCommandsController : ControllerBase
     [Authorize]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
-        int id,
-        CurrencyUpdateRequest request)
+        [FromRoute] int id,
+        [FromBody] CurrencyUpdateRequest request)
     {
         var result = await _updateService.UpdateCurrencyAsync(id, request);
         return result.ToActionResult();
@@ -49,7 +49,8 @@ public class CurrencyCommandsController : ControllerBase
 
     [Authorize]
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var result = await _deleteService.DeleteCurrencyAsync(id);
         return result.ToActionResult();

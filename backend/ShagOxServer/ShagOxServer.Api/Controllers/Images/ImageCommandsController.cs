@@ -31,14 +31,17 @@ public class ImageCommandsController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> Create(ImageCreateRequest request)
+    public async Task<IActionResult> Create(
+        [FromBody] ImageCreateRequest request)
     {
         var result = await _createService.CreateImageAsync(request);
         return result.ToActionResult();
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, ImageUpdateRequest request)
+    public async Task<IActionResult> Update(
+        [FromRoute] int id,
+        [FromBody] ImageUpdateRequest request)
     {
         var result = await _updateService.UpdateImageAsync(id, request);
         return result.ToActionResult();
@@ -46,7 +49,8 @@ public class ImageCommandsController : ControllerBase
 
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var result = await _deleteService.DeleteImageAsync(id);
         return result.ToActionResult();

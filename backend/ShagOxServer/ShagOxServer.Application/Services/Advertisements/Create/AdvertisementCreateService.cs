@@ -6,9 +6,11 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
-using ShagOxServer.Infrastructure.Interfaces.Auth;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create;
 public class AdvertisementCreateService : IAdvertisementCreateService
@@ -18,14 +20,14 @@ public class AdvertisementCreateService : IAdvertisementCreateService
     private readonly ICurrencyRepository _currencyRepository;
     private readonly ICategoryRepository _categoryRepository;
     private readonly IConditionRepository _conditionRepository;
-    private readonly IImageRepository _imageRepository;
+    private readonly IImageQueryRepository _imageRepository;
 
     public AdvertisementCreateService(
         IAdvertisementRepository advertisementRepository,
         IUserRepository userRepository,
         ICurrencyRepository currencyRepository,
         ICategoryRepository categoryRepository,
-        IImageRepository imageRepository,
+        IImageQueryRepository imageRepository,
         IConditionRepository conditionRepository)
     {
         _advertisementRepository = advertisementRepository;

@@ -31,7 +31,8 @@ public class ConditionCommandsController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Create(ConditionCreateRequest request)
+    public async Task<IActionResult> Create(
+        [FromBody] ConditionCreateRequest request)
     {
         var result = await _createService.CreateConditionAsync(request);
         return result.ToActionResult();
@@ -40,8 +41,8 @@ public class ConditionCommandsController : ControllerBase
     [Authorize]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
-        int id,
-        ConditionUpdateRequest request)
+        [FromRoute] int id,
+        [FromBody] ConditionUpdateRequest request)
     {
         var result = await _updateService.UpdateConditionAsync(id, request);
         return result.ToActionResult();
@@ -49,7 +50,8 @@ public class ConditionCommandsController : ControllerBase
 
     [Authorize]
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var result = await _deleteService.DeleteConditionAsync(id);
         return result.ToActionResult();

@@ -9,6 +9,12 @@ public class RegionRepository : BaseRepository, IRegionRepository
         : base(db)
     { }
 
+    public async Task<Region?> GetByIdAsync(int id)
+    {
+        return await _db.Regions
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task AddAsync(Region region)
     {
         await _db.Regions.AddAsync(region);
@@ -29,25 +35,5 @@ public class RegionRepository : BaseRepository, IRegionRepository
         _db.Regions.Remove(region);
 
         await _db.SaveChangesAsync();
-    }
-
-
-    public async Task<bool> ExistsAsync(string? name)
-    {
-        return await _db.Regions
-          .AnyAsync(x => 
-            (name != null && x.Name == name));
-    }
-
-    public async Task<Region?> GetByIdAsync(int id)
-    {
-        return await _db.Regions
-            .FirstOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<Region?> GetByNameAsync(string name)
-    {
-        return await _db.Regions
-            .FirstOrDefaultAsync(x => x.Name == name);
     }
 }

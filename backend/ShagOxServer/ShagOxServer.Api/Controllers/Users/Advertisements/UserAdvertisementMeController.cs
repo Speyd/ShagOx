@@ -24,27 +24,31 @@ public class UserAdvertisementMeController : ControllerBase
 
 
     [HttpGet("sales")]
-    public async Task<IActionResult> GetMySales()
+    public async Task<IActionResult> GetMySales(
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
         var user = await _queryUserService.GetMyProfileAsync();
 
         if (!user.IsSuccess || user.Value is null)
             return NotFound(user.Error);
 
-        var result = await _queryService.GetSellerAdvertisementsAsync(user.Value.Id);
+        var result = await _queryService.GetSellerAdvertisementsAsync(user.Value.Id, page, pageSize);
 
         return Ok(result);
     }
 
     [HttpGet("purchases")]
-    public async Task<IActionResult> GetMyPurchases()
+    public async Task<IActionResult> GetMyPurchases(
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
         var user = await _queryUserService.GetMyProfileAsync();
 
         if (!user.IsSuccess || user.Value is null)
             return NotFound(user.Error);
 
-        var result = await _queryService.GetPurchasedAdvertisementsAsync(user.Value.Id);
+        var result = await _queryService.GetPurchasedAdvertisementsAsync(user.Value.Id, page, pageSize);
 
         return Ok(result);
     }

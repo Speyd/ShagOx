@@ -36,7 +36,8 @@ public class UserRolesController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpGet("{id:int}/roles")]
-    public async Task<IActionResult> GetUserRoles(int id)
+    public async Task<IActionResult> GetUserRoles(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
 

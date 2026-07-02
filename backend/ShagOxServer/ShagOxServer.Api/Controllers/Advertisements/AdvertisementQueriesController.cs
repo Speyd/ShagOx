@@ -29,23 +29,40 @@ public class AdvertisementQueriesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
     }
 
     [HttpGet("category/{categoryId:int}")]
-    public async Task<IActionResult> GetByCategory(int categoryId)
+    public async Task<IActionResult> GetByCategory(
+        [FromRoute] int categoryId,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
-        var result = await _queryService.GetByCategoryAsync(categoryId);
+        var result = await _queryService.GetByCategoryAsync(categoryId, page, pageSize);
         return result.ToActionResult();
     }
 
-    [HttpGet("search")]
-    public async Task<IActionResult> Search(string query)
+    [HttpGet("search/title")]
+    public async Task<IActionResult> SearchByTitle(
+        [FromQuery] string title,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
-        var result = await _queryService.SearchAsync(query);
+        var result = await _queryService.SearchByTitle(title, page, pageSize);
+        return result.ToActionResult();
+    }
+
+    [HttpGet("search/description")]
+    public async Task<IActionResult> SearchByDescription(
+       [FromQuery] string query,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
+    {
+        var result = await _queryService.SearchByDescription(query, page, pageSize);
         return result.ToActionResult();
     }
 }

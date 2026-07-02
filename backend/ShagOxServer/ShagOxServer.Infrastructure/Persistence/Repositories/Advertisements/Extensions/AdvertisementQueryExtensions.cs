@@ -1,0 +1,18 @@
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Entities;
+
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extensions;
+public static class AdvertisementQueryExtensions
+{
+    public static IQueryable<Advertisement> WithIncludes(
+        this IQueryable<Advertisement> query)
+    {
+        return query
+            .Include(x => x.Currency)
+            .Include(x => x.Condition)
+            .Include(x => x.Category)
+            .Include(x => x.Seller)
+            .Include(x => x.Buyer)
+            .Include(x => x.Images);
+    }
+}

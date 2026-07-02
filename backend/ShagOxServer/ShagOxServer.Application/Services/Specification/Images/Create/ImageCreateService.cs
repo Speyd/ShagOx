@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Specification.Images.Create;
 using ShagOxServer.Application.Interfaces.Specification.Images.Create;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Create;
 public class ImageCreateService : IImageCreateService

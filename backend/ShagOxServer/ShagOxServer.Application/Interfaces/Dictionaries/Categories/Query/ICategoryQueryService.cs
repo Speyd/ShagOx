@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Common.Results;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 
 namespace ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
@@ -11,4 +12,9 @@ public interface ICategoryQueryService
 
     Task<Result<List<CategoryDto>>> GetByProductTypeAsync(
         ProductType type);
+
+    Task<Result<List<CategoryDto>>> SearchByName(
+        string name,
+        int page,
+        int pageSize);
 }

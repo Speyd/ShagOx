@@ -2,27 +2,31 @@
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Create;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Create;
 public class CurrencyCreateService : ICurrencyCreateService
 {
     private readonly ICurrencyRepository _repository;
+    private readonly ICurrencyExistsRepository _existsRepository;
+
 
     public CurrencyCreateService(
-        ICurrencyRepository currencyRepository)
+        ICurrencyRepository currencyRepository,
+        ICurrencyExistsRepository existsRepository)
     {
         _repository = currencyRepository;
+        _existsRepository = existsRepository;
     }
 
     public async Task<Result<CurrencyCreateResponse>> CreateCurrencyAsync(
         CurrencyCreateRequest request)
     {
-        if (await _repository.ExistsByCodeAsync(request.Code))
+        if (await _existsRepository.ExistsByCodeAsync(request.Code))
             return Result<CurrencyCreateResponse>
                 .AlreadyExists("Currency code");
 
-        if (await _repository.ExistsByNameAsync(request.Name))
+        if (await _existsRepository.ExistsByNameAsync(request.Name))
             return Result<CurrencyCreateResponse>
                 .AlreadyExists("Currency name");
 

@@ -1,7 +1,7 @@
 using SchagoxServer.Api.DependencyInjection;
 using ShagOxServer.Api.DependencyInjection;
 using ShagOxServer.Application.DependencyInjections.Base;
-using ShagOxServer.Infrastructure;
+using ShagOxServer.Infrastructure.DependencyInjections.Base;
 
 
 var builder = WebApplication.CreateBuilder(args);

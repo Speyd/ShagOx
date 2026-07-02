@@ -3,7 +3,7 @@ using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Specification.Images;
 using ShagOxServer.Application.Interfaces.Specification.Images.Query;
 using ShagOxServer.Application.Services.Specification.Images.Mapping;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Query;
 public class ImageQueryService : IImageQueryService

@@ -25,16 +25,16 @@ public class Advertisement : BaseEntity
     public int PreviousPrice { get; set; }
 
     public int ConditionId { get; set; }
-    public Condition? Condition { get; set; } = null;
+    public Condition Condition { get; set; } = null!;
 
     public int CurrencyId { get; set; }
     /// <summary>
     /// Currency in which the product price is specified.
     /// </summary>
-    public Currency? Currency { get; set; } = null;
+    public Currency Currency { get; set; } = null!;
 
     public int CategoryId { get; set; }
-    public Category? Category { get; set; } = null;
+    public Category Category { get; set; } = null!;
 
     /// <summary>
     /// Collection of product images displayed in the product gallery.
@@ -70,6 +70,6 @@ public class Advertisement : BaseEntity
 
     public override string ToString()
     {
-        throw new NotImplementedException();
+        return Title ?? string.Empty;
     }
 }

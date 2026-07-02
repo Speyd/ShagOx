@@ -5,12 +5,6 @@ public interface IRegionRepository
 {
     Task<Region?> GetByIdAsync(int id);
 
-    Task<Region?> GetByNameAsync(string name);
-
-
-    Task<bool> ExistsAsync(string? name);
-
-
     Task AddAsync(Region region);
 
     Task<bool> UpdateAsync(Region region);

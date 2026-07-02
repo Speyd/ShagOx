@@ -1,18 +1,36 @@
 ﻿using ShagOxServer.Application.Common.Results;
 using ShagOxServer.Application.DTOs.Advertisements;
+using ShagOxServer.Domain.Entities;
 
 namespace ShagOxServer.Application.Interfaces.Advertisements.Query;
 public interface IAdvertisementQueryService
 {
     Task<Result<AdvertisementDto>> GetByIdAsync(int id);
 
-    Task<Result<AdvertisementDto>> GetSellerAdvertisementsAsync(int userId);
+    Task<Result<List<AdvertisementDto>>> GetSellerAdvertisementsAsync(
+        int userId,
+        int page,
+        int pageSize);
 
-    Task<Result<AdvertisementDto>> GetPurchasedAdvertisementsAsync(int userId);
-
-    Task<Result<List<AdvertisementDto>>> GetByCategoryAsync(int categoryId);
+    Task<Result<List<AdvertisementDto>>> GetPurchasedAdvertisementsAsync(
+        int userId,
+        int page,
+        int pageSize);
 
     Task<Result<List<AdvertisementDto>>> GetAllAsync(int page, int pageSize);
 
-    Task<Result<List<AdvertisementDto>>> SearchAsync(string query);
+    Task<Result<List<AdvertisementDto>>> GetByCategoryAsync(
+        int categoryId,
+        int page,
+        int pageSize);
+
+    Task<Result<List<AdvertisementDto>>> SearchByTitle(
+        string title,
+        int page,
+        int pageSize);
+
+    Task<Result<List<AdvertisementDto>>> SearchByDescription(
+        string query,
+        int page,
+        int pageSize);
 }

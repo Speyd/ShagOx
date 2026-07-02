@@ -31,14 +31,17 @@ public class RegionCommandsController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> Create(RegionCreateRequest request)
+    public async Task<IActionResult> Create(
+        [FromBody] RegionCreateRequest request)
     {
         var result = await _createService.CreateRegionAsync(request);
         return result.ToActionResult();
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, RegionUpdateRequest request)
+    public async Task<IActionResult> Update(
+        [FromRoute] int id,
+        [FromBody] RegionUpdateRequest request)
     {
         var result = await _updateService.UpdateRegionAsync(id, request);
         return result.ToActionResult();
@@ -46,7 +49,8 @@ public class RegionCommandsController : ControllerBase
 
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var result = await _deleteService.DeleteRegionAsync(id);
         return result.ToActionResult();

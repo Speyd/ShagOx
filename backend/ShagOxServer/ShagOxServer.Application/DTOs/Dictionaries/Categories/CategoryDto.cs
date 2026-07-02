@@ -6,7 +6,5 @@ public sealed record CategoryDto
 (
     int Id,
     string Name,
-    ProductType ProductType,
-    List<int> Attributes,
-    List<int> Advertisements
+    ProductType ProductType
 );

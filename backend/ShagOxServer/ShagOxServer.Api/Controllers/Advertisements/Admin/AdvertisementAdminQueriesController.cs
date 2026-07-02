@@ -23,7 +23,9 @@ public class AdvertisementAdminQueriesController : ControllerBase
 
     [HttpGet("purchases/{userId:int}")]
     public async Task<IActionResult> GetPurchasedAdvertisements(
-        int userId)
+        [FromRoute] int userId,
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
         var exists = await _queryUserService.ExistsAsync(userId);
 
@@ -31,7 +33,7 @@ public class AdvertisementAdminQueriesController : ControllerBase
             return NotFound("User not found");
 
         var advertisements =
-            await _queryAdvertService.GetPurchasedAdvertisementsAsync(userId);
+            await _queryAdvertService.GetPurchasedAdvertisementsAsync(userId, page, pageSize);
 
         return Ok(advertisements);
     }

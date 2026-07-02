@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.SharedKernel.Results.Extensions;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.SharedKernel.Results.Extensions;
 using ShagOxServer.Application.DTOs.Specification.Images.Create;
 using ShagOxServer.Application.DTOs.Specification.Images.Update;
 using ShagOxServer.Application.Interfaces.Specification.Images.Create;
 using ShagOxServer.Application.Interfaces.Specification.Images.Delete;
 using ShagOxServer.Application.Interfaces.Specification.Images.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Images;
 

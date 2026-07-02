@@ -1,5 +1,5 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Users;
+﻿using ShagOxServer.Application.DTOs.Users;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Users.Query;
 public interface IUserAdminQueryService

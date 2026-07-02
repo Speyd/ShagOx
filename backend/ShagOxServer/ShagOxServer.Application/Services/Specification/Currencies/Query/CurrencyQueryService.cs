@@ -1,9 +1,10 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.SharedKernel.Results.Extensions;
-using ShagOxServer.Application.DTOs.Specification.Currencies;
+﻿using ShagOxServer.Application.DTOs.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Query;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Query;
 public class CurrencyQueryService : ICurrencyQueryService
@@ -41,20 +42,18 @@ public class CurrencyQueryService : ICurrencyQueryService
 
     public async Task<Result<List<CurrencyDto>>> SearchByCode(
      string code,
-     int page,
-     int pageSize)
+	 PaginationParams pagination)
     {
-        var currencies = await _repository.SearchByCode(code, page, pageSize);
+        var currencies = await _repository.SearchByCode(code, pagination);
 
         return currencies.ToResultList(CurrencyMapper.ToDto);
     }
 
     public async Task<Result<List<CurrencyDto>>> SearchByName(
       string name,
-      int page,
-      int pageSize)
+	  PaginationParams pagination)
     {
-        var currencies = await _repository.SearchByName(name, page, pageSize);
+        var currencies = await _repository.SearchByName(name, pagination);
 
         return currencies.ToResultList(CurrencyMapper.ToDto);
     }

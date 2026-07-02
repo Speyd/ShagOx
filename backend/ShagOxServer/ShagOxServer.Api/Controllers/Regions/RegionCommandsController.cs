@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.SharedKernel.Results.Extensions;
 using ShagOxServer.Application.DTOs.Location.Regions.Create;
 using ShagOxServer.Application.DTOs.Location.Regions.Update;
 using ShagOxServer.Application.Interfaces.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Location.Regions.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Regions;
 

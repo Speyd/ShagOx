@@ -1,7 +1,7 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Specification.Conditions.Delete;
+﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Delete;
 using ShagOxServer.Application.Interfaces.Specification.Conditions.Delete;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Delete;
 public class ConditionDeleteService : IConditionDeleteService

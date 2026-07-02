@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using ShagOxServer.SharedKernel.Results;
 using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Auth;
@@ -8,6 +7,7 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Auth;
 
 public class RegisterService : IRegisterService

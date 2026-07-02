@@ -1,5 +1,5 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Specification.Currencies.Delete;
+﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Delete;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Specification.Currencies.Delete;
 public interface ICurrencyDeleteService

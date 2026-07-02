@@ -1,9 +1,9 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;
 public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateService

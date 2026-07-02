@@ -1,5 +1,5 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Roles.Create;
+﻿using ShagOxServer.Application.DTOs.Roles.Create;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Roles.Create;
 public interface IRoleCreateService

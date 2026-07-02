@@ -1,4 +1,6 @@
-﻿namespace ShagOxServer.SharedKernel.Results.Extensions;
+﻿using ShagOxServer.SharedKernel.Abstractions.Results;
+
+namespace ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 public static class ResultMappingExtensions
 {
     public static Result<TDto> ToResult<T, TDto>(

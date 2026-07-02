@@ -1,9 +1,9 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.SharedKernel.Results.Extensions;
-using ShagOxServer.Application.DTOs.Advertisements;
+﻿using ShagOxServer.Application.DTOs.Advertisements;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Advertisements.Query;
 public class AdvertisementQueryService : IAdvertisementQueryService

@@ -1,10 +1,10 @@
-﻿using ShagOxServer.SharedKernel.Results.Extensions;
-using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Query;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
-using ShagOxServer.SharedKernel.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Query;
 public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService

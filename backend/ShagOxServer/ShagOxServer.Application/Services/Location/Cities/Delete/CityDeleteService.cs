@@ -1,7 +1,7 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Location.Cities.Delete;
+﻿using ShagOxServer.Application.DTOs.Location.Cities.Delete;
 using ShagOxServer.Application.Interfaces.Location.Cities.Delete;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Delete;
 public class CityDeleteService : ICityDeleteService

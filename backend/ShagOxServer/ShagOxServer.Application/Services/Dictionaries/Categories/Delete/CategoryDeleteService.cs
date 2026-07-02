@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Delete;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
-using ShagOxServer.SharedKernel.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
 public class CategoryDeleteService : ICategoryDeleteService

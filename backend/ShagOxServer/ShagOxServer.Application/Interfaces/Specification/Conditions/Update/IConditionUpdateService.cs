@@ -1,5 +1,5 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
+﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Specification.Conditions.Update;
 public interface IConditionUpdateService

@@ -1,5 +1,5 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
+﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Specification.Currencies.Update;
 public interface ICurrencyUpdateService

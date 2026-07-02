@@ -1,5 +1,5 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Specification.Images.Update;
+﻿using ShagOxServer.Application.DTOs.Specification.Images.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Specification.Images.Update;
 public interface IImageUpdateService

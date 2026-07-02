@@ -1,10 +1,9 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.SharedKernel.Results.Extensions;
-using ShagOxServer.Application.DTOs.Location.Regions;
+﻿using ShagOxServer.Application.DTOs.Location.Regions;
 using ShagOxServer.Application.Interfaces.Location.Regions.Query;
 using ShagOxServer.Application.Services.Location.Regions.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Query;
 public class RegionQueryService : IRegionQueryService

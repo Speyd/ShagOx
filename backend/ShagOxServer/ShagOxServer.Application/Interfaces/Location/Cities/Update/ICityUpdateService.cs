@@ -1,5 +1,5 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Location.Cities.Update;
+﻿using ShagOxServer.Application.DTOs.Location.Cities.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Location.Cities.Update;
 public interface ICityUpdateService

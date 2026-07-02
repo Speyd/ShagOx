@@ -1,9 +1,9 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Location.Cities.Create;
+﻿using ShagOxServer.Application.DTOs.Location.Cities.Create;
 using ShagOxServer.Application.Interfaces.Location.Cities.Create;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Create;
 public class CityCreateService : ICityCreateService

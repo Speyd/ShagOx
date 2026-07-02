@@ -1,10 +1,10 @@
-﻿using ShagOxServer.SharedKernel.Results.Extensions;
-using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
-using ShagOxServer.SharedKernel.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Query;
 public class CategoryQueryService : ICategoryQueryService

@@ -1,5 +1,6 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Specification.Currencies;
+﻿using ShagOxServer.Application.DTOs.Specification.Currencies;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Specification.Currencies.Query;
 public interface ICurrencyQueryService
@@ -12,11 +13,9 @@ public interface ICurrencyQueryService
 
     Task<Result<List<CurrencyDto>>> SearchByCode(
       string code,
-      int page,
-      int pageSize);
+	  PaginationParams pagination);
 
     Task<Result<List<CurrencyDto>>> SearchByName(
       string name,
-      int page,
-      int pageSize);
+	  PaginationParams pagination);
 }

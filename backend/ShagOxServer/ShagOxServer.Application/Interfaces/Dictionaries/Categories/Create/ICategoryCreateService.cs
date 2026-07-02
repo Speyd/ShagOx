@@ -1,5 +1,5 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Dictionaries.Categories.Create;
 public interface ICategoryCreateService

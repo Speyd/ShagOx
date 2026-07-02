@@ -1,9 +1,9 @@
-﻿using ShagOxServer.SharedKernel.Results;
-using ShagOxServer.SharedKernel.Results.Extensions;
-using ShagOxServer.Application.DTOs.Location.Cities;
+﻿using ShagOxServer.Application.DTOs.Location.Cities;
 using ShagOxServer.Application.Interfaces.Location.Cities.Query;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Query;
 public class CityQueryService : ICityQueryService

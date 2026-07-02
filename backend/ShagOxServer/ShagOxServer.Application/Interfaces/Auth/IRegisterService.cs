@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Register;
-using ShagOxServer.SharedKernel.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Auth;
 

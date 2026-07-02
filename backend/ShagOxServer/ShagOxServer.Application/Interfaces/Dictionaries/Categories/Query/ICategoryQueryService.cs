@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
-using ShagOxServer.SharedKernel.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
 public interface ICategoryQueryService

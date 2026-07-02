@@ -4,10 +4,10 @@ using ShagOxServer.Application.DTOs.Advertisements.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Advertisements.Create;
 using ShagOxServer.Application.Interfaces.Advertisements.Delete;
-using ShagOxServer.SharedKernel.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Users.Query;
 using System.Security.Claims;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements;
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.SharedKernel.Results.Extensions;
+namespace ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 public static class ActionResultExtensions
 {
     public static IActionResult ToActionResult<T>(

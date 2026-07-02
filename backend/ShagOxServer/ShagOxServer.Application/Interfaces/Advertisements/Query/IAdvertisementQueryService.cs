@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements;
-using ShagOxServer.SharedKernel.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Advertisements.Query;
 public interface IAdvertisementQueryService

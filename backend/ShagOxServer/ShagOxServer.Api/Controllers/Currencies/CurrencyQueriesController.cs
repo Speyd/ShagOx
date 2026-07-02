@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.SharedKernel.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Query;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Api.Controllers.Currencies;
 
@@ -45,20 +46,18 @@ public class CurrencyQueriesController : ControllerBase
     [HttpGet("search/code")]
     public async Task<IActionResult> SearchByCode(
        [FromQuery] string code,
-       [FromQuery] int page = 1,
-       [FromQuery] int pageSize = 20)
+       [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByCode(code, page, pageSize);
+        var result = await _queryService.SearchByCode(code, pagination);
         return result.ToActionResult();
     }
 
     [HttpGet("search/name")]
     public async Task<IActionResult> SearchByName(
        [FromQuery] string name,
-       [FromQuery] int page = 1,
-       [FromQuery] int pageSize = 20)
+       [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByName(name, page, pageSize);
+        var result = await _queryService.SearchByName(name, pagination);
         return result.ToActionResult();
     }
 }

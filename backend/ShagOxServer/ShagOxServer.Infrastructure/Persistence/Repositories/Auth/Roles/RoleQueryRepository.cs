@@ -16,6 +16,18 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<List<Role>> GetByUserIdAsync(
+       int userId,
+       PaginationParams pagination)
+    {
+        return await _db.UserRoles
+            .Where(x => x.UserId == userId)
+            .Select(x => x.Role)
+            .Skip((pagination.Page - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
+            .ToListAsync();
+    }
+
     public async Task<Role?> GetByNameAsync(string name)
     {
         return await _db.Roles

@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Filters.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Auth.Users;
@@ -20,15 +21,7 @@ public interface IUserQueryRepository
 
     Task<List<User>> GetUsersActiveAfterAsync(DateTime date);
 
-    Task<List<User>> SearchByFullName(
-        string fullName,
-        PaginationParams pagination);
-
-    Task<List<User>> SearchByEmail(
-       string email,
-       PaginationParams pagination);
-
-    Task<List<User>> SearchByPhone(
-        string phone, 
+    Task<List<User>> Search(
+        UserSearchFilter filter,
         PaginationParams pagination);
 }

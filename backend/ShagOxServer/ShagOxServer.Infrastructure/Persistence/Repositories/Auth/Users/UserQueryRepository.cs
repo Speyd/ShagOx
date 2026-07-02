@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Filters.Users;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -17,6 +18,7 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
         return await _db.Users.WithIncludes()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
     public async Task<User?> GetByContactAsync(string? email, string? phone)
     {
         var query = _db.Users.WithIncludes();
@@ -69,39 +71,14 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
             .ToListAsync();
     }
 
-    public async Task<List<User>> SearchByFullName(
-        string fullName, 
+    public async Task<List<User>> Search(
+        UserSearchFilter filter, 
         PaginationParams pagination)
     {
         return await _db.Users.WithIncludes()
-             .Where(x =>
-                (x.Name + " " + x.Surname).Contains(fullName))
+             .Filter(filter)
              .Skip((pagination.Page - 1) * pagination.PageSize)
              .Take(pagination.PageSize)
              .ToListAsync();
-    }
-
-    public async Task<List<User>> SearchByEmail(
-        string email,
-        PaginationParams pagination)
-    {
-        return await _db.Users.WithIncludes()
-             .Where(x =>
-                (x.Email != null && x.Email.Contains(email)))
-             .Skip((pagination.Page - 1) * pagination.PageSize)
-             .Take(pagination.PageSize)
-             .ToListAsync();
-    }
-
-    public async Task<List<User>> SearchByPhone(
-        string phone,
-        PaginationParams pagination)
-    {
-        return await _db.Users.WithIncludes()
-            .Where(x =>
-               (x.Phone != null && x.Phone.Contains(phone)))
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
-            .ToListAsync();
     }
 }

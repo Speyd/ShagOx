@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Roles;
 using ShagOxServer.Application.DTOs.Users;
+using ShagOxServer.Domain.Filters.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -13,15 +14,7 @@ public interface IUserQueryService
     Task<Result<List<RoleDto>>> GetMyRoleAsync(
         PaginationParams pagination);
 
-    Task<Result<List<UserDto>>> SearchByFullName(
-        string fullName,
-        PaginationParams pagination);
-
-    Task<Result<List<UserDto>>> SearchByEmail(
-        string email,
-        PaginationParams pagination);
-
-    Task<Result<List<UserDto>>> SearchByPhone(
-        string phone,
+    Task<Result<List<UserDto>>> Search(
+        UserSearchFilter filter,
         PaginationParams pagination);
 }

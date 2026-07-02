@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Common.Context;
 using ShagOxServer.Application.Interfaces.Users.Query;
 using ShagOxServer.Application.Services.Roles.Mapping;
 using ShagOxServer.Application.Services.Users.Mapping;
+using ShagOxServer.Domain.Filters.Users;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -17,7 +18,6 @@ public class UserQueryService : IUserQueryService
     private readonly IRoleQueryRepository _roleRepository;
 
     private readonly IUserContext _context;
-
 
     public UserQueryService(
         IUserQueryRepository userRepository,
@@ -51,34 +51,12 @@ public class UserQueryService : IUserQueryService
         return roles.ToResultList(RoleMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> SearchByFullName(
-       string fullName,
+    public async Task<Result<List<UserDto>>> Search(
+       UserSearchFilter filter,
 	   PaginationParams pagination)
     {
-        var users = await _repository.SearchByFullName(
-            fullName, pagination);
-
-        return users.ToResultList(UserMapper.ToDto);
-    }
-
-    public async Task<Result<List<UserDto>>> SearchByEmail(
-        string email,
-		PaginationParams pagination)
-    {
-        var users = await _repository.SearchByEmail(
-             email, pagination);
-
-
-        return users.ToResultList(UserMapper.ToDto);
-    }
-
-    public async Task<Result<List<UserDto>>> SearchByPhone(
-        string phone,
-		PaginationParams pagination)
-    {
-        var users = await _repository.SearchByPhone(
-            phone, pagination);
-
+        var users = await _repository.Search(
+            filter, pagination);
 
         return users.ToResultList(UserMapper.ToDto);
     }

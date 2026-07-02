@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 public interface IRoleQueryRepository
@@ -9,6 +10,5 @@ public interface IRoleQueryRepository
 
     Task<List<Role>> SearchByName(
         string name,
-        int page,
-        int pageSize);
+        PaginationParams pagination);
 }

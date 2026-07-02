@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Roles;
-using ShagOxServer.SharedKernel.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Roles.Query;
 public interface IRoleQueryService
@@ -10,6 +11,5 @@ public interface IRoleQueryService
 
     Task<Result<List<RoleDto>>> SearchByName(
        string name,
-       int page,
-       int pageSize);
+       PaginationParams pagination);
 }

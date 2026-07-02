@@ -7,21 +7,30 @@ public interface IAdvertisementQueryRepository
 
     Task<List<Advertisement>> GetByIdsAsync(List<int> ids);
 
-    Task<Advertisement?> GetSellerAdvertisementsAsync(int userId);
+    Task<List<Advertisement>> GetSellerAdvertisementsAsync(
+        int userId,
+        int page,
+        int pageSize);
 
-    Task<Advertisement?> GetPurchasedAdvertisementsAsync(int userId);
+    Task<List<Advertisement>> GetPurchasedAdvertisementsAsync(
+        int userId,
+        int page,
+        int pageSize);
 
     Task<List<Advertisement>> GetPagedAsync(int page, int pageSize);
 
-    Task<List<Advertisement>> GetByCategoryAsync(int categoryId,
+    Task<List<Advertisement>> GetByCategoryAsync(
+        int categoryId,
         int page,
         int pageSize);
 
-    Task<List<Advertisement>> SearchByTitle(string title,
+    Task<List<Advertisement>> SearchByTitle(
+        string title,
         int page,
         int pageSize);
 
-    Task<List<Advertisement>> SearchByDescription(string query,
+    Task<List<Advertisement>> SearchByDescription(
+        string query,
         int page,
         int pageSize);
 }

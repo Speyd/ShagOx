@@ -27,17 +27,31 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .ToListAsync();
     }
 
-    public async Task<Advertisement?> GetSellerAdvertisementsAsync(int userId)
+    public async Task<List<Advertisement>> GetSellerAdvertisementsAsync(
+        int userId,
+        int page,
+        int pageSize)
     {
         return await _db.Advertisements
             .WithIncludes()
-            .FirstOrDefaultAsync(x => x.SellerId == userId);
+            .Where(x => x.SellerId == userId)
+            .OrderByDescending(x => x.Popularity)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     }
-    public async Task<Advertisement?> GetPurchasedAdvertisementsAsync(int userId)
+    public async Task<List<Advertisement>> GetPurchasedAdvertisementsAsync(
+        int userId,
+        int page,
+        int pageSize)
     {
         return await _db.Advertisements
             .WithIncludes()
-            .FirstOrDefaultAsync(x => x.BuyerId == userId);
+            .Where(x => x.BuyerId == userId)
+            .OrderByDescending(x => x.Popularity)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     }
 
     public async Task<List<Advertisement>> GetPagedAsync(int page, int pageSize)

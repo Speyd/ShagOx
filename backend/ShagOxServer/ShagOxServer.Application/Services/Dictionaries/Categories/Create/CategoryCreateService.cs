@@ -13,13 +13,13 @@ public class CategoryCreateService : ICategoryCreateService
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IAttributeDefinitionQueryRepository _attributeRepository;
-    private readonly IAdvertisementRepository _advertisementRepository;
+    private readonly IAdvertisementQueryRepository _advertisementRepository;
 
 
     public CategoryCreateService(
         ICategoryRepository categoryRepository,
         IAttributeDefinitionQueryRepository attributeRepository,
-        IAdvertisementRepository advertisementRepository)
+        IAdvertisementQueryRepository advertisementRepository)
     {
         _categoryRepository = categoryRepository;
         _attributeRepository = attributeRepository;

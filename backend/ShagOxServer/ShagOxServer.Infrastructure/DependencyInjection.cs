@@ -7,9 +7,9 @@ using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
@@ -18,9 +18,9 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attribut
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Specification;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;
 
 namespace ShagOxServer.Infrastructure;
 
@@ -124,9 +124,19 @@ public static class DependencyInjection
             IConditionExistsRepository,
             ConditionExistsRepository>();
 
+
+
         services.AddScoped<
             IImageRepository,
             ImageRepository>();
+
+        services.AddScoped<
+            IImageQueryRepository,
+            ImageQueryRepository>();
+
+        services.AddScoped<
+            IImageExistsRepository,
+            ImageExistsRepository>();
         #endregion
 
         #region Dictionaries

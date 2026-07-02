@@ -1,14 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Interfaces.Specification;
+using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;
 public class ImageRepository : BaseRepository, IImageRepository
 {
     public ImageRepository(AppDbContext db)
         : base(db)
     { }
+
+    public async Task<Image?> GetByIdAsync(int id)
+    {
+        return await _db.Images
+            .FirstOrDefaultAsync(i => i.Id == id);
+    }
 
     public async Task AddAsync(Image image)
     {
@@ -30,25 +35,5 @@ public class ImageRepository : BaseRepository, IImageRepository
         _db.Images.Remove(image);
 
         await _db.SaveChangesAsync();
-    }
-
-    private IQueryable<Image> Query()
-    {
-        return _db.Images
-           .Include(x => x.Advertisement);
-    }
-
-    public async Task<Image?> GetByIdAsync(int id)
-    {
-        return await Query()
-            .FirstOrDefaultAsync(i => i.Id == id);
-    }
-
-    public async Task<List<Image>> GetByIdsAsync(
-        List<int> ids)
-    {
-        return await Query()
-           .Where(x => ids.Contains(x.Id))
-           .ToListAsync();
     }
 }

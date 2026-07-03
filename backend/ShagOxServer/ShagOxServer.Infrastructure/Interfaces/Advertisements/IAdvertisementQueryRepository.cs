@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Advertisements;
@@ -23,11 +24,7 @@ public interface IAdvertisementQueryRepository
         int categoryId,
         PaginationParams pagination);
 
-    Task<List<Advertisement>> SearchByTitle(
-        string title,
-        PaginationParams pagination);
-
-    Task<List<Advertisement>> SearchByDescription(
-        string query,
+    Task<List<Advertisement>> Search(
+        AdvertisementSearchFilter filter,
         PaginationParams pagination);
 }

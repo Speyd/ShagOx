@@ -12,14 +12,16 @@ public class ImageQueryRepository : BaseRepository, IImageQueryRepository
 
     public async Task<Image?> GetByIdAsync(int id)
     {
-        return await _db.Images.WithIncludes()
+        return await _db.Images
+            .WithIncludes()
             .FirstOrDefaultAsync(i => i.Id == id);
     }
 
     public async Task<List<Image>> GetByIdsAsync(
         List<int> ids)
     {
-        return await _db.Images.WithIncludes()
+        return await _db.Images
+           .WithIncludes()
            .Where(x => ids.Contains(x.Id))
            .ToListAsync();
     }

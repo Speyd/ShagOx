@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
+using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -42,21 +43,12 @@ public class AdvertisementQueriesController : ControllerBase
         return result.ToActionResult();
     }
 
-    [HttpGet("search/title")]
+    [HttpGet("search")]
     public async Task<IActionResult> SearchByTitle(
-        [FromQuery] string title,
+        [FromQuery] AdvertisementSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByTitle(title, pagination);
-        return result.ToActionResult();
-    }
-
-    [HttpGet("search/description")]
-    public async Task<IActionResult> SearchByDescription(
-       [FromQuery] string query,
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService.SearchByDescription(query, pagination);
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

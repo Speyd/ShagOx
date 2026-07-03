@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements;
+using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -22,11 +23,7 @@ public interface IAdvertisementQueryService
         int categoryId,
         PaginationParams pagination);
 
-    Task<Result<List<AdvertisementDto>>> SearchByTitle(
-        string title,
-        PaginationParams pagination);
-
-    Task<Result<List<AdvertisementDto>>> SearchByDescription(
-        string query,
+    Task<Result<List<AdvertisementDto>>> Search(
+        AdvertisementSearchFilter filter,
         PaginationParams pagination);
 }

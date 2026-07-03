@@ -13,16 +13,17 @@ public class CityQueryRepository : BaseRepository, ICityQueryRepository
         : base(db)
     { }
 
-
     public async Task<City?> GetByIdAsync(int id)
     {
-        return await _db.Cities.WithIncludes()
+        return await _db.Cities
+            .WithIncludes()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<City?> GetByNameAsync(string name)
     {
-        return await _db.Cities.WithIncludes()
+        return await _db.Cities
+            .WithIncludes()
             .FirstOrDefaultAsync(x => x.Name == name);
     }
 
@@ -30,7 +31,8 @@ public class CityQueryRepository : BaseRepository, ICityQueryRepository
         int regionId,
         PaginationParams pagination)
     {
-        return await _db.Cities.WithIncludes()
+        return await _db.Cities
+            .WithIncludes()
             .Where(x => x.RegionId == regionId)
             .Skip((pagination.PageSize - 1) * pagination.PageSize)
             .Take(pagination.PageSize)
@@ -41,7 +43,8 @@ public class CityQueryRepository : BaseRepository, ICityQueryRepository
         CitySearchFilter filter,
         PaginationParams pagination)
     {
-        return await _db.Cities.WithIncludes()
+        return await _db.Cities
+            .WithIncludes()
             .Filter(filter)
             .Skip((pagination.PageSize - 1) * pagination.PageSize)
             .Take(pagination.PageSize)

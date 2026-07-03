@@ -23,8 +23,6 @@ public class CategoryQueryService : ICategoryQueryService
         int id)
     {
         var category = await _repository.GetByIdAsync(id);
-        if (category is null)
-            return Result<CategoryDto>.NotFound("Category");
 
         return category.ToResult(CategoryMapper.ToDto);
     }

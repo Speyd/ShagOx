@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -77,26 +78,13 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .ToListAsync();
     }
 
-    public async Task<List<Advertisement>> SearchByTitle(
-        string title,
+    public async Task<List<Advertisement>> Search(
+        AdvertisementSearchFilter filter,
         PaginationParams pagination)
     {
         return await _db.Advertisements
             .WithIncludes()
-            .Where(x => x.Title.Contains(title))
-            .OrderByDescending(x => x.Popularity)
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
-            .ToListAsync();
-    }
-
-    public async Task<List<Advertisement>> SearchByDescription(
-        string query,
-        PaginationParams pagination)
-    {
-        return await _db.Advertisements
-            .WithIncludes()
-            .Where(x => x.Description.Contains(query))
+            .Filter(filter)
             .OrderByDescending(x => x.Popularity)
             .Skip((pagination.Page - 1) * pagination.PageSize)
             .Take(pagination.PageSize)

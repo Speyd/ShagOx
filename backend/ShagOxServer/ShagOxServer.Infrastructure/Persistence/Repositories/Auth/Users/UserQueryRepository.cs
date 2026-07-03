@@ -15,13 +15,15 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
 
     public async Task<User?> GetByIdAsync(int id)
     {
-        return await _db.Users.WithIncludes()
+        return await _db.Users
+            .WithIncludes()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<User?> GetByContactAsync(string? email, string? phone)
     {
-        var query = _db.Users.WithIncludes();
+        var query = _db.Users
+            .WithIncludes();
 
         if (!string.IsNullOrWhiteSpace(email))
             query = query.Where(x => x.Email == email);
@@ -34,19 +36,22 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
 
     public async Task<User?> GetByEmailAsync(string email)
     {
-        return await _db.Users.WithIncludes()
+        return await _db.Users
+            .WithIncludes()
             .FirstOrDefaultAsync(x => x.Email == email);
     }
 
     public async Task<User?> GetByPhoneAsync(string phone)
     {
-        return await _db.Users.WithIncludes()
+        return await _db.Users
+            .WithIncludes()
             .FirstOrDefaultAsync(x => x.Phone == phone);
     }
 
     public async Task<List<User>> GetByCityAsync(int cityId)
     {
-        return await _db.Users.WithIncludes()
+        return await _db.Users
+            .WithIncludes()
             .Where(x => x.CityId == cityId)
             .ToListAsync();
     }
@@ -56,7 +61,8 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
         var dayStart = date.Date;
         var dayEnd = dayStart.AddDays(1);
 
-        return await _db.Users.WithIncludes()
+        return await _db.Users
+            .WithIncludes()
             .Where(x => x.RegisteredAt >= dayStart && x.RegisteredAt < dayEnd)
             .ToListAsync();
     }
@@ -66,7 +72,8 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
         var dayStart = date.Date;
         var dayEnd = dayStart.AddDays(1);
 
-        return await _db.Users.WithIncludes()
+        return await _db.Users
+            .WithIncludes()
             .Where(x => x.LastSeenAt >= dayStart && x.LastSeenAt < dayEnd)
             .ToListAsync();
     }
@@ -75,7 +82,8 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
         UserSearchFilter filter, 
         PaginationParams pagination)
     {
-        return await _db.Users.WithIncludes()
+        return await _db.Users
+            .WithIncludes()
              .Filter(filter)
              .Skip((pagination.Page - 1) * pagination.PageSize)
              .Take(pagination.PageSize)

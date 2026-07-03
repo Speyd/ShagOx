@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Mapping;
+using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -59,20 +60,11 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         return advert.ToResultList(AdvertisementMapper.ToDto);
     }
 
-    public async Task<Result<List<AdvertisementDto>>> SearchByTitle(
-        string title,
+    public async Task<Result<List<AdvertisementDto>>> Search(
+        AdvertisementSearchFilter filter,
         PaginationParams pagination)
     {
-        var advert = await _repository.SearchByTitle(title, pagination);
-
-        return advert.ToResultList(AdvertisementMapper.ToDto);
-    }
-
-    public async Task<Result<List<AdvertisementDto>>> SearchByDescription(
-        string query,
-        PaginationParams pagination)
-    {
-        var advert = await _repository.SearchByDescription(query, pagination);
+        var advert = await _repository.Search(filter, pagination);
 
         return advert.ToResultList(AdvertisementMapper.ToDto);
     }

@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Conditions;
+using ShagOxServer.Domain.Filters.Specification.Conditions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -9,7 +10,7 @@ public interface IConditionQueryService
 
     Task<Result<ConditionDto>> GetByNameAsync(string name);
 
-    Task<Result<List<ConditionDto>>> SearchByName(
-       string name,
+    Task<Result<List<ConditionDto>>> Search(
+       ConditionSearchFilter filter,
        PaginationParams pagination);
 }

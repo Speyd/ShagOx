@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Filters.Specification.Conditions;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
@@ -22,12 +24,12 @@ public class ConditionQueryRepository : BaseRepository, IConditionQueryRepositor
             .FirstOrDefaultAsync(x => x.Name == name);
     }
 
-    public async Task<List<Condition>> SearchByName(
-       string name,
+    public async Task<List<Condition>> Search(
+       ConditionSearchFilter filter,
        PaginationParams pagination)
     {
         return await _db.Conditions
-            .Where(x => x.Name.Contains(name))
+            .Filter(filter)
             .Skip((pagination.Page - 1) * pagination.PageSize)
             .Take(pagination.PageSize)
             .ToListAsync();

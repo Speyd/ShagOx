@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Roles.Query;
 using ShagOxServer.Application.Interfaces.UserRoles;
+using ShagOxServer.Domain.Filters.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -41,11 +42,11 @@ public class RoleQueriesController : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> SearchByName(
-        [FromQuery] string name,
+    public async Task<IActionResult> Search(
+        [FromQuery] RoleSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByName(name, pagination);
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

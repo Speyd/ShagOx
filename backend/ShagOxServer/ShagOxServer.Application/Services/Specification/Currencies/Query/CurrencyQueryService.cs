@@ -1,9 +1,11 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.Common.Results.Extensions;
-using ShagOxServer.Application.DTOs.Specification.Currencies;
+﻿using ShagOxServer.Application.DTOs.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Query;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
+using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Query;
 public class CurrencyQueryService : ICurrencyQueryService
@@ -19,8 +21,6 @@ public class CurrencyQueryService : ICurrencyQueryService
     public async Task<Result<CurrencyDto>> GetByCodeAsync(string code)
     {
         var currency = await _repository.GetByCodeAsync(code);
-        if (currency is null)
-            Result<CurrencyDto>.NotFound("Currency");
 
         return currency.ToResult(CurrencyMapper.ToDto);
     }
@@ -39,22 +39,11 @@ public class CurrencyQueryService : ICurrencyQueryService
         return currency.ToResult(CurrencyMapper.ToDto);
     }
 
-    public async Task<Result<List<CurrencyDto>>> SearchByCode(
-     string code,
-     int page,
-     int pageSize)
+    public async Task<Result<List<CurrencyDto>>> Search(
+     CurrencySearchFilter filter,
+	 PaginationParams pagination)
     {
-        var currencies = await _repository.SearchByCode(code, page, pageSize);
-
-        return currencies.ToResultList(CurrencyMapper.ToDto);
-    }
-
-    public async Task<Result<List<CurrencyDto>>> SearchByName(
-      string name,
-      int page,
-      int pageSize)
-    {
-        var currencies = await _repository.SearchByName(name, page, pageSize);
+        var currencies = await _repository.Search(filter, pagination);
 
         return currencies.ToResultList(CurrencyMapper.ToDto);
     }

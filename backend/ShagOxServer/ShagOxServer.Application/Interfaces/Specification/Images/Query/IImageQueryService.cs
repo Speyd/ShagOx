@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Specification.Images;
+﻿using ShagOxServer.Application.DTOs.Specification.Images;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Specification.Images.Query;
 public interface IImageQueryService

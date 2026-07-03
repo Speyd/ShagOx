@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Roles.Query;
 using ShagOxServer.Application.Interfaces.UserRoles;
+using ShagOxServer.Domain.Filters.Roles;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Role;
 
@@ -33,23 +35,18 @@ public class RoleQueriesController : ControllerBase
     [HttpGet("{roleId:int}/users")]
     public async Task<IActionResult> GetByRole(
         [FromRoute] int roleId,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+        [FromQuery] PaginationParams pagination)
     {
-        page = Math.Max(1, page);
-        pageSize = Math.Clamp(pageSize, 1, 100);
-
-        var result = await _queryUserRoleService.GetUsersByRoleIdAsync(roleId, page, pageSize);
+        var result = await _queryUserRoleService.GetUsersByRoleIdAsync(roleId, pagination);
         return result.ToActionResult();
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> SearchByName(
-        [FromQuery] string name,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+    public async Task<IActionResult> Search(
+        [FromQuery] RoleSearchFilter filter,
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByName(name, page, pageSize);
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

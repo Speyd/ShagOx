@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
 using ShagOxServer.Application.Interfaces.Specification.Conditions.Create;
 using ShagOxServer.Application.Interfaces.Specification.Conditions.Delete;
 using ShagOxServer.Application.Interfaces.Specification.Conditions.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Conditions;
 

@@ -1,4 +1,6 @@
 ﻿using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Filters.Specification.Currencies;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 public interface ICurrencyQueryRepository
@@ -9,13 +11,7 @@ public interface ICurrencyQueryRepository
 
     Task<Currency?> GetBySymbolAsync(string symbol);
 
-    Task<List<Currency>> SearchByCode(
-      string code,
-      int page,
-      int pageSize);
-
-    Task<List<Currency>> SearchByName(
-      string name,
-      int page,
-      int pageSize);
+    Task<List<Currency>> Search(
+      CurrencySearchFilter filter,
+      PaginationParams pagination);
 }

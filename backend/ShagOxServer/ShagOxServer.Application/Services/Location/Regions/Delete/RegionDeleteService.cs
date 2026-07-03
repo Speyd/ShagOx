@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Location.Regions.Delete;
+﻿using ShagOxServer.Application.DTOs.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Location.Regions.Delete;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Delete;
 public class RegionDeleteService : IRegionDeleteService

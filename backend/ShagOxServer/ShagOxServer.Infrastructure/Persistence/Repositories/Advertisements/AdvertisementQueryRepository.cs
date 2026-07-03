@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extensions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 
@@ -29,80 +31,63 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
 
     public async Task<List<Advertisement>> GetSellerAdvertisementsAsync(
         int userId,
-        int page,
-        int pageSize)
+        PaginationParams pagination)
     {
         return await _db.Advertisements
             .WithIncludes()
             .Where(x => x.SellerId == userId)
             .OrderByDescending(x => x.Popularity)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((pagination.Page - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
     public async Task<List<Advertisement>> GetPurchasedAdvertisementsAsync(
         int userId,
-        int page,
-        int pageSize)
+        PaginationParams pagination)
     {
         return await _db.Advertisements
             .WithIncludes()
             .Where(x => x.BuyerId == userId)
             .OrderByDescending(x => x.Popularity)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((pagination.Page - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 
-    public async Task<List<Advertisement>> GetPagedAsync(int page, int pageSize)
+    public async Task<List<Advertisement>> GetPagedAsync(
+        PaginationParams pagination)
     {
         return await _db.Advertisements
             .WithIncludes()
             .OrderByDescending(x => x.Popularity)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((pagination.Page - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 
     public async Task<List<Advertisement>> GetByCategoryAsync(
         int categoryId,
-        int page,
-        int pageSize)
+        PaginationParams pagination)
     {
         return await _db.Advertisements
             .WithIncludes()
             .Where(x => x.CategoryId == categoryId)
             .OrderByDescending(x => x.Popularity)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((pagination.Page - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 
-    public async Task<List<Advertisement>> SearchByTitle(
-        string title,
-        int page,
-        int pageSize)
+    public async Task<List<Advertisement>> Search(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination)
     {
         return await _db.Advertisements
             .WithIncludes()
-            .Where(x => x.Title.Contains(title))
+            .Filter(filter)
             .OrderByDescending(x => x.Popularity)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
-    }
-
-    public async Task<List<Advertisement>> SearchByDescription(
-        string query,
-        int page,
-        int pageSize)
-    {
-        return await _db.Advertisements
-            .WithIncludes()
-            .Where(x => x.Description.Contains(query))
-            .OrderByDescending(x => x.Popularity)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((pagination.Page - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
     }
 }

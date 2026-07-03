@@ -1,23 +1,31 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.Common.Results.Extensions;
+﻿using ShagOxServer.Application.DTOs.Roles;
 using ShagOxServer.Application.DTOs.Users;
 using ShagOxServer.Application.Interfaces.Common.Context;
 using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.Application.Services.Roles.Mapping;
 using ShagOxServer.Application.Services.Users.Mapping;
+using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Users.Query;
 public class UserQueryService : IUserQueryService
 {
     private readonly IUserQueryRepository _repository;
-    private readonly IUserContext _context;
+    private readonly IRoleQueryRepository _roleRepository;
 
+    private readonly IUserContext _context;
 
     public UserQueryService(
         IUserQueryRepository userRepository,
+        IRoleQueryRepository roleRepository,
         IUserContext userContext)
     {
         _repository = userRepository;
+        _roleRepository = roleRepository;
         _context = userContext;
     }
 
@@ -35,37 +43,20 @@ public class UserQueryService : IUserQueryService
         return user.ToResult(UserMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> SearchByFullName(
-       string fullName,
-       int page,
-       int pageSize)
+    public async Task<Result<List<RoleDto>>> GetMyRoleAsync(
+        PaginationParams pagination)
     {
-        var users = await _repository.SearchByFullName(
-            fullName, page, pageSize);
+        var roles = await _roleRepository.GetByUserIdAsync(_context.UserId, pagination);
 
-        return users.ToResultList(UserMapper.ToDto);
+        return roles.ToResultList(RoleMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> SearchByEmail(
-        string email,
-        int page,
-        int pageSize)
+    public async Task<Result<List<UserDto>>> Search(
+       UserSearchFilter filter,
+	   PaginationParams pagination)
     {
-        var users = await _repository.SearchByEmail(
-             email, page, pageSize);
-
-
-        return users.ToResultList(UserMapper.ToDto);
-    }
-
-    public async Task<Result<List<UserDto>>> SearchByPhone(
-        string phone,
-        int page,
-        int pageSize)
-    {
-        var users = await _repository.SearchByPhone(
-            phone, page, pageSize);
-
+        var users = await _repository.Search(
+            filter, pagination);
 
         return users.ToResultList(UserMapper.ToDto);
     }

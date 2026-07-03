@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users.Advertisements;
 
@@ -25,31 +27,29 @@ public class UserAdvertisementMeController : ControllerBase
 
     [HttpGet("sales")]
     public async Task<IActionResult> GetMySales(
-        [FromQuery] int page,
-        [FromQuery] int pageSize)
+        [FromQuery] PaginationParams pagination)
     {
         var user = await _queryUserService.GetMyProfileAsync();
 
         if (!user.IsSuccess || user.Value is null)
             return NotFound(user.Error);
 
-        var result = await _queryService.GetSellerAdvertisementsAsync(user.Value.Id, page, pageSize);
+        var result = await _queryService.GetSellerAdvertisementsAsync(user.Value.Id, pagination);
 
-        return Ok(result);
+        return result.ToActionResult();
     }
 
     [HttpGet("purchases")]
     public async Task<IActionResult> GetMyPurchases(
-        [FromQuery] int page,
-        [FromQuery] int pageSize)
+        [FromQuery] PaginationParams pagination)
     {
         var user = await _queryUserService.GetMyProfileAsync();
 
         if (!user.IsSuccess || user.Value is null)
             return NotFound(user.Error);
 
-        var result = await _queryService.GetPurchasedAdvertisementsAsync(user.Value.Id, page, pageSize);
+        var result = await _queryService.GetPurchasedAdvertisementsAsync(user.Value.Id, pagination);
 
-        return Ok(result);
+        return result.ToActionResult();
     }
 }

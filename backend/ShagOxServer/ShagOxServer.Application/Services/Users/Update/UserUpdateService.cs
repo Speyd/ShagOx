@@ -1,12 +1,11 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Users.Update;
+﻿using ShagOxServer.Application.DTOs.Users.Update;
 using ShagOxServer.Application.Interfaces.Users.Update;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 
 namespace ShagOxServer.Application.Services.Users.Update;
-
 public class UserUpdateService : IUserUpdateService
 {
     private readonly IUserRepository _repository;

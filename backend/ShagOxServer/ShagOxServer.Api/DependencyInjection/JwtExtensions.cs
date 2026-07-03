@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using ShagOxServer.Api.Settings;
+using ShagOxServer.Application.Common.Settings;
 using System.Text;
 
 namespace ShagOxServer.Api.DependencyInjection;
-
 public static class JwtExtensions
 {
     public static IServiceCollection AddJWT(

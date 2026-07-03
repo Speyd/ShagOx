@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Location.Cities.Query;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.Domain.Filters.Location.Cities;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Cities;
 
@@ -38,26 +40,22 @@ public class CityQueriesController : ControllerBase
     [HttpGet("by-region/{regionId:int}")]
     public async Task<IActionResult> GetByRegion(
         [FromRoute] int regionId,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20
-        )
+        [FromQuery] PaginationParams pagination
+		)
     {
         var result = await _queryService.GetByRegionAsync(
             regionId, 
-            page, 
-            pageSize);
+            pagination);
 
         return result.ToActionResult();
     }
 
-    //TODO: make PaginationQuery
     [HttpGet("search")]
-    public async Task<IActionResult> SearchByName(
-       [FromQuery] string name,
-       [FromQuery] int page = 1,
-       [FromQuery] int pageSize = 20)
+    public async Task<IActionResult> Search(
+       [FromQuery] CitySearchFilter filter,
+       [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByName(name, page, pageSize);
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

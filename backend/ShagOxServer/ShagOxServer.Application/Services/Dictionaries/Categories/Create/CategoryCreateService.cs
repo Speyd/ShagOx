@@ -1,11 +1,11 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Create;
 using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Create;

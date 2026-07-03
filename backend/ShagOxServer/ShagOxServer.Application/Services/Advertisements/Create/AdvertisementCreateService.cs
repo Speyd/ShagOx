@@ -1,5 +1,4 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Advertisements.Create;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Create;
 using ShagOxServer.Application.Interfaces.Advertisements.Create;
 using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Account;
@@ -11,6 +10,7 @@ using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create;
 public class AdvertisementCreateService : IAdvertisementCreateService

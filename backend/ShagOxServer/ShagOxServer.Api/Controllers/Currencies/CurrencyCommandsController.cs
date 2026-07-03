@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Delete;
 using ShagOxServer.Application.Interfaces.Specification.Currencies.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Currencies;
 

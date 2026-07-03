@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Specification.Images.Delete;
+﻿using ShagOxServer.Application.DTOs.Specification.Images.Delete;
 using ShagOxServer.Application.Interfaces.Specification.Images.Delete;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Delete;
 public class ImageDeleteService : IImageDeleteService

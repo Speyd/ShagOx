@@ -1,4 +1,6 @@
 ﻿using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Domain.Filters.Location.Cities;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 public interface ICityQueryRepository
@@ -9,11 +11,9 @@ public interface ICityQueryRepository
 
     Task<List<City>> GetByRegionAsync(
         int regionId,
-        int page = 1,
-        int pageSize = 20);
+        PaginationParams pagination);
 
-    Task<List<City>> SearchByName(
-        string name,
-        int page,
-        int pageSize);
+    Task<List<City>> Search(
+        CitySearchFilter filter,
+        PaginationParams pagination);
 }

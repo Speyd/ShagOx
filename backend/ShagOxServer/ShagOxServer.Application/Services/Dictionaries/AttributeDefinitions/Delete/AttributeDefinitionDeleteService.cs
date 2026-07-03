@@ -1,8 +1,7 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Delete;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
-
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Delete;
 public class AttributeDefinitionDeleteService : IAttributeDefinitionDeleteService

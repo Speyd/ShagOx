@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Category;
 

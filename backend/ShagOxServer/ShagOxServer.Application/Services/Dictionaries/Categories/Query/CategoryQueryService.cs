@@ -1,10 +1,12 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.Common.Results.Extensions;
-using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
+using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Query;
 public class CategoryQueryService : ICategoryQueryService
@@ -17,16 +19,16 @@ public class CategoryQueryService : ICategoryQueryService
         _repository = categoryRepository;
     }
 
-    public async Task<Result<CategoryDto>> GetByIdAsync(int id)
+    public async Task<Result<CategoryDto>> GetByIdAsync(
+        int id)
     {
         var category = await _repository.GetByIdAsync(id);
-        if (category is null)
-            return Result<CategoryDto>.NotFound("Category");
 
         return category.ToResult(CategoryMapper.ToDto);
     }
 
-    public async Task<Result<CategoryDto>> GetByNameAsync(string name)
+    public async Task<Result<CategoryDto>> GetByNameAsync(
+        string name)
     {
         var category = await _repository.GetByNameAsync(name);
 
@@ -41,12 +43,11 @@ public class CategoryQueryService : ICategoryQueryService
         return categories.ToResultList(CategoryMapper.ToDto);
     }
 
-    public async Task<Result<List<CategoryDto>>> SearchByName(
-        string name,
-        int page,
-        int pageSize)
+    public async Task<Result<List<CategoryDto>>> Search(
+        CategorySearchFilter filter,
+        PaginationParams pagination)
     {
-        var categories = await _repository.SearchByName(name, page, pageSize);
+        var categories = await _repository.Search(filter, pagination);
 
         return categories.ToResultList(CategoryMapper.ToDto);
     }

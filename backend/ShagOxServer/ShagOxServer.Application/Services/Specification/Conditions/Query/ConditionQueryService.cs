@@ -1,9 +1,11 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.Common.Results.Extensions;
-using ShagOxServer.Application.DTOs.Specification.Conditions;
+﻿using ShagOxServer.Application.DTOs.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Specification.Conditions.Query;
 using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
+using ShagOxServer.Domain.Filters.Specification.Conditions;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Query;
 public class ConditionQueryService : IConditionQueryService
@@ -30,12 +32,11 @@ public class ConditionQueryService : IConditionQueryService
         return condition.ToResult(ConditionMapper.ToDto);
     }
 
-    public async Task<Result<List<ConditionDto>>> SearchByName(
-      string name,
-      int page,
-      int pageSize)
+    public async Task<Result<List<ConditionDto>>> Search(
+      ConditionSearchFilter filter,
+	  PaginationParams pagination)
     {
-        var conditions = await _repository.SearchByName(name, page, pageSize);
+        var conditions = await _repository.Search(filter, pagination);
 
         return conditions.ToResultList(ConditionMapper.ToDto);
     }

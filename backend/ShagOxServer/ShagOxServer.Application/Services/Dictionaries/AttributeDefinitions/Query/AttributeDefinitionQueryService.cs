@@ -1,10 +1,12 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.Common.Results.Extensions;
-using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Query;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Mapping;
+using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Query;
 public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
@@ -38,12 +40,11 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
         return attributes.ToResultList(AttributeDefinitionMapper.ToDto);
     }
 
-    public async Task<Result<List<AttributeDefinitionDto>>> SearchByKey(
-       string key,
-       int page,
-       int pageSize)
+    public async Task<Result<List<AttributeDefinitionDto>>> Search(
+       AttributeDefinitionSearchFilter filter,
+       PaginationParams pagination)
     {
-        var attributes = await _attributeRepository.SearchByKey(key, page, pageSize);
+        var attributes = await _attributeRepository.Search(filter, pagination);
 
         return attributes.ToResultList(AttributeDefinitionMapper.ToDto);
     }

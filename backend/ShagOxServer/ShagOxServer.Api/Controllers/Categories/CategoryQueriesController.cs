@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
+using ShagOxServer.Domain.Filters.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Category;
 
@@ -45,12 +47,11 @@ public class CategoryQueriesController : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> SearchByName(
-       [FromQuery] string name,
-       [FromQuery] int page = 1,
-       [FromQuery] int pageSize = 20)
+    public async Task<IActionResult> Search(
+       [FromQuery] CategorySearchFilter filter,
+       [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByName(name, page, pageSize);
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

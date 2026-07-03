@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Users.Query;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users;
 
@@ -34,33 +36,12 @@ public class UserQueriesController : ControllerBase
         return result.ToActionResult();
     }
 
-    [HttpGet("search/full-name")]
-    public async Task<IActionResult> SearchByFullName(
-        [FromQuery] string fullName,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+    [HttpGet("search")]
+    public async Task<IActionResult> Search(
+        [FromQuery] UserSearchFilter filter,
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByFullName(fullName, page, pageSize);
-        return result.ToActionResult();
-    }
-
-    [HttpGet("search/email")]
-    public async Task<IActionResult> SearchByEmail(
-        [FromQuery]  string email,
-        [FromQuery]  int page,
-        [FromQuery]  int pageSize)
-    {
-        var result = await _queryService.SearchByEmail(email, page, pageSize);
-        return result.ToActionResult();
-    }
-
-    [HttpGet("search/phone")]
-    public async Task<IActionResult> SearchByPhone(
-        [FromQuery] string phone,
-        [FromQuery] int page,
-        [FromQuery] int pageSize)
-    {
-        var result = await _queryService.SearchByPhone(phone, page, pageSize);
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

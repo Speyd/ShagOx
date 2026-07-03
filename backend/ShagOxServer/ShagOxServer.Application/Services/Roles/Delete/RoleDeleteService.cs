@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Roles.Delete;
+﻿using ShagOxServer.Application.DTOs.Roles.Delete;
 using ShagOxServer.Application.Interfaces.Roles.Delete;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Roles.Delete;
 public class RoleDeleteService : IRoleDeleteService

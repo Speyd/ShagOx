@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies.Extensions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
 public class CurrencyQueryRepository : BaseRepository, ICurrencyQueryRepository
@@ -27,23 +30,14 @@ public class CurrencyQueryRepository : BaseRepository, ICurrencyQueryRepository
             .FirstOrDefaultAsync(c => c.Symbol == symbol);
     }
 
-    public async Task<List<Currency>> SearchByCode(
-      string code,
-      int page,
-      int pageSize)
+    public async Task<List<Currency>> Search(
+      CurrencySearchFilter filter,
+      PaginationParams pagination)
     {
         return await _db.Currencies
-            .Where(c => c.Code.Contains(code))
+            .Filter(filter)
+            .Skip((pagination.Page - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
-    }
-
-    public async Task<List<Currency>> SearchByName(
-      string name,
-      int page,
-      int pageSize)
-    {
-        return await _db.Currencies
-           .Where(c => c.Name.Contains(name))
-           .ToListAsync();
     }
 }

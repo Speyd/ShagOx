@@ -1,9 +1,11 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.Common.Results.Extensions;
-using ShagOxServer.Application.DTOs.Location.Regions;
+﻿using ShagOxServer.Application.DTOs.Location.Regions;
 using ShagOxServer.Application.Interfaces.Location.Regions.Query;
 using ShagOxServer.Application.Services.Location.Regions.Mapping;
+using ShagOxServer.Domain.Filters.Location.Regions;
 using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Query;
 public class RegionQueryService : IRegionQueryService
@@ -30,12 +32,11 @@ public class RegionQueryService : IRegionQueryService
         return region.ToResult(RegionMapper.ToDto);
     }
 
-    public async Task<Result<List<RegionDto>>> SearchByName(
-      string name,
-      int page,
-      int pageSize)
+    public async Task<Result<List<RegionDto>>> Search(
+      RegionSearchFilter filter,
+	  PaginationParams pagination)
     {
-        var regions = await _repository.SearchByName(name, page, pageSize);
+        var regions = await _repository.Search(filter, pagination);
 
         return regions.ToResultList(RegionMapper.ToDto);
     }

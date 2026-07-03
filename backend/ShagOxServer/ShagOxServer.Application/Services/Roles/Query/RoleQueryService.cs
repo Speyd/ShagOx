@@ -1,9 +1,11 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.Common.Results.Extensions;
-using ShagOxServer.Application.DTOs.Roles;
+﻿using ShagOxServer.Application.DTOs.Roles;
 using ShagOxServer.Application.Interfaces.Roles.Query;
 using ShagOxServer.Application.Services.Roles.Mapping;
+using ShagOxServer.Domain.Filters.Roles;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Roles.Query;
 public class RoleQueryService : IRoleQueryService
@@ -24,6 +26,15 @@ public class RoleQueryService : IRoleQueryService
         return role.ToResult(RoleMapper.ToDto);
     }
 
+    public async Task<Result<List<RoleDto>>> GetByUserIdAsync(
+       int userId,
+       PaginationParams pagination)
+    {
+        var roles = await _repository.GetByUserIdAsync(userId, pagination);
+
+        return roles.ToResultList(RoleMapper.ToDto);
+    }
+
     public async Task<Result<RoleDto>> GetByNameAsync(string name)
     {
         var role = await _repository.GetByNameAsync(name);
@@ -31,12 +42,11 @@ public class RoleQueryService : IRoleQueryService
         return role.ToResult(RoleMapper.ToDto);
     }
 
-    public async Task<Result<List<RoleDto>>> SearchByName(
-       string name,
-       int page,
-       int pageSize)
+    public async Task<Result<List<RoleDto>>> Search(
+       RoleSearchFilter filter,
+	   PaginationParams pagination)
     {
-        var roles = await _repository.SearchByName(name, page, pageSize);
+        var roles = await _repository.Search(filter, pagination);
 
         return roles.ToResultList(RoleMapper.ToDto);
     }

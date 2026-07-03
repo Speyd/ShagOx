@@ -22,7 +22,6 @@ public class UserAdvertisementsController : ControllerBase
         _userQuery = userQuery;
     }
 
-    //TODO: Refactore code 'exists'
     [HttpGet]
     public async Task<IActionResult> GetUserAdvertisements(
         [FromRoute] int userId,
@@ -31,7 +30,7 @@ public class UserAdvertisementsController : ControllerBase
         var exists = await _userQuery.ExistsAsync(userId);
 
         if (!exists)
-            return NotFound();
+            return NotFound("User not found");
 
         var result = await _queryService.GetSellerAdvertisementsAsync(userId, pagination);
         return result.ToActionResult();

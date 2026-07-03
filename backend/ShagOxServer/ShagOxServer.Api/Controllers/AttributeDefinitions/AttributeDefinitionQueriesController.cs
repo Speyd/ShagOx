@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Query;
+using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -36,10 +37,10 @@ public class AttributeDefinitionQueriesController : ControllerBase
     }
     [HttpGet("search")]
     public async Task<IActionResult> SearchByKey(
-        [FromQuery] string key,
+        [FromQuery] AttributeDefinitionSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchByKey(key, pagination);
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

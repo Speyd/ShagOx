@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions.Extensions;
@@ -33,12 +34,12 @@ public class AttributeDefinitionQueryRepository : BaseRepository, IAttributeDefi
             .ToListAsync();
     }
 
-    public async Task<List<AttributeDefinition>> SearchByKey(
-        string key,
+    public async Task<List<AttributeDefinition>> Search(
+        AttributeDefinitionSearchFilter filter,
         PaginationParams pagination)
     {
         return await _db.AttributeDefinitions.WithIncludes()
-            .Where(x => x.Key.Contains(key))
+            .Filter(filter)
             .Skip((pagination.PageSize - 1) * pagination.PageSize)
             .Take(pagination.PageSize)
             .ToListAsync();

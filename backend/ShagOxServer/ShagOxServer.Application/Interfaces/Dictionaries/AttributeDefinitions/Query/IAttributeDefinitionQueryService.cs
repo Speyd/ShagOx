@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -10,7 +11,7 @@ public interface IAttributeDefinitionQueryService
     Task<Result<List<AttributeDefinitionDto>>> GetByCategoryAsync(
         int attributeId);
 
-    Task<Result<List<AttributeDefinitionDto>>> SearchByKey(
-       string key,
+    Task<Result<List<AttributeDefinitionDto>>> Search(
+       AttributeDefinitionSearchFilter filter,
        PaginationParams pagination);
 }

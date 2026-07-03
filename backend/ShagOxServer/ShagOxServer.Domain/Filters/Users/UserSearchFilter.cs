@@ -1,5 +1,5 @@
 ﻿namespace ShagOxServer.Domain.Filters.Users;
-public class UserSearchFilter
+public sealed record UserSearchFilter
 {
     public string? FullName { get; set; }
     public string? Email { get; set; }

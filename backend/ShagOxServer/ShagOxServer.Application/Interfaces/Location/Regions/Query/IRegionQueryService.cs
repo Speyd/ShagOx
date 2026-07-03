@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Regions;
+using ShagOxServer.Domain.Filters.Location.Regions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -9,7 +10,7 @@ public interface IRegionQueryService
 
     Task<Result<RegionDto>> GetByNameAsync(string name);
 
-    Task<Result<List<RegionDto>>> SearchByName(
-      string name,
+    Task<Result<List<RegionDto>>> Search(
+      RegionSearchFilter filter,
       PaginationParams pagination);
 }

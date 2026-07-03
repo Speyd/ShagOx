@@ -5,7 +5,7 @@ export async function updateAdvertisement(
   id: number,
   data: UpdateAdvertisementDto,
 ) {
-  const response = await api.patch(`/api/advertisements/${id}`, data);
+  const response = await api.put(`/api/advertisements/${id}`, data);
 
   return response.data;
 }

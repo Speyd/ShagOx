@@ -21,28 +21,27 @@
   object-fit: cover;
 }
 
-.conditionContainer {
-  background-color: #f2f4f5;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
+.left {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 
-.conditionText {
-  font-weight: bold;
-  font-size: 15px;
-  color: #333;
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
 .info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
 }
 
-.content {
+.buttons {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 10px;
 }

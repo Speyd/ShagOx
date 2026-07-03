@@ -48,7 +48,7 @@ export default function UpdateAdvertisementForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <div className={styles.inputWrapper}>
         <label className={styles.label}>Title</label>
 

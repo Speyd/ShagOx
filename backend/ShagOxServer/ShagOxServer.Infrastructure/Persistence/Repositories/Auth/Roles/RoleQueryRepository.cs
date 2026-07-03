@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Filters.Roles;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
@@ -34,12 +36,12 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
             .FirstOrDefaultAsync(x => x.Name == name);
     }
 
-    public async Task<List<Role>> SearchByName(
-        string name,
+    public async Task<List<Role>> Search(
+        RoleSearchFilter filter,
         PaginationParams pagination)
     {
         return await _db.Roles
-            .Where(x => x.Name.Contains(name))
+            .Filter(filter)
             .Skip((pagination.Page - 1) * pagination.PageSize)
             .Take(pagination.PageSize)
             .ToListAsync();

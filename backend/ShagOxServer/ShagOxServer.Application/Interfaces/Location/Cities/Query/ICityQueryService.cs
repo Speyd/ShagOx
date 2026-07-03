@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities;
+using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -13,7 +14,7 @@ public interface ICityQueryService
         int regionId,
         PaginationParams pagination);
 
-    Task<Result<List<CityDto>>> SearchByName(
-       string name,
+    Task<Result<List<CityDto>>> Search(
+       CitySearchFilter filter,
        PaginationParams pagination);
 }

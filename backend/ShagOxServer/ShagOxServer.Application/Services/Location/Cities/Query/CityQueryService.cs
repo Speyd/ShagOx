@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities;
 using ShagOxServer.Application.Interfaces.Location.Cities.Query;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
+using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -40,11 +41,11 @@ public class CityQueryService : ICityQueryService
         return cities.ToResultList(CityMapper.ToDto);
     }
 
-    public async Task<Result<List<CityDto>>> SearchByName(
-       string name,
+    public async Task<Result<List<CityDto>>> Search(
+       CitySearchFilter filter,
        PaginationParams pagination)
     {
-        var cities = await _repository.SearchByName(name, pagination);
+        var cities = await _repository.Search(filter, pagination);
 
         return cities.ToResultList(CityMapper.ToDto);
     }

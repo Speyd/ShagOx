@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Roles;
 using ShagOxServer.Application.Interfaces.Roles.Query;
 using ShagOxServer.Application.Services.Roles.Mapping;
+using ShagOxServer.Domain.Filters.Roles;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -41,11 +42,11 @@ public class RoleQueryService : IRoleQueryService
         return role.ToResult(RoleMapper.ToDto);
     }
 
-    public async Task<Result<List<RoleDto>>> SearchByName(
-       string name,
+    public async Task<Result<List<RoleDto>>> Search(
+       RoleSearchFilter filter,
 	   PaginationParams pagination)
     {
-        var roles = await _repository.SearchByName(name, pagination);
+        var roles = await _repository.Search(filter, pagination);
 
         return roles.ToResultList(RoleMapper.ToDto);
     }

@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
+using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -18,7 +19,8 @@ public class CategoryQueryService : ICategoryQueryService
         _repository = categoryRepository;
     }
 
-    public async Task<Result<CategoryDto>> GetByIdAsync(int id)
+    public async Task<Result<CategoryDto>> GetByIdAsync(
+        int id)
     {
         var category = await _repository.GetByIdAsync(id);
         if (category is null)
@@ -27,7 +29,8 @@ public class CategoryQueryService : ICategoryQueryService
         return category.ToResult(CategoryMapper.ToDto);
     }
 
-    public async Task<Result<CategoryDto>> GetByNameAsync(string name)
+    public async Task<Result<CategoryDto>> GetByNameAsync(
+        string name)
     {
         var category = await _repository.GetByNameAsync(name);
 
@@ -42,11 +45,11 @@ public class CategoryQueryService : ICategoryQueryService
         return categories.ToResultList(CategoryMapper.ToDto);
     }
 
-    public async Task<Result<List<CategoryDto>>> SearchByName(
-        string name,
+    public async Task<Result<List<CategoryDto>>> Search(
+        CategorySearchFilter filter,
         PaginationParams pagination)
     {
-        var categories = await _repository.SearchByName(name, pagination);
+        var categories = await _repository.Search(filter, pagination);
 
         return categories.ToResultList(CategoryMapper.ToDto);
     }

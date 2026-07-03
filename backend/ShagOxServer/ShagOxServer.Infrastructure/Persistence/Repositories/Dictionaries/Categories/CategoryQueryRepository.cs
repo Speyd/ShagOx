@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
+using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
@@ -32,12 +33,12 @@ public class CategoryQueryRepository : BaseRepository, ICategoryQueryRepository
             .ToListAsync();
     }
 
-    public async Task<List<Category>> SearchByName(
-        string name,
+    public async Task<List<Category>> Search(
+        CategorySearchFilter filter,
         PaginationParams pagination)
     {
         return await _db.Categories.WithIncludes()
-            .Where(x => x.Name.Contains(name))
+            .Filter(filter)
             .Skip((pagination.PageSize - 1) * pagination.PageSize)
             .Take(pagination.PageSize)
             .ToListAsync();

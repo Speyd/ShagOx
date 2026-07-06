@@ -3,7 +3,7 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
 
-namespace ShagOxServer.Domain.Entities;
+namespace ShagOxServer.Domain.Entities.Advertisements;
 
 public class Advertisement : BaseEntity
 {

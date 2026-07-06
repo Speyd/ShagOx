@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;

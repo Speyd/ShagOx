@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShagOxServer.Domain.Entities;
+using ShagOxServer.Domain.Entities.Advertisements;
 using System.Text.Json;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations;

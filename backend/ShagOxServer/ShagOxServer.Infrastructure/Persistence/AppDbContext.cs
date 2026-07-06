@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Specification;

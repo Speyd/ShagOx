@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Domain.Entities;
-using ShagOxServer.Domain.Entities.Account;
+﻿using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Advertisements;

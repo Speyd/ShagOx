@@ -9,6 +9,20 @@ public static class FavoriteQueryExtensions
     {
         return query
             .Include(x => x.User)
-            .Include(x => x.Advertisement);
+                .ThenInclude(a => a.City)
+            .Include(x => x.User)
+                .ThenInclude(a => a.UserRoles)
+            .Include(x => x.Advertisement)
+                .ThenInclude(a => a.Category)
+            .Include(x => x.Advertisement)
+                .ThenInclude(a => a.Currency)
+            .Include(x => x.Advertisement)
+                .ThenInclude(a => a.Seller)
+            .Include(x => x.Advertisement)
+                .ThenInclude(a => a.Buyer)
+            .Include(x => x.Advertisement)
+                .ThenInclude(a => a.Condition)
+            .Include(x => x.Advertisement)
+                .ThenInclude(a => a.Images);
     }
 }

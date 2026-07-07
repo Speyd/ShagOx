@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Users;
 using ShagOxServer.Application.Interfaces.Users.Query;
 using ShagOxServer.Application.Services.Users.Mapping;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements.Advertisement;
+using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

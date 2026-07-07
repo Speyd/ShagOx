@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Advertisements.Delete;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements.Advertisement;
+using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Delete;

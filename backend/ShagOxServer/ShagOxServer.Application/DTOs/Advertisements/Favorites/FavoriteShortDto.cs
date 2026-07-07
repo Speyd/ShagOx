@@ -1,9 +1,9 @@
 ﻿using ShagOxServer.Application.DTOs.Users;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.Favorites;
-public sealed record FavoriteDto
+public sealed record FavoriteShortDto
 (
     int Id,
-    UserDto User,
-    AdvertisementDto Advertisement
+    UserShortDto User,
+    AdvertisementShortDto Advertisement
 );

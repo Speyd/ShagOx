@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Images.Create;
 using ShagOxServer.Application.Interfaces.Specification.Images.Create;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements.Advertisement;
+using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

@@ -2,6 +2,7 @@
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements.Favorites;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites;
 public class FavoriteQueryRepository : BaseRepository, IFavoriteQueryRepository
@@ -27,7 +28,9 @@ public class FavoriteQueryRepository : BaseRepository, IFavoriteQueryRepository
              .CountAsync();
     }
 
-    public async Task<List<Favorite>> GetByUserIdAsync(int usderId)
+    public async Task<List<Favorite>> GetByUserIdAsync(
+        int usderId,
+        PaginationParams pagination)
     {
         return await _db.Favorites
              .WithIncludes()

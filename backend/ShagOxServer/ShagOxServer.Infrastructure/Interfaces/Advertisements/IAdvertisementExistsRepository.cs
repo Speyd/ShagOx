@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShagOxServer.Infrastructure.Interfaces.Advertisements.Advertisement;
+namespace ShagOxServer.Infrastructure.Interfaces.Advertisements;
 public interface IAdvertisementExistsRepository
 {
     Task<bool> ExistsById(int Id);

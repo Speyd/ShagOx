@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Mapping;
 using ShagOxServer.Domain.Filters.Advertisements;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements;
+using ShagOxServer.Infrastructure.Interfaces.Advertisements.Advertisement;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

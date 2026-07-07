@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Update;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements;
+using ShagOxServer.Infrastructure.Interfaces.Advertisements.Advertisement;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Results;

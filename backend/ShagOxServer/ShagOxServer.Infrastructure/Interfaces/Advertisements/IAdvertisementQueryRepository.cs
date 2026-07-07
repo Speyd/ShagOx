@@ -2,7 +2,7 @@
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
-namespace ShagOxServer.Infrastructure.Interfaces.Advertisements;
+namespace ShagOxServer.Infrastructure.Interfaces.Advertisements.Advertisement;
 public interface IAdvertisementQueryRepository
 {
     Task<Advertisement?> GetByIdAsync(int id);

@@ -23,13 +23,14 @@ public class AppDbContext : DbContext
     public DbSet<Image> Images { get; set; }
 
     public DbSet<Advertisement> Advertisements { get; set; }
-
+    public DbSet<Favorite> Favorites { get; set; }
 
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

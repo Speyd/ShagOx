@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShagOxServer.Domain.Entities.Advertisements;
 using System.Text.Json;
 
-namespace ShagOxServer.Infrastructure.Persistence.Configurations;
+namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements;
 
 public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement>
 {

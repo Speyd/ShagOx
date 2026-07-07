@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShagOxServer.Domain.Entities.Advertisements;
+
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements;
 public class FavoriteConfiguration : IEntityTypeConfiguration<Favorite>
 {

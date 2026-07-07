@@ -39,8 +39,9 @@ public class Advertisement : BaseEntity
     /// <summary>
     /// Collection of product images displayed in the product gallery.
     /// </summary>
-    public List<Image> Images { get; set; } = [];
+    public List<Image> Images { get; set; } = new List<Image>();
 
+    public List<Favorite> Favorites { get; set; } = new List<Favorite>();
 
     public int SellerId { get; set; }
     /// <summary>

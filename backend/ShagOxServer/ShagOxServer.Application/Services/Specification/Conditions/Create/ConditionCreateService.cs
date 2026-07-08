@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
-using ShagOxServer.Application.Interfaces.Specification.Conditions.Create;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Create;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Create;

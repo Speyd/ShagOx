@@ -1,8 +1,8 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Currencies;
-using ShagOxServer.Application.Interfaces.Specification.Currencies.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Query;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

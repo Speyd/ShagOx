@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions;
 public class AttributeDefinitionExistsRepository : BaseRepository, IAttributeDefinitionExistsRepository

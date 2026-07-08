@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;
 public class ImageRepository : BaseRepository, IImageRepository

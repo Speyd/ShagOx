@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Delete;
-using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Delete;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Delete;

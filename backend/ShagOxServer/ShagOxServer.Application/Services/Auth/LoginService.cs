@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.DTOs.Auth.Login;
-using ShagOxServer.Application.Interfaces.Auth;
-using ShagOxServer.Application.Interfaces.Common.Validators;
-using ShagOxServer.Application.Interfaces.Jwt;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Services.Auth;
+using ShagOxServer.Application.Interfaces.Services.Common.Validators;
+using ShagOxServer.Application.Interfaces.Services.Jwt;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth;

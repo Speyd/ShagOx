@@ -1,9 +1,9 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
-using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

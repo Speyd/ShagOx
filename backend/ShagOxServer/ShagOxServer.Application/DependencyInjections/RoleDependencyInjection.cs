@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Roles.Create;
-using ShagOxServer.Application.Interfaces.Roles.Delete;
-using ShagOxServer.Application.Interfaces.Roles.Query;
-using ShagOxServer.Application.Interfaces.Roles.Update;
+using ShagOxServer.Application.Interfaces.Services.Roles.Create;
+using ShagOxServer.Application.Interfaces.Services.Roles.Delete;
+using ShagOxServer.Application.Interfaces.Services.Roles.Query;
+using ShagOxServer.Application.Interfaces.Services.Roles.Update;
 using ShagOxServer.Application.Services.Roles.Create;
 using ShagOxServer.Application.Services.Roles.Delete;
 using ShagOxServer.Application.Services.Roles.Query;

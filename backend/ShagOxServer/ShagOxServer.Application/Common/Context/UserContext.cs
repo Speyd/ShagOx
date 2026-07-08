@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using ShagOxServer.Application.Interfaces.Common.Context;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using System.Security.Claims;
 
 namespace ShagOxServer.Application.Common.Context;

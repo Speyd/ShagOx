@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
 

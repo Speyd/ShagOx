@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
 public class RoleExistsRepository : BaseRepository, IRoleExistsRepository

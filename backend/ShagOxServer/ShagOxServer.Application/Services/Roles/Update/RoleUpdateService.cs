@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Roles.Update;
-using ShagOxServer.Application.Interfaces.Roles.Update;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
+using ShagOxServer.Application.Interfaces.Services.Roles.Update;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Roles.Update;

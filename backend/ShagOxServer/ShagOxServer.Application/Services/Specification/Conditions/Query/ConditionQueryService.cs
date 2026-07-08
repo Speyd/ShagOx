@@ -1,8 +1,8 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Conditions;
-using ShagOxServer.Application.Interfaces.Specification.Conditions.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Query;
 using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

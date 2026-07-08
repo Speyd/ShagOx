@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Delete;
-using ShagOxServer.Application.Interfaces.Specification.Currencies.Delete;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Delete;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Delete;

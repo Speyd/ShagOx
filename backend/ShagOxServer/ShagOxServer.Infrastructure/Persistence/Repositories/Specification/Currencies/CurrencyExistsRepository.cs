@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
 public class CurrencyExistsRepository : BaseRepository, ICurrencyExistsRepository

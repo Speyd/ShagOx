@@ -1,9 +1,9 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
-using ShagOxServer.Application.Interfaces.Advertisements.Favorites.Update;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements.Favorites;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Update;

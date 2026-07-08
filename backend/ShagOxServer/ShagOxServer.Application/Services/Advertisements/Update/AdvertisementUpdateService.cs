@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
-using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Interfaces.Advertisements;

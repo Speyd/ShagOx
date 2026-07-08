@@ -1,6 +1,4 @@
-﻿using ShagOxServer.Domain.Entities;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Dictionaries;
+﻿using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Interfaces.Advertisements;
 public interface IAdvertisementRepository

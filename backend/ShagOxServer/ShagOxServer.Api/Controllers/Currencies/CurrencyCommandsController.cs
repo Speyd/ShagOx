@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Currencies;
 [ApiController]
 [Route("api/admin/currencies")]
 [Authorize(Roles = "Admin")]
-public class CurrencyCommandsController : ControllerBase
+public class CurrencyCommandsController : ApiController
 {
     private readonly ICurrencyCreateService _createService;
     private readonly ICurrencyUpdateService _updateService;

@@ -8,7 +8,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements;
 
 [ApiController]
 [Route("api/advertisements")]
-public class AdvertisementQueriesController : ControllerBase
+public class AdvertisementQueriesController : ApiController
 {
     private readonly IAdvertisementQueryService _queryService;
 

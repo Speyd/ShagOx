@@ -3,7 +3,7 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
 
-namespace ShagOxServer.Domain.Entities;
+namespace ShagOxServer.Domain.Entities.Advertisements;
 
 public class Advertisement : BaseEntity
 {
@@ -39,8 +39,9 @@ public class Advertisement : BaseEntity
     /// <summary>
     /// Collection of product images displayed in the product gallery.
     /// </summary>
-    public List<Image> Images { get; set; } = [];
+    public List<Image> Images { get; set; } = new();
 
+    public List<Favorite> Favorites { get; set; } = new();
 
     public int SellerId { get; set; }
     /// <summary>

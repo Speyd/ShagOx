@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Entities;
+﻿using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extensions;

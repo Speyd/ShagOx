@@ -1,5 +1,4 @@
-﻿
-using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Application.DTOs.Specification.Currencies;
 using ShagOxServer.Application.DTOs.Specification.Images;
 using ShagOxServer.Application.DTOs.Users;

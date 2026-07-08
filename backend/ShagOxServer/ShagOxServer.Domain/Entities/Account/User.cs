@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Domain.Entities.Account;
@@ -20,11 +21,13 @@ public class User : BaseEntity
     public DateTime? LastSeenAt { get; set; }
     public DateTime RegisteredAt { get; set; } = DateTime.UtcNow;
 
-    public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public List<UserRole> UserRoles { get; set; } = new();
 
     public List<Advertisement> SoldAdvertisements { get; set; } = new();
 
     public List<Advertisement> BoughtAdvertisements { get; set; } = new();
+
+    public List<Favorite> Favorites { get; set; } = new();
 
     public override string ToString()
     {

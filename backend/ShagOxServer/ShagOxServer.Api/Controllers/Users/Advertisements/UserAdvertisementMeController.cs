@@ -10,7 +10,7 @@ namespace ShagOxServer.Api.Controllers.Users.Advertisements;
 [ApiController]
 [Authorize]
 [Route("api/users/me/advertisements")]
-public class UserAdvertisementMeController : ControllerBase
+public class UserAdvertisementMeController : ApiController
 {
     private readonly IAdvertisementQueryService _queryService;
     private readonly IUserQueryService _queryUserService;

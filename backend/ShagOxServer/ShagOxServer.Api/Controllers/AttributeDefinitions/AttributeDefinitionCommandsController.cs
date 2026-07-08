@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 [ApiController]
 [Route("api/admin/attributes")]
 [Authorize(Roles = "Admin")]
-public class AttributeDefinitionCommandsController : ControllerBase
+public class AttributeDefinitionCommandsController : ApiController
 {
     private readonly IAttributeDefinitionCreateService _createService;
     private readonly IAttributeDefinitionUpdateService _updateService;

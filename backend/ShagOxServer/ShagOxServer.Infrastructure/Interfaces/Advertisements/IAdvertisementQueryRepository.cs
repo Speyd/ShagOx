@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Entities;
+﻿using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 

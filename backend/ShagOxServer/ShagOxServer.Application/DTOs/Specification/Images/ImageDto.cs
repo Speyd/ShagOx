@@ -4,5 +4,6 @@ public sealed record ImageDto
     int Id,
     string Url,
     int Order,
+    int PublicId,
     int AdvertisementId
 );

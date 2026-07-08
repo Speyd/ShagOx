@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Roles.Update;
+﻿using ShagOxServer.Application.DTOs.Roles.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Roles.Update;
 public interface IRoleUpdateService

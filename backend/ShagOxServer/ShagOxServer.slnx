@@ -3,4 +3,5 @@
   <Project Path="ShagOxServer.Application/ShagOxServer.Application.csproj" />
   <Project Path="ShagOxServer.Domain/ShagOxServer.Domain.csproj" />
   <Project Path="ShagOxServer.Infrastructure/ShagOxServer.Infrastructure.csproj" />
+  <Project Path="ShagOxServer.SharedKernel/ShagOxServer.SharedKernel.csproj" />
 </Solution>

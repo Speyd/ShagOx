@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
+using ShagOxServer.Domain.Filters.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Category;
 
@@ -21,15 +23,16 @@ public class CategoryQueriesController : ControllerBase
 
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
     }
 
-    [HttpGet("by-product-type/{type}")]
+    [HttpGet("by-product-type")]
     public async Task<IActionResult> GetByProductType(
-        [FromRoute] ProductType type)
+        [FromQuery] ProductType type)
     {
         var result = await _queryService.GetByProductTypeAsync(type);
         return result.ToActionResult();
@@ -40,6 +43,15 @@ public class CategoryQueriesController : ControllerBase
         [FromQuery] string name)
     {
         var result = await _queryService.GetByNameAsync(name);
+        return result.ToActionResult();
+    }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> Search(
+       [FromQuery] CategorySearchFilter filter,
+       [FromQuery] PaginationParams pagination)
+    {
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

@@ -5,7 +5,7 @@ using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Advertisements.Create;
 using ShagOxServer.Application.Interfaces.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Advertisements.Update;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 
@@ -30,21 +30,24 @@ public class AdvertisementAdminCommandsController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Add(
-        AdvertisementCreateRequest request)
+        [FromBody] AdvertisementCreateRequest request)
     {
         var result = await _createService.CreateAdvertisementAsync(request);
         return result.ToActionResult();
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var result = await _deleteService.DeleteAdvertisementAsync(id);
         return result.ToActionResult();
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, AdvertisementUpdateRequest request)
+    public async Task<IActionResult> Update(
+        [FromRoute] int id,
+        [FromBody] AdvertisementUpdateRequest request)
     {
         var result = await _updateService.UpdateAdvertisementAsync(id, request);
         return result.ToActionResult();

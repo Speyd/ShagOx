@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Update;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 
@@ -31,14 +31,17 @@ public class AttributeDefinitionCommandsController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> Create(AttributeDefinitionCreateRequest request)
+    public async Task<IActionResult> Create(
+        [FromBody] AttributeDefinitionCreateRequest request)
     {
         var result = await _createService.CreateAttributeDefinitionAsync(request);
         return result.ToActionResult();
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, AttributeDefinitionUpdateRequest request)
+    public async Task<IActionResult> Update(
+        [FromRoute] int id,
+        [FromBody] AttributeDefinitionUpdateRequest request)
     {
         var result = await _updateService.UpdateAttributeDefinitionAsync(id, request);
         return result.ToActionResult();
@@ -46,7 +49,8 @@ public class AttributeDefinitionCommandsController : ControllerBase
 
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var result = await _deleteService.DeleteAttributeDefinitionAsync(id);
         return result.ToActionResult();

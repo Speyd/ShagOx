@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShagOxServer.Domain.Entities;
@@ -23,14 +24,34 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
             v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, (JsonSerializerOptions?)null)!
         );
 
-        builder.Property(x => x.Properties)
+        var comparer = new ValueComparer<Dictionary<string, string>>(
+            (a, b) => JsonSerializer.Serialize(a, (JsonSerializerOptions?)null)
+                      == JsonSerializer.Serialize(b, (JsonSerializerOptions?)null),
+
+            v => v == null
+                ? 0
+                : JsonSerializer.Serialize(v, (JsonSerializerOptions?)null).GetHashCode(),
+
+            v => JsonSerializer.Deserialize<Dictionary<string, string>>(
+                JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                (JsonSerializerOptions?)null)!
+        );
+
+        var property = builder.Property(x => x.Properties)
             .HasConversion(converter)
             .HasColumnType("jsonb")
             .IsRequired();
 
+        property.Metadata.SetValueComparer(comparer);
+
         builder.HasOne(x => x.Currency)
                .WithMany(x => x.Advertisements)
                .HasForeignKey(x => x.CurrencyId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Condition)
+               .WithMany(x => x.Advertisements)
+               .HasForeignKey(x => x.ConditionId)
                .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Category)
@@ -51,13 +72,16 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
         builder.HasIndex(x => x.SellerId);
         builder.HasIndex(x => x.CategoryId);
         builder.HasIndex(x => x.CurrencyId);
+        builder.HasIndex(x => x.ConditionId);
 
-        builder.HasIndex(x => x.Price);
         builder.HasIndex(x => x.CreatedAt);
         builder.HasIndex(x => x.Popularity);
+        builder.HasIndex(x => x.Price);
 
-        builder.HasIndex(x => new { x.CategoryId, x.Price });
         builder.HasIndex(x => new { x.CategoryId, x.CreatedAt });
         builder.HasIndex(x => new { x.CategoryId, x.Popularity });
+        builder.HasIndex(x => new { x.CategoryId, x.Price });
+        builder.HasIndex(x => new { x.CategoryId, x.ConditionId, x.CreatedAt });
+        builder.HasIndex(x => new { x.SellerId, x.CreatedAt });
     }
 }

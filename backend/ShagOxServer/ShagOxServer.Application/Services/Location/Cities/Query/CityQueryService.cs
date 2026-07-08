@@ -1,18 +1,19 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.Common.Results.Extensions;
-using ShagOxServer.Application.DTOs.Location.Cities;
+﻿using ShagOxServer.Application.DTOs.Location.Cities;
 using ShagOxServer.Application.Interfaces.Location.Cities.Query;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
-using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Query;
 public class CityQueryService : ICityQueryService
 {
-    private readonly ICityRepository _repository;
+    private readonly ICityQueryRepository _repository;
 
     public CityQueryService(
-        ICityRepository cityRepository)
+        ICityQueryRepository cityRepository)
     {
         _repository = cityRepository;
     }
@@ -33,10 +34,18 @@ public class CityQueryService : ICityQueryService
 
     public async Task<Result<List<CityDto>>> GetByRegionAsync(
         int regionId,
-        int page = 1,
-        int pageSize = 20)
+        PaginationParams pagination)
     {
-        var cities = await _repository.GetByRegionAsync(regionId);
+        var cities = await _repository.GetByRegionAsync(regionId, pagination);
+
+        return cities.ToResultList(CityMapper.ToDto);
+    }
+
+    public async Task<Result<List<CityDto>>> Search(
+       CitySearchFilter filter,
+       PaginationParams pagination)
+    {
+        var cities = await _repository.Search(filter, pagination);
 
         return cities.ToResultList(CityMapper.ToDto);
     }

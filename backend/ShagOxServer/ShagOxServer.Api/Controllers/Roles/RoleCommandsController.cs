@@ -4,13 +4,13 @@ using ShagOxServer.Application.DTOs.Roles.Update;
 using ShagOxServer.Application.Interfaces.Roles.Create;
 using ShagOxServer.Application.Interfaces.Roles.Delete;
 using ShagOxServer.Application.Interfaces.Roles.Update;
-using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.DTOs.Roles.Create;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Role;
 
 [ApiController]
-[Route("api/admin/role")]
+[Route("api/admin/roles")]
 [Authorize(Roles = "Admin")]
 public class RoleCommandsController : ControllerBase
 {
@@ -40,8 +40,8 @@ public class RoleCommandsController : ControllerBase
     [Authorize]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
-        int id, 
-        RoleUpdateRequest request)
+        [FromRoute] int id,
+        [FromBody] RoleUpdateRequest request)
     {
         var result = await _updateService.UpdateRoleAsync(id, request);
         return result.ToActionResult();
@@ -49,7 +49,8 @@ public class RoleCommandsController : ControllerBase
 
     [Authorize]
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var result = await _deleteService.DeleteRoleAsync(id);
         return result.ToActionResult();

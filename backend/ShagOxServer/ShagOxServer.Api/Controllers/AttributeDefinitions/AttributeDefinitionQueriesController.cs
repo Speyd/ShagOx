@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Query;
+using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 
@@ -19,16 +21,26 @@ public class AttributeDefinitionQueriesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
     }
 
     [HttpGet("by-category/{categoryId:int}")]
-    public async Task<IActionResult> GetByName(int categoryId)
+    public async Task<IActionResult> GetByName(
+        [FromRoute] int categoryId)
     {
         var result = await _queryService.GetByCategoryAsync(categoryId);
+        return result.ToActionResult();
+    }
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchByKey(
+        [FromQuery] AttributeDefinitionSearchFilter filter,
+        [FromQuery] PaginationParams pagination)
+    {
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

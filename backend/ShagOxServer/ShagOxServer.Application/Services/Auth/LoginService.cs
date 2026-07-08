@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using ShagOxServer.Application.Common.Results;
 using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Auth;
 using ShagOxServer.Application.Interfaces.Common.Validators;
 using ShagOxServer.Application.Interfaces.Jwt;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth;
 public class LoginService : ILoginService
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUserQueryRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
     private readonly IJwtService _jwtService;
 
     public LoginService(
-        IUserRepository userRepository,
+        IUserQueryRepository userRepository,
         IPasswordHasher<User> passwordHasher,
         IContactValidator contactValidator,
         IJwtService jwtService)
@@ -26,7 +26,7 @@ public class LoginService : ILoginService
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
         _jwtService = jwtService; 
-    }
+    } 
 
     public async Task<Result<LoginResponse>> LoginAsync(LoginRequest request)
     {

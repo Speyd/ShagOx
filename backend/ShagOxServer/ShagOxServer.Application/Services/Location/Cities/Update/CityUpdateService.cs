@@ -1,18 +1,22 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Location.Cities.Update;
+﻿using ShagOxServer.Application.DTOs.Location.Cities.Update;
 using ShagOxServer.Application.Interfaces.Location.Cities.Update;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Update;
 public class CityUpdateService : ICityUpdateService
 {
     private readonly ICityRepository _repository;
+    private readonly ICityExistsRepository _existsrepository;
 
     public CityUpdateService(
-        ICityRepository cityRepository)
+        ICityRepository cityRepository,
+        ICityExistsRepository cityExistsRepository)
     {
         _repository = cityRepository;
+        _existsrepository = cityExistsRepository;
+
     }
 
     public async Task<Result<CityUpdateResponse>> UpdateCityAsync(
@@ -30,7 +34,7 @@ public class CityUpdateService : ICityUpdateService
         if (regionId == city.RegionId && name == city.Name)
             return Result<CityUpdateResponse>.Fail("Nothing to update");
 
-        var exists = await _repository.ExistsAsync(regionId, name);
+        var exists = await _existsrepository.ExistsAsync(regionId, name);
 
         if (exists)
             return Result<CityUpdateResponse>.AlreadyExists("City");

@@ -1,0 +1,21 @@
+﻿using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Filters.Specification.Conditions;
+
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Extensions;
+public static class ConditionFilterExtensions
+{
+    public static IQueryable<Condition> Filter(
+       this IQueryable<Condition> query,
+       ConditionSearchFilter filter)
+    {
+        if (filter is null)
+            return query;
+
+        if (!string.IsNullOrWhiteSpace(filter.Name))
+        {
+            query = query.Where(u => u.Name.Contains(filter.Name));
+        }
+
+        return query;
+    }
+}

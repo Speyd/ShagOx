@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Advertisements.Query;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.Domain.Filters.Advertisements;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements;
 
@@ -18,34 +20,35 @@ public class AdvertisementQueriesController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAll(
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20)
+        [FromQuery] PaginationParams pagination)
     {
-        page = Math.Max(1, page);
-        pageSize = Math.Clamp(pageSize, 1, 100);
-
-        var result = await _queryService.GetAllAsync(page, pageSize);
+        var result = await _queryService.GetAllAsync(pagination);
         return result.ToActionResult();
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
     {
         var result = await _queryService.GetByIdAsync(id);
         return result.ToActionResult();
     }
 
     [HttpGet("category/{categoryId:int}")]
-    public async Task<IActionResult> GetByCategory(int categoryId)
+    public async Task<IActionResult> GetByCategory(
+        [FromRoute] int categoryId,
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetByCategoryAsync(categoryId);
+        var result = await _queryService.GetByCategoryAsync(categoryId, pagination);
         return result.ToActionResult();
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> Search(string query)
+    public async Task<IActionResult> SearchByTitle(
+        [FromQuery] AdvertisementSearchFilter filter,
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.SearchAsync(query);
+        var result = await _queryService.Search(filter, pagination);
         return result.ToActionResult();
     }
 }

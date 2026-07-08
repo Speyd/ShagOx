@@ -1,25 +1,24 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
-using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;
 public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateService
 {
     private readonly IAttributeDefinitionRepository _attributeRepository;
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ICategoryExistsRepository _categoryExistsRepository;
 
 
 
     public AttributeDefinitionUpdateService(
         IAttributeDefinitionRepository attributeRepository,
-        ICategoryRepository categoryRepository)
+        ICategoryExistsRepository categoryExistsRepository)
     {
         _attributeRepository = attributeRepository;
-        _categoryRepository = categoryRepository;
+        _categoryExistsRepository = categoryExistsRepository;
     }
 
     public async Task<Result<AttributeDefinitionUpdateResponse>> UpdateAttributeDefinitionAsync(
@@ -31,7 +30,7 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
             return Result<AttributeDefinitionUpdateResponse>.NotFound("Attribute Definition");
 
         if (request.CategoryId is not null &&
-            !await _categoryRepository.ExistsIdAsync(request.CategoryId.Value))
+            !await _categoryExistsRepository.ExistsIdAsync(request.CategoryId.Value))
         {
             return Result<AttributeDefinitionUpdateResponse>.NotFound("Category");
         }

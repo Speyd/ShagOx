@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Application.Common.Results;
-using ShagOxServer.Application.DTOs.Roles.Delete;
+﻿using ShagOxServer.Application.DTOs.Roles.Delete;
 using ShagOxServer.Application.Interfaces.Roles.Delete;
-using ShagOxServer.Infrastructure.Interfaces.Auth;
+using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Roles.Delete;
 public class RoleDeleteService : IRoleDeleteService
@@ -18,7 +18,7 @@ public class RoleDeleteService : IRoleDeleteService
     {
         var role = await _repository.GetByIdAsync(id);
         if (role is null)
-            return Result<RoleDeleteResponse>.NotFound("Advertisement");
+            return Result<RoleDeleteResponse>.NotFound("Role");
 
         await _repository.DeleteAsync(role);
         return Result<RoleDeleteResponse>.Success(

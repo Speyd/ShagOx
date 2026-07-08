@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Users.Update;
 using ShagOxServer.Application.Interfaces.Users.Delete;
 using ShagOxServer.Application.Interfaces.Users.Query;
 using ShagOxServer.Application.Interfaces.Users.Update;
-using ShagOxServer.Application.Common.Results.Extensions;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users.Admin;
 
@@ -25,14 +25,17 @@ public class UserAdminCommandsController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(
+        [FromRoute] int id)
     {
         var result = await _deleteService.DeleteUserAsync(id);
         return result.ToActionResult();
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, UserUpdateRequest request)
+    public async Task<IActionResult> Update(
+        [FromRoute] int id,
+        [FromBody] UserUpdateRequest request)
     {
         var result = await _updateService.UpdateUserAsync(id, request);
         return result.ToActionResult();

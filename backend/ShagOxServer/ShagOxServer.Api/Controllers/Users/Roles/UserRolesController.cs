@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
-using ShagOxServer.Application.Interfaces.UserRoles;
+using ShagOxServer.Application.Interfaces.Roles.Query;
 using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users.Roles;
 
@@ -10,40 +11,35 @@ namespace ShagOxServer.Api.Controllers.Users.Roles;
 [Route("api/users")]
 public class UserRolesController : ControllerBase
 {
-    private readonly IUserQueryService _queryService;
-    private readonly IUserRoleService _queryUserRoleService;
+    private readonly IUserQueryService _userService;
+    private readonly IRoleQueryService _roleService;
 
     public UserRolesController(
         IUserQueryService queryService,
-        IUserRoleService queryUserRoleService)
+        IRoleQueryService roleService)
     {
-        _queryService = queryService;
-        _queryUserRoleService = queryUserRoleService;
+        _userService = queryService;
+        _roleService = roleService;
     }
 
     [Authorize]
     [HttpGet("me/role")]
-    public async Task<IActionResult> GetMyRole()
+    public async Task<IActionResult> GetMyRole(
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetMyProfileAsync();
+        var result = await _userService.GetMyRoleAsync(pagination);
 
-        if (!result.IsSuccess || result.Value is null)
-            return BadRequest(result.Error);
-
-        var roles = result.Value.Roles;
-        return Ok(roles);
+        return result.ToActionResult();
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpGet("{id:int}/roles")]
-    public async Task<IActionResult> GetUserRoles(int id)
+    [HttpGet("{userId:int}/roles")]
+    public async Task<IActionResult> GetUserRoles(
+        [FromRoute] int userId,
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetByIdAsync(id);
+        var result = await _roleService.GetByUserIdAsync(userId, pagination);
 
-        if (!result.IsSuccess || result.Value is null)
-            return BadRequest(result.Error);
-
-        var roles = result.Value.Roles;
-        return Ok(roles);
+        return result.ToActionResult();
     }
 }

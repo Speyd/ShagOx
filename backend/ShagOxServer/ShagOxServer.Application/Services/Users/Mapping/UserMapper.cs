@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Roles;
 using ShagOxServer.Application.DTOs.Users;
+using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Users.Mapping;
@@ -14,8 +15,7 @@ public static class UserMapper
             user.Phone,
             user.Email,
             user.Avatar,
-            user.CityId,
-            user.City?.Name ?? "Unknown city name",
+            CityMapper.ToDto(user.City),
             MapRoles(user.UserRoles),
             user.LastSeenAt,
             user.RegisteredAt

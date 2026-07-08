@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Common.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users.Admin;
 
@@ -28,7 +28,8 @@ public class UserAdminQueriesController : ControllerBase
     }
 
     [HttpGet("by-city/{cityId:int}")]
-    public async Task<IActionResult> GetByCity(int cityId)
+    public async Task<IActionResult> GetByCity(
+        [FromRoute] int cityId)
     {
         var result = await _queryService.GetByCityAsync(cityId);
         return result.ToActionResult();

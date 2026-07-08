@@ -7,7 +7,7 @@ public class City : BaseEntity
 {
     public string Name { get; set; } = "";
     public int RegionId { get; set; }
-    public Region? Region { get; set; } = null;
+    public Region Region { get; set; } = null!;
 
     public List<User> Users { get; set; } = new List<User>();
 

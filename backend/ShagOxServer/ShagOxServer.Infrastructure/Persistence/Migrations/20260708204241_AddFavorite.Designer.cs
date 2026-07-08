@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ShagOxServer.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260707163117_AddFavorite")]
+    [Migration("20260708204241_AddFavorite")]
     partial class AddFavorite
     {
         /// <inheritdoc />
@@ -222,7 +222,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("UserId", "AdvertisementId")
                         .IsUnique();
 
-                    b.ToTable("Favorite");
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", b =>

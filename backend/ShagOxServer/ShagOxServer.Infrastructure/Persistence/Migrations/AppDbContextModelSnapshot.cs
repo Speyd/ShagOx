@@ -219,7 +219,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("UserId", "AdvertisementId")
                         .IsUnique();
 
-                    b.ToTable("Favorite");
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", b =>

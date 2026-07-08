@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Images;
 [ApiController]
 [Route("api/images")]
 [Authorize]
-public class ImageCommandsController : ControllerBase
+public class ImageCommandsController : ApiController
 {
     private readonly IImageCreateService _createService;
     private readonly IImageUpdateService _updateService;

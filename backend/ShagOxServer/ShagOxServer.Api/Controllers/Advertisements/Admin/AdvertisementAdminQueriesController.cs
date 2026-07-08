@@ -10,7 +10,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 [ApiController]
 [Route("api/admin/advertisements")]
 [Authorize(Roles = "Admin")]
-public class AdvertisementAdminQueriesController : ControllerBase
+public class AdvertisementAdminQueriesController : ApiController
 {
     private readonly IAdvertisementQueryService _queryAdvertService;
     private readonly IUserAdminQueryService _queryUserService;

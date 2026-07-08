@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Conditions;
 [ApiController]
 [Route("api/admin/conditions")]
 [Authorize(Roles = "Admin")]
-public class ConditionCommandsController : ControllerBase
+public class ConditionCommandsController : ApiController
 {
     private readonly IConditionCreateService _createService;
     private readonly IConditionUpdateService _updateService;

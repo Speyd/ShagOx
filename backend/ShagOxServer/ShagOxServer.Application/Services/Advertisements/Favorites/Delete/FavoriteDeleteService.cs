@@ -16,11 +16,14 @@ public class FavoriteDeleteService : IFavoriteDeleteService
     }
 
     public async Task<Result<FavoriteDeleteResponse>> DeleteFavoriteAsync(
-        int id)
+        int id, int userId)
     {
         var favorite = await _repository.GetByIdAsync(id);
         if (favorite is null)
             return Result<FavoriteDeleteResponse>.NotFound("Favorite");
+
+        if (userId != favorite.UserId)
+            return Result<FavoriteDeleteResponse>.Forbidden();
 
         await _repository.DeleteAsync(favorite);
         return Result<FavoriteDeleteResponse>.Success(

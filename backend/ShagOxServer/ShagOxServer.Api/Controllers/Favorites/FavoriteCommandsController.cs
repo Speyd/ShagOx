@@ -6,14 +6,13 @@ using ShagOxServer.Application.Interfaces.Advertisements.Favorites.Create;
 using ShagOxServer.Application.Interfaces.Advertisements.Favorites.Delete;
 using ShagOxServer.Application.Interfaces.Advertisements.Favorites.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using System.Security.Claims;
 
 namespace ShagOxServer.Api.Controllers.Favorites;
 
 [ApiController]
 [Route("api/favorite")]
 [Authorize]
-public class FavoriteCommandsController : ControllerBase
+public class FavoriteCommandsController : ApiController
 {
     private readonly IFavoriteCreateService _createService;
     private readonly IFavoriteUpdateService _updateService;
@@ -34,10 +33,7 @@ public class FavoriteCommandsController : ControllerBase
     public async Task<IActionResult> Create(
         [FromBody] FavoriteCreateRequest request)
     {
-        var userId = int.Parse(
-           User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
-        if (request.UserId != userId)
+        if (request.UserId != UserId)
             return Forbid();
 
         var result = await _createService.CreateFavoriteAsync(request);
@@ -49,16 +45,18 @@ public class FavoriteCommandsController : ControllerBase
         [FromRoute] int id,
         [FromBody] FavoriteUpdateRequest request)
     {
+        if (request.UserId != UserId)
+            return Forbid();
+
         var result = await _updateService.UpdateFavoriteAsync(id, request);
         return result.ToActionResult();
     }
-
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteFavoriteAsync(id);
+        var result = await _deleteService.DeleteFavoriteAsync(id, UserId);
         return result.ToActionResult();
     }
 }

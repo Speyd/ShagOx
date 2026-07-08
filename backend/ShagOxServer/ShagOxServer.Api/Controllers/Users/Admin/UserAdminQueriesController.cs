@@ -8,7 +8,7 @@ namespace ShagOxServer.Api.Controllers.Users.Admin;
 [ApiController]
 [Route("api/admin/users")]
 [Authorize(Roles = "Admin")]
-public class UserAdminQueriesController : ControllerBase
+public class UserAdminQueriesController : ApiController
 {
     private readonly IUserAdminQueryService _queryService;
 

@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Category;
 [ApiController]
 [Route("api/admin/categories")]
 [Authorize(Roles = "Admin")]
-public class CategoryCommandsController : ControllerBase
+public class CategoryCommandsController : ApiController
 {
     private readonly ICategoryCreateService _createService;
     private readonly ICategoryUpdateService _updateService;

@@ -10,7 +10,7 @@ namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 [ApiController]
 [Route("api/admin/attributes")]
 [Authorize(Roles = "Admin")]
-public class AttributeDefinitionQueriesController : ControllerBase
+public class AttributeDefinitionQueriesController : ApiController
 {
     private readonly IAttributeDefinitionQueryService _queryService;
 

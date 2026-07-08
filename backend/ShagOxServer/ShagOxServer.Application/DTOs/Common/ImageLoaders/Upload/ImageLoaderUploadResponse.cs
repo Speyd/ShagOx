@@ -1,6 +1,6 @@
-﻿namespace ShagOxServer.Application.DTOs.Common.ImageLoaders;
-public sealed record ImageLoaderResponse
+﻿namespace ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
+public sealed record ImageLoaderUploadResponse
 (
-    int PublicId,
+    string PublicId,
     string Url
 );

@@ -10,6 +10,7 @@ public static class ImageMapper
             image.Id,
             image.Url,
             image.Order,
+            image.PublicId,
             image.AdvertisementId
         );
     }

@@ -1,20 +1,56 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Http;
+using ShagOxServer.Application.DTOs.Common.ImageLoaders.Delete;
+using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
 using ShagOxServer.Application.Interfaces.Common.ImageLoaders;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Common.ImageLoaders;
-
 public class CloudinaryService : IImageLoader
 {
-    public Task DeleteAsync(string publicId)
+    private readonly Cloudinary _cloudinary;
+
+
+    public CloudinaryService(Cloudinary cloudinary)
     {
-        throw new NotImplementedException();
+        _cloudinary = cloudinary;
     }
 
-    public Task<(string Url, string PublicId)> UploadAsync(IFormFile file)
+
+    public async Task<Result<ImageLoaderDeleteResponse>> DeleteAsync(
+        string publicId)
     {
-        throw new NotImplementedException();
+        var deleteParams = new DeletionParams(publicId);
+
+        await _cloudinary.DestroyAsync(deleteParams);
+
+        return Result<ImageLoaderDeleteResponse>.Success(
+           new ImageLoaderDeleteResponse(
+                publicId,
+                DateTime.UtcNow
+               )
+           );
+    }
+
+    public async Task<Result<ImageLoaderUploadResponse>> UploadAsync(
+        IFormFile file)
+    {
+        await using var stream = file.OpenReadStream();
+
+        var uploadParams = new ImageUploadParams
+        {
+            File = new FileDescription(
+                file.FileName,
+                stream)
+        };
+
+        var result = await _cloudinary.UploadAsync(uploadParams);
+        return Result<ImageLoaderUploadResponse>.Success(
+            new ImageLoaderUploadResponse(
+                result.PublicId,
+                 result.SecureUrl.ToString()
+                )
+            );
     }
 }

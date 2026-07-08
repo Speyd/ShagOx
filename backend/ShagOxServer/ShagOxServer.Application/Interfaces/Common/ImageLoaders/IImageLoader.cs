@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ShagOxServer.Application.DTOs.Common.ImageLoaders.Delete;
+using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Common.ImageLoaders;
 public interface IImageLoader
 {
-    Task<(string Url, string PublicId)> UploadAsync(IFormFile file);
+    Task<Result<ImageLoaderUploadResponse>> UploadAsync(IFormFile file);
 
-    Task DeleteAsync(string publicId);
+    Task<Result<ImageLoaderDeleteResponse>> DeleteAsync(string publicId);
 }

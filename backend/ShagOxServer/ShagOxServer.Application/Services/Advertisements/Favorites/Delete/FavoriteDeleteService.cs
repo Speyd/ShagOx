@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Delete;
-using ShagOxServer.Application.Interfaces.Advertisements.Favorites.Delete;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements.Favorites;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Delete;

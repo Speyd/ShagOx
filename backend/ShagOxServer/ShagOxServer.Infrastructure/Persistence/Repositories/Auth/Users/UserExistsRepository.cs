@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 public class UserExistsRepository : BaseRepository, IUserExistsRepository

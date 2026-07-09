@@ -1,8 +1,8 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities;
-using ShagOxServer.Application.Interfaces.Location.Cities.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Domain.Filters.Location.Cities;
-using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

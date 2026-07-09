@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using System.Security.Claims;
 
 namespace ShagOxServer.Api.Middleware;

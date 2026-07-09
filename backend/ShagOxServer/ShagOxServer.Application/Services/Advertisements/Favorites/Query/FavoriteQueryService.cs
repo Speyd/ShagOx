@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites;
-using ShagOxServer.Application.Interfaces.Advertisements.Favorites.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements.Favorites;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

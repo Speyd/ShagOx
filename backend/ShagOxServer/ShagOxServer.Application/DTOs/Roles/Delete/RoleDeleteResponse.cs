@@ -1,6 +1,6 @@
 ﻿namespace ShagOxServer.Application.DTOs.Roles.Delete;
 public sealed record RoleDeleteResponse
 (
-     int Id,
+    int Id,
     DateTime DeleteTime
 );

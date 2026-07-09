@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;

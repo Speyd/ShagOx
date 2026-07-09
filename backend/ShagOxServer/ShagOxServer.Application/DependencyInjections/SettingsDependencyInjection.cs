@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Jwt;
+using ShagOxServer.Application.Interfaces.Services.Jwt;
 
 namespace ShagOxServer.Application.DependencyInjection;
 

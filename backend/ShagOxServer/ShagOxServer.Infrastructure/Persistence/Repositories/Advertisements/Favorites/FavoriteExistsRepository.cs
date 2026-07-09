@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Infrastructure.Interfaces.Advertisements.Favorites;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites;
 public class FavoriteExistsRepository : BaseRepository, IFavoriteExistsRepository

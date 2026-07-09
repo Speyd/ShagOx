@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Regions.Create;
-using ShagOxServer.Application.Interfaces.Location.Regions.Create;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
+using ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
 using ShagOxServer.Domain.Entities.Location;
-using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Create;

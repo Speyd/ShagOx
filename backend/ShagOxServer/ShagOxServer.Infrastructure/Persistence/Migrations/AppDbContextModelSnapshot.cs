@@ -391,6 +391,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("integer");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("text");

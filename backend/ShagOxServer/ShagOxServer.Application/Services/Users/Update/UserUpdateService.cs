@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Users.Update;
-using ShagOxServer.Application.Interfaces.Users.Update;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Services.Users.Update;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 

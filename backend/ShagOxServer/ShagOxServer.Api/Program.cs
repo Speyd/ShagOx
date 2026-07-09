@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddDatabase(builder.Configuration)
     .AddJWT(builder.Configuration)
+    .AddCloudinary(builder.Configuration)
     .AddFrontendPolicy()
     .AddControllersWithJson()
     .AddSwaggerDocumentation()

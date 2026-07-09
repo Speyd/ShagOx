@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Users.Delete;
-using ShagOxServer.Application.Interfaces.Users.Delete;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Services.Users.Delete;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Users.Delete;

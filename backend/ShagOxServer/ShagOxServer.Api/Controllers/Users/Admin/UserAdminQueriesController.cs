@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.Application.Interfaces.Services.Users.Query;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users.Admin;
@@ -8,7 +8,7 @@ namespace ShagOxServer.Api.Controllers.Users.Admin;
 [ApiController]
 [Route("api/admin/users")]
 [Authorize(Roles = "Admin")]
-public class UserAdminQueriesController : ControllerBase
+public class UserAdminQueriesController : ApiController
 {
     private readonly IUserAdminQueryService _queryService;
 

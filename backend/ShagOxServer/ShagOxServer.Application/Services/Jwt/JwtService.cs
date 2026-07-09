@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ShagOxServer.Application.Common.Settings;
-using ShagOxServer.Application.Interfaces.Jwt;
+using ShagOxServer.Application.Interfaces.Services.Jwt;
 using ShagOxServer.Domain.Entities.Account;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

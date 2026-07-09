@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 

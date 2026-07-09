@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
-using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Location.Cities.Query;
+using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -10,7 +10,7 @@ namespace ShagOxServer.Api.Controllers.Cities;
 [ApiController]
 [Route("api/admin/cities")]
 [Authorize(Roles = "Admin")]
-public class CityQueriesController : ControllerBase
+public class CityQueriesController : ApiController
 {
     private readonly ICityQueryService _queryService;
 

@@ -1,15 +1,15 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Update;
-using ShagOxServer.Application.Interfaces.Advertisements.Update;
-using ShagOxServer.Domain.Entities;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Update;

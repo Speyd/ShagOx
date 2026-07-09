@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Common.Validators;
+﻿using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using System;
 using System.Text.RegularExpressions;
 

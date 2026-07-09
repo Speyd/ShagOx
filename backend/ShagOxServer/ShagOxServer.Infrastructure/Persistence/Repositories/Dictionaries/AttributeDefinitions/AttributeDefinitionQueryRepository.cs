@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;

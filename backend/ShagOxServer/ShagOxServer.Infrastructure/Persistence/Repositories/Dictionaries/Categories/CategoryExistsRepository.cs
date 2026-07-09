@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
 public class CategoryExistsRepository : BaseRepository, ICategoryExistsRepository

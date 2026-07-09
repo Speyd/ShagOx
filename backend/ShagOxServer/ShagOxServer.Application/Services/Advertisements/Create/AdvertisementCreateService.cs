@@ -1,15 +1,16 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Create;
-using ShagOxServer.Application.Interfaces.Advertisements.Create;
-using ShagOxServer.Domain.Entities;
+using ShagOxServer.Application.DTOs.Specification.Images.Create;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Create;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Create;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Currencies;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create;
@@ -20,21 +21,22 @@ public class AdvertisementCreateService : IAdvertisementCreateService
     private readonly ICurrencyRepository _currencyRepository;
     private readonly ICategoryRepository _categoryRepository;
     private readonly IConditionRepository _conditionRepository;
-    private readonly IImageQueryRepository _imageRepository;
+    private readonly IImageCreateService _imageService;
+
 
     public AdvertisementCreateService(
         IAdvertisementRepository advertisementRepository,
         IUserRepository userRepository,
         ICurrencyRepository currencyRepository,
         ICategoryRepository categoryRepository,
-        IImageQueryRepository imageRepository,
+        IImageCreateService imageService,
         IConditionRepository conditionRepository)
     {
         _advertisementRepository = advertisementRepository;
         _userRepository = userRepository;
         _currencyRepository = currencyRepository;
         _categoryRepository = categoryRepository;
-        _imageRepository = imageRepository;
+        _imageService = imageService;
         _conditionRepository = conditionRepository;
     }
 
@@ -46,11 +48,24 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         if (!validation.IsSuccess)
             return Result<AdvertisementCreateResponse>.Fail(validation.Error!);
 
-        var (seller, currency, condition, category, images) = validation.Value!;
+        var (seller, currency, condition, category) = validation.Value!;
 
-        var advert = CreateAdvertisement(images, request);
+
+        var advert = CreateAdvertisement(request);
 
         await _advertisementRepository.AddAsync(advert);
+
+        //TODO: Make Transaction
+        var images = await Task.WhenAll(
+             request.Images.Select(async i =>
+             {
+                 var result = await _imageService.CreateFromFileAsync(
+                     new ImageFileCreateRequest(i, advert.Id)
+                 );
+
+                 return result.Value;
+             })
+        );
 
         var response = new AdvertisementCreateResponse(
             advert.Id,
@@ -64,46 +79,34 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         User seller,
         Currency currency,
         Condition condition,
-        Category category,
-    List<Image> images)>> ValidateAsync(
+        Category category)>> ValidateAsync(
         AdvertisementCreateRequest request)
     {
         var seller = await _userRepository.GetByIdAsync(request.SellerId);
         if (seller is null)
-            return Result<(User, Currency, Condition, Category, List<Image>)>
+            return Result<(User, Currency, Condition, Category)>
                 .NotFound("Seller");
 
         var currency = await _currencyRepository.GetByIdAsync(request.CurrencyId);
         if (currency is null)
-            return Result<(User, Currency, Condition, Category, List<Image>)>
+            return Result<(User, Currency, Condition, Category)>
                 .NotFound("Currency");
 
         var condition = await _conditionRepository.GetByIdAsync(request.ConditionId);
         if (condition is null)
-            return Result<(User, Currency, Condition, Category, List<Image>)>
+            return Result<(User, Currency, Condition, Category)>
                 .NotFound("Condition");
 
         var category = await _categoryRepository.GetByIdAsync(request.CategoryId);
         if (category is null)
-            return Result<(User, Currency, Condition, Category, List<Image>)>
+            return Result<(User, Currency, Condition, Category)>
                 .NotFound("Category");
 
-        var images = await _imageRepository.GetByIdsAsync(request.Images);
-
-        if (images.Count != request.Images.Count)
-        {
-            var missing = request.Images.Except(images.Select(x => x.Id));
-
-            return Result<(User, Currency, Condition, Category, List<Image>)>
-                .NotFound($"Images: {string.Join(", ", missing)}");
-        }
-
-        return Result<(User, Currency, Condition, Category, List<Image>)>
-            .Success((seller, currency, condition, category, images));
+        return Result<(User, Currency, Condition, Category)>
+            .Success((seller, currency, condition, category));
     }
 
     private Advertisement CreateAdvertisement(
-        List<Image> images,
         AdvertisementCreateRequest request)
     {
         return new Advertisement
@@ -115,8 +118,6 @@ public class AdvertisementCreateService : IAdvertisementCreateService
             CurrencyId = request.CurrencyId,
             CategoryId = request.CategoryId,
             SellerId = request.SellerId,
-
-            Images = images,
 
             Properties = request.Properties ?? new()
         };

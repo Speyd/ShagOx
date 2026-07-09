@@ -12,6 +12,10 @@ public class ImageConfiguration : IEntityTypeConfiguration<Image>
                .IsRequired()
                .HasColumnType("text");
 
+        builder.Property(x => x.PublicId)
+               .IsRequired()
+               .HasMaxLength(255);
+
         builder.HasOne(x => x.Advertisement)
            .WithMany(x => x.Images)
            .HasForeignKey(x => x.AdvertisementId)

@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Auth.Register;
-using ShagOxServer.Application.Interfaces.Auth;
+using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Auth;
 
 [ApiController]
 [Route("auth")]
-public class AuthController : ControllerBase
+public class AuthController : ApiController
 {
     private readonly IRegisterService _registerService;
     private readonly ILoginService _loginService;

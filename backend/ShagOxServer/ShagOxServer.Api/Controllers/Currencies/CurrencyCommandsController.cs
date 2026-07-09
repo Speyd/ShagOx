@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
-using ShagOxServer.Application.Interfaces.Specification.Currencies.Create;
-using ShagOxServer.Application.Interfaces.Specification.Currencies.Delete;
-using ShagOxServer.Application.Interfaces.Specification.Currencies.Update;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Create;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Delete;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Currencies;
@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Currencies;
 [ApiController]
 [Route("api/admin/currencies")]
 [Authorize(Roles = "Admin")]
-public class CurrencyCommandsController : ControllerBase
+public class CurrencyCommandsController : ApiController
 {
     private readonly ICurrencyCreateService _createService;
     private readonly ICurrencyUpdateService _updateService;

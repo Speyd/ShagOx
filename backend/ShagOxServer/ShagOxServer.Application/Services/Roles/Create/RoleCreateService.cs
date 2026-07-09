@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Roles.Create;
-using ShagOxServer.Application.Interfaces.Roles.Create;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
+using ShagOxServer.Application.Interfaces.Services.Roles.Create;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Roles.Create;

@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Advertisements;
 namespace ShagOxServer.Domain.Entities.Specification;
 
 public class Currency : BaseEntity

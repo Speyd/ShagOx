@@ -1,4 +1,6 @@
-﻿namespace ShagOxServer.Application.DTOs.Advertisements.Create;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace ShagOxServer.Application.DTOs.Advertisements.Create;
 public sealed record AdvertisementCreateRequest
 (
     string Title,
@@ -9,6 +11,6 @@ public sealed record AdvertisementCreateRequest
     int ConditionId,
     int CategoryId,
     int SellerId,
-    List<int> Images,
+    List<IFormFile> Images,
     Dictionary<string, string>? Properties = null
 );

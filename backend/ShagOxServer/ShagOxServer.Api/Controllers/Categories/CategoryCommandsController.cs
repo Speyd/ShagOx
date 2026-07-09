@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
-using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Create;
-using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Delete;
-using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Update;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Create;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Category;
@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Category;
 [ApiController]
 [Route("api/admin/categories")]
 [Authorize(Roles = "Admin")]
-public class CategoryCommandsController : ControllerBase
+public class CategoryCommandsController : ApiController
 {
     private readonly ICategoryCreateService _createService;
     private readonly ICategoryUpdateService _updateService;

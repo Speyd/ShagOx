@@ -1,8 +1,8 @@
 ﻿using ShagOxServer.Application.DTOs.Roles;
-using ShagOxServer.Application.Interfaces.Roles.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
+using ShagOxServer.Application.Interfaces.Services.Roles.Query;
 using ShagOxServer.Application.Services.Roles.Mapping;
 using ShagOxServer.Domain.Filters.Roles;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

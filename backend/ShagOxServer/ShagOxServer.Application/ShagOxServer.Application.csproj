@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.29.2" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.11" />
@@ -16,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShagOxServer.Domain\ShagOxServer.Domain.csproj" />
-    <ProjectReference Include="..\ShagOxServer.Infrastructure\ShagOxServer.Infrastructure.csproj" />
     <ProjectReference Include="..\ShagOxServer.SharedKernel\ShagOxServer.SharedKernel.csproj" />
   </ItemGroup>
 

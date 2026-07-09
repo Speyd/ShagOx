@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Specification.Currencies.Query;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Query;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -10,7 +10,7 @@ namespace ShagOxServer.Api.Controllers.Currencies;
 [ApiController]
 [Route("api/admin/currencies")]
 [Authorize(Roles = "Admin")]
-public class CurrencyQueriesController : ControllerBase
+public class CurrencyQueriesController : ApiController
 {
     private readonly ICurrencyQueryService _queryService;
 

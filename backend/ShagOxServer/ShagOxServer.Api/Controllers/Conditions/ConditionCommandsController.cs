@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
-using ShagOxServer.Application.Interfaces.Specification.Conditions.Create;
-using ShagOxServer.Application.Interfaces.Specification.Conditions.Delete;
-using ShagOxServer.Application.Interfaces.Specification.Conditions.Update;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Create;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Delete;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Conditions;
@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Conditions;
 [ApiController]
 [Route("api/admin/conditions")]
 [Authorize(Roles = "Admin")]
-public class ConditionCommandsController : ControllerBase
+public class ConditionCommandsController : ApiController
 {
     private readonly IConditionCreateService _createService;
     private readonly IConditionUpdateService _updateService;

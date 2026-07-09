@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
-using ShagOxServer.Infrastructure.Interfaces.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 

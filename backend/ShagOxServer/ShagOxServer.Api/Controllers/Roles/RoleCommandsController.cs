@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Roles.Update;
-using ShagOxServer.Application.Interfaces.Roles.Create;
-using ShagOxServer.Application.Interfaces.Roles.Delete;
-using ShagOxServer.Application.Interfaces.Roles.Update;
 using ShagOxServer.Application.DTOs.Roles.Create;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.Application.Interfaces.Services.Roles.Create;
+using ShagOxServer.Application.Interfaces.Services.Roles.Delete;
+using ShagOxServer.Application.Interfaces.Services.Roles.Update;
 
 namespace ShagOxServer.Api.Controllers.Role;
 
 [ApiController]
 [Route("api/admin/roles")]
 [Authorize(Roles = "Admin")]
-public class RoleCommandsController : ControllerBase
+public class RoleCommandsController : ApiController
 {
     private readonly IRoleCreateService _createService;
     private readonly IRoleUpdateService _updateService;

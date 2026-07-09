@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Query;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Query;
 using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -10,7 +10,7 @@ namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 [ApiController]
 [Route("api/admin/attributes")]
 [Authorize(Roles = "Admin")]
-public class AttributeDefinitionQueriesController : ControllerBase
+public class AttributeDefinitionQueriesController : ApiController
 {
     private readonly IAttributeDefinitionQueryService _queryService;
 

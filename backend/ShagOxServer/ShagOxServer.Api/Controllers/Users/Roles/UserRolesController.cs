@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Roles.Query;
-using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.Application.Interfaces.Services.Roles.Query;
+using ShagOxServer.Application.Interfaces.Services.Users.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -9,7 +9,7 @@ namespace ShagOxServer.Api.Controllers.Users.Roles;
 
 [ApiController]
 [Route("api/users")]
-public class UserRolesController : ControllerBase
+public class UserRolesController : ApiController
 {
     private readonly IUserQueryService _userService;
     private readonly IRoleQueryService _roleService;

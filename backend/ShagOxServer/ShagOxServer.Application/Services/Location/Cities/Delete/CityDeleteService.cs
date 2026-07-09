@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities.Delete;
-using ShagOxServer.Application.Interfaces.Location.Cities.Delete;
-using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Delete;

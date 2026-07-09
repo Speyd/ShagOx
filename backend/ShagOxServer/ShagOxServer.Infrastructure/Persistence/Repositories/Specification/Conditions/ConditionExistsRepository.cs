@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
 public class ConditionExistsRepository : BaseRepository, IConditionExistsRepository

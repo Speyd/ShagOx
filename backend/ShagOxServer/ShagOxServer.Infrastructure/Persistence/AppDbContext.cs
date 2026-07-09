@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Specification;
@@ -23,13 +23,14 @@ public class AppDbContext : DbContext
     public DbSet<Image> Images { get; set; }
 
     public DbSet<Advertisement> Advertisements { get; set; }
-
+    public DbSet<Favorite> Favorites { get; set; }
 
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

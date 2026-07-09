@@ -116,7 +116,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisement", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -196,6 +196,30 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("CategoryId", "ConditionId", "CreatedAt");
 
                     b.ToTable("Advertisements");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Favorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AdvertisementId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertisementId");
+
+                    b.HasIndex("UserId", "AdvertisementId")
+                        .IsUnique();
+
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", b =>
@@ -367,6 +391,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("integer");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("text");
@@ -408,7 +437,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisement", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Buyer")
                         .WithMany("BoughtAdvertisements")
@@ -450,6 +479,25 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Seller");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Favorite", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "Advertisement")
+                        .WithMany("Favorites")
+                        .HasForeignKey("AdvertisementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "User")
+                        .WithMany("Favorites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Advertisement");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Category", "Category")
@@ -474,7 +522,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Image", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Advertisement", "Advertisement")
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "Advertisement")
                         .WithMany("Images")
                         .HasForeignKey("AdvertisementId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -492,13 +540,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                 {
                     b.Navigation("BoughtAdvertisements");
 
+                    b.Navigation("Favorites");
+
                     b.Navigation("SoldAdvertisements");
 
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisement", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
                 {
+                    b.Navigation("Favorites");
+
                     b.Navigation("Images");
                 });
 

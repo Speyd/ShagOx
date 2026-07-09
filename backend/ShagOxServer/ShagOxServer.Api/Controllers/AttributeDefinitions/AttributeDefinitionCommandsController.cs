@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
-using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Create;
-using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Delete;
-using ShagOxServer.Application.Interfaces.Dictionaries.AttributeDefinitions.Update;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Create;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 [ApiController]
 [Route("api/admin/attributes")]
 [Authorize(Roles = "Admin")]
-public class AttributeDefinitionCommandsController : ControllerBase
+public class AttributeDefinitionCommandsController : ApiController
 {
     private readonly IAttributeDefinitionCreateService _createService;
     private readonly IAttributeDefinitionUpdateService _updateService;

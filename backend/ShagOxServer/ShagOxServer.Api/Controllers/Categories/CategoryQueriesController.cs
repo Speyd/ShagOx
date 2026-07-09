@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Query;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -11,7 +11,7 @@ namespace ShagOxServer.Api.Controllers.Category;
 [ApiController]
 [Route("api/admin/categories")]
 [Authorize(Roles = "Admin")]
-public class CategoryQueriesController : ControllerBase
+public class CategoryQueriesController : ApiController
 {
     private readonly ICategoryQueryService _queryService;
 

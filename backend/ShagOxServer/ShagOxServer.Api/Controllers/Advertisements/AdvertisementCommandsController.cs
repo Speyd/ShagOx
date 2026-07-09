@@ -2,19 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Advertisements.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Update;
-using ShagOxServer.Application.Interfaces.Advertisements.Create;
-using ShagOxServer.Application.Interfaces.Advertisements.Delete;
-using ShagOxServer.Application.Interfaces.Advertisements.Update;
-using ShagOxServer.Application.Interfaces.Users.Query;
-using System.Security.Claims;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Create;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Delete;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
+using ShagOxServer.Application.Interfaces.Services.Users.Query;
 
 namespace ShagOxServer.Api.Controllers.Advertisements;
 
 [ApiController]
 [Route("api/advertisements")]
 [Authorize]
-public class AdvertisementCommandsController : ControllerBase
+public class AdvertisementCommandsController : ApiController
 {
     private readonly IAdvertisementCreateService _createService;
     private readonly IAdvertisementUpdateService _updateService;
@@ -38,10 +37,7 @@ public class AdvertisementCommandsController : ControllerBase
     public async Task<IActionResult> Create(
         [FromBody] AdvertisementCreateRequest request)
     {
-        var userId = int.Parse(
-            User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
-        if (request.SellerId != userId)
+        if (request.SellerId != UserId)
             return Forbid();
 
         var result = await _createService.CreateAdvertisementAsync(request);
@@ -76,9 +72,7 @@ public class AdvertisementCommandsController : ControllerBase
 
     private async Task<IActionResult?> CheckAccess(int advertisementId)
     {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
-        var isOwner = await _userService.IsAdvertisementOwnerAsync(userId, advertisementId);
+        var isOwner = await _userService.IsAdvertisementOwnerAsync(UserId, advertisementId);
 
         if (!isOwner)
             return Forbid();

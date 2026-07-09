@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Location.Regions.Query;
+using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 using ShagOxServer.Domain.Filters.Location.Regions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -10,7 +10,7 @@ namespace ShagOxServer.Api.Controllers.Regions;
 [ApiController]
 [Route("api/admin/regions")]
 [Authorize(Roles = "Admin")]
-public class RegionQueriesController : ControllerBase
+public class RegionQueriesController : ApiController
 {
     private readonly IRegionQueryService _queryService;
 

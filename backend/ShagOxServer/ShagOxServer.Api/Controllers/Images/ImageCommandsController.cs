@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Specification.Images.Create;
 using ShagOxServer.Application.DTOs.Specification.Images.Update;
-using ShagOxServer.Application.Interfaces.Specification.Images.Create;
-using ShagOxServer.Application.Interfaces.Specification.Images.Delete;
-using ShagOxServer.Application.Interfaces.Specification.Images.Update;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Create;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Delete;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Images;
@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Images;
 [ApiController]
 [Route("api/images")]
 [Authorize]
-public class ImageCommandsController : ControllerBase
+public class ImageCommandsController : ApiController
 {
     private readonly IImageCreateService _createService;
     private readonly IImageUpdateService _updateService;
@@ -32,9 +32,9 @@ public class ImageCommandsController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] ImageCreateRequest request)
+        [FromBody] ImageFileCreateRequest request)
     {
-        var result = await _createService.CreateImageAsync(request);
+        var result = await _createService.CreateFromFileAsync(request);
         return result.ToActionResult();
     }
 
@@ -46,7 +46,6 @@ public class ImageCommandsController : ControllerBase
         var result = await _updateService.UpdateImageAsync(id, request);
         return result.ToActionResult();
     }
-
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Advertisements.Query;
-using ShagOxServer.Application.Interfaces.Users.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Query;
+using ShagOxServer.Application.Interfaces.Services.Users.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -9,7 +9,7 @@ namespace ShagOxServer.Api.Controllers.Users.Advertisements;
 
 [ApiController]
 [Route("api/users/{userId:int}/advertisements")]
-public class UserAdvertisementsController : ControllerBase
+public class UserAdvertisementsController : ApiController
 {
     private readonly IAdvertisementQueryService _queryService;
     private readonly IUserAdminQueryService _userQuery;

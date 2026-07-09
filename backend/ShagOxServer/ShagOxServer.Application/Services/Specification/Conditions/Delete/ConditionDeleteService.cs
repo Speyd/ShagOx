@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Delete;
-using ShagOxServer.Application.Interfaces.Specification.Conditions.Delete;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Delete;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Delete;

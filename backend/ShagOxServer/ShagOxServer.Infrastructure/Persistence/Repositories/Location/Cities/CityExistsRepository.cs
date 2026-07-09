@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Infrastructure.Interfaces.Location.Cities;
-
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 public class CityExistsRepository : BaseRepository, ICityExistsRepository
 {

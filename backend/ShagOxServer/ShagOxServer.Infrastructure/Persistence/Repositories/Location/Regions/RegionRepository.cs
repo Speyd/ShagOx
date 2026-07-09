@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Domain.Entities.Location;
-using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 public class RegionRepository : BaseRepository, IRegionRepository

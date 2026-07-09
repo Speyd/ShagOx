@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Specification.Images.Query;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Query;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Images;
 
 [ApiController]
 [Route("api/images")]
-public class ImageQueriesController : ControllerBase
+public class ImageQueriesController : ApiController
 {
     private readonly IImageQueryService _queryService;
 

@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Regions.Update;
-using ShagOxServer.Application.Interfaces.Location.Regions.Update;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
+using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
 using ShagOxServer.Domain.Entities.Location;
-using ShagOxServer.Infrastructure.Interfaces.Location.Regions;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Update;

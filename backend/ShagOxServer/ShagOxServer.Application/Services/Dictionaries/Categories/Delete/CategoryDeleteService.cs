@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Delete;
-using ShagOxServer.Application.Interfaces.Dictionaries.Categories.Delete;
-using ShagOxServer.Infrastructure.Interfaces.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Delete;

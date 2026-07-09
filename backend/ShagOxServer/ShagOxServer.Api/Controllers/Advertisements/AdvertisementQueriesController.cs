@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Advertisements.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Query;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -8,7 +8,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements;
 
 [ApiController]
 [Route("api/advertisements")]
-public class AdvertisementQueriesController : ControllerBase
+public class AdvertisementQueriesController : ApiController
 {
     private readonly IAdvertisementQueryService _queryService;
 

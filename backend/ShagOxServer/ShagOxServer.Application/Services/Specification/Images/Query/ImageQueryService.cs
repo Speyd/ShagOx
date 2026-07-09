@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Images;
-using ShagOxServer.Application.Interfaces.Specification.Images.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
+using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Query;
 using ShagOxServer.Application.Services.Specification.Images.Mapping;
-using ShagOxServer.Infrastructure.Interfaces.Specification.Images;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 

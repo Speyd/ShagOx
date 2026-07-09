@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Users;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 

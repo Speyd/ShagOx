@@ -24,11 +24,15 @@ public static class UserMapper
 
     private static List<RoleDto> MapRoles(List<UserRole> userRoles)
     {
+        if(userRoles is null)
+            return new List<RoleDto>();
+
         return userRoles
-            .Select(x => new RoleDto(
-                x.Role!.Id,
-                x.Role.Name,
-                x.Role.Description))
-            .ToList();
+         .Where(x => x.Role != null)
+         .Select(x => new RoleDto(
+             x.Role!.Id,
+             x.Role.Name,
+             x.Role.Description))
+         .ToList();
     }
 }

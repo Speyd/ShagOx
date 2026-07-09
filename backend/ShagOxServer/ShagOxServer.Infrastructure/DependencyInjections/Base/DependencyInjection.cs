@@ -11,6 +11,7 @@ public static class DependencyInjection
             .AddLocationInfrastructure()
             .AddAdvertisementsInfrastructure()
             .AddSpecificationInfrastructure()
-            .AddDictionariesInfrastructure();
+            .AddDictionariesInfrastructure()
+            .AddCloudinary();
     }
 }

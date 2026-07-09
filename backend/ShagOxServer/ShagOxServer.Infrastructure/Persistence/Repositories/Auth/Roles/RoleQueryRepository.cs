@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Roles;
-using ShagOxServer.Infrastructure.Interfaces.Auth.Roles;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 

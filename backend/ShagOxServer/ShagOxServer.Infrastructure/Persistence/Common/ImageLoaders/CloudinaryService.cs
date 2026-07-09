@@ -22,7 +22,7 @@ public class CloudinaryService : IImageLoaderService
         string publicId)
     {
         if (string.IsNullOrWhiteSpace(publicId))
-            Result<ImageLoaderDeleteResponse>.Fail("PublicId is incorrect");
+            return Result<ImageLoaderDeleteResponse>.Fail("PublicId is incorrect");
 
         var deleteParams = new DeletionParams(publicId);
         await _cloudinary.DestroyAsync(deleteParams);

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Advertisements.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Update;
-using System.Security.Claims;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Delete;

@@ -32,7 +32,7 @@ public class ImageCommandsController : ApiController
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] ImageFileCreateRequest request)
+        [FromForm] ImageFileCreateRequest request)
     {
         var result = await _createService.CreateFromFileAsync(request);
         return result.ToActionResult();

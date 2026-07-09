@@ -6,12 +6,12 @@ using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Common.ImageLoaders;
-public class CloudinaryService : IImageLoaderService
+namespace ShagOxServer.Infrastructure.ExternalServices.ImageStorage;
+public class CloudinaryImageLoader : IImageLoaderService
 {
     private readonly Cloudinary _cloudinary;
 
-    public CloudinaryService(
+    public CloudinaryImageLoader(
         Cloudinary cloudinary)
     {
         _cloudinary = cloudinary;

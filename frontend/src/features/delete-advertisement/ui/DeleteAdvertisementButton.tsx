@@ -1,5 +1,6 @@
-import Button from "@/shared/ui/Button";
 import { useDeleteAdvertisement } from "../hooks/useDeleteAdvertisement";
+import { Trash2 } from "lucide-react";
+import IconButton from "@/shared/ui/IconButton/IconButton";
 
 type DeleteAdvertisementButtonProps = {
   id: number;
@@ -15,8 +16,11 @@ export default function DeleteAdvertisementButton({
   };
 
   return (
-    <div>
-      <Button onClick={() => handleDelete()}>Видалити оголошення</Button>
-    </div>
+    <IconButton
+      onClick={() => handleDelete()}
+      disabled={deleteMutation.isPending}
+    >
+      <Trash2 size={20} />
+    </IconButton>
   );
 }

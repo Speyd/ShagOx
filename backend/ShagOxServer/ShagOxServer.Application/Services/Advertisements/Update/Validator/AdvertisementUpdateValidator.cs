@@ -5,9 +5,9 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Advertisements;
+namespace ShagOxServer.Application.Services.Advertisements.Update.Validator;
 
-public class AdvertisementValidator
+public class AdvertisementUpdateValidator
 {
     private readonly IUserRepository _userRepository;
     private readonly ICurrencyRepository _currencyRepository;
@@ -15,7 +15,7 @@ public class AdvertisementValidator
     private readonly IConditionRepository _conditionRepository;
 
 
-    public AdvertisementValidator(
+    public AdvertisementUpdateValidator(
         IUserRepository userRepository,
         ICurrencyRepository currencyRepository,
         ICategoryRepository categoryRepository,

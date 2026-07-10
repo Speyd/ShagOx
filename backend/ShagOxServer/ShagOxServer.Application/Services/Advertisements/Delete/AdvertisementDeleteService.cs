@@ -64,20 +64,4 @@ public class AdvertisementDeleteService : IAdvertisementDeleteService
            )
        );
     }
-
-    private async Task RecalculateImagesOrderAsync(
-        int advertisementId)
-    {
-        var images = await _imageQueryRepository
-            .GetByAdvertisementIdAsync(advertisementId);
-
-
-        var order = 0;
-
-        foreach (var image in images.OrderBy(x => x.Order))
-        {
-            image.Order = order;
-            order++;
-        }
-    }
 }

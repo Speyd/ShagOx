@@ -38,7 +38,7 @@ public class FavoriteQueriesController : ApiController
 
     [Authorize]
     [HttpGet("me")]
-    public async Task<IActionResult> GetByUserIdAsync(
+    public async Task<IActionResult> GetMyfavorite(
        [FromQuery] PaginationParams pagination
        )
     {

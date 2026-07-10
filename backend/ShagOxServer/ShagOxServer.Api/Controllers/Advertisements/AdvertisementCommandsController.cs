@@ -35,7 +35,7 @@ public class AdvertisementCommandsController : ApiController
     
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] AdvertisementCreateRequest request)
+        [FromForm] AdvertisementCreateRequest request)
     {
         if (request.SellerId != UserId)
             return Forbid();

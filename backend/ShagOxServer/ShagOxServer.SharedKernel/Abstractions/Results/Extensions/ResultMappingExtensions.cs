@@ -1,6 +1,4 @@
-﻿using ShagOxServer.SharedKernel.Abstractions.Results;
-
-namespace ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+﻿namespace ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 public static class ResultMappingExtensions
 {
     public static Result<TDto> ToResult<T, TDto>(
@@ -21,7 +19,7 @@ public static class ResultMappingExtensions
       string errorMessage = "Not found")
       where T : class
     {
-        if (entities is null || !entities.Any())
+        if (entities is null)
             return Result<List<TDto>>.Fail(errorMessage);
 
         return Result<List<TDto>>.Success(

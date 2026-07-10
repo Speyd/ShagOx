@@ -56,16 +56,12 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         await _advertisementRepository.AddAsync(advert);
 
         //TODO: Make Transaction
-        var images = await Task.WhenAll(
-             request.Images.Select(async i =>
-             {
-                 var result = await _imageService.CreateFromFileAsync(
-                     new ImageFileCreateRequest(i, advert.Id)
-                 );
-
-                 return result.Value;
-             })
-        );
+        foreach (var image in request.Images)
+        {
+            await _imageService.CreateFromFileAsync(
+                new ImageFileCreateRequest(image, advert.Id)
+            );
+        }
 
         var response = new AdvertisementCreateResponse(
             advert.Id,

@@ -5,9 +5,9 @@ public interface IAttributeDefinitionRepository
 {
     Task<AttributeDefinition?> GetByIdAsync(int id);
 
-    Task AddAsync(AttributeDefinition attribute);
+    void Add(AttributeDefinition attribute);
 
-    Task<bool> UpdateAsync(AttributeDefinition attribute);
+    bool Update(AttributeDefinition attribute);
 
-    Task DeleteAsync(AttributeDefinition attribute);
+    void Delete(AttributeDefinition attribute);
 }

@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Delete;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -7,11 +8,15 @@ namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.De
 public class AttributeDefinitionDeleteService : IAttributeDefinitionDeleteService
 {
     private readonly IAttributeDefinitionRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
+
 
     public AttributeDefinitionDeleteService(
-        IAttributeDefinitionRepository attributeRepository)
+        IAttributeDefinitionRepository attributeRepository,
+        IUnitOfWork unitOfWork)
     {
         _repository = attributeRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<AttributeDefinitionDeleteResponse>> DeleteAttributeDefinitionAsync(
@@ -21,7 +26,17 @@ public class AttributeDefinitionDeleteService : IAttributeDefinitionDeleteServic
         if (attribute is null)
             return Result<AttributeDefinitionDeleteResponse>.NotFound("Attribute Definition");
 
-        await _repository.DeleteAsync(attribute);
+        try
+        {
+            _repository.Add(attribute);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         return Result<AttributeDefinitionDeleteResponse>.Success(
            new AttributeDefinitionDeleteResponse(

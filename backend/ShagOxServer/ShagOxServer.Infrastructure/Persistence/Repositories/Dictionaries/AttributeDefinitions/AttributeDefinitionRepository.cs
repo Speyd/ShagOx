@@ -15,25 +15,19 @@ public class AttributeDefinitionRepository : BaseRepository, IAttributeDefinitio
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddAsync(AttributeDefinition attribute)
+    public void Add(AttributeDefinition attribute)
     {
-        await _db.AttributeDefinitions.AddAsync(attribute);
-
-        await _db.SaveChangesAsync();
+        _db.AttributeDefinitions.Add(attribute);
     }
 
-    public async Task<bool> UpdateAsync(AttributeDefinition attribute)
+    public bool Update(AttributeDefinition attribute)
     {
         _db.AttributeDefinitions.Update(attribute);
-
-        await _db.SaveChangesAsync();
         return true;
     }
 
-    public async Task DeleteAsync(AttributeDefinition attribute)
+    public void Delete(AttributeDefinition attribute)
     {
         _db.AttributeDefinitions.Remove(attribute);
-
-        await _db.SaveChangesAsync();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Create;
@@ -10,13 +11,17 @@ public class AttributeDefinitionCreateService : IAttributeDefinitionCreateServic
 {
     private readonly IAttributeDefinitionRepository _attributeRepository;
     private readonly ICategoryExistsRepository _categoryExistsRepository;
+    private readonly IUnitOfWork _unitOfWork;
+
 
     public AttributeDefinitionCreateService(
         IAttributeDefinitionRepository attributeRepository,
-        ICategoryExistsRepository categoryExistsRepository)
+        ICategoryExistsRepository categoryExistsRepository,
+        IUnitOfWork unitOfWork)
     {
         _attributeRepository = attributeRepository;
         _categoryExistsRepository = categoryExistsRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<AttributeDefinitionCreateResponse>> CreateAttributeDefinitionAsync(
@@ -27,7 +32,18 @@ public class AttributeDefinitionCreateService : IAttributeDefinitionCreateServic
             return Result<AttributeDefinitionCreateResponse>.NotFound("Category");
 
         var attribute = CreateAttributeDefinition(request);
-        await _attributeRepository.AddAsync(attribute);
+
+        try
+        {
+            _attributeRepository.Add(attribute);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         var response = new AttributeDefinitionCreateResponse(
             attribute.Id,

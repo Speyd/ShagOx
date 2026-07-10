@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Update;
 using ShagOxServer.Domain.Entities.Specification;
@@ -8,11 +9,14 @@ namespace ShagOxServer.Application.Services.Specification.Conditions.Update;
 public class ConditionUpdateService : IConditionUpdateService
 {
     private readonly IConditionRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ConditionUpdateService(
-        IConditionRepository conditionRepository)
+        IConditionRepository conditionRepository,
+        IUnitOfWork unitOfWork)
     {
         _repository = conditionRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<ConditionUpdateResponse>> UpdateConditionAsync(
@@ -33,7 +37,20 @@ public class ConditionUpdateService : IConditionUpdateService
         if (updatedCount == 0)
             return Result<ConditionUpdateResponse>.Success(result);
 
-        await _repository.UpdateAsync(condition);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _repository.UpdateAsync(condition);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
+
 
         return Result<ConditionUpdateResponse>.Success(result);
     }

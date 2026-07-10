@@ -5,7 +5,7 @@ public interface IAdvertisementRepository
 {
     Task<Advertisement?> GetByIdAsync(int id);
 
-    Task AddAsync(Advertisement advertisement);
+    void AddAsync(Advertisement advertisement);
 
     void DeleteAsync(Advertisement advertisement);
 

@@ -15,9 +15,9 @@ public class ImageRepository : BaseRepository, IImageRepository
             .FirstOrDefaultAsync(i => i.Id == id);
     }
 
-    public async Task AddAsync(Image image)
+    public void AddAsync(Image image)
     {
-        await _db.Images.AddAsync(image);
+        _db.Images.Add(image);
     }
 
     public bool UpdateAsync(Image image)

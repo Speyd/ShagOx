@@ -21,7 +21,7 @@ public class CurrencyDeleteService : ICurrencyDeleteService
         if (currency is null)
             return Result<CurrencyDeleteResponse>.NotFound("Currency");
 
-        await _repository.DeleteAsync(currency);
+        _repository.DeleteAsync(currency);
         return Result<CurrencyDeleteResponse>.Success(
           new CurrencyDeleteResponse(
               currency.Id,

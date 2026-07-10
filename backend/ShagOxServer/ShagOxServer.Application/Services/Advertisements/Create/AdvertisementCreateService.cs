@@ -48,9 +48,6 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         if (!validation.IsSuccess)
             return Result<AdvertisementCreateResponse>.Fail(validation.Error!);
 
-        var (seller, currency, condition, category) = validation.Value!;
-
-
         var advert = CreateAdvertisement(request);
 
         await _advertisementRepository.AddAsync(advert);
@@ -71,35 +68,31 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         return Result<AdvertisementCreateResponse>.Success(response);
     }
 
-    private async Task<Result<(
-        User seller,
-        Currency currency,
-        Condition condition,
-        Category category)>> ValidateAsync(
+    private async Task<Result<bool>> ValidateAsync(
         AdvertisementCreateRequest request)
     {
         var seller = await _userRepository.GetByIdAsync(request.SellerId);
         if (seller is null)
-            return Result<(User, Currency, Condition, Category)>
+            return Result<bool>
                 .NotFound("Seller");
 
         var currency = await _currencyRepository.GetByIdAsync(request.CurrencyId);
         if (currency is null)
-            return Result<(User, Currency, Condition, Category)>
+            return Result<bool>
                 .NotFound("Currency");
 
         var condition = await _conditionRepository.GetByIdAsync(request.ConditionId);
         if (condition is null)
-            return Result<(User, Currency, Condition, Category)>
+            return Result<bool>
                 .NotFound("Condition");
 
         var category = await _categoryRepository.GetByIdAsync(request.CategoryId);
         if (category is null)
-            return Result<(User, Currency, Condition, Category)>
+            return Result<bool>
                 .NotFound("Category");
 
-        return Result<(User, Currency, Condition, Category)>
-            .Success((seller, currency, condition, category));
+        return Result<bool>
+            .Success(true);
     }
 
     private Advertisement CreateAdvertisement(
@@ -113,6 +106,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
 
             CurrencyId = request.CurrencyId,
             CategoryId = request.CategoryId,
+            ConditionId = request.ConditionId,
             SellerId = request.SellerId,
 
             Properties = request.Properties ?? new()

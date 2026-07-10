@@ -3,7 +3,6 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Services.Roles.Create;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Roles.Create;
@@ -11,6 +10,7 @@ public class RoleCreateService : IRoleCreateService
 {
     private readonly IRoleRepository _repository;
     private readonly IRoleExistsRepository _existsRepository;
+
     private readonly IUnitOfWork _unitOfWork;
 
 

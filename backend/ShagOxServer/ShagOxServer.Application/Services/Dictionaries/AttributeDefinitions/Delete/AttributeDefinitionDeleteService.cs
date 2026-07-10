@@ -8,6 +8,7 @@ namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.De
 public class AttributeDefinitionDeleteService : IAttributeDefinitionDeleteService
 {
     private readonly IAttributeDefinitionRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
 
 
@@ -25,6 +26,8 @@ public class AttributeDefinitionDeleteService : IAttributeDefinitionDeleteServic
         var attribute = await _repository.GetByIdAsync(id);
         if (attribute is null)
             return Result<AttributeDefinitionDeleteResponse>.NotFound("Attribute Definition");
+
+        await _unitOfWork.BeginTransactionAsync();
 
         try
         {

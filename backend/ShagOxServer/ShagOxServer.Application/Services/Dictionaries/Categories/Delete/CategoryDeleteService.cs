@@ -8,6 +8,7 @@ namespace ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
 public class CategoryDeleteService : ICategoryDeleteService
 {
     private readonly ICategoryRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
 
     public CategoryDeleteService(
@@ -24,6 +25,8 @@ public class CategoryDeleteService : ICategoryDeleteService
         var category = await _repository.GetByIdAsync(id);
         if (category is null)
             return Result<CategoryDeleteResponse>.NotFound("Category");
+
+        await _unitOfWork.BeginTransactionAsync();
 
         try
         {

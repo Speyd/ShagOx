@@ -10,7 +10,9 @@ namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Up
 public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateService
 {
     private readonly IAttributeDefinitionRepository _attributeRepository;
+
     private readonly ICategoryExistsRepository _categoryExistsRepository;
+
     private readonly IUnitOfWork _unitOfWork;
 
 
@@ -46,6 +48,8 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
 
         if (updatedCount == 0)
             return Result<AttributeDefinitionUpdateResponse>.Success(result);
+
+        await _unitOfWork.BeginTransactionAsync();
 
         try
         {

@@ -13,8 +13,11 @@ namespace ShagOxServer.Application.Services.Dictionaries.Categories.Create;
 public class CategoryCreateService : ICategoryCreateService
 {
     private readonly ICategoryRepository _categoryRepository;
+
     private readonly IAttributeDefinitionQueryRepository _attributeRepository;
+
     private readonly IAdvertisementQueryRepository _advertisementRepository;
+
     private readonly IUnitOfWork _unitOfWork;
 
 
@@ -56,6 +59,8 @@ public class CategoryCreateService : ICategoryCreateService
         }
 
         var category = CreateCategory(attributes, advertisements, request);
+
+        await _unitOfWork.BeginTransactionAsync();
 
         try
         {

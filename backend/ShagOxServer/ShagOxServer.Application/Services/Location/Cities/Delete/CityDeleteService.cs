@@ -8,6 +8,7 @@ namespace ShagOxServer.Application.Services.Location.Cities.Delete;
 public class CityDeleteService : ICityDeleteService
 {
     private readonly ICityRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
 
     public CityDeleteService(

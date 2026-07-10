@@ -10,6 +10,7 @@ public class AdvertisementDeleteService : IAdvertisementDeleteService
 {
     private readonly IAdvertisementRepository _repository;
     private readonly IAdvertisementQueryRepository _repositoryQuery;
+
     private readonly IImageDeleteService _imageService;
 
     private readonly IUnitOfWork _unitOfWork;

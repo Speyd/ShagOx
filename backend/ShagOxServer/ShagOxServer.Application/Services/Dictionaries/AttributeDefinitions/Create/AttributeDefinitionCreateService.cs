@@ -10,7 +10,9 @@ namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Cr
 public class AttributeDefinitionCreateService : IAttributeDefinitionCreateService
 {
     private readonly IAttributeDefinitionRepository _attributeRepository;
+
     private readonly ICategoryExistsRepository _categoryExistsRepository;
+
     private readonly IUnitOfWork _unitOfWork;
 
 
@@ -32,6 +34,8 @@ public class AttributeDefinitionCreateService : IAttributeDefinitionCreateServic
             return Result<AttributeDefinitionCreateResponse>.NotFound("Category");
 
         var attribute = CreateAttributeDefinition(request);
+
+        await _unitOfWork.BeginTransactionAsync();
 
         try
         {

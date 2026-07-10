@@ -8,6 +8,7 @@ namespace ShagOxServer.Application.Services.Location.Regions.Delete;
 public class RegionDeleteService : IRegionDeleteService
 {
     private readonly IRegionRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
 
     public RegionDeleteService(

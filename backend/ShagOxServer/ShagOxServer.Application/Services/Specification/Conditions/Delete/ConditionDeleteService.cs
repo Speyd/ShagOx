@@ -8,6 +8,7 @@ namespace ShagOxServer.Application.Services.Specification.Conditions.Delete;
 public class ConditionDeleteService : IConditionDeleteService
 {
     private readonly IConditionRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
 
     public ConditionDeleteService(

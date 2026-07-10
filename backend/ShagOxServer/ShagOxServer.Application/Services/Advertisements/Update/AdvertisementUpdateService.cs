@@ -6,7 +6,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Create;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Delete;
@@ -18,9 +17,13 @@ namespace ShagOxServer.Application.Services.Advertisements.Update;
 public class AdvertisementUpdateService : IAdvertisementUpdateService
 {
     private readonly IAdvertisementRepository _advertisementRepository;
+
     private readonly IUserRepository _userRepository;
+
     private readonly ICurrencyRepository _currencyRepository;
+
     private readonly ICategoryRepository _categoryRepository;
+
     private readonly IConditionRepository _conditionRepository;
 
     private readonly IImageCreateService _imageCreateService;

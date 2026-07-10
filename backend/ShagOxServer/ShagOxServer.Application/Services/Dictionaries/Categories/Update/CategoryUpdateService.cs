@@ -12,8 +12,11 @@ namespace ShagOxServer.Application.Services.Dictionaries.Categories.Update;
 public class CategoryUpdateService : ICategoryUpdateService
 {
     private readonly ICategoryRepository _categoryRepository;
+
     private readonly IAttributeDefinitionQueryRepository _attributeRepository;
+
     private readonly IAdvertisementQueryRepository _advertisementRepository;
+
     private readonly IUnitOfWork _unitOfWork;
 
 
@@ -53,6 +56,8 @@ public class CategoryUpdateService : ICategoryUpdateService
 
         if (updatedCount == 0)
             return Result<CategoryUpdateResponse>.Success(result);
+
+        await _unitOfWork.BeginTransactionAsync();
 
         try
         {

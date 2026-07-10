@@ -17,12 +17,18 @@ namespace ShagOxServer.Application.Services.Advertisements.Create;
 public class AdvertisementCreateService : IAdvertisementCreateService
 {
     private readonly IAdvertisementRepository _advertisementRepository;
+
     private readonly IUserRepository _userRepository;
+
     private readonly ICurrencyRepository _currencyRepository;
+
     private readonly ICategoryRepository _categoryRepository;
+
     private readonly IConditionRepository _conditionRepository;
+
     private readonly IImageCreateService _imageService;
     private readonly IImageLoaderService _loaderService;
+
     private readonly IUnitOfWork _unitOfWork;
 
 

@@ -9,6 +9,7 @@ namespace ShagOxServer.Application.Services.Roles.Update;
 public class RoleUpdateService : IRoleUpdateService
 {
     private readonly IRoleRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
 
     public RoleUpdateService(

@@ -12,9 +12,11 @@ public class ImageCreateService : IImageCreateService
 {
     private readonly IImageRepository _imageRepository;
     private readonly IImageQueryRepository _imageQueryRepository;
-    private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IImageLoaderService _loaderService;
 
+    private readonly IAdvertisementRepository _advertisementRepository;
+
+    
     public ImageCreateService(
         IImageRepository imageRepository,
         IImageQueryRepository imageQueryRepository,

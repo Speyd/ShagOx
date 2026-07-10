@@ -9,6 +9,7 @@ namespace ShagOxServer.Application.Services.Specification.Conditions.Create;
 public class ConditionCreateService : IConditionCreateService
 {
     private readonly IConditionRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
 
 

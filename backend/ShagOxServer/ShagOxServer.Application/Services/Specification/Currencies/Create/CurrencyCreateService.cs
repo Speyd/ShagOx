@@ -10,6 +10,7 @@ public class CurrencyCreateService : ICurrencyCreateService
 {
     private readonly ICurrencyRepository _repository;
     private readonly ICurrencyExistsRepository _existsRepository;
+
     private readonly IUnitOfWork _unitOfWork;
 
 

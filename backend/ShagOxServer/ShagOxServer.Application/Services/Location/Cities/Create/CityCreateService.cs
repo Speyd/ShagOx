@@ -10,7 +10,9 @@ namespace ShagOxServer.Application.Services.Location.Cities.Create;
 public class CityCreateService : ICityCreateService
 {
     private readonly ICityRepository _cityRepository;
+
     private readonly IRegionRepository _regionRepository;
+
     private readonly IUnitOfWork _unitOfWork;
 
 

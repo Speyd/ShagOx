@@ -6,11 +6,11 @@ using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Update;
-
 public class RegionUpdateService : IRegionUpdateService
 {
     private readonly IRegionRepository _repository;
     private readonly IRegionExistsRepository _existsRepository;
+
     private readonly IUnitOfWork _unitOfWork;
 
 

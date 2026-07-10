@@ -8,6 +8,7 @@ namespace ShagOxServer.Application.Services.Specification.Currencies.Delete;
 public class CurrencyDeleteService : ICurrencyDeleteService
 {
     private readonly IConditionRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
 
     public CurrencyDeleteService(

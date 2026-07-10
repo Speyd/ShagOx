@@ -12,7 +12,10 @@ namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Qu
 public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
 {
     private readonly IAttributeDefinitionQueryRepository _attributeRepository;
+
     private readonly ICategoryExistsRepository _categoryExistsRepository;
+
+
     public AttributeDefinitionQueryService(
         IAttributeDefinitionQueryRepository attributeRepository,
         ICategoryExistsRepository categoryExistsRepository)

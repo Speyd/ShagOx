@@ -8,6 +8,7 @@ namespace ShagOxServer.Application.Services.Roles.Delete;
 public class RoleDeleteService : IRoleDeleteService
 {
     private readonly IRoleRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
 
     public RoleDeleteService(

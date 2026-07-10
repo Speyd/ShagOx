@@ -9,6 +9,7 @@ namespace ShagOxServer.Application.Services.Specification.Conditions.Update;
 public class ConditionUpdateService : IConditionUpdateService
 {
     private readonly IConditionRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
 
     public ConditionUpdateService(

@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
@@ -9,16 +10,22 @@ namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Up
 public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateService
 {
     private readonly IAttributeDefinitionRepository _attributeRepository;
+
     private readonly ICategoryExistsRepository _categoryExistsRepository;
 
 
 
+    private readonly IUnitOfWork _unitOfWork;
+
+
     public AttributeDefinitionUpdateService(
         IAttributeDefinitionRepository attributeRepository,
-        ICategoryExistsRepository categoryExistsRepository)
+        ICategoryExistsRepository categoryExistsRepository,
+        IUnitOfWork unitOfWork)
     {
         _attributeRepository = attributeRepository;
         _categoryExistsRepository = categoryExistsRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<AttributeDefinitionUpdateResponse>> UpdateAttributeDefinitionAsync(
@@ -44,7 +51,19 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
         if (updatedCount == 0)
             return Result<AttributeDefinitionUpdateResponse>.Success(result);
 
-        await _attributeRepository.UpdateAsync(attribute);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _attributeRepository.Add(attribute);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         return Result<AttributeDefinitionUpdateResponse>.Success(result);
     }

@@ -5,9 +5,9 @@ public interface IRoleRepository
 {
     Task<Role?> GetByIdAsync(int id);
 
-    Task AddAsync(Role role);
+    void Add(Role role);
 
-    Task<bool> UpdateAsync(Role role);
+    bool Update(Role role);
 
-    Task DeleteAsync(Role role);
+    void Delete(Role role);
 }

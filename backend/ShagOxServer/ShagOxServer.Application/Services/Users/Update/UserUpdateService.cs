@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Users.Update;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Users.Update;
 using ShagOxServer.Domain.Entities.Account;
@@ -10,13 +11,17 @@ public class UserUpdateService : IUserUpdateService
 {
     private readonly IUserRepository _repository;
     private readonly IUserExistsRepository _existsRepository;
-    
+
+    private readonly IUnitOfWork _unitOfWork;
+
     public UserUpdateService(
         IUserRepository userRepository,
-        IUserExistsRepository existsRepository)
+        IUserExistsRepository existsRepository,
+        IUnitOfWork unitOfWork)
     {
         _repository = userRepository;
         _existsRepository = existsRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<UserUpdateResponse>> UpdateUserAsync(
@@ -51,7 +56,19 @@ public class UserUpdateService : IUserUpdateService
         if (updatedCount == 0)
             return Result<UserUpdateResponse>.Success(result);
 
-        await _repository.UpdateAsync(user);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _repository.Update(user);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         return Result<UserUpdateResponse>.Success(result);
     }

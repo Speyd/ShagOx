@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
@@ -10,17 +11,24 @@ namespace ShagOxServer.Application.Services.Advertisements.Favorites.Update;
 public class FavoriteUpdateService : IFavoriteUpdateService
 {
     private readonly IFavoriteRepository _repository;
+
     private readonly IUserExistsRepository _userRepository;
+
     private readonly IAdvertisementExistsRepository _advertRepository;
+
+    private readonly IUnitOfWork _unitOfWork;
+
 
     public FavoriteUpdateService(
         IFavoriteRepository favoriteRepository,
         IUserExistsRepository userRepository,
-        IAdvertisementExistsRepository advertRepository)
+        IAdvertisementExistsRepository advertRepository,
+        IUnitOfWork unitOfWork)
     {
         _repository = favoriteRepository;
         _userRepository = userRepository;
         _advertRepository = advertRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<FavoriteUpdateResponse>> UpdateFavoriteAsync(
@@ -52,7 +60,19 @@ public class FavoriteUpdateService : IFavoriteUpdateService
         if (updatedCount == 0)
             return Result<FavoriteUpdateResponse>.Success(result);
 
-        await _repository.UpdateAsync(favorite);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _repository.Update(favorite);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         return Result<FavoriteUpdateResponse>.Success(result);
     }

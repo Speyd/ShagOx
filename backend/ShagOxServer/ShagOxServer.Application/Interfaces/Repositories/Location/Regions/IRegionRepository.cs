@@ -5,9 +5,9 @@ public interface IRegionRepository
 {
     Task<Region?> GetByIdAsync(int id);
 
-    Task AddAsync(Region region);
+    void Add(Region region);
 
-    Task<bool> UpdateAsync(Region region);
+    bool Update(Region region);
 
-    Task DeleteAsync(Region region);
+    void Delete(Region region);
 }

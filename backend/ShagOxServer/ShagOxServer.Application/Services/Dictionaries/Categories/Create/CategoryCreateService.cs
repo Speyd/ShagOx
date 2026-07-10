@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
@@ -12,18 +13,24 @@ namespace ShagOxServer.Application.Services.Dictionaries.Categories.Create;
 public class CategoryCreateService : ICategoryCreateService
 {
     private readonly ICategoryRepository _categoryRepository;
+
     private readonly IAttributeDefinitionQueryRepository _attributeRepository;
+
     private readonly IAdvertisementQueryRepository _advertisementRepository;
+
+    private readonly IUnitOfWork _unitOfWork;
 
 
     public CategoryCreateService(
         ICategoryRepository categoryRepository,
         IAttributeDefinitionQueryRepository attributeRepository,
-        IAdvertisementQueryRepository advertisementRepository)
+        IAdvertisementQueryRepository advertisementRepository,
+        IUnitOfWork unitOfWork)
     {
         _categoryRepository = categoryRepository;
         _attributeRepository = attributeRepository;
         _advertisementRepository = advertisementRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<CategoryCreateResponse>> CreateCategoryAsync(
@@ -52,7 +59,20 @@ public class CategoryCreateService : ICategoryCreateService
         }
 
         var category = CreateCategory(attributes, advertisements, request);
-        await _categoryRepository.AddAsync(category);
+
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _categoryRepository.Add(category);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         var response = new CategoryCreateResponse(
             category.Id,

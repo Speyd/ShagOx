@@ -3,7 +3,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
-
 public class CategoryRepository : BaseRepository, ICategoryRepository
 {
     public CategoryRepository(AppDbContext db) 
@@ -16,25 +15,19 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task AddAsync(Category category)
+    public void Add(Category category)
     {
-        await _db.Categories.AddAsync(category);
-
-        await _db.SaveChangesAsync();
+        _db.Categories.AddAsync(category);
     }
 
-    public async Task<bool> UpdateAsync(Category category)
+    public bool Update(Category category)
     {
         _db.Categories.Update(category);
-
-        await _db.SaveChangesAsync();
         return true;
     }
 
-    public async Task DeleteAsync(Category category)
+    public void Delete(Category category)
     {
         _db.Categories.Remove(category);
-
-        await _db.SaveChangesAsync();
     }
 }

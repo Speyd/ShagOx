@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Create;
 using ShagOxServer.Domain.Entities.Specification;
@@ -10,13 +11,17 @@ public class CurrencyCreateService : ICurrencyCreateService
     private readonly ICurrencyRepository _repository;
     private readonly ICurrencyExistsRepository _existsRepository;
 
+    private readonly IUnitOfWork _unitOfWork;
+
 
     public CurrencyCreateService(
         ICurrencyRepository currencyRepository,
-        ICurrencyExistsRepository existsRepository)
+        ICurrencyExistsRepository existsRepository,
+        IUnitOfWork unitOfWork)
     {
         _repository = currencyRepository;
         _existsRepository = existsRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<CurrencyCreateResponse>> CreateCurrencyAsync(
@@ -33,7 +38,19 @@ public class CurrencyCreateService : ICurrencyCreateService
 
         var currency = CreateCurrency(request);
 
-        await _repository.AddAsync(currency);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _repository.Add(currency);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         var response = new CurrencyCreateResponse(
             currency.Id,

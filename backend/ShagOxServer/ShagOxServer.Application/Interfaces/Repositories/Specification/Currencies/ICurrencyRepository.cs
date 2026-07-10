@@ -5,9 +5,9 @@ public interface ICurrencyRepository
 {
     Task<Currency?> GetByIdAsync(int id);
 
-    Task AddAsync(Currency currency);
+    void Add(Currency currency);
 
-    Task<bool> UpdateAsync(Currency currency);
+    bool Update(Currency currency);
 
-    Task DeleteAsync(Currency currency);
+    void Delete(Currency currency);
 }

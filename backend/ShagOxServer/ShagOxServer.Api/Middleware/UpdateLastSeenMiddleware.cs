@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+﻿using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using System.Security.Claims;
 
 namespace ShagOxServer.Api.Middleware;
@@ -14,7 +15,8 @@ public class UpdateLastSeenMiddleware
 
     public async Task InvokeAsync(
         HttpContext context,
-        IUserRepository repository)
+        IUserRepository repository,
+        IUnitOfWork unitOfWork)
     {
         if (context.User.Identity?.IsAuthenticated == true)
         {
@@ -30,7 +32,8 @@ public class UpdateLastSeenMiddleware
                 if (user is not null)
                 {
                     user.LastSeenAt = DateTime.UtcNow;
-                    await repository.UpdateAsync(user);
+                    repository.Update(user);
+                    await unitOfWork.SaveChangesAsync();
                 }
             }
         }

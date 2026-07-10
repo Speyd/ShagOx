@@ -7,5 +7,7 @@ public interface IImageQueryRepository
 
     Task<List<Image>> GetByIdsAsync(List<int> ids);
 
+    Task<List<Image>> GetByAdvertisementIdAsync(int advertId);
+
     Task<int> GetNextOrder(int advertId, int? requestedOrder = null);
 }

@@ -5,9 +5,9 @@ public interface ICityRepository
 {
     Task<City?> GetByIdAsync(int id);
 
-    Task AddAsync(City city);
+    void Add(City city);
 
-    Task<bool> UpdateAsync(City city);
+    bool Update(City city);
 
-    Task DeleteAsync(City city);
+    void Delete(City city);
 }

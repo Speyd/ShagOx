@@ -5,9 +5,9 @@ public interface IConditionRepository
 {
     Task<Condition?> GetByIdAsync(int id);
 
-    Task AddAsync(Condition condition);
+    void Add(Condition condition);
 
-    Task<bool> UpdateAsync(Condition condition);
+    bool Update(Condition condition);
 
-    Task DeleteAsync(Condition condition);
+    void Delete(Condition condition);
 }

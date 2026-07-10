@@ -5,9 +5,9 @@ public interface IUserRepository
 {
     Task<User?> GetByIdAsync(int id);
 
-    Task AddAsync(User user);
+    void Add(User user);
 
-    Task<bool> UpdateAsync(User user);
+    bool Update(User user);
 
-    Task DeleteAsync(User user);
+    void Delete(User user);
 }

@@ -16,23 +16,19 @@ public class CityRepository : BaseRepository, ICityRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddAsync(City city)
+    public void Add(City city)
     {
-        await _db.Cities.AddAsync(city);
+        _db.Cities.Add(city);
     }
 
-    public async Task<bool> UpdateAsync(City city)
+    public bool Update(City city)
     {
         _db.Cities.Update(city);
-
-        await _db.SaveChangesAsync();
         return true;
     }
 
-    public async Task DeleteAsync(City city)
+    public void Delete(City city)
     {
         _db.Cities.Remove(city);
-
-        await _db.SaveChangesAsync();
     }  
 }

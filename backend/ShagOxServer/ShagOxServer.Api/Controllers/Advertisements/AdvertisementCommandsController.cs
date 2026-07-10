@@ -13,23 +13,22 @@ namespace ShagOxServer.Api.Controllers.Advertisements;
 [ApiController]
 [Route("api/advertisements")]
 [Authorize]
-public class AdvertisementCommandsController : ApiController
+public class AdvertisementCommandsController : AdvertisementOwnerController
 {
     private readonly IAdvertisementCreateService _createService;
     private readonly IAdvertisementUpdateService _updateService;
     private readonly IAdvertisementDeleteService _deleteService;
-    private readonly IUserAdminQueryService _userService;
 
     public AdvertisementCommandsController(
         IAdvertisementCreateService createService,
         IAdvertisementUpdateService updateService,
         IAdvertisementDeleteService deleteService,
         IUserAdminQueryService userService)
+        :base(userService)
     {
         _createService = createService;
         _updateService = updateService;
         _deleteService = deleteService;
-        _userService = userService;
     }
 
     
@@ -49,7 +48,7 @@ public class AdvertisementCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] AdvertisementUpdateRequest request)
     {
-        var forbidden = await CheckAccess(id);
+        var forbidden = await CheckAdvertisementOwnerAsync(id);
         if (forbidden is not null)
             return forbidden;
 
@@ -62,21 +61,11 @@ public class AdvertisementCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var forbidden = await CheckAccess(id);
+        var forbidden = await CheckAdvertisementOwnerAsync(id);
         if (forbidden is not null)
             return forbidden;
 
         var result = await _deleteService.DeleteAdvertisementAsync(id);
         return result.ToActionResult();
-    }
-
-    private async Task<IActionResult?> CheckAccess(int advertisementId)
-    {
-        var isOwner = await _userService.IsAdvertisementOwnerAsync(UserId, advertisementId);
-
-        if (!isOwner)
-            return Forbid();
-
-        return null;
     }
 }

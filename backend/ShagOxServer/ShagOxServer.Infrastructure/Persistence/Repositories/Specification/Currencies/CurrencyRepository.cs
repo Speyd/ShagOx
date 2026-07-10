@@ -14,24 +14,19 @@ public class CurrencyRepository : BaseRepository, ICurrencyRepository
         return await _db.Currencies.FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task AddAsync(Currency currency)
+    public void Add(Currency currency)
     {
-        await _db.Currencies.AddAsync(currency);
-
-        await _db.SaveChangesAsync();
+         _db.Currencies.Add(currency);
     }
 
-    public async Task<bool> UpdateAsync(Currency currency)
+    public bool Update(Currency currency)
     {
         _db.Currencies.Update(currency);
-        await _db.SaveChangesAsync();
         return true;
     }
 
-    public async Task DeleteAsync(Currency currency)
+    public void Delete(Currency currency)
     {
         _db.Currencies.Remove(currency);
-
-        await _db.SaveChangesAsync();
     }
 }

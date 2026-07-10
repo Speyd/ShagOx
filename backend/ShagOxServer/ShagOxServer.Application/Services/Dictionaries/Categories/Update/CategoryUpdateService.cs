@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
@@ -13,16 +14,19 @@ public class CategoryUpdateService : ICategoryUpdateService
     private readonly ICategoryRepository _categoryRepository;
     private readonly IAttributeDefinitionQueryRepository _attributeRepository;
     private readonly IAdvertisementQueryRepository _advertisementRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
 
     public CategoryUpdateService(
         ICategoryRepository categoryRepository,
         IAttributeDefinitionQueryRepository attributeRepository,
-        IAdvertisementQueryRepository advertisementRepository)
+        IAdvertisementQueryRepository advertisementRepository,
+        IUnitOfWork unitOfWork)
     {
         _categoryRepository = categoryRepository;
         _attributeRepository = attributeRepository;
         _advertisementRepository = advertisementRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<CategoryUpdateResponse>> UpdateCategoryAsync(
@@ -50,7 +54,17 @@ public class CategoryUpdateService : ICategoryUpdateService
         if (updatedCount == 0)
             return Result<CategoryUpdateResponse>.Success(result);
 
-        await _categoryRepository.UpdateAsync(category);
+        try
+        {
+            _categoryRepository.Update(category);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         return Result<CategoryUpdateResponse>.Success(result);
     }

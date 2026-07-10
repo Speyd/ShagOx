@@ -5,10 +5,9 @@ public interface IFavoriteRepository
 {
     Task<Favorite?> GetByIdAsync(int id);
 
-    Task AddAsync(Favorite favorite);
+    void Add(Favorite favorite);
 
-    Task DeleteAsync(Favorite favorite);
+    void Delete(Favorite favorite);
 
-    Task<bool> UpdateAsync(Favorite favorite);
+    bool Update(Favorite favorite);
 }
-

@@ -15,25 +15,19 @@ public class FavoriteRepository : BaseRepository, IFavoriteRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddAsync(Favorite favorite)
+    public void Add(Favorite favorite)
     {
-        await _db.Favorites.AddAsync(favorite);
-
-        await _db.SaveChangesAsync();
+        _db.Favorites.Add(favorite);
     }
 
-    public async Task DeleteAsync(Favorite favorite)
+    public void Delete(Favorite favorite)
     {
         _db.Favorites.Remove(favorite);
-
-        await _db.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateAsync(Favorite favorite)
+    public bool Update(Favorite favorite)
     {
         _db.Favorites.Update(favorite);
-
-        await _db.SaveChangesAsync();
         return true;
     }
 }

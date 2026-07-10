@@ -26,6 +26,11 @@ public class UnitOfWork : IUnitOfWork
         await _transaction!.CommitAsync();
     }
 
+    public async Task SaveChangesAsync()
+    {
+        await _db.SaveChangesAsync();
+    }
+
     public async Task RollbackAsync()
     {
         if (_transaction != null)

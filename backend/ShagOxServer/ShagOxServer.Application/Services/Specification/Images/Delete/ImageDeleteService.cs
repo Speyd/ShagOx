@@ -24,9 +24,12 @@ public class ImageDeleteService : IImageDeleteService
         if (image is null)
             return Result<ImageDeleteResponse>.NotFound("Image");
 
-        await _repository.DeleteAsync(image);
+        var result = await _loaderService.DeleteAsync(image.PublicId);
 
-        await _loaderService.DeleteAsync(image.PublicId);
+        if (!result.IsSuccess)
+            return Result<ImageDeleteResponse>.Fail(result.Error!);
+
+        _repository.DeleteAsync(image);
 
         return Result<ImageDeleteResponse>.Success(
            new ImageDeleteResponse(

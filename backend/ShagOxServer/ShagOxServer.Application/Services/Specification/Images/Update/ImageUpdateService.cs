@@ -57,7 +57,7 @@ public class ImageUpdateService : IImageUpdateService
         if (updatedCount == 0)
             return Result<ImageUpdateResponse>.Success(response);
 
-        await _imageRepository.UpdateAsync(image);
+        _imageRepository.UpdateAsync(image);
 
         return Result<ImageUpdateResponse>.Success(response);
     }

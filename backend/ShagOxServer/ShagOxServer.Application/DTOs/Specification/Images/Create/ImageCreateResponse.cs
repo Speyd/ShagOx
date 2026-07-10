@@ -2,5 +2,6 @@
 public sealed record ImageCreateResponse
 (
     int Id,
+    string PublicId,
     DateTime CreatedAt
 );

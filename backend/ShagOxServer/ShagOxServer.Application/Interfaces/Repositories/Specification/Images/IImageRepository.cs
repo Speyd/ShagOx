@@ -7,7 +7,7 @@ public interface IImageRepository
 
     Task AddAsync(Image image);
 
-    Task<bool> UpdateAsync(Image image);
+    bool UpdateAsync(Image image);
 
-    Task DeleteAsync(Image image);
+    void DeleteAsync(Image image);
 }

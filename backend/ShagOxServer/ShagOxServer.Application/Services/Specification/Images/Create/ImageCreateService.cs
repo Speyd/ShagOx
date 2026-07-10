@@ -46,6 +46,7 @@ public class ImageCreateService : IImageCreateService
         return Result<ImageCreateResponse>.Success(
             new ImageCreateResponse(
             image.Id,
+            image.PublicId,
             DateTime.UtcNow)
         );
     }
@@ -71,7 +72,40 @@ public class ImageCreateService : IImageCreateService
         return Result<ImageCreateResponse>.Success(
             new ImageCreateResponse(
             image.Id,
+            image.PublicId,
             DateTime.UtcNow)
+        );
+    }
+
+    public async Task<Result<ImageCreateResponse>> CreateFromFileInternalAsync(
+        ImageFileCreateRequest request)
+    {
+        var newOrder = await _imageQueryRepository
+            .GetNextOrder(request.AdvertisementId);
+
+        var uploadResult = await _loaderService
+            .UploadAsync(request.File);
+
+        if (!uploadResult.IsSuccess || uploadResult.Value is null)
+        {
+            return Result<ImageCreateResponse>
+                .Fail("Fail Upload Image");
+        }
+
+        var image = CreateImage(
+            newOrder,
+            request,
+            uploadResult.Value);
+
+
+        await _imageRepository.AddAsync(image);
+
+
+        return Result<ImageCreateResponse>.Success(
+            new ImageCreateResponse(
+                image.Id,
+                image.PublicId,
+                DateTime.UtcNow)
         );
     }
 

@@ -41,7 +41,7 @@ public class ImageCreateService : IImageCreateService
 
         var image = CreateImage(newOrder, request);
 
-        _imageRepository.AddAsync(image);
+        _imageRepository.Add(image);
 
         return Result<ImageCreateResponse>.Success(
             new ImageCreateResponse(
@@ -67,7 +67,7 @@ public class ImageCreateService : IImageCreateService
 
         var image = CreateImage(newOrder, request, response.Value);
 
-        _imageRepository.AddAsync(image);
+        _imageRepository.Add(image);
 
         return Result<ImageCreateResponse>.Success(
             new ImageCreateResponse(
@@ -98,7 +98,7 @@ public class ImageCreateService : IImageCreateService
             uploadResult.Value);
 
 
-        _imageRepository.AddAsync(image);
+        _imageRepository.Add(image);
 
 
         return Result<ImageCreateResponse>.Success(

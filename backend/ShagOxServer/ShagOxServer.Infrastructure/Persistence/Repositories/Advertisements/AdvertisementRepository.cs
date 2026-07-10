@@ -15,17 +15,17 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public void AddAsync(Advertisement advertisement)
+    public void Add(Advertisement advertisement)
     {
         _db.Advertisements.Add(advertisement);
     }
 
-    public void DeleteAsync(Advertisement advertisement)
+    public void Delete(Advertisement advertisement)
     {
         _db.Advertisements.Remove(advertisement);
     }
 
-    public bool UpdateAsync(Advertisement advertisement)
+    public bool Update(Advertisement advertisement)
     {
         _db.Advertisements.Update(advertisement);
         return true;

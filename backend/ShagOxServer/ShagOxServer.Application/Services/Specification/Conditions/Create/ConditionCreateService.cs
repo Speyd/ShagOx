@@ -31,7 +31,7 @@ public class ConditionCreateService : IConditionCreateService
         {
             condition = CreateCondition(request);
 
-            _repository.AddAsync(condition);
+            _repository.Add(condition);
 
             await _unitOfWork.CommitAsync();
         }

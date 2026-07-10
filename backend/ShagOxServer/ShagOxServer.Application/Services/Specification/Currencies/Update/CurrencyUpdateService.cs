@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Update;
 using ShagOxServer.Domain.Entities.Specification;
@@ -9,14 +10,17 @@ public class CurrencyUpdateService : ICurrencyUpdateService
 {
     private readonly ICurrencyRepository _repository;
     private readonly ICurrencyExistsRepository _existsRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
 
     public CurrencyUpdateService(
         ICurrencyRepository currencyRepository,
-        ICurrencyExistsRepository existsRepository)
+        ICurrencyExistsRepository existsRepository,
+        IUnitOfWork unitOfWork)
     {
         _repository = currencyRepository;
         _existsRepository = existsRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<CurrencyUpdateResponse>> UpdateCurrencyAsync(
@@ -41,7 +45,6 @@ public class CurrencyUpdateService : ICurrencyUpdateService
             return Result<CurrencyUpdateResponse>.NotFound("Currency");
 
         var updatedCount = ApplyUpdates(currency, request);
-
         var result = new CurrencyUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -50,7 +53,20 @@ public class CurrencyUpdateService : ICurrencyUpdateService
         if (updatedCount == 0)
             return Result<CurrencyUpdateResponse>.Success(result);
 
-        await _repository.UpdateAsync(currency);
+
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _repository.Update(currency);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         return Result<CurrencyUpdateResponse>.Success(result);
     }

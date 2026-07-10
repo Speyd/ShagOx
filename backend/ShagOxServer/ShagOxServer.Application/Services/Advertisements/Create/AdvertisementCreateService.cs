@@ -59,7 +59,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            await _advertisementRepository.AddAsync(advert);
+            _advertisementRepository.Add(advert);
 
             await _unitOfWork.SaveChangesAsync();
 

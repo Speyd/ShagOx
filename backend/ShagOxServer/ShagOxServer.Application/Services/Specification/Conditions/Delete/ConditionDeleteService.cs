@@ -29,7 +29,7 @@ public class ConditionDeleteService : IConditionDeleteService
 
         try
         {
-            _repository.DeleteAsync(condition);
+            _repository.Delete(condition);
 
             await _unitOfWork.CommitAsync();
         }

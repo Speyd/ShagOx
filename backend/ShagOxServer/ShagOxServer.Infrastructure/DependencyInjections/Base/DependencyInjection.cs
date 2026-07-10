@@ -10,6 +10,7 @@ public static class DependencyInjection
             .AddAuthInfrastructure()
             .AddLocationInfrastructure()
             .AddAdvertisementsInfrastructure()
+            .AddUnitOfWorkInfrastructure()
             .AddSpecificationInfrastructure()
             .AddDictionariesInfrastructure()
             .AddCloudinary();

@@ -15,18 +15,18 @@ public class ImageRepository : BaseRepository, IImageRepository
             .FirstOrDefaultAsync(i => i.Id == id);
     }
 
-    public void AddAsync(Image image)
+    public void Add(Image image)
     {
         _db.Images.Add(image);
     }
 
-    public bool UpdateAsync(Image image)
+    public bool Update(Image image)
     {
         _db.Images.Update(image);
         return true;
     }
 
-    public void DeleteAsync(Image image)
+    public void Delete(Image image)
     {
         _db.Images.Remove(image);
     }

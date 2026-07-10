@@ -41,7 +41,7 @@ public class ConditionUpdateService : IConditionUpdateService
 
         try
         {
-            _repository.UpdateAsync(condition);
+            _repository.Update(condition);
 
             await _unitOfWork.CommitAsync();
         }

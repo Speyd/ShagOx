@@ -35,7 +35,7 @@ public class AdvertisementDeleteService : IAdvertisementDeleteService
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _repository.DeleteAsync(advert);
+            _repository.Delete(advert);
             await _unitOfWork.SaveChangesAsync();
 
             foreach (var image in advert.Images)

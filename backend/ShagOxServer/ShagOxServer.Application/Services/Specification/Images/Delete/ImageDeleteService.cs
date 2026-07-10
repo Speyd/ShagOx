@@ -29,7 +29,7 @@ public class ImageDeleteService : IImageDeleteService
         if (!result.IsSuccess)
             return Result<ImageDeleteResponse>.Fail(result.Error!);
 
-        _repository.DeleteAsync(image);
+        _repository.Delete(image);
 
         return Result<ImageDeleteResponse>.Success(
            new ImageDeleteResponse(

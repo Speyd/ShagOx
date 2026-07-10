@@ -5,9 +5,9 @@ public interface IImageRepository
 {
     Task<Image?> GetByIdAsync(int id);
 
-    void AddAsync(Image image);
+    void Add(Image image);
 
-    bool UpdateAsync(Image image);
+    bool Update(Image image);
 
-    void DeleteAsync(Image image);
+    void Delete(Image image);
 }

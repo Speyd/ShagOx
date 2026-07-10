@@ -15,18 +15,18 @@ public class ConditionRepository : BaseRepository, IConditionRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public void AddAsync(Condition condition)
+    public void Add(Condition condition)
     {
         _db.Conditions.Add(condition);
     }
 
-    public bool UpdateAsync(Condition condition)
+    public bool Update(Condition condition)
     {
         _db.Conditions.Update(condition);
         return true;
     }
 
-    public void DeleteAsync(Condition condition)
+    public void Delete(Condition condition)
     {
         _db.Conditions.Remove(condition);
     }

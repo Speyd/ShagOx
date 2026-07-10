@@ -8,22 +8,21 @@ public class UnitOfWork : IUnitOfWork
     private IDbContextTransaction? _transaction;
 
     public UnitOfWork(
-        AppDbContext db,
-        IDbContextTransaction? transaction)
+        AppDbContext db)
     {
         _db = db;
-        _transaction = transaction;
     }
 
     public async Task BeginTransactionAsync()
     {
-        _ = await _db.Database.BeginTransactionAsync();
+        _transaction = await _db.Database.BeginTransactionAsync();
     }
 
     public async Task CommitAsync()
     {
         await _db.SaveChangesAsync();
-        await _transaction!.CommitAsync();
+        if(_transaction is not null)
+            await _transaction!.CommitAsync();
     }
 
     public async Task SaveChangesAsync()
@@ -33,7 +32,7 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task RollbackAsync()
     {
-        if (_transaction != null)
+        if (_transaction is not null)
             await _transaction.RollbackAsync();
     }
 }

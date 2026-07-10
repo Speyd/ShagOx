@@ -19,7 +19,7 @@ public static class ResultMappingExtensions
       string errorMessage = "Not found")
       where T : class
     {
-        if (entities is null || !entities.Any())
+        if (entities is null)
             return Result<List<TDto>>.Fail(errorMessage);
 
         return Result<List<TDto>>.Success(

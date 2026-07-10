@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Regions.Create;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
 using ShagOxServer.Domain.Entities.Location;
@@ -9,14 +10,17 @@ public class RegionCreateService : IRegionCreateService
 {
     private readonly IRegionRepository _repository;
     private readonly IRegionExistsRepository _existsRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
 
     public RegionCreateService(
         IRegionRepository regionRepository,
-        IRegionExistsRepository existsRepository)
+        IRegionExistsRepository existsRepository,
+        IUnitOfWork unitOfWork)
     {
         _repository = regionRepository;
         _existsRepository = existsRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<RegionCreateResponse>> CreateRegionAsync(
@@ -28,7 +32,19 @@ public class RegionCreateService : IRegionCreateService
 
         var region = CreateRegion(request);
 
-        await _repository.AddAsync(region);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _repository.Add(region);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         var response = new RegionCreateResponse(
             region.Id,

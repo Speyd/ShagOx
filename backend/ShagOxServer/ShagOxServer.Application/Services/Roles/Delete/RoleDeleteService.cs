@@ -24,6 +24,8 @@ public class RoleDeleteService : IRoleDeleteService
         if (role is null)
             return Result<RoleDeleteResponse>.NotFound("Role");
 
+        await _unitOfWork.BeginTransactionAsync();
+
         try
         {
             _repository.Delete(role);

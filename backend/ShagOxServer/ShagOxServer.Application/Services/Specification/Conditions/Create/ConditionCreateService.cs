@@ -23,14 +23,13 @@ public class ConditionCreateService : IConditionCreateService
     public async Task<Result<ConditionCreateResponse>> CreateConditionAsync(
         ConditionCreateRequest request)
     {
-        await _unitOfWork.BeginTransactionAsync();
 
-        Condition condition;
+        Condition condition = CreateCondition(request);
+
+        await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            condition = CreateCondition(request);
-
             _repository.Add(condition);
 
             await _unitOfWork.CommitAsync();

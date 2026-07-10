@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Crea
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
 using ShagOxServer.Application.Services.Advertisements.Create;
@@ -13,6 +14,7 @@ using ShagOxServer.Application.Services.Advertisements.Favorites.Create;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Delete;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Update;
+using ShagOxServer.Application.Services.Advertisements.Images;
 using ShagOxServer.Application.Services.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Update;
 
@@ -30,6 +32,8 @@ public static class AdvertisementDependencyInjection
         services.AddScoped<IFavoriteDeleteService, FavoriteDeleteService>();
         services.AddScoped<IFavoriteQueryService, FavoriteQueryService>();
         services.AddScoped<IFavoriteUpdateService, FavoriteUpdateService>();
+
+        services.AddScoped<IAdvertisementImageService, AdvertisementImageService>();
 
         return services;
     }

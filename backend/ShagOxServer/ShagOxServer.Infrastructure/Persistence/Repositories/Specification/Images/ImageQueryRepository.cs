@@ -26,6 +26,15 @@ public class ImageQueryRepository : BaseRepository, IImageQueryRepository
            .ToListAsync();
     }
 
+    public async Task<List<Image>> GetByAdvertisementIdAsync(
+        int advertId)
+    {
+        return await _db.Images
+          .WithIncludes()
+          .Where(x => x.AdvertisementId == advertId)
+          .ToListAsync();
+    }
+
     public async Task<int> GetNextOrder(
         int advertId,
         int? requestedOrder = null)

@@ -19,6 +19,14 @@ public class FavoriteAdminQueriesController : ApiController
         _queryService = queryService;
     }
 
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(
+        [FromRoute] int id)
+    {
+        var result = await _queryService.GetByIdAsync(id);
+        return result.ToActionResult();
+    }
+
     [HttpGet("by-user/{userId:int}")]
     public async Task<IActionResult> GetByUserIdAsync(
         [FromRoute] int userId,

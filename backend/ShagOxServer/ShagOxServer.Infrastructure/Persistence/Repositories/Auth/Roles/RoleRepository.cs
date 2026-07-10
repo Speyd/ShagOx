@@ -3,7 +3,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
-
 public class RoleRepository : BaseRepository, IRoleRepository
 {
     public RoleRepository(AppDbContext db)
@@ -16,23 +15,19 @@ public class RoleRepository : BaseRepository, IRoleRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddAsync(Role role)
+    public void Add(Role role)
     {
-        await _db.Roles.AddAsync(role);
-
-        await _db.SaveChangesAsync();
+        _db.Roles.Add(role);
     }
 
-    public async Task DeleteAsync(Role role)
+    public void Delete(Role role)
     {
         _db.Roles.Remove(role);
-
-        await _db.SaveChangesAsync();
     }
-    public async Task<bool> UpdateAsync(Role role)
+
+    public bool Update(Role role)
     {   
         _db.Roles.Update(role);
-        await _db.SaveChangesAsync();
         return true;
     }
 }

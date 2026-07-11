@@ -38,10 +38,11 @@ public class ImageCreateService : IImageCreateService
             return Result<ImageCreateResponse>.NotFound("Advertisement");
 
         var orderExists = advert.Images.Any(x => x.Order == request.Order);
-        var newOrder = await _imageQueryRepository
-            .GetNextOrder(request.AdvertisementId, request.Order);
+        if (orderExists)
+            return Result<ImageCreateResponse>
+                .Fail("Image with this order already exists.");
 
-        var image = CreateImage(newOrder, request);
+        var image = CreateImage(request);
 
         _imageRepository.Add(image);
 
@@ -60,14 +61,16 @@ public class ImageCreateService : IImageCreateService
         if (advert is null)
             return Result<ImageCreateResponse>.NotFound("Advertisement");
 
-        var newOrder = await _imageQueryRepository
-            .GetNextOrder(request.AdvertisementId);
+        var orderExists = advert.Images.Any(x => x.Order == request.Order);
+        if (orderExists)
+            return Result<ImageCreateResponse>
+                .Fail("Image with this order already exists.");
 
         var response = await _loaderService.UploadAsync(request.File);
         if (!response.IsSuccess || response.Value is null)
             return Result<ImageCreateResponse>.Fail("Fail Upload Image");
 
-        var image = CreateImage(newOrder, request, response.Value);
+        var image = CreateImage(request, response.Value);
 
         _imageRepository.Add(image);
 
@@ -82,9 +85,6 @@ public class ImageCreateService : IImageCreateService
     public async Task<Result<ImageCreateResponse>> CreateFromFileInternalAsync(
         ImageFileCreateRequest request)
     {
-        var newOrder = await _imageQueryRepository
-            .GetNextOrder(request.AdvertisementId);
-
         var uploadResult = await _loaderService
             .UploadAsync(request.File);
 
@@ -95,7 +95,6 @@ public class ImageCreateService : IImageCreateService
         }
 
         var image = CreateImage(
-            newOrder,
             request,
             uploadResult.Value);
 
@@ -112,27 +111,25 @@ public class ImageCreateService : IImageCreateService
     }
 
     private Image CreateImage(
-        int newOrder,
         ImageCreateRequest request)
     {
         return new Image
         {
             Url = request.Url,
-            Order = newOrder,
+            Order = request.Order,
             AdvertisementId = request.AdvertisementId,
             PublicId = ""
         };
     }
 
     private Image CreateImage(
-        int newOrder,
         ImageFileCreateRequest request,
         ImageLoaderUploadResponse response)
     {
         return new Image
         {
             Url = response.Url,
-            Order = newOrder,
+            Order = request.Order,
             AdvertisementId = request.AdvertisementId,
             PublicId = response.PublicId
         };

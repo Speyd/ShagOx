@@ -16,7 +16,11 @@ export default function AdvertisementCard(props: Advertisement) {
           className={styles.imageContainer}
           onClick={() => navigate(`/advertisement/${props.id}`)}
         >
-          <img src={props.images[0]} alt="" className={styles.image} />
+          <img
+            src={props.images[0]?.url ?? "/placeholder.png"}
+            alt={props.title}
+            className={styles.image}
+          />
         </div>
 
         <div className={styles.info}>

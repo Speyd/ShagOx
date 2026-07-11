@@ -6,7 +6,7 @@ export interface Advertisement {
   id: number;
   title: string;
   description: string;
-  images: string[];
+  images: AdvertisementImage[];
   popularity: number;
   price: number;
   previousPrice: number;
@@ -17,4 +17,11 @@ export interface Advertisement {
   soldAt: string | null;
   createdAt: string;
   properties: AdvertisementProperties;
+}
+
+export interface AdvertisementImage {
+  id: number;
+  url: string;
+  order: number;
+  advertisementId: number;
 }

@@ -6,7 +6,7 @@ export interface CreateAdvertisementDto {
   currencyId: number;
   sellerId: number;
   categoryId: number;
+  conditionId: number;
   properties: Record<string, string>;
-  images: string[];
+  images: File[];
 }
-

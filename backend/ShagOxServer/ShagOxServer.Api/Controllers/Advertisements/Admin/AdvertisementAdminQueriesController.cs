@@ -10,17 +10,16 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 [ApiController]
 [Route("api/admin/advertisements")]
 [Authorize(Roles = "Admin")]
-public class AdvertisementAdminQueriesController : ApiController
+public class AdvertisementAdminQueriesController : AdvertisementOwnerController
 {
     private readonly IAdvertisementQueryService _queryAdvertService;
-    private readonly IUserAdminQueryService _queryUserService;
 
     public AdvertisementAdminQueriesController(
        IAdvertisementQueryService queryAdvertService,
        IUserAdminQueryService queryUserService)
+        :base(queryUserService)
     {
         _queryAdvertService = queryAdvertService;
-        _queryUserService = queryUserService;
     }
 
     [HttpGet("purchases/{userId:int}")]
@@ -28,7 +27,7 @@ public class AdvertisementAdminQueriesController : ApiController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _queryUserService.ExistsAsync(userId);
+        var exists = await _userService.ExistsAsync(userId);
 
         if (!exists)
             return NotFound("User not found");

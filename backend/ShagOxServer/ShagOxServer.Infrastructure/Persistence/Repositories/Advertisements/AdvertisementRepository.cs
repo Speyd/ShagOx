@@ -3,7 +3,6 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
-
 public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
 {
     public AdvertisementRepository(AppDbContext db) 
@@ -16,25 +15,19 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddAsync(Advertisement advertisement)
+    public void Add(Advertisement advertisement)
     {
-        await _db.Advertisements.AddAsync(advertisement);
-
-        await _db.SaveChangesAsync();
+        _db.Advertisements.Add(advertisement);
     }
 
-    public async Task DeleteAsync(Advertisement advertisement)
+    public void Delete(Advertisement advertisement)
     {
         _db.Advertisements.Remove(advertisement);
-
-        await _db.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateAsync(Advertisement advertisement)
+    public bool Update(Advertisement advertisement)
     {
         _db.Advertisements.Update(advertisement);
-
-        await _db.SaveChangesAsync();
         return true;
     }
 }

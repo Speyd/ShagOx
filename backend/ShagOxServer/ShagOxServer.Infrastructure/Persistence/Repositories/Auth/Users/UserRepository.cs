@@ -3,7 +3,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
-
 public class UserRepository : BaseRepository, IUserRepository
 {
     public UserRepository(AppDbContext db)
@@ -17,25 +16,20 @@ public class UserRepository : BaseRepository, IUserRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddAsync(User user)
+    public void Add(User user)
     {
-        await _db.Users.AddAsync(user);
-
-        await _db.SaveChangesAsync();
+        _db.Users.Add(user);
     }
 
 
-    public async Task<bool> UpdateAsync(User user)
+    public bool Update(User user)
     {
         _db.Users.Update(user);
-        await _db.SaveChangesAsync();
         return true;
     }
 
-    public async Task DeleteAsync(User user)
+    public void Delete(User user)
     {
         _db.Users.Remove(user);
-
-        await _db.SaveChangesAsync();
     }
 }

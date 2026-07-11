@@ -5,9 +5,9 @@ public interface IAdvertisementRepository
 {
     Task<Advertisement?> GetByIdAsync(int id);
 
-    Task AddAsync(Advertisement advertisement);
+    void Add(Advertisement advertisement);
 
-    Task DeleteAsync(Advertisement advertisement);
+    void Delete(Advertisement advertisement);
 
-    Task<bool> UpdateAsync (Advertisement advertisement);
+    bool Update(Advertisement advertisement);
 }

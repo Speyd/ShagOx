@@ -12,8 +12,10 @@ namespace ShagOxServer.Application.Services.Auth;
 public class LoginService : ILoginService
 {
     private readonly IUserQueryRepository _userRepository;
+
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
+
     private readonly IJwtService _jwtService;
 
     public LoginService(

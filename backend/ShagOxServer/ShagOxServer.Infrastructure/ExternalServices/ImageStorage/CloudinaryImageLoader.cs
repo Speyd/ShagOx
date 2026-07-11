@@ -5,6 +5,7 @@ using ShagOxServer.Application.DTOs.Common.ImageLoaders.Delete;
 using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Infrastructure.ExternalServices.ImageStorage;
 public class CloudinaryImageLoader : IImageLoaderService
@@ -22,10 +23,15 @@ public class CloudinaryImageLoader : IImageLoaderService
         string publicId)
     {
         if (string.IsNullOrWhiteSpace(publicId))
-            return Result<ImageLoaderDeleteResponse>.Fail("PublicId is incorrect");
+            return Result<ImageLoaderDeleteResponse>
+                .Fail("PublicId is incorrect");
 
         var deleteParams = new DeletionParams(publicId);
-        await _cloudinary.DestroyAsync(deleteParams);
+        var result = await _cloudinary.DestroyAsync(deleteParams);
+
+        if (result.Error != null)
+            return Result<ImageLoaderDeleteResponse>
+                .Fail($"Cloudinary delete failed: {result.Error.Message}");
 
         return Result<ImageLoaderDeleteResponse>.Success(
            new ImageLoaderDeleteResponse(
@@ -48,6 +54,12 @@ public class CloudinaryImageLoader : IImageLoaderService
         };
 
         var result = await _cloudinary.UploadAsync(uploadParams);
+
+        if (result.Error != null)
+        {
+            return Result<ImageLoaderUploadResponse>
+                .Fail($"Cloudinary upload failed: {result.Error.Message}");
+        }
 
         return Result<ImageLoaderUploadResponse>.Success(
           new ImageLoaderUploadResponse(

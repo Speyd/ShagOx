@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Domain.Entities.Specification;
+
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
 public class ConditionRepository : BaseRepository, IConditionRepository
 {
@@ -14,25 +15,19 @@ public class ConditionRepository : BaseRepository, IConditionRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddAsync(Condition condition)
+    public void Add(Condition condition)
     {
-        await _db.Conditions.AddAsync(condition);
-
-        await _db.SaveChangesAsync();
+        _db.Conditions.Add(condition);
     }
 
-    public async Task<bool> UpdateAsync(Condition condition)
+    public bool Update(Condition condition)
     {
         _db.Conditions.Update(condition);
-
-        await _db.SaveChangesAsync();
         return true;
     }
 
-    public async Task DeleteAsync(Condition condition)
+    public void Delete(Condition condition)
     {
         _db.Conditions.Remove(condition);
-
-        await _db.SaveChangesAsync();
     }
 }

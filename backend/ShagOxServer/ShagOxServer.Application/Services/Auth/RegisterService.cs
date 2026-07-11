@@ -1,39 +1,42 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.DTOs.Auth.Register;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-namespace ShagOxServer.Application.Services.Auth;
 
+namespace ShagOxServer.Application.Services.Auth;
 public class RegisterService : IRegisterService
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserExistsRepository _userExistsRepository;
 
-    private readonly IRoleRepository _roleRepository;
     private readonly IRoleQueryRepository _roleQueryRepository;
+
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
+
+    private readonly IUnitOfWork _unitOfWork;
 
 
     public RegisterService(
         IUserRepository userRepository,
         IUserExistsRepository userExistsRepository,
-        IRoleRepository roleRepository,
         IRoleQueryRepository roleQueryRepository,
         IPasswordHasher<User> passwordHasher,
-        IContactValidator contactValidator)
+        IContactValidator contactValidator,
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _userExistsRepository = userExistsRepository;
-        _roleRepository = roleRepository;
         _roleQueryRepository = roleQueryRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
+        _unitOfWork = unitOfWork;
     }
 
 
@@ -49,12 +52,21 @@ public class RegisterService : IRegisterService
             if (exists)
                 return Result<RegisterResponse>.Fail("User already exists");
 
+            await _unitOfWork.BeginTransactionAsync();
 
-            await AddDefaultRole(user);
+            try
+            {
+                await AddDefaultRole(user);
 
-            await _userRepository.AddAsync(user);
+                _userRepository.Add(user);
 
-            await SetDefaultName(user);
+                await SetDefaultName(user);
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
 
             return Result<RegisterResponse>.Success(
                new RegisterResponse(user)
@@ -66,6 +78,7 @@ public class RegisterService : IRegisterService
             return Result<RegisterResponse>.Fail("Unknown Exception");
         }
     }
+
     private User CreateUser(RegisterRequest request)
     {
         var user = new User();
@@ -108,7 +121,7 @@ public class RegisterService : IRegisterService
         user.Name = $"user-{user.Id}";
 
 
-        await _userRepository.UpdateAsync(user);
+        _userRepository.Update(user);
     }
 
     private UserContactType ApplyContact(

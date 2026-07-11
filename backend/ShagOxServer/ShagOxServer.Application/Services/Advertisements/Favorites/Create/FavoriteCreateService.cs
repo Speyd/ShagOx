@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Create;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
@@ -10,17 +11,24 @@ namespace ShagOxServer.Application.Services.Advertisements.Favorites.Create;
 public class FavoriteCreateService : IFavoriteCreateService
 {
     private readonly IFavoriteRepository _repository;
+
     private readonly IUserExistsRepository _userRepository;
+
     private readonly IAdvertisementExistsRepository _advertRepository;
+
+    private readonly IUnitOfWork _unitOfWork;
+
 
     public FavoriteCreateService(
         IFavoriteRepository favoriteRepository,
         IUserExistsRepository userRepository,
-        IAdvertisementExistsRepository advertRepository)
+        IAdvertisementExistsRepository advertRepository,
+        IUnitOfWork unitOfWork)
     {
         _repository = favoriteRepository;
         _userRepository = userRepository;
         _advertRepository = advertRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<FavoriteCreateResponse>> CreateFavoriteAsync(
@@ -37,7 +45,19 @@ public class FavoriteCreateService : IFavoriteCreateService
 
         var favorite = CreateFavorite(request);
 
-        await _repository.AddAsync(favorite);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _repository.Add(favorite);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         var response = new FavoriteCreateResponse(
             favorite.Id,

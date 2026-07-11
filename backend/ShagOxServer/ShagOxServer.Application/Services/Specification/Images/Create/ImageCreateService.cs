@@ -12,9 +12,11 @@ public class ImageCreateService : IImageCreateService
 {
     private readonly IImageRepository _imageRepository;
     private readonly IImageQueryRepository _imageQueryRepository;
-    private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IImageLoaderService _loaderService;
 
+    private readonly IAdvertisementRepository _advertisementRepository;
+
+    
     public ImageCreateService(
         IImageRepository imageRepository,
         IImageQueryRepository imageQueryRepository,
@@ -41,11 +43,12 @@ public class ImageCreateService : IImageCreateService
 
         var image = CreateImage(newOrder, request);
 
-        await _imageRepository.AddAsync(image);
+        _imageRepository.Add(image);
 
         return Result<ImageCreateResponse>.Success(
             new ImageCreateResponse(
             image.Id,
+            image.PublicId,
             DateTime.UtcNow)
         );
     }
@@ -66,12 +69,45 @@ public class ImageCreateService : IImageCreateService
 
         var image = CreateImage(newOrder, request, response.Value);
 
-        await _imageRepository.AddAsync(image);
+        _imageRepository.Add(image);
 
         return Result<ImageCreateResponse>.Success(
             new ImageCreateResponse(
             image.Id,
+            image.PublicId,
             DateTime.UtcNow)
+        );
+    }
+
+    public async Task<Result<ImageCreateResponse>> CreateFromFileInternalAsync(
+        ImageFileCreateRequest request)
+    {
+        var newOrder = await _imageQueryRepository
+            .GetNextOrder(request.AdvertisementId);
+
+        var uploadResult = await _loaderService
+            .UploadAsync(request.File);
+
+        if (!uploadResult.IsSuccess || uploadResult.Value is null)
+        {
+            return Result<ImageCreateResponse>
+                .Fail("Fail Upload Image");
+        }
+
+        var image = CreateImage(
+            newOrder,
+            request,
+            uploadResult.Value);
+
+
+        _imageRepository.Add(image);
+
+
+        return Result<ImageCreateResponse>.Success(
+            new ImageCreateResponse(
+                image.Id,
+                image.PublicId,
+                DateTime.UtcNow)
         );
     }
 

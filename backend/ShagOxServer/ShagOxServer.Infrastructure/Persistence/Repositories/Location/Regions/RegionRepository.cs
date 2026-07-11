@@ -15,25 +15,19 @@ public class RegionRepository : BaseRepository, IRegionRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddAsync(Region region)
+    public void Add(Region region)
     {
-        await _db.Regions.AddAsync(region);
-
-        await _db.SaveChangesAsync();
+        _db.Regions.Add(region);
     }
 
-    public async Task<bool> UpdateAsync(Region region)
+    public bool Update(Region region)
     {
         _db.Regions.Update(region);
-
-        await _db.SaveChangesAsync();
         return true;
     }
 
-    public async Task DeleteAsync(Region region)
+    public void Delete(Region region)
     {
         _db.Regions.Remove(region);
-
-        await _db.SaveChangesAsync();
     }
 }

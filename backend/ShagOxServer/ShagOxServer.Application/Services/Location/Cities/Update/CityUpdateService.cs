@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities.Update;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
 using ShagOxServer.Domain.Entities.Location;
@@ -10,13 +11,16 @@ public class CityUpdateService : ICityUpdateService
     private readonly ICityRepository _repository;
     private readonly ICityExistsRepository _existsrepository;
 
+    private readonly IUnitOfWork _unitOfWork;
+
     public CityUpdateService(
         ICityRepository cityRepository,
-        ICityExistsRepository cityExistsRepository)
+        ICityExistsRepository cityExistsRepository,
+        IUnitOfWork unitOfWork)
     {
         _repository = cityRepository;
         _existsrepository = cityExistsRepository;
-
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<CityUpdateResponse>> UpdateCityAsync(
@@ -35,7 +39,6 @@ public class CityUpdateService : ICityUpdateService
             return Result<CityUpdateResponse>.Fail("Nothing to update");
 
         var exists = await _existsrepository.ExistsAsync(regionId, name);
-
         if (exists)
             return Result<CityUpdateResponse>.AlreadyExists("City");
 
@@ -49,7 +52,21 @@ public class CityUpdateService : ICityUpdateService
         if (updatedCount == 0)
             return Result<CityUpdateResponse>.Success(result);
 
-        await _repository.UpdateAsync(city);
+
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _repository.Add(city);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
+
 
         return Result<CityUpdateResponse>.Success(result);
     }

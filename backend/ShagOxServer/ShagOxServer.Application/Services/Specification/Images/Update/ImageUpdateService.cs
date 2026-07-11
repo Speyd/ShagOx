@@ -10,6 +10,7 @@ namespace ShagOxServer.Application.Services.Specification.Images.Update;
 public class ImageUpdateService : IImageUpdateService
 {
     private readonly IImageRepository _imageRepository;
+
     private readonly IAdvertisementRepository _advertisementRepository;
 
 
@@ -57,7 +58,7 @@ public class ImageUpdateService : IImageUpdateService
         if (updatedCount == 0)
             return Result<ImageUpdateResponse>.Success(response);
 
-        await _imageRepository.UpdateAsync(image);
+        _imageRepository.Update(image);
 
         return Result<ImageUpdateResponse>.Success(response);
     }

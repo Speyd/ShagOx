@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities.Create;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Create;
@@ -9,15 +10,20 @@ namespace ShagOxServer.Application.Services.Location.Cities.Create;
 public class CityCreateService : ICityCreateService
 {
     private readonly ICityRepository _cityRepository;
+
     private readonly IRegionRepository _regionRepository;
+
+    private readonly IUnitOfWork _unitOfWork;
 
 
     public CityCreateService(
         ICityRepository cityRepository,
-        IRegionRepository regionRepository)
+        IRegionRepository regionRepository,
+        IUnitOfWork unitOfWork)
     {
         _cityRepository = cityRepository;
         _regionRepository = regionRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<CityCreateResponse>> CreateCityAsync(
@@ -29,7 +35,19 @@ public class CityCreateService : ICityCreateService
 
         var city = CreateCity(request);
 
-        await _cityRepository.AddAsync(city);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _cityRepository.Add(city);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
 
         var response = new CityCreateResponse(
             city.Id,

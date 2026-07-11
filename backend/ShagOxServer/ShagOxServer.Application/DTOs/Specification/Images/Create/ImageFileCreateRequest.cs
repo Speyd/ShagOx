@@ -4,5 +4,6 @@ namespace ShagOxServer.Application.DTOs.Specification.Images.Create;
 public sealed record ImageFileCreateRequest
 (
     IFormFile File,
-    int AdvertisementId
+    int AdvertisementId,
+    int Order
 );

@@ -102,18 +102,21 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         };
     }
 
+
     private async Task<Result<bool>> CreateImagesAsync(
         int advertisementId,
         List<IFormFile> images)
     {
         var uploadedImages = new List<string>();
 
+        int order = 0;
         foreach (var image in images)
         {
             var result = await _imageService.CreateFromFileInternalAsync(
                 new ImageFileCreateRequest(
                     image,
-                    advertisementId));
+                    advertisementId,
+                    order++));
 
 
             if (!result.IsSuccess)

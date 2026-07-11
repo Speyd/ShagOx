@@ -59,7 +59,7 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
 
             var imagesResult =
                 await _imageService.SyncImagesAsync(
-                    advertId,
+                    advert,
                     request);
 
 

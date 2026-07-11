@@ -46,7 +46,7 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
         [FromRoute] int id,
-        [FromBody] AdvertisementUpdateRequest request)
+        [FromForm] AdvertisementUpdateRequest request)
     {
         var forbidden = await CheckAdvertisementOwnerAsync(id);
         if (forbidden is not null)

@@ -69,13 +69,18 @@ public class AdvertisementImageService : IAdvertisementImageService
 
         try
         {
+            foreach (var image in images)
+            {
+                image.Order += 1000;
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
             for (int order = 0; order < request.ImageIds.Count; order++)
             {
                 var image = imagesById[request.ImageIds[order]];
-
                 image.Order = order;
             }
-
 
             await _unitOfWork.CommitAsync();
         }

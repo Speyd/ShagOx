@@ -1,25 +1,32 @@
 import { useForm } from "react-hook-form";
 import useUpdateAdvertisement from "../hooks/useUpdateAdvertisement";
-import type { UpdateAdvertisementDto } from "../model/types";
 import { useGetAdvertisement } from "@/entities/Advertisement/hooks/useGetAdvertisement";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/shared/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateAdvertisementSchema } from "../model/schema";
 import styles from "./UpdateAdvertisementForm.module.css";
 import Input from "@/shared/ui/Input";
 import TextArea from "@/shared/ui/TextArea";
+import ImageUploader from "@/shared/ui/ImageUploader";
+import type { ImageItem } from "@/types/advertisements";
+import type { UpdateAdvertisementDto } from "../model/types";
+import { useUpdateImagesOrder } from "../hooks/useUpdateImagesOrder";
 
-interface UpdateAdvertisementFormProps {
+type UpdateAdvertisementFormProps = {
   advertisementId: number;
-}
+};
 
 export default function UpdateAdvertisementForm({
   advertisementId,
 }: UpdateAdvertisementFormProps) {
   const mutation = useUpdateAdvertisement();
-
+  const updateOrderMutation = useUpdateImagesOrder();
   const { data: advertisement } = useGetAdvertisement(advertisementId);
+
+  const [images, setImages] = useState<ImageItem[]>([]);
+  const [deletedImages, setDeletedImages] = useState<number[]>([]);
+  const [imagesError, setImagesError] = useState<string>("");
 
   const {
     register,
@@ -30,8 +37,24 @@ export default function UpdateAdvertisementForm({
     resolver: zodResolver(updateAdvertisementSchema),
   });
 
+  const removeImage = (image: ImageItem) => {
+    if (image.imageId) {
+      setDeletedImages((prev) => [...prev, image.imageId!]);
+    }
+
+    setImages((prev) => prev.filter((x) => x.id !== image.id));
+  };
+
   useEffect(() => {
     if (advertisement) {
+      setImages(
+        advertisement.images.map((image) => ({
+          id: crypto.randomUUID(),
+          imageId: image.id,
+          url: image.url,
+        })),
+      );
+
       reset({
         title: advertisement.title,
         description: advertisement.description,
@@ -40,11 +63,32 @@ export default function UpdateAdvertisementForm({
     }
   }, [advertisement, reset]);
 
-  const onSubmit = (data: UpdateAdvertisementDto) => {
-    mutation.mutate({
+  const onSubmit = async (data: UpdateAdvertisementDto) => {
+    if (images.length < 2) {
+      setImagesError("Потрібно додати мінімум 2 фотографії");
+      return;
+    } else if (images.length > 10) {
+      setImagesError("Максимум 10 фотографій");
+      return;
+    }
+
+    await mutation.mutateAsync({
       id: advertisementId,
-      data,
+      data: {
+        ...data,
+
+        newImages: images.filter((x) => x.file).map((x) => x.file!),
+
+        deletedImageIds: deletedImages,
+      },
     });
+
+    await updateOrderMutation.mutateAsync({
+      advertisementId,
+      imageIds: images.filter((x) => x.imageId).map((x) => x.imageId!),
+    });
+
+    setImagesError("");
   };
 
   return (
@@ -81,6 +125,24 @@ export default function UpdateAdvertisementForm({
             placeholder="Enter price"
           />
           {errors.price && <p className="error">{errors.price.message}</p>}
+        </div>
+      </div>
+
+      <div className={styles.inputWrapper}>
+        <label className={styles.label}>Фото</label>
+        <p>
+          Перше фото буде на обкладинці оголошення. Перетягніть, щоб змінити
+          порядок фото.
+        </p>
+
+        <div className={styles.images}>
+          <ImageUploader
+            images={images}
+            setImages={setImages}
+            onDelete={removeImage}
+          />
+
+          {imagesError && <p className="error">{imagesError}</p>}
         </div>
       </div>
 

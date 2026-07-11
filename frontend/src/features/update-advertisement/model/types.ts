@@ -1,3 +1,8 @@
-import type { CreateAdvertisementDto } from "@/features/create-advertisement/model/types";
+export type UpdateAdvertisementDto = {
+  title?: string;
+  description?: string;
+  price?: number;
 
-export type UpdateAdvertisementDto = Partial<CreateAdvertisementDto>;
+  newImages?: File[];
+  deletedImageIds?: number[];
+};

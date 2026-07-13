@@ -41,23 +41,4 @@ public class AdvertisementImagesCommandsController : AdvertisementOwnerControlle
 
         return result.ToActionResult();
     }
-
-
-    [HttpPut("order")]
-    public async Task<IActionResult> UpdateOrder(
-        [FromRoute] int advertisementId,
-        [FromBody] ImageOrderUpdateRequest request)
-    {
-        var forbidden = await CheckAdvertisementOwnerAsync(advertisementId);
-        if (forbidden is not null)
-            return forbidden;
-
-        var result = await _imageService
-            .UpdateImagesOrderAsync(
-                advertisementId,
-                request);
-
-
-        return result.ToActionResult();
-    }
 }

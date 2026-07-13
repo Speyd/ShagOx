@@ -6,4 +6,7 @@ public interface IImageDeleteService
 {
     Task<Result<ImageDeleteResponse>> DeleteImageAsync(
         int id);
+
+    Task<Result<ImageDeleteResponse>> DeleteImageRecordAsync(
+        int id);
 }

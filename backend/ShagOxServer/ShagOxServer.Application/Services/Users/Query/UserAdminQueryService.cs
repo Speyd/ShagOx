@@ -74,11 +74,4 @@ public class UserAdminQueryService : IUserAdminQueryService
 
         return result;
     }
-
-    public async Task<bool> IsAdvertisementOwnerAsync(int userId, int adId)
-    {
-        var result = await _advertRepository.IsOwnerAsync(adId, userId);
-
-        return result;
-    }
 }

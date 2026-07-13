@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
+using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Create;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Delete;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -16,6 +17,7 @@ public class AdvertisementImageService : IAdvertisementImageService
     private readonly IImageQueryRepository _imageQueryRepository;
     private readonly IImageCreateService _imageCreateService;
     private readonly IImageDeleteService _imageDeleteService;
+    private readonly IImageLoaderService _imageLoaderService;
     private readonly IAdvertisementQueryRepository _advertRepository;
 
 
@@ -26,15 +28,18 @@ public class AdvertisementImageService : IAdvertisementImageService
         IImageQueryRepository imageQueryRepository,
         IImageCreateService imageCreateService,
         IImageDeleteService imageDeleteService,
+        IImageLoaderService imageLoaderService,
         IAdvertisementQueryRepository advertRepository,
         IUnitOfWork unitOfWork)
     {
         _imageQueryRepository = imageQueryRepository;
         _imageCreateService = imageCreateService;
         _imageDeleteService = imageDeleteService;
+        _imageLoaderService = imageLoaderService;
         _advertRepository = advertRepository;
         _unitOfWork = unitOfWork;
     }
+
 
     public async Task<Result<bool>> UpdateImagesOrderAsync(
        int advertisementId,
@@ -106,49 +111,72 @@ public class AdvertisementImageService : IAdvertisementImageService
         Advertisement advertisement,
         AdvertisementUpdateRequest request)
     {
-        if (request.DeletedImageIds is not null)
+        var loadedImage = new List<ImageCreateResponse>();
+
+        try
         {
-            foreach (var imageId in request.DeletedImageIds)
+            if (request.DeletedImageIds is not null &&
+                request.DeletedImageIds.Any())
             {
-                var image = advertisement.Images
-                    .FirstOrDefault(x => x.Id == imageId);
+                foreach (var imageId in request.DeletedImageIds)
+                {
+                    var image = advertisement.Images
+                        .FirstOrDefault(x => x.Id == imageId);
 
-                if (image is null)
-                    continue;
+                    if (image is null)
+                        continue;
 
-                var result = await _imageDeleteService
-                    .DeleteImageAsync(imageId);
+                    var result = await _imageDeleteService
+                        .DeleteImageAsync(imageId);
 
-                if (!result.IsSuccess)
-                    return Result<bool>.Fail(result.Error!);
+                    if (!result.IsSuccess)
+                        return Result<bool>.Fail(result.Error!);
 
-                advertisement.Images.Remove(image);
+                    advertisement.Images.Remove(image);
+                }
+
+                RecalculateImagesOrder(advertisement);
             }
 
-            RecalculateImagesOrder(advertisement);
-        }
-
-        if (request.NewImages is not null)
-        {
-            var order = advertisement.Images.Count;
-
-            foreach (var file in request.NewImages)
+            if (request.NewImages is not null &&
+                request.NewImages.Any())
             {
-                if (file is null)
-                    continue;
+                var order = advertisement.Images.Count;
 
-                var result = await _imageCreateService.CreateFromFileAsync(
-                    new ImageFileCreateRequest(
-                        file,
-                        advertisement.Id,
-                        order++));
+                foreach (var file in request.NewImages)
+                {
+                    if (file is null)
+                        continue;
 
-                if (!result.IsSuccess)
-                    return Result<bool>.Fail(result.Error!);
+                    var result = await _imageCreateService.CreateFromFileAsync(
+                        new ImageFileCreateRequest(
+                            file,
+                            advertisement.Id,
+                            order++));
+
+                    if (!result.IsSuccess)
+                    {
+                        loadedImage.Select(i => 
+                            _imageLoaderService.DeleteAsync(i.PublicId));
+
+                        return Result<bool>.Fail(result.Error!);
+                    }
+                       
+                    if(result.Value is not null)
+                        loadedImage.Add(result.Value);
+                }
             }
+
+            return Result<bool>.Success(true);
+
+        }
+        catch
+        {
+            loadedImage.Select(i =>
+                            _imageLoaderService.DeleteAsync(i.PublicId));
+            throw;
         }
 
-        return Result<bool>.Success(true);
     }
 
 

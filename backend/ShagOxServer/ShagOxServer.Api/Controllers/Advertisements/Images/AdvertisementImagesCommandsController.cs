@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Interfaces.Services.Users.Query;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -18,8 +18,9 @@ public class AdvertisementImagesCommandsController : AdvertisementOwnerControlle
 
     public AdvertisementImagesCommandsController(
         IAdvertisementImageService imageService,
-        IUserAdminQueryService userService)
-        :base(userService)
+        IAdvertisementExistsRepository existsAdvertRepository, 
+        IUserAdminQueryService userQueryService)
+        : base(existsAdvertRepository, userQueryService)
     {
         _imageService = imageService;
     }
@@ -31,31 +32,11 @@ public class AdvertisementImagesCommandsController : AdvertisementOwnerControlle
         [FromForm] AdvertisementUpdateRequest request)
     {
         var forbidden = await CheckAdvertisementOwnerAsync(advertisementId);
-
         if (forbidden is not null)
             return forbidden;
 
-
         var result = await _imageService
             .SyncImagesAsync(advertisementId, request);
-
-
-        return result.ToActionResult();
-    }
-
-
-    [HttpPut("order")]
-    public async Task<IActionResult> UpdateOrder(
-        [FromRoute] int advertisementId,
-        [FromBody] ImageOrderUpdateRequest request)
-    {
-       
-
-
-        var result = await _imageService
-            .UpdateImagesOrderAsync(
-                advertisementId,
-                request);
 
 
         return result.ToActionResult();

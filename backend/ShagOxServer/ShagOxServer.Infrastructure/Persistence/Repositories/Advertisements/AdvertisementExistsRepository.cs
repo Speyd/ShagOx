@@ -19,7 +19,7 @@ public class AdvertisementExistsRepository : BaseRepository, IAdvertisementExist
     public async Task<bool> IsOwnerAsync(int adId, int userId)
     {
         var result = await _db.Advertisements.AnyAsync(x =>
-           x.Id == adId && x.SellerId == userId);
+           (x.Id == adId && x.SellerId == userId));
 
         return result;
     }

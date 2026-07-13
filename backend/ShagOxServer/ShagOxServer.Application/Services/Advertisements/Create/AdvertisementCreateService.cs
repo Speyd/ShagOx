@@ -38,13 +38,14 @@ public class AdvertisementCreateService : IAdvertisementCreateService
     }
 
     public async Task<Result<AdvertisementCreateResponse>> CreateAdvertisementAsync(
-        AdvertisementCreateRequest request)
+        AdvertisementCreateRequest request,
+        int userId)
     {
         var validation = await _validator.ValidateAsync(request);
         if (!validation.IsSuccess)
             return Result<AdvertisementCreateResponse>.Fail(validation.Error!);
 
-        var advert = CreateAdvertisement(request);
+        var advert = CreateAdvertisement(request, userId);
 
         await _unitOfWork.BeginTransactionAsync();
         try
@@ -85,7 +86,8 @@ public class AdvertisementCreateService : IAdvertisementCreateService
     }
 
     private Advertisement CreateAdvertisement(
-        AdvertisementCreateRequest request)
+        AdvertisementCreateRequest request, 
+        int userId)
     {
         return new Advertisement
         {
@@ -96,7 +98,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
             CurrencyId = request.CurrencyId,
             CategoryId = request.CategoryId,
             ConditionId = request.ConditionId,
-            SellerId = request.SellerId,
+            SellerId = userId,
 
             Properties = request.Properties ?? new()
         };
@@ -116,7 +118,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
                 new ImageFileCreateRequest(
                     image,
                     advertisementId,
-                    order++));
+                    order++ + 1000));
 
 
             if (!result.IsSuccess)

@@ -1,9 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Delete;
-using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Delete;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -14,7 +12,6 @@ public class AdvertisementDeleteService : IAdvertisementDeleteService
     private readonly IAdvertisementQueryRepository _repositoryQuery;
 
     private readonly IImageDeleteService _imageService;
-    private readonly IAdvertisementImageService _imageOrderService;
 
     private readonly IUnitOfWork _unitOfWork;
 
@@ -22,13 +19,11 @@ public class AdvertisementDeleteService : IAdvertisementDeleteService
         IAdvertisementRepository advertisementRepository,
         IAdvertisementQueryRepository advertisementQueryRepositor,
         IImageDeleteService imageService,
-        IAdvertisementImageService imageOrderService,
         IUnitOfWork unitOfWork)
     {
         _repository = advertisementRepository;
         _repositoryQuery = advertisementQueryRepositor;
         _imageService = imageService;
-        _imageOrderService = imageOrderService;
         _unitOfWork = unitOfWork;
     }
 
@@ -42,7 +37,6 @@ public class AdvertisementDeleteService : IAdvertisementDeleteService
         try
         {
             _repository.Delete(advert);
-            await _unitOfWork.SaveChangesAsync();
 
             foreach (var image in advert.Images)
             {

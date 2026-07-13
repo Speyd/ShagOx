@@ -27,6 +27,7 @@ public class CloudinaryImageLoader : IImageLoaderService
                 .Fail("PublicId is incorrect");
 
         var deleteParams = new DeletionParams(publicId);
+        Console.WriteLine($"\n\n\n{publicId}\n\n\n");
         var result = await _cloudinary.DestroyAsync(deleteParams);
 
         if (result.Error != null)

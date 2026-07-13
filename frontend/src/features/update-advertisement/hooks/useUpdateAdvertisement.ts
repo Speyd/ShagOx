@@ -1,11 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { updateAdvertisement } from "../model/api";
 import { toast } from "sonner";
-import type { UpdateAdvertisementDto } from "../model/types";
+import type { UpdateAdvertisementRequestDto } from "../model/types";
+import axios from "axios";
 
 type UpdateAdvertisementRequest = {
   id: number;
-  data: UpdateAdvertisementDto;
+  data: UpdateAdvertisementRequestDto;
 };
 
 export default function useUpdateAdvertisement() {
@@ -13,6 +14,13 @@ export default function useUpdateAdvertisement() {
     mutationFn: ({ id, data }: UpdateAdvertisementRequest) =>
       updateAdvertisement(id, data),
     onSuccess: () => toast.success("Ви успішно оновили оголошення!"),
-    onError: () => toast.error("Помилка серверу."),
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
+        toast.error("Ви не є власником цього оголошення.");
+        return;
+      }
+
+      toast.error("Не вдалося оновити оголошення. Спробуйте ще раз.");
+    },
   });
 }

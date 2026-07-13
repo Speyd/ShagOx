@@ -10,8 +10,7 @@ import Input from "@/shared/ui/Input";
 import TextArea from "@/shared/ui/TextArea";
 import ImageUploader from "@/shared/ui/ImageUploader";
 import type { ImageItem } from "@/types/advertisements";
-import type { UpdateAdvertisementDto } from "../model/types";
-import { useUpdateImagesOrder } from "../hooks/useUpdateImagesOrder";
+import type { UpdateAdvertisementDto } from "../model/schema";
 
 type UpdateAdvertisementFormProps = {
   advertisementId: number;
@@ -21,7 +20,6 @@ export default function UpdateAdvertisementForm({
   advertisementId,
 }: UpdateAdvertisementFormProps) {
   const mutation = useUpdateAdvertisement();
-  const updateOrderMutation = useUpdateImagesOrder();
   const { data: advertisement } = useGetAdvertisement(advertisementId);
 
   const [images, setImages] = useState<ImageItem[]>([]);
@@ -74,18 +72,26 @@ export default function UpdateAdvertisementForm({
 
     await mutation.mutateAsync({
       id: advertisementId,
+
       data: {
         ...data,
 
-        newImages: images.filter((x) => x.file).map((x) => x.file!),
+        images: [
+          ...images.map((image, index) => ({
+            id: image.imageId,
+            file: image.file,
+            order: index,
+            isDeleted: false,
+          })),
 
-        deletedImageIds: deletedImages,
+          ...deletedImages.map((id) => ({
+            id,
+            file: undefined,
+            order: 0,
+            isDeleted: true,
+          })),
+        ],
       },
-    });
-
-    await updateOrderMutation.mutateAsync({
-      advertisementId,
-      imageIds: images.filter((x) => x.imageId).map((x) => x.imageId!),
     });
 
     setImagesError("");

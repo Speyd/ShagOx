@@ -1,8 +1,12 @@
-export type UpdateAdvertisementDto = {
+export type UpdateAdvertisementRequestDto = {
   title?: string;
   description?: string;
   price?: number;
-
-  newImages?: File[];
-  deletedImageIds?: number[];
+  properties?: Record<string, string>;
+  images: {
+    id?: number;
+    file?: File;
+    order: number;
+    isDeleted: boolean;
+  }[];
 };

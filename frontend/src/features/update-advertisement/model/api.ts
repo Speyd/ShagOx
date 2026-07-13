@@ -1,9 +1,9 @@
 import { api } from "@/shared/api/api";
-import type { UpdateAdvertisementDto } from "./types";
+import type { UpdateAdvertisementRequestDto } from "./types";
 
 export async function updateAdvertisement(
   id: number,
-  data: UpdateAdvertisementDto,
+  data: UpdateAdvertisementRequestDto,
 ) {
   const formData = new FormData();
 
@@ -13,22 +13,26 @@ export async function updateAdvertisement(
 
   if (data.price != null) formData.append("price", data.price.toString());
 
-  data.newImages?.forEach((file) => {
-    formData.append("newImages", file);
-  });
+  for (const [key, value] of Object.entries(data.properties ?? {})) {
+    formData.append(`properties[${key}]`, value);
+  }
+  
+  data.images.forEach((image, index) => {
+    if (image.id != null) {
+      formData.append(`images[${index}].id`, image.id.toString());
+    }
 
-  data.deletedImageIds?.forEach((id) => {
-    formData.append("deletedImageIds", id.toString());
+    if (image.file) {
+      formData.append(`images[${index}].file`, image.file);
+    }
+
+    formData.append(`images[${index}].order`, image.order.toString());
+
+    formData.append(
+      `images[${index}].isDeleted`,
+      String(image.isDeleted ?? false),
+    );
   });
 
   return api.put(`/api/advertisements/${id}`, formData);
-}
-
-export async function updateImagesOrder(
-  advertisementId: number,
-  imageIds: number[],
-) {
-  return api.put(`/api/advertisements/${advertisementId}/images/order`, {
-    imageIds,
-  });
 }

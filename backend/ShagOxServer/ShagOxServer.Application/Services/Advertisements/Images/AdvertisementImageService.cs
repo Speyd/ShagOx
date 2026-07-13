@@ -17,6 +17,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Advertisements.Images;
 public class AdvertisementImageService : IAdvertisementImageService
 {
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IImageQueryRepository _imageQueryRepository;
     private readonly IImageCreateService _imageCreateService;
     private readonly IImageDeleteService _imageDeleteService;
@@ -24,12 +25,14 @@ public class AdvertisementImageService : IAdvertisementImageService
     private readonly IAdvertisementQueryRepository _advertRepository;
 
     public AdvertisementImageService(
+        IUnitOfWork unitOfWork,
         IImageQueryRepository imageQueryRepository,
         IImageCreateService imageCreateService,
         IImageDeleteService imageDeleteService,
         IImageLoaderService imageLoaderService,
         IAdvertisementQueryRepository advertRepository)
     {
+        _unitOfWork = unitOfWork;
         _imageQueryRepository = imageQueryRepository;
         _imageCreateService = imageCreateService;
         _imageDeleteService = imageDeleteService;
@@ -66,6 +69,13 @@ public class AdvertisementImageService : IAdvertisementImageService
                 return Result<bool>.Success(true);
             }
 
+            var prepareResult = await PrepareOrdersAsync(
+                advertisement,
+                request.Images);
+
+            if (!prepareResult.IsSuccess)
+                return prepareResult;
+
 
             foreach (var image in request.Images)
             {
@@ -91,6 +101,32 @@ public class AdvertisementImageService : IAdvertisementImageService
             await DeleteLoadedImagesAsync(loadedImage);
             throw;
         }
+    }
+
+    private async Task<Result<bool>> PrepareOrdersAsync(
+        Advertisement advertisement,
+        List<ImageAdvertUpdateRequest> images)
+    {
+        var ids = images
+            .Where(image => image.Id is not null)
+            .Select(image => image.Id!.Value)
+            .ToHashSet();
+
+        var existingImages = advertisement.Images
+            .Where(image => ids.Contains(image.Id))
+            .ToList();
+
+        if (!existingImages.Any())
+            return Result<bool>.Success(true);
+
+        foreach (var image in existingImages)
+        {
+            image.Order = -image.Id;
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+
+        return Result<bool>.Success(true);
     }
 
     private async Task<Result<bool>> SyncImageAsync(

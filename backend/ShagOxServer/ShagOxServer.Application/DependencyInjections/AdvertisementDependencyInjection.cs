@@ -15,6 +15,8 @@ using ShagOxServer.Application.Services.Advertisements.Favorites.Create;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Delete;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Update;
+using ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validator;
+using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
 using ShagOxServer.Application.Services.Advertisements.Images;
 using ShagOxServer.Application.Services.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Update;
@@ -31,16 +33,24 @@ public static class AdvertisementDependencyInjection
         services.AddScoped<IAdvertisementQueryService, AdvertisementQueryService>();
         services.AddScoped<IAdvertisementUpdateService, AdvertisementUpdateService>();
 
+        services.AddScoped<AdvertisementCreateValidator>();
+        services.AddScoped<AdvertisementUpdateValidator>();
+        services.AddScoped<AdvertisementValidator>();
+
+
+
         services.AddScoped<IFavoriteCreateService, FavoriteCreateService>();
         services.AddScoped<IFavoriteDeleteService, FavoriteDeleteService>();
         services.AddScoped<IFavoriteQueryService, FavoriteQueryService>();
         services.AddScoped<IFavoriteUpdateService, FavoriteUpdateService>();
 
-        services.AddScoped<IAdvertisementImageService, AdvertisementImageService>();
+        services.AddScoped<FavoriteUpdateValidator>();
+        services.AddScoped<FavoriteValidator>();
 
-        services.AddScoped<AdvertisementCreateValidator>();
-        services.AddScoped<AdvertisementUpdateValidator>();
-        services.AddScoped<AdvertisementValidator>();
+
+
+        services.AddScoped<IAdvertisementImageService, AdvertisementImageService>();
+  
 
         return services;
     }

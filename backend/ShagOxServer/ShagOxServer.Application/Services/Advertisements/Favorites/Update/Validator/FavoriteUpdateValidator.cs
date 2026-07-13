@@ -1,18 +1,19 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
 using ShagOxServer.Application.Services.Advertisements.Validator;
+using ShagOxServer.Application.Services.Users.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validator;
 public class FavoriteUpdateValidator
 {
-    //private readonly UserValidator _userValidator;
+    private readonly UserValidator _userValidator;
     private readonly AdvertisementValidator _advertisementValidator;
 
     public FavoriteUpdateValidator(
-        //UserValidator userValidator,
+        UserValidator userValidator,
         AdvertisementValidator advertisementValidator)
     {
-       // _userValidator = userValidator;
+        _userValidator = userValidator;
         _advertisementValidator = advertisementValidator;
     }
 
@@ -21,11 +22,11 @@ public class FavoriteUpdateValidator
     {
         if (request.UserId is not null)
         {
-            //var user = await _userValidator
-            //    .GetUserAsync(request.UserId.Value);
+            var user = await _userValidator
+                .GetUserValidator(request.UserId.Value);
 
-            //if (!user.IsSuccess)
-            //    return Result<bool>.NotFound("User");
+            if (!user.IsSuccess)
+                return Result<bool>.NotFound("User");
         }
 
 

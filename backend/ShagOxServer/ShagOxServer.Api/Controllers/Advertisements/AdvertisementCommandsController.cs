@@ -7,7 +7,6 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Services.Users.Query;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 using System.Security.Claims;
 
@@ -40,7 +39,7 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
     public async Task<IActionResult> Create(
         [FromForm] AdvertisementCreateRequest request)
     {
-        var result = await _createService.CreateAdvertisementAsync(request);
+        var result = await _createService.CreateAdvertisementAsync(request, UserId);
         return result.ToActionResult();
     }
 

@@ -10,7 +10,6 @@ public sealed record AdvertisementCreateRequest
     int CurrencyId,
     int ConditionId,
     int CategoryId,
-    int SellerId,
     List<IFormFile> Images,
     Dictionary<string, string>? Properties = null
 );

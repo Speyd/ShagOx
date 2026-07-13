@@ -1,34 +1,45 @@
 import { useNavigate } from "react-router-dom";
 import type { Advertisement } from "../model/types";
 import styles from "./AdvertisementCard.module.css";
+import DeleteAdvertisementButton from "@/features/delete-advertisement";
+import { UpdateAdvertisementButton } from "@/features/update-advertisement/ui";
+import Price from "@/shared/ui/Price";
+import { formatDate } from "@/shared/lib/formatDate";
 
 export default function AdvertisementCard(props: Advertisement) {
   const navigate = useNavigate();
 
   return (
     <div className={styles.card}>
-      <div className={styles.content}>
+      <div className={styles.left}>
         <div
           className={styles.imageContainer}
           onClick={() => navigate(`/advertisement/${props.id}`)}
         >
-          <img src={props.images[0]} alt="" className={styles.image} />
+          <img
+            src={props.images[0]?.url ?? "/placeholder.png"}
+            alt={props.title}
+            className={styles.image}
+          />
         </div>
 
         <div className={styles.info}>
-          <h2>
-            {props.title}, {props.id}
-          </h2>
-
-          <div className={styles.conditionContainer}>
-            <p className={styles.conditionText}>{props.condition}</p>
+          <div className={styles.infoTitle}>
+            <h2>{props.title}</h2>
+            <p>{props.description}</p>
           </div>
 
-          <p>{props.category}</p>
+          <p>{formatDate(props.createdAt)}</p>
         </div>
       </div>
 
-      <div className={styles.price}>{props.price}</div>
+      <div className={styles.right}>
+        <Price value={props.price} />
+        <div className={styles.buttons}>
+          <UpdateAdvertisementButton id={props.id} />
+          <DeleteAdvertisementButton id={props.id} />
+        </div>
+      </div>
     </div>
   );
 }

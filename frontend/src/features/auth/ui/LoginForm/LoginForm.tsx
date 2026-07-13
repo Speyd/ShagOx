@@ -49,6 +49,7 @@ export default function LoginForm() {
             <p className={styles.error}>{errors.emailOrPhone.message}</p>
           )}
         </div>
+        
       </div>
 
       <div className={styles.inputWrapper}>

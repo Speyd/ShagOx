@@ -51,7 +51,8 @@ public class CloudinaryImageLoader : IImageLoaderService
         {
             File = new FileDescription(
                 file.FileName,
-                stream)
+                stream),
+            Folder = "ShagOx"
         };
 
         var result = await _cloudinary.UploadAsync(uploadParams);

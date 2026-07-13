@@ -9,9 +9,16 @@ export interface Advertisement {
   price: number;
   previousPrice: number;
   currency: string;
-  images: string[];
+  images: ImageItem[];
   seller: number;
   buyer: number | null;
   createdAt: string;
   soldAt: string | null;
 }
+
+export type ImageItem = {
+  id: string;
+  imageId?: number;
+  url: string;
+  file?: File;
+};

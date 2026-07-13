@@ -100,6 +100,9 @@ public class AdvertisementCreateService : IAdvertisementCreateService
             ConditionId = request.ConditionId,
             SellerId = userId,
 
+            Price = request.Price,
+            PreviousPrice = request.Price,
+
             Properties = request.Properties ?? new()
         };
     }

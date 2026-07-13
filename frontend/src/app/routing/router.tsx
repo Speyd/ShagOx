@@ -6,6 +6,8 @@ import MainLayout from "../layouts";
 import NotFoundPage from "@/pages/NotFoundPage";
 import AdvertisementPage from "@/pages/AdvertisementPage";
 import { PublicRoute } from "./PublicRoute";
+import CreateAdvertisementPage from "@/pages/CreateAdvertisementPage/CreateAdvertisementPage";
+import UpdateAdvertisementPage from "@/pages/UpdateAdvertisementPage";
 
 export default function Router() {
   return (
@@ -28,6 +30,14 @@ export default function Router() {
                 <RegisterPage />
               </PublicRoute>
             }
+          />
+          <Route
+            path="/create-advertisement"
+            element={<CreateAdvertisementPage />}
+          />
+          <Route
+            path="/update-advertisement/:id"
+            element={<UpdateAdvertisementPage />}
           />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />
         </Route>

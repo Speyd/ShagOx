@@ -24,3 +24,9 @@ body {
   --bg-base: #f8fafc;
   --text-base: #334155;
 }
+
+.error {
+  color: red;
+  font-weight: 600;
+  font-size: 12px;
+}

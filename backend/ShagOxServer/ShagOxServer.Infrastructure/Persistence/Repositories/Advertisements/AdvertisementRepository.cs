@@ -12,6 +12,7 @@ public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
     public async Task<Advertisement?> GetByIdAsync(int id)
     {
         return await _db.Advertisements
+            .Include(x => x.Images)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 

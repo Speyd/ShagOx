@@ -20,11 +20,12 @@ export default function CreateAdvertisementForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateAdvertisementDto>({
+  } = useForm({
     resolver: zodResolver(createAdvertisementSchema),
   });
 
   const onSubmit = async (data: CreateAdvertisementDto) => {
+    console.log(data);
     await mutation.mutateAsync({
       ...data,
       previousPrice: data.price,
@@ -61,12 +62,7 @@ export default function CreateAdvertisementForm() {
 
       <div className={styles.inputWrapper}>
         <label className={styles.label}>Ціна</label>
-        <Input
-          type="number"
-          {...register("price", {
-            valueAsNumber: true,
-          })}
-        />
+        <Input type="number" {...register("price")} placeholder="Enter price" />
 
         {errors.price && <p className="error">{errors.price.message}</p>}
       </div>

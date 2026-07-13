@@ -12,11 +12,11 @@ export function useCreateAdvertisement() {
       queryClient.invalidateQueries({
         queryKey: ["advertisements"],
       });
-      toast.success("Advertisement created!");
+      toast.success("Оголошення успішно створено!");
     },
 
     onError: () => {
-      toast.error("Failed to create advertisement");
+      toast.error("Не вдалося створити оголошення. Спробуйте ще раз.");
     },
   });
 }

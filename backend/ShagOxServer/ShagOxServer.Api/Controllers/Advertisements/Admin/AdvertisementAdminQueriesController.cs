@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Query;
 using ShagOxServer.Application.Interfaces.Services.Users.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -16,8 +17,9 @@ public class AdvertisementAdminQueriesController : AdvertisementOwnerController
 
     public AdvertisementAdminQueriesController(
        IAdvertisementQueryService queryAdvertService,
-       IUserAdminQueryService queryUserService)
-        :base(queryUserService)
+       IAdvertisementExistsRepository existsAdvertRepository,
+       IUserAdminQueryService userQueryService)
+        :base(existsAdvertRepository, userQueryService)
     {
         _queryAdvertService = queryAdvertService;
     }
@@ -27,7 +29,7 @@ public class AdvertisementAdminQueriesController : AdvertisementOwnerController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userService.ExistsAsync(userId);
+        var exists = await _userQueryService.ExistsAsync(userId);
 
         if (!exists)
             return NotFound("User not found");

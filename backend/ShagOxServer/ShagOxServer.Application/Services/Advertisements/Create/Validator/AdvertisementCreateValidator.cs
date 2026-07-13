@@ -29,11 +29,6 @@ public class AdvertisementCreateValidator
     public async Task<Result<bool>> ValidateAsync(
        AdvertisementCreateRequest request)
     {
-        var seller = await _userRepository.GetByIdAsync(request.SellerId);
-        if (seller is null)
-            return Result<bool>
-                .NotFound("Seller");
-
         var currency = await _currencyRepository.GetByIdAsync(request.CurrencyId);
         if (currency is null)
             return Result<bool>

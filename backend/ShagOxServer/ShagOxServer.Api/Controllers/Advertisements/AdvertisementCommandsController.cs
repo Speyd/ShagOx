@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Advertisements.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Update;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Services.Users.Query;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using System.Security.Claims;
 
 namespace ShagOxServer.Api.Controllers.Advertisements;
 
@@ -23,8 +25,9 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
         IAdvertisementCreateService createService,
         IAdvertisementUpdateService updateService,
         IAdvertisementDeleteService deleteService,
-        IUserAdminQueryService userService)
-        :base(userService)
+        IAdvertisementExistsRepository existsAdvertRepository,
+        IUserAdminQueryService userQueryService)
+        : base(existsAdvertRepository, userQueryService)
     {
         _createService = createService;
         _updateService = updateService;
@@ -36,17 +39,14 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
     public async Task<IActionResult> Create(
         [FromForm] AdvertisementCreateRequest request)
     {
-        if (request.SellerId != UserId)
-            return Forbid();
-
-        var result = await _createService.CreateAdvertisementAsync(request);
+        var result = await _createService.CreateAdvertisementAsync(request, UserId);
         return result.ToActionResult();
     }
 
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
         [FromRoute] int id,
-        [FromBody] AdvertisementUpdateRequest request)
+        [FromForm] AdvertisementUpdateRequest request)
     {
         var forbidden = await CheckAdvertisementOwnerAsync(id);
         if (forbidden is not null)
@@ -61,6 +61,11 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
+        var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        Console.WriteLine($"AdvertisementId: {id}");
+        Console.WriteLine($"Claim UserId: {claim}");
+
         var forbidden = await CheckAdvertisementOwnerAsync(id);
         if (forbidden is not null)
             return forbidden;

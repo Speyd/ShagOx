@@ -10,7 +10,7 @@ namespace ShagOxServer.Application.Services.Advertisements.Update;
 
 public class AdvertisementUpdateService : IAdvertisementUpdateService
 {
-    private readonly IAdvertisementRepository _advertisementRepository;
+    private readonly IAdvertisementQueryRepository _advertisementQueryRepository;
     private readonly IAdvertisementImageService _imageService;
     private readonly AdvertisementUpdateValidator _validator;
 
@@ -18,12 +18,12 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
 
 
     public AdvertisementUpdateService(
-        IAdvertisementRepository advertisementRepository,
+        IAdvertisementQueryRepository advertisementQueryRepository,
         IAdvertisementImageService imageService,
         AdvertisementUpdateValidator validator,
         IUnitOfWork unitOfWork)
     {
-        _advertisementRepository = advertisementRepository;
+        _advertisementQueryRepository = advertisementQueryRepository;
         _validator = validator;
         _imageService = imageService;
         _unitOfWork = unitOfWork;
@@ -34,7 +34,7 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
         int advertId,
         AdvertisementUpdateRequest request)
     {
-        var advert = await _advertisementRepository.GetByIdAsync(advertId);
+        var advert = await _advertisementQueryRepository.GetByIdAsync(advertId);
 
         if (advert is null)
             return Result<AdvertisementUpdateResponse>
@@ -42,7 +42,6 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
 
 
         var validation = await _validator.ValidateAsync(request);
-
         if (!validation.IsSuccess)
             return Result<AdvertisementUpdateResponse>
                 .Fail(validation.Error!);

@@ -37,11 +37,6 @@ public class ImageCreateService : IImageCreateService
         if (advert is null)
             return Result<ImageCreateResponse>.NotFound("Advertisement");
 
-        var orderExists = advert.Images.Any(x => x.Order == request.Order);
-        if (orderExists)
-            return Result<ImageCreateResponse>
-                .Fail("Image with this order already exists.");
-
         var image = CreateImage(request);
 
         _imageRepository.Add(image);
@@ -60,11 +55,6 @@ public class ImageCreateService : IImageCreateService
         var advert = await _advertisementRepository.GetByIdAsync(request.AdvertisementId);
         if (advert is null)
             return Result<ImageCreateResponse>.NotFound("Advertisement");
-
-        var orderExists = advert.Images.Any(x => x.Order == request.Order);
-        if (orderExists)
-            return Result<ImageCreateResponse>
-                .Fail("Image with this order already exists.");
 
         var response = await _loaderService.UploadAsync(request.File);
         if (!response.IsSuccess || response.Value is null)

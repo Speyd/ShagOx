@@ -38,4 +38,20 @@ public class ImageDeleteService : IImageDeleteService
            )
        );
     }
+
+    public async Task<Result<ImageDeleteResponse>> DeleteImageRecordAsync(int id)
+    {
+        var image = await _repository.GetByIdAsync(id);
+        if (image is null)
+            return Result<ImageDeleteResponse>.NotFound("Image");
+
+        _repository.Delete(image);
+
+        return Result<ImageDeleteResponse>.Success(
+           new ImageDeleteResponse(
+               image.Id,
+               DateTime.UtcNow
+           )
+       );
+    }
 }

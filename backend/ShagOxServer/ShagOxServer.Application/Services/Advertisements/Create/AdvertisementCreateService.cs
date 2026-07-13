@@ -118,7 +118,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
                 new ImageFileCreateRequest(
                     image,
                     advertisementId,
-                    order++));
+                    order++ + 1000));
 
 
             if (!result.IsSuccess)

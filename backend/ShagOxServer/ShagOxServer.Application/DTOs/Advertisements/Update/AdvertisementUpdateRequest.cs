@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.Update;
 public sealed record AdvertisementUpdateRequest
@@ -11,7 +11,6 @@ public sealed record AdvertisementUpdateRequest
     int? ConditionId,
     int? CategoryId,
     int? BuyerId,
-    List<IFormFile>? NewImages,
-    List<int>? DeletedImageIds,
+    List<ImageAdvertUpdateRequest>? Images,
     Dictionary<string, string>? Properties
 );

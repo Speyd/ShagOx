@@ -19,6 +19,7 @@ using ShagOxServer.Application.Services.Advertisements.Images;
 using ShagOxServer.Application.Services.Advertisements.Query;
 using ShagOxServer.Application.Services.Advertisements.Update;
 using ShagOxServer.Application.Services.Advertisements.Update.Validator;
+using ShagOxServer.Application.Services.Advertisements.Validator;
 
 namespace ShagOxServer.Application.DependencyInjection;
 public static class AdvertisementDependencyInjection
@@ -39,6 +40,7 @@ public static class AdvertisementDependencyInjection
 
         services.AddScoped<AdvertisementCreateValidator>();
         services.AddScoped<AdvertisementUpdateValidator>();
+        services.AddScoped<AdvertisementValidator>();
 
         return services;
     }

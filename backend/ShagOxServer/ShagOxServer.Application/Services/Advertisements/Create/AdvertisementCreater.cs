@@ -2,7 +2,7 @@
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create;
-public static class AdvertisementCreator
+public static class AdvertisementCreater
 {
     public static Advertisement CreateAdvertisement(
        AdvertisementCreateRequest request,

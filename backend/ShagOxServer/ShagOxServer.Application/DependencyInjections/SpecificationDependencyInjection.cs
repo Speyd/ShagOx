@@ -24,6 +24,8 @@ using ShagOxServer.Application.Services.Specification.Images.Create.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Delete;
 using ShagOxServer.Application.Services.Specification.Images.Query;
 using ShagOxServer.Application.Services.Specification.Images.Update;
+using ShagOxServer.Application.Services.Specification.Images.Update.Validator;
+using ShagOxServer.Application.Services.Specification.Images.Validator;
 
 namespace ShagOxServer.Application.DependencyInjection;
 
@@ -48,7 +50,10 @@ public static class SpecificationDependencyInjection
         services.AddScoped<IImageCreateService, ImageCreateService>();
         services.AddScoped<IImageUpdateService, ImageUpdateService>();
         services.AddScoped<IImageDeleteService, ImageDeleteService>();
+
         services.AddScoped<ImageCreateValidator>();
+        services.AddScoped<ImageUpdateValidator>();
+        services.AddScoped<ImageValidator>();
 
         return services;
     }

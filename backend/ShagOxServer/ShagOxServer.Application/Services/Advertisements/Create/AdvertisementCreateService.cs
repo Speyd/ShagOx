@@ -39,7 +39,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         if (!validation.IsSuccess)
             return Result<AdvertisementCreateResponse>.Fail(validation.Error!);
 
-        var advert = AdvertisementCreator.CreateAdvertisement(request, userId);
+        var advert = AdvertisementCreater.CreateAdvertisement(request, userId);
 
         await _unitOfWork.BeginTransactionAsync();
         try

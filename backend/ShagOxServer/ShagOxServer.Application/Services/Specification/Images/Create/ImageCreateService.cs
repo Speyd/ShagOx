@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Create;
+using ShagOxServer.Application.Services.Advertisements.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Create.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -12,27 +13,31 @@ public class ImageCreateService : IImageCreateService
 {
     private readonly IImageRepository _imageRepository;
     private readonly IImageLoaderService _loaderService;
-    private readonly ImageCreateValidator _validator;
+    private readonly ImageCreateValidator _imageValidator;
+    private readonly AdvertisementValidator _advertValidator;
+
 
     public ImageCreateService(
         IImageRepository imageRepository,
         IImageLoaderService loaderService,
-        ImageCreateValidator validator)
+        ImageCreateValidator imageValidator,
+        AdvertisementValidator advertValidator)
     {
         _imageRepository = imageRepository;
         _loaderService = loaderService;
-        _validator = validator;
+        _imageValidator = imageValidator;
+        _advertValidator = advertValidator;
     }
 
 
     public async Task<Result<ImageCreateResponse>> CreateAsync(
         ImageCreateRequest request)
     {
-        var resultValid = await _validator.AdvertisementValidator(request.AdvertisementId);
+        var resultValid = await _advertValidator.GetAdvertisementValidator(request.AdvertisementId);
         if (!resultValid.IsSuccess)
             return Result<ImageCreateResponse>.Fail(resultValid.Error ?? "");
 
-        var image = ImageCreator.CreateImage(request);
+        var image = ImageCreater.CreateImage(request);
 
         _imageRepository.Add(image);
 
@@ -42,15 +47,15 @@ public class ImageCreateService : IImageCreateService
     public async Task<Result<ImageCreateResponse>> CreateFromFileAsync(
         ImageFileCreateRequest request)
     {
-        var resultAdvertValid = await _validator.AdvertisementValidator(request.AdvertisementId);
+        var resultAdvertValid = await _advertValidator.GetAdvertisementValidator(request.AdvertisementId);
         if (!resultAdvertValid.IsSuccess)
             return Result<ImageCreateResponse>.Fail(resultAdvertValid.Error ?? "");
 
-        var resultLoaderValid = await _validator.ImageUploaderValidator(request.File);
+        var resultLoaderValid = await _imageValidator.ImageUploadValidator(request.File);
         if (!resultLoaderValid.IsSuccess)
             return Result<ImageCreateResponse>.Fail(resultLoaderValid.Error ?? "");
 
-        var image = ImageCreator.CreateImage(request, resultLoaderValid.Value!);
+        var image = ImageCreater.CreateImage(request, resultLoaderValid.Value!);
         _imageRepository.Add(image);
 
         return Success(image);
@@ -96,11 +101,11 @@ public class ImageCreateService : IImageCreateService
     public async Task<Result<ImageCreateResponse>> CreateFromFileInternalAsync(
         ImageFileCreateRequest request)
     {
-        var resultLoaderValid = await _validator.ImageUploaderValidator(request.File);
+        var resultLoaderValid = await _imageValidator.ImageUploadValidator(request.File);
         if (!resultLoaderValid.IsSuccess)
             return Result<ImageCreateResponse>.Fail(resultLoaderValid.Error ?? "");
 
-        var image = ImageCreator.CreateImage(
+        var image = ImageCreater.CreateImage(
             request,
             resultLoaderValid.Value!);
 

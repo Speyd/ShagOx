@@ -20,6 +20,7 @@ using ShagOxServer.Application.Services.Specification.Currencies.Delete;
 using ShagOxServer.Application.Services.Specification.Currencies.Query;
 using ShagOxServer.Application.Services.Specification.Currencies.Update;
 using ShagOxServer.Application.Services.Specification.Images.Create;
+using ShagOxServer.Application.Services.Specification.Images.Create.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Delete;
 using ShagOxServer.Application.Services.Specification.Images.Query;
 using ShagOxServer.Application.Services.Specification.Images.Update;
@@ -47,6 +48,7 @@ public static class SpecificationDependencyInjection
         services.AddScoped<IImageCreateService, ImageCreateService>();
         services.AddScoped<IImageUpdateService, ImageUpdateService>();
         services.AddScoped<IImageDeleteService, ImageDeleteService>();
+        services.AddScoped<ImageCreateValidator>();
 
         return services;
     }

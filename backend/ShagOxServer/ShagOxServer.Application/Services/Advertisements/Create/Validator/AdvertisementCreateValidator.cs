@@ -1,5 +1,4 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Create;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
@@ -8,19 +7,16 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Advertisements.Create.Validator;
 public class AdvertisementCreateValidator
 {
-    private readonly IUserRepository _userRepository;
     private readonly ICurrencyRepository _currencyRepository;
     private readonly ICategoryRepository _categoryRepository;
     private readonly IConditionRepository _conditionRepository;
 
 
     public AdvertisementCreateValidator(
-        IUserRepository userRepository,
         ICurrencyRepository currencyRepository,
         ICategoryRepository categoryRepository,
         IConditionRepository conditionRepository)
     {
-        _userRepository = userRepository;
         _currencyRepository = currencyRepository;
         _categoryRepository = categoryRepository;
         _conditionRepository = conditionRepository;

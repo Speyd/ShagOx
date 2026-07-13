@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace ShagOxServer.Application.DTOs.Specification.Images.Create;
+namespace ShagOxServer.Application.DTOs.Specification.Images.Create.File;
 public sealed record ImageFileCreateRequest
 (
     IFormFile File,

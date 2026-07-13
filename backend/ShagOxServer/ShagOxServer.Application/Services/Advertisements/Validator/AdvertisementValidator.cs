@@ -6,12 +6,15 @@ namespace ShagOxServer.Application.Services.Advertisements.Validator;
 public class AdvertisementValidator
 {
     private readonly IAdvertisementRepository _advertisementRepository;
+    private readonly IAdvertisementExistsRepository _advertisementExistsRepository;
 
 
     public AdvertisementValidator(
-        IAdvertisementRepository advertisementRepository)
+        IAdvertisementRepository advertisementRepository,
+        IAdvertisementExistsRepository advertisementExistsRepository)
     {
         _advertisementRepository = advertisementRepository;
+        _advertisementExistsRepository = advertisementExistsRepository;
     }
 
     public async Task<Result<Advertisement>> GetAdvertisementValidator(
@@ -22,5 +25,15 @@ public class AdvertisementValidator
             return Result<Advertisement>.NotFound("Advertisement");
 
         return Result<Advertisement>.Success(advert);
+    }
+
+    public async Task<Result<bool>> ExistsAdvertisementValidator(
+        int advertId)
+    {
+        var advert = await _advertisementExistsRepository.ExistsById(advertId);
+        if (!advert)
+            return Result<bool>.NotFound("Advertisement");
+
+        return Result<bool>.Success(advert);
     }
 }

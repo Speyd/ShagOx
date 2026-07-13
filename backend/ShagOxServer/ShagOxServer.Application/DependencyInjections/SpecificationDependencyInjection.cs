@@ -52,7 +52,6 @@ public static class SpecificationDependencyInjection
         services.AddScoped<IImageDeleteService, ImageDeleteService>();
 
         services.AddScoped<ImageCreateValidator>();
-        services.AddScoped<ImageUpdateValidator>();
         services.AddScoped<ImageValidator>();
 
         return services;

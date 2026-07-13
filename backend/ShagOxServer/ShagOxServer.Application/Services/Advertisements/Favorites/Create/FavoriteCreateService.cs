@@ -1,10 +1,9 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Create;
-using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Application.Services.Advertisements.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Create;
@@ -14,7 +13,7 @@ public class FavoriteCreateService : IFavoriteCreateService
 
     private readonly IUserExistsRepository _userRepository;
 
-    private readonly IAdvertisementExistsRepository _advertRepository;
+    private readonly AdvertisementValidator _advertValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
@@ -22,12 +21,12 @@ public class FavoriteCreateService : IFavoriteCreateService
     public FavoriteCreateService(
         IFavoriteRepository favoriteRepository,
         IUserExistsRepository userRepository,
-        IAdvertisementExistsRepository advertRepository,
+        AdvertisementValidator advertValidator,
         IUnitOfWork unitOfWork)
     {
         _repository = favoriteRepository;
         _userRepository = userRepository;
-        _advertRepository = advertRepository;
+        _advertValidator = advertValidator;
         _unitOfWork = unitOfWork;
     }
 
@@ -38,12 +37,13 @@ public class FavoriteCreateService : IFavoriteCreateService
         if (!validationUser)
             return Result<FavoriteCreateResponse>.NotFound("User");
 
-        var validationAdvert = await _advertRepository.ExistsById(request.AdvertisementId);
-        if (!validationAdvert)
-            return Result<FavoriteCreateResponse>.NotFound("Advertisement");
+        var validationAdvert = await _advertValidator.ExistsAdvertisementValidator(
+            request.AdvertisementId);
 
+        if (!validationAdvert.IsSuccess)
+            return Result<FavoriteCreateResponse>.Fail(validationAdvert.Error ?? "");
 
-        var favorite = CreateFavorite(request);
+        var favorite = FavoriteCreater.CreateFavorite(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -59,21 +59,10 @@ public class FavoriteCreateService : IFavoriteCreateService
             throw;
         }
 
-        var response = new FavoriteCreateResponse(
+        return Result<FavoriteCreateResponse>.Success(
+            new FavoriteCreateResponse(
             favorite.Id,
             DateTime.UtcNow
-        );
-
-        return Result<FavoriteCreateResponse>.Success(response);
-    }
-
-    private Favorite CreateFavorite(
-        FavoriteCreateRequest request)
-    {
-        return new Favorite
-        {
-            UserId = request.UserId,
-            AdvertisementId = request.AdvertisementId,
-        };
+        ));
     }
 }

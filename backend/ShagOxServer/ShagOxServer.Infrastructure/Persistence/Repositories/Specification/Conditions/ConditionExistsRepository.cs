@@ -8,6 +8,12 @@ public class ConditionExistsRepository : BaseRepository, IConditionExistsReposit
         : base(db)
     { }
 
+    public async Task<bool> ExistsByIdAsync(int id)
+    {
+        return await _db.Conditions
+            .AnyAsync(x => x.Id == id);
+    }
+
     public async Task<bool> ExistsByNameAsync(string name)
     {
         return await _db.Conditions

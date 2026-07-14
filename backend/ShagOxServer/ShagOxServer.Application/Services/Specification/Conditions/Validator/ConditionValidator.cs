@@ -27,6 +27,16 @@ public class ConditionValidator
         return Result<Condition>.Success(condition);
     }
 
+    public async Task<Result<bool>> ExistsByIdValidator(
+      int id)
+    {
+        var condition = await _existsRepository.ExistsByIdAsync(id);
+        if (condition)
+            return Result<bool>.AlreadyExists("Condition");
+
+        return Result<bool>.Success(false);
+    }
+
     public async Task<Result<bool>> ExistsByNameValidator(
       string? name)
     {

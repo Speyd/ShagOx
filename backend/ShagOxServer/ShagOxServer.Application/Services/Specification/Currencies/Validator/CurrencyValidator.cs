@@ -6,12 +6,15 @@ namespace ShagOxServer.Application.Services.Specification.Currencies.Validator;
 public class CurrencyValidator
 {
     private readonly ICurrencyRepository _repository;
+    private readonly ICurrencyExistsRepository _existsRepository;
 
 
     public CurrencyValidator(
-        ICurrencyRepository repository)
+        ICurrencyRepository repository,
+        ICurrencyExistsRepository existsRepository)
     {
         _repository = repository;
+        _existsRepository = existsRepository;
     }
 
 
@@ -23,5 +26,15 @@ public class CurrencyValidator
             return Result<Currency>.NotFound("Currency");
 
         return Result<Currency>.Success(currency);
+    }
+
+    public async Task<Result<bool>> ExistsCurrencyValidator(
+        int currencyId)
+    {
+        var currency = await _existsRepository.ExistsByIdAsync(currencyId);
+        if (currency)
+            return Result<bool>.AlreadyExists("Currency");
+
+        return Result<bool>.Success(currency);
     }
 }

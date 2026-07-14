@@ -32,7 +32,7 @@ public class RegionValidator
        int regionId)
     {
         var region = await _regionExistsRepository.ExistsAsync(regionId);
-        if (!region)
+        if (region)
             return Result<bool>.AlreadyExists("Region");
 
         return Result<bool>.Success(region);
@@ -42,7 +42,7 @@ public class RegionValidator
        string name)
     {
         var region = await _regionExistsRepository.ExistsAsync(name);
-        if (!region)
+        if (region)
             return Result<bool>.AlreadyExists("Region");
 
         return Result<bool>.Success(region);

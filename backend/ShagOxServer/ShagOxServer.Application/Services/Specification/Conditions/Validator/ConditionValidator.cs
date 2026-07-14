@@ -34,7 +34,7 @@ public class ConditionValidator
             return Result<bool>.Success(false);
 
         var condition = await _existsRepository.ExistsByNameAsync(name);
-        if (!condition)
+        if (condition)
             return Result<bool>.AlreadyExists("Condition");
 
         return Result<bool>.Success(false);

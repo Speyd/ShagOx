@@ -31,7 +31,7 @@ public class UserValidator
        int userId)
     {
         var user = await _userExistsRepository.ExistsAsync(userId);
-        if (!user)
+        if (user)
             return Result<bool>.AlreadyExists("User");
 
         return Result<bool>.Success(user);

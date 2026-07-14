@@ -9,6 +9,15 @@ public class CategoryExistsRepository : BaseRepository, ICategoryExistsRepositor
         : base(db)
     { }
 
+    public async Task<bool> ExistsAsync(
+        string name,
+        ProductType type)
+    {
+        return await _db.Categories
+            .AnyAsync(c =>
+                c.Name == name && c.ProductType == type);
+    }
+
     public async Task<bool> ExistsIdAsync(int id)
     {
         return await _db.Categories.AnyAsync(c => c.Id == id);

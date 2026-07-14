@@ -28,12 +28,15 @@ public class ConditionValidator
     }
 
     public async Task<Result<bool>> ExistsByNameValidator(
-      string name)
+      string? name)
     {
+        if(name is null)
+            return Result<bool>.Success(false);
+
         var condition = await _existsRepository.ExistsByNameAsync(name);
         if (!condition)
             return Result<bool>.AlreadyExists("Condition");
 
-        return Result<bool>.Success(true);
+        return Result<bool>.Success(false);
     }
 }

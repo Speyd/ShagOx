@@ -1,13 +1,13 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Specification.Currencies.Create.Validator;
-public class CurrencyCreateValidator
+namespace ShagOxServer.Application.Services.Specification.Currencies.Update.Validator;
+public class CurrencyUpdateValidator
 {
     private readonly ICurrencyExistsRepository _existsRepository;
 
 
-    public CurrencyCreateValidator(
+    public CurrencyUpdateValidator(
         ICurrencyExistsRepository existsRepository)
     {
         _existsRepository = existsRepository;
@@ -15,8 +15,11 @@ public class CurrencyCreateValidator
 
 
     public async Task<Result<bool>> ExistsByCodeValidator(
-        string code)
+        string? code)
     {
+        if(code is null)
+            return Result<bool>.Success(false);
+
         var currency = await _existsRepository.ExistsByCodeAsync(code);
         if (!currency)
             return Result<bool>.AlreadyExists("Currency code");
@@ -25,8 +28,11 @@ public class CurrencyCreateValidator
     }
 
     public async Task<Result<bool>> ExistsByNameValidator(
-        string name)
+        string? name)
     {
+        if (name is null)
+            return Result<bool>.Success(false);
+
         var currency = await _existsRepository.ExistsByNameAsync(name);
         if (!currency)
             return Result<bool>.AlreadyExists("Currency name");

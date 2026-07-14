@@ -21,6 +21,8 @@ using ShagOxServer.Application.Services.Specification.Currencies.Create.Validato
 using ShagOxServer.Application.Services.Specification.Currencies.Delete;
 using ShagOxServer.Application.Services.Specification.Currencies.Query;
 using ShagOxServer.Application.Services.Specification.Currencies.Update;
+using ShagOxServer.Application.Services.Specification.Currencies.Update.Validator;
+using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Create;
 using ShagOxServer.Application.Services.Specification.Images.Create.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Delete;
@@ -41,6 +43,9 @@ public static class SpecificationDependencyInjection
         services.AddScoped<ICurrencyDeleteService, CurrencyDeleteService>();
 
         services.AddScoped<CurrencyCreateValidator>();
+        services.AddScoped<CurrencyUpdateValidator>();
+        services.AddScoped<CurrencyValidator>();
+
 
         // Condition
         services.AddScoped<IConditionQueryService, ConditionQueryService>();

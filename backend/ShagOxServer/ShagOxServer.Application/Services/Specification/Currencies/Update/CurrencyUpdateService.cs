@@ -2,6 +2,8 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Update;
+using ShagOxServer.Application.Services.Specification.Currencies.Update.Validator;
+using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -9,18 +11,21 @@ namespace ShagOxServer.Application.Services.Specification.Currencies.Update;
 public class CurrencyUpdateService : ICurrencyUpdateService
 {
     private readonly ICurrencyRepository _repository;
-    private readonly ICurrencyExistsRepository _existsRepository;
+    private readonly CurrencyValidator _validator;
+    private readonly CurrencyUpdateValidator _updateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public CurrencyUpdateService(
         ICurrencyRepository currencyRepository,
-        ICurrencyExistsRepository existsRepository,
+        CurrencyValidator validator,
+        CurrencyUpdateValidator updateValidator,
         IUnitOfWork unitOfWork)
     {
         _repository = currencyRepository;
-        _existsRepository = existsRepository;
+        _validator = validator;
+        _updateValidator = updateValidator;
         _unitOfWork = unitOfWork;
     }
 
@@ -28,24 +33,19 @@ public class CurrencyUpdateService : ICurrencyUpdateService
         int currencyId,
         CurrencyUpdateRequest request)
     {
-        if (request.Code is not null &&
-            await _existsRepository.ExistsByCodeAsync(request.Code))
-        {
-            return Result<CurrencyUpdateResponse>
-                .AlreadyExists("Currency code");
-        }
-        if (request.Name is not null &&
-            await _existsRepository.ExistsByNameAsync(request.Name))
-        {
-            return Result<CurrencyUpdateResponse>
-                .AlreadyExists("Currency name");
-        }
+        var code = await _updateValidator.ExistsByCodeValidator(request.Code);
+        if (!code.IsSuccess)
+            return Result<CurrencyUpdateResponse>.Fail(code.Error ?? "");
 
-        var currency = await _repository.GetByIdAsync(currencyId);
-        if (currency is null)
-            return Result<CurrencyUpdateResponse>.NotFound("Currency");
+        var name = await _updateValidator.ExistsByNameValidator(request.Name);
+        if (!name.IsSuccess)
+            return Result<CurrencyUpdateResponse>.Fail(code.Error ?? "");
 
-        var updatedCount = ApplyUpdates(currency, request);
+        var currency = await _validator.GetCurrencyValidator(currencyId);
+        if (!currency.IsSuccess)
+            return Result<CurrencyUpdateResponse>.Fail(currency.Error ?? "");
+
+        var updatedCount = ApplyUpdates(currency.Value, request);
         var result = new CurrencyUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -59,7 +59,7 @@ public class CurrencyUpdateService : ICurrencyUpdateService
 
         try
         {
-            _repository.Update(currency);
+            _repository.Update(currency.Value);
 
             await _unitOfWork.CommitAsync();
         }

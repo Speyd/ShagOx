@@ -17,6 +17,7 @@ public class RoleValidator
         _roleExistsRepository = roleExistsRepository;
     }
 
+
     public async Task<Result<Role>> GetRoleValidator(
         int roleId)
     {
@@ -31,6 +32,16 @@ public class RoleValidator
        int roleId)
     {
         var role = await _roleExistsRepository.ExistsAsync(roleId);
+        if (!role)
+            return Result<bool>.AlreadyExists("Role");
+
+        return Result<bool>.Success(role);
+    }
+
+    public async Task<Result<bool>> ExistsRoleByNameValidator(
+       string name)
+    {
+        var role = await _roleExistsRepository.ExistsAsync(name);
         if (!role)
             return Result<bool>.AlreadyExists("Role");
 

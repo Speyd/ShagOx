@@ -2,36 +2,36 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Services.Roles.Create;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Application.Services.Roles.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Roles.Create;
 public class RoleCreateService : IRoleCreateService
 {
     private readonly IRoleRepository _repository;
-    private readonly IRoleExistsRepository _existsRepository;
+    private readonly RoleValidator _validator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RoleCreateService(
         IRoleRepository roleRepository,
-        IRoleExistsRepository existsRepository,
+        RoleValidator validator,
         IUnitOfWork unitOfWork)
     {
         _repository = roleRepository;
-        _existsRepository = existsRepository;
+        _validator = validator;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<RoleCreateResponse>> CreateRoleAsync(
         RoleCreateRequest request)
     {
-        var validation = await _existsRepository.ExistsAsync(request.Name);
-        if (validation)
-            return Result<RoleCreateResponse>.AlreadyExists("Role");
+        var validation = await _validator.ExistsRoleByNameValidator(request.Name);
+        if (!validation.IsSuccess)
+            return Result<RoleCreateResponse>.Fail(validation.Error ?? "");
 
-        var role = CreateRole(request);
+        var role = RoleCreater.CreateRole(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -53,15 +53,5 @@ public class RoleCreateService : IRoleCreateService
         );
 
         return Result<RoleCreateResponse>.Success(response);
-    }
-
-    private Role CreateRole(
-       RoleCreateRequest request)
-    {
-        return new Role
-        {
-            Name = request.Name,
-            Description = request.Description ?? "",
-        };
     }
 }

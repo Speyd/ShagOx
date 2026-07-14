@@ -2,41 +2,40 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Create;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Application.Services.Specification.Currencies.Create.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Create;
 public class CurrencyCreateService : ICurrencyCreateService
 {
     private readonly ICurrencyRepository _repository;
-    private readonly ICurrencyExistsRepository _existsRepository;
+    private readonly CurrencyCreateValidator _validator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public CurrencyCreateService(
         ICurrencyRepository currencyRepository,
-        ICurrencyExistsRepository existsRepository,
+        CurrencyCreateValidator validator,
         IUnitOfWork unitOfWork)
     {
         _repository = currencyRepository;
-        _existsRepository = existsRepository;
+        _validator = validator;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<CurrencyCreateResponse>> CreateCurrencyAsync(
         CurrencyCreateRequest request)
     {
-        if (await _existsRepository.ExistsByCodeAsync(request.Code))
-            return Result<CurrencyCreateResponse>
-                .AlreadyExists("Currency code");
+        var code = await _validator.ExistsByCodeValidator(request.Code);
+        if (!code.IsSuccess)
+            return Result<CurrencyCreateResponse>.Fail(code.Error ?? "");
 
-        if (await _existsRepository.ExistsByNameAsync(request.Name))
-            return Result<CurrencyCreateResponse>
-                .AlreadyExists("Currency name");
+        var name = await _validator.ExistsByNameValidator(request.Name);
+        if (!name.IsSuccess)
+            return Result<CurrencyCreateResponse>.Fail(code.Error ?? "");
 
-
-        var currency = CreateCurrency(request);
+        var currency = CurrencyCreater.CreateCurrency(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -58,16 +57,5 @@ public class CurrencyCreateService : ICurrencyCreateService
         );
 
         return Result<CurrencyCreateResponse>.Success(response);
-    }
-
-    private Currency CreateCurrency(
-        CurrencyCreateRequest request)
-    {
-        return new Currency
-        {
-            Code = request.Code,
-            Symbol = request.Symbol,
-            Name = request.Name,
-        };
     }
 }

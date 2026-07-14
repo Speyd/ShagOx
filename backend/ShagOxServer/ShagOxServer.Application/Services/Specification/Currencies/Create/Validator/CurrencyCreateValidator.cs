@@ -19,7 +19,7 @@ public class CurrencyCreateValidator
     {
         var currency = await _existsRepository.ExistsByCodeAsync(code);
         if (!currency)
-            return Result<bool>.NotFound("Currency");
+            return Result<bool>.AlreadyExists("Currency code");
 
         return Result<bool>.Success(true);
     }
@@ -29,7 +29,7 @@ public class CurrencyCreateValidator
     {
         var currency = await _existsRepository.ExistsByNameAsync(name);
         if (!currency)
-            return Result<bool>.NotFound("Currency");
+            return Result<bool>.AlreadyExists("Currency name");
 
         return Result<bool>.Success(true);
     }

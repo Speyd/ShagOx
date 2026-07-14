@@ -10,6 +10,9 @@ public static class AuthDependencyInjection
         services.AddScoped<IRegisterService, RegisterService>();
         services.AddScoped<ILoginService, LoginService>();
 
+
+        services.AddScoped<UserCreater>();
+
         return services;
     }
 }

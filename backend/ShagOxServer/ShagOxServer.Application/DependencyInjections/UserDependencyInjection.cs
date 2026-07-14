@@ -10,6 +10,7 @@ using ShagOxServer.Application.Services.UserRoles;
 using ShagOxServer.Application.Services.Users.Delete;
 using ShagOxServer.Application.Services.Users.Query;
 using ShagOxServer.Application.Services.Users.Update;
+using ShagOxServer.Application.Services.Users.Update.Validator;
 using ShagOxServer.Application.Services.Users.Validator;
 using ShagOxServer.Domain.Entities.Account;
 
@@ -30,6 +31,8 @@ public static class UserDependencyInjection
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
         services.AddScoped<UserValidator>();
+        services.AddScoped<UserUpdateValidator>();
+
 
         return services;
     }

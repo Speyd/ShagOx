@@ -2,7 +2,8 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Users.Update;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Application.Services.Users.Update.Validator;
+using ShagOxServer.Application.Services.Users.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 
@@ -10,44 +11,42 @@ namespace ShagOxServer.Application.Services.Users.Update;
 public class UserUpdateService : IUserUpdateService
 {
     private readonly IUserRepository _repository;
-    private readonly IUserExistsRepository _existsRepository;
+    private readonly UserUpdateValidator _updateValidator;
+    private readonly UserValidator _validator;
 
     private readonly IUnitOfWork _unitOfWork;
 
+
     public UserUpdateService(
         IUserRepository userRepository,
-        IUserExistsRepository existsRepository,
+        UserValidator validator,
+        UserUpdateValidator updateValidator,
         IUnitOfWork unitOfWork)
     {
         _repository = userRepository;
-        _existsRepository = existsRepository;
+        _validator = validator;
+        _updateValidator = updateValidator;
         _unitOfWork = unitOfWork;
     }
+
 
     public async Task<Result<UserUpdateResponse>> UpdateUserAsync(
         int userId,
         UserUpdateRequest request)
     {
-        var user = await _repository.GetByIdAsync(userId);
+        var user = await _validator.GetUserValidator(userId);
+        if (!user.IsSuccess)
+            return Result<UserUpdateResponse>.Fail(user.Error ?? "");
 
-        if (user is null)
-            return Result<UserUpdateResponse>.NotFound("User");
+        var phone = await _updateValidator.ExistsPhoneValidator(request);
+        if (!phone.IsSuccess)
+            return Result<UserUpdateResponse>.Fail(phone.Error ?? "");
 
-        if (request.Phone is not null)
-        {
-            var exists = await _existsRepository.ExistsPhoneAsync(request.Phone);
-            if (exists)
-                return Result<UserUpdateResponse>.AlreadyExists("Phone");
-        }
+        var email = await _updateValidator.ExistsEmailValidator(request);
+        if (!email.IsSuccess)
+            return Result<UserUpdateResponse>.Fail(email.Error ?? "");
 
-        if (request.Email is not null)
-        {
-            var exists = await _existsRepository.ExistsEmailAsync(request.Email);
-            if (exists)
-                return Result<UserUpdateResponse>.AlreadyExists("Email");
-        }
-
-        var updatedCount = ApplyUpdates(user, request);
+        var updatedCount = UserUpdater.ApplyUpdates(user.Value!, request);
         var result = new UserUpdateResponse(
             DateTime.UtcNow,
             updatedCount
@@ -60,7 +59,7 @@ public class UserUpdateService : IUserUpdateService
 
         try
         {
-            _repository.Update(user);
+            _repository.Update(user.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -71,48 +70,5 @@ public class UserUpdateService : IUserUpdateService
         }
 
         return Result<UserUpdateResponse>.Success(result);
-    }
-
-    private static int ApplyUpdates(User user, UserUpdateRequest request)
-    {
-        int countUpdated = 0;
-
-        if (request.Surname is not null)
-        {
-            user.Surname = request.Surname;
-            countUpdated++;
-        }
-
-        if (request.Name is not null)
-        {
-            user.Name = request.Name;
-            countUpdated++;
-        }
-
-        if (request.Phone is not null)
-        {
-            user.Phone = request.Phone;
-            countUpdated++;
-        }
-
-        if (request.Email is not null)
-        {
-            user.Email = request.Email;
-            countUpdated++;
-        }
-
-        if (request.Avatar is not null)
-        {
-            user.Avatar = request.Avatar;
-            countUpdated++;
-        }
-
-        if (request.CityId is not null)
-        {
-            user.CityId = request.CityId.Value;
-            countUpdated++;
-        }
-
-        return countUpdated;
     }
 }

@@ -2,6 +2,8 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
+using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
+using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -9,17 +11,20 @@ namespace ShagOxServer.Application.Services.Location.Cities.Update;
 public class CityUpdateService : ICityUpdateService
 {
     private readonly ICityRepository _repository;
-    private readonly ICityExistsRepository _existsrepository;
+    private readonly CityValidator _validator;
+    private readonly CityUpdateValidator _updateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
     public CityUpdateService(
         ICityRepository cityRepository,
-        ICityExistsRepository cityExistsRepository,
+        CityValidator validator,
+        CityUpdateValidator updateValidator,
         IUnitOfWork unitOfWork)
     {
         _repository = cityRepository;
-        _existsrepository = cityExistsRepository;
+        _validator = validator;
+        _updateValidator = updateValidator;
         _unitOfWork = unitOfWork;
     }
 
@@ -27,23 +32,31 @@ public class CityUpdateService : ICityUpdateService
         int cityId, 
         CityUpdateRequest request)
     {
-        var city = await _repository.GetByIdAsync(cityId);
+        var city = await _validator.GetCityValidator(cityId);
+        if (!city.IsSuccess)
+            return Result<CityUpdateResponse>.Fail(city.Error ?? "");
 
-        if (city is null)
-            return Result<CityUpdateResponse>.NotFound("City");
+        var changeValidator = await _updateValidator
+            .HasChangesValidator(city.Value!, request);
+        if (!changeValidator.IsSuccess)
+        {
+            return Result<CityUpdateResponse>.Success(
+                new CityUpdateResponse(
+                DateTime.UtcNow,
+                0
+            ));
+        }
 
-        var regionId = request.RegionId ?? city.RegionId;
-        var name = request.Name ?? city.Name;
+        var existsValidator = await _validator.ExistsCityValidator(
+            changeValidator.Value!.regionId, 
+            changeValidator.Value.name
+        );
 
-        if (regionId == city.RegionId && name == city.Name)
-            return Result<CityUpdateResponse>.Fail("Nothing to update");
-
-        var exists = await _existsrepository.ExistsAsync(regionId, name);
-        if (exists)
-            return Result<CityUpdateResponse>.AlreadyExists("City");
+        if (!existsValidator.IsSuccess)
+            return Result<CityUpdateResponse>.Fail(existsValidator.Error ?? "");
 
 
-        var updatedCount = ApplyUpdates(city, request);
+        var updatedCount = ApplyUpdates(city.Value!, request);
         var result = new CityUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -57,7 +70,7 @@ public class CityUpdateService : ICityUpdateService
 
         try
         {
-            _repository.Add(city);
+            _repository.Add(city.Value!);
 
             await _unitOfWork.CommitAsync();
         }

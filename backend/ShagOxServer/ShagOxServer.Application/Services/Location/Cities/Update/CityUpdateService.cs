@@ -4,7 +4,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
 using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
-using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Update;
@@ -56,7 +55,7 @@ public class CityUpdateService : ICityUpdateService
             return Result<CityUpdateResponse>.Fail(existsValidator.Error ?? "");
 
 
-        var updatedCount = ApplyUpdates(city.Value!, request);
+        var updatedCount = CityUpdater.ApplyUpdates(city.Value!, request);
         var result = new CityUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -82,26 +81,5 @@ public class CityUpdateService : ICityUpdateService
 
 
         return Result<CityUpdateResponse>.Success(result);
-    }
-
-    private static int ApplyUpdates(
-        City city,
-        CityUpdateRequest request)
-    {
-        int countUpdated = 0;
-
-        if (request.Name is not null)
-        {
-            city.Name = request.Name;
-            countUpdated++;
-        }
-
-        if (request.RegionId is not null)
-        {
-            city.RegionId = request.RegionId.Value;
-            countUpdated++;
-        }
-
-        return countUpdated;
     }
 }

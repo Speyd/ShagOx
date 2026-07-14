@@ -8,6 +8,13 @@ public class RegionExistsRepository : BaseRepository, IRegionExistsRepository
         : base(db)
     { }
 
+    public async Task<bool> ExistsAsync(int id)
+    {
+        return await _db.Regions
+          .AnyAsync(x =>
+            (x.Id == id));
+    }
+
     public async Task<bool> ExistsAsync(string? name)
     {
         return await _db.Regions

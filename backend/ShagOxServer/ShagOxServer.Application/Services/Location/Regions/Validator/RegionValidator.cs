@@ -18,7 +18,7 @@ public class RegionValidator
     }
 
 
-    public async Task<Result<Region>> GetCityValidator(
+    public async Task<Result<Region>> GetRegionValidator(
         int regionId)
     {
         var region = await _regionRepository.GetByIdAsync(regionId);
@@ -28,7 +28,17 @@ public class RegionValidator
         return Result<Region>.Success(region);
     }
 
-    public async Task<Result<bool>> ExistsCityValidator(
+    public async Task<Result<bool>> ExistsRegionValidator(
+       int regionId)
+    {
+        var region = await _regionExistsRepository.ExistsAsync(regionId);
+        if (!region)
+            return Result<bool>.AlreadyExists("Region");
+
+        return Result<bool>.Success(region);
+    }
+
+    public async Task<Result<bool>> ExistsRegionByNameValidator(
        string name)
     {
         var region = await _regionExistsRepository.ExistsAsync(name);

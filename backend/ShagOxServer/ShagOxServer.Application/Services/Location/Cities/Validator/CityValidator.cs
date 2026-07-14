@@ -29,9 +29,10 @@ public class CityValidator
     }
 
     public async Task<Result<bool>> ExistsCityValidator(
-       int cityId)
+       int regionId,
+       string cityName)
     {
-        var city = await _cityExistsRepository.ExistsAsync(cityId);
+        var city = await _cityExistsRepository.ExistsAsync(regionId, cityName);
         if (!city)
             return Result<bool>.AlreadyExists("City");
 

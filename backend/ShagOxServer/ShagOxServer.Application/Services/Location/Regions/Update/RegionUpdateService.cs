@@ -39,7 +39,7 @@ public class RegionUpdateService : IRegionUpdateService
             return Result<RegionUpdateResponse>.Fail(
                 "Name ist exists or null");
 
-        var updatedCount = ApplyUpdates(region, request);
+        var updatedCount = RegionUpdater.ApplyUpdates(region, request);
 
         var result = new RegionUpdateResponse(
                 DateTime.UtcNow,
@@ -64,20 +64,5 @@ public class RegionUpdateService : IRegionUpdateService
         }
 
         return Result<RegionUpdateResponse>.Success(result);
-    }
-    
-    private static int ApplyUpdates(
-        Region region,
-        RegionUpdateRequest request)
-    {
-        int countUpdated = 0;
-
-        if (request.Name is not null)
-        {
-            region.Name = request.Name;
-            countUpdated++;
-        }
-
-        return countUpdated;
     }
 }

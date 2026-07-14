@@ -11,10 +11,13 @@ using ShagOxServer.Application.Services.Location.Cities.Create;
 using ShagOxServer.Application.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Services.Location.Cities.Query;
 using ShagOxServer.Application.Services.Location.Cities.Update;
+using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
+using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Application.Services.Location.Regions.Create;
 using ShagOxServer.Application.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Services.Location.Regions.Query;
 using ShagOxServer.Application.Services.Location.Regions.Update;
+using ShagOxServer.Application.Services.Location.Regions.Validator;
 
 namespace ShagOxServer.Application.DependencyInjection;
 public static class LocationDependencyInjection
@@ -27,11 +30,18 @@ public static class LocationDependencyInjection
         services.AddScoped<IRegionUpdateService, RegionUpdateService>();
         services.AddScoped<IRegionDeleteService, RegionDeleteService>();
 
+        services.AddScoped<RegionValidator>();
+
+
         // City
         services.AddScoped<ICityQueryService, CityQueryService>();
         services.AddScoped<ICityCreateService, CityCreateService>();
         services.AddScoped<ICityUpdateService, CityUpdateService>();
         services.AddScoped<ICityDeleteService, CityDeleteService>();
+
+        services.AddScoped<CityValidator>();
+        services.AddScoped<CityUpdateValidator>();
+
 
         return services;
     }

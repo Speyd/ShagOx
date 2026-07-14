@@ -2,44 +2,45 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
-using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Update;
 public class RegionUpdateService : IRegionUpdateService
 {
     private readonly IRegionRepository _repository;
-    private readonly IRegionExistsRepository _existsRepository;
+    private readonly RegionValidator _validator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RegionUpdateService(
         IRegionRepository regionRepository,
-        IRegionExistsRepository existsRepository,
+        RegionValidator validator,
         IUnitOfWork unitOfWork)
     {
         _repository = regionRepository;
-        _existsRepository = existsRepository;
+        _validator = validator;
         _unitOfWork = unitOfWork;
     }
+
 
     public async Task<Result<RegionUpdateResponse>> UpdateRegionAsync(
         int regionId,
         RegionUpdateRequest request)
     {
-        var region = await _repository.GetByIdAsync(regionId);
+        var region = await _validator.GetRegionValidator(regionId);
+        if (!region.IsSuccess)
+            return Result<RegionUpdateResponse>.Fail(region.Error ?? "");
 
-        if (region is null)
-            return Result<RegionUpdateResponse>.NotFound("Region");
+        if (request.Name is not null)
+        {
+            var valid = await _validator.ExistsRegionByNameValidator(request.Name);
+            if (!valid.IsSuccess)
+                return Result<RegionUpdateResponse>.Fail(valid.Error ?? "");
+        }
 
-        var valid = await _existsRepository.ExistsAsync(request.Name);
-        if (valid && request.Name is not null ||
-            request.Name is null)
-            return Result<RegionUpdateResponse>.Fail(
-                "Name ist exists or null");
-
-        var updatedCount = RegionUpdater.ApplyUpdates(region, request);
+        var updatedCount = RegionUpdater.ApplyUpdates(region.Value!, request);
 
         var result = new RegionUpdateResponse(
                 DateTime.UtcNow,
@@ -53,7 +54,7 @@ public class RegionUpdateService : IRegionUpdateService
 
         try
         {
-            _repository.Update(region);
+            _repository.Update(region.Value!);
 
             await _unitOfWork.CommitAsync();
         }

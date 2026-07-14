@@ -11,6 +11,8 @@ using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Create
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Query;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update.Validator;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Query;
@@ -38,6 +40,9 @@ public static class DictionaryDependencyInjection
         services.AddScoped<IAttributeDefinitionCreateService, AttributeDefinitionCreateService>();
         services.AddScoped<IAttributeDefinitionUpdateService, AttributeDefinitionUpdateService>();
         services.AddScoped<IAttributeDefinitionDeleteService, AttributeDefinitionDeleteService>();
+
+        services.AddScoped<AttributeDefinitionValidator>();
+        services.AddScoped<AttributeDefinitionUpdateValidator>();
 
         return services;
     }

@@ -1,48 +1,64 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
-using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update.Validator;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;
 public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateService
 {
     private readonly IAttributeDefinitionRepository _attributeRepository;
-
-    private readonly ICategoryExistsRepository _categoryExistsRepository;
-
-
+    private readonly AttributeDefinitionValidator _attributeValidator;
+    private readonly AttributeDefinitionUpdateValidator _attributeUpdateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public AttributeDefinitionUpdateService(
         IAttributeDefinitionRepository attributeRepository,
-        ICategoryExistsRepository categoryExistsRepository,
+        AttributeDefinitionValidator attributeValidator,
+        AttributeDefinitionUpdateValidator attributeUpdateValidator,
         IUnitOfWork unitOfWork)
     {
         _attributeRepository = attributeRepository;
-        _categoryExistsRepository = categoryExistsRepository;
+        _attributeValidator = attributeValidator;
+        _attributeUpdateValidator = attributeUpdateValidator;
         _unitOfWork = unitOfWork;
     }
+
 
     public async Task<Result<AttributeDefinitionUpdateResponse>> UpdateAttributeDefinitionAsync(
         int attributeId,
         AttributeDefinitionUpdateRequest request)
     {
-        var attribute = await _attributeRepository.GetByIdAsync(attributeId);
-        if (attribute is null)
-            return Result<AttributeDefinitionUpdateResponse>.NotFound("Attribute Definition");
+        var attribute = await _attributeValidator.GetAttributeValidator(attributeId);
+        if (!attribute.IsSuccess)
+            return Result<AttributeDefinitionUpdateResponse>.Fail(attribute.Error ?? "");
 
-        if (request.CategoryId is not null &&
-            !await _categoryExistsRepository.ExistsIdAsync(request.CategoryId.Value))
+        var changeValidator = _attributeUpdateValidator
+            .HasChangesValidator(attribute.Value!, request);
+
+        if (!changeValidator.IsSuccess)
         {
-            return Result<AttributeDefinitionUpdateResponse>.NotFound("Category");
+            return Result<AttributeDefinitionUpdateResponse>.Success(
+                new AttributeDefinitionUpdateResponse(
+                DateTime.UtcNow,
+                0
+            ));
         }
 
-        var updatedCount = ApplyUpdates(attribute, request);
+        var existsValidator = await _attributeValidator.ExistsByKeyValidator(
+          changeValidator.Value!.key,
+          changeValidator.Value!.categoryId
+        );
+
+        if (!existsValidator.IsSuccess)
+            return Result<AttributeDefinitionUpdateResponse>.Fail(existsValidator.Error ?? "");
+
+
+        var updatedCount = AttributeDefinitionUpdater.ApplyUpdates(attribute.Value!, request);
         var result = new AttributeDefinitionUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -55,7 +71,7 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
 
         try
         {
-            _attributeRepository.Add(attribute);
+            _attributeRepository.Add(attribute.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -66,50 +82,5 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
         }
 
         return Result<AttributeDefinitionUpdateResponse>.Success(result);
-    }
-
-    private static int ApplyUpdates(
-        AttributeDefinition attribute,
-        AttributeDefinitionUpdateRequest request)
-    {
-        int countUpdated = 0;
-
-        if (request.CategoryId is not null)
-        {
-            attribute.CategoryId = request.CategoryId.Value;
-            countUpdated++;
-        }
-
-        if (request.Key is not null)
-        {
-            attribute.Key = request.Key;
-            countUpdated++;
-        }
-
-        if (request.Type is not null)
-        {
-            attribute.Type = request.Type.Value;
-            countUpdated++;
-        }
-
-        if (request.Required is not null)
-        {
-            attribute.Required = request.Required.Value;
-            countUpdated++;
-        }
-
-        if (request.Min is not null)
-        {
-            attribute.Min = request.Min.Value;
-            countUpdated++;
-        }
-
-        if (request.Max is not null)
-        {
-            attribute.Max = request.Max.Value;
-            countUpdated++;
-        }
-
-        return countUpdated;
     }
 }

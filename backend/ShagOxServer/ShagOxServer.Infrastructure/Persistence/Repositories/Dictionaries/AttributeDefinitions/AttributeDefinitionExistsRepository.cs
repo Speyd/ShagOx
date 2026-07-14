@@ -21,4 +21,12 @@ public class AttributeDefinitionExistsRepository : BaseRepository, IAttributeDef
             (x.Id == attributeId &&
             x.CategoryId == categoryId));
     }
+
+    public async Task<bool> ExistsByCategoryAsync(string attributeKey, int categoryId)
+    {
+        return await _db.AttributeDefinitions
+            .AnyAsync(x =>
+            (x.Key == attributeKey &&
+            x.CategoryId == categoryId));
+    }
 }

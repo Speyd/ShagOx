@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Create;
-public static class ImageCreator
+public static class ImageCreater
 {
     public static Image CreateImage(
        ImageCreateRequest request)

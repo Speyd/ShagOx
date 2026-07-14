@@ -1,5 +1,4 @@
-﻿
-namespace ShagOxServer.Application.DTOs.Users.Update;
+﻿namespace ShagOxServer.Application.DTOs.Users.Update;
 public sealed record UserUpdateRequest
 (
     string? Surname,

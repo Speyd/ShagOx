@@ -32,11 +32,11 @@ public class AttributeDefinitionCreateService : IAttributeDefinitionCreateServic
     public async Task<Result<AttributeDefinitionCreateResponse>> CreateAttributeDefinitionAsync(
         AttributeDefinitionCreateRequest request)
     {
-        var categoryExists = await _categoryValidator.ExistsCategoryValidator(request.CategoryId);
+        var categoryExists = await _categoryValidator.ExistsByIdAsync(request.CategoryId);
         if (!categoryExists.IsSuccess)
             return Result<AttributeDefinitionCreateResponse>.Fail(categoryExists.Error ?? "");
 
-        var keyExists = await _validator.ExistsByKeyValidator(request.Key, request.CategoryId);
+        var keyExists = await _validator.NotExistsByKeyAsync(request.Key, request.CategoryId);
         if (!keyExists.IsSuccess)
             return Result<AttributeDefinitionCreateResponse>.Fail(keyExists.Error ?? "");
 

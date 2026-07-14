@@ -41,11 +41,11 @@ public class CurrencyUpdateService : ICurrencyUpdateService
         if (!name.IsSuccess)
             return Result<CurrencyUpdateResponse>.Fail(code.Error ?? "");
 
-        var currency = await _validator.GetCurrencyValidator(currencyId);
+        var currency = await _validator.GetByIdAsync(currencyId);
         if (!currency.IsSuccess)
             return Result<CurrencyUpdateResponse>.Fail(currency.Error ?? "");
 
-        var updatedCount = ApplyUpdates(currency.Value, request);
+        var updatedCount = ApplyUpdates(currency.Value!, request);
         var result = new CurrencyUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -59,7 +59,7 @@ public class CurrencyUpdateService : ICurrencyUpdateService
 
         try
         {
-            _repository.Update(currency.Value);
+            _repository.Update(currency.Value!);
 
             await _unitOfWork.CommitAsync();
         }

@@ -23,7 +23,7 @@ public class FavoriteUpdateValidator
         if (request.UserId is not null)
         {
             var user = await _userValidator
-                .GetUserValidator(request.UserId.Value);
+                .GetByIdAsync(request.UserId.Value);
 
             if (!user.IsSuccess)
                 return Result<bool>.NotFound("User");
@@ -33,7 +33,7 @@ public class FavoriteUpdateValidator
         if (request.AdvertisementId is not null)
         {
             var advert = await _advertisementValidator
-                .GetAdvertisementValidator(request.AdvertisementId.Value);
+                .GetByIdAsync(request.AdvertisementId.Value);
 
             if (!advert.IsSuccess)
                 return Result<bool>.NotFound("Advertisement");

@@ -27,7 +27,7 @@ public class RegionCreateService : IRegionCreateService
     public async Task<Result<RegionCreateResponse>> CreateRegionAsync(
         RegionCreateRequest request)
     {
-        var validation = await _validator.ExistsRegionByNameValidator(request.Name);
+        var validation = await _validator.NotExistsByNameAsync(request.Name);
         if (!validation.IsSuccess)
             return Result<RegionCreateResponse>.Fail(validation.Error ?? "");
 

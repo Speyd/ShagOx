@@ -15,7 +15,7 @@ public class ImageValidator
     }
 
 
-    public async Task<Result<Image>> GetImageValidator(
+    public async Task<Result<Image>> GetByIdAsync(
         int imageId)
     {
         var image = await _imageRepository.GetByIdAsync(imageId);

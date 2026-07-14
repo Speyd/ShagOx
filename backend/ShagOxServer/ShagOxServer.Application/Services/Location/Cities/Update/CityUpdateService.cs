@@ -31,7 +31,7 @@ public class CityUpdateService : ICityUpdateService
         int cityId, 
         CityUpdateRequest request)
     {
-        var city = await _validator.GetCityValidator(cityId);
+        var city = await _validator.GetByIdAsync(cityId);
         if (!city.IsSuccess)
             return Result<CityUpdateResponse>.Fail(city.Error ?? "");
 
@@ -47,7 +47,7 @@ public class CityUpdateService : ICityUpdateService
             ));
         }
 
-        var existsValidator = await _validator.ExistsCityValidator(
+        var existsValidator = await _validator.NotExistsAsync(
             changeValidator.Value!.regionId, 
             changeValidator.Value.name
         );

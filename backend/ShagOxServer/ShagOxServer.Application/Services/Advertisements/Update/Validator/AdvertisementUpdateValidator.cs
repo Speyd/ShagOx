@@ -34,7 +34,7 @@ public class AdvertisementUpdateValidator
         if (request.BuyerId is not null)
         {
             var buyer = await _userValidator
-                .ExistsUserValidator(request.BuyerId.Value);
+                .ExistsByIdAsync(request.BuyerId.Value);
 
             if (!buyer.IsSuccess)
                 return buyer;
@@ -44,7 +44,7 @@ public class AdvertisementUpdateValidator
         if (request.CurrencyId is not null)
         {
             var currency = await _currencyValidator
-                .ExistsCurrencyValidator(request.CurrencyId.Value);
+                .ExistsByIdAsync(request.CurrencyId.Value);
 
             if (!currency.IsSuccess)
                 return currency;
@@ -54,7 +54,7 @@ public class AdvertisementUpdateValidator
         if (request.ConditionId is not null)
         {
             var condition = await _conditionValidator
-                .ExistsByIdValidator(request.ConditionId.Value);
+                .ExistsByIdAsync(request.ConditionId.Value);
 
             if (!condition.IsSuccess)
                 return condition;
@@ -64,7 +64,7 @@ public class AdvertisementUpdateValidator
         if (request.CategoryId is not null)
         {
             var category = await _categoryValidator
-                .ExistsCategoryValidator(request.CategoryId.Value);
+                .ExistsByIdAsync(request.CategoryId.Value);
 
             if (!category.IsSuccess)
                 return category;

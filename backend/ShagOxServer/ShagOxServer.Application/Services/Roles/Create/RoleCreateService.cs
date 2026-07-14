@@ -27,7 +27,7 @@ public class RoleCreateService : IRoleCreateService
     public async Task<Result<RoleCreateResponse>> CreateRoleAsync(
         RoleCreateRequest request)
     {
-        var validation = await _validator.ExistsRoleByNameValidator(request.Name);
+        var validation = await _validator.NotExistsByNameAsync(request.Name);
         if (!validation.IsSuccess)
             return Result<RoleCreateResponse>.Fail(validation.Error ?? "");
 

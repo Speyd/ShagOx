@@ -6,7 +6,6 @@ using ShagOxServer.Application.Services.Users.Update.Validator;
 using ShagOxServer.Application.Services.Users.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-
 namespace ShagOxServer.Application.Services.Users.Update;
 public class UserUpdateService : IUserUpdateService
 {
@@ -34,7 +33,7 @@ public class UserUpdateService : IUserUpdateService
         int userId,
         UserUpdateRequest request)
     {
-        var user = await _validator.GetUserValidator(userId);
+        var user = await _validator.GetByIdAsync(userId);
         if (!user.IsSuccess)
             return Result<UserUpdateResponse>.Fail(user.Error ?? "");
 

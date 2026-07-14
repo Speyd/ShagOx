@@ -17,7 +17,7 @@ public class AdvertisementValidator
         _advertisementExistsRepository = advertisementExistsRepository;
     }
 
-    public async Task<Result<Advertisement>> GetAdvertisementValidator(
+    public async Task<Result<Advertisement>> GetByIdAsync(
         int advertId)
     {
         var advert = await _advertisementRepository.GetByIdAsync(advertId);
@@ -27,13 +27,21 @@ public class AdvertisementValidator
         return Result<Advertisement>.Success(advert);
     }
 
-    public async Task<Result<bool>> ExistsAdvertisementValidator(
+    public async Task<Result<bool>> ExistsByIdAsync(
         int advertId)
     {
-        var advert = await _advertisementExistsRepository.ExistsById(advertId);
-        if (advert)
+        if (!await _advertisementExistsRepository.ExistsById(advertId))
             return Result<bool>.AlreadyExists("Advertisement");
 
-        return Result<bool>.Success(advert);
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByIdAsync(
+        int advertId)
+    {
+        if (await _advertisementExistsRepository.ExistsById(advertId))
+            return Result<bool>.AlreadyExists("Advertisement");
+
+        return Result<bool>.Success(true);
     }
 }

@@ -29,13 +29,13 @@ public class RegionUpdateService : IRegionUpdateService
         int regionId,
         RegionUpdateRequest request)
     {
-        var region = await _validator.GetRegionValidator(regionId);
+        var region = await _validator.GetByIdAsync(regionId);
         if (!region.IsSuccess)
             return Result<RegionUpdateResponse>.Fail(region.Error ?? "");
 
         if (request.Name is not null)
         {
-            var valid = await _validator.ExistsRegionByNameValidator(request.Name);
+            var valid = await _validator.NotExistsByNameAsync(request.Name);
             if (!valid.IsSuccess)
                 return Result<RegionUpdateResponse>.Fail(valid.Error ?? "");
         }

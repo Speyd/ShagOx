@@ -37,7 +37,7 @@ public class CategoryUpdateService : ICategoryUpdateService
         int categoryId,
         CategoryUpdateRequest request)
     {
-        var category = await _validator.GetCategoryValidator(categoryId);
+        var category = await _validator.GetByIdAsync(categoryId);
         if(!category.IsSuccess)
             return Result<CategoryUpdateResponse>.Fail(category.Error ?? "");
 
@@ -51,7 +51,7 @@ public class CategoryUpdateService : ICategoryUpdateService
             ));
         }
 
-        var existsValidator = await _validator.ExistsCategoryValidator(
+        var existsValidator = await _validator.NotExistsAsync(
            changeValidator.Value!.name,
            changeValidator.Value!.productType
         );

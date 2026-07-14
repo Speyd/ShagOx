@@ -33,7 +33,7 @@ public class ImageCreateService : IImageCreateService
     public async Task<Result<ImageCreateResponse>> CreateAsync(
         ImageCreateRequest request)
     {
-        var resultValid = await _advertValidator.GetAdvertisementValidator(request.AdvertisementId);
+        var resultValid = await _advertValidator.ExistsByIdAsync(request.AdvertisementId);
         if (!resultValid.IsSuccess)
             return Result<ImageCreateResponse>.Fail(resultValid.Error ?? "");
 
@@ -47,7 +47,7 @@ public class ImageCreateService : IImageCreateService
     public async Task<Result<ImageCreateResponse>> CreateFromFileAsync(
         ImageFileCreateRequest request)
     {
-        var resultAdvertValid = await _advertValidator.GetAdvertisementValidator(request.AdvertisementId);
+        var resultAdvertValid = await _advertValidator.ExistsByIdAsync(request.AdvertisementId);
         if (!resultAdvertValid.IsSuccess)
             return Result<ImageCreateResponse>.Fail(resultAdvertValid.Error ?? "");
 

@@ -17,7 +17,7 @@ public class ConditionValidator
         _existsRepository = existsRepository;
     }
 
-    public async Task<Result<Condition>> GetConditionValidator(
+    public async Task<Result<Condition>> GetByIdAsync(
        int conditionId)
     {
         var condition = await _repository.GetByIdAsync(conditionId);
@@ -27,24 +27,43 @@ public class ConditionValidator
         return Result<Condition>.Success(condition);
     }
 
-    public async Task<Result<bool>> ExistsByIdValidator(
+    public async Task<Result<bool>> ExistsByIdAsync(
       int id)
     {
-        var condition = await _existsRepository.ExistsByIdAsync(id);
-        if (condition)
+        if (!await _existsRepository.ExistsByIdAsync(id))
             return Result<bool>.AlreadyExists("Condition");
 
         return Result<bool>.Success(false);
     }
 
-    public async Task<Result<bool>> ExistsByNameValidator(
+    public async Task<Result<bool>> NotExistsByIdAsync(
+      int id)
+    {
+        if (await _existsRepository.ExistsByIdAsync(id))
+            return Result<bool>.AlreadyExists("Condition");
+
+        return Result<bool>.Success(false);
+    }
+
+    public async Task<Result<bool>> ExistsByNameAsync(
       string? name)
     {
         if(name is null)
             return Result<bool>.Success(false);
 
-        var condition = await _existsRepository.ExistsByNameAsync(name);
-        if (condition)
+        if (!await _existsRepository.ExistsByNameAsync(name))
+            return Result<bool>.AlreadyExists("Condition");
+
+        return Result<bool>.Success(false);
+    }
+
+    public async Task<Result<bool>> NotExistsByNameAsync(
+      string? name)
+    {
+        if (name is null)
+            return Result<bool>.Success(false);
+
+        if (!await _existsRepository.ExistsByNameAsync(name))
             return Result<bool>.AlreadyExists("Condition");
 
         return Result<bool>.Success(false);

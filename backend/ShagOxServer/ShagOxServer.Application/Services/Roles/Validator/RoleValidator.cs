@@ -18,7 +18,7 @@ public class RoleValidator
     }
 
 
-    public async Task<Result<Role>> GetRoleValidator(
+    public async Task<Result<Role>> GetByIdAsync(
         int roleId)
     {
         var role = await _roleRepository.GetByIdAsync(roleId);
@@ -28,23 +28,39 @@ public class RoleValidator
         return Result<Role>.Success(role);
     }
 
-    public async Task<Result<bool>> ExistsRoleValidator(
+    public async Task<Result<bool>> ExistsByIdAsync(
        int roleId)
     {
-        var role = await _roleExistsRepository.ExistsAsync(roleId);
-        if (role)
+        if (!await _roleExistsRepository.ExistsAsync(roleId))
             return Result<bool>.AlreadyExists("Role");
 
-        return Result<bool>.Success(role);
+        return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> ExistsRoleByNameValidator(
-       string name)
+    public async Task<Result<bool>> NotExistsByIdAsync(
+       int roleId)
     {
-        var role = await _roleExistsRepository.ExistsAsync(name);
-        if (role)
+        if (await _roleExistsRepository.ExistsAsync(roleId))
             return Result<bool>.AlreadyExists("Role");
 
-        return Result<bool>.Success(role);
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> ExistsByNameAsync(
+       string name)
+    {
+        if (!await _roleExistsRepository.ExistsAsync(name))
+            return Result<bool>.AlreadyExists("Role");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByNameAsync(
+      string name)
+    {
+        if (await _roleExistsRepository.ExistsAsync(name))
+            return Result<bool>.AlreadyExists("Role");
+
+        return Result<bool>.Success(true);
     }
 }

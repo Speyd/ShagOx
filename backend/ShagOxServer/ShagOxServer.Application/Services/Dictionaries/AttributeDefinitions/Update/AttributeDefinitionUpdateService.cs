@@ -33,7 +33,7 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
         int attributeId,
         AttributeDefinitionUpdateRequest request)
     {
-        var attribute = await _attributeValidator.GetAttributeValidator(attributeId);
+        var attribute = await _attributeValidator.GetByIdAsync(attributeId);
         if (!attribute.IsSuccess)
             return Result<AttributeDefinitionUpdateResponse>.Fail(attribute.Error ?? "");
 
@@ -49,7 +49,7 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
             ));
         }
 
-        var existsValidator = await _attributeValidator.ExistsByKeyValidator(
+        var existsValidator = await _attributeValidator.NotExistsByKeyAsync(
           changeValidator.Value!.key,
           changeValidator.Value!.categoryId
         );

@@ -19,7 +19,7 @@ public class CategoryValidator
     }
 
 
-    public async Task<Result<Category>> GetCategoryValidator(
+    public async Task<Result<Category>> GetByIdAsync(
         int categoryId)
     {
         var category = await _categoryRepository.GetByIdAsync(categoryId);
@@ -29,44 +29,49 @@ public class CategoryValidator
         return Result<Category>.Success(category);
     }
 
-    public async Task<Result<bool>> ExistsCategoryValidator(
+    public async Task<Result<bool>> ExistsByIdAsync(
        int categoryId)
     {
-        var category = await _categoryExistsRepository.ExistsIdAsync(categoryId);
-        if (category)
+        if (!await _categoryExistsRepository.ExistsIdAsync(categoryId))
             return Result<bool>.AlreadyExists("Category");
 
-        return Result<bool>.Success(category);
+        return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> ExistsCategoryValidator(
+    public async Task<Result<bool>> NotExistsByIdAsync(
+      int categoryId)
+    {
+        if (await _categoryExistsRepository.ExistsIdAsync(categoryId))
+            return Result<bool>.AlreadyExists("Category");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsAsync(
       string name,
       ProductType productType)
     {
-        var category = await _categoryExistsRepository.ExistsAsync(name, productType);
-        if (category)
+        if (await _categoryExistsRepository.ExistsAsync(name, productType))
             return Result<bool>.AlreadyExists("Category");
 
-        return Result<bool>.Success(category);
+        return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> ExistsCategoryByNameValidator(
+    public async Task<Result<bool>> ExistsByNameAsync(
        string name)
     {
-        var category = await _categoryExistsRepository.ExistsNameAsync(name);
-        if (category)
+        if (await _categoryExistsRepository.ExistsNameAsync(name))
             return Result<bool>.AlreadyExists("Category");
 
-        return Result<bool>.Success(category);
+        return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> ExistsCategoryByProductValidator(
+    public async Task<Result<bool>> ExistsByProductAsync(
        ProductType productType)
     {
-        var category = await _categoryExistsRepository.ExistsProductTypeAsync(productType);
-        if (category)
+        if (await _categoryExistsRepository.ExistsProductTypeAsync(productType))
             return Result<bool>.AlreadyExists("Category");
 
-        return Result<bool>.Success(category);
+        return Result<bool>.Success(true);
     }
 }

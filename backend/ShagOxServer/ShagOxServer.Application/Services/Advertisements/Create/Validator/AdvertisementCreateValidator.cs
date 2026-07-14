@@ -26,15 +26,23 @@ public class AdvertisementCreateValidator
     public async Task<Result<bool>> ValidateAsync(
        AdvertisementCreateRequest request)
     {
-        var currency = await _currencyValidator.ExistsCurrencyValidator(request.CurrencyId);
+        var currency = await _currencyValidator
+            .ExistsByIdAsync(request.CurrencyId);
+
         if (!currency.IsSuccess)
             return currency;
 
-        var condition = await _conditionValidator.ExistsByIdValidator(request.ConditionId);
-        if (!currency.IsSuccess)
-            return currency;
 
-        var category = await _categoryValidator.ExistsCategoryValidator(request.CategoryId);
+        var condition = await _conditionValidator
+            .ExistsByIdAsync(request.ConditionId);
+
+        if (!condition.IsSuccess)
+            return condition;
+
+
+        var category = await _categoryValidator
+            .ExistsByIdAsync(request.CategoryId);
+
         if (!category.IsSuccess)
             return category;
 

@@ -1,5 +1,4 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Images.Update;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Update;
 using ShagOxServer.Application.Services.Advertisements.Validator;
@@ -29,7 +28,7 @@ public class ImageUpdateService : IImageUpdateService
         int imageId,
         ImageUpdateRequest request)
     {
-        var image = await _imageValidator.GetImageValidator(imageId);
+        var image = await _imageValidator.GetByIdAsync(imageId);
         if (!image.IsSuccess)
             return Result<ImageUpdateResponse>.Fail(image.Error ?? "");
 
@@ -38,7 +37,7 @@ public class ImageUpdateService : IImageUpdateService
         if (request.AdvertisementId is not null &&
             request.Order is not null)
         {
-            var advert = await _advertValidator.GetAdvertisementValidator(request.AdvertisementId.Value);
+            var advert = await _advertValidator.GetByIdAsync(request.AdvertisementId.Value);
 
             var orderExists = advert.Value!.Images.Any(x =>
                 x.Id != imageId &&

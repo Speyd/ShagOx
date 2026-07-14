@@ -17,8 +17,7 @@ public class AttributeDefinitionValidator
         _attributeExistsRepository = attributeExistsRepository;
     }
 
-
-    public async Task<Result<AttributeDefinition>> GetAttributeValidator(
+    public async Task<Result<AttributeDefinition>> GetByIdAsync(
         int attributeId)
     {
         var attribute = await _attributeRepository.GetByIdAsync(attributeId);
@@ -28,17 +27,25 @@ public class AttributeDefinitionValidator
         return Result<AttributeDefinition>.Success(attribute);
     }
 
-    public async Task<Result<bool>> ExistsAttributeValidator(
+    public async Task<Result<bool>> ExistsByIdAsync(
        int attributeId)
     {
-        var attribute = await _attributeExistsRepository.ExistsByIdAsync(attributeId);
-        if (attribute)
+        if (!await _attributeExistsRepository.ExistsByIdAsync(attributeId))
             return Result<bool>.AlreadyExists("Attribute Definition");
 
-        return Result<bool>.Success(attribute);
+        return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> ExistsByKeyValidator(
+    public async Task<Result<bool>> NotExistsByIdAsync(
+       int attributeId)
+    {
+        if (await _attributeExistsRepository.ExistsByIdAsync(attributeId))
+            return Result<bool>.AlreadyExists("Attribute Definition");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByKeyAsync(
       string attributeName,
       int categoryId)
     {

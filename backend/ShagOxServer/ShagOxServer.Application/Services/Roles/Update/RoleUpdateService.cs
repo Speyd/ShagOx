@@ -29,7 +29,7 @@ public class RoleUpdateService : IRoleUpdateService
         int roleId,
         RoleUpdateRequest request)
     {
-        var role = await _validator.GetRoleValidator(roleId);
+        var role = await _validator.GetByIdAsync(roleId);
         if (!role.IsSuccess)
             return Result<RoleUpdateResponse>.Fail(role.Error ?? "");
 

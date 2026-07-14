@@ -17,7 +17,8 @@ public class UserValidator
         _userExistsRepository = userExistsRepository;
     }
 
-    public async Task<Result<User>> GetUserValidator(
+
+    public async Task<Result<User>> GetByIdAsync(
         int userId)
     {
         var user = await _userRepository.GetByIdAsync(userId);
@@ -27,13 +28,21 @@ public class UserValidator
         return Result<User>.Success(user);
     }
 
-    public async Task<Result<bool>> ExistsUserValidator(
+    public async Task<Result<bool>> ExistsByIdAsync(
        int userId)
     {
-        var user = await _userExistsRepository.ExistsAsync(userId);
-        if (user)
+        if (!await _userExistsRepository.ExistsAsync(userId))
             return Result<bool>.AlreadyExists("User");
 
-        return Result<bool>.Success(user);
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByIdAsync(
+       int userId)
+    {
+        if (await _userExistsRepository.ExistsAsync(userId))
+            return Result<bool>.AlreadyExists("User");
+
+        return Result<bool>.Success(true);
     }
 }

@@ -37,7 +37,7 @@ public class FavoriteCreateService : IFavoriteCreateService
         if (!validationUser)
             return Result<FavoriteCreateResponse>.NotFound("User");
 
-        var validationAdvert = await _advertValidator.ExistsAdvertisementValidator(
+        var validationAdvert = await _advertValidator.ExistsByIdAsync(
             request.AdvertisementId);
 
         if (!validationAdvert.IsSuccess)

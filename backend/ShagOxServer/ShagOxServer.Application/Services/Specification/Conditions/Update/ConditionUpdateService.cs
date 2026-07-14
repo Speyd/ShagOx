@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
+﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
+using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Update;
@@ -27,9 +28,16 @@ public class ConditionUpdateService : IConditionUpdateService
         int conditionId, 
         ConditionUpdateRequest request)
     {
-        var condition = await _validator.GetConditionValidator(conditionId);
+        var condition = await _validator.GetByIdAsync(conditionId);
         if (!condition.IsSuccess)
             return Result<ConditionUpdateResponse>.Fail(condition.Error ?? "");
+
+        if (request.Name is not null)
+        {
+            var validationName = await _validator.NotExistsByNameAsync(request.Name);
+            if (!validationName.IsSuccess)
+                Result<ConditionCreateResponse>.Fail(validationName.Error ?? "");
+        }
 
         var updatedCount = ConditionUpdater.ApplyUpdates(condition.Value!, request);
         var result = new ConditionUpdateResponse(

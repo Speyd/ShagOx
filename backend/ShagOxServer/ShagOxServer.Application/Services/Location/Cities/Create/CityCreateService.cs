@@ -38,11 +38,11 @@ public class CityCreateService : ICityCreateService
     public async Task<Result<CityCreateResponse>> CreateCityAsync(
         CityCreateRequest request)
     {
-        var region = await _regionValidator.ExistsRegionValidator(request.RegionId);
+        var region = await _regionValidator.ExistsByIdAsync(request.RegionId);
         if (!region.IsSuccess)
             Result<CityCreateResponse>.Fail(region.Error ?? "");
 
-        var validatorName = await _cityValidator.ExistsCityValidator(request.RegionId, request.Name);
+        var validatorName = await _cityValidator.NotExistsAsync(request.RegionId, request.Name);
         if (!validatorName.IsSuccess)
             Result<CityCreateResponse>.Fail(validatorName.Error ?? "");
 

@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Update;
+using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -9,14 +10,17 @@ namespace ShagOxServer.Application.Services.Specification.Conditions.Update;
 public class ConditionUpdateService : IConditionUpdateService
 {
     private readonly IConditionRepository _repository;
+    private readonly ConditionValidator _validator;
 
     private readonly IUnitOfWork _unitOfWork;
 
     public ConditionUpdateService(
         IConditionRepository conditionRepository,
+        ConditionValidator validator,
         IUnitOfWork unitOfWork)
     {
         _repository = conditionRepository;
+        _validator = validator;
         _unitOfWork = unitOfWork;
     }
 
@@ -24,12 +28,11 @@ public class ConditionUpdateService : IConditionUpdateService
         int conditionId, 
         ConditionUpdateRequest request)
     {
-        var condition = await _repository.GetByIdAsync(conditionId);
+        var condition = await _validator.GetConditionValidator(conditionId);
+        if (!condition.IsSuccess)
+            return Result<ConditionUpdateResponse>.Fail(condition.Error ?? "");
 
-        if (condition is null)
-            return Result<ConditionUpdateResponse>.NotFound("Condition");
-
-        var updatedCount = ApplyUpdates(condition, request);
+        var updatedCount = ConditionUpdater.ApplyUpdates(condition.Value!, request);
         var result = new ConditionUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -42,7 +45,7 @@ public class ConditionUpdateService : IConditionUpdateService
 
         try
         {
-            _repository.Update(condition);
+            _repository.Update(condition.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -54,21 +57,5 @@ public class ConditionUpdateService : IConditionUpdateService
 
 
         return Result<ConditionUpdateResponse>.Success(result);
-    }
-
-    private static int ApplyUpdates(
-        Condition condition,
-        ConditionUpdateRequest request)
-    {
-        int countUpdated = 0;
-
-        if (request.Name is not null)
-        {
-            condition.Name = request.Name;
-            countUpdated++;
-        }
-
-
-        return countUpdated;
     }
 }

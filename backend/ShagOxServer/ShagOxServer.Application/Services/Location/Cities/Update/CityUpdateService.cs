@@ -35,8 +35,9 @@ public class CityUpdateService : ICityUpdateService
         if (!city.IsSuccess)
             return Result<CityUpdateResponse>.Fail(city.Error ?? "");
 
-        var changeValidator = await _updateValidator
+        var changeValidator = _updateValidator
             .HasChangesValidator(city.Value!, request);
+
         if (!changeValidator.IsSuccess)
         {
             return Result<CityUpdateResponse>.Success(

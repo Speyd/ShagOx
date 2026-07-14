@@ -5,7 +5,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Location.Cities.Update.Validator;
 public class CityUpdateValidator
 {
-    public async Task<Result<(int regionId, string name)>> HasChangesValidator(
+    public async Result<(int regionId, string name)> HasChangesValidator(
         City city,
         CityUpdateRequest request)
     {

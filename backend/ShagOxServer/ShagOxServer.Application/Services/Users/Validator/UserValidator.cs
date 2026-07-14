@@ -6,12 +6,15 @@ namespace ShagOxServer.Application.Services.Users.Validator;
 public class UserValidator
 {
     private readonly IUserRepository _userRepository;
+    private readonly IUserExistsRepository _userExistsRepository;
 
 
     public UserValidator(
-        IUserRepository userRepository)
+        IUserRepository userRepository, 
+        IUserExistsRepository userExistsRepository)
     {
         _userRepository = userRepository;
+        _userExistsRepository = userExistsRepository;
     }
 
     public async Task<Result<User>> GetUserValidator(
@@ -22,5 +25,15 @@ public class UserValidator
             return Result<User>.NotFound("User");
 
         return Result<User>.Success(user);
+    }
+
+    public async Task<Result<bool>> ExistsUserValidator(
+       int userId)
+    {
+        var user = await _userExistsRepository.ExistsAsync(userId);
+        if (!user)
+            return Result<bool>.AlreadyExists("User");
+
+        return Result<bool>.Success(user);
     }
 }

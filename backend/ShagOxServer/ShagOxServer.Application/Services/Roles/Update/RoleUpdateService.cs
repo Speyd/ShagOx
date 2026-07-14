@@ -2,34 +2,38 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Services.Roles.Update;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Application.Services.Roles.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Roles.Update;
 public class RoleUpdateService : IRoleUpdateService
 {
     private readonly IRoleRepository _repository;
+    private readonly RoleValidator _validator;
 
     private readonly IUnitOfWork _unitOfWork;
 
+
     public RoleUpdateService(
         IRoleRepository roleRepository,
+        RoleValidator validator,
         IUnitOfWork unitOfWork)
     {
         _repository = roleRepository;
+        _validator = validator;
         _unitOfWork = unitOfWork;
     }
+
 
     public async Task<Result<RoleUpdateResponse>> UpdateRoleAsync(
         int roleId,
         RoleUpdateRequest request)
     {
-        var role = await _repository.GetByIdAsync(roleId);
+        var role = await _validator.GetRoleValidator(roleId);
+        if (!role.IsSuccess)
+            return Result<RoleUpdateResponse>.Fail(role.Error ?? "");
 
-        if (role is null)
-            return Result<RoleUpdateResponse>.NotFound("Role");
-
-        var updatedCount = ApplyUpdates(role, request);
+        var updatedCount = RoleUpdater.ApplyUpdates(role.Value!, request);
         var result = new RoleUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -43,7 +47,7 @@ public class RoleUpdateService : IRoleUpdateService
 
         try
         {
-            _repository.Update(role);
+            _repository.Update(role.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -54,26 +58,5 @@ public class RoleUpdateService : IRoleUpdateService
         }
 
         return Result<RoleUpdateResponse>.Success(result);
-    }
-
-    private static int ApplyUpdates(
-        Role role,
-        RoleUpdateRequest request)
-    {
-        int countUpdated = 0;
-
-        if (request.Name is not null)
-        {
-            role.Name = request.Name;
-            countUpdated++;
-        }
-
-        if (request.Description is not null)
-        {
-            role.Description = request.Description;
-            countUpdated++;
-        }
-
-        return countUpdated;
     }
 }

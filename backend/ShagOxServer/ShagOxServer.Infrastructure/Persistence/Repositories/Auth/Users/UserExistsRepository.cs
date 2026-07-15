@@ -17,7 +17,7 @@ public class UserExistsRepository : BaseRepository, IUserExistsRepository
         );
     }
 
-    public async Task<bool> ExistsAsync(int id)
+    public async Task<bool> ExistsByIdAsync(int id)
     {
         return await _db.Users.AnyAsync(x => x.Id == id);
     }

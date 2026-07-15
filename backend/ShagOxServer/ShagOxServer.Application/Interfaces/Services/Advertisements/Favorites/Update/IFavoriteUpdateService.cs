@@ -4,7 +4,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
 public interface IFavoriteUpdateService
 {
-    Task<Result<FavoriteUpdateResponse>> UpdateFavoriteAsync(
+    Task<Result<FavoriteUpdateResponse>> UpdateAsync(
         int favoriteId,
         FavoriteUpdateRequest request);
 }

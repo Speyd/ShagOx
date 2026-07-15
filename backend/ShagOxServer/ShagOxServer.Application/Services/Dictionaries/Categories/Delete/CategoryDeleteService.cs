@@ -2,35 +2,40 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
 public class CategoryDeleteService : ICategoryDeleteService
 {
-    private readonly ICategoryRepository _repository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly CategoryValidator _categoryValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
     public CategoryDeleteService(
         ICategoryRepository categoryRepository,
+        CategoryValidator categoryValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = categoryRepository;
+        _categoryRepository = categoryRepository;
+        _categoryValidator = categoryValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<CategoryDeleteResponse>> DeleteCategoryAsync(
+
+    public async Task<Result<CategoryDeleteResponse>> DeleteAsync(
         int id)
     {
-        var category = await _repository.GetByIdAsync(id);
-        if (category is null)
-            return Result<CategoryDeleteResponse>.NotFound("Category");
+        var category = await _categoryValidator.GetByIdAsync(id);
+        if (!category.IsSuccess)
+            return Result<CategoryDeleteResponse>.Fail(category.Error ?? "");
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _repository.Delete(category);
+            _categoryRepository.Delete(category.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -42,7 +47,7 @@ public class CategoryDeleteService : ICategoryDeleteService
 
         return Result<CategoryDeleteResponse>.Success(
           new CategoryDeleteResponse(
-              category.Id,
+              category.Value!.Id,
               DateTime.UtcNow
           )
       );

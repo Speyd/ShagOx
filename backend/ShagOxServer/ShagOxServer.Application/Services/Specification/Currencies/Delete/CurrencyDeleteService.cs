@@ -1,37 +1,43 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Delete;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
+using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Delete;
 public class CurrencyDeleteService : ICurrencyDeleteService
 {
-    private readonly IConditionRepository _repository;
+    private readonly IConditionRepository _currencyRepository;
+    private readonly ConditionValidator _currencyValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
+
     public CurrencyDeleteService(
         IConditionRepository currencyRepository,
+        ConditionValidator currencyValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = currencyRepository;
+        _currencyRepository = currencyRepository;
+        _currencyValidator = currencyValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<CurrencyDeleteResponse>> DeleteCurrencyAsync(
+
+    public async Task<Result<CurrencyDeleteResponse>> DeleteAsync(
         int id)
     {
-        var currency = await _repository.GetByIdAsync(id);
-        if (currency is null)
-            return Result<CurrencyDeleteResponse>.NotFound("Currency");
+        var currency = await _currencyValidator.GetByIdAsync(id);
+        if (!currency.IsSuccess)
+            return Result<CurrencyDeleteResponse>.Fail(currency.Error ?? "");
 
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _repository.Delete(currency);
+            _currencyRepository.Delete(currency.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -43,7 +49,7 @@ public class CurrencyDeleteService : ICurrencyDeleteService
 
         return Result<CurrencyDeleteResponse>.Success(
           new CurrencyDeleteResponse(
-              currency.Id,
+              currency.Value!.Id,
               DateTime.UtcNow
           )
       );

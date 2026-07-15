@@ -1,48 +1,50 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Create;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
+using ShagOxServer.Application.Services.Specification.Conditions.Validator;
+using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create.Validator;
 public class AdvertisementCreateValidator
 {
-    private readonly IUserRepository _userRepository;
-    private readonly ICurrencyRepository _currencyRepository;
-    private readonly ICategoryRepository _categoryRepository;
-    private readonly IConditionRepository _conditionRepository;
+    private readonly CurrencyValidator _currencyValidator;
+    private readonly CategoryValidator _categoryValidator;
+    private readonly ConditionValidator _conditionValidator;
 
 
     public AdvertisementCreateValidator(
-        IUserRepository userRepository,
-        ICurrencyRepository currencyRepository,
-        ICategoryRepository categoryRepository,
-        IConditionRepository conditionRepository)
+        CurrencyValidator currencyValidator,
+        CategoryValidator categoryValidator,
+        ConditionValidator conditionValidator)
     {
-        _userRepository = userRepository;
-        _currencyRepository = currencyRepository;
-        _categoryRepository = categoryRepository;
-        _conditionRepository = conditionRepository;
+        _currencyValidator = currencyValidator;
+        _categoryValidator = categoryValidator;
+        _conditionValidator = conditionValidator;
     }
+
 
     public async Task<Result<bool>> ValidateAsync(
        AdvertisementCreateRequest request)
     {
-        var currency = await _currencyRepository.GetByIdAsync(request.CurrencyId);
-        if (currency is null)
-            return Result<bool>
-                .NotFound("Currency");
+        var currency = await _currencyValidator
+            .ExistsByIdAsync(request.CurrencyId);
 
-        var condition = await _conditionRepository.GetByIdAsync(request.ConditionId);
-        if (condition is null)
-            return Result<bool>
-                .NotFound("Condition");
+        if (!currency.IsSuccess)
+            return currency;
 
-        var category = await _categoryRepository.GetByIdAsync(request.CategoryId);
-        if (category is null)
-            return Result<bool>
-                .NotFound("Category");
+
+        var condition = await _conditionValidator
+            .ExistsByIdAsync(request.ConditionId);
+
+        if (!condition.IsSuccess)
+            return condition;
+
+
+        var category = await _categoryValidator
+            .ExistsByIdAsync(request.CategoryId);
+
+        if (!category.IsSuccess)
+            return category;
 
         return Result<bool>
             .Success(true);

@@ -3,9 +3,13 @@
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 public interface ICategoryExistsRepository
 {
-    Task<bool> ExistsIdAsync(int id);
+    Task<bool> ExistsAsync(
+        string name,
+        ProductType type);
 
-    Task<bool> ExistsNameAsync(string name);
+    Task<bool> ExistsByIdAsync(int id);
 
-    Task<bool> ExistsProductTypeAsync(ProductType type);
+    Task<bool> ExistsByNameAsync(string name);
+
+    Task<bool> ExistsByProductTypeAsync(ProductType type);
 }

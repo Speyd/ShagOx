@@ -4,6 +4,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
 public interface IFavoriteDeleteService
 {
-    Task<Result<FavoriteDeleteResponse>> DeleteFavoriteAsync(
+    Task<Result<FavoriteDeleteResponse>> DeleteAsync(
        int id, int userId);
 }

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Repositories.Auth;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Auth;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.UserRoles;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections;
@@ -23,7 +23,9 @@ public static class AuthDependencyInjection
         services.AddScoped<IRoleExistsRepository, RoleExistsRepository>();
 
         // UserRole
-        services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+        services.AddScoped<IUserRoleQueryRepository, UserRoleQueryRepository>();
+        services.AddScoped<IUserRoleExistsRepository, UserRoleExistsRepository>();
+
 
         return services;
     }

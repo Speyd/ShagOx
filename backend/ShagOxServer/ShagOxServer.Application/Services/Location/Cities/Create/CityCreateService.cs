@@ -1,39 +1,47 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Create;
-using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Application.Services.Location.Cities.Validator;
+using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Create;
 public class CityCreateService : ICityCreateService
 {
     private readonly ICityRepository _cityRepository;
+    private readonly CityValidator _cityValidator;
 
-    private readonly IRegionRepository _regionRepository;
+    private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public CityCreateService(
         ICityRepository cityRepository,
-        IRegionRepository regionRepository,
+        CityValidator cityValidator,
+        RegionValidator regionValidator,
         IUnitOfWork unitOfWork)
     {
         _cityRepository = cityRepository;
-        _regionRepository = regionRepository;
+        _cityValidator = cityValidator;
+        _regionValidator = regionValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<CityCreateResponse>> CreateCityAsync(
+
+    public async Task<Result<CityCreateResponse>> CreateAsync(
         CityCreateRequest request)
     {
-        var region = _regionRepository.GetByIdAsync(request.RegionId);
-        if (region is null)
-            Result<CityCreateResponse>.NotFound("Region");
+        var region = await _regionValidator.ExistsByIdAsync(request.RegionId);
+        if (!region.IsSuccess)
+            Result<CityCreateResponse>.Fail(region.Error ?? "");
 
-        var city = CreateCity(request);
+        var validatorName = await _cityValidator.NotExistsAsync(request.RegionId, request.Name);
+        if (!validatorName.IsSuccess)
+            Result<CityCreateResponse>.Fail(validatorName.Error ?? "");
+
+        var city = CityCreater.CreateCity(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -55,15 +63,5 @@ public class CityCreateService : ICityCreateService
         );
 
         return Result<CityCreateResponse>.Success(response);
-    }
-
-    private City CreateCity(
-        CityCreateRequest request)
-    {
-        return new City
-        {
-            Name = request.Name,
-            RegionId = request.RegionId,
-        };
     }
 }

@@ -2,14 +2,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Application.Interfaces.Services.UserRoles;
+using ShagOxServer.Application.Interfaces.Services.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Users.Delete;
 using ShagOxServer.Application.Interfaces.Services.Users.Query;
 using ShagOxServer.Application.Interfaces.Services.Users.Update;
-using ShagOxServer.Application.Services.UserRoles;
+using ShagOxServer.Application.Services.UserRoles.Query;
 using ShagOxServer.Application.Services.Users.Delete;
 using ShagOxServer.Application.Services.Users.Query;
 using ShagOxServer.Application.Services.Users.Update;
+using ShagOxServer.Application.Services.Users.Update.Validator;
+using ShagOxServer.Application.Services.Users.Validator;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.DependencyInjection;
@@ -24,9 +26,13 @@ public static class UserDependencyInjection
         services.AddScoped<IUserUpdateService, UserUpdateService>();
         services.AddScoped<IUserDeleteService, UserDeleteService>();
 
-        services.AddScoped<IUserRoleService, UserRoleService>();
+        services.AddScoped<IUserRoleQueryService, UserRoleQueryService>();
 
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+        services.AddScoped<UserValidator>();
+        services.AddScoped<UserUpdateValidator>();
+
 
         return services;
     }

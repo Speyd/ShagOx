@@ -1,5 +1,4 @@
 ﻿using ShagOxServer.Application.DTOs.Users;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Users.Query;
 using ShagOxServer.Application.Services.Users.Mapping;
@@ -12,18 +11,15 @@ public class UserAdminQueryService : IUserAdminQueryService
     private readonly IUserQueryRepository _userRepository;
     private readonly IUserExistsRepository _userExistsRepository;
 
-    private readonly IAdvertisementExistsRepository _advertRepository;
-
 
     public UserAdminQueryService(
         IUserQueryRepository userRepository,
-        IUserExistsRepository userExistsRepository,
-        IAdvertisementExistsRepository advertRepository)
+        IUserExistsRepository userExistsRepository)
     {
         _userRepository = userRepository;
         _userExistsRepository = userExistsRepository;
-        _advertRepository = advertRepository;
     }
+
 
     public async Task<Result<UserDto>> GetByContactAsync(string? email, string? phone)
     {
@@ -68,9 +64,9 @@ public class UserAdminQueryService : IUserAdminQueryService
     }
 
 
-    public async Task<bool> ExistsAsync(int id)
+    public async Task<bool> ExistsByIdAsync(int id)
     {
-        var result = await _userExistsRepository.ExistsAsync(id);
+        var result = await _userExistsRepository.ExistsByIdAsync(id);
 
         return result;
     }

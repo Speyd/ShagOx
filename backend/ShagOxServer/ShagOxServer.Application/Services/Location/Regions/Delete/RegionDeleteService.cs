@@ -2,35 +2,41 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
+using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Delete;
 public class RegionDeleteService : IRegionDeleteService
 {
-    private readonly IRegionRepository _repository;
+    private readonly IRegionRepository _regionRepository;
+    private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
+
     public RegionDeleteService(
         IRegionRepository regionRepository,
+        RegionValidator regionValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = regionRepository;
+        _regionRepository = regionRepository;
+        _regionValidator = regionValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<RegionDeleteResponse>> DeleteRegionAsync(
+
+    public async Task<Result<RegionDeleteResponse>> DeleteAsync(
         int id)
     {
-        var region = await _repository.GetByIdAsync(id);
-        if (region is null)
-            return Result<RegionDeleteResponse>.NotFound("Region");
+        var region = await _regionValidator.GetByIdAsync(id);
+        if (!region.IsSuccess)
+            return Result<RegionDeleteResponse>.Fail(region.Error ?? "");
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _repository.Delete(region);
+            _regionRepository.Delete(region.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -42,7 +48,7 @@ public class RegionDeleteService : IRegionDeleteService
 
         return Result<RegionDeleteResponse>.Success(
            new RegionDeleteResponse(
-               region.Id,
+               region.Value!.Id,
                DateTime.UtcNow
            )
        );

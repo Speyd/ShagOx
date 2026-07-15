@@ -30,7 +30,7 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
     }
 
 
-    public async Task<Result<AdvertisementUpdateResponse>> UpdateAdvertisementAsync(
+    public async Task<Result<AdvertisementUpdateResponse>> UpdateAsync(
         int advertId,
         AdvertisementUpdateRequest request)
     {

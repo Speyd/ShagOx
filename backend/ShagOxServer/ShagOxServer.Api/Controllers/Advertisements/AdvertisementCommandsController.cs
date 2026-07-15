@@ -39,7 +39,7 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
     public async Task<IActionResult> Create(
         [FromForm] AdvertisementCreateRequest request)
     {
-        var result = await _createService.CreateAdvertisementAsync(request, UserId);
+        var result = await _createService.CreateAsync(request, UserId);
         return result.ToActionResult();
     }
 
@@ -52,7 +52,7 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
         if (forbidden is not null)
             return forbidden;
 
-        var result = await _updateService.UpdateAdvertisementAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 
@@ -70,7 +70,7 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
         if (forbidden is not null)
             return forbidden;
 
-        var result = await _deleteService.DeleteAdvertisementAsync(id);
+        var result = await _deleteService.DeleteAsync(id);
         return result.ToActionResult();
     }
 }

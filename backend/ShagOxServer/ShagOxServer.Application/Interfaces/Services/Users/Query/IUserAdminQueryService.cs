@@ -17,5 +17,5 @@ public interface IUserAdminQueryService
     Task<Result<List<UserDto>>> GetUsersActiveAfterAsync(DateTime date);
 
 
-    Task<bool> ExistsAsync(int id);
+    Task<bool> ExistsByIdAsync(int id);
 }

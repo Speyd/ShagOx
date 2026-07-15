@@ -14,31 +14,35 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Application.Services.Users.Query;
 public class UserQueryService : IUserQueryService
 {
-    private readonly IUserQueryRepository _repository;
-    private readonly IRoleQueryRepository _roleRepository;
+    private readonly IUserQueryRepository _userQueryRepository;
+    private readonly IRoleQueryRepository _roleQueryRepository;
 
     private readonly IUserContext _context;
 
+
     public UserQueryService(
-        IUserQueryRepository userRepository,
-        IRoleQueryRepository roleRepository,
+        IUserQueryRepository userQueryRepository,
+        IRoleQueryRepository roleQueryRepository,
         IUserContext userContext)
     {
-        _repository = userRepository;
-        _roleRepository = roleRepository;
+        _userQueryRepository = userQueryRepository;
+        _roleQueryRepository = roleQueryRepository;
         _context = userContext;
     }
 
+
     public async Task<Result<UserDto>> GetByIdAsync(int id)
     {
-        var user = await _repository.GetByIdAsync(id);
+        var user = await _userQueryRepository
+            .GetByIdAsync(id);
 
         return user.ToResult(UserMapper.ToDto);
     }
 
     public async Task<Result<UserDto>> GetMyProfileAsync()
     {
-        var user = await _repository.GetByIdAsync(_context.UserId);
+        var user = await _userQueryRepository
+            .GetByIdAsync(_context.UserId);
 
         return user.ToResult(UserMapper.ToDto);
     }
@@ -46,7 +50,8 @@ public class UserQueryService : IUserQueryService
     public async Task<Result<List<RoleDto>>> GetMyRoleAsync(
         PaginationParams pagination)
     {
-        var roles = await _roleRepository.GetByUserIdAsync(_context.UserId, pagination);
+        var roles = await _roleQueryRepository
+            .GetByUserAsync(_context.UserId, pagination);
 
         return roles.ToResultList(RoleMapper.ToDto);
     }
@@ -55,7 +60,8 @@ public class UserQueryService : IUserQueryService
        UserSearchFilter filter,
 	   PaginationParams pagination)
     {
-        var users = await _repository.Search(
+        var users = await _userQueryRepository
+            .Search(
             filter, pagination);
 
         return users.ToResultList(UserMapper.ToDto);

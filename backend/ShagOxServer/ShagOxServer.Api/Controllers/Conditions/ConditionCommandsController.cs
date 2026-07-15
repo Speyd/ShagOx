@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Create;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Delete;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Update;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Conditions;
@@ -34,7 +34,7 @@ public class ConditionCommandsController : ApiController
     public async Task<IActionResult> Create(
         [FromBody] ConditionCreateRequest request)
     {
-        var result = await _createService.CreateConditionAsync(request);
+        var result = await _createService.CreateAsync(request);
         return result.ToActionResult();
     }
 
@@ -44,7 +44,7 @@ public class ConditionCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] ConditionUpdateRequest request)
     {
-        var result = await _updateService.UpdateConditionAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 
@@ -53,7 +53,7 @@ public class ConditionCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteConditionAsync(id);
+        var result = await _deleteService.DeleteAsync(id);
         return result.ToActionResult();
     }
 }

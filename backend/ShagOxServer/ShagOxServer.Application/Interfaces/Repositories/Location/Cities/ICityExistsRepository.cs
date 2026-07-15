@@ -4,4 +4,6 @@ public interface ICityExistsRepository
     Task<bool> ExistsAsync(
         int regionId,
         string cityName);
+
+    Task<bool> ExistsByIdAsync(int id);
 }

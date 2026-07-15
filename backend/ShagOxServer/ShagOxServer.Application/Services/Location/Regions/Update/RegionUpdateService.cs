@@ -2,44 +2,45 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
-using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Update;
 public class RegionUpdateService : IRegionUpdateService
 {
-    private readonly IRegionRepository _repository;
-    private readonly IRegionExistsRepository _existsRepository;
+    private readonly IRegionRepository _regionRepository;
+    private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RegionUpdateService(
         IRegionRepository regionRepository,
-        IRegionExistsRepository existsRepository,
+        RegionValidator regionValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = regionRepository;
-        _existsRepository = existsRepository;
+        _regionRepository = regionRepository;
+        _regionValidator = regionValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<RegionUpdateResponse>> UpdateRegionAsync(
+
+    public async Task<Result<RegionUpdateResponse>> UpdateAsync(
         int regionId,
         RegionUpdateRequest request)
     {
-        var region = await _repository.GetByIdAsync(regionId);
+        var region = await _regionValidator.GetByIdAsync(regionId);
+        if (!region.IsSuccess)
+            return Result<RegionUpdateResponse>.Fail(region.Error ?? "");
 
-        if (region is null)
-            return Result<RegionUpdateResponse>.NotFound("Region");
+        if (request.Name is not null)
+        {
+            var valid = await _regionValidator.NotExistsByNameAsync(request.Name);
+            if (!valid.IsSuccess)
+                return Result<RegionUpdateResponse>.Fail(valid.Error ?? "");
+        }
 
-        var valid = await _existsRepository.ExistsAsync(request.Name);
-        if (valid && request.Name is not null ||
-            request.Name is null)
-            return Result<RegionUpdateResponse>.Fail(
-                "Name ist exists or null");
-
-        var updatedCount = ApplyUpdates(region, request);
+        var updatedCount = RegionUpdater.ApplyUpdates(region.Value!, request);
 
         var result = new RegionUpdateResponse(
                 DateTime.UtcNow,
@@ -53,7 +54,7 @@ public class RegionUpdateService : IRegionUpdateService
 
         try
         {
-            _repository.Update(region);
+            _regionRepository.Update(region.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -64,20 +65,5 @@ public class RegionUpdateService : IRegionUpdateService
         }
 
         return Result<RegionUpdateResponse>.Success(result);
-    }
-    
-    private static int ApplyUpdates(
-        Region region,
-        RegionUpdateRequest request)
-    {
-        int countUpdated = 0;
-
-        if (request.Name is not null)
-        {
-            region.Name = request.Name;
-            countUpdated++;
-        }
-
-        return countUpdated;
     }
 }

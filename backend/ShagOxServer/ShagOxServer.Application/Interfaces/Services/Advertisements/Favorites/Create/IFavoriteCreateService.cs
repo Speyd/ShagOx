@@ -4,6 +4,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Create;
 public interface IFavoriteCreateService
 {
-    Task<Result<FavoriteCreateResponse>> CreateFavoriteAsync(
+    Task<Result<FavoriteCreateResponse>> CreateAsync(
        FavoriteCreateRequest request);
 }

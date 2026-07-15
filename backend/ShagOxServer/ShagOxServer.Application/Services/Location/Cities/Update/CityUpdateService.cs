@@ -2,48 +2,63 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
-using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
+using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Update;
 public class CityUpdateService : ICityUpdateService
 {
-    private readonly ICityRepository _repository;
-    private readonly ICityExistsRepository _existsrepository;
+    private readonly ICityRepository _cityRepository;
+    private readonly CityValidator _cityValidator;
+    private readonly CityUpdateValidator _cityUpdateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
+
     public CityUpdateService(
         ICityRepository cityRepository,
-        ICityExistsRepository cityExistsRepository,
+        CityValidator cityValidator,
+        CityUpdateValidator cityUpdateValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = cityRepository;
-        _existsrepository = cityExistsRepository;
+        _cityRepository = cityRepository;
+        _cityValidator = cityValidator;
+        _cityUpdateValidator = cityUpdateValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<CityUpdateResponse>> UpdateCityAsync(
+
+    public async Task<Result<CityUpdateResponse>> UpdateAsync(
         int cityId, 
         CityUpdateRequest request)
     {
-        var city = await _repository.GetByIdAsync(cityId);
+        var city = await _cityValidator.GetByIdAsync(cityId);
+        if (!city.IsSuccess)
+            return Result<CityUpdateResponse>.Fail(city.Error ?? "");
 
-        if (city is null)
-            return Result<CityUpdateResponse>.NotFound("City");
+        var changeValidator = _cityUpdateValidator
+            .HasChangesValidator(city.Value!, request);
 
-        var regionId = request.RegionId ?? city.RegionId;
-        var name = request.Name ?? city.Name;
+        if (!changeValidator.IsSuccess)
+        {
+            return Result<CityUpdateResponse>.Success(
+                new CityUpdateResponse(
+                DateTime.UtcNow,
+                0
+            ));
+        }
 
-        if (regionId == city.RegionId && name == city.Name)
-            return Result<CityUpdateResponse>.Fail("Nothing to update");
+        var existsValidator = await _cityValidator.NotExistsAsync(
+            changeValidator.Value!.regionId, 
+            changeValidator.Value.name
+        );
 
-        var exists = await _existsrepository.ExistsAsync(regionId, name);
-        if (exists)
-            return Result<CityUpdateResponse>.AlreadyExists("City");
+        if (!existsValidator.IsSuccess)
+            return Result<CityUpdateResponse>.Fail(existsValidator.Error ?? "");
 
 
-        var updatedCount = ApplyUpdates(city, request);
+        var updatedCount = CityUpdater.ApplyUpdates(city.Value!, request);
         var result = new CityUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -57,7 +72,7 @@ public class CityUpdateService : ICityUpdateService
 
         try
         {
-            _repository.Add(city);
+            _cityRepository.Add(city.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -69,26 +84,5 @@ public class CityUpdateService : ICityUpdateService
 
 
         return Result<CityUpdateResponse>.Success(result);
-    }
-
-    private static int ApplyUpdates(
-        City city,
-        CityUpdateRequest request)
-    {
-        int countUpdated = 0;
-
-        if (request.Name is not null)
-        {
-            city.Name = request.Name;
-            countUpdated++;
-        }
-
-        if (request.RegionId is not null)
-        {
-            city.RegionId = request.RegionId.Value;
-            countUpdated++;
-        }
-
-        return countUpdated;
     }
 }

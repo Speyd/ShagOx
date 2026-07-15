@@ -1,35 +1,51 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
+﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
+using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Update;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
+using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Update;
 public class ConditionUpdateService : IConditionUpdateService
 {
-    private readonly IConditionRepository _repository;
+    private readonly IConditionRepository _conditionRepository;
+    private readonly ConditionValidator _conditionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
+
     public ConditionUpdateService(
         IConditionRepository conditionRepository,
+        ConditionValidator conditionValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = conditionRepository;
+        _conditionRepository = conditionRepository;
+        _conditionValidator = conditionValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<ConditionUpdateResponse>> UpdateConditionAsync(
+
+    public async Task<Result<ConditionUpdateResponse>> UpdateAsync(
         int conditionId, 
         ConditionUpdateRequest request)
     {
-        var condition = await _repository.GetByIdAsync(conditionId);
+        var condition = await _conditionValidator
+            .GetByIdAsync(conditionId);
 
-        if (condition is null)
-            return Result<ConditionUpdateResponse>.NotFound("Condition");
+        if (!condition.IsSuccess)
+            return Result<ConditionUpdateResponse>.Fail(condition.Error ?? "");
 
-        var updatedCount = ApplyUpdates(condition, request);
+        if (request.Name is not null)
+        {
+            var validationName = await _conditionValidator
+                .NotExistsByNameAsync(request.Name);
+
+            if (!validationName.IsSuccess)
+                Result<ConditionCreateResponse>.Fail(validationName.Error ?? "");
+        }
+
+        var updatedCount = ConditionUpdater.ApplyUpdates(condition.Value!, request);
         var result = new ConditionUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -42,7 +58,7 @@ public class ConditionUpdateService : IConditionUpdateService
 
         try
         {
-            _repository.Update(condition);
+            _conditionRepository.Update(condition.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -54,21 +70,5 @@ public class ConditionUpdateService : IConditionUpdateService
 
 
         return Result<ConditionUpdateResponse>.Success(result);
-    }
-
-    private static int ApplyUpdates(
-        Condition condition,
-        ConditionUpdateRequest request)
-    {
-        int countUpdated = 0;
-
-        if (request.Name is not null)
-        {
-            condition.Name = request.Name;
-            countUpdated++;
-        }
-
-
-        return countUpdated;
     }
 }

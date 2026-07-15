@@ -1,51 +1,59 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Update;
+using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Update;
+using ShagOxServer.Application.Services.Specification.Currencies.Update.Validator;
+using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Update;
 public class CurrencyUpdateService : ICurrencyUpdateService
 {
-    private readonly ICurrencyRepository _repository;
-    private readonly ICurrencyExistsRepository _existsRepository;
+    private readonly ICurrencyRepository _currencyRepository;
+    private readonly CurrencyValidator _currencyValidator;
+    private readonly CurrencyUpdateValidator _currencyUpdateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public CurrencyUpdateService(
         ICurrencyRepository currencyRepository,
-        ICurrencyExistsRepository existsRepository,
+        CurrencyValidator currencyValidator,
+        CurrencyUpdateValidator currencyUpdateValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = currencyRepository;
-        _existsRepository = existsRepository;
+        _currencyRepository = currencyRepository;
+        _currencyValidator = currencyValidator;
+        _currencyUpdateValidator = currencyUpdateValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<CurrencyUpdateResponse>> UpdateCurrencyAsync(
+
+    public async Task<Result<CurrencyUpdateResponse>> UpdateAsync(
         int currencyId,
         CurrencyUpdateRequest request)
     {
-        if (request.Code is not null &&
-            await _existsRepository.ExistsByCodeAsync(request.Code))
-        {
-            return Result<CurrencyUpdateResponse>
-                .AlreadyExists("Currency code");
-        }
-        if (request.Name is not null &&
-            await _existsRepository.ExistsByNameAsync(request.Name))
-        {
-            return Result<CurrencyUpdateResponse>
-                .AlreadyExists("Currency name");
-        }
+        var code = await _currencyUpdateValidator
+            .ExistsByCodeValidator(request.Code);
+        if (!code.IsSuccess)
+            return Result<CurrencyUpdateResponse>.Fail(code.Error ?? "");
 
-        var currency = await _repository.GetByIdAsync(currencyId);
-        if (currency is null)
-            return Result<CurrencyUpdateResponse>.NotFound("Currency");
 
-        var updatedCount = ApplyUpdates(currency, request);
+        var name = await _currencyUpdateValidator
+            .ExistsByNameValidator(request.Name);
+
+        if (!name.IsSuccess)
+            return Result<CurrencyUpdateResponse>.Fail(code.Error ?? "");
+
+
+        var currency = await _currencyValidator
+            .GetByIdAsync(currencyId);
+
+        if (!currency.IsSuccess)
+            return Result<CurrencyUpdateResponse>.Fail(currency.Error ?? "");
+
+        var updatedCount = CurrencyUpdater.ApplyUpdates(currency.Value!, request);
         var result = new CurrencyUpdateResponse(
                 DateTime.UtcNow,
                 updatedCount
@@ -59,7 +67,7 @@ public class CurrencyUpdateService : ICurrencyUpdateService
 
         try
         {
-            _repository.Update(currency);
+            _currencyRepository.Update(currency.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -70,32 +78,5 @@ public class CurrencyUpdateService : ICurrencyUpdateService
         }
 
         return Result<CurrencyUpdateResponse>.Success(result);
-    }
-
-    private static int ApplyUpdates(
-        Currency currency,
-        CurrencyUpdateRequest request)
-    {
-        int countUpdated = 0;
-
-        if (request.Code is not null)
-        {
-            currency.Code = request.Code;
-            countUpdated++;
-        }
-
-        if (request.Symbol is not null)
-        {
-            currency.Symbol = request.Symbol;
-            countUpdated++;
-        }
-
-        if (request.Name is not null)
-        {
-            currency.Name = request.Name;
-            countUpdated++;
-        }
-
-        return countUpdated;
     }
 }

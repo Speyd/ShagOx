@@ -4,6 +4,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
 public interface IRegionCreateService
 {
-    Task<Result<RegionCreateResponse>> CreateRegionAsync(
+    Task<Result<RegionCreateResponse>> CreateAsync(
         RegionCreateRequest request);
 }

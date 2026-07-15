@@ -27,12 +27,12 @@ public class UserAdvertisementsController : ApiController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQuery.ExistsAsync(userId);
+        var exists = await _userQuery.ExistsByIdAsync(userId);
 
         if (!exists)
             return NotFound("User not found");
 
-        var result = await _queryService.GetSellerAdvertisementsAsync(userId, pagination);
+        var result = await _queryService.GetBySellerAsync(userId, pagination);
         return result.ToActionResult();
     }
 
@@ -42,13 +42,13 @@ public class UserAdvertisementsController : ApiController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQuery.ExistsAsync(userId);
+        var exists = await _userQuery.ExistsByIdAsync(userId);
 
         if (!exists)
             return NotFound("User not found");
 
         var advertisements =
-            await _queryService.GetPurchasedAdvertisementsAsync(userId, pagination);
+            await _queryService.GetPurchasedByUserAsync(userId, pagination);
 
         return advertisements.ToActionResult();
     }

@@ -8,12 +8,12 @@ public class RoleExistsRepository : BaseRepository, IRoleExistsRepository
         : base(db)
     { }
 
-    public async Task<bool> ExistsAsync(int id)
+    public async Task<bool> ExistsByIdAsync(int id)
     {
         return await _db.Roles.AnyAsync(r => r.Id == id);
     }
 
-    public async Task<bool> ExistsAsync(string name)
+    public async Task<bool> ExistsByNameAsync(string name)
     {
         return await _db.Roles.AnyAsync(r => r.Name == name);
     }

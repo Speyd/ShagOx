@@ -9,17 +9,26 @@ public class CategoryExistsRepository : BaseRepository, ICategoryExistsRepositor
         : base(db)
     { }
 
-    public async Task<bool> ExistsIdAsync(int id)
+    public async Task<bool> ExistsAsync(
+        string name,
+        ProductType type)
+    {
+        return await _db.Categories
+            .AnyAsync(c =>
+                c.Name == name && c.ProductType == type);
+    }
+
+    public async Task<bool> ExistsByIdAsync(int id)
     {
         return await _db.Categories.AnyAsync(c => c.Id == id);
     }
 
-    public async Task<bool> ExistsNameAsync(string name)
+    public async Task<bool> ExistsByNameAsync(string name)
     {
         return await _db.Categories.AnyAsync(c => c.Name == name);
     }
 
-    public async Task<bool> ExistsProductTypeAsync(ProductType type)
+    public async Task<bool> ExistsByProductTypeAsync(ProductType type)
     {
         return await _db.Categories.AnyAsync(c => c.ProductType == type);
     }

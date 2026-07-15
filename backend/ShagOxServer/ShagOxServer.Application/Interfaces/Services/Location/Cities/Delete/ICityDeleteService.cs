@@ -4,6 +4,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 public interface ICityDeleteService
 {
-    Task<Result<CityDeleteResponse>> DeleteCityAsync(
+    Task<Result<CityDeleteResponse>> DeleteAsync(
        int id);
 }

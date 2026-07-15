@@ -1,37 +1,45 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Create;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Create;
+using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Create;
 public class ConditionCreateService : IConditionCreateService
 {
-    private readonly IConditionRepository _repository;
+    private readonly IConditionRepository _conditionRepository;
+    private readonly ConditionValidator _conditionValidator;
+
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public ConditionCreateService(
         IConditionRepository conditionRepository,
+        ConditionValidator conditionValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = conditionRepository;
+        _conditionRepository = conditionRepository;
+        _conditionValidator = conditionValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<ConditionCreateResponse>> CreateConditionAsync(
+
+    public async Task<Result<ConditionCreateResponse>> CreateAsync(
         ConditionCreateRequest request)
     {
+        var validationName = await _conditionValidator.NotExistsByNameAsync(request.Name);
+        if(!validationName.IsSuccess)
+            Result<ConditionCreateResponse>.Fail(validationName.Error ?? "");
 
-        Condition condition = CreateCondition(request);
+        var condition = ConditionCreater.CreateCondition(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _repository.Add(condition);
+            _conditionRepository.Add(condition);
 
             await _unitOfWork.CommitAsync();
         }
@@ -47,14 +55,5 @@ public class ConditionCreateService : IConditionCreateService
         );
 
         return Result<ConditionCreateResponse>.Success(response);
-    }
-
-    private Condition CreateCondition(
-       ConditionCreateRequest request)
-    {
-        return new Condition
-        {
-            Name = request.Name,
-        };
     }
 }

@@ -8,6 +8,12 @@ public class CurrencyExistsRepository : BaseRepository, ICurrencyExistsRepositor
         : base(db)
     { }
 
+
+    public async Task<bool> ExistsByIdAsync(int id)
+    {
+        return await _db.Currencies.AnyAsync(c => c.Id == id);
+    }
+
     public async Task<bool> ExistsByCodeAsync(string? code)
     {
         return await _db.Currencies.AnyAsync(c => c.Code == code);

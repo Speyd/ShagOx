@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.DTOs.Advertisements.Update;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
 using ShagOxServer.Application.DTOs.Specification.Images.Create;
-using ShagOxServer.Application.DTOs.Specification.Images.Update;
+using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Create;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Images.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Images.Delete;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -185,7 +184,7 @@ public class AdvertisementImageService : IAdvertisementImageService
 
 
         var result = await _imageDeleteService
-            .DeleteImageRecordAsync(image.Id!.Value);
+            .DeleteRecordAsync(image.Id!.Value);
 
 
         if (!result.IsSuccess)

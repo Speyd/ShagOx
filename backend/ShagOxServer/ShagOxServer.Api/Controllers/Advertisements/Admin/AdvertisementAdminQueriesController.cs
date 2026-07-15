@@ -29,13 +29,13 @@ public class AdvertisementAdminQueriesController : AdvertisementOwnerController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQueryService.ExistsAsync(userId);
+        var exists = await _userQueryService.ExistsByIdAsync(userId);
 
         if (!exists)
             return NotFound("User not found");
 
         var advertisements =
-            await _queryAdvertService.GetPurchasedAdvertisementsAsync(userId, pagination);
+            await _queryAdvertService.GetPurchasedByUserAsync(userId, pagination);
 
         return advertisements.ToActionResult();
     }

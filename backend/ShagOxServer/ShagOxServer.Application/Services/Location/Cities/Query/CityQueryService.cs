@@ -12,11 +12,13 @@ public class CityQueryService : ICityQueryService
 {
     private readonly ICityQueryRepository _repository;
 
+
     public CityQueryService(
         ICityQueryRepository cityRepository)
     {
         _repository = cityRepository;
     }
+
 
     public async Task<Result<CityDto>> GetByIdAsync(int id)
     {

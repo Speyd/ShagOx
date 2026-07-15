@@ -4,6 +4,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Location.Cities.Create;
 public interface ICityCreateService
 {
-    Task<Result<CityCreateResponse>> CreateCityAsync(
+    Task<Result<CityCreateResponse>> CreateAsync(
        CityCreateRequest request);
 }

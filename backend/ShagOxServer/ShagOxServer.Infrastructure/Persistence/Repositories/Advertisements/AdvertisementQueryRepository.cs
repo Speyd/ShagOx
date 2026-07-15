@@ -29,7 +29,7 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .ToListAsync();
     }
 
-    public async Task<List<Advertisement>> GetSellerAdvertisementsAsync(
+    public async Task<List<Advertisement>> GetBySellerAsync(
         int userId,
         PaginationParams pagination)
     {
@@ -41,7 +41,7 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .Take(pagination.PageSize)
             .ToListAsync();
     }
-    public async Task<List<Advertisement>> GetPurchasedAdvertisementsAsync(
+    public async Task<List<Advertisement>> GetPurchasedByUserAsync(
         int userId,
         PaginationParams pagination)
     {

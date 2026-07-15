@@ -1,51 +1,46 @@
-﻿using Microsoft.AspNetCore.Http;
-using ShagOxServer.Application.DTOs.Advertisements.Create;
-using ShagOxServer.Application.DTOs.Specification.Images.Create;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Create;
+using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Create;
-using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Images.Create;
 using ShagOxServer.Application.Services.Advertisements.Create.Validator;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create;
 public class AdvertisementCreateService : IAdvertisementCreateService
 {
     private readonly IAdvertisementRepository _advertisementRepository;
-    private readonly AdvertisementCreateValidator _validator;
+    private readonly AdvertisementCreateValidator _advertisementValidator;
  
-    private readonly IImageCreateService _imageService;
-    private readonly IImageLoaderService _loaderService;
+    private readonly IImageCreateService _imageCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public AdvertisementCreateService(
         IAdvertisementRepository advertisementRepository,
-        AdvertisementCreateValidator validator,
-        IImageCreateService imageService,
-        IImageLoaderService loaderService,
+        AdvertisementCreateValidator advertisementValidator,
+        IImageCreateService imageCreateService,
         IUnitOfWork unitOfWork)
     {
         _advertisementRepository = advertisementRepository;
-        _validator = validator;
-       
-        _imageService = imageService;
-        _loaderService = loaderService;
+        _advertisementValidator = advertisementValidator;
+
+        _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<AdvertisementCreateResponse>> CreateAdvertisementAsync(
+
+    public async Task<Result<AdvertisementCreateResponse>> CreateAsync(
         AdvertisementCreateRequest request,
         int userId)
     {
-        var validation = await _validator.ValidateAsync(request);
+        var validation = await _advertisementValidator.ValidateAsync(request);
         if (!validation.IsSuccess)
             return Result<AdvertisementCreateResponse>.Fail(validation.Error!);
-
-        var advert = CreateAdvertisement(request, userId);
+        
+        var advert = AdvertisementCreater.CreateAdvertisement(request, userId);
 
         await _unitOfWork.BeginTransactionAsync();
         try
@@ -54,11 +49,9 @@ public class AdvertisementCreateService : IAdvertisementCreateService
 
             await _unitOfWork.SaveChangesAsync();
 
-
-            var imagesResult = await CreateImagesAsync(
-                advert.Id,
-                request.Images);
-
+            var imagesResult = await _imageCreateService.CreateFromFilesAsync(
+                new ImageFilesCreateRequest(advert.Id, request.Images)
+            );
 
             if (!imagesResult.IsSuccess)
             {
@@ -77,68 +70,10 @@ public class AdvertisementCreateService : IAdvertisementCreateService
             throw;
         }
 
-        var response = new AdvertisementCreateResponse(
+        return Result<AdvertisementCreateResponse>.Success(
+            new AdvertisementCreateResponse(
             advert.Id,
             advert.CreatedAt
-        );
-
-        return Result<AdvertisementCreateResponse>.Success(response);
-    }
-
-    private Advertisement CreateAdvertisement(
-        AdvertisementCreateRequest request, 
-        int userId)
-    {
-        return new Advertisement
-        {
-            Title = request.Title,
-            Description = request.Description ?? "",
-            Popularity = request.Popularity,
-
-            CurrencyId = request.CurrencyId,
-            CategoryId = request.CategoryId,
-            ConditionId = request.ConditionId,
-            SellerId = userId,
-
-            Price = request.Price,
-            PreviousPrice = request.Price,
-
-            Properties = request.Properties ?? new()
-        };
-    }
-
-
-    private async Task<Result<bool>> CreateImagesAsync(
-        int advertisementId,
-        List<IFormFile> images)
-    {
-        var uploadedImages = new List<string>();
-
-        int order = 0;
-        foreach (var image in images)
-        {
-            var result = await _imageService.CreateFromFileInternalAsync(
-                new ImageFileCreateRequest(
-                    image,
-                    advertisementId,
-                    order++ + 1000));
-
-
-            if (!result.IsSuccess)
-            {
-                foreach (var publicId in uploadedImages)
-                {
-                    await _loaderService.DeleteAsync(publicId);
-                }
-
-                return Result<bool>
-                    .Fail(result.Error!);
-            }
-
-
-            uploadedImages.Add(result.Value!.PublicId);
-        }
-
-        return Result<bool>.Success(true);
+        ));
     }
 }

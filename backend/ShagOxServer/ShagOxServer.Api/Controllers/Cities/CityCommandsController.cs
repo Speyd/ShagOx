@@ -33,7 +33,7 @@ public class CityCommandsController : ApiController
     public async Task<IActionResult> Create(
         [FromBody] CityCreateRequest request)
     {
-        var result = await _createService.CreateCityAsync(request);
+        var result = await _createService.CreateAsync(request);
         return result.ToActionResult();
     }
 
@@ -42,7 +42,7 @@ public class CityCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] CityUpdateRequest request)
     {
-        var result = await _updateService.UpdateCityAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 
@@ -51,7 +51,7 @@ public class CityCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteCityAsync(id);
+        var result = await _deleteService.DeleteAsync(id);
         return result.ToActionResult();
     }
 }

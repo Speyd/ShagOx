@@ -27,7 +27,7 @@ public class UserAdminCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteUserAsync(id);
+        var result = await _deleteService.DeleteAsync(id);
         return result.ToActionResult();
     }
 
@@ -36,7 +36,7 @@ public class UserAdminCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] UserUpdateRequest request)
     {
-        var result = await _updateService.UpdateUserAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 }

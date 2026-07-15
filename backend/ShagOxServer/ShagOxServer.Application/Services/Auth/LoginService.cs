@@ -11,24 +11,26 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Auth;
 public class LoginService : ILoginService
 {
-    private readonly IUserQueryRepository _userRepository;
+    private readonly IUserQueryRepository _userQueryRepository;
 
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
 
     private readonly IJwtService _jwtService;
 
+
     public LoginService(
-        IUserQueryRepository userRepository,
+        IUserQueryRepository userQueryRepository,
         IPasswordHasher<User> passwordHasher,
         IContactValidator contactValidator,
         IJwtService jwtService)
     {
-        _userRepository = userRepository;
+        _userQueryRepository = userQueryRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
         _jwtService = jwtService; 
     } 
+
 
     public async Task<Result<LoginResponse>> LoginAsync(LoginRequest request)
     {
@@ -64,8 +66,8 @@ public class LoginService : ILoginService
     {
         return type switch
         {
-            UserContactType.Email => await _userRepository.GetByEmailAsync(data),
-            UserContactType.Phone => await _userRepository.GetByPhoneAsync(data),
+            UserContactType.Email => await _userQueryRepository.GetByEmailAsync(data),
+            UserContactType.Phone => await _userQueryRepository.GetByPhoneAsync(data),
             _ => null
         };
     }

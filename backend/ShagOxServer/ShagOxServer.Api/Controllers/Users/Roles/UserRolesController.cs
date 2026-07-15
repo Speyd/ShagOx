@@ -38,7 +38,7 @@ public class UserRolesController : ApiController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _roleService.GetByUserIdAsync(userId, pagination);
+        var result = await _roleService.GetByUserAsync(userId, pagination);
 
         return result.ToActionResult();
     }

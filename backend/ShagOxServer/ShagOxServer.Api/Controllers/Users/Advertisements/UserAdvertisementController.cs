@@ -27,7 +27,7 @@ public class UserAdvertisementsController : ApiController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQuery.ExistsAsync(userId);
+        var exists = await _userQuery.ExistsByIdAsync(userId);
 
         if (!exists)
             return NotFound("User not found");
@@ -42,7 +42,7 @@ public class UserAdvertisementsController : ApiController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQuery.ExistsAsync(userId);
+        var exists = await _userQuery.ExistsByIdAsync(userId);
 
         if (!exists)
             return NotFound("User not found");

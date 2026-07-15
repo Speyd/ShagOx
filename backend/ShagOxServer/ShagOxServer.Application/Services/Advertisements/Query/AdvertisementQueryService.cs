@@ -47,7 +47,7 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         int userId,
         PaginationParams pagination)
     {
-        var advert = await _repository.GetSellerAdvertisementsAsync(userId, pagination);
+        var advert = await _repository.GetBySellerAsync(userId, pagination);
 
         return advert.ToResultList(AdvertisementMapper.ToDto);
     }
@@ -55,7 +55,7 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         int userId,
         PaginationParams pagination)
     {
-        var advert = await _repository.GetSellerAdvertisementsAsync(userId, pagination);
+        var advert = await _repository.GetPurchasedByUserAsync(userId, pagination);
 
         return advert.ToResultList(AdvertisementMapper.ToDto);
     }

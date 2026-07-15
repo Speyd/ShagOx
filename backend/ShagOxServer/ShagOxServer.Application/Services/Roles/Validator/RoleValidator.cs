@@ -31,7 +31,7 @@ public class RoleValidator
     public async Task<Result<bool>> ExistsByIdAsync(
        int roleId)
     {
-        if (!await _roleExistsRepository.ExistsAsync(roleId))
+        if (!await _roleExistsRepository.ExistsByIdAsync(roleId))
             return Result<bool>.NotFound("Role");
 
         return Result<bool>.Success(true);
@@ -40,7 +40,7 @@ public class RoleValidator
     public async Task<Result<bool>> NotExistsByIdAsync(
        int roleId)
     {
-        if (await _roleExistsRepository.ExistsAsync(roleId))
+        if (await _roleExistsRepository.ExistsByIdAsync(roleId))
             return Result<bool>.AlreadyExists("Role");
 
         return Result<bool>.Success(true);
@@ -49,7 +49,7 @@ public class RoleValidator
     public async Task<Result<bool>> ExistsByNameAsync(
        string name)
     {
-        if (!await _roleExistsRepository.ExistsAsync(name))
+        if (!await _roleExistsRepository.ExistsByNameAsync(name))
             return Result<bool>.NotFound("Role");
 
         return Result<bool>.Success(true);
@@ -58,7 +58,7 @@ public class RoleValidator
     public async Task<Result<bool>> NotExistsByNameAsync(
       string name)
     {
-        if (await _roleExistsRepository.ExistsAsync(name))
+        if (await _roleExistsRepository.ExistsByNameAsync(name))
             return Result<bool>.AlreadyExists("Role");
 
         return Result<bool>.Success(true);

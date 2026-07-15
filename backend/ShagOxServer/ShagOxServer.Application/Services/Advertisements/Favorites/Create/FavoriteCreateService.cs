@@ -1,9 +1,9 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Create;
 using ShagOxServer.Application.Services.Advertisements.Validator;
+using ShagOxServer.Application.Services.Users.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Create;
@@ -11,7 +11,7 @@ public class FavoriteCreateService : IFavoriteCreateService
 {
     private readonly IFavoriteRepository _repository;
 
-    private readonly IUserExistsRepository _userRepository;
+    private readonly UserValidator _userValidator;
 
     private readonly AdvertisementValidator _advertValidator;
 
@@ -20,12 +20,12 @@ public class FavoriteCreateService : IFavoriteCreateService
 
     public FavoriteCreateService(
         IFavoriteRepository favoriteRepository,
-        IUserExistsRepository userRepository,
+        UserValidator userValidator,
         AdvertisementValidator advertValidator,
         IUnitOfWork unitOfWork)
     {
         _repository = favoriteRepository;
-        _userRepository = userRepository;
+        _userValidator = userValidator;
         _advertValidator = advertValidator;
         _unitOfWork = unitOfWork;
     }
@@ -33,9 +33,9 @@ public class FavoriteCreateService : IFavoriteCreateService
     public async Task<Result<FavoriteCreateResponse>> CreateFavoriteAsync(
         FavoriteCreateRequest request)
     {
-        var validationUser = await _userRepository.ExistsAsync(request.UserId);
-        if (!validationUser)
-            return Result<FavoriteCreateResponse>.NotFound("User");
+        var validationUser = await _userValidator.ExistsByIdAsync(request.UserId);
+        if (!validationUser.IsSuccess)
+            return Result<FavoriteCreateResponse>.Fail(validationUser.Error ?? "");
 
         var validationAdvert = await _advertValidator.ExistsByIdAsync(
             request.AdvertisementId);

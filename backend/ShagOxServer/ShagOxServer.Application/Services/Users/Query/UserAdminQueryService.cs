@@ -68,9 +68,9 @@ public class UserAdminQueryService : IUserAdminQueryService
     }
 
 
-    public async Task<bool> ExistsAsync(int id)
+    public async Task<bool> ExistsByIdAsync(int id)
     {
-        var result = await _userExistsRepository.ExistsAsync(id);
+        var result = await _userExistsRepository.ExistsByIdAsync(id);
 
         return result;
     }

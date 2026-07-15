@@ -7,9 +7,9 @@ public interface ICategoryExistsRepository
         string name,
         ProductType type);
 
-    Task<bool> ExistsIdAsync(int id);
+    Task<bool> ExistsByIdAsync(int id);
 
-    Task<bool> ExistsNameAsync(string name);
+    Task<bool> ExistsByNameAsync(string name);
 
-    Task<bool> ExistsProductTypeAsync(ProductType type);
+    Task<bool> ExistsByProductTypeAsync(ProductType type);
 }

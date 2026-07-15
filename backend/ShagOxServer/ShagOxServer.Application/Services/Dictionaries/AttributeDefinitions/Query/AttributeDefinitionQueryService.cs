@@ -34,7 +34,7 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
     public async Task<Result<List<AttributeDefinitionDto>>> GetByCategoryAsync(
         int categoryId)
     {
-        var categoryExists = await _categoryExistsRepository.ExistsIdAsync(categoryId);
+        var categoryExists = await _categoryExistsRepository.ExistsByIdAsync(categoryId);
         if (!categoryExists)
             return Result<List<AttributeDefinitionDto>>.NotFound("Category");
 

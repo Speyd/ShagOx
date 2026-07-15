@@ -31,7 +31,7 @@ public class UserValidator
     public async Task<Result<bool>> ExistsByIdAsync(
        int userId)
     {
-        if (!await _userExistsRepository.ExistsAsync(userId))
+        if (!await _userExistsRepository.ExistsByIdAsync(userId))
             return Result<bool>.NotFound("User");
 
         return Result<bool>.Success(true);
@@ -40,7 +40,7 @@ public class UserValidator
     public async Task<Result<bool>> NotExistsByIdAsync(
        int userId)
     {
-        if (await _userExistsRepository.ExistsAsync(userId))
+        if (await _userExistsRepository.ExistsByIdAsync(userId))
             return Result<bool>.AlreadyExists("User");
 
         return Result<bool>.Success(true);

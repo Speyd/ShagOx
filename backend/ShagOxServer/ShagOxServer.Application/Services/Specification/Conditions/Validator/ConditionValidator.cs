@@ -31,7 +31,7 @@ public class ConditionValidator
       int id)
     {
         if (!await _existsRepository.ExistsByIdAsync(id))
-            return Result<bool>.AlreadyExists("Condition");
+            return Result<bool>.NotFound("Condition");
 
         return Result<bool>.Success(false);
     }
@@ -52,7 +52,7 @@ public class ConditionValidator
             return Result<bool>.Success(false);
 
         if (!await _existsRepository.ExistsByNameAsync(name))
-            return Result<bool>.AlreadyExists("Condition");
+            return Result<bool>.NotFound("Condition");
 
         return Result<bool>.Success(false);
     }

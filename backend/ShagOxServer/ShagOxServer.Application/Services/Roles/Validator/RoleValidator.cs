@@ -32,7 +32,7 @@ public class RoleValidator
        int roleId)
     {
         if (!await _roleExistsRepository.ExistsAsync(roleId))
-            return Result<bool>.AlreadyExists("Role");
+            return Result<bool>.NotFound("Role");
 
         return Result<bool>.Success(true);
     }
@@ -50,7 +50,7 @@ public class RoleValidator
        string name)
     {
         if (!await _roleExistsRepository.ExistsAsync(name))
-            return Result<bool>.AlreadyExists("Role");
+            return Result<bool>.NotFound("Role");
 
         return Result<bool>.Success(true);
     }

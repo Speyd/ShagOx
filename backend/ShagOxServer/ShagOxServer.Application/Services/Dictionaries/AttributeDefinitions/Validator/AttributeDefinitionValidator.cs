@@ -31,7 +31,7 @@ public class AttributeDefinitionValidator
        int attributeId)
     {
         if (!await _attributeExistsRepository.ExistsByIdAsync(attributeId))
-            return Result<bool>.AlreadyExists("Attribute Definition");
+            return Result<bool>.NotFound("Attribute Definition");
 
         return Result<bool>.Success(true);
     }

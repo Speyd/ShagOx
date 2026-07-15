@@ -33,7 +33,7 @@ public class FavoriteUpdateService : IFavoriteUpdateService
         int favoriteId,
         FavoriteUpdateRequest request)
     {
-        var favorite = await _favoriteValidator.GetFavoriteValidator(favoriteId);
+        var favorite = await _favoriteValidator.GetByIdAsync(favoriteId);
         if (!favorite.IsSuccess)
             return Result<FavoriteUpdateResponse>.Fail(favorite.Error ?? "");
 

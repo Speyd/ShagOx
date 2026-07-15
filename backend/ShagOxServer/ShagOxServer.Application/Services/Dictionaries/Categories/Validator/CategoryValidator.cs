@@ -33,7 +33,7 @@ public class CategoryValidator
        int categoryId)
     {
         if (!await _categoryExistsRepository.ExistsIdAsync(categoryId))
-            return Result<bool>.AlreadyExists("Category");
+            return Result<bool>.NotFound("Category");
 
         return Result<bool>.Success(true);
     }
@@ -61,7 +61,7 @@ public class CategoryValidator
        string name)
     {
         if (await _categoryExistsRepository.ExistsNameAsync(name))
-            return Result<bool>.AlreadyExists("Category");
+            return Result<bool>.NotFound("Category");
 
         return Result<bool>.Success(true);
     }
@@ -70,7 +70,7 @@ public class CategoryValidator
        ProductType productType)
     {
         if (await _categoryExistsRepository.ExistsProductTypeAsync(productType))
-            return Result<bool>.AlreadyExists("Category");
+            return Result<bool>.NotFound("Category");
 
         return Result<bool>.Success(true);
     }

@@ -33,7 +33,7 @@ public class CityValidator
        string cityName)
     {
         if (!await _cityExistsRepository.ExistsAsync(regionId, cityName))
-            return Result<bool>.AlreadyExists("City");
+            return Result<bool>.NotFound("City");
 
         return Result<bool>.Success(true);
     }

@@ -31,7 +31,7 @@ public class AdvertisementValidator
         int advertId)
     {
         if (!await _advertisementExistsRepository.ExistsById(advertId))
-            return Result<bool>.AlreadyExists("Advertisement");
+            return Result<bool>.NotFound("Advertisement");
 
         return Result<bool>.Success(true);
     }

@@ -6,15 +6,18 @@ namespace ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
 public class FavoriteValidator
 {
     private readonly IFavoriteRepository _favoriteRepository;
+    private readonly IFavoriteExistsRepository _favoriteExistsRepository;
 
 
     public FavoriteValidator(
-        IFavoriteRepository favoriteRepository)
+        IFavoriteRepository favoriteRepository,
+        IFavoriteExistsRepository favoriteExistsRepository)
     {
         _favoriteRepository = favoriteRepository;
+        _favoriteExistsRepository = favoriteExistsRepository;
     }
 
-    public async Task<Result<Favorite>> GetFavoriteValidator(
+    public async Task<Result<Favorite>> GetByIdAsync(
         int favoriteId)
     {
         var favorite = await _favoriteRepository.GetByIdAsync(favoriteId);
@@ -22,5 +25,23 @@ public class FavoriteValidator
             return Result<Favorite>.NotFound("Favorite");
 
         return Result<Favorite>.Success(favorite);
+    }
+
+    public async Task<Result<bool>> ExistsByIdAsync(
+        int favoriteId)
+    {
+        if (!await _favoriteExistsRepository.ExistsByIdAsync(favoriteId))
+            return Result<bool>.NotFound("Favorite");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByIdAsync(
+        int favoriteId)
+    {
+        if (await _favoriteExistsRepository.ExistsByIdAsync(favoriteId))
+            return Result<bool>.AlreadyExists("Favorite");
+
+        return Result<bool>.Success(true);
     }
 }

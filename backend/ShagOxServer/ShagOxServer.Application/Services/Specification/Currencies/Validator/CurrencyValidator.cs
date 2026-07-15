@@ -39,7 +39,7 @@ public class CurrencyValidator
     public async Task<Result<bool>> NotExistsByIdAsync(int id)
     {
         if (await _existsRepository.ExistsByIdAsync(id))
-            return Result<bool>.NotFound("Currency");
+            return Result<bool>.AlreadyExists("Currency");
 
         return Result<bool>.Success(true);
     }

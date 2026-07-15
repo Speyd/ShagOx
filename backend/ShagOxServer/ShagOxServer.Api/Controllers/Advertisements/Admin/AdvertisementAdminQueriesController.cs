@@ -35,7 +35,7 @@ public class AdvertisementAdminQueriesController : AdvertisementOwnerController
             return NotFound("User not found");
 
         var advertisements =
-            await _queryAdvertService.GetPurchasedAdvertisementsAsync(userId, pagination);
+            await _queryAdvertService.GetPurchasedByUserAsync(userId, pagination);
 
         return advertisements.ToActionResult();
     }

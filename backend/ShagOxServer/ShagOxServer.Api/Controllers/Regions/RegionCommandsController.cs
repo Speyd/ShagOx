@@ -34,7 +34,7 @@ public class RegionCommandsController : ApiController
     public async Task<IActionResult> Create(
         [FromBody] RegionCreateRequest request)
     {
-        var result = await _createService.CreateRegionAsync(request);
+        var result = await _createService.CreateAsync(request);
         return result.ToActionResult();
     }
 
@@ -43,7 +43,7 @@ public class RegionCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] RegionUpdateRequest request)
     {
-        var result = await _updateService.UpdateRegionAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 
@@ -52,7 +52,7 @@ public class RegionCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteRegionAsync(id);
+        var result = await _deleteService.DeleteAsync(id);
         return result.ToActionResult();
     }
 }

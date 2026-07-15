@@ -4,6 +4,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Roles.Delete;
 public interface IRoleDeleteService
 {
-    Task<Result<RoleDeleteResponse>> DeleteRoleAsync(
+    Task<Result<RoleDeleteResponse>> DeleteAsync(
         int id);
 }

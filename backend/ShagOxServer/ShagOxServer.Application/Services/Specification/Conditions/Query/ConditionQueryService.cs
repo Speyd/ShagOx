@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Query;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Query;
 using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -10,24 +10,28 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Application.Services.Specification.Conditions.Query;
 public class ConditionQueryService : IConditionQueryService
 {
-    private readonly IConditionQueryRepository _repository;
+    private readonly IConditionQueryRepository _conditionQueryRepository;
+
 
     public ConditionQueryService(
-        IConditionQueryRepository conditionRepository)
+        IConditionQueryRepository conditionQueryRepository)
     {
-        _repository = conditionRepository;
+        _conditionQueryRepository = conditionQueryRepository;
     }
+
 
     public async Task<Result<ConditionDto>> GetByIdAsync(int id)
     {
-        var condition = await _repository.GetByIdAsync(id);
+        var condition = await _conditionQueryRepository
+            .GetByIdAsync(id);
 
         return condition.ToResult(ConditionMapper.ToDto);
     }
 
     public async Task<Result<ConditionDto>> GetByNameAsync(string name)
     {
-        var condition = await _repository.GetByNameAsync(name);
+        var condition = await _conditionQueryRepository
+            .GetByNameAsync(name);
 
         return condition.ToResult(ConditionMapper.ToDto);
     }
@@ -36,7 +40,8 @@ public class ConditionQueryService : IConditionQueryService
       ConditionSearchFilter filter,
 	  PaginationParams pagination)
     {
-        var conditions = await _repository.Search(filter, pagination);
+        var conditions = await _conditionQueryRepository
+            .Search(filter, pagination);
 
         return conditions.ToResultList(ConditionMapper.ToDto);
     }

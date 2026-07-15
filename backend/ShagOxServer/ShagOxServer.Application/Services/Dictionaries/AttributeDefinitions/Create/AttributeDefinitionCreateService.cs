@@ -10,7 +10,7 @@ namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Cr
 public class AttributeDefinitionCreateService : IAttributeDefinitionCreateService
 {
     private readonly IAttributeDefinitionRepository _attributeRepository;
-    private readonly AttributeDefinitionValidator _validator;
+    private readonly AttributeDefinitionValidator _attributeValidator;
 
     private readonly CategoryValidator _categoryValidator;
 
@@ -19,24 +19,25 @@ public class AttributeDefinitionCreateService : IAttributeDefinitionCreateServic
 
     public AttributeDefinitionCreateService(
         IAttributeDefinitionRepository attributeRepository,
-        AttributeDefinitionValidator validator,
+        AttributeDefinitionValidator attributeValidator,
         CategoryValidator categoryValidator,
         IUnitOfWork unitOfWork)
     {
         _attributeRepository = attributeRepository;
-        _validator = validator;
+        _attributeValidator = attributeValidator;
         _categoryValidator = categoryValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<AttributeDefinitionCreateResponse>> CreateAttributeDefinitionAsync(
+
+    public async Task<Result<AttributeDefinitionCreateResponse>> CreateAsync(
         AttributeDefinitionCreateRequest request)
     {
         var categoryExists = await _categoryValidator.ExistsByIdAsync(request.CategoryId);
         if (!categoryExists.IsSuccess)
             return Result<AttributeDefinitionCreateResponse>.Fail(categoryExists.Error ?? "");
 
-        var keyExists = await _validator.NotExistsByKeyAsync(request.Key, request.CategoryId);
+        var keyExists = await _attributeValidator.NotExistsByKeyAsync(request.Key, request.CategoryId);
         if (!keyExists.IsSuccess)
             return Result<AttributeDefinitionCreateResponse>.Fail(keyExists.Error ?? "");
 

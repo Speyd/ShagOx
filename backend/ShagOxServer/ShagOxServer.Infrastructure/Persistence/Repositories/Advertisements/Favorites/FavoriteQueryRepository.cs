@@ -19,7 +19,7 @@ public class FavoriteQueryRepository : BaseRepository, IFavoriteQueryRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<int> CountByAdvertisementIdAsync(
+    public async Task<int> CountByAdvertisementAsync(
         int advertisementId)
     {
         return await _db.Favorites
@@ -28,7 +28,7 @@ public class FavoriteQueryRepository : BaseRepository, IFavoriteQueryRepository
              .CountAsync();
     }
 
-    public async Task<List<Favorite>> GetByUserIdAsync(
+    public async Task<List<Favorite>> GetByUserAsync(
         int usderId,
         PaginationParams pagination)
     {

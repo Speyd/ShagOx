@@ -4,6 +4,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Create;
 public interface IAttributeDefinitionCreateService
 {
-    Task<Result<AttributeDefinitionCreateResponse>> CreateAttributeDefinitionAsync(
+    Task<Result<AttributeDefinitionCreateResponse>> CreateAsync(
         AttributeDefinitionCreateRequest request);
 }

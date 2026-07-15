@@ -8,34 +8,34 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Location.Regions.Update;
 public class RegionUpdateService : IRegionUpdateService
 {
-    private readonly IRegionRepository _repository;
-    private readonly RegionValidator _validator;
+    private readonly IRegionRepository _regionRepository;
+    private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RegionUpdateService(
         IRegionRepository regionRepository,
-        RegionValidator validator,
+        RegionValidator regionValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = regionRepository;
-        _validator = validator;
+        _regionRepository = regionRepository;
+        _regionValidator = regionValidator;
         _unitOfWork = unitOfWork;
     }
 
 
-    public async Task<Result<RegionUpdateResponse>> UpdateRegionAsync(
+    public async Task<Result<RegionUpdateResponse>> UpdateAsync(
         int regionId,
         RegionUpdateRequest request)
     {
-        var region = await _validator.GetByIdAsync(regionId);
+        var region = await _regionValidator.GetByIdAsync(regionId);
         if (!region.IsSuccess)
             return Result<RegionUpdateResponse>.Fail(region.Error ?? "");
 
         if (request.Name is not null)
         {
-            var valid = await _validator.NotExistsByNameAsync(request.Name);
+            var valid = await _regionValidator.NotExistsByNameAsync(request.Name);
             if (!valid.IsSuccess)
                 return Result<RegionUpdateResponse>.Fail(valid.Error ?? "");
         }
@@ -54,7 +54,7 @@ public class RegionUpdateService : IRegionUpdateService
 
         try
         {
-            _repository.Update(region.Value!);
+            _regionRepository.Update(region.Value!);
 
             await _unitOfWork.CommitAsync();
         }

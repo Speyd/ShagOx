@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Images.Update;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Update;
+using ShagOxServer.Application.Interfaces.Services.Specification.Images.Update;
 using ShagOxServer.Application.Services.Advertisements.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -24,7 +24,8 @@ public class ImageUpdateService : IImageUpdateService
         _advertValidator = advertisementValidator;
     }
 
-    public async Task<Result<ImageUpdateResponse>> UpdateImageAsync(
+
+    public async Task<Result<ImageUpdateResponse>> UpdateAsync(
         int imageId,
         ImageUpdateRequest request)
     {

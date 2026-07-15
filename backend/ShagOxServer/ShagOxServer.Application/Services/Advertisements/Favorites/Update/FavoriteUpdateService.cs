@@ -9,9 +9,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Update;
 public class FavoriteUpdateService : IFavoriteUpdateService
 {
-    private readonly IFavoriteRepository _repository;
+    private readonly IFavoriteRepository _favoriteRepository;
     private readonly FavoriteValidator _favoriteValidator;
-
     private readonly FavoriteUpdateValidator _favoriteUpdateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -23,13 +22,14 @@ public class FavoriteUpdateService : IFavoriteUpdateService
         FavoriteUpdateValidator favoriteUpdateValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = favoriteRepository;
+        _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;
         _favoriteUpdateValidator = favoriteUpdateValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<FavoriteUpdateResponse>> UpdateFavoriteAsync(
+
+    public async Task<Result<FavoriteUpdateResponse>> UpdateAsync(
         int favoriteId,
         FavoriteUpdateRequest request)
     {
@@ -54,7 +54,7 @@ public class FavoriteUpdateService : IFavoriteUpdateService
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _repository.Update(favorite.Value!);
+            _favoriteRepository.Update(favorite.Value!);
 
             await _unitOfWork.CommitAsync();
         }

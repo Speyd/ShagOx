@@ -18,7 +18,7 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<Role>> GetByUserIdAsync(
+    public async Task<List<Role>> GetByUserAsync(
        int userId,
        PaginationParams pagination)
     {

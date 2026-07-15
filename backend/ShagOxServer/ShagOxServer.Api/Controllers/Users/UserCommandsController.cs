@@ -27,7 +27,7 @@ public class UserCommandsController : ApiController
         if (UserId != id)
             return Forbid();
 
-        var result = await _updateService.UpdateUserAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 }

@@ -4,7 +4,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
 public interface IAttributeDefinitionUpdateService
 {
-    Task<Result<AttributeDefinitionUpdateResponse>> UpdateAttributeDefinitionAsync(
+    Task<Result<AttributeDefinitionUpdateResponse>> UpdateAsync(
         int attributeId,
         AttributeDefinitionUpdateRequest request);
 }

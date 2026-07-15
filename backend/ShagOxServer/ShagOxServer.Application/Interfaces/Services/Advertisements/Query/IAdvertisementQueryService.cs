@@ -8,11 +8,11 @@ public interface IAdvertisementQueryService
 {
     Task<Result<AdvertisementDto>> GetByIdAsync(int id);
 
-    Task<Result<List<AdvertisementDto>>> GetSellerAdvertisementsAsync(
+    Task<Result<List<AdvertisementDto>>> GetBySellerAsync(
         int userId,
         PaginationParams pagination);
 
-    Task<Result<List<AdvertisementDto>>> GetPurchasedAdvertisementsAsync(
+    Task<Result<List<AdvertisementDto>>> GetPurchasedByUserAsync(
         int userId,
         PaginationParams pagination);
 

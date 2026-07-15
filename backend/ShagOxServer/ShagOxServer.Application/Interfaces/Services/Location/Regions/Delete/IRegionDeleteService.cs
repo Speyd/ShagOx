@@ -4,6 +4,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 public interface IRegionDeleteService
 {
-    Task<Result<RegionDeleteResponse>> DeleteRegionAsync(
+    Task<Result<RegionDeleteResponse>> DeleteAsync(
        int id );
 }

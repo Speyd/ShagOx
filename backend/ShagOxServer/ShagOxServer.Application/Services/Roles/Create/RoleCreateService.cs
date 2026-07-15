@@ -8,26 +8,27 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Roles.Create;
 public class RoleCreateService : IRoleCreateService
 {
-    private readonly IRoleRepository _repository;
-    private readonly RoleValidator _validator;
+    private readonly IRoleRepository _roleRepository;
+    private readonly RoleValidator _roleValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RoleCreateService(
         IRoleRepository roleRepository,
-        RoleValidator validator,
+        RoleValidator roleValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = roleRepository;
-        _validator = validator;
+        _roleRepository = roleRepository;
+        _roleValidator = roleValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<RoleCreateResponse>> CreateRoleAsync(
+
+    public async Task<Result<RoleCreateResponse>> CreateAsync(
         RoleCreateRequest request)
     {
-        var validation = await _validator.NotExistsByNameAsync(request.Name);
+        var validation = await _roleValidator.NotExistsByNameAsync(request.Name);
         if (!validation.IsSuccess)
             return Result<RoleCreateResponse>.Fail(validation.Error ?? "");
 
@@ -37,7 +38,7 @@ public class RoleCreateService : IRoleCreateService
 
         try
         {
-            _repository.Add(role);
+            _roleRepository.Add(role);
 
             await _unitOfWork.CommitAsync();
         }

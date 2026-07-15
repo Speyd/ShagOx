@@ -6,9 +6,9 @@ public interface IFavoriteQueryRepository
 {
     Task<Favorite?> GetByIdAsync(int id);
 
-    Task<List<Favorite>> GetByUserIdAsync(
+    Task<List<Favorite>> GetByUserAsync(
         int usderId,
         PaginationParams pagination);
 
-    Task<int> CountByAdvertisementIdAsync(int advertisementId);
+    Task<int> CountByAdvertisementAsync(int advertisementId);
 }

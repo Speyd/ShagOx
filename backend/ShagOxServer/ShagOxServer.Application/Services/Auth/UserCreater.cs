@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.DTOs.Auth.Register;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
@@ -15,18 +16,20 @@ public class UserCreater
 
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
-
+    private readonly IUnitOfWork _unitOfWork;
 
     public UserCreater(
         IUserRepository userRepository,
         IRoleQueryRepository roleQueryRepository,
         IPasswordHasher<User> passwordHasher,
-        IContactValidator contactValidator)
+        IContactValidator contactValidator,
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _roleQueryRepository = roleQueryRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
+        _unitOfWork = unitOfWork;
     }
 
     public User CreateUser(RegisterRequest request)
@@ -47,19 +50,18 @@ public class UserCreater
 
     public async Task AddDefaultRole(User user)
     {
-        var role =
-            await _roleQueryRepository.GetByNameAsync("User");
+        var role = await _roleQueryRepository.GetByNameAsync("User");
+
+        if (role is null)
+            throw new Exception("Role not found");
 
 
-        if (role == null)
-            throw new Exception("User role not found");
+        user.UserRoles.Add(new UserRole
+        {
+            Role = role
+        });
 
-
-        user.UserRoles.Add(
-            new UserRole
-            {
-                RoleId = role.Id,
-            });
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task SetDefaultName(User user)

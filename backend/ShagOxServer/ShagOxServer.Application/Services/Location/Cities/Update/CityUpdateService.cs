@@ -9,33 +9,35 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Location.Cities.Update;
 public class CityUpdateService : ICityUpdateService
 {
-    private readonly ICityRepository _repository;
-    private readonly CityValidator _validator;
-    private readonly CityUpdateValidator _updateValidator;
+    private readonly ICityRepository _cityRepository;
+    private readonly CityValidator _cityValidator;
+    private readonly CityUpdateValidator _cityUpdateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
+
     public CityUpdateService(
         ICityRepository cityRepository,
-        CityValidator validator,
-        CityUpdateValidator updateValidator,
+        CityValidator cityValidator,
+        CityUpdateValidator cityUpdateValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = cityRepository;
-        _validator = validator;
-        _updateValidator = updateValidator;
+        _cityRepository = cityRepository;
+        _cityValidator = cityValidator;
+        _cityUpdateValidator = cityUpdateValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<CityUpdateResponse>> UpdateCityAsync(
+
+    public async Task<Result<CityUpdateResponse>> UpdateAsync(
         int cityId, 
         CityUpdateRequest request)
     {
-        var city = await _validator.GetByIdAsync(cityId);
+        var city = await _cityValidator.GetByIdAsync(cityId);
         if (!city.IsSuccess)
             return Result<CityUpdateResponse>.Fail(city.Error ?? "");
 
-        var changeValidator = _updateValidator
+        var changeValidator = _cityUpdateValidator
             .HasChangesValidator(city.Value!, request);
 
         if (!changeValidator.IsSuccess)
@@ -47,7 +49,7 @@ public class CityUpdateService : ICityUpdateService
             ));
         }
 
-        var existsValidator = await _validator.NotExistsAsync(
+        var existsValidator = await _cityValidator.NotExistsAsync(
             changeValidator.Value!.regionId, 
             changeValidator.Value.name
         );
@@ -70,7 +72,7 @@ public class CityUpdateService : ICityUpdateService
 
         try
         {
-            _repository.Add(city.Value!);
+            _cityRepository.Add(city.Value!);
 
             await _unitOfWork.CommitAsync();
         }

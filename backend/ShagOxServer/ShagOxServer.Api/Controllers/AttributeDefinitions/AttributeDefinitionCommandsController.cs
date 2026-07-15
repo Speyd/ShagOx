@@ -34,7 +34,7 @@ public class AttributeDefinitionCommandsController : ApiController
     public async Task<IActionResult> Create(
         [FromBody] AttributeDefinitionCreateRequest request)
     {
-        var result = await _createService.CreateAttributeDefinitionAsync(request);
+        var result = await _createService.CreateAsync(request);
         return result.ToActionResult();
     }
 
@@ -43,7 +43,7 @@ public class AttributeDefinitionCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] AttributeDefinitionUpdateRequest request)
     {
-        var result = await _updateService.UpdateAttributeDefinitionAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 
@@ -52,7 +52,7 @@ public class AttributeDefinitionCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteAttributeDefinitionAsync(id);
+        var result = await _deleteService.DeleteAsync(id);
         return result.ToActionResult();
     }
 }

@@ -33,7 +33,7 @@ public class RoleCommandsController : ApiController
     [HttpPost]
     public async Task<IActionResult> Create(RoleCreateRequest request)
     {
-        var result = await _createService.CreateRoleAsync(request);
+        var result = await _createService.CreateAsync(request);
         return result.ToActionResult();
     }
 
@@ -43,7 +43,7 @@ public class RoleCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] RoleUpdateRequest request)
     {
-        var result = await _updateService.UpdateRoleAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 
@@ -52,7 +52,7 @@ public class RoleCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteRoleAsync(id);
+        var result = await _deleteService.DeleteAsync(id);
         return result.ToActionResult();
     }
 }

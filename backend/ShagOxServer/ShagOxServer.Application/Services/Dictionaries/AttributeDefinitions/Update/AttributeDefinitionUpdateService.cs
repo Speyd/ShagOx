@@ -29,7 +29,7 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
     }
 
 
-    public async Task<Result<AttributeDefinitionUpdateResponse>> UpdateAttributeDefinitionAsync(
+    public async Task<Result<AttributeDefinitionUpdateResponse>> UpdateAsync(
         int attributeId,
         AttributeDefinitionUpdateRequest request)
     {

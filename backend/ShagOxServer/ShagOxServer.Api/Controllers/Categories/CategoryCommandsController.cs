@@ -34,7 +34,7 @@ public class CategoryCommandsController : ApiController
     public async Task<IActionResult> Create(
         [FromBody] CategoryCreateRequest request)
     {
-        var result = await _createService.CreateCategoryAsync(request);
+        var result = await _createService.CreateAsync(request);
         return result.ToActionResult();
     }
 
@@ -43,7 +43,7 @@ public class CategoryCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] CategoryUpdateRequest request)
     {
-        var result = await _updateService.UpdateCategoryAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 
@@ -52,7 +52,7 @@ public class CategoryCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteCategoryAsync(id);
+        var result = await _deleteService.DeleteAsync(id);
         return result.ToActionResult();
     }
 }

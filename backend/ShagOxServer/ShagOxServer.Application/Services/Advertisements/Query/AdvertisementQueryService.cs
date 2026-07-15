@@ -10,18 +10,19 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Application.Services.Advertisements.Query;
 public class AdvertisementQueryService : IAdvertisementQueryService
 {
-    private readonly IAdvertisementQueryRepository _repository;
+    private readonly IAdvertisementQueryRepository _advertisementRepository;
 
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository)
     {
-        _repository = advertisementRepository;
+        _advertisementRepository = advertisementRepository;
     }
 
     public async Task<Result<List<AdvertisementDto>>> GetAllAsync(
         PaginationParams pagination)
     {
-        var adverts = await _repository.GetPagedAsync(pagination);
+        var adverts = await _advertisementRepository
+            .GetPagedAsync(pagination);
 
         return adverts.ToResultList(AdvertisementMapper.ToDto);
     }
@@ -30,7 +31,8 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         int categoryId,
         PaginationParams pagination)
     {
-        var adverts = await _repository.GetByCategoryAsync(categoryId, pagination);
+        var adverts = await _advertisementRepository
+            .GetByCategoryAsync(categoryId, pagination);
 
         return adverts.ToResultList(AdvertisementMapper.ToDto);
     }
@@ -38,24 +40,27 @@ public class AdvertisementQueryService : IAdvertisementQueryService
     public async Task<Result<AdvertisementDto>> GetByIdAsync(
         int id)
     {
-        var advert = await _repository.GetByIdAsync(id);
+        var advert = await _advertisementRepository
+            .GetByIdAsync(id);
 
         return advert.ToResult(AdvertisementMapper.ToDto);
     }
 
-    public async Task<Result<List<AdvertisementDto>>> GetSellerAdvertisementsAsync(
+    public async Task<Result<List<AdvertisementDto>>> GetBySellerAsync(
         int userId,
         PaginationParams pagination)
     {
-        var advert = await _repository.GetBySellerAsync(userId, pagination);
+        var advert = await _advertisementRepository
+            .GetBySellerAsync(userId, pagination);
 
         return advert.ToResultList(AdvertisementMapper.ToDto);
     }
-    public async Task<Result<List<AdvertisementDto>>> GetPurchasedAdvertisementsAsync(
+    public async Task<Result<List<AdvertisementDto>>> GetPurchasedByUserAsync(
         int userId,
         PaginationParams pagination)
     {
-        var advert = await _repository.GetPurchasedByUserAsync(userId, pagination);
+        var advert = await _advertisementRepository
+            .GetPurchasedByUserAsync(userId, pagination);
 
         return advert.ToResultList(AdvertisementMapper.ToDto);
     }
@@ -64,7 +69,8 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         AdvertisementSearchFilter filter,
         PaginationParams pagination)
     {
-        var advert = await _repository.Search(filter, pagination);
+        var advert = await _advertisementRepository
+            .Search(filter, pagination);
 
         return advert.ToResultList(AdvertisementMapper.ToDto);
     }

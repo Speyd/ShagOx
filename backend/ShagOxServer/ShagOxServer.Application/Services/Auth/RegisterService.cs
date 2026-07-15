@@ -45,7 +45,7 @@ public class RegisterService : IRegisterService
             {
                 await _userCreater.AddDefaultRole(user);
 
-                _userRepository.Add(user);
+                _userRepository.Add(user);         
 
                 await _userCreater.SetDefaultName(user);
             }
@@ -55,14 +55,15 @@ public class RegisterService : IRegisterService
                 throw;
             }
 
+            await _unitOfWork.CommitAsync();
+
             return Result<RegisterResponse>.Success(
                new RegisterResponse(user)
             );
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
-            _ = ex;
-            return Result<RegisterResponse>.Fail("Unknown Exception");
+            return Result<RegisterResponse>.Fail(ex.Message);
         }
     }
 }

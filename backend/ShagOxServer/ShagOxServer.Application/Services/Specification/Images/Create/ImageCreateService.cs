@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Images.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Images.Create;
 using ShagOxServer.Application.Services.Advertisements.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Create.Validator;
 using ShagOxServer.Domain.Entities.Specification;

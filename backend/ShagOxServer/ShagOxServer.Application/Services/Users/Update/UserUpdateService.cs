@@ -9,39 +9,39 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Users.Update;
 public class UserUpdateService : IUserUpdateService
 {
-    private readonly IUserRepository _repository;
-    private readonly UserUpdateValidator _updateValidator;
-    private readonly UserValidator _validator;
+    private readonly IUserRepository _userRepository;
+    private readonly UserValidator _userValidator;
+    private readonly UserUpdateValidator _userUpdateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public UserUpdateService(
         IUserRepository userRepository,
-        UserValidator validator,
-        UserUpdateValidator updateValidator,
+        UserValidator userValidator,
+        UserUpdateValidator userUpdateValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = userRepository;
-        _validator = validator;
-        _updateValidator = updateValidator;
+        _userRepository = userRepository;
+        _userValidator = userValidator;
+        _userUpdateValidator = userUpdateValidator;
         _unitOfWork = unitOfWork;
     }
 
 
-    public async Task<Result<UserUpdateResponse>> UpdateUserAsync(
+    public async Task<Result<UserUpdateResponse>> UpdateAsync(
         int userId,
         UserUpdateRequest request)
     {
-        var user = await _validator.GetByIdAsync(userId);
+        var user = await _userValidator.GetByIdAsync(userId);
         if (!user.IsSuccess)
             return Result<UserUpdateResponse>.Fail(user.Error ?? "");
 
-        var phone = await _updateValidator.ExistsPhoneValidator(request);
+        var phone = await _userUpdateValidator.ExistsPhoneValidator(request);
         if (!phone.IsSuccess)
             return Result<UserUpdateResponse>.Fail(phone.Error ?? "");
 
-        var email = await _updateValidator.ExistsEmailValidator(request);
+        var email = await _userUpdateValidator.ExistsEmailValidator(request);
         if (!email.IsSuccess)
             return Result<UserUpdateResponse>.Fail(email.Error ?? "");
 
@@ -58,7 +58,7 @@ public class UserUpdateService : IUserUpdateService
 
         try
         {
-            _repository.Update(user.Value!);
+            _userRepository.Update(user.Value!);
 
             await _unitOfWork.CommitAsync();
         }

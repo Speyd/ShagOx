@@ -9,36 +9,37 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Query;
 public class FavoriteQueryService : IFavoriteQueryService
 {
-    private readonly IFavoriteQueryRepository _repository;
+    private readonly IFavoriteQueryRepository _favoriteRepository;
 
 
     public FavoriteQueryService(
         IFavoriteQueryRepository favoriteRepository)
     {
-        _repository = favoriteRepository;
+        _favoriteRepository = favoriteRepository;
     }
+
 
     public async Task<Result<FavoriteDto>> GetByIdAsync(
         int id)
     {
-        var favorite = await _repository.GetByIdAsync(id);
+        var favorite = await _favoriteRepository.GetByIdAsync(id);
 
         return favorite.ToResult(FavoriteMapper.ToDto);
     }
 
-    public async Task<Result<int>> CountByAdvertisementIdAsync(
+    public async Task<Result<int>> CountByAdvertisementAsync(
         int advertisementId)
     {
-        var count = await _repository.CountByAdvertisementIdAsync(advertisementId);
+        var count = await _favoriteRepository.CountByAdvertisementAsync(advertisementId);
 
         return Result<int>.Success(count);
     }
 
-    public async Task<Result<List<FavoriteDto>>> GetByUserIdAsync(
+    public async Task<Result<List<FavoriteDto>>> GetByUserAsync(
         int usderId,
         PaginationParams pagination)
     {
-        var favorites = await _repository.GetByUserIdAsync(usderId, pagination);
+        var favorites = await _favoriteRepository.GetByUserAsync(usderId, pagination);
 
         return favorites.ToResultList(FavoriteMapper.ToDto);
     }

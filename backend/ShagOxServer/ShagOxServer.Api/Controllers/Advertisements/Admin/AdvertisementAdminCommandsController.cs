@@ -28,7 +28,7 @@ public class AdvertisementAdminCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteAdvertisementAsync(id);
+        var result = await _deleteService.DeleteAsync(id);
         return result.ToActionResult();
     }
 
@@ -37,7 +37,7 @@ public class AdvertisementAdminCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] AdvertisementUpdateRequest request)
     {
-        var result = await _updateService.UpdateAdvertisementAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 }

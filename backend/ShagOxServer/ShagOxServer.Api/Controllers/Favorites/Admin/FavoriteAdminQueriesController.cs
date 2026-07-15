@@ -33,7 +33,7 @@ public class FavoriteAdminQueriesController : ApiController
         [FromQuery] PaginationParams pagination
         )
     {
-        var result = await _queryService.GetByUserIdAsync(
+        var result = await _queryService.GetByUserAsync(
             userId,
             pagination);
 

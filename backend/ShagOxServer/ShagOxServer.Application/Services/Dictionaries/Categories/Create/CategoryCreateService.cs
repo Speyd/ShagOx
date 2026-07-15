@@ -25,7 +25,8 @@ public class CategoryCreateService : ICategoryCreateService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<CategoryCreateResponse>> CreateCategoryAsync(
+
+    public async Task<Result<CategoryCreateResponse>> CreateAsync(
         CategoryCreateRequest request)
     {
         var exists = await _validator.NotExistsAsync(request.Name, request.ProductType);

@@ -11,18 +11,21 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Query;
 public class CategoryQueryService : ICategoryQueryService
 {
-    private readonly ICategoryQueryRepository _repository;
+    private readonly ICategoryQueryRepository _categoryQueryRepository;
+
 
     public CategoryQueryService(
-        ICategoryQueryRepository categoryRepository)
+        ICategoryQueryRepository categoryQueryRepository)
     {
-        _repository = categoryRepository;
+        _categoryQueryRepository = categoryQueryRepository;
     }
+
 
     public async Task<Result<CategoryDto>> GetByIdAsync(
         int id)
     {
-        var category = await _repository.GetByIdAsync(id);
+        var category = await _categoryQueryRepository
+            .GetByIdAsync(id);
 
         return category.ToResult(CategoryMapper.ToDto);
     }
@@ -30,7 +33,8 @@ public class CategoryQueryService : ICategoryQueryService
     public async Task<Result<CategoryDto>> GetByNameAsync(
         string name)
     {
-        var category = await _repository.GetByNameAsync(name);
+        var category = await _categoryQueryRepository
+            .GetByNameAsync(name);
 
         return category.ToResult(CategoryMapper.ToDto);
     }
@@ -38,7 +42,8 @@ public class CategoryQueryService : ICategoryQueryService
     public async Task<Result<List<CategoryDto>>> GetByProductTypeAsync(
         ProductType type)
     {
-        var categories = await _repository.GetByProductTypeAsync(type);
+        var categories = await _categoryQueryRepository
+            .GetByProductTypeAsync(type);
 
         return categories.ToResultList(CategoryMapper.ToDto);
     }
@@ -47,7 +52,8 @@ public class CategoryQueryService : ICategoryQueryService
         CategorySearchFilter filter,
         PaginationParams pagination)
     {
-        var categories = await _repository.Search(filter, pagination);
+        var categories = await _categoryQueryRepository
+            .Search(filter, pagination);
 
         return categories.ToResultList(CategoryMapper.ToDto);
     }

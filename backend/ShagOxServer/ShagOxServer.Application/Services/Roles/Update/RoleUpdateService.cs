@@ -8,28 +8,28 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Roles.Update;
 public class RoleUpdateService : IRoleUpdateService
 {
-    private readonly IRoleRepository _repository;
-    private readonly RoleValidator _validator;
+    private readonly IRoleRepository _roleRepository;
+    private readonly RoleValidator _roleValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RoleUpdateService(
         IRoleRepository roleRepository,
-        RoleValidator validator,
+        RoleValidator roleValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = roleRepository;
-        _validator = validator;
+        _roleRepository = roleRepository;
+        _roleValidator = roleValidator;
         _unitOfWork = unitOfWork;
     }
 
 
-    public async Task<Result<RoleUpdateResponse>> UpdateRoleAsync(
+    public async Task<Result<RoleUpdateResponse>> UpdateAsync(
         int roleId,
         RoleUpdateRequest request)
     {
-        var role = await _validator.GetByIdAsync(roleId);
+        var role = await _roleValidator.GetByIdAsync(roleId);
         if (!role.IsSuccess)
             return Result<RoleUpdateResponse>.Fail(role.Error ?? "");
 
@@ -47,7 +47,7 @@ public class RoleUpdateService : IRoleUpdateService
 
         try
         {
-            _repository.Update(role.Value!);
+            _roleRepository.Update(role.Value!);
 
             await _unitOfWork.CommitAsync();
         }

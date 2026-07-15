@@ -4,7 +4,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
 public interface IRegionUpdateService
 {
-    Task<Result<RegionUpdateResponse>> UpdateRegionAsync(
+    Task<Result<RegionUpdateResponse>> UpdateAsync(
        int regionId,
        RegionUpdateRequest request);
 }

@@ -4,6 +4,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
 public interface IAttributeDefinitionDeleteService
 {
-    Task<Result<AttributeDefinitionDeleteResponse>> DeleteAttributeDefinitionAsync(
+    Task<Result<AttributeDefinitionDeleteResponse>> DeleteAsync(
        int id);
 }

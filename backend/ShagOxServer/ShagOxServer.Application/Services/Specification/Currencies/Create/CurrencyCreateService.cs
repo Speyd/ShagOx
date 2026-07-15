@@ -1,37 +1,43 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Create;
 using ShagOxServer.Application.Services.Specification.Currencies.Create.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Create;
 public class CurrencyCreateService : ICurrencyCreateService
 {
-    private readonly ICurrencyRepository _repository;
-    private readonly CurrencyCreateValidator _validator;
+    private readonly ICurrencyRepository _currencyRepository;
+    private readonly CurrencyCreateValidator _currencyCreateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public CurrencyCreateService(
         ICurrencyRepository currencyRepository,
-        CurrencyCreateValidator validator,
+        CurrencyCreateValidator currencyCreateValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = currencyRepository;
-        _validator = validator;
+        _currencyRepository = currencyRepository;
+        _currencyCreateValidator = currencyCreateValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<CurrencyCreateResponse>> CreateCurrencyAsync(
+
+    public async Task<Result<CurrencyCreateResponse>> CreateAsync(
         CurrencyCreateRequest request)
     {
-        var code = await _validator.ExistsByCodeValidator(request.Code);
+        var code = await _currencyCreateValidator
+            .ExistsByCodeValidator(request.Code);
+
         if (!code.IsSuccess)
             return Result<CurrencyCreateResponse>.Fail(code.Error ?? "");
 
-        var name = await _validator.ExistsByNameValidator(request.Name);
+
+        var name = await _currencyCreateValidator
+            .ExistsByNameValidator(request.Name);
+
         if (!name.IsSuccess)
             return Result<CurrencyCreateResponse>.Fail(code.Error ?? "");
 
@@ -41,7 +47,7 @@ public class CurrencyCreateService : ICurrencyCreateService
 
         try
         {
-            _repository.Add(currency);
+            _currencyRepository.Add(currency);
 
             await _unitOfWork.CommitAsync();
         }

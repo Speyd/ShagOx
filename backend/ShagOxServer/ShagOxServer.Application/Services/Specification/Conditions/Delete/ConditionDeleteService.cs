@@ -1,36 +1,43 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Delete;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Conditions.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Delete;
+using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Delete;
 public class ConditionDeleteService : IConditionDeleteService
 {
-    private readonly IConditionRepository _repository;
+    private readonly IConditionRepository _conditionRepository;
+    private readonly ConditionValidator _conditionValidator;
+
 
     private readonly IUnitOfWork _unitOfWork;
 
+
     public ConditionDeleteService(
         IConditionRepository conditionRepository,
+        ConditionValidator conditionValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = conditionRepository;
+        _conditionRepository = conditionRepository;
+        _conditionValidator = conditionValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<ConditionDeleteResponse>> DeleteConditionAsync(
+
+    public async Task<Result<ConditionDeleteResponse>> DeleteAsync(
         int id)
     {
-        var condition = await _repository.GetByIdAsync(id);
-        if (condition is null)
-            return Result<ConditionDeleteResponse>.NotFound("Condition");
+        var condition = await _conditionValidator.GetByIdAsync(id);
+        if (!condition.IsSuccess)
+            return Result<ConditionDeleteResponse>.Fail(condition.Error ?? "");
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _repository.Delete(condition);
+            _conditionRepository.Delete(condition.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -43,7 +50,7 @@ public class ConditionDeleteService : IConditionDeleteService
 
         return Result<ConditionDeleteResponse>.Success(
            new ConditionDeleteResponse(
-               condition.Id,
+               condition.Value!.Id,
                DateTime.UtcNow
            )
        );

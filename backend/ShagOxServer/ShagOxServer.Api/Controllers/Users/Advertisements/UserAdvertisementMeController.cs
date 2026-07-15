@@ -34,7 +34,7 @@ public class UserAdvertisementMeController : ApiController
         if (!user.IsSuccess || user.Value is null)
             return NotFound(user.Error);
 
-        var result = await _queryService.GetSellerAdvertisementsAsync(user.Value.Id, pagination);
+        var result = await _queryService.GetBySellerAsync(user.Value.Id, pagination);
 
         return result.ToActionResult();
     }
@@ -48,7 +48,7 @@ public class UserAdvertisementMeController : ApiController
         if (!user.IsSuccess || user.Value is null)
             return NotFound(user.Error);
 
-        var result = await _queryService.GetPurchasedAdvertisementsAsync(user.Value.Id, pagination);
+        var result = await _queryService.GetPurchasedByUserAsync(user.Value.Id, pagination);
 
         return result.ToActionResult();
     }

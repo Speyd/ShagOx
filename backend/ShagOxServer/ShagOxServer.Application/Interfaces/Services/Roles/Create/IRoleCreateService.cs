@@ -4,6 +4,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Roles.Create;
 public interface IRoleCreateService
 {
-    Task<Result<RoleCreateResponse>> CreateRoleAsync(
+    Task<Result<RoleCreateResponse>> CreateAsync(
         RoleCreateRequest request);
 }

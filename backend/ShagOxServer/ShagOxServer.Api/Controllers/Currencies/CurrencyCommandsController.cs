@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Create;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Delete;
-using ShagOxServer.Application.Interfaces.Services.Roles.Specification.Currencies.Update;
+using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Currencies;
@@ -33,7 +33,7 @@ public class CurrencyCommandsController : ApiController
     [HttpPost]
     public async Task<IActionResult> Create(CurrencyCreateRequest request)
     {
-        var result = await _createService.CreateCurrencyAsync(request);
+        var result = await _createService.CreateAsync(request);
         return result.ToActionResult();
     }
 
@@ -43,7 +43,7 @@ public class CurrencyCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] CurrencyUpdateRequest request)
     {
-        var result = await _updateService.UpdateCurrencyAsync(id, request);
+        var result = await _updateService.UpdateAsync(id, request);
         return result.ToActionResult();
     }
 
@@ -52,7 +52,7 @@ public class CurrencyCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteCurrencyAsync(id);
+        var result = await _deleteService.DeleteAsync(id);
         return result.ToActionResult();
     }
 }

@@ -9,7 +9,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Create;
 public class FavoriteCreateService : IFavoriteCreateService
 {
-    private readonly IFavoriteRepository _repository;
+    private readonly IFavoriteRepository _favoriteRepository;
 
     private readonly UserValidator _userValidator;
 
@@ -24,13 +24,14 @@ public class FavoriteCreateService : IFavoriteCreateService
         AdvertisementValidator advertValidator,
         IUnitOfWork unitOfWork)
     {
-        _repository = favoriteRepository;
+        _favoriteRepository = favoriteRepository;
         _userValidator = userValidator;
         _advertValidator = advertValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<FavoriteCreateResponse>> CreateFavoriteAsync(
+
+    public async Task<Result<FavoriteCreateResponse>> CreateAsync(
         FavoriteCreateRequest request)
     {
         var validationUser = await _userValidator.ExistsByIdAsync(request.UserId);
@@ -49,7 +50,7 @@ public class FavoriteCreateService : IFavoriteCreateService
 
         try
         {
-            _repository.Add(favorite);
+            _favoriteRepository.Add(favorite);
 
             await _unitOfWork.CommitAsync();
         }

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logout } from "../api/logout";
 import { toast } from "sonner";
+import { logout } from "../../api/api";
 
 export function useLogout() {
   const queryClient = useQueryClient();
@@ -8,7 +8,7 @@ export function useLogout() {
   return useMutation({
     mutationFn: logout,
     onSuccess: async () => {
-      queryClient.removeQueries({ queryKey: ["me"] });
+      queryClient.clear();
       toast.success("Ви успішно вийшли.");
     },
   });

@@ -34,5 +34,5 @@ export async function updateAdvertisement(
     );
   });
 
-  return api.put(`/api/advertisements/${id}`, formData);
+  return api.put(`/advertisements/${id}`, formData);
 }

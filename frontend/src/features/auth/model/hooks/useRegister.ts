@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { register } from "../api/register";
 import { toast } from "sonner";
+import { register } from "../../api/api";
 
 export function useRegister() {
   return useMutation({

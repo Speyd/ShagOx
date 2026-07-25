@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateAdvertisement } from "../model/api";
 import { toast } from "sonner";
-import type { UpdateAdvertisementRequestDto } from "../model/types";
+import type { UpdateAdvertisementRequestDto } from "../types";
 import axios from "axios";
+import { updateAdvertisement } from "../../api/api";
 
 type UpdateAdvertisementRequest = {
   id: number;

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createAdvertisement } from "../model/api";
+
 import { toast } from "sonner";
+import { createAdvertisement } from "../../api/api";
 
 export function useCreateAdvertisement() {
   const queryClient = useQueryClient();

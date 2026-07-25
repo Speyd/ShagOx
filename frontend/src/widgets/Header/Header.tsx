@@ -2,10 +2,9 @@ import Container from "@/shared/ui/Container";
 import styles from "./Header.module.css";
 import Button from "@/shared/ui/Button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useAuthStore } from "@/features/auth/store/useAuthStore";
-import IconButton from "@/shared/ui/IconButton";
 import { Heart } from "lucide-react";
+import { useLogout } from "@/features/auth/model/hooks/useLogout";
 
 export default function Header() {
   const navigate = useNavigate();

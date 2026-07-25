@@ -22,7 +22,7 @@ export async function createAdvertisement(data: CreateAdvertisementDto) {
     formData.append(`properties[${key}]`, value);
   }
 
-  const response = await api.post("/api/advertisements", formData);
+  const response = await api.post("/advertisements", formData);
 
   return response.data;
 }

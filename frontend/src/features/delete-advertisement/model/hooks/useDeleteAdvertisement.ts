@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteAdvertisement } from "../model/api";
 import { toast } from "sonner";
 import axios from "axios";
+import { deleteAdvertisement } from "../../api/api";
 
 export function useDeleteAdvertisement() {
   const queryClient = useQueryClient();
@@ -10,7 +10,7 @@ export function useDeleteAdvertisement() {
     mutationFn: deleteAdvertisement,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["advertisements"] });
-      toast.success("Advertisement deleted!");
+      toast.success("Оголошення успішно видалено!");
     },
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response?.status === 403) {

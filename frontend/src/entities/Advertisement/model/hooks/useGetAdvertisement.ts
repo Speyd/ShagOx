@@ -1,6 +1,6 @@
+import type { Advertisement } from "@/types/advertisements";
 import { useQuery } from "@tanstack/react-query";
-import type { Advertisement } from "../model/types";
-import { getAdvertisement } from "../model/api";
+import { getAdvertisement } from "../../api/api";
 
 export function useGetAdvertisement(id: number) {
   return useQuery<Advertisement>({

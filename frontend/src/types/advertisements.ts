@@ -1,23 +1,41 @@
-export interface Advertisement {
+export type Advertisement = {
   id: number;
   title: string;
-  category: string;
-  properties: Record<string, any>;
   description: string;
-  condition: string;
-  popularity: number;
+
   price: number;
   previousPrice: number;
-  currency: string;
+
+  currency: Currency;
+  category: Category;
+
+  seller: UserShort;
+  buyer: UserShort | null;
+
   images: ImageItem[];
-  seller: number;
-  buyer: number | null;
+  properties: Record<string, string>;
+
   createdAt: string;
   soldAt: string | null;
-}
+};
+
+export type Currency = {
+  id: number;
+  name: string;
+};
+
+export type Category = {
+  id: number;
+  name: string;
+};
+
+export type UserShort = {
+  id: number;
+  username: string;
+};
 
 export type ImageItem = {
-  id: string;
+  id: number;
   imageId?: number;
   url: string;
   file?: File;

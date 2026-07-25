@@ -2,18 +2,21 @@ import Input from "@/shared/ui/Input";
 import styles from "./LoginForm.module.css";
 import Button from "@/shared/ui/Button";
 import { useState } from "react";
-import { useLogin } from "../../hooks/useLogin";
 import { useForm } from "react-hook-form";
-import { loginSchema, type LoginFormData } from "../../model/loginSchema";
+import {
+  loginSchema,
+  type LoginFormData,
+} from "../../model/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useLogin } from "../../model/hooks/useLogin";
 
 export default function LoginForm() {
   const [serverError, setServerError] = useState("");
 
   const loginMutation = useLogin();
-  
+
   const navigate = useNavigate();
 
   const {
@@ -49,7 +52,6 @@ export default function LoginForm() {
             <p className={styles.error}>{errors.emailOrPhone.message}</p>
           )}
         </div>
-        
       </div>
 
       <div className={styles.inputWrapper}>

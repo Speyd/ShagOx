@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import type { User } from "../model/types";
-import { me } from "../api/me";
+import type { User } from "../types";
+import { me } from "../../api/api";
 
 export function useMe() {
   return useQuery<User>({
     queryKey: ["me"],
     queryFn: me,
-    retry: false,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
+    retry: false,
   });
 }

@@ -8,6 +8,8 @@ import AdvertisementPage from "@/pages/AdvertisementPage";
 import { PublicRoute } from "./PublicRoute";
 import CreateAdvertisementPage from "@/pages/CreateAdvertisementPage/CreateAdvertisementPage";
 import UpdateAdvertisementPage from "@/pages/UpdateAdvertisementPage";
+import FavoritesPage from "@/pages/FavoritesPage";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 export default function Router() {
   return (
@@ -16,6 +18,14 @@ export default function Router() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route
+            path="/favorite"
+            element={
+              <ProtectedRoute>
+                <FavoritesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/login"
             element={
               <PublicRoute>
@@ -23,6 +33,7 @@ export default function Router() {
               </PublicRoute>
             }
           />
+
           <Route
             path="/register"
             element={

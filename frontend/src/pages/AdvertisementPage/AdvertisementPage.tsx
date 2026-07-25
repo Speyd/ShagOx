@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import styles from "./AdvertisementPage.module.css";
 import DeleteAdvertisementButton from "@/features/delete-advertisement";
-import { useGetAdvertisement } from "@/entities/Advertisement/hooks/useGetAdvertisement";
-import { UpdateAdvertisementButton } from "@/features/update-advertisement/ui";
 import Price from "@/shared/ui/Price";
+import { useGetAdvertisement } from "@/entities/Advertisement/model/hooks/useGetAdvertisement";
+import { UpdateAdvertisementButton } from "@/features/update-advertisement";
 
 export default function AdvertisementPage() {
   const { id } = useParams<{ id: string }>();

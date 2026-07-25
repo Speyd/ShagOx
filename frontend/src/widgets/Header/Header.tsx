@@ -1,9 +1,11 @@
 import Container from "@/shared/ui/Container";
 import styles from "./Header.module.css";
 import Button from "@/shared/ui/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useAuthStore } from "@/features/auth/store/useAuthStore";
+import IconButton from "@/shared/ui/IconButton";
+import { Heart } from "lucide-react";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -12,6 +14,9 @@ export default function Header() {
   const logoutStore = useAuthStore((state) => state.logout);
 
   const logoutMutation = useLogout();
+
+  const location = useLocation();
+  const isFavoritePage = location.pathname === "/favorite";
 
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
@@ -38,6 +43,13 @@ export default function Header() {
             </Button>
             <Button onClick={() => navigate("/login")}>Увійти</Button>
             <Button onClick={() => handleLogout()}>Вийти</Button>
+            <Link to="/favorite" className={styles.favoriteButton}>
+              <Heart
+                size={35}
+                fill={isFavoritePage ? "#ef4444" : "none"}
+                color={isFavoritePage ? "#ef4444" : "currentColor"}
+              />
+            </Link>
           </div>
         </div>
       </Container>

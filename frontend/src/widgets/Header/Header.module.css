@@ -21,3 +21,20 @@
   display: flex;
   gap: 10px;
 }
+
+.favoriteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform 0.15s;
+}
+
+.favoriteButton:hover {
+  transform: scale(1.05);
+}

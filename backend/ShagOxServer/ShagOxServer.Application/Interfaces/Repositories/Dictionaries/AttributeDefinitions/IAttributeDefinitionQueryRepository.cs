@@ -7,6 +7,9 @@ public interface IAttributeDefinitionQueryRepository
 {
     Task<AttributeDefinition?> GetByIdAsync(int id);
 
+    Task<List<AttributeDefinition>> GetPagedAsync(
+        PaginationParams pagination);
+
     Task<List<AttributeDefinition>> GetByIdsAsync(List<int> ids);
 
     Task<List<AttributeDefinition>> GetByCategoryAsync(int categoryId);

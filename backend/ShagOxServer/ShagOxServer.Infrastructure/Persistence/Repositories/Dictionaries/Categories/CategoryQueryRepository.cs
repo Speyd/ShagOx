@@ -14,21 +14,34 @@ public class CategoryQueryRepository : BaseRepository, ICategoryQueryRepository
         : base(db)
     { }
 
+
     public async Task<Category?> GetByIdAsync(int id)
     {
-        return await _db.Categories.WithIncludes()
+        return await _db.Categories
+            .WithIncludes()
             .FirstOrDefaultAsync(c => c.Id == id);
+    }
+
+    public async Task<List<Category>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        return await _db.Categories
+            .WithIncludes()
+            .WithPagination(pagination)
+            .ToListAsync();
     }
 
     public async Task<Category?> GetByNameAsync(string name)
     {
-        return await _db.Categories.WithIncludes()
+        return await _db.Categories
+            .WithIncludes()
             .FirstOrDefaultAsync(c => c.Name == name);
     }
 
     public async Task<List<Category>> GetByProductTypeAsync(ProductType type)
     {
-        return await _db.Categories.WithIncludes()
+        return await _db.Categories
+            .WithIncludes()
             .Where(c => c.ProductType == type)
             .ToListAsync();
     }
@@ -37,7 +50,8 @@ public class CategoryQueryRepository : BaseRepository, ICategoryQueryRepository
         CategorySearchFilter filter,
         PaginationParams pagination)
     {
-        return await _db.Categories.WithIncludes()
+        return await _db.Categories
+            .WithIncludes()
             .Filter(filter)
             .Skip((pagination.PageSize - 1) * pagination.PageSize)
             .Take(pagination.PageSize)

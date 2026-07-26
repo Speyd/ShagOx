@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -17,6 +18,15 @@ public class FavoriteQueryRepository : BaseRepository, IFavoriteQueryRepository
         return await _db.Favorites
             .WithIncludes()
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<Favorite>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        return await _db.Favorites
+            .WithIncludes()
+            .WithPagination(pagination)
+            .ToListAsync();
     }
 
     public async Task<int> CountByAdvertisementAsync(

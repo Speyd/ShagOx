@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Users.Query;
 using ShagOxServer.Application.Services.Users.Mapping;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -23,42 +24,54 @@ public class UserAdminQueryService : IUserAdminQueryService
 
     public async Task<Result<UserDto>> GetByContactAsync(string? email, string? phone)
     {
-        var user = await _userRepository.GetByContactAsync(email, phone);
+        var user = await _userRepository
+            .GetByContactAsync(email, phone);
 
         return user.ToResult(UserMapper.ToDto);
     }
 
     public async Task<Result<UserDto>> GetByEmailAsync(string email)
     {
-        var user = await _userRepository.GetByEmailAsync(email);
+        var user = await _userRepository
+            .GetByEmailAsync(email);
 
         return user.ToResult(UserMapper.ToDto);
     }
 
     public async Task<Result<UserDto>> GetByPhoneAsync(string phone)
     {
-        var user = await _userRepository.GetByEmailAsync(phone);
+        var user = await _userRepository
+            .GetByEmailAsync(phone);
 
         return user.ToResult(UserMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> GetByCityAsync(int cityId)
+    public async Task<Result<List<UserDto>>> GetByCityAsync(
+        int cityId,
+        PaginationParams pagination)
     {
-        var users = await _userRepository.GetByCityAsync(cityId);
+        var users = await _userRepository
+            .GetByCityAsync(cityId, pagination);
 
         return users.ToResultList(UserMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> GetUsersActiveAfterAsync(DateTime date)
+    public async Task<Result<List<UserDto>>> GetUsersActiveAfterAsync(
+        DateTime date,
+        PaginationParams pagination)
     {
-        var users = await _userRepository.GetUsersActiveAfterAsync(date);
+        var users = await _userRepository
+            .GetUsersActiveAfterAsync(date, pagination);
 
         return users.ToResultList(UserMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> GetUsersRegisteredAfterAsync(DateTime date)
+    public async Task<Result<List<UserDto>>> GetUsersRegisteredAfterAsync(
+        DateTime date,
+        PaginationParams pagination)
     {
-        var users = await _userRepository.GetUsersRegisteredAfterAsync(date);
+        var users = await _userRepository
+            .GetUsersRegisteredAfterAsync(date, pagination);
 
         return users.ToResultList(UserMapper.ToDto);
     }
@@ -66,7 +79,8 @@ public class UserAdminQueryService : IUserAdminQueryService
 
     public async Task<bool> ExistsByIdAsync(int id)
     {
-        var result = await _userExistsRepository.ExistsByIdAsync(id);
+        var result = await _userExistsRepository
+            .ExistsByIdAsync(id);
 
         return result;
     }

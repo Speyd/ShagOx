@@ -6,7 +6,10 @@ public interface IFavoriteQueryRepository
 {
     Task<Favorite?> GetByIdAsync(int id);
 
-    Task<List<Favorite>> GetByUserAsync(
+    Task<List<Favorite>> GetPagedAsync(
+        PaginationParams pagination);
+
+        Task<List<Favorite>> GetByUserAsync(
         int usderId,
         PaginationParams pagination);
 

@@ -7,6 +7,9 @@ public interface ICityQueryRepository
 {
     Task<City?> GetByIdAsync(int id);
 
+    Task<List<City>> GetPagedAsync(
+        PaginationParams pagination);
+
     Task<City?> GetByNameAsync(string name);
 
     Task<List<City>> GetByRegionAsync(

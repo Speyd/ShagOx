@@ -12,7 +12,7 @@ public class RegionQueryService : IRegionQueryService
 {
     private readonly IRegionQueryRepository _regionQueryRepository;
 
-
+    
     public RegionQueryService(
         IRegionQueryRepository regionQueryRepository)
     {
@@ -26,6 +26,15 @@ public class RegionQueryService : IRegionQueryService
             .GetByIdAsync(id);
 
         return region.ToResult(RegionMapper.ToDto);
+    }
+
+    public async Task<Result<List<RegionDto>>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        var regions = await _regionQueryRepository
+            .GetPagedAsync(pagination);
+
+        return regions.ToResultList(RegionMapper.ToDto);
     }
 
     public async Task<Result<RegionDto>> GetByNameAsync(string name)

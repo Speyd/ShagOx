@@ -14,6 +14,7 @@ public class UserAdvertisementsController : ApiController
     private readonly IAdvertisementQueryService _queryService;
     private readonly IUserAdminQueryService _userQuery;
 
+
     public UserAdvertisementsController(
         IAdvertisementQueryService queryService,
         IUserAdminQueryService userQuery)
@@ -22,17 +23,21 @@ public class UserAdvertisementsController : ApiController
         _userQuery = userQuery;
     }
 
+
     [HttpGet]
     public async Task<IActionResult> GetUserAdvertisements(
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQuery.ExistsByIdAsync(userId);
+        var exists = await _userQuery
+            .ExistsByIdAsync(userId);
 
         if (!exists)
             return NotFound("User not found");
 
-        var result = await _queryService.GetBySellerAsync(userId, pagination);
+        var result = await _queryService
+            .GetBySellerAsync(userId, pagination);
+
         return result.ToActionResult();
     }
 
@@ -42,13 +47,14 @@ public class UserAdvertisementsController : ApiController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQuery.ExistsByIdAsync(userId);
+        var exists = await _userQuery
+            .ExistsByIdAsync(userId);
 
         if (!exists)
             return NotFound("User not found");
 
-        var advertisements =
-            await _queryService.GetPurchasedByUserAsync(userId, pagination);
+        var advertisements = await _queryService.
+            GetPurchasedByUserAsync(userId, pagination);
 
         return advertisements.ToActionResult();
     }

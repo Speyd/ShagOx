@@ -14,25 +14,31 @@ public class ConditionQueriesController : ApiController
 {
     private readonly IConditionQueryService _queryService;
 
+
     public ConditionQueriesController(
         IConditionQueryService queryService)
     {
         _queryService = queryService;
     }
 
+
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        var result = await _queryService.GetByIdAsync(id);
+        var result = await _queryService
+            .GetByIdAsync(id);
+
         return result.ToActionResult();
     }
 
-    [HttpGet("by-name")]
-    public async Task<IActionResult> GetByName(
-        [FromQuery] string name)
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetByNameAsync(name);
+        var result = await _queryService
+            .GetPagedAsync(pagination);
+
         return result.ToActionResult();
     }
 
@@ -41,7 +47,9 @@ public class ConditionQueriesController : ApiController
        [FromQuery] ConditionSearchFilter filter,
        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.Search(filter, pagination);
+        var result = await _queryService
+            .Search(filter, pagination);
+
         return result.ToActionResult();
     }
 }

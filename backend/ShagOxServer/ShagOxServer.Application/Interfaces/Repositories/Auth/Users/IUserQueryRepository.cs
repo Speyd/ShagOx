@@ -18,19 +18,11 @@ public interface IUserQueryRepository
         string? email,
         string? phone);
 
-    Task<List<User>> GetByCityAsync(
-        int cityId,
-        PaginationParams pagination);
-
-    Task<List<User>> GetUsersRegisteredAfterAsync(
-        DateTime date,
-        PaginationParams pagination);
-
-    Task<List<User>> GetUsersActiveAfterAsync(
-        DateTime date,
-        PaginationParams pagination);
-
     Task<List<User>> Search(
         UserSearchFilter filter,
+        PaginationParams pagination);
+
+    Task<List<User>> AdminSearch(
+        UserAdminSearchFilter filter,
         PaginationParams pagination);
 }

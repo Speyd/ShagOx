@@ -62,18 +62,6 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .ToListAsync();
     }
 
-    public async Task<List<Advertisement>> GetByCategoryAsync(
-        int categoryId,
-        PaginationParams pagination)
-    {
-        return await _db.Advertisements
-            .WithIncludes()
-            .Where(x => x.CategoryId == categoryId)
-            .OrderByDescending(x => x.Popularity)
-            .WithPagination(pagination)
-            .ToListAsync();
-    }
-
     public async Task<List<Advertisement>> Search(
         AdvertisementSearchFilter filter,
         PaginationParams pagination)

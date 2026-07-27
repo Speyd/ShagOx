@@ -8,8 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Users.Advertisements;
 
 [ApiController]
-[Authorize]
 [Route("api/users/me/advertisements")]
+[Authorize]
 public class UserAdvertisementMeController : ApiController
 {
     private readonly IAdvertisementQueryService _queryService;
@@ -29,12 +29,14 @@ public class UserAdvertisementMeController : ApiController
     public async Task<IActionResult> GetMySales(
         [FromQuery] PaginationParams pagination)
     {
-        var user = await _queryUserService.GetMyProfileAsync();
+        var user = await _queryUserService
+            .GetMyProfileAsync();
 
         if (!user.IsSuccess || user.Value is null)
             return NotFound(user.Error);
 
-        var result = await _queryService.GetBySellerAsync(user.Value.Id, pagination);
+        var result = await _queryService
+            .GetBySellerAsync(user.Value.Id, pagination);
 
         return result.ToActionResult();
     }
@@ -43,12 +45,14 @@ public class UserAdvertisementMeController : ApiController
     public async Task<IActionResult> GetMyPurchases(
         [FromQuery] PaginationParams pagination)
     {
-        var user = await _queryUserService.GetMyProfileAsync();
+        var user = await _queryUserService
+            .GetMyProfileAsync();
 
         if (!user.IsSuccess || user.Value is null)
             return NotFound(user.Error);
 
-        var result = await _queryService.GetPurchasedByUserAsync(user.Value.Id, pagination);
+        var result = await _queryService
+            .GetPurchasedByUserAsync(user.Value.Id, pagination);
 
         return result.ToActionResult();
     }

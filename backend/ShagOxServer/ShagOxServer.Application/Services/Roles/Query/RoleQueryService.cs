@@ -28,6 +28,15 @@ public class RoleQueryService : IRoleQueryService
         return role.ToResult(RoleMapper.ToDto);
     }
 
+    public async Task<Result<List<RoleDto>>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        var roles = await _roleQueryRepository
+            .GetPagedAsync(pagination);
+
+        return roles.ToResultList(RoleMapper.ToDto);
+    }
+
     public async Task<Result<List<RoleDto>>> GetByUserAsync(
        int userId,
        PaginationParams pagination)

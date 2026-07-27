@@ -12,8 +12,6 @@ public interface IAttributeDefinitionQueryRepository
 
     Task<List<AttributeDefinition>> GetByIdsAsync(List<int> ids);
 
-    Task<List<AttributeDefinition>> GetByCategoryAsync(int categoryId);
-
     Task<List<AttributeDefinition>> Search(
         AttributeDefinitionSearchFilter filter,
         PaginationParams pagination);

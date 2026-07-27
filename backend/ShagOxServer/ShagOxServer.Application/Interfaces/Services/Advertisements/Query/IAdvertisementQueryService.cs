@@ -16,11 +16,7 @@ public interface IAdvertisementQueryService
         int userId,
         PaginationParams pagination);
 
-    Task<Result<List<AdvertisementDto>>> GetAllAsync(
-        PaginationParams pagination);
-
-    Task<Result<List<AdvertisementDto>>> GetByCategoryAsync(
-        int categoryId,
+    Task<Result<List<AdvertisementDto>>> GetPagedAsync(
         PaginationParams pagination);
 
     Task<Result<List<AdvertisementDto>>> Search(

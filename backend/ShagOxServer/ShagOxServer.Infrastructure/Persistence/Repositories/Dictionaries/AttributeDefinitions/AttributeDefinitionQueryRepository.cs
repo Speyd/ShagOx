@@ -30,14 +30,6 @@ public class AttributeDefinitionQueryRepository : BaseRepository, IAttributeDefi
             .ToListAsync();
     }
 
-    public async Task<List<AttributeDefinition>> GetByCategoryAsync(int categoryId)
-    {
-        return await _db.AttributeDefinitions
-            .WithIncludes()
-            .Where(x => x.CategoryId == categoryId)
-            .ToListAsync();
-    }
-
     public async Task<List<AttributeDefinition>> GetByIdsAsync(
         List<int> ids)
     {

@@ -30,6 +30,15 @@ public class CategoryQueryService : ICategoryQueryService
         return category.ToResult(CategoryMapper.ToDto);
     }
 
+    public async Task<Result<List<CategoryDto>>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        var categories = await _categoryQueryRepository
+            .GetPagedAsync(pagination);
+
+        return categories.ToResultList(CategoryMapper.ToDto);
+    }
+
     public async Task<Result<CategoryDto>> GetByNameAsync(
         string name)
     {
@@ -40,10 +49,11 @@ public class CategoryQueryService : ICategoryQueryService
     }
 
     public async Task<Result<List<CategoryDto>>> GetByProductTypeAsync(
-        ProductType type)
+        ProductType type,
+        PaginationParams pagination)
     {
         var categories = await _categoryQueryRepository
-            .GetByProductTypeAsync(type);
+            .GetByProductTypeAsync(type, pagination);
 
         return categories.ToResultList(CategoryMapper.ToDto);
     }

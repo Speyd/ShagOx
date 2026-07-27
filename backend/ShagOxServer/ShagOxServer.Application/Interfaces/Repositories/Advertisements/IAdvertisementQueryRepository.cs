@@ -20,10 +20,6 @@ public interface IAdvertisementQueryRepository
     Task<List<Advertisement>> GetPagedAsync(
         PaginationParams pagination);
 
-    Task<List<Advertisement>> GetByCategoryAsync(
-        int categoryId,
-        PaginationParams pagination);
-
     Task<List<Advertisement>> Search(
         AdvertisementSearchFilter filter,
         PaginationParams pagination);

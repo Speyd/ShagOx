@@ -57,47 +57,19 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
             .FirstOrDefaultAsync(x => x.Phone == phone);
     }
 
-    public async Task<List<User>> GetByCityAsync(
-        int cityId,
-        PaginationParams pagination)
-    {
-        return await _db.Users
-            .WithIncludes()
-            .Where(x => x.CityId == cityId)
-            .WithPagination(pagination)
-            .ToListAsync();
-    }
-
-    public async Task<List<User>> GetUsersRegisteredAfterAsync(
-        DateTime date,
-        PaginationParams pagination)
-    {
-        var dayStart = date.Date;
-        var dayEnd = dayStart.AddDays(1);
-
-        return await _db.Users
-            .WithIncludes()
-            .Where(x => x.RegisteredAt >= dayStart && x.RegisteredAt < dayEnd)
-            .WithPagination(pagination)
-            .ToListAsync();
-    }
-
-    public async Task<List<User>> GetUsersActiveAfterAsync(
-        DateTime date,
-        PaginationParams pagination)
-    {
-        var dayStart = date.Date;
-        var dayEnd = dayStart.AddDays(1);
-
-        return await _db.Users
-            .WithIncludes()
-            .Where(x => x.LastSeenAt >= dayStart && x.LastSeenAt < dayEnd)
-            .WithPagination(pagination)
-            .ToListAsync();
-    }
-
     public async Task<List<User>> Search(
         UserSearchFilter filter, 
+        PaginationParams pagination)
+    {
+        return await _db.Users
+            .WithIncludes()
+             .Filter(filter)
+             .WithPagination(pagination)
+             .ToListAsync();
+    }
+
+    public async Task<List<User>> AdminSearch(
+        UserAdminSearchFilter filter,
         PaginationParams pagination)
     {
         return await _db.Users

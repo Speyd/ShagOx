@@ -15,6 +15,7 @@ public class CategoryQueriesController : ApiController
 {
     private readonly ICategoryQueryService _queryService;
 
+
     public CategoryQueriesController(
         ICategoryQueryService queryService)
     {
@@ -26,23 +27,30 @@ public class CategoryQueriesController : ApiController
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        var result = await _queryService.GetByIdAsync(id);
+        var result = await _queryService
+            .GetByIdAsync(id);
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] PaginationParams pagination)
+    {
+        var result = await _queryService
+            .GetPagedAsync(pagination);
+
         return result.ToActionResult();
     }
 
     [HttpGet("by-product-type")]
     public async Task<IActionResult> GetByProductType(
-        [FromQuery] ProductType type)
+        [FromQuery] ProductType type,
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetByProductTypeAsync(type);
-        return result.ToActionResult();
-    }
+        var result = await _queryService
+            .GetByProductTypeAsync(type, pagination);
 
-    [HttpGet("by-name")]
-    public async Task<IActionResult> GetByName(
-        [FromQuery] string name)
-    {
-        var result = await _queryService.GetByNameAsync(name);
         return result.ToActionResult();
     }
 
@@ -51,7 +59,9 @@ public class CategoryQueriesController : ApiController
        [FromQuery] CategorySearchFilter filter,
        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.Search(filter, pagination);
+        var result = await _queryService
+            .Search(filter, pagination);
+
         return result.ToActionResult();
     }
 }

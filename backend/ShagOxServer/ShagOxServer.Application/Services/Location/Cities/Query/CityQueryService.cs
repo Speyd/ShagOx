@@ -10,26 +10,37 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Application.Services.Location.Cities.Query;
 public class CityQueryService : ICityQueryService
 {
-    private readonly ICityQueryRepository _repository;
+    private readonly ICityQueryRepository _repositoryQueryCity;
 
 
     public CityQueryService(
-        ICityQueryRepository cityRepository)
+        ICityQueryRepository repositoryQueryCity)
     {
-        _repository = cityRepository;
+        _repositoryQueryCity = repositoryQueryCity;
     }
 
 
     public async Task<Result<CityDto>> GetByIdAsync(int id)
     {
-        var city = await _repository.GetByIdAsync(id);
+        var city = await _repositoryQueryCity
+            .GetByIdAsync(id);
 
         return city.ToResult(CityMapper.ToDto);
     }
 
+    public async Task<Result<List<CityDto>>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        var cities = await _repositoryQueryCity
+            .GetPagedAsync(pagination);
+
+        return cities.ToResultList(CityMapper.ToDto);
+    }
+
     public async Task<Result<CityDto>> GetByNameAsync(string name)
     {
-        var city = await _repository.GetByNameAsync(name);
+        var city = await _repositoryQueryCity
+            .GetByNameAsync(name);
 
         return city.ToResult(CityMapper.ToDto);
     }
@@ -38,7 +49,8 @@ public class CityQueryService : ICityQueryService
         int regionId,
         PaginationParams pagination)
     {
-        var cities = await _repository.GetByRegionAsync(regionId, pagination);
+        var cities = await _repositoryQueryCity
+            .GetByRegionAsync(regionId, pagination);
 
         return cities.ToResultList(CityMapper.ToDto);
     }
@@ -47,7 +59,8 @@ public class CityQueryService : ICityQueryService
        CitySearchFilter filter,
        PaginationParams pagination)
     {
-        var cities = await _repository.Search(filter, pagination);
+        var cities = await _repositoryQueryCity
+            .Search(filter, pagination);
 
         return cities.ToResultList(CityMapper.ToDto);
     }

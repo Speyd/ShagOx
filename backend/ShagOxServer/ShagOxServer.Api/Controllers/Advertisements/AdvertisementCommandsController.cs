@@ -21,6 +21,7 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
     private readonly IAdvertisementUpdateService _updateService;
     private readonly IAdvertisementDeleteService _deleteService;
 
+
     public AdvertisementCommandsController(
         IAdvertisementCreateService createService,
         IAdvertisementUpdateService updateService,
@@ -39,7 +40,9 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
     public async Task<IActionResult> Create(
         [FromForm] AdvertisementCreateRequest request)
     {
-        var result = await _createService.CreateAsync(request, UserId);
+        var result = await _createService
+            .CreateAsync(request, UserId);
+
         return result.ToActionResult();
     }
 
@@ -52,7 +55,9 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
         if (forbidden is not null)
             return forbidden;
 
-        var result = await _updateService.UpdateAsync(id, request);
+        var result = await _updateService
+            .UpdateAsync(id, request);
+
         return result.ToActionResult();
     }
 
@@ -61,16 +66,16 @@ public class AdvertisementCommandsController : AdvertisementOwnerController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        Console.WriteLine($"AdvertisementId: {id}");
-        Console.WriteLine($"Claim UserId: {claim}");
+        var claim = User
+            .FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         var forbidden = await CheckAdvertisementOwnerAsync(id);
         if (forbidden is not null)
             return forbidden;
 
-        var result = await _deleteService.DeleteAsync(id);
+        var result = await _deleteService
+            .DeleteAsync(id);
+
         return result.ToActionResult();
     }
 }

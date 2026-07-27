@@ -12,11 +12,13 @@ public class UserCommandsController : ApiController
 {
     private readonly IUserUpdateService _updateService;
 
+
     public UserCommandsController(
         IUserUpdateService updateService)
     {
         _updateService = updateService;
     }
+
 
     [Authorize]
     [HttpPut("{id:int}")]
@@ -27,7 +29,9 @@ public class UserCommandsController : ApiController
         if (UserId != id)
             return Forbid();
 
-        var result = await _updateService.UpdateAsync(id, request);
+        var result = await _updateService
+            .UpdateAsync(id, request);
+
         return result.ToActionResult();
     }
 }

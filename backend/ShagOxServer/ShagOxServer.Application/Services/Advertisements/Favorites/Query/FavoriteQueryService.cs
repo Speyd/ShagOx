@@ -27,6 +27,15 @@ public class FavoriteQueryService : IFavoriteQueryService
         return favorite.ToResult(FavoriteMapper.ToDto);
     }
 
+    public async Task<Result<List<FavoriteDto>>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        var favorits = await _favoriteRepository
+            .GetPagedAsync(pagination);
+
+        return favorits.ToResultList(FavoriteMapper.ToDto);
+    }
+
     public async Task<Result<int>> CountByAdvertisementAsync(
         int advertisementId)
     {

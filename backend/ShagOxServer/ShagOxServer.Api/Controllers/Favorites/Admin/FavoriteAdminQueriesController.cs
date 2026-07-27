@@ -13,17 +13,31 @@ public class FavoriteAdminQueriesController : ApiController
 {
     private readonly IFavoriteQueryService _queryService;
 
+
     public FavoriteAdminQueriesController(
         IFavoriteQueryService queryService)
     {
         _queryService = queryService;
     }
 
+
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        var result = await _queryService.GetByIdAsync(id);
+        var result = await _queryService
+            .GetByIdAsync(id);
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] PaginationParams pagination)
+    {
+        var result = await _queryService
+            .GetPagedAsync(pagination);
+
         return result.ToActionResult();
     }
 
@@ -33,9 +47,8 @@ public class FavoriteAdminQueriesController : ApiController
         [FromQuery] PaginationParams pagination
         )
     {
-        var result = await _queryService.GetByUserAsync(
-            userId,
-            pagination);
+        var result = await _queryService
+            .GetByUserAsync(userId, pagination);
 
         return result.ToActionResult();
     }

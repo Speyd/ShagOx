@@ -18,6 +18,7 @@ public class CategoryCommandsController : ApiController
     private readonly ICategoryUpdateService _updateService;
     private readonly ICategoryDeleteService _deleteService;
 
+
     public CategoryCommandsController(
         ICategoryCreateService createService,
         ICategoryUpdateService updateService,
@@ -34,7 +35,9 @@ public class CategoryCommandsController : ApiController
     public async Task<IActionResult> Create(
         [FromBody] CategoryCreateRequest request)
     {
-        var result = await _createService.CreateAsync(request);
+        var result = await _createService
+            .CreateAsync(request);
+
         return result.ToActionResult();
     }
 
@@ -43,7 +46,9 @@ public class CategoryCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] CategoryUpdateRequest request)
     {
-        var result = await _updateService.UpdateAsync(id, request);
+        var result = await _updateService
+            .UpdateAsync(id, request);
+
         return result.ToActionResult();
     }
 
@@ -52,7 +57,9 @@ public class CategoryCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteAsync(id);
+        var result = await _deleteService
+            .DeleteAsync(id);
+
         return result.ToActionResult();
     }
 }

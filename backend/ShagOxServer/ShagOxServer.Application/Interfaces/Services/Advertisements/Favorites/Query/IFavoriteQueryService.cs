@@ -8,6 +8,9 @@ public interface IFavoriteQueryService
     Task<Result<FavoriteDto>> GetByIdAsync(
         int id);
 
+    Task<Result<List<FavoriteDto>>> GetPagedAsync(
+        PaginationParams pagination);
+
     Task<Result<int>> CountByAdvertisementAsync(
         int advertisementId);
 

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Specification;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Extensions;
@@ -13,7 +14,8 @@ public static class ConditionFilterExtensions
 
         if (!string.IsNullOrWhiteSpace(filter.Name))
         {
-            query = query.Where(u => u.Name.Contains(filter.Name));
+            query = query.Where(u => u.Name != null &&
+                EF.Functions.ILike(u.Name, $"%{filter.Name}%"));
         }
 
         return query;

@@ -13,6 +13,7 @@ public class UserQueriesController : ApiController
 {
     private readonly IUserQueryService _queryService;
 
+
     public UserQueriesController(
         IUserQueryService queryService)
     {
@@ -24,7 +25,9 @@ public class UserQueriesController : ApiController
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        var result = await _queryService.GetByIdAsync(id);
+        var result = await _queryService
+            .GetByIdAsync(id);
+
         return result.ToActionResult();
     }
 
@@ -32,7 +35,9 @@ public class UserQueriesController : ApiController
     [HttpGet("me")]
     public async Task<IActionResult> GetMyProfile()
     {
-        var result = await _queryService.GetMyProfileAsync();
+        var result = await _queryService
+            .GetMyProfileAsync();
+
         return result.ToActionResult();
     }
 
@@ -41,7 +46,9 @@ public class UserQueriesController : ApiController
         [FromQuery] UserSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.Search(filter, pagination);
+        var result = await _queryService
+            .Search(filter, pagination);
+
         return result.ToActionResult();
     }
 }

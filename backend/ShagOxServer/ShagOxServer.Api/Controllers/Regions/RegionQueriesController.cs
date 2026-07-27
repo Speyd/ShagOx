@@ -14,6 +14,7 @@ public class RegionQueriesController : ApiController
 {
     private readonly IRegionQueryService _queryService;
 
+
     public RegionQueriesController(
         IRegionQueryService queryService)
     {
@@ -25,15 +26,19 @@ public class RegionQueriesController : ApiController
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        var result = await _queryService.GetByIdAsync(id);
+        var result = await _queryService
+            .GetByIdAsync(id);
+
         return result.ToActionResult();
     }
 
-    [HttpGet("by-name")]
-    public async Task<IActionResult> GetByName(
-         [FromQuery] string name)
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetByNameAsync(name);
+        var result = await _queryService
+            .GetPagedAsync(pagination);
+
         return result.ToActionResult();
     }
 
@@ -42,7 +47,9 @@ public class RegionQueriesController : ApiController
        [FromQuery] RegionSearchFilter filter,
        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.Search(filter, pagination);
+        var result = await _queryService
+            .Search(filter, pagination);
+
         return result.ToActionResult();
     }
 }

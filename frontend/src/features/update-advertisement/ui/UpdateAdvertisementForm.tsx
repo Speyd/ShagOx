@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
-import useUpdateAdvertisement from "../hooks/useUpdateAdvertisement";
-import { useGetAdvertisement } from "@/entities/Advertisement/hooks/useGetAdvertisement";
+import useUpdateAdvertisement from "../model/hooks/useUpdateAdvertisement";
 import { useEffect, useState } from "react";
 import Button from "@/shared/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateAdvertisementSchema } from "../model/schema";
+import { updateAdvertisementSchema } from "../model/schemas/schema";
 import styles from "./UpdateAdvertisementForm.module.css";
 import Input from "@/shared/ui/Input";
 import TextArea from "@/shared/ui/TextArea";
 import ImageUploader from "@/shared/ui/ImageUploader";
 import type { ImageItem } from "@/types/advertisements";
-import type { UpdateAdvertisementDto } from "../model/schema";
+import type { UpdateAdvertisementDto } from "../model/schemas/schema";
+import { useGetAdvertisement } from "@/entities/Advertisement/model/hooks/useGetAdvertisement";
 
 type UpdateAdvertisementFormProps = {
   advertisementId: number;
@@ -47,9 +47,9 @@ export default function UpdateAdvertisementForm({
     if (advertisement) {
       setImages(
         advertisement.images.map((image) => ({
-          id: crypto.randomUUID(),
-          imageId: image.id,
+          id: image.id,
           url: image.url,
+          imageId: image.id,
         })),
       );
 

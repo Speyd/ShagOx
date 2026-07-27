@@ -5,11 +5,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRegister } from "../../hooks/useRegister";
 import {
   registerSchema,
   type RegisterFormData,
-} from "../../model/registerSchema";
+} from "../../model/schemas/registerSchema";
+import { useRegister } from "../../model/hooks/useRegister";
 
 export default function RegisterForm() {
   const [serverError, setServerError] = useState("");

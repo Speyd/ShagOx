@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Auth;
 
 [ApiController]
-[Route("auth")]
+[Route("api")]
 public class AuthController : ApiController
 {
     private readonly IRegisterService _registerService;
@@ -35,14 +35,16 @@ public class AuthController : ApiController
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(
-        [FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var result = await _loginService
             .LoginAsync(request);
 
-        if (!result.IsSuccess || result.Value?.Token is null)
-            return BadRequest(result.Error);
+        if (!result.IsSuccess)
+            return Unauthorized(result.Error);
+
+        if (result.Value?.Token is null)
+            return StatusCode(StatusCodes.Status500InternalServerError);
 
         Response.Cookies.Append(
             "access_token",

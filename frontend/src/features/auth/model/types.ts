@@ -3,12 +3,6 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface LoginResponse {
-  success: boolean;
-  message: string;
-  token: string;
-}
-
 export interface RegisterRequest {
   emailOrPhone: string;
   password: string;

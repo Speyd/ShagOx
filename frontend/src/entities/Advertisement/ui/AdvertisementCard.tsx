@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import type { Advertisement } from "../model/types";
 import styles from "./AdvertisementCard.module.css";
 import DeleteAdvertisementButton from "@/features/delete-advertisement";
-import { UpdateAdvertisementButton } from "@/features/update-advertisement/ui";
 import Price from "@/shared/ui/Price";
 import { formatDate } from "@/shared/lib/formatDate";
+import type { Advertisement } from "@/types/advertisements";
+import { UpdateAdvertisementButton } from "@/features/update-advertisement";
+import FavoriteButton from "@/features/favorites";
 
 export default function AdvertisementCard(props: Advertisement) {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export default function AdvertisementCard(props: Advertisement) {
         <div className={styles.buttons}>
           <UpdateAdvertisementButton id={props.id} />
           <DeleteAdvertisementButton id={props.id} />
+          <FavoriteButton advertisementId={props.id} />
         </div>
       </div>
     </div>

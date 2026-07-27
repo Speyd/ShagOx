@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateAdvertisement } from "../hooks/useCreateAdvertisement";
+import { useCreateAdvertisement } from "../model/hooks/useCreateAdvertisement";
 import {
   createAdvertisementSchema,
   type CreateAdvertisementDto,
-} from "../model/schema";
+} from "../model/schemas/schema";
 import styles from "./CreateAdvertisementForm.module.css";
 import Input from "@/shared/ui/Input";
 import TextArea from "@/shared/ui/TextArea";
@@ -12,8 +12,10 @@ import Button from "@/shared/ui/Button";
 import ImageUploader from "@/shared/ui/ImageUploader";
 import { useState } from "react";
 import type { ImageItem } from "@/types/advertisements";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateAdvertisementForm() {
+  const navigate = useNavigate();
   const mutation = useCreateAdvertisement();
   const [images, setImages] = useState<ImageItem[]>([]);
   const {
@@ -25,8 +27,7 @@ export default function CreateAdvertisementForm() {
   });
 
   const onSubmit = async (data: CreateAdvertisementDto) => {
-    console.log(data);
-    await mutation.mutateAsync({
+    const advertisement = await mutation.mutateAsync({
       ...data,
       previousPrice: data.price,
       currencyId: 0,
@@ -38,6 +39,7 @@ export default function CreateAdvertisementForm() {
         Brand: "Apple",
       },
     });
+    navigate(`/advertisement/${advertisement.id}`);
   };
 
   return (

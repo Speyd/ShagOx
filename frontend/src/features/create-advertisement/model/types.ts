@@ -1,4 +1,4 @@
-export interface CreateAdvertisementDto {
+export type CreateAdvertisementDto = {
   title: string;
   description: string;
   price: number;
@@ -9,4 +9,4 @@ export interface CreateAdvertisementDto {
   conditionId: number;
   properties: Record<string, string>;
   images: File[];
-}
+};

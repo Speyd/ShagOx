@@ -1,4 +1,4 @@
-import UpdateAdvertisementForm from "@/features/update-advertisement";
+import { UpdateAdvertisementForm } from "@/features/update-advertisement";
 import styles from "./UpdateAdvertisementPage.module.css";
 
 export default function UpdateAdvertisementPage() {

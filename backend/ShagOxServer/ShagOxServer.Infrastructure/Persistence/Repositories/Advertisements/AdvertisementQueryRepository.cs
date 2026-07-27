@@ -29,16 +29,18 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .ToListAsync();
     }
 
-    public async Task<List<Advertisement>> GetBySellerAsync(
+    public async Task<PagedResult<Advertisement>> GetBySellerAsync(
         int userId,
         PaginationParams pagination)
     {
-        return await _db.Advertisements
+        var result =  await _db.Advertisements
             .WithIncludes()
             .Where(x => x.SellerId == userId)
             .OrderByDescending(x => x.Popularity)
             .WithPagination(pagination)
             .ToListAsync();
+
+        return new PagedResult<Advertisement>(result, pagination);
     }
     public async Task<List<Advertisement>> GetPurchasedByUserAsync(
         int userId,

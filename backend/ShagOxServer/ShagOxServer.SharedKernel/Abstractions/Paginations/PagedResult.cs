@@ -12,7 +12,8 @@ public sealed class PagedResult<T>
     public int TotalPages { get; init; }
 
     public PagedResult(
-        IReadOnlyList<T> items, 
+        IReadOnlyList<T> items,
+        int totalCount,
         PaginationParams pagination)
     {
         Items = items;
@@ -20,8 +21,8 @@ public sealed class PagedResult<T>
         Page = pagination.Page;
         PageSize = pagination.PageSize;
 
-        TotalCount = items.Count;
+        TotalCount = totalCount;
         TotalPages = (int)Math.Ceiling(
-            items.Count / (double)pagination.PageSize);
+            totalCount / (double)pagination.PageSize);
     }
 }

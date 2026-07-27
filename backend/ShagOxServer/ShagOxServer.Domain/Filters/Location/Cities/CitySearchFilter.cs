@@ -2,5 +2,6 @@
 
 public sealed record CitySearchFilter
 (
-    string? Name
+    string? Name,
+    int? RegionId
 );

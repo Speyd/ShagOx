@@ -12,16 +12,10 @@ namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Qu
 public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
 {
     private readonly IAttributeDefinitionQueryRepository _attributeQueryRepository;
-
-    private readonly ICategoryExistsRepository _categoryExistsRepository;
-
-
     public AttributeDefinitionQueryService(
-        IAttributeDefinitionQueryRepository attributeQueryRepository,
-        ICategoryExistsRepository categoryExistsRepository)
+        IAttributeDefinitionQueryRepository attributeQueryRepository)
     {
         _attributeQueryRepository = attributeQueryRepository;
-        _categoryExistsRepository = categoryExistsRepository;
     }
 
 
@@ -32,13 +26,11 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
         return attribute.ToResult(AttributeDefinitionMapper.ToDto);
     }
 
-    public async Task<Result<List<AttributeDefinitionDto>>> GetByCategoryAsync(
-        int categoryId)
+    public async Task<Result<List<AttributeDefinitionDto>>> GetPagedAsync(
+        PaginationParams pagination)
     {
-        if (!await _categoryExistsRepository.ExistsByIdAsync(categoryId))
-            return Result<List<AttributeDefinitionDto>>.NotFound("Category");
-
-        var attributes = await _attributeQueryRepository.GetByCategoryAsync(categoryId);
+        var attributes = await _attributeQueryRepository
+            .GetPagedAsync(pagination);
 
         return attributes.ToResultList(AttributeDefinitionMapper.ToDto);
     }
@@ -47,7 +39,8 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
        AttributeDefinitionSearchFilter filter,
        PaginationParams pagination)
     {
-        var attributes = await _attributeQueryRepository.Search(filter, pagination);
+        var attributes = await _attributeQueryRepository
+            .Search(filter, pagination);
 
         return attributes.ToResultList(AttributeDefinitionMapper.ToDto);
     }

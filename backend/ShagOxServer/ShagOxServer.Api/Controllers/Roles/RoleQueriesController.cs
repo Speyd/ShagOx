@@ -16,6 +16,7 @@ public class RoleQueriesController : ApiController
     private readonly IRoleQueryService _queryService;
     private readonly IUserRoleQueryService _queryUserRoleService;
 
+
     public RoleQueriesController(
         IRoleQueryService queryService,
         IUserRoleQueryService queryUserRoleService)
@@ -24,11 +25,24 @@ public class RoleQueriesController : ApiController
         _queryUserRoleService = queryUserRoleService;
     }
 
+
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        var result = await _queryService.GetByIdAsync(id);
+        var result = await _queryService
+            .GetByIdAsync(id);
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] PaginationParams pagination)
+    {
+        var result = await _queryService
+            .GetPagedAsync(pagination);
+
         return result.ToActionResult();
     }
 
@@ -37,7 +51,9 @@ public class RoleQueriesController : ApiController
         [FromRoute] int roleId,
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryUserRoleService.GetUsersByRoleIdAsync(roleId, pagination);
+        var result = await _queryUserRoleService
+            .GetUsersByRoleIdAsync(roleId, pagination);
+
         return result.ToActionResult();
     }
 
@@ -46,7 +62,9 @@ public class RoleQueriesController : ApiController
         [FromQuery] RoleSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.Search(filter, pagination);
+        var result = await _queryService
+            .Search(filter, pagination);
+
         return result.ToActionResult();
     }
 }

@@ -15,6 +15,7 @@ public class UserAdminCommandsController : ApiController
     private readonly IUserDeleteService _deleteService;
     private readonly IUserUpdateService _updateService;
 
+
     public UserAdminCommandsController(
         IUserDeleteService deleteService,
         IUserUpdateService updateService)
@@ -23,11 +24,14 @@ public class UserAdminCommandsController : ApiController
         _updateService = updateService;
     }
 
+
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteAsync(id);
+        var result = await _deleteService
+            .DeleteAsync(id);
+
         return result.ToActionResult();
     }
 
@@ -36,7 +40,9 @@ public class UserAdminCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] UserUpdateRequest request)
     {
-        var result = await _updateService.UpdateAsync(id, request);
+        var result = await _updateService
+            .UpdateAsync(id, request);
+
         return result.ToActionResult();
     }
 }

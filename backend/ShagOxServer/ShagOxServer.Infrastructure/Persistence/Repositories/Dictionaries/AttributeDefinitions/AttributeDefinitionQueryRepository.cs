@@ -13,16 +13,20 @@ public class AttributeDefinitionQueryRepository : BaseRepository, IAttributeDefi
         : base(db)
     { }
 
+
     public async Task<AttributeDefinition?> GetByIdAsync(int id)
     {
-        return await _db.AttributeDefinitions.WithIncludes()
+        return await _db.AttributeDefinitions
+            .WithIncludes()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<AttributeDefinition>> GetByCategoryAsync(int categoryId)
+    public async Task<List<AttributeDefinition>> GetPagedAsync(
+        PaginationParams pagination)
     {
-        return await _db.AttributeDefinitions.WithIncludes()
-            .Where(x => x.CategoryId == categoryId)
+        return await _db.AttributeDefinitions
+            .WithIncludes()
+            .WithPagination(pagination)
             .ToListAsync();
     }
 
@@ -38,10 +42,10 @@ public class AttributeDefinitionQueryRepository : BaseRepository, IAttributeDefi
         AttributeDefinitionSearchFilter filter,
         PaginationParams pagination)
     {
-        return await _db.AttributeDefinitions.WithIncludes()
+        return await _db.AttributeDefinitions
+            .WithIncludes()
             .Filter(filter)
-            .Skip((pagination.PageSize - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
+            .WithPagination(pagination)
             .ToListAsync();
     }
 }

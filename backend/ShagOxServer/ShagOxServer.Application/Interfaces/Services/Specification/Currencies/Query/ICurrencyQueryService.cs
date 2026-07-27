@@ -8,6 +8,9 @@ public interface ICurrencyQueryService
 {
     Task<Result<CurrencyDto>> GetByIdAsync(int id);
 
+    Task<Result<List<CurrencyDto>>> GetPagedAsync(
+        PaginationParams pagination);
+
     Task<Result<CurrencyDto>> GetByCodeAsync(string code);
 
     Task<Result<CurrencyDto>> GetBySymbolAsync(string symbol);

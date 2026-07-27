@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Extensions;
@@ -12,10 +13,19 @@ public class ConditionQueryRepository : BaseRepository, IConditionQueryRepositor
         : base(db)
     { }
 
+
     public async Task<Condition?> GetByIdAsync(int id)
     {
         return await _db.Conditions
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<Condition>> GetPagedAsync(
+       PaginationParams pagination)
+    {
+        return await _db.Conditions
+            .WithPagination(pagination)
+            .ToListAsync();
     }
 
     public async Task<Condition?> GetByNameAsync(string name)
@@ -30,8 +40,7 @@ public class ConditionQueryRepository : BaseRepository, IConditionQueryRepositor
     {
         return await _db.Conditions
             .Filter(filter)
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
+            .WithPagination(pagination)
             .ToListAsync();
     }
 }

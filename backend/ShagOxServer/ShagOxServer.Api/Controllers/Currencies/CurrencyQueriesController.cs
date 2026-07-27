@@ -14,33 +14,31 @@ public class CurrencyQueriesController : ApiController
 {
     private readonly ICurrencyQueryService _queryService;
 
+
     public CurrencyQueriesController(
         ICurrencyQueryService queryService)
     {
         _queryService = queryService;
     }
 
+
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        var result = await _queryService.GetByIdAsync(id);
+        var result = await _queryService
+            .GetByIdAsync(id);
+
         return result.ToActionResult();
     }
 
-    [HttpGet("by-code")]
-    public async Task<IActionResult> GetById(
-        [FromQuery] string code)
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetByCodeAsync(code);
-        return result.ToActionResult();
-    }
+        var result = await _queryService
+            .GetPagedAsync(pagination);
 
-    [HttpGet("by-symbol")]
-    public async Task<IActionResult> GetBySymbol(
-        [FromQuery] string symbol)
-    {
-        var result = await _queryService.GetBySymbolAsync(symbol);
         return result.ToActionResult();
     }
 
@@ -49,7 +47,9 @@ public class CurrencyQueriesController : ApiController
        [FromQuery] CurrencySearchFilter filter,
        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.Search(filter, pagination);
+        var result = await _queryService
+            .Search(filter, pagination);
+
         return result.ToActionResult();
     }
 }

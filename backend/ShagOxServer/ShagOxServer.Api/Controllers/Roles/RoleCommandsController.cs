@@ -29,30 +29,33 @@ public class RoleCommandsController : ApiController
         _deleteService = deleteService;
     }
 
-    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(RoleCreateRequest request)
     {
-        var result = await _createService.CreateAsync(request);
+        var result = await _createService
+            .CreateAsync(request);
+
         return result.ToActionResult();
     }
 
-    [Authorize]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
         [FromRoute] int id,
         [FromBody] RoleUpdateRequest request)
     {
-        var result = await _updateService.UpdateAsync(id, request);
+        var result = await _updateService
+            .UpdateAsync(id, request);
+
         return result.ToActionResult();
     }
 
-    [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteAsync(id);
+        var result = await _deleteService
+            .DeleteAsync(id);
+
         return result.ToActionResult();
     }
 }

@@ -18,6 +18,7 @@ public class FavoriteCommandsController : ApiController
     private readonly IFavoriteUpdateService _updateService;
     private readonly IFavoriteDeleteService _deleteService;
 
+
     public FavoriteCommandsController(
         IFavoriteCreateService createService,
         IFavoriteUpdateService updateService,
@@ -29,6 +30,7 @@ public class FavoriteCommandsController : ApiController
         _deleteService = deleteService;
     }
 
+
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] FavoriteCreateRequest request)
@@ -36,7 +38,9 @@ public class FavoriteCommandsController : ApiController
         if (request.UserId != UserId)
             return Forbid();
 
-        var result = await _createService.CreateAsync(request);
+        var result = await _createService
+            .CreateAsync(request);
+
         return result.ToActionResult();
     }
 
@@ -48,7 +52,9 @@ public class FavoriteCommandsController : ApiController
         if (request.UserId != UserId)
             return Forbid();
 
-        var result = await _updateService.UpdateAsync(id, request);
+        var result = await _updateService
+            .UpdateAsync(id, request);
+
         return result.ToActionResult();
     }
 
@@ -56,7 +62,9 @@ public class FavoriteCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteAsync(id, UserId);
+        var result = await _deleteService
+            .DeleteAsync(id, UserId);
+
         return result.ToActionResult();
     }
 }

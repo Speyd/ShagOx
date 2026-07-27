@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Services.Auth;
@@ -13,6 +14,7 @@ public class AuthController : ApiController
     private readonly IRegisterService _registerService;
     private readonly ILoginService _loginService;
 
+
     public AuthController(
         IRegisterService registerService,
         ILoginService loginService)
@@ -26,7 +28,8 @@ public class AuthController : ApiController
     public async Task<IActionResult> Register(
         [FromBody] RegisterRequest request)
     {
-        var result = await _registerService.RegisterAsync(request);
+        var result = await _registerService
+            .RegisterAsync(request);
 
         return result.ToActionResult();
     }
@@ -34,7 +37,8 @@ public class AuthController : ApiController
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var result = await _loginService.LoginAsync(request);
+        var result = await _loginService
+            .LoginAsync(request);
 
         if (!result.IsSuccess)
             return Unauthorized(result.Error);
@@ -56,7 +60,8 @@ public class AuthController : ApiController
     }
 
     [HttpPost("logout")]
-    public IActionResult Logout() 
+    [Authorize]
+    public IActionResult Logout()
     {
         Response.Cookies.Delete("access_token");
 

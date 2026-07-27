@@ -7,6 +7,9 @@ public interface IRoleQueryRepository
 {
     Task<Role?> GetByIdAsync(int id);
 
+    Task<List<Role>> GetPagedAsync(
+        PaginationParams pagination);
+
     Task<List<Role>> GetByUserAsync(
         int userId,
         PaginationParams pagination);

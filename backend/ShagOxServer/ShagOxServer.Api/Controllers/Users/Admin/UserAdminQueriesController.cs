@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Services.Users.Query;
+using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Users.Admin;
@@ -12,42 +14,32 @@ public class UserAdminQueriesController : ApiController
 {
     private readonly IUserAdminQueryService _queryService;
 
+
     public UserAdminQueriesController(
         IUserAdminQueryService queryService)
     {
         _queryService = queryService;
     }
 
-    [HttpGet("by-contact")]
-    public async Task<IActionResult> GetByContact(
-        [FromQuery] string? email,
-        [FromQuery] string? phone)
+
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetByContactAsync(email, phone);
+        var result = await _queryService
+            .GetPagedAsync(pagination);
+
         return result.ToActionResult();
     }
 
-    [HttpGet("by-city/{cityId:int}")]
-    public async Task<IActionResult> GetByCity(
-        [FromRoute] int cityId)
+    [HttpGet("search")]
+    public async Task<IActionResult> Search(
+        [FromQuery] UserAdminSearchFilter filter,
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetByCityAsync(cityId);
-        return result.ToActionResult();
-    }
+        var result = await _queryService
+            .Search(filter, pagination);
 
-    [HttpGet("registered-after")]
-    public async Task<IActionResult> GetRegisteredAfter(
-        [FromQuery] DateTime date)
-    {
-        var result = await _queryService.GetUsersRegisteredAfterAsync(date);
-        return result.ToActionResult();
-    }
-
-    [HttpGet("active-after")]
-    public async Task<IActionResult> GetActiveAfter(
-        [FromQuery] DateTime date)
-    {
-        var result = await _queryService.GetUsersActiveAfterAsync(date);
         return result.ToActionResult();
     }
 }

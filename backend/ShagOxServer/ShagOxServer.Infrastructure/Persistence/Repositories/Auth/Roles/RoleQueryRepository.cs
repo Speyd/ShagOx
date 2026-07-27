@@ -12,6 +12,15 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
         : base(db)
     { }
 
+
+    public async Task<List<Role>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        return await _db.Roles
+            .WithPagination(pagination)
+            .ToListAsync();
+    }
+
     public async Task<Role?> GetByIdAsync(int id)
     {
         return await _db.Roles
@@ -25,8 +34,7 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
         return await _db.UserRoles
             .Where(x => x.UserId == userId)
             .Select(x => x.Role)
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
+            .WithPagination(pagination)
             .ToListAsync();
     }
 
@@ -42,8 +50,7 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
     {
         return await _db.Roles
             .Filter(filter)
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
+            .WithPagination(pagination)
             .ToListAsync();
     }
 }

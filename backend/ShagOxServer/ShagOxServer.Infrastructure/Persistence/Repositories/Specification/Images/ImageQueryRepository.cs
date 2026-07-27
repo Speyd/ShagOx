@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images.Extensions;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;
 public class ImageQueryRepository : BaseRepository, IImageQueryRepository
@@ -24,6 +25,15 @@ public class ImageQueryRepository : BaseRepository, IImageQueryRepository
            .WithIncludes()
            .Where(x => ids.Contains(x.Id))
            .ToListAsync();
+    }
+
+    public async Task<List<Image>> GetPagedAsync(
+      PaginationParams pagination)
+    {
+        return await _db.Images
+            .WithIncludes()
+            .WithPagination(pagination)
+            .ToListAsync();
     }
 
     public async Task<List<Image>> GetByAdvertisementIdAsync(

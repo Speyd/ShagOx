@@ -28,6 +28,15 @@ public class ConditionQueryService : IConditionQueryService
         return condition.ToResult(ConditionMapper.ToDto);
     }
 
+    public async Task<Result<List<ConditionDto>>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        var conditions = await _conditionQueryRepository
+            .GetPagedAsync(pagination);
+
+        return conditions.ToResultList(ConditionMapper.ToDto);
+    }
+
     public async Task<Result<ConditionDto>> GetByNameAsync(string name)
     {
         var condition = await _conditionQueryRepository

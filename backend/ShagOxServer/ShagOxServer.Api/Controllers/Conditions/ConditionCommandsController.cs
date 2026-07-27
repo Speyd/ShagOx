@@ -29,12 +29,15 @@ public class ConditionCommandsController : ApiController
         _deleteService = deleteService;
     }
 
+
     [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] ConditionCreateRequest request)
     {
-        var result = await _createService.CreateAsync(request);
+        var result = await _createService
+            .CreateAsync(request);
+
         return result.ToActionResult();
     }
 
@@ -44,7 +47,9 @@ public class ConditionCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] ConditionUpdateRequest request)
     {
-        var result = await _updateService.UpdateAsync(id, request);
+        var result = await _updateService
+            .UpdateAsync(id, request);
+
         return result.ToActionResult();
     }
 
@@ -53,7 +58,9 @@ public class ConditionCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteAsync(id);
+        var result = await _deleteService
+            .DeleteAsync(id);
+
         return result.ToActionResult();
     }
 }

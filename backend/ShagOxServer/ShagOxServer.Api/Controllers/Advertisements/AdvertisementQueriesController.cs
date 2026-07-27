@@ -12,17 +12,21 @@ public class AdvertisementQueriesController : ApiController
 {
     private readonly IAdvertisementQueryService _queryService;
 
+
     public AdvertisementQueriesController(
         IAdvertisementQueryService queryService)
     {
         _queryService = queryService;
     }
 
+
     [HttpGet]
-    public async Task<IActionResult> GetAll(
+    public async Task<IActionResult> GetPaged(
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetAllAsync(pagination);
+        var result = await _queryService
+            .GetPagedAsync(pagination);
+
         return result.ToActionResult();
     }
 
@@ -30,16 +34,9 @@ public class AdvertisementQueriesController : ApiController
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        var result = await _queryService.GetByIdAsync(id);
-        return result.ToActionResult();
-    }
+        var result = await _queryService
+            .GetByIdAsync(id);
 
-    [HttpGet("category/{categoryId:int}")]
-    public async Task<IActionResult> GetByCategory(
-        [FromRoute] int categoryId,
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService.GetByCategoryAsync(categoryId, pagination);
         return result.ToActionResult();
     }
 
@@ -48,7 +45,9 @@ public class AdvertisementQueriesController : ApiController
         [FromQuery] AdvertisementSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.Search(filter, pagination);
+        var result = await _queryService
+            .Search(filter, pagination);
+
         return result.ToActionResult();
     }
 }

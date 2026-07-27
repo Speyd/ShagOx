@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Advertisements.Update;
-using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Interfaces.Services.Users.Query;
@@ -10,7 +10,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Images;
 
 [ApiController]
 [Route("api/advertisements/{advertisementId:int}/images")]
-
+[Authorize(Roles = "Admin")]
 public class AdvertisementImagesCommandsController : AdvertisementOwnerController
 {
     private readonly IAdvertisementImageService _imageService;

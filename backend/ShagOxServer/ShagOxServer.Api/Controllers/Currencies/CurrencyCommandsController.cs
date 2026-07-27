@@ -33,7 +33,9 @@ public class CurrencyCommandsController : ApiController
     [HttpPost]
     public async Task<IActionResult> Create(CurrencyCreateRequest request)
     {
-        var result = await _createService.CreateAsync(request);
+        var result = await _createService
+            .CreateAsync(request);
+
         return result.ToActionResult();
     }
 
@@ -43,7 +45,9 @@ public class CurrencyCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] CurrencyUpdateRequest request)
     {
-        var result = await _updateService.UpdateAsync(id, request);
+        var result = await _updateService
+            .UpdateAsync(id, request);
+
         return result.ToActionResult();
     }
 
@@ -52,7 +56,9 @@ public class CurrencyCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteAsync(id);
+        var result = await _deleteService
+            .DeleteAsync(id);
+
         return result.ToActionResult();
     }
 }

@@ -18,21 +18,11 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         _advertisementRepository = advertisementRepository;
     }
 
-    public async Task<Result<List<AdvertisementDto>>> GetAllAsync(
+    public async Task<Result<List<AdvertisementDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var adverts = await _advertisementRepository
             .GetPagedAsync(pagination);
-
-        return adverts.ToResultList(AdvertisementMapper.ToDto);
-    }
-
-    public async Task<Result<List<AdvertisementDto>>> GetByCategoryAsync(
-        int categoryId,
-        PaginationParams pagination)
-    {
-        var adverts = await _advertisementRepository
-            .GetByCategoryAsync(categoryId, pagination);
 
         return adverts.ToResultList(AdvertisementMapper.ToDto);
     }

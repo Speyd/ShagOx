@@ -2,5 +2,6 @@
 public sealed record AdvertisementSearchFilter
 (
     string? Title,
-    string? Description
+    string? Description,
+    int? CategoryId
 );

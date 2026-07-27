@@ -18,6 +18,14 @@ public class CurrencyQueryRepository : BaseRepository, ICurrencyQueryRepository
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
+    public async Task<List<Currency>> GetPagedAsync(
+      PaginationParams pagination)
+    {
+        return await _db.Currencies
+            .WithPagination(pagination)
+            .ToListAsync();
+    }
+
     public async Task<Currency?> GetByCodeAsync(string code)
     {
         return await _db.Currencies

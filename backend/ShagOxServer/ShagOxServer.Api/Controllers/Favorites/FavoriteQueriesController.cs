@@ -12,6 +12,7 @@ public class FavoriteQueriesController : ApiController
 {
     private readonly IFavoriteQueryService _queryService;
 
+
     public FavoriteQueriesController(
         IFavoriteQueryService queryService)
     {
@@ -24,7 +25,9 @@ public class FavoriteQueriesController : ApiController
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        var result = await _queryService.GetByIdAsync(id);
+        var result = await _queryService
+            .GetByIdAsync(id);
+
         return result.ToActionResult();
     }
 
@@ -32,7 +35,9 @@ public class FavoriteQueriesController : ApiController
     public async Task<IActionResult> CountByAdvertisementIdAsync(
          [FromRoute] int advertId)
     {
-        var result = await _queryService.CountByAdvertisementAsync(advertId);
+        var result = await _queryService
+            .CountByAdvertisementAsync(advertId);
+
         return result.ToActionResult();
     }
 
@@ -42,9 +47,8 @@ public class FavoriteQueriesController : ApiController
        [FromQuery] PaginationParams pagination
        )
     {
-        var result = await _queryService.GetByUserAsync(
-            UserId,
-            pagination);
+        var result = await _queryService
+            .GetByUserAsync(UserId, pagination);
 
         return result.ToActionResult();
     }

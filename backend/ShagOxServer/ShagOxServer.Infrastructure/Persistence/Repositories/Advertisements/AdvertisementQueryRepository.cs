@@ -37,8 +37,7 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .WithIncludes()
             .Where(x => x.SellerId == userId)
             .OrderByDescending(x => x.Popularity)
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
+            .WithPagination(pagination)
             .ToListAsync();
     }
     public async Task<List<Advertisement>> GetPurchasedByUserAsync(
@@ -49,8 +48,7 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .WithIncludes()
             .Where(x => x.BuyerId == userId)
             .OrderByDescending(x => x.Popularity)
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
+            .WithPagination(pagination)
             .ToListAsync();
     }
 
@@ -60,21 +58,7 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
         return await _db.Advertisements
             .WithIncludes()
             .OrderByDescending(x => x.Popularity)
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
-            .ToListAsync();
-    }
-
-    public async Task<List<Advertisement>> GetByCategoryAsync(
-        int categoryId,
-        PaginationParams pagination)
-    {
-        return await _db.Advertisements
-            .WithIncludes()
-            .Where(x => x.CategoryId == categoryId)
-            .OrderByDescending(x => x.Popularity)
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
+            .WithPagination(pagination)
             .ToListAsync();
     }
 
@@ -86,8 +70,7 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .WithIncludes()
             .Filter(filter)
             .OrderByDescending(x => x.Popularity)
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
+            .WithPagination(pagination)
             .ToListAsync();
     }
 }

@@ -15,6 +15,7 @@ public class AdvertisementAdminQueriesController : AdvertisementOwnerController
 {
     private readonly IAdvertisementQueryService _queryAdvertService;
 
+
     public AdvertisementAdminQueriesController(
        IAdvertisementQueryService queryAdvertService,
        IAdvertisementExistsRepository existsAdvertRepository,
@@ -24,18 +25,20 @@ public class AdvertisementAdminQueriesController : AdvertisementOwnerController
         _queryAdvertService = queryAdvertService;
     }
 
+
     [HttpGet("purchases/{userId:int}")]
     public async Task<IActionResult> GetPurchasedAdvertisements(
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQueryService.ExistsByIdAsync(userId);
+        var exists = await _userQueryService
+            .ExistsByIdAsync(userId);
 
         if (!exists)
             return NotFound("User not found");
 
-        var advertisements =
-            await _queryAdvertService.GetPurchasedByUserAsync(userId, pagination);
+        var advertisements = await _queryAdvertService
+            .GetPurchasedByUserAsync(userId, pagination);
 
         return advertisements.ToActionResult();
     }

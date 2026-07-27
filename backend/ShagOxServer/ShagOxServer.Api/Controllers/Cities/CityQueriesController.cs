@@ -14,6 +14,7 @@ public class CityQueriesController : ApiController
 {
     private readonly ICityQueryService _queryService;
 
+
     public CityQueriesController(
         ICityQueryService queryService)
     {
@@ -25,37 +26,31 @@ public class CityQueriesController : ApiController
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        var result = await _queryService.GetByIdAsync(id);
+        var result = await _queryService
+            .GetByIdAsync(id);
+
         return result.ToActionResult();
     }
 
-    [HttpGet("by-name")]
-    public async Task<IActionResult> GetByName(
-         [FromQuery] string name)
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.GetByNameAsync(name);
-        return result.ToActionResult();
-    }
-
-    [HttpGet("by-region/{regionId:int}")]
-    public async Task<IActionResult> GetByRegion(
-        [FromRoute] int regionId,
-        [FromQuery] PaginationParams pagination
-		)
-    {
-        var result = await _queryService.GetByRegionAsync(
-            regionId, 
-            pagination);
+        var result = await _queryService
+            .GetPagedAsync(pagination);
 
         return result.ToActionResult();
     }
+
 
     [HttpGet("search")]
     public async Task<IActionResult> Search(
        [FromQuery] CitySearchFilter filter,
        [FromQuery] PaginationParams pagination)
     {
-        var result = await _queryService.Search(filter, pagination);
+        var result = await _queryService
+            .Search(filter, pagination);
+
         return result.ToActionResult();
     }
 }

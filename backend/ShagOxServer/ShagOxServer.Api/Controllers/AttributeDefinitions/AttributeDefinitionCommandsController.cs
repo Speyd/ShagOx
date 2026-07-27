@@ -18,6 +18,7 @@ public class AttributeDefinitionCommandsController : ApiController
     private readonly IAttributeDefinitionUpdateService _updateService;
     private readonly IAttributeDefinitionDeleteService _deleteService;
 
+
     public AttributeDefinitionCommandsController(
         IAttributeDefinitionCreateService createService,
         IAttributeDefinitionUpdateService updateService,
@@ -34,7 +35,9 @@ public class AttributeDefinitionCommandsController : ApiController
     public async Task<IActionResult> Create(
         [FromBody] AttributeDefinitionCreateRequest request)
     {
-        var result = await _createService.CreateAsync(request);
+        var result = await _createService
+            .CreateAsync(request);
+
         return result.ToActionResult();
     }
 
@@ -43,7 +46,9 @@ public class AttributeDefinitionCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] AttributeDefinitionUpdateRequest request)
     {
-        var result = await _updateService.UpdateAsync(id, request);
+        var result = await _updateService
+            .UpdateAsync(id, request);
+
         return result.ToActionResult();
     }
 
@@ -52,7 +57,9 @@ public class AttributeDefinitionCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteAsync(id);
+        var result = await _deleteService
+            .DeleteAsync(id);
+
         return result.ToActionResult();
     }
 }

@@ -20,6 +20,15 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<List<User>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        return await _db.Users
+            .WithIncludes()
+            .WithPagination(pagination)
+            .ToListAsync();
+    }
+
     public async Task<User?> GetByContactAsync(string? email, string? phone)
     {
         var query = _db.Users
@@ -48,36 +57,6 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
             .FirstOrDefaultAsync(x => x.Phone == phone);
     }
 
-    public async Task<List<User>> GetByCityAsync(int cityId)
-    {
-        return await _db.Users
-            .WithIncludes()
-            .Where(x => x.CityId == cityId)
-            .ToListAsync();
-    }
-
-    public async Task<List<User>> GetUsersRegisteredAfterAsync(DateTime date)
-    {
-        var dayStart = date.Date;
-        var dayEnd = dayStart.AddDays(1);
-
-        return await _db.Users
-            .WithIncludes()
-            .Where(x => x.RegisteredAt >= dayStart && x.RegisteredAt < dayEnd)
-            .ToListAsync();
-    }
-
-    public async Task<List<User>> GetUsersActiveAfterAsync(DateTime date)
-    {
-        var dayStart = date.Date;
-        var dayEnd = dayStart.AddDays(1);
-
-        return await _db.Users
-            .WithIncludes()
-            .Where(x => x.LastSeenAt >= dayStart && x.LastSeenAt < dayEnd)
-            .ToListAsync();
-    }
-
     public async Task<List<User>> Search(
         UserSearchFilter filter, 
         PaginationParams pagination)
@@ -85,8 +64,18 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
         return await _db.Users
             .WithIncludes()
              .Filter(filter)
-             .Skip((pagination.Page - 1) * pagination.PageSize)
-             .Take(pagination.PageSize)
+             .WithPagination(pagination)
+             .ToListAsync();
+    }
+
+    public async Task<List<User>> AdminSearch(
+        UserAdminSearchFilter filter,
+        PaginationParams pagination)
+    {
+        return await _db.Users
+            .WithIncludes()
+             .Filter(filter)
+             .WithPagination(pagination)
              .ToListAsync();
     }
 }

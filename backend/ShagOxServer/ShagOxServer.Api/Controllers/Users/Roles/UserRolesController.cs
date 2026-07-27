@@ -14,6 +14,7 @@ public class UserRolesController : ApiController
     private readonly IUserQueryService _userService;
     private readonly IRoleQueryService _roleService;
 
+
     public UserRolesController(
         IUserQueryService queryService,
         IRoleQueryService roleService)
@@ -22,12 +23,14 @@ public class UserRolesController : ApiController
         _roleService = roleService;
     }
 
+
     [Authorize]
     [HttpGet("me/role")]
     public async Task<IActionResult> GetMyRole(
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _userService.GetMyRoleAsync(pagination);
+        var result = await _userService
+            .GetMyRoleAsync(pagination);
 
         return result.ToActionResult();
     }
@@ -38,7 +41,8 @@ public class UserRolesController : ApiController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var result = await _roleService.GetByUserAsync(userId, pagination);
+        var result = await _roleService
+            .GetByUserAsync(userId, pagination);
 
         return result.ToActionResult();
     }

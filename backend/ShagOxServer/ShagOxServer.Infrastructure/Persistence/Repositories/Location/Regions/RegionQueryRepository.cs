@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Regions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -12,10 +13,19 @@ public class RegionQueryRepository : BaseRepository, IRegionQueryRepository
         : base(db)
     { }
 
+
     public async Task<Region?> GetByIdAsync(int id)
     {
         return await _db.Regions
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<Region>> GetPagedAsync(
+       PaginationParams pagination)
+    {
+        return await _db.Regions
+            .WithPagination(pagination)
+            .ToListAsync();
     }
 
     public async Task<Region?> GetByNameAsync(string name)

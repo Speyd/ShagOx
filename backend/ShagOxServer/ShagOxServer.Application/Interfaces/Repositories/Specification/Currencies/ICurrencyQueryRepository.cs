@@ -7,6 +7,9 @@ public interface ICurrencyQueryRepository
 {
     Task<Currency?> GetByIdAsync(int id);
 
+    Task<List<Currency>> GetPagedAsync(
+        PaginationParams pagination);
+
     Task<Currency?> GetByCodeAsync(string code);
 
     Task<Currency?> GetBySymbolAsync(string symbol);

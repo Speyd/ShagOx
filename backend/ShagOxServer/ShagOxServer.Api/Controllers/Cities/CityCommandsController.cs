@@ -18,6 +18,7 @@ public class CityCommandsController : ApiController
     private readonly ICityUpdateService _updateService;
     private readonly ICityDeleteService _deleteService;
 
+
     public CityCommandsController(
         ICityCreateService createService,
         ICityUpdateService updateService,
@@ -29,11 +30,14 @@ public class CityCommandsController : ApiController
         _deleteService = deleteService;
     }
 
+
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] CityCreateRequest request)
     {
-        var result = await _createService.CreateAsync(request);
+        var result = await _createService
+            .CreateAsync(request);
+
         return result.ToActionResult();
     }
 
@@ -42,7 +46,9 @@ public class CityCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] CityUpdateRequest request)
     {
-        var result = await _updateService.UpdateAsync(id, request);
+        var result = await _updateService
+            .UpdateAsync(id, request);
+
         return result.ToActionResult();
     }
 
@@ -51,7 +57,9 @@ public class CityCommandsController : ApiController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var result = await _deleteService.DeleteAsync(id);
+        var result = await _deleteService
+            .DeleteAsync(id);
+        
         return result.ToActionResult();
     }
 }

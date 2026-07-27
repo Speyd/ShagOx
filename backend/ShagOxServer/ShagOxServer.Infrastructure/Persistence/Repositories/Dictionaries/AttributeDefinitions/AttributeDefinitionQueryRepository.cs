@@ -21,13 +21,12 @@ public class AttributeDefinitionQueryRepository : BaseRepository, IAttributeDefi
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<AttributeDefinition>> GetPagedAsync(
+    public async Task<PagedResult<AttributeDefinition>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.AttributeDefinitions
             .WithIncludes()
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<List<AttributeDefinition>> GetByIdsAsync(
@@ -38,14 +37,13 @@ public class AttributeDefinitionQueryRepository : BaseRepository, IAttributeDefi
             .ToListAsync();
     }
 
-    public async Task<List<AttributeDefinition>> Search(
+    public async Task<PagedResult<AttributeDefinition>> Search(
         AttributeDefinitionSearchFilter filter,
         PaginationParams pagination)
     {
         return await _db.AttributeDefinitions
             .WithIncludes()
             .Filter(filter)
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 }

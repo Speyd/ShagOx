@@ -18,12 +18,11 @@ public class CurrencyQueryRepository : BaseRepository, ICurrencyQueryRepository
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<List<Currency>> GetPagedAsync(
+    public async Task<PagedResult<Currency>> GetPagedAsync(
       PaginationParams pagination)
     {
         return await _db.Currencies
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<Currency?> GetByCodeAsync(string code)
@@ -38,14 +37,12 @@ public class CurrencyQueryRepository : BaseRepository, ICurrencyQueryRepository
             .FirstOrDefaultAsync(c => c.Symbol == symbol);
     }
 
-    public async Task<List<Currency>> Search(
+    public async Task<PagedResult<Currency>> Search(
       CurrencySearchFilter filter,
       PaginationParams pagination)
     {
         return await _db.Currencies
             .Filter(filter)
-            .Skip((pagination.Page - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 }

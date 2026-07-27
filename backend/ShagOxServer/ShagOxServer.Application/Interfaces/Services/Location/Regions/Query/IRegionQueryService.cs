@@ -8,12 +8,12 @@ public interface IRegionQueryService
 {
     Task<Result<RegionDto>> GetByIdAsync(int id);
 
-    Task<Result<List<RegionDto>>> GetPagedAsync(
+    Task<Result<PagedResult<RegionDto>>> GetPagedAsync(
         PaginationParams pagination);
 
     Task<Result<RegionDto>> GetByNameAsync(string name);
 
-    Task<Result<List<RegionDto>>> Search(
+    Task<Result<PagedResult<RegionDto>>> Search(
       RegionSearchFilter filter,
       PaginationParams pagination);
 }

@@ -8,16 +8,16 @@ public interface IRoleQueryService
 {
     Task<Result<RoleDto>> GetByIdAsync(int id);
 
-    Task<Result<List<RoleDto>>> GetPagedAsync(
+    Task<Result<PagedResult<RoleDto>>> GetPagedAsync(
         PaginationParams pagination);
 
-    Task<Result<List<RoleDto>>> GetByUserAsync(
+    Task<Result<PagedResult<RoleDto>>> GetByUserAsync(
        int userId,
        PaginationParams pagination);
 
     Task<Result<RoleDto>> GetByNameAsync(string name);
 
-    Task<Result<List<RoleDto>>> Search(
+    Task<Result<PagedResult<RoleDto>>> Search(
        RoleSearchFilter filter,
        PaginationParams pagination);
 }

@@ -7,12 +7,12 @@ public interface IConditionQueryRepository
 {
     Task<Condition?> GetByIdAsync(int id);
 
-    Task<List<Condition>> GetPagedAsync(
+    Task<PagedResult<Condition>> GetPagedAsync(
         PaginationParams pagination);
 
     Task<Condition?> GetByNameAsync(string name);
 
-    Task<List<Condition>> Search(
+    Task<PagedResult<Condition>> Search(
         ConditionSearchFilter filter,
         PaginationParams pagination);
 }

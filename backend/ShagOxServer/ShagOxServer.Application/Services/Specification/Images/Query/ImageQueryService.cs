@@ -27,12 +27,12 @@ public class ImageQueryService : IImageQueryService
         return image.ToResult(ImageMapper.ToDto);
     }
 
-    public async Task<Result<List<ImageDto>>> GetPagedAsync(
+    public async Task<Result<PagedResult<ImageDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var images = await _imageQueryRepository
             .GetPagedAsync(pagination);
 
-        return images.ToResultList(ImageMapper.ToDto);
+        return images.ToResultPaged(ImageMapper.ToDto);
     }
 }

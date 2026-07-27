@@ -6,10 +6,10 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Users.Query;
 public interface IUserAdminQueryService
 {
-    Task<Result<List<UserDto>>> GetPagedAsync(
+    Task<Result<PagedResult<UserDto>>> GetPagedAsync(
         PaginationParams pagination);
 
-    Task<Result<List<UserDto>>> Search(
+    Task<Result<PagedResult<UserDto>>> Search(
         UserAdminSearchFilter filter,
         PaginationParams pagination);
 

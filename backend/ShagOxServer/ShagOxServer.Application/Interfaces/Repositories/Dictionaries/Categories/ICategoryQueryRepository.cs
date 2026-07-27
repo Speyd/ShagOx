@@ -8,16 +8,16 @@ public interface ICategoryQueryRepository
 {
     Task<Category?> GetByIdAsync(int id);
 
-    Task<List<Category>> GetPagedAsync(
+    Task<PagedResult<Category>> GetPagedAsync(
         PaginationParams pagination);
 
     Task<Category?> GetByNameAsync(string name);
 
-    Task<List<Category>> GetByProductTypeAsync(
+    Task<PagedResult<Category>> GetByProductTypeAsync(
         ProductType type,
         PaginationParams pagination);
 
-    Task<List<Category>> Search(
+    Task<PagedResult<Category>> Search(
        CategorySearchFilter filter,
        PaginationParams pagination);
 }

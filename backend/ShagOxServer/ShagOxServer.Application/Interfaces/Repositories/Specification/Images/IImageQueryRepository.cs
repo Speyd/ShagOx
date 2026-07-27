@@ -6,7 +6,7 @@ public interface IImageQueryRepository
 {
     Task<Image?> GetByIdAsync(int id);
 
-    Task<List<Image>> GetPagedAsync(
+    Task<PagedResult<Image>> GetPagedAsync(
         PaginationParams pagination);
 
     Task<List<Image>> GetByIdsAsync(List<int> ids);

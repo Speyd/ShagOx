@@ -28,13 +28,13 @@ public class CityQueryService : ICityQueryService
         return city.ToResult(CityMapper.ToDto);
     }
 
-    public async Task<Result<List<CityDto>>> GetPagedAsync(
+    public async Task<Result<PagedResult<CityDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var cities = await _repositoryQueryCity
             .GetPagedAsync(pagination);
 
-        return cities.ToResultList(CityMapper.ToDto);
+        return cities.ToResultPaged(CityMapper.ToDto);
     }
 
     public async Task<Result<CityDto>> GetByNameAsync(string name)
@@ -45,23 +45,23 @@ public class CityQueryService : ICityQueryService
         return city.ToResult(CityMapper.ToDto);
     }
 
-    public async Task<Result<List<CityDto>>> GetByRegionAsync(
+    public async Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
         int regionId,
         PaginationParams pagination)
     {
         var cities = await _repositoryQueryCity
             .GetByRegionAsync(regionId, pagination);
 
-        return cities.ToResultList(CityMapper.ToDto);
+        return cities.ToResultPaged(CityMapper.ToDto);
     }
 
-    public async Task<Result<List<CityDto>>> Search(
+    public async Task<Result<PagedResult<CityDto>>> Search(
        CitySearchFilter filter,
        PaginationParams pagination)
     {
         var cities = await _repositoryQueryCity
             .Search(filter, pagination);
 
-        return cities.ToResultList(CityMapper.ToDto);
+        return cities.ToResultPaged(CityMapper.ToDto);
     }
 }

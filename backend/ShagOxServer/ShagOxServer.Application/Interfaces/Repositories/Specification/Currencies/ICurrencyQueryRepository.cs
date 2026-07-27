@@ -7,14 +7,14 @@ public interface ICurrencyQueryRepository
 {
     Task<Currency?> GetByIdAsync(int id);
 
-    Task<List<Currency>> GetPagedAsync(
+    Task<PagedResult<Currency>> GetPagedAsync(
         PaginationParams pagination);
 
     Task<Currency?> GetByCodeAsync(string code);
 
     Task<Currency?> GetBySymbolAsync(string symbol);
 
-    Task<List<Currency>> Search(
+    Task<PagedResult<Currency>> Search(
       CurrencySearchFilter filter,
       PaginationParams pagination);
 }

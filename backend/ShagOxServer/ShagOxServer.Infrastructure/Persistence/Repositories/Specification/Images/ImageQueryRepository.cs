@@ -27,13 +27,12 @@ public class ImageQueryRepository : BaseRepository, IImageQueryRepository
            .ToListAsync();
     }
 
-    public async Task<List<Image>> GetPagedAsync(
+    public async Task<PagedResult<Image>> GetPagedAsync(
       PaginationParams pagination)
     {
         return await _db.Images
             .WithIncludes()
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<List<Image>> GetByAdvertisementIdAsync(

@@ -20,12 +20,11 @@ public class RegionQueryRepository : BaseRepository, IRegionQueryRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<Region>> GetPagedAsync(
+    public async Task<PagedResult<Region>> GetPagedAsync(
        PaginationParams pagination)
     {
         return await _db.Regions
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<Region?> GetByNameAsync(string name)
@@ -34,14 +33,12 @@ public class RegionQueryRepository : BaseRepository, IRegionQueryRepository
             .FirstOrDefaultAsync(x => x.Name == name);
     }
 
-    public async Task<List<Region>> Search(
+    public async Task<PagedResult<Region>> Search(
         RegionSearchFilter filter,
         PaginationParams pagination)
     {
         return await _db.Regions
             .Filter(filter)
-            .Skip((pagination.PageSize - 1) * pagination.PageSize)
-            .Take(pagination.PageSize)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 }

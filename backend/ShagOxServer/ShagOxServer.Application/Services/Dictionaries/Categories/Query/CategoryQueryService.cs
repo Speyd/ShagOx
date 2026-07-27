@@ -30,13 +30,13 @@ public class CategoryQueryService : ICategoryQueryService
         return category.ToResult(CategoryMapper.ToDto);
     }
 
-    public async Task<Result<List<CategoryDto>>> GetPagedAsync(
+    public async Task<Result<PagedResult<CategoryDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var categories = await _categoryQueryRepository
             .GetPagedAsync(pagination);
 
-        return categories.ToResultList(CategoryMapper.ToDto);
+        return categories.ToResultPaged(CategoryMapper.ToDto);
     }
 
     public async Task<Result<CategoryDto>> GetByNameAsync(
@@ -48,23 +48,23 @@ public class CategoryQueryService : ICategoryQueryService
         return category.ToResult(CategoryMapper.ToDto);
     }
 
-    public async Task<Result<List<CategoryDto>>> GetByProductTypeAsync(
+    public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
         ProductType type,
         PaginationParams pagination)
     {
         var categories = await _categoryQueryRepository
             .GetByProductTypeAsync(type, pagination);
 
-        return categories.ToResultList(CategoryMapper.ToDto);
+        return categories.ToResultPaged(CategoryMapper.ToDto);
     }
 
-    public async Task<Result<List<CategoryDto>>> Search(
+    public async Task<Result<PagedResult<CategoryDto>>> Search(
         CategorySearchFilter filter,
         PaginationParams pagination)
     {
         var categories = await _categoryQueryRepository
             .Search(filter, pagination);
 
-        return categories.ToResultList(CategoryMapper.ToDto);
+        return categories.ToResultPaged(CategoryMapper.ToDto);
     }
 }

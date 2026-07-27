@@ -28,23 +28,23 @@ public class RoleQueryService : IRoleQueryService
         return role.ToResult(RoleMapper.ToDto);
     }
 
-    public async Task<Result<List<RoleDto>>> GetPagedAsync(
+    public async Task<Result<PagedResult<RoleDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var roles = await _roleQueryRepository
             .GetPagedAsync(pagination);
 
-        return roles.ToResultList(RoleMapper.ToDto);
+        return roles.ToResultPaged(RoleMapper.ToDto);
     }
 
-    public async Task<Result<List<RoleDto>>> GetByUserAsync(
+    public async Task<Result<PagedResult<RoleDto>>> GetByUserAsync(
        int userId,
        PaginationParams pagination)
     {
         var roles = await _roleQueryRepository
             .GetByUserAsync(userId, pagination);
 
-        return roles.ToResultList(RoleMapper.ToDto);
+        return roles.ToResultPaged(RoleMapper.ToDto);
     }
 
     public async Task<Result<RoleDto>> GetByNameAsync(string name)
@@ -55,13 +55,13 @@ public class RoleQueryService : IRoleQueryService
         return role.ToResult(RoleMapper.ToDto);
     }
 
-    public async Task<Result<List<RoleDto>>> Search(
+    public async Task<Result<PagedResult<RoleDto>>> Search(
        RoleSearchFilter filter,
 	   PaginationParams pagination)
     {
         var roles = await _roleQueryRepository
             .Search(filter, pagination);
 
-        return roles.ToResultList(RoleMapper.ToDto);
+        return roles.ToResultPaged(RoleMapper.ToDto);
     }
 }

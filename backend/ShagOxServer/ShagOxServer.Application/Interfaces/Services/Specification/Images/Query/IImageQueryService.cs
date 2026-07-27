@@ -7,6 +7,6 @@ public interface IImageQueryService
 {
     Task<Result<ImageDto>> GetByIdAsync(int id);
 
-    Task<Result<List<ImageDto>>> GetPagedAsync(
+    Task<Result<PagedResult<ImageDto>>> GetPagedAsync(
         PaginationParams pagination);
 }

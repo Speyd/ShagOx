@@ -11,10 +11,10 @@ public interface IUserQueryService
 
     Task<Result<UserDto>> GetMyProfileAsync();
 
-    Task<Result<List<RoleDto>>> GetMyRoleAsync(
+    Task<Result<PagedResult<RoleDto>>> GetMyRoleAsync(
         PaginationParams pagination);
 
-    Task<Result<List<UserDto>>> Search(
+    Task<Result<PagedResult<UserDto>>> Search(
         UserSearchFilter filter,
         PaginationParams pagination);
 }

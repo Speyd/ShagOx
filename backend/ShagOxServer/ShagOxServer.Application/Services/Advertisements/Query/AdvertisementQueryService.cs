@@ -18,13 +18,13 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         _advertisementRepository = advertisementRepository;
     }
 
-    public async Task<Result<List<AdvertisementDto>>> GetPagedAsync(
+    public async Task<Result<PagedResult<AdvertisementDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var adverts = await _advertisementRepository
             .GetPagedAsync(pagination);
 
-        return adverts.ToResultList(AdvertisementMapper.ToDto);
+        return adverts.ToResultPaged(AdvertisementMapper.ToDto);
     }
 
     public async Task<Result<AdvertisementDto>> GetByIdAsync(
@@ -36,32 +36,32 @@ public class AdvertisementQueryService : IAdvertisementQueryService
         return advert.ToResult(AdvertisementMapper.ToDto);
     }
 
-    public async Task<Result<List<AdvertisementDto>>> GetBySellerAsync(
+    public async Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
         int userId,
         PaginationParams pagination)
     {
         var advert = await _advertisementRepository
             .GetBySellerAsync(userId, pagination);
 
-        return advert.ToResultList(AdvertisementMapper.ToDto);
+        return advert.ToResultPaged(AdvertisementMapper.ToDto);
     }
-    public async Task<Result<List<AdvertisementDto>>> GetPurchasedByUserAsync(
+    public async Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         int userId,
         PaginationParams pagination)
     {
         var advert = await _advertisementRepository
             .GetPurchasedByUserAsync(userId, pagination);
 
-        return advert.ToResultList(AdvertisementMapper.ToDto);
+        return advert.ToResultPaged(AdvertisementMapper.ToDto);
     }
 
-    public async Task<Result<List<AdvertisementDto>>> Search(
+    public async Task<Result<PagedResult<AdvertisementDto>>> Search(
         AdvertisementSearchFilter filter,
         PaginationParams pagination)
     {
         var advert = await _advertisementRepository
             .Search(filter, pagination);
 
-        return advert.ToResultList(AdvertisementMapper.ToDto);
+        return advert.ToResultPaged(AdvertisementMapper.ToDto);
     }
 }

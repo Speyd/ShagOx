@@ -47,16 +47,16 @@ public class UserQueryService : IUserQueryService
         return user.ToResult(UserMapper.ToDto);
     }
 
-    public async Task<Result<List<RoleDto>>> GetMyRoleAsync(
+    public async Task<Result<PagedResult<RoleDto>>> GetMyRoleAsync(
         PaginationParams pagination)
     {
         var roles = await _roleQueryRepository
             .GetByUserAsync(_context.UserId, pagination);
 
-        return roles.ToResultList(RoleMapper.ToDto);
+        return roles.ToResultPaged(RoleMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> Search(
+    public async Task<Result<PagedResult<UserDto>>> Search(
        UserSearchFilter filter,
 	   PaginationParams pagination)
     {
@@ -64,6 +64,6 @@ public class UserQueryService : IUserQueryService
             .Search(
             filter, pagination);
 
-        return users.ToResultList(UserMapper.ToDto);
+        return users.ToResultPaged(UserMapper.ToDto);
     }
 }

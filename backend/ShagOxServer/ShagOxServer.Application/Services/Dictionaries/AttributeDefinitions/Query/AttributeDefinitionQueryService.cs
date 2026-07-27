@@ -1,6 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Query;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Mapping;
 using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
@@ -26,22 +25,22 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
         return attribute.ToResult(AttributeDefinitionMapper.ToDto);
     }
 
-    public async Task<Result<List<AttributeDefinitionDto>>> GetPagedAsync(
+    public async Task<Result<PagedResult<AttributeDefinitionDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var attributes = await _attributeQueryRepository
             .GetPagedAsync(pagination);
 
-        return attributes.ToResultList(AttributeDefinitionMapper.ToDto);
+        return attributes.ToResultPaged(AttributeDefinitionMapper.ToDto);
     }
 
-    public async Task<Result<List<AttributeDefinitionDto>>> Search(
+    public async Task<Result<PagedResult<AttributeDefinitionDto>>> Search(
        AttributeDefinitionSearchFilter filter,
        PaginationParams pagination)
     {
         var attributes = await _attributeQueryRepository
             .Search(filter, pagination);
 
-        return attributes.ToResultList(AttributeDefinitionMapper.ToDto);
+        return attributes.ToResultPaged(AttributeDefinitionMapper.ToDto);
     }
 }

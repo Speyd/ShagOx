@@ -20,13 +20,12 @@ public class FavoriteQueryRepository : BaseRepository, IFavoriteQueryRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<Favorite>> GetPagedAsync(
+    public async Task<PagedResult<Favorite>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Favorites
             .WithIncludes()
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<int> CountByAdvertisementAsync(
@@ -38,13 +37,13 @@ public class FavoriteQueryRepository : BaseRepository, IFavoriteQueryRepository
              .CountAsync();
     }
 
-    public async Task<List<Favorite>> GetByUserAsync(
+    public async Task<PagedResult<Favorite>> GetByUserAsync(
         int usderId,
         PaginationParams pagination)
     {
         return await _db.Favorites
              .WithIncludes()
              .Where(x => x.UserId == usderId)
-             .ToListAsync();
+             .ToPagedResultAsync(pagination);
     }
 }

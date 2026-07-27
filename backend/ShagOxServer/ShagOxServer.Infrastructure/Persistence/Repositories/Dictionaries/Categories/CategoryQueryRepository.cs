@@ -22,13 +22,12 @@ public class CategoryQueryRepository : BaseRepository, ICategoryQueryRepository
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<List<Category>> GetPagedAsync(
+    public async Task<PagedResult<Category>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Categories
             .WithIncludes()
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<Category?> GetByNameAsync(string name)
@@ -38,25 +37,23 @@ public class CategoryQueryRepository : BaseRepository, ICategoryQueryRepository
             .FirstOrDefaultAsync(c => c.Name == name);
     }
 
-    public async Task<List<Category>> GetByProductTypeAsync(
+    public async Task<PagedResult<Category>> GetByProductTypeAsync(
         ProductType type,
         PaginationParams pagination)
     {
         return await _db.Categories
             .WithIncludes()
             .Where(c => c.ProductType == type)
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<Category>> Search(
+    public async Task<PagedResult<Category>> Search(
         CategorySearchFilter filter,
         PaginationParams pagination)
     {
         return await _db.Categories
             .WithIncludes()
             .Filter(filter)
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 }

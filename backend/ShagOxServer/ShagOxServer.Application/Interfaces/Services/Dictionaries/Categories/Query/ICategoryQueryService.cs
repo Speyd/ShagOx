@@ -9,16 +9,16 @@ public interface ICategoryQueryService
 {
     Task<Result<CategoryDto>> GetByIdAsync(int id);
 
-    Task<Result<List<CategoryDto>>> GetPagedAsync(
+    Task<Result<PagedResult<CategoryDto>>> GetPagedAsync(
         PaginationParams pagination);
 
     Task<Result<CategoryDto>> GetByNameAsync(string name);
 
-    Task<Result<List<CategoryDto>>> GetByProductTypeAsync(
+    Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
         ProductType type,
         PaginationParams pagination);
 
-    Task<Result<List<CategoryDto>>> Search(
+    Task<Result<PagedResult<CategoryDto>>> Search(
         CategorySearchFilter filter,
         PaginationParams pagination);
 }

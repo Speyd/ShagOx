@@ -28,13 +28,13 @@ public class ConditionQueryService : IConditionQueryService
         return condition.ToResult(ConditionMapper.ToDto);
     }
 
-    public async Task<Result<List<ConditionDto>>> GetPagedAsync(
+    public async Task<Result<PagedResult<ConditionDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var conditions = await _conditionQueryRepository
             .GetPagedAsync(pagination);
 
-        return conditions.ToResultList(ConditionMapper.ToDto);
+        return conditions.ToResultPaged(ConditionMapper.ToDto);
     }
 
     public async Task<Result<ConditionDto>> GetByNameAsync(string name)
@@ -45,13 +45,13 @@ public class ConditionQueryService : IConditionQueryService
         return condition.ToResult(ConditionMapper.ToDto);
     }
 
-    public async Task<Result<List<ConditionDto>>> Search(
+    public async Task<Result<PagedResult<ConditionDto>>> Search(
       ConditionSearchFilter filter,
 	  PaginationParams pagination)
     {
         var conditions = await _conditionQueryRepository
             .Search(filter, pagination);
 
-        return conditions.ToResultList(ConditionMapper.ToDto);
+        return conditions.ToResultPaged(ConditionMapper.ToDto);
     }
 }

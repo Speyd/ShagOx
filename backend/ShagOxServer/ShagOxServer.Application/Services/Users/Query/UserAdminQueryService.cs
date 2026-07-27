@@ -23,23 +23,23 @@ public class UserAdminQueryService : IUserAdminQueryService
     }
 
 
-    public async Task<Result<List<UserDto>>> GetPagedAsync(
+    public async Task<Result<PagedResult<UserDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var users = await _userQueryRepository
             .GetPagedAsync(pagination);
 
-        return users.ToResultList(UserMapper.ToDto);
+        return users.ToResultPaged(UserMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> Search(
+    public async Task<Result<PagedResult<UserDto>>> Search(
        UserAdminSearchFilter filter,
        PaginationParams pagination)
     {
         var users = await _userQueryRepository
             .AdminSearch(filter, pagination);
 
-        return users.ToResultList(UserMapper.ToDto);
+        return users.ToResultPaged(UserMapper.ToDto);
     }
 
     public async Task<bool> ExistsByIdAsync(int id)

@@ -20,13 +20,12 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<User>> GetPagedAsync(
+    public async Task<PagedResult<User>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Users
             .WithIncludes()
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<User?> GetByContactAsync(string? email, string? phone)
@@ -57,25 +56,23 @@ public class UserQueryRepository : BaseRepository, IUserQueryRepository
             .FirstOrDefaultAsync(x => x.Phone == phone);
     }
 
-    public async Task<List<User>> Search(
+    public async Task<PagedResult<User>> Search(
         UserSearchFilter filter, 
         PaginationParams pagination)
     {
         return await _db.Users
             .WithIncludes()
-             .Filter(filter)
-             .WithPagination(pagination)
-             .ToListAsync();
+            .Filter(filter)
+            .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<User>> AdminSearch(
+    public async Task<PagedResult<User>> AdminSearch(
         UserAdminSearchFilter filter,
         PaginationParams pagination)
     {
         return await _db.Users
             .WithIncludes()
-             .Filter(filter)
-             .WithPagination(pagination)
-             .ToListAsync();
+            .Filter(filter)
+            .ToPagedResultAsync(pagination);
     }
 }

@@ -29,7 +29,7 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .ToListAsync();
     }
 
-    public async Task<List<Advertisement>> GetBySellerAsync(
+    public async Task<PagedResult<Advertisement>> GetBySellerAsync(
         int userId,
         PaginationParams pagination)
     {
@@ -37,10 +37,9 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .WithIncludes()
             .Where(x => x.SellerId == userId)
             .OrderByDescending(x => x.Popularity)
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
-    public async Task<List<Advertisement>> GetPurchasedByUserAsync(
+    public async Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
         int userId,
         PaginationParams pagination)
     {
@@ -48,21 +47,19 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .WithIncludes()
             .Where(x => x.BuyerId == userId)
             .OrderByDescending(x => x.Popularity)
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<Advertisement>> GetPagedAsync(
+    public async Task<PagedResult<Advertisement>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Advertisements
             .WithIncludes()
             .OrderByDescending(x => x.Popularity)
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<Advertisement>> Search(
+    public async Task<PagedResult<Advertisement>> Search(
         AdvertisementSearchFilter filter,
         PaginationParams pagination)
     {
@@ -70,7 +67,6 @@ public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryR
             .WithIncludes()
             .Filter(filter)
             .OrderByDescending(x => x.Popularity)
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 }

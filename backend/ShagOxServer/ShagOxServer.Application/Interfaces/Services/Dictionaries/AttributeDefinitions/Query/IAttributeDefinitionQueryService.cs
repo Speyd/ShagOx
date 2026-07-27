@@ -8,10 +8,10 @@ public interface IAttributeDefinitionQueryService
 {
     Task<Result<AttributeDefinitionDto>> GetByIdAsync(int id);
 
-    Task<Result<List<AttributeDefinitionDto>>> GetPagedAsync(
+    Task<Result<PagedResult<AttributeDefinitionDto>>> GetPagedAsync(
         PaginationParams pagination);
 
-    Task<Result<List<AttributeDefinitionDto>>> Search(
+    Task<Result<PagedResult<AttributeDefinitionDto>>> Search(
        AttributeDefinitionSearchFilter filter,
        PaginationParams pagination);
 }

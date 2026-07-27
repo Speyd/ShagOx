@@ -13,12 +13,11 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
     { }
 
 
-    public async Task<List<Role>> GetPagedAsync(
+    public async Task<PagedResult<Role>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Roles
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<Role?> GetByIdAsync(int id)
@@ -27,15 +26,14 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<Role>> GetByUserAsync(
+    public async Task<PagedResult<Role>> GetByUserAsync(
        int userId,
        PaginationParams pagination)
     {
         return await _db.UserRoles
             .Where(x => x.UserId == userId)
             .Select(x => x.Role)
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<Role?> GetByNameAsync(string name)
@@ -44,13 +42,12 @@ public class RoleQueryRepository : BaseRepository, IRoleQueryRepository
             .FirstOrDefaultAsync(x => x.Name == name);
     }
 
-    public async Task<List<Role>> Search(
+    public async Task<PagedResult<Role>> Search(
         RoleSearchFilter filter,
         PaginationParams pagination)
     {
         return await _db.Roles
             .Filter(filter)
-            .WithPagination(pagination)
-            .ToListAsync();
+            .ToPagedResultAsync(pagination);
     }
 }

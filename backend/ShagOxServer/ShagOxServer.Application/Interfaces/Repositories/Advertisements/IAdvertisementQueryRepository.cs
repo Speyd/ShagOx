@@ -9,18 +9,18 @@ public interface IAdvertisementQueryRepository
 
     Task<List<Advertisement>> GetByIdsAsync(List<int> ids);
 
-    Task<List<Advertisement>> GetBySellerAsync(
+    Task<PagedResult<Advertisement>> GetBySellerAsync(
         int userId,
         PaginationParams pagination);
 
-    Task<List<Advertisement>> GetPurchasedByUserAsync(
+    Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
         int userId,
         PaginationParams pagination);
 
-    Task<List<Advertisement>> GetPagedAsync(
+    Task<PagedResult<Advertisement>> GetPagedAsync(
         PaginationParams pagination);
 
-    Task<List<Advertisement>> Search(
+    Task<PagedResult<Advertisement>> Search(
         AdvertisementSearchFilter filter,
         PaginationParams pagination);
 }

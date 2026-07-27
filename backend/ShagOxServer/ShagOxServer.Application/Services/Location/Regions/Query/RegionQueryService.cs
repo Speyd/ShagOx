@@ -28,13 +28,13 @@ public class RegionQueryService : IRegionQueryService
         return region.ToResult(RegionMapper.ToDto);
     }
 
-    public async Task<Result<List<RegionDto>>> GetPagedAsync(
+    public async Task<Result<PagedResult<RegionDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var regions = await _regionQueryRepository
             .GetPagedAsync(pagination);
 
-        return regions.ToResultList(RegionMapper.ToDto);
+        return regions.ToResultPaged(RegionMapper.ToDto);
     }
 
     public async Task<Result<RegionDto>> GetByNameAsync(string name)
@@ -45,13 +45,13 @@ public class RegionQueryService : IRegionQueryService
         return region.ToResult(RegionMapper.ToDto);
     }
 
-    public async Task<Result<List<RegionDto>>> Search(
+    public async Task<Result<PagedResult<RegionDto>>> Search(
       RegionSearchFilter filter,
 	  PaginationParams pagination)
     {
         var regions = await _regionQueryRepository
             .Search(filter, pagination);
 
-        return regions.ToResultList(RegionMapper.ToDto);
+        return regions.ToResultPaged(RegionMapper.ToDto);
     }
 }

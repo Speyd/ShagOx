@@ -18,6 +18,12 @@ public static class CategoryFilterExtensions
                 EF.Functions.ILike(u.Name, $"%{filter.Name}%"));
         }
 
+        if (filter.ProductTypeId is not null)
+        {
+            query = query
+                .Where(u => u.ProductTypeId == filter.ProductTypeId);
+        }
+        
         return query;
     }
 }

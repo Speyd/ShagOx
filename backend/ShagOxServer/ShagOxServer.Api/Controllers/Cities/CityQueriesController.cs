@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -8,8 +7,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Cities;
 
 [ApiController]
-[Route("api/admin/cities")]
-[Authorize(Roles = "Admin")]
+[Route("api/cities")]
 public class CityQueriesController : ApiController
 {
     private readonly ICityQueryService _queryService;
@@ -28,16 +26,6 @@ public class CityQueriesController : ApiController
     {
         var result = await _queryService
             .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .GetPagedAsync(pagination);
 
         return result.ToActionResult();
     }

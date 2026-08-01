@@ -7,19 +7,19 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Del
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.ProductTypes;
+namespace ShagOxServer.Api.Controllers.ProductTypes.Admin;
 
 [ApiController]
 [Route("api/admin/product-types")]
 [Authorize(Roles = "Admin")]
-public class ProductTypeCommandsController : ApiController
+public class ProductTypeAdminCommandsController : ApiController
 {
     private readonly IProductTypeCreateService _createService;
     private readonly IProductTypeUpdateService _updateService;
     private readonly IProductTypeDeleteService _deleteService;
 
 
-    public ProductTypeCommandsController(
+    public ProductTypeAdminCommandsController(
         IProductTypeCreateService createService,
         IProductTypeUpdateService updateService,
         IProductTypeDeleteService deleteService

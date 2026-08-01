@@ -7,19 +7,19 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Dele
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Conditions;
+namespace ShagOxServer.Api.Controllers.Conditions.Admin;
 
 [ApiController]
 [Route("api/admin/conditions")]
 [Authorize(Roles = "Admin")]
-public class ConditionCommandsController : ApiController
+public class ConditionAdminCommandsController : ApiController
 {
     private readonly IConditionCreateService _createService;
     private readonly IConditionUpdateService _updateService;
     private readonly IConditionDeleteService _deleteService;
 
 
-    public ConditionCommandsController(
+    public ConditionAdminCommandsController(
         IConditionCreateService createService,
         IConditionUpdateService updateService,
         IConditionDeleteService deleteService)

@@ -7,19 +7,19 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Dele
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Currencies;
+namespace ShagOxServer.Api.Controllers.Currencies.Admin;
 
 [ApiController]
 [Route("api/admin/currencies")]
 [Authorize(Roles = "Admin")]
-public class CurrencyCommandsController : ApiController
+public class CurrencyAdminCommandsController : ApiController
 {
     private readonly ICurrencyCreateService _createService;
     private readonly ICurrencyUpdateService _updateService;
     private readonly ICurrencyDeleteService _deleteService;
 
 
-    public CurrencyCommandsController(
+    public CurrencyAdminCommandsController(
         ICurrencyCreateService createService,
         ICurrencyUpdateService updateService,
         ICurrencyDeleteService deleteService)

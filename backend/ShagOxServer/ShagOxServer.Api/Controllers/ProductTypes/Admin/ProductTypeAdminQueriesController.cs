@@ -5,30 +5,20 @@ using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.ProductTypes;
+namespace ShagOxServer.Api.Controllers.ProductTypes.Admin;
 
 [ApiController]
-[Route("api/product-types")]
-public class ProductTypeQueriesController : ApiController
+[Route("api/admin/product-types")]
+[Authorize(Roles = "Admin")]
+public class ProductTypeAdminQueriesController : ApiController
 {
     private readonly IProductTypeQueryService _queryService;
 
 
-    public ProductTypeQueriesController(
+    public ProductTypeAdminQueriesController(
         IProductTypeQueryService queryService)
     {
         _queryService = queryService;
-    }
-
-
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] int id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
-
-        return result.ToActionResult();
     }
 
     [HttpGet("search")]

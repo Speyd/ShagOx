@@ -7,19 +7,19 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delet
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Category;
+namespace ShagOxServer.Api.Controllers.Categories.Admin;
 
 [ApiController]
 [Route("api/admin/categories")]
 [Authorize(Roles = "Admin")]
-public class CategoryCommandsController : ApiController
+public class CategoryAdminCommandsController : ApiController
 {
     private readonly ICategoryCreateService _createService;
     private readonly ICategoryUpdateService _updateService;
     private readonly ICategoryDeleteService _deleteService;
 
 
-    public CategoryCommandsController(
+    public CategoryAdminCommandsController(
         ICategoryCreateService createService,
         ICategoryUpdateService updateService,
         ICategoryDeleteService deleteService

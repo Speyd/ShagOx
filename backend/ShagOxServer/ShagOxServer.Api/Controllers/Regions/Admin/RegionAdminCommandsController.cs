@@ -7,19 +7,19 @@ using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Regions;
+namespace ShagOxServer.Api.Controllers.Regions.Admin;
 
 [ApiController]
 [Route("api/admin/regions")]
 [Authorize(Roles = "Admin")]
-public class RegionCommandsController : ApiController
+public class RegionAdminCommandsController : ApiController
 {
     private readonly IRegionCreateService _createService;
     private readonly IRegionUpdateService _updateService;
     private readonly IRegionDeleteService _deleteService;
 
 
-    public RegionCommandsController(
+    public RegionAdminCommandsController(
         IRegionCreateService createService,
         IRegionUpdateService updateService,
         IRegionDeleteService deleteService

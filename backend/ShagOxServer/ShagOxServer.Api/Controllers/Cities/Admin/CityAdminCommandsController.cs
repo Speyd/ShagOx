@@ -7,19 +7,19 @@ using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Cities;
+namespace ShagOxServer.Api.Controllers.Cities.Admin;
 
 [ApiController]
 [Route("api/admin/cities")]
 [Authorize(Roles = "Admin")]
-public class CityCommandsController : ApiController
+public class CityAdminCommandsController : ApiController
 {
     private readonly ICityCreateService _createService;
     private readonly ICityUpdateService _updateService;
     private readonly ICityDeleteService _deleteService;
 
 
-    public CityCommandsController(
+    public CityAdminCommandsController(
         ICityCreateService createService,
         ICityUpdateService updateService,
         ICityDeleteService deleteService

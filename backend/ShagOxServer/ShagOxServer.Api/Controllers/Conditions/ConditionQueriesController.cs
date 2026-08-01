@@ -8,8 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Conditions;
 
 [ApiController]
-[Route("api/admin/conditions")]
-[Authorize(Roles = "Admin")]
+[Route("api/conditions")]
 public class ConditionQueriesController : ApiController
 {
     private readonly IConditionQueryService _queryService;
@@ -28,16 +27,6 @@ public class ConditionQueriesController : ApiController
     {
         var result = await _queryService
             .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .GetPagedAsync(pagination);
 
         return result.ToActionResult();
     }

@@ -20,7 +20,7 @@ public class CityExistsRepository
 
     public async Task<bool> ExistsByIdAsync(int id)
     {
-        return await _db.Cities.AnyAsync(
-            x => x.Id == id);
+        return await _db.Cities
+            .AnyAsync(x => x.Id == id);
     }
 }

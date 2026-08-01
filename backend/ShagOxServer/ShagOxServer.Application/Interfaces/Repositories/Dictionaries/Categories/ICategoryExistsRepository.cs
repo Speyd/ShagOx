@@ -1,6 +1,4 @@
-﻿using ShagOxServer.Domain.Entities.Dictionaries.Enum;
-
-namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+﻿namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 public interface ICategoryExistsRepository
 {
     Task<bool> ExistsAsync(

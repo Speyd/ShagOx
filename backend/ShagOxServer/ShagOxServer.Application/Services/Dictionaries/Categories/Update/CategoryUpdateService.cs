@@ -39,6 +39,13 @@ public class CategoryUpdateService
         if(!category.IsSuccess)
             return Result<UpdateResponse>.Fail(category.Error);
 
+        if (request.Name is not null)
+        {
+            var nameValidator = await _categoryValidator.GetByIdAsync(categoryId);
+            if (!category.IsSuccess)
+                return Result<UpdateResponse>.Fail(category.Error);
+        }
+
         var changeValidator = _categoryUpdateValidator
             .HasChangesValidator(category.Value!, request);
 

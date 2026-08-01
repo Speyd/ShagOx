@@ -18,6 +18,9 @@ public class UserCreater
     private readonly IContactValidator _contactValidator;
     private readonly IUnitOfWork _unitOfWork;
 
+    private readonly string BaseRole = "User";
+
+
     public UserCreater(
         IUserRepository userRepository,
         IRoleQueryRepository roleQueryRepository,
@@ -50,7 +53,8 @@ public class UserCreater
 
     public async Task AddDefaultRole(User user)
     {
-        var role = await _roleQueryRepository.GetByNameAsync("User");
+        var role = await _roleQueryRepository
+            .GetByNameAsync(BaseRole);
 
         if (role is null)
             throw new Exception("Role not found");

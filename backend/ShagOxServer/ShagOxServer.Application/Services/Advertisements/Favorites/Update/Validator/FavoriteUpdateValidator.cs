@@ -9,6 +9,7 @@ public class FavoriteUpdateValidator
     private readonly UserValidator _userValidator;
     private readonly AdvertisementValidator _advertisementValidator;
 
+
     public FavoriteUpdateValidator(
         UserValidator userValidator,
         AdvertisementValidator advertisementValidator)
@@ -16,6 +17,7 @@ public class FavoriteUpdateValidator
         _userValidator = userValidator;
         _advertisementValidator = advertisementValidator;
     }
+
 
     public async Task<Result<bool>> ValidateAsync(
         FavoriteUpdateRequest request)

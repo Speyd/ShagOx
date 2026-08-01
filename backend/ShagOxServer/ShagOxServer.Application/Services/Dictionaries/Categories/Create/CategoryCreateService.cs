@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
+using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 
@@ -11,18 +12,22 @@ namespace ShagOxServer.Application.Services.Dictionaries.Categories.Create;
 public class CategoryCreateService : ICategoryCreateService
 {
     private readonly ICategoryRepository _categoryRepository;
-    private readonly CategoryValidator _validator;
+    private readonly CategoryValidator _categoryValidator;
+    private readonly ProductTypeValidator _productTypeValidator;
+
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public CategoryCreateService(
         ICategoryRepository categoryRepository,
-        CategoryValidator validator,
+        CategoryValidator categoryValidator,
+        ProductTypeValidator productTypeValidator,
         IUnitOfWork unitOfWork)
     {
         _categoryRepository = categoryRepository;
-        _validator = validator;
+        _categoryValidator = categoryValidator;
+        _productTypeValidator = productTypeValidator;
         _unitOfWork = unitOfWork;
     }
 
@@ -30,11 +35,19 @@ public class CategoryCreateService : ICategoryCreateService
     public async Task<Result<CreateResponse>> CreateAsync(
         CategoryCreateRequest request)
     {
-        var exists = await _validator
+        var typeValidator = await _productTypeValidator
+           .ExistsByIdAsync(request.ProductTypeId);
+
+        if (!typeValidator.IsSuccess)
+            Result<CreateResponse>.Fail(typeValidator.Error);
+
+
+        var nameValidator = await _categoryValidator
             .NotExistsAsync(request.Name, request.ProductTypeId);
 
-        if (!exists.IsSuccess)
-            Result<CreateResponse>.Fail(exists.Error);
+        if (!nameValidator.IsSuccess)
+            Result<CreateResponse>.Fail(nameValidator.Error);  
+
 
         var category = CategoryCreater.Create(request);
 

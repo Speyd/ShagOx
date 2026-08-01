@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Account;
 namespace ShagOxServer.Application.Services.Auth.Roles.Create;
 public static class RoleCreater
 {
-    public static Role CreateRole(
+    public static Role Create(
        RoleCreateRequest request)
     {
         return new Role

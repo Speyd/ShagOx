@@ -43,7 +43,9 @@ public class FavoriteUpdateService : IFavoriteUpdateService
             return Result<UpdateResponse>.Fail(validator.Error);
 
 
-        var updatedCount = FavoriteUpdater.ApplyUpdates(favorite.Value!, request);
+        var updatedCount = FavoriteUpdater
+            .ApplyUpdates(favorite.Value!, request);
+
         var result = new UpdateResponse(
             updatedCount,
             DateTime.UtcNow

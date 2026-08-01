@@ -272,15 +272,39 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
 
-                    b.Property<string>("ProductType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductType");
+                    b.HasIndex("ProductTypeId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.ProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>
@@ -509,6 +533,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Category", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.ProductType", "ProductType")
+                        .WithMany("Categories")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductType");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Location.Region", "Region")
@@ -559,6 +594,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Advertisements");
 
                     b.Navigation("Attributes");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.ProductType", b =>
+                {
+                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>

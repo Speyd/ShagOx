@@ -2,11 +2,13 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions;
-public class AttributeDefinitionExistsRepository : BaseRepository, IAttributeDefinitionExistsRepository
+public class AttributeDefinitionExistsRepository 
+    : BaseRepository, IAttributeDefinitionExistsRepository
 {
     public AttributeDefinitionExistsRepository(AppDbContext db)
         : base(db)
     { }
+
 
     public async Task<bool> ExistsByIdAsync(int id)
     {

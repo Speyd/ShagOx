@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Location.Regions.Create;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
@@ -25,14 +26,16 @@ public class RegionCreateService : IRegionCreateService
     }
 
 
-    public async Task<Result<RegionCreateResponse>> CreateAsync(
+    public async Task<Result<CreateResponse>> CreateAsync(
         RegionCreateRequest request)
     {
-        var validation = await _regionValidator.NotExistsByNameAsync(request.Name);
-        if (!validation.IsSuccess)
-            return Result<RegionCreateResponse>.Fail(validation.Error ?? "");
+        var validation = await _regionValidator
+            .NotExistsByNameAsync(request.Name);
 
-        var region = RegionCreater.CreateRegion(request);
+        if (!validation.IsSuccess)
+            return Result<CreateResponse>.Fail(validation.Error);
+
+        var region = RegionCreater.Create(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -48,11 +51,10 @@ public class RegionCreateService : IRegionCreateService
             throw;
         }
 
-        var response = new RegionCreateResponse(
-            region.Id,
-            DateTime.UtcNow
-        );
-
-        return Result<RegionCreateResponse>.Success(response);
+        return Result<CreateResponse>.Success(
+            new CreateResponse(
+                region.Id,
+                DateTime.UtcNow
+        ));
     }
 }

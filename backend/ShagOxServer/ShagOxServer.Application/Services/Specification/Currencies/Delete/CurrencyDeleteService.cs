@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Delete;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
@@ -25,12 +25,12 @@ public class CurrencyDeleteService : ICurrencyDeleteService
     }
 
 
-    public async Task<Result<CurrencyDeleteResponse>> DeleteAsync(
+    public async Task<Result<DeleteResponse>> DeleteAsync(
         int id)
     {
         var currency = await _currencyValidator.GetByIdAsync(id);
         if (!currency.IsSuccess)
-            return Result<CurrencyDeleteResponse>.Fail(currency.Error ?? "");
+            return Result<DeleteResponse>.Fail(currency.Error);
 
 
         await _unitOfWork.BeginTransactionAsync();
@@ -47,8 +47,8 @@ public class CurrencyDeleteService : ICurrencyDeleteService
             throw;
         }
 
-        return Result<CurrencyDeleteResponse>.Success(
-          new CurrencyDeleteResponse(
+        return Result<DeleteResponse>.Success(
+          new DeleteResponse(
               currency.Value!.Id,
               DateTime.UtcNow
           )

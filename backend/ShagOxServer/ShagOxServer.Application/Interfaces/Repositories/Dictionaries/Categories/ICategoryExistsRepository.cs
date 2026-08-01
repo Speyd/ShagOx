@@ -1,15 +1,13 @@
-﻿using ShagOxServer.Domain.Entities.Dictionaries.Enum;
-
-namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+﻿namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 public interface ICategoryExistsRepository
 {
     Task<bool> ExistsAsync(
         string name,
-        ProductType type);
+        int productTypeId);
 
     Task<bool> ExistsByIdAsync(int id);
 
     Task<bool> ExistsByNameAsync(string name);
 
-    Task<bool> ExistsByProductTypeAsync(ProductType type);
+    Task<bool> ExistsByProductTypeAsync(int productTypeId);
 }

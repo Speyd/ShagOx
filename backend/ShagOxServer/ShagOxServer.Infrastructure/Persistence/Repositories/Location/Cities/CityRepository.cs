@@ -3,7 +3,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
-public class CityRepository : BaseRepository, ICityRepository
+public class CityRepository
+    : BaseRepository, ICityRepository
 {
     public CityRepository(AppDbContext db)
         : base(db)

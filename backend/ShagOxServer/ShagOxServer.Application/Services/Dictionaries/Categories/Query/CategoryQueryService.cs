@@ -2,7 +2,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
-using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -39,21 +38,12 @@ public class CategoryQueryService : ICategoryQueryService
         return categories.ToResultPaged(CategoryMapper.ToDto);
     }
 
-    public async Task<Result<CategoryDto>> GetByNameAsync(
-        string name)
-    {
-        var category = await _categoryQueryRepository
-            .GetByNameAsync(name);
-
-        return category.ToResult(CategoryMapper.ToDto);
-    }
-
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
-        ProductType type,
+        int productTypeId,
         PaginationParams pagination)
     {
         var categories = await _categoryQueryRepository
-            .GetByProductTypeAsync(type, pagination);
+            .GetByProductTypeAsync(productTypeId, pagination);
 
         return categories.ToResultPaged(CategoryMapper.ToDto);
     }

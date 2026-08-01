@@ -1,14 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
 
-public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+public class CategoryConfiguration 
+    : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder)
     {
@@ -16,8 +13,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .IsRequired()
             .HasMaxLength(150);
 
-        builder.Property(x => x.ProductType)
-            .HasConversion<string>()
+        builder.Property(x => x.ProductTypeId)
             .IsRequired();
 
         builder.HasMany(x => x.Attributes)
@@ -25,6 +21,11 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => x.ProductType);
+        builder.HasOne(x => x.ProductType)
+            .WithMany(x => x.Categories)
+            .HasForeignKey(x => x.ProductTypeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(x => x.ProductTypeId);
     }
 }

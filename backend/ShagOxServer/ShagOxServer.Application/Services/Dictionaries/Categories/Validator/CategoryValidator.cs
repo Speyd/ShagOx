@@ -1,6 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
@@ -29,6 +28,32 @@ public class CategoryValidator
         return Result<Category>.Success(category);
     }
 
+    public async Task<Result<bool>> ExistsAsync(
+       string categoryName,
+       int productTypeId)
+    {
+        if (!await _categoryExistsRepository.
+                ExistsAsync(categoryName, productTypeId))
+        {
+            return Result<bool>.NotFound("Category");
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsAsync(
+       string categoryName,
+       int productTypeId)
+    {
+        if (await _categoryExistsRepository.
+                ExistsAsync(categoryName, productTypeId))
+        {
+            return Result<bool>.AlreadyExists("Category");
+        }
+
+        return Result<bool>.Success(true);
+    }
+
     public async Task<Result<bool>> ExistsByIdAsync(
        int categoryId)
     {
@@ -47,29 +72,28 @@ public class CategoryValidator
         return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> NotExistsAsync(
-      string name,
-      ProductType productType)
-    {
-        if (await _categoryExistsRepository.ExistsAsync(name, productType))
-            return Result<bool>.AlreadyExists("Category");
-
-        return Result<bool>.Success(true);
-    }
-
     public async Task<Result<bool>> ExistsByNameAsync(
        string name)
     {
-        if (await _categoryExistsRepository.ExistsByNameAsync(name))
+        if (!await _categoryExistsRepository.ExistsByNameAsync(name))
             return Result<bool>.NotFound("Category");
 
         return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> ExistsByProductAsync(
-       ProductType productType)
+    public async Task<Result<bool>> NotExistsByNameAsync(
+       string name)
     {
-        if (await _categoryExistsRepository.ExistsByProductTypeAsync(productType))
+        if (await _categoryExistsRepository.ExistsByNameAsync(name))
+            return Result<bool>.AlreadyExists("Category");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> ExistsByProductAsync(
+       int productTypeId)
+    {
+        if (!await _categoryExistsRepository.ExistsByProductTypeAsync(productTypeId))
             return Result<bool>.NotFound("Category");
 
         return Result<bool>.Success(true);

@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
 using ShagOxServer.Application.Services.Advertisements.Validator;
-using ShagOxServer.Application.Services.Users.Validator;
+using ShagOxServer.Application.Services.Auth.Users.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validator;
@@ -9,6 +9,7 @@ public class FavoriteUpdateValidator
     private readonly UserValidator _userValidator;
     private readonly AdvertisementValidator _advertisementValidator;
 
+
     public FavoriteUpdateValidator(
         UserValidator userValidator,
         AdvertisementValidator advertisementValidator)
@@ -16,6 +17,7 @@ public class FavoriteUpdateValidator
         _userValidator = userValidator;
         _advertisementValidator = advertisementValidator;
     }
+
 
     public async Task<Result<bool>> ValidateAsync(
         FavoriteUpdateRequest request)

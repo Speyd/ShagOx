@@ -4,7 +4,8 @@ using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
 
-public class AttributeDefinitionConfiguration : IEntityTypeConfiguration<AttributeDefinition>
+public class AttributeDefinitionConfiguration 
+    : IEntityTypeConfiguration<AttributeDefinition>
 {
     public void Configure(EntityTypeBuilder<AttributeDefinition> builder)
     {

@@ -6,11 +6,13 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currenc
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
-public class CurrencyQueryRepository : BaseRepository, ICurrencyQueryRepository
+public class CurrencyQueryRepository 
+    : BaseRepository, ICurrencyQueryRepository
 {
     public CurrencyQueryRepository(AppDbContext db)
         : base(db)
     { }
+
 
     public async Task<Currency?> GetByIdAsync(int id)
     {

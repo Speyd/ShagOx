@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Regions;
 
 [ApiController]
-[Route("api/admin/regions")]
+[Route("api/regions")]
 [Authorize(Roles = "Admin")]
 public class RegionQueriesController : ApiController
 {
@@ -28,16 +28,6 @@ public class RegionQueriesController : ApiController
     {
         var result = await _queryService
             .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .GetPagedAsync(pagination);
 
         return result.ToActionResult();
     }

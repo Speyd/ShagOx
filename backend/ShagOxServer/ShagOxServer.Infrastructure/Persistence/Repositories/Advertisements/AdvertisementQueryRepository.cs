@@ -6,12 +6,13 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extens
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
-
-public class AdvertisementQueryRepository : BaseRepository, IAdvertisementQueryRepository
+public class AdvertisementQueryRepository 
+    : BaseRepository, IAdvertisementQueryRepository
 {
     public AdvertisementQueryRepository(AppDbContext db)
         : base(db)
     { }
+
 
     public async Task<Advertisement?> GetByIdAsync(int id)
     {

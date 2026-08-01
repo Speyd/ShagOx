@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Specification;
 namespace ShagOxServer.Application.Services.Specification.Conditions.Create;
 public static class ConditionCreater
 {
-    public static Condition CreateCondition(
+    public static Condition Create(
        ConditionCreateRequest request)
     {
         return new Condition

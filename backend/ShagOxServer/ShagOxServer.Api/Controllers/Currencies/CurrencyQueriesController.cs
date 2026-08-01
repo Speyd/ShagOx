@@ -8,8 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Currencies;
 
 [ApiController]
-[Route("api/admin/currencies")]
-[Authorize(Roles = "Admin")]
+[Route("api/currencies")]
 public class CurrencyQueriesController : ApiController
 {
     private readonly ICurrencyQueryService _queryService;

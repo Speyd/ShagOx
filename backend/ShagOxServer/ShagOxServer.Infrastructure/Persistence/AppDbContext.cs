@@ -15,6 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<UserRole> UserRoles { get; set; }
 
 
+    public DbSet<ProductType> ProductTypes { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<AttributeDefinition> AttributeDefinitions { get; set; }
 

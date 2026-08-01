@@ -5,68 +5,64 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
 using ShagOxServer.Application.Services.Advertisements.Update.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.Services.Advertisements.Validator;
 
 namespace ShagOxServer.Application.Services.Advertisements.Update;
-
 public class AdvertisementUpdateService : IAdvertisementUpdateService
 {
-    private readonly IAdvertisementQueryRepository _advertisementQueryRepository;
     private readonly IAdvertisementImageService _imageService;
-    private readonly AdvertisementUpdateValidator _validator;
+    private readonly AdvertisementValidator _validator;
+    private readonly AdvertisementUpdateValidator _validatorUpdate;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public AdvertisementUpdateService(
-        IAdvertisementQueryRepository advertisementQueryRepository,
         IAdvertisementImageService imageService,
-        AdvertisementUpdateValidator validator,
+        AdvertisementValidator validator,
+        AdvertisementUpdateValidator validatorUpdate,
         IUnitOfWork unitOfWork)
     {
-        _advertisementQueryRepository = advertisementQueryRepository;
         _validator = validator;
+        _validatorUpdate = validatorUpdate;
         _imageService = imageService;
         _unitOfWork = unitOfWork;
     }
 
 
-    public async Task<Result<AdvertisementUpdateResponse>> UpdateAsync(
+    public async Task<Result<UpdateResponse>> UpdateAsync(
         int advertId,
         AdvertisementUpdateRequest request)
     {
-        var advert = await _advertisementQueryRepository.GetByIdAsync(advertId);
+        var advert = await _validator.GetByIdAsync(advertId);
+        if (!advert.IsSuccess)
+            return Result<UpdateResponse>.Fail(advert.Error);
 
-        if (advert is null)
-            return Result<AdvertisementUpdateResponse>
-                .NotFound("Advertisement");
-
-
-        var validation = await _validator.ValidateAsync(request);
+        var validation = await _validatorUpdate.ValidateAsync(request);
         if (!validation.IsSuccess)
-            return Result<AdvertisementUpdateResponse>
-                .Fail(validation.Error!);
-
-
+            return Result<UpdateResponse>.Fail(validation.Error!);
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            var updatedCount =
-                AdvertisementUpdater.UpdateFields(advert, request);
+            var updatedCount = AdvertisementUpdater
+                .UpdateFields(advert.Value!, request);
 
 
-            var imagesResult =
-                await _imageService.SyncImagesAsync(
-                    advert,
-                    request);
+            var imagesResult = await _imageService
+                .SyncImagesAsync(
+                    advert.Value!,
+                    request
+                );
 
 
             if (!imagesResult.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
 
-                return Result<AdvertisementUpdateResponse>
+                return Result<UpdateResponse>
                     .Fail(imagesResult.Error!);
             }
 
@@ -74,10 +70,11 @@ public class AdvertisementUpdateService : IAdvertisementUpdateService
             await _unitOfWork.CommitAsync();
 
 
-            return Result<AdvertisementUpdateResponse>.Success(
-                new AdvertisementUpdateResponse(
-                    DateTime.UtcNow,
-                    updatedCount));
+            return Result<UpdateResponse>.Success(
+                new UpdateResponse(
+                    updatedCount,
+                    DateTime.UtcNow
+                ));
         }
         catch
         {

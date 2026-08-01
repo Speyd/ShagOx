@@ -10,7 +10,7 @@ public static class CategoryMapper
         return new CategoryDto(
             category.Id,
             category.Name,
-            category.ProductType
+            category.ProductTypeId
         );
     }
 }

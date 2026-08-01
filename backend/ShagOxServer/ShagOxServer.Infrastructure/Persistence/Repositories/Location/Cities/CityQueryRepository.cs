@@ -7,11 +7,13 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Exten
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
-public class CityQueryRepository : BaseRepository, ICityQueryRepository
+public class CityQueryRepository 
+    : BaseRepository, ICityQueryRepository
 {
     public CityQueryRepository(AppDbContext db)
         : base(db)
     { }
+
 
     public async Task<City?> GetByIdAsync(int id)
     {

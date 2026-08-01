@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Delete;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Delete;
@@ -30,13 +30,16 @@ public class AdvertisementDeleteService : IAdvertisementDeleteService
     }
 
 
-    public async Task<Result<AdvertisementDeleteResponse>> DeleteAsync(int id)
+    public async Task<Result<DeleteResponse>> DeleteAsync(int id)
     {
-        var advert = await _advertisementValidator.GetByIdAsync(id);
+        var advert = await _advertisementValidator
+            .GetByIdAsync(id);
+
         if (!advert.IsSuccess)
-            return Result<AdvertisementDeleteResponse>.Fail(advert.Error ?? "");
+            return Result<DeleteResponse>.Fail(advert.Error ?? "");
 
         await _unitOfWork.BeginTransactionAsync();
+
         try
         {
             _advertisementRepository.Delete(advert.Value!);
@@ -54,8 +57,8 @@ public class AdvertisementDeleteService : IAdvertisementDeleteService
             throw;
         }
 
-        return Result<AdvertisementDeleteResponse>.Success(
-           new AdvertisementDeleteResponse(
+        return Result<DeleteResponse>.Success(
+           new DeleteResponse(
                advert.Value!.Id,
                DateTime.UtcNow
            )

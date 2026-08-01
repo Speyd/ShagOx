@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Location.Regions.Delete;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
@@ -25,12 +25,12 @@ public class RegionDeleteService : IRegionDeleteService
     }
 
 
-    public async Task<Result<RegionDeleteResponse>> DeleteAsync(
+    public async Task<Result<DeleteResponse>> DeleteAsync(
         int id)
     {
         var region = await _regionValidator.GetByIdAsync(id);
         if (!region.IsSuccess)
-            return Result<RegionDeleteResponse>.Fail(region.Error ?? "");
+            return Result<DeleteResponse>.Fail(region.Error);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -46,8 +46,8 @@ public class RegionDeleteService : IRegionDeleteService
             throw;
         }
 
-        return Result<RegionDeleteResponse>.Success(
-           new RegionDeleteResponse(
+        return Result<DeleteResponse>.Success(
+           new DeleteResponse(
                region.Value!.Id,
                DateTime.UtcNow
            )

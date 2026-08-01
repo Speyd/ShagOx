@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Location.Cities.Delete;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
@@ -25,12 +25,12 @@ public class CityDeleteService : ICityDeleteService
     }
 
 
-    public async Task<Result<CityDeleteResponse>> DeleteAsync(
+    public async Task<Result<DeleteResponse>> DeleteAsync(
         int id)
     {
         var city = await _cityValidator.GetByIdAsync(id);
         if (!city.IsSuccess)
-            return Result<CityDeleteResponse>.Fail(city.Error ?? "");
+            return Result<DeleteResponse>.Fail(city.Error);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -46,8 +46,8 @@ public class CityDeleteService : ICityDeleteService
             throw;
         }
 
-        return Result<CityDeleteResponse>.Success(
-           new CityDeleteResponse(
+        return Result<DeleteResponse>.Success(
+           new DeleteResponse(
                city.Value!.Id,
                DateTime.UtcNow
            )

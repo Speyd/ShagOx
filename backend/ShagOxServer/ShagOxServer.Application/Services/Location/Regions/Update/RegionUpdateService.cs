@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Update;
 public class RegionUpdateService : IRegionUpdateService
@@ -25,30 +26,33 @@ public class RegionUpdateService : IRegionUpdateService
     }
 
 
-    public async Task<Result<RegionUpdateResponse>> UpdateAsync(
+    public async Task<Result<UpdateResponse>> UpdateAsync(
         int regionId,
         RegionUpdateRequest request)
     {
         var region = await _regionValidator.GetByIdAsync(regionId);
         if (!region.IsSuccess)
-            return Result<RegionUpdateResponse>.Fail(region.Error ?? "");
+            return Result<UpdateResponse>.Fail(region.Error);
 
         if (request.Name is not null)
         {
-            var valid = await _regionValidator.NotExistsByNameAsync(request.Name);
-            if (!valid.IsSuccess)
-                return Result<RegionUpdateResponse>.Fail(valid.Error ?? "");
+            var nameValidation = await _regionValidator
+                .NotExistsByNameAsync(request.Name);
+
+            if (!nameValidation.IsSuccess)
+                return Result<UpdateResponse>.Fail(nameValidation.Error);
         }
 
-        var updatedCount = RegionUpdater.ApplyUpdates(region.Value!, request);
+        var updatedCount = RegionUpdater
+            .ApplyUpdates(region.Value!, request);
 
-        var result = new RegionUpdateResponse(
-                DateTime.UtcNow,
-                updatedCount
-            );
+        var result = new UpdateResponse(
+            updatedCount,
+            DateTime.UtcNow
+        );
 
         if (updatedCount == 0)
-            return Result<RegionUpdateResponse>.Success(result);
+            return Result<UpdateResponse>.Success(result);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -64,6 +68,6 @@ public class RegionUpdateService : IRegionUpdateService
             throw;
         }
 
-        return Result<RegionUpdateResponse>.Success(result);
+        return Result<UpdateResponse>.Success(result);
     }
 }

@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Delete;
+using ShagOxServer.Application.Services.Advertisements.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -21,7 +22,7 @@ public class AdvertisementImageService : IAdvertisementImageService
     private readonly IImageCreateService _imageCreateService;
     private readonly IImageDeleteService _imageDeleteService;
     private readonly IImageLoaderService _imageLoaderService;
-    private readonly IAdvertisementQueryRepository _advertRepository;
+    private readonly AdvertisementValidator _advertValidator;
 
     public AdvertisementImageService(
         IUnitOfWork unitOfWork,
@@ -29,27 +30,27 @@ public class AdvertisementImageService : IAdvertisementImageService
         IImageCreateService imageCreateService,
         IImageDeleteService imageDeleteService,
         IImageLoaderService imageLoaderService,
-        IAdvertisementQueryRepository advertRepository)
+        AdvertisementValidator advertValidator)
     {
         _unitOfWork = unitOfWork;
         _imageQueryRepository = imageQueryRepository;
         _imageCreateService = imageCreateService;
         _imageDeleteService = imageDeleteService;
         _imageLoaderService = imageLoaderService;
-        _advertRepository = advertRepository;
+        _advertValidator = advertValidator;
     }
 
     public async Task<Result<bool>> SyncImagesAsync(
        int advertisementId,
        AdvertisementUpdateRequest request)
     {
-        var advertisement = await _advertRepository
+        var advertisement = await _advertValidator
             .GetByIdAsync(advertisementId);
 
-        if (advertisement is null)
-            return Result<bool>.NotFound("Advertisement");
+        if (!advertisement.IsSuccess)
+            return Result<bool>.Fail(advertisement.Error);
 
-        return await SyncImagesAsync(advertisement, request);
+        return await SyncImagesAsync(advertisement.Value!, request);
     }
 
     public async Task<Result<bool>> SyncImagesAsync(

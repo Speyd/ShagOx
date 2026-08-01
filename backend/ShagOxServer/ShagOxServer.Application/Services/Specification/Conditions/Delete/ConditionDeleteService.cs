@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Delete;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Delete;
@@ -26,12 +26,12 @@ public class ConditionDeleteService : IConditionDeleteService
     }
 
 
-    public async Task<Result<ConditionDeleteResponse>> DeleteAsync(
+    public async Task<Result<DeleteResponse>> DeleteAsync(
         int id)
     {
         var condition = await _conditionValidator.GetByIdAsync(id);
         if (!condition.IsSuccess)
-            return Result<ConditionDeleteResponse>.Fail(condition.Error ?? "");
+            return Result<DeleteResponse>.Fail(condition.Error);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -48,8 +48,8 @@ public class ConditionDeleteService : IConditionDeleteService
         }
 
 
-        return Result<ConditionDeleteResponse>.Success(
-           new ConditionDeleteResponse(
+        return Result<DeleteResponse>.Success(
+           new DeleteResponse(
                condition.Value!.Id,
                DateTime.UtcNow
            )

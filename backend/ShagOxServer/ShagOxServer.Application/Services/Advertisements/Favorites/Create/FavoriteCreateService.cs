@@ -1,9 +1,10 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Create;
+using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Create;
 using ShagOxServer.Application.Services.Advertisements.Validator;
-using ShagOxServer.Application.Services.Users.Validator;
+using ShagOxServer.Application.Services.Auth.Users.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Create;
@@ -31,20 +32,24 @@ public class FavoriteCreateService : IFavoriteCreateService
     }
 
 
-    public async Task<Result<FavoriteCreateResponse>> CreateAsync(
+    public async Task<Result<CreateResponse>> CreateAsync(
         FavoriteCreateRequest request)
     {
-        var validationUser = await _userValidator.ExistsByIdAsync(request.UserId);
+        var validationUser = await _userValidator
+            .ExistsByIdAsync(request.UserId);
+
         if (!validationUser.IsSuccess)
-            return Result<FavoriteCreateResponse>.Fail(validationUser.Error ?? "");
+            return Result<CreateResponse>.Fail(validationUser.Error);
+
 
         var validationAdvert = await _advertValidator.ExistsByIdAsync(
             request.AdvertisementId);
 
         if (!validationAdvert.IsSuccess)
-            return Result<FavoriteCreateResponse>.Fail(validationAdvert.Error ?? "");
+            return Result<CreateResponse>.Fail(validationAdvert.Error);
 
-        var favorite = FavoriteCreater.CreateFavorite(request);
+        var favorite = FavoriteCreater.Create(request);
+        
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -60,10 +65,10 @@ public class FavoriteCreateService : IFavoriteCreateService
             throw;
         }
 
-        return Result<FavoriteCreateResponse>.Success(
-            new FavoriteCreateResponse(
-            favorite.Id,
-            DateTime.UtcNow
+        return Result<CreateResponse>.Success(
+            new CreateResponse(
+                favorite.Id,
+                DateTime.UtcNow
         ));
     }
 }

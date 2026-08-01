@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Delete;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
@@ -25,15 +25,17 @@ public class FavoriteDeleteService : IFavoriteDeleteService
     }
 
 
-    public async Task<Result<FavoriteDeleteResponse>> DeleteAsync(
+    public async Task<Result<DeleteResponse>> DeleteAsync(
         int id, int userId)
     {
-        var favorite = await _favoriteValidator.GetByIdAsync(id);
+        var favorite = await _favoriteValidator
+            .GetByIdAsync(id);
+
         if (!favorite.IsSuccess)
-            return Result<FavoriteDeleteResponse>.Fail(favorite.Error ?? "");
+            return Result<DeleteResponse>.Fail(favorite.Error);
 
         if (userId != favorite.Value!.UserId)
-            return Result<FavoriteDeleteResponse>.Forbidden();
+            return Result<DeleteResponse>.Forbidden();
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -49,8 +51,8 @@ public class FavoriteDeleteService : IFavoriteDeleteService
             throw;
         }
 
-        return Result<FavoriteDeleteResponse>.Success(
-           new FavoriteDeleteResponse(
+        return Result<DeleteResponse>.Success(
+           new DeleteResponse(
                favorite.Value!.Id,
                DateTime.UtcNow
            )

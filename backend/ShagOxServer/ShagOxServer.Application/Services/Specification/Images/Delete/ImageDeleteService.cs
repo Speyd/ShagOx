@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Images.Delete;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Delete;
@@ -24,37 +24,38 @@ public class ImageDeleteService : IImageDeleteService
     }
 
 
-    public async Task<Result<ImageDeleteResponse>> DeleteAsync(int id)
+    public async Task<Result<DeleteResponse>> DeleteAsync(int id)
     {
         var image = await _imageValidator.GetByIdAsync(id);
         if (!image.IsSuccess)
-            return Result<ImageDeleteResponse>.Fail(image.Error ?? "");
+            return Result<DeleteResponse>.Fail(image.Error);
 
-        var result = await _loaderService.DeleteAsync(image.Value!.PublicId);
+        var result = await _loaderService
+            .DeleteAsync(image.Value!.PublicId);
 
         if (!result.IsSuccess)
-            return Result<ImageDeleteResponse>.Fail(result.Error!);
+            return Result<DeleteResponse>.Fail(result.Error!);
 
         _imageRepository.Delete(image.Value!);
 
-        return Result<ImageDeleteResponse>.Success(
-           new ImageDeleteResponse(
+        return Result<DeleteResponse>.Success(
+           new DeleteResponse(
                image.Value!.Id,
                DateTime.UtcNow
            )
        );
     }
 
-    public async Task<Result<ImageDeleteResponse>> DeleteRecordAsync(int id)
+    public async Task<Result<DeleteResponse>> DeleteRecordAsync(int id)
     {
         var image = await _imageValidator.GetByIdAsync(id);
         if (!image.IsSuccess)
-            return Result<ImageDeleteResponse>.Fail(image.Error ?? "");
+            return Result<DeleteResponse>.Fail(image.Error);
 
         _imageRepository.Delete(image.Value!);
 
-        return Result<ImageDeleteResponse>.Success(
-           new ImageDeleteResponse(
+        return Result<DeleteResponse>.Success(
+           new DeleteResponse(
                image.Value!.Id,
                DateTime.UtcNow
            )

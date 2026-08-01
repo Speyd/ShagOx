@@ -1,8 +1,8 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Update;
+using ShagOxServer.Application.Services.Auth.Users.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
-using ShagOxServer.Application.Services.Users.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Update.Validator;

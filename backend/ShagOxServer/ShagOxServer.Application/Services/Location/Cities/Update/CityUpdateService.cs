@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
 using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Update;
 public class CityUpdateService : ICityUpdateService
@@ -29,23 +30,23 @@ public class CityUpdateService : ICityUpdateService
     }
 
 
-    public async Task<Result<CityUpdateResponse>> UpdateAsync(
+    public async Task<Result<UpdateResponse>> UpdateAsync(
         int cityId, 
         CityUpdateRequest request)
     {
         var city = await _cityValidator.GetByIdAsync(cityId);
         if (!city.IsSuccess)
-            return Result<CityUpdateResponse>.Fail(city.Error ?? "");
+            return Result<UpdateResponse>.Fail(city.Error);
 
         var changeValidator = _cityUpdateValidator
             .HasChangesValidator(city.Value!, request);
 
         if (!changeValidator.IsSuccess)
         {
-            return Result<CityUpdateResponse>.Success(
-                new CityUpdateResponse(
-                DateTime.UtcNow,
-                0
+            return Result<UpdateResponse>.Success(
+                new UpdateResponse(
+                    0,
+                    DateTime.UtcNow
             ));
         }
 
@@ -55,17 +56,17 @@ public class CityUpdateService : ICityUpdateService
         );
 
         if (!existsValidator.IsSuccess)
-            return Result<CityUpdateResponse>.Fail(existsValidator.Error ?? "");
+            return Result<UpdateResponse>.Fail(existsValidator.Error);
 
 
         var updatedCount = CityUpdater.ApplyUpdates(city.Value!, request);
-        var result = new CityUpdateResponse(
-                DateTime.UtcNow,
-                updatedCount
-            );
+        var result = new UpdateResponse(
+            updatedCount,
+            DateTime.UtcNow
+        );
 
         if (updatedCount == 0)
-            return Result<CityUpdateResponse>.Success(result);
+            return Result<UpdateResponse>.Success(result);
 
 
         await _unitOfWork.BeginTransactionAsync();
@@ -83,6 +84,6 @@ public class CityUpdateService : ICityUpdateService
         }
 
 
-        return Result<CityUpdateResponse>.Success(result);
+        return Result<UpdateResponse>.Success(result);
     }
 }

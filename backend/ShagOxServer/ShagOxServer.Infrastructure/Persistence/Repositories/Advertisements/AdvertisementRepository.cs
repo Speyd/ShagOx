@@ -3,11 +3,13 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
-public class AdvertisementRepository : BaseRepository, IAdvertisementRepository
+public class AdvertisementRepository 
+    : BaseRepository, IAdvertisementRepository
 {
     public AdvertisementRepository(AppDbContext db) 
         : base(db)
     {}
+
 
     public async Task<Advertisement?> GetByIdAsync(int id)
     {

@@ -1,8 +1,8 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements;
+using ShagOxServer.Application.Services.Auth.Users.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Images.Mapping;
-using ShagOxServer.Application.Services.Users.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Mapping;

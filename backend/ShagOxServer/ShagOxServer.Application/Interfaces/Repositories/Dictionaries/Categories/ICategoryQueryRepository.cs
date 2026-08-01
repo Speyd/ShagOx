@@ -1,5 +1,4 @@
 ﻿using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -11,10 +10,8 @@ public interface ICategoryQueryRepository
     Task<PagedResult<Category>> GetPagedAsync(
         PaginationParams pagination);
 
-    Task<Category?> GetByNameAsync(string name);
-
     Task<PagedResult<Category>> GetByProductTypeAsync(
-        ProductType type,
+        int productTypeId,
         PaginationParams pagination);
 
     Task<PagedResult<Category>> Search(

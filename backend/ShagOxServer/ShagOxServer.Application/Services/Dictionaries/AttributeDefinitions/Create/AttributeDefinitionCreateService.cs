@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Create;
@@ -30,18 +31,24 @@ public class AttributeDefinitionCreateService : IAttributeDefinitionCreateServic
     }
 
 
-    public async Task<Result<AttributeDefinitionCreateResponse>> CreateAsync(
+    public async Task<Result<CreateResponse>> CreateAsync(
         AttributeDefinitionCreateRequest request)
     {
-        var categoryExists = await _categoryValidator.ExistsByIdAsync(request.CategoryId);
+        var categoryExists = await _categoryValidator
+            .ExistsByIdAsync(request.CategoryId);
+
         if (!categoryExists.IsSuccess)
-            return Result<AttributeDefinitionCreateResponse>.Fail(categoryExists.Error ?? "");
+            return Result<CreateResponse>.Fail(categoryExists.Error);
 
-        var keyExists = await _attributeValidator.NotExistsByKeyAsync(request.Key, request.CategoryId);
+
+        var keyExists = await _attributeValidator
+            .NotExistsByKeyAsync(request.Key, request.CategoryId);
+
         if (!keyExists.IsSuccess)
-            return Result<AttributeDefinitionCreateResponse>.Fail(keyExists.Error ?? "");
+            return Result<CreateResponse>.Fail(keyExists.Error);
 
-        var attribute = AttributeDefinitionCreater.CreateAttributeDefinition(request);
+
+        var attribute = AttributeDefinitionCreater.Create(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -57,11 +64,10 @@ public class AttributeDefinitionCreateService : IAttributeDefinitionCreateServic
             throw;
         }
 
-        var response = new AttributeDefinitionCreateResponse(
-            attribute.Id,
-            DateTime.UtcNow
-        );
-
-        return Result<AttributeDefinitionCreateResponse>.Success(response);
+        return Result<CreateResponse>.Success(
+            new CreateResponse(
+                attribute.Id,
+                DateTime.UtcNow
+        ));
     }
 }

@@ -3,11 +3,13 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
-public class CategoryRepository : BaseRepository, ICategoryRepository
+public class CategoryRepository 
+    : BaseRepository, ICategoryRepository
 {
     public CategoryRepository(AppDbContext db) 
         : base(db)
     {}
+
 
     public async Task<Category?> GetByIdAsync(int id)
     {
@@ -17,7 +19,7 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
 
     public void Add(Category category)
     {
-        _db.Categories.AddAsync(category);
+        _db.Categories.Add(category);
     }
 
     public bool Update(Category category)

@@ -1,10 +1,7 @@
-﻿using ShagOxServer.Domain.Entities.Dictionaries.Enum;
-
-namespace ShagOxServer.Application.DTOs.Dictionaries.Categories;
-
+﻿namespace ShagOxServer.Application.DTOs.Dictionaries.Categories;
 public sealed record CategoryDto
 (
     int Id,
     string Name,
-    ProductType ProductType
+    int ProductTypeId
 );

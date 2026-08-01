@@ -43,7 +43,6 @@ public static class SpecificationDependencyInjection
         services.AddScoped<ICurrencyDeleteService, CurrencyDeleteService>();
 
         services.AddScoped<CurrencyCreateValidator>();
-        services.AddScoped<CurrencyUpdateValidator>();
         services.AddScoped<CurrencyValidator>();
 
 

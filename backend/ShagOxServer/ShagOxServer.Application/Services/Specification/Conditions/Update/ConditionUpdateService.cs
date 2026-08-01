@@ -36,11 +36,14 @@ public class ConditionUpdateService : IConditionUpdateService
         if (!condition.IsSuccess)
             return Result<UpdateResponse>.Fail(condition.Error );
 
-        var validationName = await _conditionValidator
-            .NotExistsByNameAsync(request.Name);
+        if (request.Name is not null)
+        {
+            var nameValidation = await _conditionValidator
+                .NotExistsByNameAsync(request.Name);
 
-        if (!validationName.IsSuccess)
-            Result<CreateResponse>.Fail(validationName.Error);
+            if (!nameValidation.IsSuccess)
+                Result<CreateResponse>.Fail(nameValidation.Error);
+        }
 
         var updatedCount = ConditionUpdater
             .ApplyUpdates(condition.Value!, request);
@@ -66,7 +69,6 @@ public class ConditionUpdateService : IConditionUpdateService
             await _unitOfWork.RollbackAsync();
             throw;
         }
-
 
         return Result<UpdateResponse>.Success(result);
     }

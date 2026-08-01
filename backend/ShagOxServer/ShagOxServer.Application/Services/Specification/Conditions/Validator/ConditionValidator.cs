@@ -46,10 +46,8 @@ public class ConditionValidator
     }
 
     public async Task<Result<bool>> ExistsByNameAsync(
-      string? name)
+      string name)
     {
-        if(name is null)
-            return Result<bool>.Success(false);
 
         if (!await _existsRepository.ExistsByNameAsync(name))
             return Result<bool>.NotFound("Condition");
@@ -58,11 +56,8 @@ public class ConditionValidator
     }
 
     public async Task<Result<bool>> NotExistsByNameAsync(
-      string? name)
+      string name)
     {
-        if (name is null)
-            return Result<bool>.Success(false);
-
         if (!await _existsRepository.ExistsByNameAsync(name))
             return Result<bool>.AlreadyExists("Condition");
 

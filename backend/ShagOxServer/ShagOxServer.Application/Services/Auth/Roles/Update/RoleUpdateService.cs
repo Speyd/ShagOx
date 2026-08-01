@@ -34,6 +34,15 @@ public class RoleUpdateService : IRoleUpdateService
         if (!role.IsSuccess)
             return Result<UpdateResponse>.Fail(role.Error);
 
+        if (role.Value!.Name is not null)
+        {
+            var nameValidator = await _roleValidator.
+                NotExistsByNameAsync(role.Value!.Name);
+
+            if (!nameValidator.IsSuccess)
+                return Result<UpdateResponse>.Fail(nameValidator.Error);
+        }
+
         var updatedCount = RoleUpdater.ApplyUpdates(role.Value!, request);
         var result = new UpdateResponse(
             updatedCount,

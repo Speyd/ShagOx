@@ -60,6 +60,7 @@ public class ProductTypeValidator
     public async Task<Result<bool>> NotExistsByNameAsync(
        string name)
     {
+
         if (await _productTypeExistsRepository.ExistsByNameAsync(name))
             return Result<bool>.AlreadyExists("ProductType");
 

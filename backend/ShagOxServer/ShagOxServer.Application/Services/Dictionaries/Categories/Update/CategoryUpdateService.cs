@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Update;
-public class CategoryUpdateService : ICategoryUpdateService
+public class CategoryUpdateService 
+    : ICategoryUpdateService
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly CategoryValidator _categoryValidator;

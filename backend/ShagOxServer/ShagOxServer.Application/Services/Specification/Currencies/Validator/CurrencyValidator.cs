@@ -43,4 +43,22 @@ public class CurrencyValidator
 
         return Result<bool>.Success(true);
     }
+
+    public async Task<Result<bool>> ExistsByCodeValidator(
+        string code)
+    {
+        if (!await _existsRepository.ExistsByCodeAsync(code))
+            return Result<bool>.AlreadyExists("Currency code");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> ExistsByNameValidator(
+        string name)
+    {
+        if (!await _existsRepository.ExistsByNameAsync(name))
+            return Result<bool>.AlreadyExists("Currency name");
+
+        return Result<bool>.Success(true);
+    }
 }

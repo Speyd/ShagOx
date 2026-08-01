@@ -34,9 +34,14 @@ public class RegionUpdateService : IRegionUpdateService
         if (!region.IsSuccess)
             return Result<UpdateResponse>.Fail(region.Error);
 
-        var valid = await _regionValidator.NotExistsByNameAsync(request.Name);
-        if (!valid.IsSuccess)
-            return Result<UpdateResponse>.Fail(valid.Error);
+        if (request.Name is not null)
+        {
+            var nameValidation = await _regionValidator
+                .NotExistsByNameAsync(request.Name);
+
+            if (!nameValidation.IsSuccess)
+                return Result<UpdateResponse>.Fail(nameValidation.Error);
+        }
 
         var updatedCount = RegionUpdater
             .ApplyUpdates(region.Value!, request);

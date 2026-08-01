@@ -29,13 +29,6 @@ public class CategoryQueryRepository : BaseRepository, ICategoryQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<Category?> GetByNameAsync(string name)
-    {
-        return await _db.Categories
-            .WithIncludes()
-            .FirstOrDefaultAsync(c => c.Name == name);
-    }
-
     public async Task<PagedResult<Category>> GetByProductTypeAsync(
         int productTypeId,
         PaginationParams pagination)

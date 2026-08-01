@@ -11,8 +11,6 @@ public interface ICategoryQueryService
     Task<Result<PagedResult<CategoryDto>>> GetPagedAsync(
         PaginationParams pagination);
 
-    Task<Result<CategoryDto>> GetByNameAsync(string name);
-
     Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
         int productTypeId,
         PaginationParams pagination);

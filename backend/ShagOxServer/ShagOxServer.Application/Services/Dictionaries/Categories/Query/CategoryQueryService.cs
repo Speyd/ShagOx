@@ -38,15 +38,6 @@ public class CategoryQueryService : ICategoryQueryService
         return categories.ToResultPaged(CategoryMapper.ToDto);
     }
 
-    public async Task<Result<CategoryDto>> GetByNameAsync(
-        string name)
-    {
-        var category = await _categoryQueryRepository
-            .GetByNameAsync(name);
-
-        return category.ToResult(CategoryMapper.ToDto);
-    }
-
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
         int productTypeId,
         PaginationParams pagination)

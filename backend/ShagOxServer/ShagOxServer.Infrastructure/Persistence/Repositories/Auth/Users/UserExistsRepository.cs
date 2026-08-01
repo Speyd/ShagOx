@@ -2,7 +2,8 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
-public class UserExistsRepository : BaseRepository, IUserExistsRepository
+public class UserExistsRepository 
+    : BaseRepository, IUserExistsRepository
 {
     public UserExistsRepository(AppDbContext db)
         : base(db)
@@ -19,7 +20,8 @@ public class UserExistsRepository : BaseRepository, IUserExistsRepository
 
     public async Task<bool> ExistsByIdAsync(int id)
     {
-        return await _db.Users.AnyAsync(x => x.Id == id);
+        return await _db.Users
+            .AnyAsync(x => x.Id == id);
     }
 
     public async Task<bool> ExistsEmailAsync(string? email)

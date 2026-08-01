@@ -7,7 +7,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categori
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
-public class CategoryQueryRepository : BaseRepository, ICategoryQueryRepository
+public class CategoryQueryRepository 
+    : BaseRepository, ICategoryQueryRepository
 {
     public CategoryQueryRepository(AppDbContext db)
         : base(db)

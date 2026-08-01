@@ -3,7 +3,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
-public class UserRepository : BaseRepository, IUserRepository
+public class UserRepository 
+    : BaseRepository, IUserRepository
 {
     public UserRepository(AppDbContext db)
         :base(db)

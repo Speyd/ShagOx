@@ -7,7 +7,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Exte
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
-public class RegionQueryRepository : BaseRepository, IRegionQueryRepository
+public class RegionQueryRepository 
+    : BaseRepository, IRegionQueryRepository
 {
     public RegionQueryRepository(AppDbContext db)
         : base(db)

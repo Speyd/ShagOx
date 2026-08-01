@@ -6,7 +6,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditi
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
-public class ConditionQueryRepository : BaseRepository, IConditionQueryRepository
+public class ConditionQueryRepository 
+    : BaseRepository, IConditionQueryRepository
 {
     public ConditionQueryRepository(AppDbContext db)
         : base(db)

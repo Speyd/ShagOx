@@ -6,7 +6,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favori
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites;
-public class FavoriteQueryRepository : BaseRepository, IFavoriteQueryRepository
+public class FavoriteQueryRepository 
+    : BaseRepository, IFavoriteQueryRepository
 {
     public FavoriteQueryRepository(AppDbContext db)
         : base(db)

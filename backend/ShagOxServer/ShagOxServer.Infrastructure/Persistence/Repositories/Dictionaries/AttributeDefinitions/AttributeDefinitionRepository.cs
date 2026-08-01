@@ -3,11 +3,13 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDef
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions;
-public class AttributeDefinitionRepository : BaseRepository, IAttributeDefinitionRepository
+public class AttributeDefinitionRepository 
+    : BaseRepository, IAttributeDefinitionRepository
 {
     public AttributeDefinitionRepository(AppDbContext db)
         : base(db)
     { }
+
 
     public async Task<AttributeDefinition?> GetByIdAsync(int id)
     {

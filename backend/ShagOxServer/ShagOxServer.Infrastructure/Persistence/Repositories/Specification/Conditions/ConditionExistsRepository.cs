@@ -2,11 +2,13 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
-public class ConditionExistsRepository : BaseRepository, IConditionExistsRepository
+public class ConditionExistsRepository 
+    : BaseRepository, IConditionExistsRepository
 {
     public ConditionExistsRepository(AppDbContext db)
         : base(db)
     { }
+
 
     public async Task<bool> ExistsByIdAsync(int id)
     {

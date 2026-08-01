@@ -3,7 +3,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
-public class ConditionRepository : BaseRepository, IConditionRepository
+public class ConditionRepository 
+    : BaseRepository, IConditionRepository
 {
     public ConditionRepository(AppDbContext db)
         : base(db)

@@ -5,11 +5,13 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images.
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;
-public class ImageQueryRepository : BaseRepository, IImageQueryRepository
+public class ImageQueryRepository 
+    : BaseRepository, IImageQueryRepository
 {
     public ImageQueryRepository(AppDbContext db)
         : base(db)
     { }
+
 
     public async Task<Image?> GetByIdAsync(int id)
     {

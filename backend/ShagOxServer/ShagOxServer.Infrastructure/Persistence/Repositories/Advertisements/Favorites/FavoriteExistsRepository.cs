@@ -2,7 +2,8 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites;
-public class FavoriteExistsRepository : BaseRepository, IFavoriteExistsRepository
+public class FavoriteExistsRepository 
+    : BaseRepository, IFavoriteExistsRepository
 {
     public FavoriteExistsRepository(AppDbContext db)
         : base(db)
@@ -10,7 +11,8 @@ public class FavoriteExistsRepository : BaseRepository, IFavoriteExistsRepositor
 
     public async Task<bool> ExistsByIdAsync(int id)
     {
-        var result = await _db.Favorites.AnyAsync(x => x.Id == id);
+        var result = await _db.Favorites
+            .AnyAsync(x => x.Id == id);
 
         return result;
     }

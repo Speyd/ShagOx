@@ -3,7 +3,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites;
-public class FavoriteRepository : BaseRepository, IFavoriteRepository
+public class FavoriteRepository 
+    : BaseRepository, IFavoriteRepository
 {
     public FavoriteRepository(AppDbContext db)
         : base(db)

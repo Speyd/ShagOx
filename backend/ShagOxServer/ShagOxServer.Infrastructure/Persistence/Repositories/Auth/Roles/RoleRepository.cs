@@ -3,12 +3,14 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
-public class RoleRepository : BaseRepository, IRoleRepository
+public class RoleRepository 
+    : BaseRepository, IRoleRepository
 {
     public RoleRepository(AppDbContext db)
         :base(db)
     {}
   
+
     public async Task<Role?> GetByIdAsync(int id)
     {
         return await _db.Roles

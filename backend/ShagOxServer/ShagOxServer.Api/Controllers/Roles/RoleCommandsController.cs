@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.DTOs.Roles.Update;
-using ShagOxServer.Application.DTOs.Roles.Create;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using ShagOxServer.Application.Interfaces.Services.Roles.Create;
-using ShagOxServer.Application.Interfaces.Services.Roles.Delete;
-using ShagOxServer.Application.Interfaces.Services.Roles.Update;
+using ShagOxServer.Application.DTOs.Auth.Roles.Create;
+using ShagOxServer.Application.DTOs.Auth.Roles.Update;
+using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Create;
+using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
+using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Update;
 
 namespace ShagOxServer.Api.Controllers.Role;
 

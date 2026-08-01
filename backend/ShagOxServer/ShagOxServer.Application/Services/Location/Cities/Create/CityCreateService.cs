@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Location.Cities.Create;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Location.Cities.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Create;
@@ -30,18 +31,24 @@ public class CityCreateService : ICityCreateService
     }
 
 
-    public async Task<Result<CityCreateResponse>> CreateAsync(
+    public async Task<Result<CreateResponse>> CreateAsync(
         CityCreateRequest request)
     {
-        var region = await _regionValidator.ExistsByIdAsync(request.RegionId);
+        var region = await _regionValidator
+            .ExistsByIdAsync(request.RegionId);
+
         if (!region.IsSuccess)
-            Result<CityCreateResponse>.Fail(region.Error ?? "");
+            Result<CreateResponse>.Fail(region.Error);
 
-        var validatorName = await _cityValidator.NotExistsAsync(request.RegionId, request.Name);
+
+        var validatorName = await _cityValidator
+            .NotExistsAsync(request.RegionId, request.Name);
+
         if (!validatorName.IsSuccess)
-            Result<CityCreateResponse>.Fail(validatorName.Error ?? "");
+            Result<CreateResponse>.Fail(validatorName.Error);
 
-        var city = CityCreater.CreateCity(request);
+
+        var city = CityCreater.Create(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -57,11 +64,10 @@ public class CityCreateService : ICityCreateService
             throw;
         }
 
-        var response = new CityCreateResponse(
-            city.Id,
-            DateTime.UtcNow
-        );
-
-        return Result<CityCreateResponse>.Success(response);
+        return Result<CreateResponse>.Success(
+            new CreateResponse(
+                city.Id,
+                DateTime.UtcNow
+        ));
     }
 }

@@ -11,8 +11,8 @@ public class Result<T>
     public static Result<T> Success(T value)
         => new() { IsSuccess = true, Value = value };
 
-    public static Result<T> Fail(string error)
-        => new() { IsSuccess = false, Error = error };
+    public static Result<T> Fail(string? error)
+        => new() { IsSuccess = false, Error = error ?? "Unknown error" };
 
     public static Result<T> NotFound(string objectName)
         => new() { IsSuccess = false, Error =  $"{objectName} not found" };

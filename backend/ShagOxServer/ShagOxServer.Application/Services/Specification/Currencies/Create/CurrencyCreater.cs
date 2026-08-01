@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Specification;
 namespace ShagOxServer.Application.Services.Specification.Currencies.Create;
 public static class CurrencyCreater
 {
-    public static Currency CreateCurrency(
+    public static Currency Create(
         CurrencyCreateRequest request)
     {
         return new Currency

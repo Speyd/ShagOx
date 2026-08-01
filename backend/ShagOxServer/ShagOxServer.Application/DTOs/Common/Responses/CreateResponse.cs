@@ -1,5 +1,5 @@
 ﻿namespace ShagOxServer.Application.DTOs.Common.Responses;
-public sealed record CreateResponse
+public record CreateResponse
 (
     int Id,
     DateTime CreatedAt

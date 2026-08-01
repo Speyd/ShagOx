@@ -6,7 +6,7 @@ using ShagOxServer.Domain.Entities.Specification;
 namespace ShagOxServer.Application.Services.Specification.Images.Create;
 public static class ImageCreater
 {
-    public static Image CreateImage(
+    public static Image Create(
        ImageCreateRequest request)
     {
         return new Image
@@ -18,7 +18,7 @@ public static class ImageCreater
         };
     }
 
-    public static Image CreateImage(
+    public static Image Create(
         ImageFileCreateRequest request,
         ImageLoaderUploadResponse response)
     {

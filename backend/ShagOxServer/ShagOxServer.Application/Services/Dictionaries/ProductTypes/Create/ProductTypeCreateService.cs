@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Create;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Create;
@@ -27,14 +28,14 @@ public class ProductTypeCreateService
     }
 
 
-    public async Task<Result<ProductTypeCreateResponse>> CreateAsync(
+    public async Task<Result<CreateResponse>> CreateAsync(
        ProductTypeCreateRequest request)
     {
         var exists = await _validator
             .NotExistsByNameAsync(request.Name);
 
         if (!exists.IsSuccess)
-            Result<ProductTypeCreateResponse>.Fail(exists.Error ?? "");
+            Result<CreateResponse>.Fail(exists.Error);
 
 
         var productType = ProductTypeCreater.Create(request);
@@ -53,11 +54,10 @@ public class ProductTypeCreateService
             throw;
         }
 
-        var response = new ProductTypeCreateResponse(
-            productType.Id,
-            DateTime.UtcNow
-        );
-
-        return Result<ProductTypeCreateResponse>.Success(response);
+        return Result<CreateResponse>.Success(
+            new CreateResponse(
+                productType.Id,
+                DateTime.UtcNow
+        ));
     }
 }

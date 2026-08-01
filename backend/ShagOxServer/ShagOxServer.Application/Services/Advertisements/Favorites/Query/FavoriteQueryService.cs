@@ -22,7 +22,8 @@ public class FavoriteQueryService : IFavoriteQueryService
     public async Task<Result<FavoriteDto>> GetByIdAsync(
         int id)
     {
-        var favorite = await _favoriteRepository.GetByIdAsync(id);
+        var favorite = await _favoriteRepository
+            .GetByIdAsync(id);
 
         return favorite.ToResult(FavoriteMapper.ToDto);
     }
@@ -39,7 +40,8 @@ public class FavoriteQueryService : IFavoriteQueryService
     public async Task<Result<int>> CountByAdvertisementAsync(
         int advertisementId)
     {
-        var count = await _favoriteRepository.CountByAdvertisementAsync(advertisementId);
+        var count = await _favoriteRepository
+            .CountByAdvertisementAsync(advertisementId);
 
         return Result<int>.Success(count);
     }
@@ -48,7 +50,8 @@ public class FavoriteQueryService : IFavoriteQueryService
         int usderId,
         PaginationParams pagination)
     {
-        var favorites = await _favoriteRepository.GetByUserAsync(usderId, pagination);
+        var favorites = await _favoriteRepository
+            .GetByUserAsync(usderId, pagination);
 
         return favorites.ToResultPaged(FavoriteMapper.ToDto);
     }

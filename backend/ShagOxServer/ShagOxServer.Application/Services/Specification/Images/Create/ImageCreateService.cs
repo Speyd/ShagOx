@@ -33,11 +33,13 @@ public class ImageCreateService : IImageCreateService
     public async Task<Result<ImageCreateResponse>> CreateAsync(
         ImageCreateRequest request)
     {
-        var resultValid = await _advertValidator.ExistsByIdAsync(request.AdvertisementId);
-        if (!resultValid.IsSuccess)
-            return Result<ImageCreateResponse>.Fail(resultValid.Error ?? "");
+        var resultValid = await _advertValidator
+            .ExistsByIdAsync(request.AdvertisementId);
 
-        var image = ImageCreater.CreateImage(request);
+        if (!resultValid.IsSuccess)
+            return Result<ImageCreateResponse>.Fail(resultValid.Error);
+
+        var image = ImageCreater.Create(request);
 
         _imageRepository.Add(image);
 
@@ -47,15 +49,25 @@ public class ImageCreateService : IImageCreateService
     public async Task<Result<ImageCreateResponse>> CreateFromFileAsync(
         ImageFileCreateRequest request)
     {
-        var resultAdvertValid = await _advertValidator.ExistsByIdAsync(request.AdvertisementId);
+        var resultAdvertValid = await _advertValidator
+            .ExistsByIdAsync(request.AdvertisementId);
+
         if (!resultAdvertValid.IsSuccess)
-            return Result<ImageCreateResponse>.Fail(resultAdvertValid.Error ?? "");
+            return Result<ImageCreateResponse>.Fail(resultAdvertValid.Error);
 
-        var resultLoaderValid = await _imageValidator.ImageUploadValidator(request.File);
+
+        var resultLoaderValid = await _imageValidator
+            .ImageUploadValidator(request.File);
+
         if (!resultLoaderValid.IsSuccess)
-            return Result<ImageCreateResponse>.Fail(resultLoaderValid.Error ?? "");
+            return Result<ImageCreateResponse>.Fail(resultLoaderValid.Error);
 
-        var image = ImageCreater.CreateImage(request, resultLoaderValid.Value!);
+
+        var image = ImageCreater.Create(
+            request, 
+            resultLoaderValid.Value!
+        );
+
         _imageRepository.Add(image);
 
         return Success(image);
@@ -103,11 +115,12 @@ public class ImageCreateService : IImageCreateService
     {
         var resultLoaderValid = await _imageValidator.ImageUploadValidator(request.File);
         if (!resultLoaderValid.IsSuccess)
-            return Result<ImageCreateResponse>.Fail(resultLoaderValid.Error ?? "");
+            return Result<ImageCreateResponse>.Fail(resultLoaderValid.Error);
 
-        var image = ImageCreater.CreateImage(
+        var image = ImageCreater.Create(
             request,
-            resultLoaderValid.Value!);
+            resultLoaderValid.Value!
+        );
 
         _imageRepository.Add(image);
 
@@ -120,6 +133,7 @@ public class ImageCreateService : IImageCreateService
             new ImageCreateResponse(
                 image.Id,
                 image.PublicId,
-                DateTime.UtcNow));
+                DateTime.UtcNow
+        ));
     }
 }

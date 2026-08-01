@@ -1,9 +1,9 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Delete;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
 public interface IAttributeDefinitionDeleteService
 {
-    Task<Result<AttributeDefinitionDeleteResponse>> DeleteAsync(
+    Task<Result<DeleteResponse>> DeleteAsync(
        int id);
 }

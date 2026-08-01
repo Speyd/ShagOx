@@ -4,7 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Update;
 using ShagOxServer.Application.Services.Specification.Currencies.Update.Validator;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Update;
@@ -30,37 +30,41 @@ public class CurrencyUpdateService : ICurrencyUpdateService
     }
 
 
-    public async Task<Result<CurrencyUpdateResponse>> UpdateAsync(
+    public async Task<Result<UpdateResponse>> UpdateAsync(
         int currencyId,
         CurrencyUpdateRequest request)
     {
         var code = await _currencyUpdateValidator
             .ExistsByCodeValidator(request.Code);
+
         if (!code.IsSuccess)
-            return Result<CurrencyUpdateResponse>.Fail(code.Error ?? "");
+            return Result<UpdateResponse>.Fail(code.Error);
 
 
         var name = await _currencyUpdateValidator
             .ExistsByNameValidator(request.Name);
 
         if (!name.IsSuccess)
-            return Result<CurrencyUpdateResponse>.Fail(code.Error ?? "");
+            return Result<UpdateResponse>.Fail(code.Error);
 
 
         var currency = await _currencyValidator
             .GetByIdAsync(currencyId);
 
         if (!currency.IsSuccess)
-            return Result<CurrencyUpdateResponse>.Fail(currency.Error ?? "");
+            return Result<UpdateResponse>.Fail(currency.Error);
 
-        var updatedCount = CurrencyUpdater.ApplyUpdates(currency.Value!, request);
-        var result = new CurrencyUpdateResponse(
-                DateTime.UtcNow,
-                updatedCount
+
+        var updatedCount = CurrencyUpdater
+            .ApplyUpdates(currency.Value!, request);
+
+        var result = new UpdateResponse(
+                updatedCount,
+                DateTime.UtcNow
             );
 
         if (updatedCount == 0)
-            return Result<CurrencyUpdateResponse>.Success(result);
+            return Result<UpdateResponse>.Success(result);
 
 
         await _unitOfWork.BeginTransactionAsync();
@@ -77,6 +81,6 @@ public class CurrencyUpdateService : ICurrencyUpdateService
             throw;
         }
 
-        return Result<CurrencyUpdateResponse>.Success(result);
+        return Result<UpdateResponse>.Success(result);
     }
 }

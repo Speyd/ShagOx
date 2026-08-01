@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Create;
@@ -25,23 +26,23 @@ public class CurrencyCreateService : ICurrencyCreateService
     }
 
 
-    public async Task<Result<CurrencyCreateResponse>> CreateAsync(
+    public async Task<Result<CreateResponse>> CreateAsync(
         CurrencyCreateRequest request)
     {
         var code = await _currencyCreateValidator
             .ExistsByCodeValidator(request.Code);
 
         if (!code.IsSuccess)
-            return Result<CurrencyCreateResponse>.Fail(code.Error ?? "");
+            return Result<CreateResponse>.Fail(code.Error);
 
 
         var name = await _currencyCreateValidator
             .ExistsByNameValidator(request.Name);
 
         if (!name.IsSuccess)
-            return Result<CurrencyCreateResponse>.Fail(code.Error ?? "");
+            return Result<CreateResponse>.Fail(code.Error);
 
-        var currency = CurrencyCreater.CreateCurrency(request);
+        var currency = CurrencyCreater.Create(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -57,11 +58,10 @@ public class CurrencyCreateService : ICurrencyCreateService
             throw;
         }
 
-        var response = new CurrencyCreateResponse(
-            currency.Id,
-            DateTime.UtcNow
-        );
-
-        return Result<CurrencyCreateResponse>.Success(response);
+        return Result<CreateResponse>.Success(
+            new CreateResponse(
+                currency.Id,
+                DateTime.UtcNow
+        ));
     }
 }

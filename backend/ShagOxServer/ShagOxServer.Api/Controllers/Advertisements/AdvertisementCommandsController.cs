@@ -6,7 +6,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
-using ShagOxServer.Application.Interfaces.Services.Users.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 using System.Security.Claims;
 

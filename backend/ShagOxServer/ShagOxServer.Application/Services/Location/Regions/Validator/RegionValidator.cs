@@ -56,8 +56,11 @@ public class RegionValidator
     }
 
     public async Task<Result<bool>> NotExistsByNameAsync(
-       string name)
+       string? name)
     {
+        if(name is null)
+            return Result<bool>.Fail("Name is null");
+
         if (await _regionExistsRepository.ExistsByNameAsync(name))
             return Result<bool>.AlreadyExists("Region");
 

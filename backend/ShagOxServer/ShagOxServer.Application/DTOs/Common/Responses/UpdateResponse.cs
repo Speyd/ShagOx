@@ -1,5 +1,5 @@
 ﻿namespace ShagOxServer.Application.DTOs.Common.Responses;
-public sealed record CategoryUpdateResponse
+public record UpdateResponse
 (
     int CountUpdatedProperty,
     DateTime TimeUpdate

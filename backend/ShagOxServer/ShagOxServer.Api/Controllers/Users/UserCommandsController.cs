@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.DTOs.Users.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using ShagOxServer.Application.Interfaces.Services.Users.Update;
+using ShagOxServer.Application.DTOs.Auth.Users.Update;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Update;
 
 namespace ShagOxServer.Api.Controllers.Users;
 

@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Dictionaries;
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Create;
 public static class AttributeDefinitionCreater
 {
-    public static AttributeDefinition CreateAttributeDefinition(
+    public static AttributeDefinition Create(
        AttributeDefinitionCreateRequest request)
     {
         return new AttributeDefinition

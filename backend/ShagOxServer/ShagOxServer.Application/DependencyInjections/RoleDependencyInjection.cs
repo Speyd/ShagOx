@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Services.Roles.Create;
-using ShagOxServer.Application.Interfaces.Services.Roles.Delete;
-using ShagOxServer.Application.Interfaces.Services.Roles.Query;
-using ShagOxServer.Application.Interfaces.Services.Roles.Update;
-using ShagOxServer.Application.Services.Roles.Create;
-using ShagOxServer.Application.Services.Roles.Delete;
-using ShagOxServer.Application.Services.Roles.Query;
-using ShagOxServer.Application.Services.Roles.Update;
-using ShagOxServer.Application.Services.Roles.Validator;
+using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Create;
+using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
+using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Update;
+using ShagOxServer.Application.Services.Auth.Roles.Create;
+using ShagOxServer.Application.Services.Auth.Roles.Delete;
+using ShagOxServer.Application.Services.Auth.Roles.Query;
+using ShagOxServer.Application.Services.Auth.Roles.Update;
+using ShagOxServer.Application.Services.Auth.Roles.Validator;
 
 namespace ShagOxServer.Application.DependencyInjection;
 public static class RoleDependencyInjection

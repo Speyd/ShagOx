@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Location;
 namespace ShagOxServer.Application.Services.Location.Regions.Create;
 public static class RegionCreater
 {
-    public static Region CreateRegion(
+    public static Region Create(
         RegionCreateRequest request)
     {
         return new Region

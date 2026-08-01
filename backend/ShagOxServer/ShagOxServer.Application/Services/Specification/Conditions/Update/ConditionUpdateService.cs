@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
@@ -26,7 +26,7 @@ public class ConditionUpdateService : IConditionUpdateService
     }
 
 
-    public async Task<Result<ConditionUpdateResponse>> UpdateAsync(
+    public async Task<Result<UpdateResponse>> UpdateAsync(
         int conditionId, 
         ConditionUpdateRequest request)
     {
@@ -34,25 +34,24 @@ public class ConditionUpdateService : IConditionUpdateService
             .GetByIdAsync(conditionId);
 
         if (!condition.IsSuccess)
-            return Result<ConditionUpdateResponse>.Fail(condition.Error ?? "");
+            return Result<UpdateResponse>.Fail(condition.Error );
 
-        if (request.Name is not null)
-        {
-            var validationName = await _conditionValidator
-                .NotExistsByNameAsync(request.Name);
+        var validationName = await _conditionValidator
+            .NotExistsByNameAsync(request.Name);
 
-            if (!validationName.IsSuccess)
-                Result<ConditionCreateResponse>.Fail(validationName.Error ?? "");
-        }
+        if (!validationName.IsSuccess)
+            Result<CreateResponse>.Fail(validationName.Error);
 
-        var updatedCount = ConditionUpdater.ApplyUpdates(condition.Value!, request);
-        var result = new ConditionUpdateResponse(
-                DateTime.UtcNow,
-                updatedCount
-            );
+        var updatedCount = ConditionUpdater
+            .ApplyUpdates(condition.Value!, request);
+
+        var result = new UpdateResponse(
+            updatedCount,
+            DateTime.UtcNow
+        );
 
         if (updatedCount == 0)
-            return Result<ConditionUpdateResponse>.Success(result);
+            return Result<UpdateResponse>.Success(result);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -69,6 +68,6 @@ public class ConditionUpdateService : IConditionUpdateService
         }
 
 
-        return Result<ConditionUpdateResponse>.Success(result);
+        return Result<UpdateResponse>.Success(result);
     }
 }

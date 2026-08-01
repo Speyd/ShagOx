@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+﻿using ShagOxServer.Application.DTOs.Auth.Users;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Application.DTOs.Specification.Currencies;
 using ShagOxServer.Application.DTOs.Specification.Images;
-using ShagOxServer.Application.DTOs.Users;
 
 namespace ShagOxServer.Application.DTOs.Advertisements;
 

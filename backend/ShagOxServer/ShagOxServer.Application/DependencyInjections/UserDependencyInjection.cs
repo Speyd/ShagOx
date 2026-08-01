@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Common.Context;
+using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Delete;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Update;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Application.Interfaces.Services.UserRoles.Query;
-using ShagOxServer.Application.Interfaces.Services.Users.Delete;
-using ShagOxServer.Application.Interfaces.Services.Users.Query;
-using ShagOxServer.Application.Interfaces.Services.Users.Update;
-using ShagOxServer.Application.Services.UserRoles.Query;
-using ShagOxServer.Application.Services.Users.Delete;
-using ShagOxServer.Application.Services.Users.Query;
-using ShagOxServer.Application.Services.Users.Update;
-using ShagOxServer.Application.Services.Users.Update.Validator;
-using ShagOxServer.Application.Services.Users.Validator;
+using ShagOxServer.Application.Services.Auth.UserRoles.Query;
+using ShagOxServer.Application.Services.Auth.Users.Delete;
+using ShagOxServer.Application.Services.Auth.Users.Query;
+using ShagOxServer.Application.Services.Auth.Users.Update;
+using ShagOxServer.Application.Services.Auth.Users.Update.Validator;
+using ShagOxServer.Application.Services.Auth.Users.Validator;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.DependencyInjection;

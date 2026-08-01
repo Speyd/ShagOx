@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Create;
@@ -26,14 +27,16 @@ public class ConditionCreateService : IConditionCreateService
     }
 
 
-    public async Task<Result<ConditionCreateResponse>> CreateAsync(
+    public async Task<Result<CreateResponse>> CreateAsync(
         ConditionCreateRequest request)
     {
-        var validationName = await _conditionValidator.NotExistsByNameAsync(request.Name);
-        if(!validationName.IsSuccess)
-            Result<ConditionCreateResponse>.Fail(validationName.Error ?? "");
+        var validationName = await _conditionValidator
+            .NotExistsByNameAsync(request.Name);
 
-        var condition = ConditionCreater.CreateCondition(request);
+        if(!validationName.IsSuccess)
+            Result<CreateResponse>.Fail(validationName.Error);
+
+        var condition = ConditionCreater.Create(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -49,11 +52,10 @@ public class ConditionCreateService : IConditionCreateService
             throw;
         }
 
-        var response = new ConditionCreateResponse(
-            condition.Id,
-            DateTime.UtcNow
-        );
-
-        return Result<ConditionCreateResponse>.Success(response);
+        return Result<CreateResponse>.Success(
+            new CreateResponse(
+                condition.Id,
+                DateTime.UtcNow
+        ));
     }
 }

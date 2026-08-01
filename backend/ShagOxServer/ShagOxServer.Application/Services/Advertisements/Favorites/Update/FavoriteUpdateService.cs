@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Upda
 using ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Update;
 public class FavoriteUpdateService : IFavoriteUpdateService
@@ -29,27 +30,27 @@ public class FavoriteUpdateService : IFavoriteUpdateService
     }
 
 
-    public async Task<Result<FavoriteUpdateResponse>> UpdateAsync(
+    public async Task<Result<UpdateResponse>> UpdateAsync(
         int favoriteId,
         FavoriteUpdateRequest request)
     {
         var favorite = await _favoriteValidator.GetByIdAsync(favoriteId);
         if (!favorite.IsSuccess)
-            return Result<FavoriteUpdateResponse>.Fail(favorite.Error ?? "");
+            return Result<UpdateResponse>.Fail(favorite.Error);
 
         var validator = await _favoriteUpdateValidator.ValidateAsync(request);
         if(!validator.IsSuccess)
-            return Result<FavoriteUpdateResponse>.Fail(validator.Error ?? "");
+            return Result<UpdateResponse>.Fail(validator.Error);
 
 
         var updatedCount = FavoriteUpdater.ApplyUpdates(favorite.Value!, request);
-        var result = new FavoriteUpdateResponse(
-                DateTime.UtcNow,
-                updatedCount
-            );
+        var result = new UpdateResponse(
+            updatedCount,
+            DateTime.UtcNow
+        );
 
         if (updatedCount == 0)
-            return Result<FavoriteUpdateResponse>.Success(result);
+            return Result<UpdateResponse>.Success(result);
 
         await _unitOfWork.BeginTransactionAsync();
         try
@@ -64,6 +65,6 @@ public class FavoriteUpdateService : IFavoriteUpdateService
             throw;
         }
 
-        return Result<FavoriteUpdateResponse>.Success(result);
+        return Result<UpdateResponse>.Success(result);
     }
 }

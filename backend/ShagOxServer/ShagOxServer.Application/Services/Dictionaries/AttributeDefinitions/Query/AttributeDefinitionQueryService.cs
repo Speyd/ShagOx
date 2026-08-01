@@ -11,6 +11,8 @@ namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Qu
 public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
 {
     private readonly IAttributeDefinitionQueryRepository _attributeQueryRepository;
+
+
     public AttributeDefinitionQueryService(
         IAttributeDefinitionQueryRepository attributeQueryRepository)
     {
@@ -20,7 +22,8 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
 
     public async Task<Result<AttributeDefinitionDto>> GetByIdAsync(int id)
     {
-        var attribute = await _attributeQueryRepository.GetByIdAsync(id);
+        var attribute = await _attributeQueryRepository
+            .GetByIdAsync(id);
 
         return attribute.ToResult(AttributeDefinitionMapper.ToDto);
     }

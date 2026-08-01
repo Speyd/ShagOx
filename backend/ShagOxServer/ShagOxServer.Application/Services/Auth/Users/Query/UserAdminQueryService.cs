@@ -1,0 +1,52 @@
+﻿using ShagOxServer.Application.DTOs.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
+using ShagOxServer.Application.Services.Auth.Users.Mapping;
+using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+
+namespace ShagOxServer.Application.Services.Auth.Users.Query;
+public class UserAdminQueryService : IUserAdminQueryService
+{
+    private readonly IUserQueryRepository _userQueryRepository;
+    private readonly IUserExistsRepository _userExistsRepository;
+
+
+    public UserAdminQueryService(
+        IUserQueryRepository userRepository,
+        IUserExistsRepository userExistsRepository)
+    {
+        _userQueryRepository = userRepository;
+        _userExistsRepository = userExistsRepository;
+    }
+
+
+    public async Task<Result<PagedResult<UserDto>>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        var users = await _userQueryRepository
+            .GetPagedAsync(pagination);
+
+        return users.ToResultPaged(UserMapper.ToDto);
+    }
+
+    public async Task<Result<PagedResult<UserDto>>> Search(
+       UserAdminSearchFilter filter,
+       PaginationParams pagination)
+    {
+        var users = await _userQueryRepository
+            .AdminSearch(filter, pagination);
+
+        return users.ToResultPaged(UserMapper.ToDto);
+    }
+
+    public async Task<bool> ExistsByIdAsync(int id)
+    {
+        var result = await _userExistsRepository
+            .ExistsByIdAsync(id);
+
+        return result;
+    }
+}

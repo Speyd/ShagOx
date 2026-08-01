@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Delete;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
@@ -25,12 +25,14 @@ public class AttributeDefinitionDeleteService : IAttributeDefinitionDeleteServic
     }
 
 
-    public async Task<Result<AttributeDefinitionDeleteResponse>> DeleteAsync(
+    public async Task<Result<DeleteResponse>> DeleteAsync(
         int id)
     {
-        var attribute = await _attributeValidator.GetByIdAsync(id);
+        var attribute = await _attributeValidator
+            .GetByIdAsync(id);
+
         if (!attribute.IsSuccess)
-            return Result<AttributeDefinitionDeleteResponse>.Fail(attribute.Error ?? "");
+            return Result<DeleteResponse>.Fail(attribute.Error);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -46,8 +48,8 @@ public class AttributeDefinitionDeleteService : IAttributeDefinitionDeleteServic
             throw;
         }
 
-        return Result<AttributeDefinitionDeleteResponse>.Success(
-           new AttributeDefinitionDeleteResponse(
+        return Result<DeleteResponse>.Success(
+           new DeleteResponse(
                attribute.Value!.Id,
                DateTime.UtcNow
            )

@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Create;
+using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
@@ -32,15 +33,19 @@ public class AdvertisementCreateService : IAdvertisementCreateService
     }
 
 
-    public async Task<Result<AdvertisementCreateResponse>> CreateAsync(
+    public async Task<Result<CreateResponse>> CreateAsync(
         AdvertisementCreateRequest request,
         int userId)
     {
-        var validation = await _advertisementValidator.ValidateAsync(request);
+        var validation = await _advertisementValidator
+            .ValidateAsync(request);
+
         if (!validation.IsSuccess)
-            return Result<AdvertisementCreateResponse>.Fail(validation.Error!);
+            return Result<CreateResponse>.Fail(validation.Error!);
         
-        var advert = AdvertisementCreater.CreateAdvertisement(request, userId);
+
+        var advert = AdvertisementCreater
+            .Create(request, userId);
 
         await _unitOfWork.BeginTransactionAsync();
         try
@@ -49,15 +54,19 @@ public class AdvertisementCreateService : IAdvertisementCreateService
 
             await _unitOfWork.SaveChangesAsync();
 
-            var imagesResult = await _imageCreateService.CreateFromFilesAsync(
-                new ImageFilesCreateRequest(advert.Id, request.Images)
+            var imagesResult = await _imageCreateService
+                .CreateFromFilesAsync(
+                    new ImageFilesCreateRequest(
+                        advert.Id, 
+                        request.Images
+                    )
             );
 
             if (!imagesResult.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
 
-                return Result<AdvertisementCreateResponse>
+                return Result<CreateResponse>
                     .Fail(imagesResult.Error!);
             }
 
@@ -70,10 +79,10 @@ public class AdvertisementCreateService : IAdvertisementCreateService
             throw;
         }
 
-        return Result<AdvertisementCreateResponse>.Success(
-            new AdvertisementCreateResponse(
-            advert.Id,
-            advert.CreatedAt
+        return Result<CreateResponse>.Success(
+            new CreateResponse(
+                advert.Id,
+                advert.CreatedAt
         ));
     }
 }

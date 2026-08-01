@@ -1,5 +1,5 @@
 ﻿namespace ShagOxServer.Application.DTOs.Common.Responses;
-public sealed record DeleteResponse
+public record DeleteResponse
 (
     int Id,
     DateTime DeleteTime

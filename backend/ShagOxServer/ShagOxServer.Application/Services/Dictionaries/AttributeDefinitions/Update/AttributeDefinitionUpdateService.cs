@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinit
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;
 public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateService
@@ -29,43 +30,46 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
     }
 
 
-    public async Task<Result<AttributeDefinitionUpdateResponse>> UpdateAsync(
+    public async Task<Result<UpdateResponse>> UpdateAsync(
         int attributeId,
         AttributeDefinitionUpdateRequest request)
     {
         var attribute = await _attributeValidator.GetByIdAsync(attributeId);
         if (!attribute.IsSuccess)
-            return Result<AttributeDefinitionUpdateResponse>.Fail(attribute.Error ?? "");
+            return Result<UpdateResponse>.Fail(attribute.Error);
 
         var changeValidator = _attributeUpdateValidator
             .HasChangesValidator(attribute.Value!, request);
 
         if (!changeValidator.IsSuccess)
         {
-            return Result<AttributeDefinitionUpdateResponse>.Success(
-                new AttributeDefinitionUpdateResponse(
-                DateTime.UtcNow,
-                0
+            return Result<UpdateResponse>.Success(
+                new UpdateResponse(
+                    0,
+                    DateTime.UtcNow
             ));
         }
 
-        var existsValidator = await _attributeValidator.NotExistsByKeyAsync(
-          changeValidator.Value!.key,
-          changeValidator.Value!.categoryId
+        var existsValidator = await _attributeValidator
+            .NotExistsByKeyAsync(
+                changeValidator.Value!.key,
+                changeValidator.Value!.categoryId
         );
 
         if (!existsValidator.IsSuccess)
-            return Result<AttributeDefinitionUpdateResponse>.Fail(existsValidator.Error ?? "");
+            return Result<UpdateResponse>.Fail(existsValidator.Error);
 
 
-        var updatedCount = AttributeDefinitionUpdater.ApplyUpdates(attribute.Value!, request);
-        var result = new AttributeDefinitionUpdateResponse(
-                DateTime.UtcNow,
-                updatedCount
-            );
+        var updatedCount = AttributeDefinitionUpdater
+            .ApplyUpdates(attribute.Value!, request);
+
+        var result = new UpdateResponse(
+            updatedCount,
+            DateTime.UtcNow
+        );
 
         if (updatedCount == 0)
-            return Result<AttributeDefinitionUpdateResponse>.Success(result);
+            return Result<UpdateResponse>.Success(result);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -81,6 +85,6 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
             throw;
         }
 
-        return Result<AttributeDefinitionUpdateResponse>.Success(result);
+        return Result<UpdateResponse>.Success(result);
     }
 }

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Users;
+﻿using ShagOxServer.Application.DTOs.Auth.Users;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.Favorites;
 public sealed record FavoriteShortDto

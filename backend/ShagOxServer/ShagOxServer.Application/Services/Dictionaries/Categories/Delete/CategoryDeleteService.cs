@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Delete;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
@@ -13,6 +13,7 @@ public class CategoryDeleteService : ICategoryDeleteService
 
     private readonly IUnitOfWork _unitOfWork;
 
+
     public CategoryDeleteService(
         ICategoryRepository categoryRepository,
         CategoryValidator categoryValidator,
@@ -24,12 +25,14 @@ public class CategoryDeleteService : ICategoryDeleteService
     }
 
 
-    public async Task<Result<CategoryDeleteResponse>> DeleteAsync(
+    public async Task<Result<DeleteResponse>> DeleteAsync(
         int id)
     {
-        var category = await _categoryValidator.GetByIdAsync(id);
+        var category = await _categoryValidator
+            .GetByIdAsync(id);
+
         if (!category.IsSuccess)
-            return Result<CategoryDeleteResponse>.Fail(category.Error ?? "");
+            return Result<DeleteResponse>.Fail(category.Error);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -45,11 +48,11 @@ public class CategoryDeleteService : ICategoryDeleteService
             throw;
         }
 
-        return Result<CategoryDeleteResponse>.Success(
-          new CategoryDeleteResponse(
-              category.Value!.Id,
-              DateTime.UtcNow
-          )
+        return Result<DeleteResponse>.Success(
+            new DeleteResponse(
+                category.Value!.Id,
+                DateTime.UtcNow
+            )
       );
     }
 }

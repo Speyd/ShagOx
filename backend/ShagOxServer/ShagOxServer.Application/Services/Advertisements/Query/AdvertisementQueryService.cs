@@ -12,11 +12,13 @@ public class AdvertisementQueryService : IAdvertisementQueryService
 {
     private readonly IAdvertisementQueryRepository _advertisementRepository;
 
+
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository)
     {
         _advertisementRepository = advertisementRepository;
     }
+
 
     public async Task<Result<PagedResult<AdvertisementDto>>> GetPagedAsync(
         PaginationParams pagination)

@@ -1,12 +1,14 @@
 ﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;
 public class Category : BaseEntity
 {
     public string Name { get; set; } = null!;
-    public ProductType ProductType { get; set; }
+
+    public int ProductTypeId { get; set; }
+    public ProductType ProductType { get; set; } = null!;
+
 
     public List<AttributeDefinition> Attributes { get; set; }
         = new List<AttributeDefinition>();

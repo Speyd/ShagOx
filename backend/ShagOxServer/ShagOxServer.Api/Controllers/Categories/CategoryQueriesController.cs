@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
-using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -45,11 +44,11 @@ public class CategoryQueriesController : ApiController
 
     [HttpGet("by-product-type")]
     public async Task<IActionResult> GetByProductType(
-        [FromQuery] ProductType type,
+        [FromQuery] int productTypeId,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService
-            .GetByProductTypeAsync(type, pagination);
+            .GetByProductTypeAsync(productTypeId, pagination);
 
         return result.ToActionResult();
     }

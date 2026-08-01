@@ -1,10 +1,8 @@
-﻿using ShagOxServer.Domain.Entities.Dictionaries.Enum;
-
-namespace ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
+﻿namespace ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 public sealed record CategoryUpdateRequest
 (
     string? Name,
-    ProductType? ProductType,
+    int? ProductTypeId,
     List<int>? Attributes,
     List<int>? Advertisements
 );

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
@@ -38,12 +37,12 @@ public class CategoryQueryRepository : BaseRepository, ICategoryQueryRepository
     }
 
     public async Task<PagedResult<Category>> GetByProductTypeAsync(
-        ProductType type,
+        int productTypeId,
         PaginationParams pagination)
     {
         return await _db.Categories
             .WithIncludes()
-            .Where(c => c.ProductType == type)
+            .Where(c => c.ProductTypeId == productTypeId)
             .ToPagedResultAsync(pagination);
     }
 

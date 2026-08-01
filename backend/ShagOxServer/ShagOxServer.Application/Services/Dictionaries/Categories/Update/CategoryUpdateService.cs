@@ -51,7 +51,7 @@ public class CategoryUpdateService : ICategoryUpdateService
 
         var existsValidator = await _categoryValidator.NotExistsAsync(
            changeValidator.Value!.name,
-           changeValidator.Value!.productType
+           changeValidator.Value!.productTypeId
         );
 
         if (!existsValidator.IsSuccess)

@@ -13,8 +13,7 @@ public class CategoryConfiguration
             .IsRequired()
             .HasMaxLength(150);
 
-        builder.Property(x => x.ProductType)
-            .HasConversion<string>()
+        builder.Property(x => x.ProductTypeId)
             .IsRequired();
 
         builder.HasMany(x => x.Attributes)
@@ -22,6 +21,11 @@ public class CategoryConfiguration
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => x.ProductType);
+        builder.HasOne(x => x.ProductType)
+            .WithMany(x => x.Categories)
+            .HasForeignKey(x => x.ProductTypeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(x => x.ProductTypeId);
     }
 }

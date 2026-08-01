@@ -29,9 +29,12 @@ public class CategoryCreateService : ICategoryCreateService
     public async Task<Result<CategoryCreateResponse>> CreateAsync(
         CategoryCreateRequest request)
     {
-        var exists = await _validator.NotExistsAsync(request.Name, request.ProductType);
+        var exists = await _validator
+            .NotExistsAsync(request.Name, request.ProductTypeId);
+
         if (!exists.IsSuccess)
             Result<CategoryCreateResponse>.Fail(exists.Error ?? "");
+
 
         var category = CategoryCreater.CreateCategory(request);
 

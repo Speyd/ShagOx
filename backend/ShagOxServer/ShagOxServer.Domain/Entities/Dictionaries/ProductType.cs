@@ -6,6 +6,8 @@ public class ProductType : BaseEntity
     public string Name { get; set; } = null!;
     public string Description { get; set; } = "";
 
+    public List<Category> Categories { get; set; }
+        = new List<Category>();
 
     public override string ToString()
     {

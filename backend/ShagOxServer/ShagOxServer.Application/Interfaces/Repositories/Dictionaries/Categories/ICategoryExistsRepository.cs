@@ -5,11 +5,11 @@ public interface ICategoryExistsRepository
 {
     Task<bool> ExistsAsync(
         string name,
-        ProductType type);
+        int productTypeId);
 
     Task<bool> ExistsByIdAsync(int id);
 
     Task<bool> ExistsByNameAsync(string name);
 
-    Task<bool> ExistsByProductTypeAsync(ProductType type);
+    Task<bool> ExistsByProductTypeAsync(int productTypeId);
 }

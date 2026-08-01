@@ -14,7 +14,7 @@ public interface ICategoryQueryRepository
     Task<Category?> GetByNameAsync(string name);
 
     Task<PagedResult<Category>> GetByProductTypeAsync(
-        ProductType type,
+        int productTypeId,
         PaginationParams pagination);
 
     Task<PagedResult<Category>> Search(

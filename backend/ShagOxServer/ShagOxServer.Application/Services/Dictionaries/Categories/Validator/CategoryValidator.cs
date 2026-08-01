@@ -1,6 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
@@ -49,9 +48,9 @@ public class CategoryValidator
 
     public async Task<Result<bool>> NotExistsAsync(
       string name,
-      ProductType productType)
+      int productTypeId)
     {
-        if (await _categoryExistsRepository.ExistsAsync(name, productType))
+        if (await _categoryExistsRepository.ExistsAsync(name, productTypeId))
             return Result<bool>.AlreadyExists("Category");
 
         return Result<bool>.Success(true);
@@ -67,9 +66,9 @@ public class CategoryValidator
     }
 
     public async Task<Result<bool>> ExistsByProductAsync(
-       ProductType productType)
+       int productTypeId)
     {
-        if (await _categoryExistsRepository.ExistsByProductTypeAsync(productType))
+        if (await _categoryExistsRepository.ExistsByProductTypeAsync(productTypeId))
             return Result<bool>.NotFound("Category");
 
         return Result<bool>.Success(true);

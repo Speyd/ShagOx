@@ -1,14 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
 
-public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+public class CategoryConfiguration 
+    : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder)
     {

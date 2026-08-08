@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ShagOxServer.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260808101026_AddStatus")]
+    partial class AddStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,7 +165,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("SoldAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int?>("StatusId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -527,11 +530,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Status", "Status")
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Status", null)
                         .WithMany("Advertisements")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("StatusId");
 
                     b.Navigation("Buyer");
 
@@ -542,8 +543,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Currency");
 
                     b.Navigation("Seller");
-
-                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Favorite", b =>

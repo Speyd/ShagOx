@@ -8,7 +8,8 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Create;
-public class CurrencyCreateService : ICurrencyCreateService
+public class CurrencyCreateService
+    : ICurrencyCreateService
 {
     private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyCreateValidator _currencyCreateValidator;

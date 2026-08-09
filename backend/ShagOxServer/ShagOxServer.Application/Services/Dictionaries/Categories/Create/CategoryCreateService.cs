@@ -10,7 +10,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Create;
-public class CategoryCreateService : ICategoryCreateService
+public class CategoryCreateService 
+    : ICategoryCreateService
 {
     private readonly IRepository<Category> _categoryRepository;
     private readonly CategoryValidator _categoryValidator;

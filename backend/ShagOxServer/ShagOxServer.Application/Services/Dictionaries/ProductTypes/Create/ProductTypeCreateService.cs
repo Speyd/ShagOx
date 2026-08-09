@@ -9,7 +9,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Create;
 
-public class ProductTypeCreateService 
+public class ProductTypeCreateService
     : IProductTypeCreateService
 {
     private readonly IRepository<ProductType> _productTypeRepository;

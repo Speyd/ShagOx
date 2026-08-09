@@ -6,6 +6,6 @@ namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Create;
 public interface IAdvertisementCreateService
 {
     Task<Result<CreateResponse>> CreateAsync(
-       AdvertisementCreateRequest request,
-       int userId);
+        AdvertisementCreateRequest request,
+        int userId);
 }

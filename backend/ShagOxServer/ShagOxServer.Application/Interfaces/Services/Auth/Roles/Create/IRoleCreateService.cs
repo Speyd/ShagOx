@@ -1,10 +1,12 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Roles.Create;
 using ShagOxServer.Application.DTOs.Common.Responses;
-using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.Application.Interfaces.Services.Base;
 
 namespace ShagOxServer.Application.Interfaces.Services.Auth.Roles.Create;
 public interface IRoleCreateService
+    : ICreateService<
+        CreateResponse,
+        RoleCreateRequest
+        >
 {
-    Task<Result<CreateResponse>> CreateAsync(
-        RoleCreateRequest request);
 }

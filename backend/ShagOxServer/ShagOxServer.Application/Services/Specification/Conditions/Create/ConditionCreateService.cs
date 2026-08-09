@@ -8,7 +8,8 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Create;
-public class ConditionCreateService : IConditionCreateService
+public class ConditionCreateService
+    : IConditionCreateService
 {
     private readonly IRepository<Condition> _conditionRepository;
     private readonly ConditionValidator _conditionValidator;

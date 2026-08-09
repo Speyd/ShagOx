@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Update;
@@ -36,7 +33,6 @@ public static class DictionaryDependencyInjection
     {
         // ProductType
         services.AddScoped<IProductTypeQueryService, ProductTypeQueryService>();
-        services.AddScoped<IProductTypeCreateService, ProductTypeCreateService>();
         services.AddScoped<IProductTypeDeleteService, ProductTypeDeleteService>();
         services.AddScoped<IProductTypeUpdateService, ProductTypeUpdateService>();
 
@@ -45,7 +41,6 @@ public static class DictionaryDependencyInjection
 
         // Category
         services.AddScoped<ICategoryQueryService, CategoryQueryService>();
-        services.AddScoped<ICategoryCreateService, CategoryCreateService>();
         services.AddScoped<ICategoryUpdateService, CategoryUpdateService>();
         services.AddScoped<ICategoryDeleteService, CategoryDeleteService>();
 
@@ -55,7 +50,6 @@ public static class DictionaryDependencyInjection
 
         // AttributeDefinition
         services.AddScoped<IAttributeDefinitionQueryService, AttributeDefinitionQueryService>();
-        services.AddScoped<IAttributeDefinitionCreateService, AttributeDefinitionCreateService>();
         services.AddScoped<IAttributeDefinitionUpdateService, AttributeDefinitionUpdateService>();
         services.AddScoped<IAttributeDefinitionDeleteService, AttributeDefinitionDeleteService>();
 

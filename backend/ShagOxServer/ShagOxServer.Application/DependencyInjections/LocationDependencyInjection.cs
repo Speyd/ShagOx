@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Services.Location.Cities.Create;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
-using ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
@@ -26,7 +24,6 @@ public static class LocationDependencyInjection
     {
         // Region
         services.AddScoped<IRegionQueryService, RegionQueryService>();
-        services.AddScoped<IRegionCreateService, RegionCreateService>();
         services.AddScoped<IRegionUpdateService, RegionUpdateService>();
         services.AddScoped<IRegionDeleteService, RegionDeleteService>();
 
@@ -35,7 +32,6 @@ public static class LocationDependencyInjection
 
         // City
         services.AddScoped<ICityQueryService, CityQueryService>();
-        services.AddScoped<ICityCreateService, CityCreateService>();
         services.AddScoped<ICityUpdateService, CityUpdateService>();
         services.AddScoped<ICityDeleteService, CityDeleteService>();
 

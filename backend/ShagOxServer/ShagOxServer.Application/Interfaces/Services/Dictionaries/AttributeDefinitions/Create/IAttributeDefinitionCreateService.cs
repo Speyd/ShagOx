@@ -1,10 +1,12 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
-using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.Application.Interfaces.Services.Base;
 
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Create;
 public interface IAttributeDefinitionCreateService
+    : ICreateService<
+        CreateResponse,
+        AttributeDefinitionCreateRequest
+        >
 {
-    Task<Result<CreateResponse>> CreateAsync(
-        AttributeDefinitionCreateRequest request);
 }

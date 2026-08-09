@@ -9,7 +9,8 @@ using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Create;
-public class CityCreateService : ICityCreateService
+public class CityCreateService
+    : ICityCreateService
 {
     private readonly IRepository<City> _cityRepository;
     private readonly CityValidator _cityValidator;

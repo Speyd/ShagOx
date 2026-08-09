@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Domain.Entities.Account;
 using System.Security.Claims;
 
 namespace ShagOxServer.Api.Middleware;
@@ -15,7 +16,7 @@ public class UpdateLastSeenMiddleware
 
     public async Task InvokeAsync(
         HttpContext context,
-        IUserRepository repository,
+        IRepository<User> repository,
         IUnitOfWork unitOfWork)
     {
         if (context.User.Identity?.IsAuthenticated == true)

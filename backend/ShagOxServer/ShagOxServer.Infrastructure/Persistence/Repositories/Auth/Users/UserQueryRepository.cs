@@ -7,7 +7,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 public class UserQueryRepository 
-    : BaseRepository, IUserQueryRepository
+    : RepositoryContext, IUserQueryRepository
 {
     public UserQueryRepository(AppDbContext db)
         : base(db)

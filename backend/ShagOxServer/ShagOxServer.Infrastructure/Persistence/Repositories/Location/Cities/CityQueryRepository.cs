@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 public class CityQueryRepository 
-    : BaseRepository, ICityQueryRepository
+    : RepositoryContext, ICityQueryRepository
 {
     public CityQueryRepository(AppDbContext db)
         : base(db)

@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
 public class CategoryExistsRepository 
-    : BaseRepository, ICategoryExistsRepository
+    : RepositoryContext, ICategoryExistsRepository
 {
     public CategoryExistsRepository(AppDbContext db)
         : base(db)

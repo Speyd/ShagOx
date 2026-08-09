@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 public class ProductTypeValidator
 {
-    private readonly IProductTypeRepository _productTypeRepository;
+    private readonly IRepository<ProductType> _productTypeRepository;
     private readonly IProductTypeExistsRepository _productTypeExistsRepository;
 
 
     public ProductTypeValidator(
-        IProductTypeRepository productTypeRepository,
+        IRepository<ProductType> productTypeRepository,
         IProductTypeExistsRepository productTypeExistsRepository)
     {
         _productTypeRepository = productTypeRepository;

@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
 public class CurrencyExistsRepository 
-    : BaseRepository, ICurrencyExistsRepository
+    : RepositoryContext, ICurrencyExistsRepository
 {
     public CurrencyExistsRepository(AppDbContext db)
         : base(db)

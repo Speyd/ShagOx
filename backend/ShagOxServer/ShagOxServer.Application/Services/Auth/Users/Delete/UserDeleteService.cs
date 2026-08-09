@@ -1,21 +1,22 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Delete;
 using ShagOxServer.Application.Services.Auth.Users.Validator;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Delete;
 public class UserDeleteService : IUserDeleteService
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IRepository<User> _userRepository;
     private readonly UserValidator _userValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public UserDeleteService(
-        IUserRepository userRepository,
+        IRepository<User> userRepository,
         UserValidator userValidator,
         IUnitOfWork unitOfWork)
     {

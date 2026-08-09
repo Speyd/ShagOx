@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
 public class ConditionExistsRepository 
-    : BaseRepository, IConditionExistsRepository
+    : RepositoryContext, IConditionExistsRepository
 {
     public ConditionExistsRepository(AppDbContext db)
         : base(db)

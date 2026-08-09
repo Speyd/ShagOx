@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
 public class RoleExistsRepository 
-    : BaseRepository, IRoleExistsRepository
+    : RepositoryContext, IRoleExistsRepository
 {
     public RoleExistsRepository(AppDbContext db)
         : base(db)

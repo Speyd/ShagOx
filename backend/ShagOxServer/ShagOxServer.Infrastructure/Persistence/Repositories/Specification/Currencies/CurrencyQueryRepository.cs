@@ -7,7 +7,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
 public class CurrencyQueryRepository 
-    : BaseRepository, ICurrencyQueryRepository
+    : RepositoryContext, ICurrencyQueryRepository
 {
     public CurrencyQueryRepository(AppDbContext db)
         : base(db)

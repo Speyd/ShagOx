@@ -1,15 +1,16 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Delete;
 using ShagOxServer.Application.Services.Advertisements.Validator;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Delete;
 public class AdvertisementDeleteService : IAdvertisementDeleteService
 {
-    private readonly IAdvertisementRepository _advertisementRepository;
+    private readonly IRepository<Advertisement> _advertisementRepository;
     private readonly AdvertisementValidator _advertisementValidator;
 
     private readonly IImageDeleteService _imageDeleteService;
@@ -18,7 +19,7 @@ public class AdvertisementDeleteService : IAdvertisementDeleteService
 
 
     public AdvertisementDeleteService(
-        IAdvertisementRepository advertisementRepository,
+        IRepository<Advertisement> advertisementRepository,
         AdvertisementValidator advertisementValidator,
         IImageDeleteService imageDeleteService,
         IUnitOfWork unitOfWork)

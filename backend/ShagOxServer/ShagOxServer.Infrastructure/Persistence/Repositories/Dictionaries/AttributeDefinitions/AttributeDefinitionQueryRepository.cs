@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions;
 public class AttributeDefinitionQueryRepository 
-    : BaseRepository, IAttributeDefinitionQueryRepository
+    : RepositoryContext, IAttributeDefinitionQueryRepository
 {
     public AttributeDefinitionQueryRepository(AppDbContext db)
         : base(db)

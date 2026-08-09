@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 public class UserExistsRepository 
-    : BaseRepository, IUserExistsRepository
+    : RepositoryContext, IUserExistsRepository
 {
     public UserExistsRepository(AppDbContext db)
         : base(db)

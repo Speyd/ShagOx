@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.DTOs.Location.Cities.Update;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Location.Cities.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
 using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Update;
 public class CityUpdateService : ICityUpdateService
 {
-    private readonly ICityRepository _cityRepository;
+    private readonly IRepository<City> _cityRepository;
     private readonly CityValidator _cityValidator;
     private readonly CityUpdateValidator _cityUpdateValidator;
 
@@ -18,7 +19,7 @@ public class CityUpdateService : ICityUpdateService
 
 
     public CityUpdateService(
-        ICityRepository cityRepository,
+        IRepository<City> cityRepository,
         CityValidator cityValidator,
         CityUpdateValidator cityUpdateValidator,
         IUnitOfWork unitOfWork)

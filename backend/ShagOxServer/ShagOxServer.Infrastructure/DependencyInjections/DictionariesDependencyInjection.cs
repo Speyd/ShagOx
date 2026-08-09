@@ -12,17 +12,14 @@ public static class DictionariesDependencyInjection
     public static IServiceCollection AddDictionariesInfrastructure(this IServiceCollection services)
     {
         // ProductType
-        services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
         services.AddScoped<IProductTypeQueryRepository, ProductTypeQueryRepository>();
         services.AddScoped<IProductTypeExistsRepository, ProductTypeExistsRepository>();
 
         // Category
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ICategoryQueryRepository, CategoryQueryRepository>();
         services.AddScoped<ICategoryExistsRepository, CategoryExistsRepository>();
 
         // AttributeDefinition
-        services.AddScoped<IAttributeDefinitionRepository, AttributeDefinitionRepository>();
         services.AddScoped<IAttributeDefinitionQueryRepository, AttributeDefinitionQueryRepository>();
         services.AddScoped<IAttributeDefinitionExistsRepository, AttributeDefinitionExistsRepository>();
 

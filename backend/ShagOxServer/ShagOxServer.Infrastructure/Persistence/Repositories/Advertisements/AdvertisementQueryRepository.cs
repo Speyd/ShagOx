@@ -7,7 +7,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 public class AdvertisementQueryRepository 
-    : BaseRepository, IAdvertisementQueryRepository
+    : RepositoryContext, IAdvertisementQueryRepository
 {
     public AdvertisementQueryRepository(AppDbContext db)
         : base(db)

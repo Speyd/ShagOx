@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Images.Create;
 using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Create;
 using ShagOxServer.Application.Services.Advertisements.Validator;
@@ -11,14 +11,14 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Specification.Images.Create;
 public class ImageCreateService : IImageCreateService
 {
-    private readonly IImageRepository _imageRepository;
+    private readonly IRepository<Image> _imageRepository;
     private readonly IImageLoaderService _loaderService;
     private readonly ImageCreateValidator _imageValidator;
     private readonly AdvertisementValidator _advertValidator;
 
 
     public ImageCreateService(
-        IImageRepository imageRepository,
+        IRepository<Image> imageRepository,
         IImageLoaderService loaderService,
         ImageCreateValidator imageValidator,
         AdvertisementValidator advertValidator)

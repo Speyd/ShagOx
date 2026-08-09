@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes;
 public class ProductTypeQueryRepository
-    : BaseRepository, IProductTypeQueryRepository
+    : RepositoryContext, IProductTypeQueryRepository
 {
     public ProductTypeQueryRepository(AppDbContext db)
         : base(db)

@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Validator;
 public class RegionValidator
 {
-    private readonly IRegionRepository _regionRepository;
+    private readonly IRepository<Region> _regionRepository;
     private readonly IRegionExistsRepository _regionExistsRepository;
 
 
     public RegionValidator(
-        IRegionRepository regionRepository,
+        IRepository<Region> regionRepository,
         IRegionExistsRepository regionExistsRepository)
     {
         _regionRepository = regionRepository;

@@ -1,21 +1,22 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Delete;
 public class AttributeDefinitionDeleteService : IAttributeDefinitionDeleteService
 {
-    private readonly IAttributeDefinitionRepository _attributeRepository;
+    private readonly IRepository<AttributeDefinition> _attributeRepository;
     private readonly AttributeDefinitionValidator _attributeValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public AttributeDefinitionDeleteService(
-        IAttributeDefinitionRepository attributeRepository,
+        IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
         IUnitOfWork unitOfWork)
     {

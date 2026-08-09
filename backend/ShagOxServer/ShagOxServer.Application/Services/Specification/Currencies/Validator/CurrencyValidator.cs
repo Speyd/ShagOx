@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Validator;
 public class CurrencyValidator
 {
-    private readonly ICurrencyRepository _repository;
+    private readonly IRepository<Currency> _repository;
     private readonly ICurrencyExistsRepository _existsRepository;
 
 
     public CurrencyValidator(
-        ICurrencyRepository repository,
+        IRepository<Currency> repository,
         ICurrencyExistsRepository existsRepository)
     {
         _repository = repository;

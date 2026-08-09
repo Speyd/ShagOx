@@ -1,22 +1,23 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Update;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
-using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Update;
 public class CurrencyUpdateService : ICurrencyUpdateService
 {
-    private readonly ICurrencyRepository _currencyRepository;
+    private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyValidator _currencyValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public CurrencyUpdateService(
-        ICurrencyRepository currencyRepository,
+        IRepository<Currency> currencyRepository,
         CurrencyValidator currencyValidator,
         IUnitOfWork unitOfWork)
     {

@@ -9,11 +9,9 @@ public static class AdvertisementDependencyInjection
 {
     public static IServiceCollection AddAdvertisementsInfrastructure(this IServiceCollection services)
     {
-        services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
         services.AddScoped<IAdvertisementQueryRepository, AdvertisementQueryRepository>();
         services.AddScoped<IAdvertisementExistsRepository, AdvertisementExistsRepository>();
 
-        services.AddScoped<IFavoriteRepository, FavoriteRepository>();
         services.AddScoped<IFavoriteQueryRepository, FavoriteQueryRepository>();
         services.AddScoped<IFavoriteExistsRepository, FavoriteExistsRepository>();
 

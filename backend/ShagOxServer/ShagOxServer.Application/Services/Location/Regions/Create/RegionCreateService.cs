@@ -1,22 +1,23 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Create;
 public class RegionCreateService : IRegionCreateService
 {
-    private readonly IRegionRepository _regionRepository;
+    private readonly IRepository<Region> _regionRepository;
     private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RegionCreateService(
-        IRegionRepository regionRepository,
+        IRepository<Region> regionRepository,
         RegionValidator regionValidator,
         IUnitOfWork unitOfWork)
     {

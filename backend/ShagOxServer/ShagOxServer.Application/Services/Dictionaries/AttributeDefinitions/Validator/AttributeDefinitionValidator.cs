@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 public class AttributeDefinitionValidator
 {
-    private readonly IAttributeDefinitionRepository _attributeRepository;
+    private readonly IRepository<AttributeDefinition> _attributeRepository;
     private readonly IAttributeDefinitionExistsRepository _attributeExistsRepository;
 
 
     public AttributeDefinitionValidator(
-        IAttributeDefinitionRepository attributeRepository,
+        IRepository<AttributeDefinition> attributeRepository,
         IAttributeDefinitionExistsRepository attributeExistsRepository)
     {
         _attributeRepository = attributeRepository;

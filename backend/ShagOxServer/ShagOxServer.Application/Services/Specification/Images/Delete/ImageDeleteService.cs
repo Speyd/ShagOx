@@ -1,20 +1,21 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Delete;
 using ShagOxServer.Application.Services.Specification.Images.Validator;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Delete;
 public class ImageDeleteService : IImageDeleteService
 {
-    private readonly IImageRepository _imageRepository;
+    private readonly IRepository<Image> _imageRepository;
     private readonly ImageValidator _imageValidator;
     private readonly IImageLoaderService _loaderService;
 
 
     public ImageDeleteService(
-        IImageRepository imageRepository,
+        IRepository<Image> imageRepository,
         ImageValidator imageValidator,
         IImageLoaderService loaderService)
     {

@@ -1,17 +1,18 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Create;
 public class CategoryCreateService : ICategoryCreateService
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IRepository<Category> _categoryRepository;
     private readonly CategoryValidator _categoryValidator;
     private readonly ProductTypeValidator _productTypeValidator;
 
@@ -20,7 +21,7 @@ public class CategoryCreateService : ICategoryCreateService
 
 
     public CategoryCreateService(
-        ICategoryRepository categoryRepository,
+        IRepository<Category> categoryRepository,
         CategoryValidator categoryValidator,
         ProductTypeValidator productTypeValidator,
         IUnitOfWork unitOfWork)

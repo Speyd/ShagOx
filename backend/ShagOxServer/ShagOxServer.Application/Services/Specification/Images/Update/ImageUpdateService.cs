@@ -1,22 +1,23 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Images.Update;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Specification.Images.Update;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Update;
 using ShagOxServer.Application.Services.Advertisements.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Validator;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Update;
 public class ImageUpdateService : IImageUpdateService
 {
-    private readonly IImageRepository _imageRepository;
+    private readonly IRepository<Image> _imageRepository;
     private readonly ImageValidator _imageValidator;
 
     private readonly AdvertisementValidator _advertValidator;
 
 
     public ImageUpdateService(
-        IImageRepository imageRepository,
+        IRepository<Image> imageRepository,
         ImageValidator imageValidator,
         AdvertisementValidator advertisementValidator)
     {

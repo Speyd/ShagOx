@@ -3,14 +3,14 @@ using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Create;
 public class UserCreater
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IRepository<User> _userRepository;
 
     private readonly IRoleQueryRepository _roleQueryRepository;
 
@@ -18,11 +18,11 @@ public class UserCreater
     private readonly IContactValidator _contactValidator;
     private readonly IUnitOfWork _unitOfWork;
 
-    private readonly string BaseRole = "User";
+    private readonly string DefaultRole = "User";
 
 
     public UserCreater(
-        IUserRepository userRepository,
+        IRepository<User> userRepository,
         IRoleQueryRepository roleQueryRepository,
         IPasswordHasher<User> passwordHasher,
         IContactValidator contactValidator,
@@ -54,7 +54,7 @@ public class UserCreater
     public async Task AddDefaultRole(User user)
     {
         var role = await _roleQueryRepository
-            .GetByNameAsync(BaseRole);
+            .GetByNameAsync(DefaultRole);
 
         if (role is null)
             throw new Exception("Role not found");

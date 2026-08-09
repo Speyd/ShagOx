@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Validator;
 public class ConditionValidator
 {
-    private readonly IConditionRepository _repository;
+    private readonly IRepository<Condition> _repository;
     private readonly IConditionExistsRepository _existsRepository;
 
 
     public ConditionValidator(
-        IConditionRepository conditionRepository,
+        IRepository<Condition> conditionRepository,
         IConditionExistsRepository existsRepository)
     {
         _repository = conditionRepository;

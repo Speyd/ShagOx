@@ -1,14 +1,16 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Services.Auth.Users.Create;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth;
 public class RegisterService : IRegisterService
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IRepository<User> _userRepository;
     private readonly IUserExistsRepository _userExistsRepository;
     private readonly UserCreater _userCreater;
     
@@ -16,7 +18,7 @@ public class RegisterService : IRegisterService
 
 
     public RegisterService(
-        IUserRepository userRepository,
+        IRepository<User> userRepository,
         IUserExistsRepository userExistsRepository,
         UserCreater userCreater,
         IUnitOfWork unitOfWork)

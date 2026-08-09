@@ -1,16 +1,17 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Validator;
 public class AdvertisementValidator
 {
-    private readonly IAdvertisementRepository _advertisementRepository;
+    private readonly IRepository<Advertisement> _advertisementRepository;
     private readonly IAdvertisementExistsRepository _advertisementExistsRepository;
 
 
     public AdvertisementValidator(
-        IAdvertisementRepository advertisementRepository,
+        IRepository<Advertisement> advertisementRepository,
         IAdvertisementExistsRepository advertisementExistsRepository)
     {
         _advertisementRepository = advertisementRepository;

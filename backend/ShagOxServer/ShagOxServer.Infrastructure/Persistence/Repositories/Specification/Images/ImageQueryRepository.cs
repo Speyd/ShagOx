@@ -6,7 +6,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;
 public class ImageQueryRepository 
-    : BaseRepository, IImageQueryRepository
+    : RepositoryContext, IImageQueryRepository
 {
     public ImageQueryRepository(AppDbContext db)
         : base(db)

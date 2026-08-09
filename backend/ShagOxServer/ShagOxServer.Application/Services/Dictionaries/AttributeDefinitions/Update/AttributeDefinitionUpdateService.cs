@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;
 public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateService
 {
-    private readonly IAttributeDefinitionRepository _attributeRepository;
+    private readonly IRepository<AttributeDefinition> _attributeRepository;
     private readonly AttributeDefinitionValidator _attributeValidator;
     private readonly AttributeDefinitionUpdateValidator _attributeUpdateValidator;
 
@@ -18,7 +19,7 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
 
 
     public AttributeDefinitionUpdateService(
-        IAttributeDefinitionRepository attributeRepository,
+        IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
         AttributeDefinitionUpdateValidator attributeUpdateValidator,
         IUnitOfWork unitOfWork)

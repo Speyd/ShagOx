@@ -3,15 +3,17 @@ using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Create;
 using ShagOxServer.Application.Services.Advertisements.Create.Validator;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create;
 public class AdvertisementCreateService : IAdvertisementCreateService
 {
-    private readonly IAdvertisementRepository _advertisementRepository;
+    private readonly IRepository<Advertisement> _advertisementRepository;
     private readonly AdvertisementCreateValidator _advertisementValidator;
  
     private readonly IImageCreateService _imageCreateService;
@@ -20,7 +22,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
 
 
     public AdvertisementCreateService(
-        IAdvertisementRepository advertisementRepository,
+        IRepository<Advertisement> advertisementRepository,
         AdvertisementCreateValidator advertisementValidator,
         IImageCreateService imageCreateService,
         IUnitOfWork unitOfWork)

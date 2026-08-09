@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 public class CategoryValidator
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IRepository<Category> _categoryRepository;
     private readonly ICategoryExistsRepository _categoryExistsRepository;
 
 
     public CategoryValidator(
-        ICategoryRepository categoryRepository,
+        IRepository<Category> categoryRepository,
         ICategoryExistsRepository categoryExistsRepository)
     {
         _categoryRepository = categoryRepository;

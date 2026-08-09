@@ -1,22 +1,23 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Create;
 using ShagOxServer.Application.Services.Specification.Currencies.Create.Validator;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Create;
 public class CurrencyCreateService : ICurrencyCreateService
 {
-    private readonly ICurrencyRepository _currencyRepository;
+    private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyCreateValidator _currencyCreateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public CurrencyCreateService(
-        ICurrencyRepository currencyRepository,
+        IRepository<Currency> currencyRepository,
         CurrencyCreateValidator currencyCreateValidator,
         IUnitOfWork unitOfWork)
     {

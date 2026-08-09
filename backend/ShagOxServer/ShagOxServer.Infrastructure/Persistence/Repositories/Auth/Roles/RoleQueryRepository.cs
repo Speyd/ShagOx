@@ -7,7 +7,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
 public class RoleQueryRepository 
-    : BaseRepository, IRoleQueryRepository
+    : RepositoryContext, IRoleQueryRepository
 {
     public RoleQueryRepository(AppDbContext db)
         : base(db)

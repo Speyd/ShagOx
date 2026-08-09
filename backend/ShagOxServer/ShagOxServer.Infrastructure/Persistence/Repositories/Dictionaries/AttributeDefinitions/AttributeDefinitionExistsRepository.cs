@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDef
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions;
 public class AttributeDefinitionExistsRepository 
-    : BaseRepository, IAttributeDefinitionExistsRepository
+    : RepositoryContext, IAttributeDefinitionExistsRepository
 {
     public AttributeDefinitionExistsRepository(AppDbContext db)
         : base(db)

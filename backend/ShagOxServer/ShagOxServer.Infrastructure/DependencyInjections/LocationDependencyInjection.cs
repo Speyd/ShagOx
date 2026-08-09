@@ -9,13 +9,12 @@ public static class LocationDependencyInjection
 {
     public static IServiceCollection AddLocationInfrastructure(this IServiceCollection services)
     {
+
         // Region
-        services.AddScoped<IRegionRepository, RegionRepository>();
         services.AddScoped<IRegionQueryRepository, RegionQueryRepository>();
         services.AddScoped<IRegionExistsRepository, RegionExistsRepository>();
 
         // City
-        services.AddScoped<ICityRepository, CityRepository>();
         services.AddScoped<ICityQueryRepository, CityQueryRepository>();
         services.AddScoped<ICityExistsRepository, CityExistsRepository>();
 

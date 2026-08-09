@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 public class AdvertisementExistsRepository 
-    : BaseRepository, IAdvertisementExistsRepository
+    : RepositoryContext, IAdvertisementExistsRepository
 {
     public AdvertisementExistsRepository(AppDbContext db)
         : base(db)

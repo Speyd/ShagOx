@@ -1,17 +1,18 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Update;
 public class CategoryUpdateService 
     : ICategoryUpdateService
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IRepository<Category> _categoryRepository;
     private readonly CategoryValidator _categoryValidator;
     private readonly CategoryUpdateValidator _categoryUpdateValidator;
 
@@ -19,7 +20,7 @@ public class CategoryUpdateService
 
 
     public CategoryUpdateService(
-        ICategoryRepository categoryRepository,
+        IRepository<Category> categoryRepository,
         CategoryValidator categoryValidator,
         CategoryUpdateValidator categoryUpdateValidator,
         IUnitOfWork unitOfWork)

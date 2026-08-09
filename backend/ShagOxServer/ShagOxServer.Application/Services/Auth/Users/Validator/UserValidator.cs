@@ -1,16 +1,17 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Validator;
 public class UserValidator
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IRepository<User> _userRepository;
     private readonly IUserExistsRepository _userExistsRepository;
 
 
     public UserValidator(
-        IUserRepository userRepository, 
+        IRepository<User> userRepository, 
         IUserExistsRepository userExistsRepository)
     {
         _userRepository = userRepository;

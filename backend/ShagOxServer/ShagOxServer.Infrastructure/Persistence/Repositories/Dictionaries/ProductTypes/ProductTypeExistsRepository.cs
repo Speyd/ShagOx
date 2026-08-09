@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes;
 public class ProductTypeExistsRepository
-    : BaseRepository, IProductTypeExistsRepository
+    : RepositoryContext, IProductTypeExistsRepository
 {
     public ProductTypeExistsRepository(AppDbContext db)
         : base(db)

@@ -1,16 +1,17 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Users.Update;
+using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Update;
 using ShagOxServer.Application.Services.Auth.Users.Update.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Validator;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Update;
 public class UserUpdateService : IUserUpdateService
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IRepository<User> _userRepository;
     private readonly UserValidator _userValidator;
     private readonly UserUpdateValidator _userUpdateValidator;
 
@@ -18,7 +19,7 @@ public class UserUpdateService : IUserUpdateService
 
 
     public UserUpdateService(
-        IUserRepository userRepository,
+        IRepository<User> userRepository,
         UserValidator userValidator,
         UserUpdateValidator userUpdateValidator,
         IUnitOfWork unitOfWork)

@@ -9,21 +9,23 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 public class CityQueryRepository 
-    : RepositoryContext, ICityQueryRepository
+    : QueryRepository<City>, 
+      ICityQueryRepository
 {
     public CityQueryRepository(AppDbContext db)
         : base(db)
     { }
 
 
-    public async Task<City?> GetByIdAsync(int id)
+    public override async Task<City?> GetByIdAsync(
+        int id)
     {
         return await _db.Cities
             .WithIncludes()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<PagedResult<City>> GetPagedAsync(
+    public override async Task<PagedResult<City>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Cities
@@ -31,7 +33,8 @@ public class CityQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<City?> GetByNameAsync(string name)
+    public async Task<City?> GetByNameAsync(
+        string name)
     {
         return await _db.Cities
             .WithIncludes()

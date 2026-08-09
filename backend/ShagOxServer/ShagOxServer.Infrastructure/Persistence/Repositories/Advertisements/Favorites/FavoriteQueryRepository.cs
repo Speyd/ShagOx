@@ -8,21 +8,23 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites;
 public class FavoriteQueryRepository 
-    : RepositoryContext, IFavoriteQueryRepository
+    : QueryRepository<Favorite>, 
+      IFavoriteQueryRepository
 {
     public FavoriteQueryRepository(AppDbContext db)
         : base(db)
     { }
 
 
-    public async Task<Favorite?> GetByIdAsync(int id)
+    public override async Task<Favorite?> GetByIdAsync(
+        int id)
     {
         return await _db.Favorites
             .WithIncludes()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<PagedResult<Favorite>> GetPagedAsync(
+    public override async Task<PagedResult<Favorite>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Favorites

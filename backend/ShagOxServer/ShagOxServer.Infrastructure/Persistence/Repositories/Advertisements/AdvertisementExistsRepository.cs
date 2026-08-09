@@ -12,7 +12,9 @@ public class AdvertisementExistsRepository
         : base(db)
     { }
 
-    public async Task<bool> IsOwnerAsync(int adId, int userId)
+    public async Task<bool> IsOwnerAsync(
+        int adId,
+        int userId)
     {
         var result = await _db.Advertisements
            .AnyAsync(x =>

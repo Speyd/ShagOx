@@ -13,7 +13,9 @@ public class UserRoleExistsRepository
     { }
 
 
-    public async Task<bool> ExistsAsync(int roleId, int userId)
+    public async Task<bool> ExistsAsync(
+        int roleId, 
+        int userId)
     {
         return await _db.UserRoles
             .AnyAsync(x => x.UserId == userId && x.RoleId == roleId);

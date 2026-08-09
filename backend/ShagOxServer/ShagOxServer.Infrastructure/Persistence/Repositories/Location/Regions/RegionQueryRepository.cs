@@ -9,25 +9,13 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 public class RegionQueryRepository 
-    : RepositoryContext, IRegionQueryRepository
+    : QueryRepository<Region>, 
+      IRegionQueryRepository
 {
     public RegionQueryRepository(AppDbContext db)
         : base(db)
     { }
 
-
-    public async Task<Region?> GetByIdAsync(int id)
-    {
-        return await _db.Regions
-            .FirstOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<PagedResult<Region>> GetPagedAsync(
-       PaginationParams pagination)
-    {
-        return await _db.Regions
-            .ToPagedResultAsync(pagination);
-    }
 
     public async Task<Region?> GetByNameAsync(string name)
     {

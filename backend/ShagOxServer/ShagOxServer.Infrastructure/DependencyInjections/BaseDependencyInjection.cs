@@ -10,6 +10,7 @@ public static class BaseDependencyInjection
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped(typeof(IExistsRepository<>), typeof(ExistsRepository<>));
+        services.AddScoped(typeof(IQueryRepository<>), typeof(QueryRepository<>));
 
         return services;
     }

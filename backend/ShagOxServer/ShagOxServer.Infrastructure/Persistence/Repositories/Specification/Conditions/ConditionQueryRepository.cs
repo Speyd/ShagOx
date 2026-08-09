@@ -8,27 +8,16 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
 public class ConditionQueryRepository 
-    : RepositoryContext, IConditionQueryRepository
+    : QueryRepository<Condition>, 
+      IConditionQueryRepository
 {
     public ConditionQueryRepository(AppDbContext db)
         : base(db)
     { }
 
 
-    public async Task<Condition?> GetByIdAsync(int id)
-    {
-        return await _db.Conditions
-            .FirstOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<PagedResult<Condition>> GetPagedAsync(
-       PaginationParams pagination)
-    {
-        return await _db.Conditions
-            .ToPagedResultAsync(pagination);
-    }
-
-    public async Task<Condition?> GetByNameAsync(string name)
+    public async Task<Condition?> GetByNameAsync(
+        string name)
     {
         return await _db.Conditions
             .FirstOrDefaultAsync(x => x.Name == name);

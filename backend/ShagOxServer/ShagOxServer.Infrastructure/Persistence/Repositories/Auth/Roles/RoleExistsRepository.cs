@@ -13,7 +13,8 @@ public class RoleExistsRepository
     { }
 
 
-    public async Task<bool> ExistsByNameAsync(string name)
+    public async Task<bool> ExistsByNameAsync(
+        string name)
     {
         return await _db.Roles
             .AnyAsync(r => r.Name == name);

@@ -11,25 +11,25 @@ public  class Repository<T>
     }
 
 
-    public async Task<T?> GetByIdAsync(int id)
+    public virtual async Task<T?> GetByIdAsync(int id)
     {
         return await _db.Set<T>()
             .FindAsync(id);
     }
 
-    public void Add(T entity)
+    public virtual void Add(T entity)
     {
         _db.Set<T>()
             .Add(entity);
     }
 
-    public void Delete(T entity)
+    public virtual void Delete(T entity)
     {
         _db.Set<T>()
             .Remove(entity);
     }
 
-    public bool Update(T entity)
+    public virtual bool Update(T entity)
     {
         try
         {

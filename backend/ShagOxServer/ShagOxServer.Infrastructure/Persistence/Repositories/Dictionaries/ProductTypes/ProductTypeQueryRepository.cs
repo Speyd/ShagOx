@@ -9,25 +9,13 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes;
 public class ProductTypeQueryRepository
-    : RepositoryContext, IProductTypeQueryRepository
+    : QueryRepository<ProductType>, 
+      IProductTypeQueryRepository
 {
     public ProductTypeQueryRepository(AppDbContext db)
         : base(db)
     { }
 
-
-    public async Task<ProductType?> GetByIdAsync(int id)
-    {
-        return await _db.ProductTypes
-            .FirstOrDefaultAsync(c => c.Id == id);
-    }
-
-    public async Task<PagedResult<ProductType>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        return await _db.ProductTypes
-            .ToPagedResultAsync(pagination);
-    }
 
     public async Task<PagedResult<ProductType>> Search(
         ProductTypeSearchFilter filter,

@@ -13,7 +13,8 @@ public class ProductTypeExistsRepository
     { }
 
 
-    public async Task<bool> ExistsByNameAsync(string name)
+    public async Task<bool> ExistsByNameAsync(
+        string name)
     {
         return await _db.ProductTypes
             .AnyAsync(c => c.Name == name);

@@ -22,13 +22,15 @@ public class CategoryExistsRepository
                 c.Name == name && c.ProductTypeId == productTypeId);
     }
 
-    public async Task<bool> ExistsByNameAsync(string name)
+    public async Task<bool> ExistsByNameAsync(
+        string name)
     {
         return await _db.Categories
             .AnyAsync(c => c.Name == name);
     }
 
-    public async Task<bool> ExistsByProductTypeAsync(int productTypeId)
+    public async Task<bool> ExistsByProductTypeAsync(
+        int productTypeId)
     {
         return await _db.Categories
             .AnyAsync(c => c.ProductTypeId == productTypeId);

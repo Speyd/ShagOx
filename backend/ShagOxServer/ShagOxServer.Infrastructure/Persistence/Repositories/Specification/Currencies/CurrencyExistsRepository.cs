@@ -13,19 +13,22 @@ public class CurrencyExistsRepository
     { }
 
 
-    public async Task<bool> ExistsByCodeAsync(string? code)
+    public async Task<bool> ExistsByCodeAsync(
+        string? code)
     {
         return await _db.Currencies
             .AnyAsync(c => c.Code == code);
     }
 
-    public async Task<bool> ExistsBySymbolAsync(string? symbol)
+    public async Task<bool> ExistsBySymbolAsync(
+        string? symbol)
     {
         return await _db.Currencies
             .AnyAsync(c => c.Symbol == symbol);
     }
 
-    public async Task<bool> ExistsByNameAsync(string? name)
+    public async Task<bool> ExistsByNameAsync(
+        string? name)
     {
         return await _db.Currencies
             .AnyAsync(c => c.Name == name);

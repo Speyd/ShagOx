@@ -8,21 +8,23 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 public class UserQueryRepository 
-    : RepositoryContext, IUserQueryRepository
+    : QueryRepository<User>, 
+      IUserQueryRepository
 {
     public UserQueryRepository(AppDbContext db)
         : base(db)
     { }
 
 
-    public async Task<User?> GetByIdAsync(int id)
+    public override async Task<User?> GetByIdAsync(
+        int id)
     {
         return await _db.Users
             .WithIncludes()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<PagedResult<User>> GetPagedAsync(
+    public override async Task<PagedResult<User>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Users
@@ -30,7 +32,9 @@ public class UserQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<User?> GetByContactAsync(string? email, string? phone)
+    public async Task<User?> GetByContactAsync(
+        string? email,
+        string? phone)
     {
         var query = _db.Users
             .WithIncludes();
@@ -44,14 +48,16 @@ public class UserQueryRepository
         return await query.FirstOrDefaultAsync();
     }
 
-    public async Task<User?> GetByEmailAsync(string email)
+    public async Task<User?> GetByEmailAsync(
+        string email)
     {
         return await _db.Users
             .WithIncludes()
             .FirstOrDefaultAsync(x => x.Email == email);
     }
 
-    public async Task<User?> GetByPhoneAsync(string phone)
+    public async Task<User?> GetByPhoneAsync(
+        string phone)
     {
         return await _db.Users
             .WithIncludes()

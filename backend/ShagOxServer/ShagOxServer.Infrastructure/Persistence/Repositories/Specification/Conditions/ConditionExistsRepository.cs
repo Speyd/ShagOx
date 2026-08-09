@@ -13,7 +13,8 @@ public class ConditionExistsRepository
     { }
 
 
-    public async Task<bool> ExistsByNameAsync(string name)
+    public async Task<bool> ExistsByNameAsync(
+        string name)
     {
         return await _db.Conditions
             .AnyAsync(x => x.Name == name);

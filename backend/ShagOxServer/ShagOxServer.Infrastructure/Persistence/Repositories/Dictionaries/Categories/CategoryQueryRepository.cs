@@ -9,21 +9,23 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
 public class CategoryQueryRepository 
-    : RepositoryContext, ICategoryQueryRepository
+    : QueryRepository<Category>, 
+      ICategoryQueryRepository
 {
     public CategoryQueryRepository(AppDbContext db)
         : base(db)
     { }
 
 
-    public async Task<Category?> GetByIdAsync(int id)
+    public override async Task<Category?> GetByIdAsync(
+        int id)
     {
         return await _db.Categories
             .WithIncludes()
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<PagedResult<Category>> GetPagedAsync(
+    public override async Task<PagedResult<Category>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Categories

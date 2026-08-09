@@ -1,14 +1,10 @@
-﻿using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 public interface IImageQueryRepository
+    : IQueryRepository<Image>
 {
-    Task<Image?> GetByIdAsync(int id);
-
-    Task<PagedResult<Image>> GetPagedAsync(
-        PaginationParams pagination);
-
     Task<List<Image>> GetByIdsAsync(List<int> ids);
 
     Task<List<Image>> GetByAdvertisementIdAsync(int advertId);

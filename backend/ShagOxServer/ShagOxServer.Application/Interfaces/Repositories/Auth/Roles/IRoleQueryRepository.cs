@@ -1,15 +1,12 @@
-﻿using ShagOxServer.Domain.Entities.Account;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 public interface IRoleQueryRepository
+    : IQueryRepository<Role>
 {
-    Task<Role?> GetByIdAsync(int id);
-
-    Task<PagedResult<Role>> GetPagedAsync(
-        PaginationParams pagination);
-
     Task<PagedResult<Role>> GetByUserAsync(
         int userId,
         PaginationParams pagination);

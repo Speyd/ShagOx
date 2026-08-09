@@ -7,14 +7,16 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;
 public class ImageQueryRepository 
-    : RepositoryContext, IImageQueryRepository
+    : QueryRepository<Image>, 
+      IImageQueryRepository
 {
     public ImageQueryRepository(AppDbContext db)
         : base(db)
     { }
 
 
-    public async Task<Image?> GetByIdAsync(int id)
+    public override async Task<Image?> GetByIdAsync(
+        int id)
     {
         return await _db.Images
             .WithIncludes()
@@ -30,7 +32,7 @@ public class ImageQueryRepository
            .ToListAsync();
     }
 
-    public async Task<PagedResult<Image>> GetPagedAsync(
+    public override async Task<PagedResult<Image>> GetPagedAsync(
       PaginationParams pagination)
     {
         return await _db.Images

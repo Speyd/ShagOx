@@ -1,14 +1,11 @@
-﻿using ShagOxServer.Domain.Entities.Advertisements;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 public interface IFavoriteQueryRepository
+    : IQueryRepository<Favorite>
 {
-    Task<Favorite?> GetByIdAsync(int id);
-
-    Task<PagedResult<Favorite>> GetPagedAsync(
-        PaginationParams pagination);
-
     Task<PagedResult<Favorite>> GetByUserAsync(
         int usderId,
         PaginationParams pagination);

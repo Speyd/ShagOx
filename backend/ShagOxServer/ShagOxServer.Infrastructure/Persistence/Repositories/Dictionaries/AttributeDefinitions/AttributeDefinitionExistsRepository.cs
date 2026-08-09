@@ -13,7 +13,9 @@ public class AttributeDefinitionExistsRepository
     { }
 
 
-    public async Task<bool> ExistsByCategoryAsync(int attributeId, int categoryId)
+    public async Task<bool> ExistsByCategoryAsync(
+        int attributeId,
+        int categoryId)
     {
         return await _db.AttributeDefinitions
             .AnyAsync(x =>
@@ -21,7 +23,9 @@ public class AttributeDefinitionExistsRepository
             x.CategoryId == categoryId));
     }
 
-    public async Task<bool> ExistsByCategoryAsync(string attributeKey, int categoryId)
+    public async Task<bool> ExistsByCategoryAsync(
+        string attributeKey,
+        int categoryId)
     {
         return await _db.AttributeDefinitions
             .AnyAsync(x =>

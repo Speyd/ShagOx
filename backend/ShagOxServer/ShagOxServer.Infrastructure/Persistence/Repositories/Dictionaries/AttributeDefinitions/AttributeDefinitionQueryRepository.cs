@@ -9,21 +9,23 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.AttributeDefinitions;
 public class AttributeDefinitionQueryRepository 
-    : RepositoryContext, IAttributeDefinitionQueryRepository
+    : QueryRepository<AttributeDefinition>, 
+      IAttributeDefinitionQueryRepository
 {
     public AttributeDefinitionQueryRepository(AppDbContext db)
         : base(db)
     { }
 
 
-    public async Task<AttributeDefinition?> GetByIdAsync(int id)
+    public override async Task<AttributeDefinition?> GetByIdAsync(
+        int id)
     {
         return await _db.AttributeDefinitions
             .WithIncludes()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<PagedResult<AttributeDefinition>> GetPagedAsync(
+    public override async Task<PagedResult<AttributeDefinition>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.AttributeDefinitions

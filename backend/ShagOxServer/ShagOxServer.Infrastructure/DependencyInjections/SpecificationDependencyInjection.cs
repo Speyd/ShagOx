@@ -21,7 +21,6 @@ public static class SpecificationDependencyInjection
 
         // Image
         services.AddScoped<IImageQueryRepository, ImageQueryRepository>();
-        services.AddScoped<IImageExistsRepository, ImageExistsRepository>();
 
         return services;
     }

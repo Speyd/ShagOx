@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
-public class CityExistsRepository 
-    : RepositoryContext, ICityExistsRepository
+public class CityExistsRepository
+    : ExistsRepository<City>,
+      ICityExistsRepository
 {
     public CityExistsRepository(AppDbContext db)
         : base(db)
@@ -16,11 +19,5 @@ public class CityExistsRepository
     {
         return await _db.Cities.AnyAsync(
             x => (x.RegionId == regionId && x.Name == x.Name));
-    }
-
-    public async Task<bool> ExistsByIdAsync(int id)
-    {
-        return await _db.Cities
-            .AnyAsync(x => x.Id == id);
     }
 }

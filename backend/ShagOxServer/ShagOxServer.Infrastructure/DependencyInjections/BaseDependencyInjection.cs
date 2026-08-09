@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Infrastructure.Persistence.Repositories;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections;
 public static class BaseDependencyInjection
@@ -8,7 +8,8 @@ public static class BaseDependencyInjection
     public static IServiceCollection AddBaseRepositories(
        this IServiceCollection services)
     {
-        services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped(typeof(IExistsRepository<>), typeof(ExistsRepository<>));
 
         return services;
     }

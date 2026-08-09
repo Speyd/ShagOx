@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
-public class UserExistsRepository 
-    : RepositoryContext, IUserExistsRepository
+public class UserExistsRepository
+    : ExistsRepository<User>,
+      IUserExistsRepository
 {
     public UserExistsRepository(AppDbContext db)
         : base(db)
@@ -16,12 +19,6 @@ public class UserExistsRepository
             (email != null && x.Email == email) ||
             (phone != null && x.Phone == phone)
         );
-    }
-
-    public async Task<bool> ExistsByIdAsync(int id)
-    {
-        return await _db.Users
-            .AnyAsync(x => x.Id == id);
     }
 
     public async Task<bool> ExistsEmailAsync(string? email)

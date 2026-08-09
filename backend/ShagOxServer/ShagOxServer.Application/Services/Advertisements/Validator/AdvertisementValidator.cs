@@ -31,7 +31,7 @@ public class AdvertisementValidator
     public async Task<Result<bool>> ExistsByIdAsync(
         int advertId)
     {
-        if (!await _advertisementExistsRepository.ExistsById(advertId))
+        if (!await _advertisementExistsRepository.ExistsByIdAsync(advertId))
             return Result<bool>.NotFound("Advertisement");
 
         return Result<bool>.Success(true);
@@ -40,7 +40,7 @@ public class AdvertisementValidator
     public async Task<Result<bool>> NotExistsByIdAsync(
         int advertId)
     {
-        if (await _advertisementExistsRepository.ExistsById(advertId))
+        if (await _advertisementExistsRepository.ExistsByIdAsync(advertId))
             return Result<bool>.AlreadyExists("Advertisement");
 
         return Result<bool>.Success(true);

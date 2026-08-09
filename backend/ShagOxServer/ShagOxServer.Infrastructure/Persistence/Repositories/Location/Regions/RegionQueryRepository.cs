@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Regions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;

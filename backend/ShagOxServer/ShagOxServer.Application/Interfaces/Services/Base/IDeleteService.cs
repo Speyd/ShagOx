@@ -3,7 +3,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Base;
 public interface IDeleteService<TResponse>
-    where TResponse : DeleteResponse
 {
     Task<Result<TResponse>> DeleteAsync(
         int id);

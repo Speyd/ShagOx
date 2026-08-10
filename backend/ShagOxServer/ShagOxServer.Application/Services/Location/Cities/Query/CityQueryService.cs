@@ -21,7 +21,8 @@ public class CityQueryService
     }
 
 
-    public async Task<Result<CityDto>> GetByIdAsync(int id)
+    public async Task<Result<CityDto>> GetByIdAsync(
+        int id)
     {
         var city = await _repositoryQueryCity
             .GetByIdAsync(id);
@@ -38,7 +39,8 @@ public class CityQueryService
         return cities.ToResultPaged(CityMapper.ToDto);
     }
 
-    public async Task<Result<CityDto>> GetByNameAsync(string name)
+    public async Task<Result<CityDto>> GetByNameAsync(
+        string name)
     {
         var city = await _repositoryQueryCity
             .GetByNameAsync(name);

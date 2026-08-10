@@ -5,7 +5,8 @@ using ShagOxServer.Domain.Entities.Location;
 namespace ShagOxServer.Application.Services.Location.Cities.Mapping;
 public static class CityMapper
 {
-    public static CityDto ToDto(City? city)
+    public static CityDto ToDto(
+        City? city)
     {
         if(city is null)
             return new CityDto(

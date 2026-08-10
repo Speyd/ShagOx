@@ -26,7 +26,8 @@ public class ImageDeleteService
     }
 
 
-    public async Task<Result<DeleteResponse>> DeleteAsync(int id)
+    public async Task<Result<DeleteResponse>> DeleteAsync(
+        int id)
     {
         var image = await _imageValidator.GetByIdAsync(id);
         if (!image.IsSuccess)
@@ -48,7 +49,8 @@ public class ImageDeleteService
        );
     }
 
-    public async Task<Result<DeleteResponse>> DeleteRecordAsync(int id)
+    public async Task<Result<DeleteResponse>> DeleteRecordAsync(
+        int id)
     {
         var image = await _imageValidator.GetByIdAsync(id);
         if (!image.IsSuccess)

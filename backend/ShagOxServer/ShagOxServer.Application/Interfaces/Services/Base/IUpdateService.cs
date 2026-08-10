@@ -1,8 +1,9 @@
 ﻿using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Base;
-public interface ICreateService<TResponse, TRequest>
+public interface IUpdateService<TResponse, TRequest>
 {
-    Task<Result<TResponse>> CreateAsync(
+    Task<Result<TResponse>> UpdateAsync(
+        int id,
         TRequest request);
 }

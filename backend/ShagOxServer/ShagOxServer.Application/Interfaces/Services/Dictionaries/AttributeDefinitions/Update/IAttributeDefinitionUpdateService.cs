@@ -1,11 +1,9 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
-using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
+using ShagOxServer.Application.Interfaces.Services.Base;
 
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
 public interface IAttributeDefinitionUpdateService
+    : IUpdateService<UpdateResponse, AttributeDefinitionUpdateRequest>
 {
-    Task<Result<UpdateResponse>> UpdateAsync(
-        int attributeId,
-        AttributeDefinitionUpdateRequest request);
 }

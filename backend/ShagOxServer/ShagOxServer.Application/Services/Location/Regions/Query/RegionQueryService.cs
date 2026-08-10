@@ -21,7 +21,8 @@ public class RegionQueryService
     }
 
 
-    public async Task<Result<RegionDto>> GetByIdAsync(int id)
+    public async Task<Result<RegionDto>> GetByIdAsync(
+        int id)
     {
         var region = await _regionQueryRepository
             .GetByIdAsync(id);
@@ -38,7 +39,8 @@ public class RegionQueryService
         return regions.ToResultPaged(RegionMapper.ToDto);
     }
 
-    public async Task<Result<RegionDto>> GetByNameAsync(string name)
+    public async Task<Result<RegionDto>> GetByNameAsync(
+        string name)
     {
         var region = await _regionQueryRepository
             .GetByNameAsync(name);

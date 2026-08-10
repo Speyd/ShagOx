@@ -1,4 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Infrastructure.DependencyInjections.Advertisement;
+using ShagOxServer.Infrastructure.DependencyInjections.Auth;
+using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
+using ShagOxServer.Infrastructure.DependencyInjections.Location;
+using ShagOxServer.Infrastructure.DependencyInjections.Specification;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Base;
 

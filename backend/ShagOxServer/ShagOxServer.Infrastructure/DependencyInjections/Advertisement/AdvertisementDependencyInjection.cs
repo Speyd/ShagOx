@@ -1,12 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses;
 
-namespace ShagOxServer.Infrastructure.DependencyInjections;
+namespace ShagOxServer.Infrastructure.DependencyInjections.Advertisement;
 public static class AdvertisementDependencyInjection
 {
     public static IServiceCollection AddAdvertisementsInfrastructure(this IServiceCollection services)
@@ -14,11 +10,9 @@ public static class AdvertisementDependencyInjection
         services.AddScoped<IAdvertisementQueryRepository, AdvertisementQueryRepository>();
         services.AddScoped<IAdvertisementExistsRepository, AdvertisementExistsRepository>();
 
+        services.AddFavoriteInfrastructure();
 
-        services.AddScoped<IFavoriteQueryRepository, FavoriteQueryRepository>();
-
-
-        services.AddScoped<IStatusQueryRepository, StatusQueryRepository>();
+        services.AddStatusInfrastructure();
 
         return services;
     }

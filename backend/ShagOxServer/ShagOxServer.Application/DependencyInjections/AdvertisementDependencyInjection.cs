@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Quer
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
 using ShagOxServer.Application.Services.Advertisements.Create;
@@ -18,7 +19,9 @@ using ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validato
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
 using ShagOxServer.Application.Services.Advertisements.Images;
 using ShagOxServer.Application.Services.Advertisements.Query;
+using ShagOxServer.Application.Services.Advertisements.Statuses.Create;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Query;
+using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Application.Services.Advertisements.Update;
 using ShagOxServer.Application.Services.Advertisements.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Validator;
@@ -28,6 +31,7 @@ public static class AdvertisementDependencyInjection
 {
     public static IServiceCollection AddAdvertisements(this IServiceCollection services)
     {
+        // Advertisement
         services.AddScoped<IAdvertisementCreateService, AdvertisementCreateService>();
         services.AddScoped<IAdvertisementDeleteService, AdvertisementDeleteService>();
         services.AddScoped<IAdvertisementQueryService, AdvertisementQueryService>();
@@ -38,7 +42,7 @@ public static class AdvertisementDependencyInjection
         services.AddScoped<AdvertisementValidator>();
 
 
-
+        // Favorit
         services.AddScoped<IFavoriteDeleteService, FavoriteDeleteService>();
         services.AddScoped<IFavoriteQueryService, FavoriteQueryService>();
         services.AddScoped<IFavoriteUpdateService, FavoriteUpdateService>();
@@ -47,9 +51,14 @@ public static class AdvertisementDependencyInjection
         services.AddScoped<FavoriteValidator>();
 
 
+        // Status
         services.AddScoped<IStatusQueryService, StatusQueryService>();
+        services.AddScoped<IStatusCreateService, StatusCreateService>();
+
+        services.AddScoped<StatusValidator>();
 
 
+        // Advertisement-Image
         services.AddScoped<IAdvertisementImageService, AdvertisementImageService>();
   
 

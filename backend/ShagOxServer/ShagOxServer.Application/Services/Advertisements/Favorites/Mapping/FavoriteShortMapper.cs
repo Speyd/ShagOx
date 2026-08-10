@@ -6,7 +6,8 @@ using ShagOxServer.Domain.Entities.Advertisements;
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 public static class FavoriteShortMapper
 {
-    public static FavoriteShortDto ToDto(Favorite x)
+    public static FavoriteShortDto ToDto(
+        Favorite x)
     {
         return new FavoriteShortDto
         (

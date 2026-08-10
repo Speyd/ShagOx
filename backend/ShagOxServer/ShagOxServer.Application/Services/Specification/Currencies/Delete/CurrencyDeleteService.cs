@@ -7,7 +7,8 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Delete;
-public class CurrencyDeleteService : ICurrencyDeleteService
+public class CurrencyDeleteService 
+    : ICurrencyDeleteService
 {
     private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyValidator _currencyValidator;

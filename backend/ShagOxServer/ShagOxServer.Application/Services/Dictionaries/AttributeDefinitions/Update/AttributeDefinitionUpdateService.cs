@@ -9,7 +9,8 @@ using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;
-public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateService
+public class AttributeDefinitionUpdateService 
+    : IAttributeDefinitionUpdateService
 {
     private readonly IRepository<AttributeDefinition> _attributeRepository;
     private readonly AttributeDefinitionValidator _attributeValidator;

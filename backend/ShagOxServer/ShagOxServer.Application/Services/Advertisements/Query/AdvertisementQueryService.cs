@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Advertisements.Query;
-public class AdvertisementQueryService : IAdvertisementQueryService
+public class AdvertisementQueryService 
+    : IAdvertisementQueryService
 {
     private readonly IAdvertisementQueryRepository _advertisementRepository;
 

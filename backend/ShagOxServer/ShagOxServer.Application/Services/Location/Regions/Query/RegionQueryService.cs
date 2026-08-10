@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Query;
-public class RegionQueryService : IRegionQueryService
+public class RegionQueryService 
+    : IRegionQueryService
 {
     private readonly IRegionQueryRepository _regionQueryRepository;
 

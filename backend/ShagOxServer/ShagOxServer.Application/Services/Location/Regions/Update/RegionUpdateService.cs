@@ -8,7 +8,8 @@ using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Update;
-public class RegionUpdateService : IRegionUpdateService
+public class RegionUpdateService 
+    : IRegionUpdateService
 {
     private readonly IRepository<Region> _regionRepository;
     private readonly RegionValidator _regionValidator;

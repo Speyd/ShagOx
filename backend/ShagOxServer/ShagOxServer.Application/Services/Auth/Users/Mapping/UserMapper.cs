@@ -6,7 +6,8 @@ using ShagOxServer.Domain.Entities.Account;
 namespace ShagOxServer.Application.Services.Auth.Users.Mapping;
 public static class UserMapper
 {
-    public static UserDto ToDto(User user)
+    public static UserDto ToDto(
+        User user)
     {
         return new UserDto(
             user.Id,
@@ -22,7 +23,8 @@ public static class UserMapper
         );
     }
 
-    private static List<RoleDto> MapRoles(List<UserRole> userRoles)
+    private static List<RoleDto> MapRoles(
+        List<UserRole> userRoles)
     {
         if(userRoles is null)
             return new List<RoleDto>();

@@ -7,7 +7,8 @@ using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Delete;
-public class RegionDeleteService : IRegionDeleteService
+public class RegionDeleteService 
+    : IRegionDeleteService
 {
     private readonly IRepository<Region> _regionRepository;
     private readonly RegionValidator _regionValidator;

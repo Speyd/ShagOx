@@ -7,7 +7,8 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Delete;
-public class ImageDeleteService : IImageDeleteService
+public class ImageDeleteService 
+    : IImageDeleteService
 {
     private readonly IRepository<Image> _imageRepository;
     private readonly ImageValidator _imageValidator;

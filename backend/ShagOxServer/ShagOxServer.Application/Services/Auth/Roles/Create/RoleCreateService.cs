@@ -8,7 +8,8 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Create;
-public class RoleCreateService : IRoleCreateService
+public class RoleCreateService 
+    : IRoleCreateService
 {
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;

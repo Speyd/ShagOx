@@ -8,7 +8,8 @@ using ShagOxServer.Domain.Entities.Advertisements;
 namespace ShagOxServer.Application.Services.Advertisements.Mapping;
 public static class AdvertisementMapper
 {
-    public static AdvertisementDto ToDto(Advertisement x)
+    public static AdvertisementDto ToDto(
+        Advertisement x)
     {
         return new AdvertisementDto
         (

@@ -1,6 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
 using ShagOxServer.Application.Services.Advertisements.Update.Validator;
@@ -9,7 +8,8 @@ using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Services.Advertisements.Validator;
 
 namespace ShagOxServer.Application.Services.Advertisements.Update;
-public class AdvertisementUpdateService : IAdvertisementUpdateService
+public class AdvertisementUpdateService 
+    : IAdvertisementUpdateService
 {
     private readonly IAdvertisementImageService _imageService;
     private readonly AdvertisementValidator _validator;

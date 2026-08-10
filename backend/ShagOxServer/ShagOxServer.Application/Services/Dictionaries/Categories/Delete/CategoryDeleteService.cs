@@ -7,7 +7,8 @@ using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
-public class CategoryDeleteService : ICategoryDeleteService
+public class CategoryDeleteService 
+    : ICategoryDeleteService
 {
     private readonly IRepository<Category> _categoryRepository;
     private readonly CategoryValidator _categoryValidator;

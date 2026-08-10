@@ -29,7 +29,8 @@ public class CurrencyValidator
         return Result<Currency>.Success(currency);
     }
 
-    public async Task<Result<bool>> ExistsByIdAsync(int id)
+    public async Task<Result<bool>> ExistsByIdAsync(
+        int id)
     {
         if (!await _existsRepository.ExistsByIdAsync(id))
             return Result<bool>.NotFound("Currency");
@@ -37,7 +38,8 @@ public class CurrencyValidator
         return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> NotExistsByIdAsync(int id)
+    public async Task<Result<bool>> NotExistsByIdAsync(
+        int id)
     {
         if (await _existsRepository.ExistsByIdAsync(id))
             return Result<bool>.AlreadyExists("Currency");

@@ -50,7 +50,9 @@ public class AttributeDefinitionValidator
       string attributeName,
       int categoryId)
     {
-        var attribute = await _attributeExistsRepository.ExistsByCategoryAsync(attributeName, categoryId);
+        var attribute = await _attributeExistsRepository
+            .ExistsByCategoryAsync(attributeName, categoryId);
+
         if (attribute)
             return Result<bool>.AlreadyExists("Attribute Definition");
 

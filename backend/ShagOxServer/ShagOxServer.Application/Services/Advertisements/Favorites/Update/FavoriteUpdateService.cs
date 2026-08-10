@@ -9,7 +9,8 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Update;
-public class FavoriteUpdateService : IFavoriteUpdateService
+public class FavoriteUpdateService 
+    : IFavoriteUpdateService
 {
     private readonly IRepository<Favorite> _favoriteRepository;
     private readonly FavoriteValidator _favoriteValidator;

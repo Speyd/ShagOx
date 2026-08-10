@@ -7,7 +7,8 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Delete;
-public class UserDeleteService : IUserDeleteService
+public class UserDeleteService 
+    : IUserDeleteService
 {
     private readonly IRepository<User> _userRepository;
     private readonly UserValidator _userValidator;
@@ -26,7 +27,8 @@ public class UserDeleteService : IUserDeleteService
     }
 
 
-    public async Task<Result<DeleteResponse>> DeleteAsync(int id)
+    public async Task<Result<DeleteResponse>> DeleteAsync(
+        int id)
     {
         var user = await _userValidator.GetByIdAsync(id);
         if (!user.IsSuccess)

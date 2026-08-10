@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Query;
-public class RoleQueryService : IRoleQueryService
+public class RoleQueryService 
+    : IRoleQueryService
 {
     private readonly IRoleQueryRepository _roleQueryRepository;
 
@@ -20,7 +21,8 @@ public class RoleQueryService : IRoleQueryService
     }
 
 
-    public async Task<Result<RoleDto>> GetByIdAsync(int id)
+    public async Task<Result<RoleDto>> GetByIdAsync(
+        int id)
     {
         var role = await _roleQueryRepository
             .GetByIdAsync(id);
@@ -47,7 +49,8 @@ public class RoleQueryService : IRoleQueryService
         return roles.ToResultPaged(RoleMapper.ToDto);
     }
 
-    public async Task<Result<RoleDto>> GetByNameAsync(string name)
+    public async Task<Result<RoleDto>> GetByNameAsync(
+        string name)
     {
         var role = await _roleQueryRepository
             .GetByNameAsync(name);

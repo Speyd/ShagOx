@@ -1,0 +1,44 @@
+﻿using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
+using ShagOxServer.Application.DTOs.Specification.Images.Create;
+using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+
+namespace ShagOxServer.Application.Services.Advertisements.Images;
+public partial class AdvertisementImageService
+{
+    private async Task<Result<bool>> DeleteImageAsync(
+        ImageAdvertUpdateRequest image,
+        Image? getImage,
+        List<string> deleteImage)
+    {
+        if (getImage is null)
+        {
+            return Result<bool>
+                .NotFound($"Image({image.Id})");
+        }
+
+        var result = await _imageDeleteService
+            .DeleteRecordAsync(image.Id!.Value);
+
+        if (!result.IsSuccess)
+        {
+            return Result<bool>
+                .Fail(result.Error!);
+        }
+
+        deleteImage.Add(getImage.PublicId);
+
+        return Result<bool>.Success(true);
+    }
+
+
+    private async Task DeleteLoadedImagesAsync(
+        List<ImageCreateResponse> loadedImage)
+    {
+        foreach (var image in loadedImage)
+        {
+            await _imageLoaderService
+                .DeleteAsync(image.PublicId);
+        }
+    }
+}

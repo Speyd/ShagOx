@@ -7,7 +7,8 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Delete;
-public class ConditionDeleteService : IConditionDeleteService
+public class ConditionDeleteService 
+    : IConditionDeleteService
 {
     private readonly IRepository<Condition> _conditionRepository;
     private readonly ConditionValidator _conditionValidator;

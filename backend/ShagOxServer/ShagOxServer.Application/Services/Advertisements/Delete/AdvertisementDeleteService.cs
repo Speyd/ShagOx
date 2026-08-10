@@ -11,8 +11,8 @@ namespace ShagOxServer.Application.Services.Advertisements.Delete;
 public class AdvertisementDeleteService 
     : IAdvertisementDeleteService
 {
-    private readonly IRepository<Advertisement> _advertisementRepository;
-    private readonly AdvertisementValidator _advertisementValidator;
+    private readonly IRepository<Advertisement> _advertRepository;
+    private readonly AdvertisementValidator _advertValidator;
 
     private readonly IImageDeleteService _imageDeleteService;
 
@@ -20,31 +20,32 @@ public class AdvertisementDeleteService
 
 
     public AdvertisementDeleteService(
-        IRepository<Advertisement> advertisementRepository,
-        AdvertisementValidator advertisementValidator,
+        IRepository<Advertisement> advertRepository,
+        AdvertisementValidator advertValidator,
         IImageDeleteService imageDeleteService,
         IUnitOfWork unitOfWork)
     {
-        _advertisementRepository = advertisementRepository;
-        _advertisementValidator = advertisementValidator;
+        _advertRepository = advertRepository;
+        _advertValidator = advertValidator;
         _imageDeleteService = imageDeleteService;
         _unitOfWork = unitOfWork;
     }
 
 
-    public async Task<Result<DeleteResponse>> DeleteAsync(int id)
+    public async Task<Result<DeleteResponse>> DeleteAsync(
+        int id)
     {
-        var advert = await _advertisementValidator
+        var advert = await _advertValidator
             .GetByIdAsync(id);
 
         if (!advert.IsSuccess)
-            return Result<DeleteResponse>.Fail(advert.Error ?? "");
+            return Result<DeleteResponse>.Fail(advert.Error);
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _advertisementRepository.Delete(advert.Value!);
+            _advertRepository.Delete(advert.Value!);
 
             foreach (var image in advert.Value!.Images)
             {

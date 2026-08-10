@@ -8,7 +8,8 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Update;
-public class RoleUpdateService : IRoleUpdateService
+public class RoleUpdateService 
+    : IRoleUpdateService
 {
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;

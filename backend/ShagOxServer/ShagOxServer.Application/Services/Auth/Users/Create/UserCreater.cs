@@ -35,7 +35,8 @@ public class UserCreater
         _unitOfWork = unitOfWork;
     }
 
-    public User CreateUser(RegisterRequest request)
+    public User CreateUser(
+        RegisterRequest request)
     {
         var user = new User();
 
@@ -51,7 +52,8 @@ public class UserCreater
         return user;
     }
 
-    public async Task AddDefaultRole(User user)
+    public async Task AddDefaultRole(
+        User user)
     {
         var role = await _roleQueryRepository
             .GetByNameAsync(DefaultRole);
@@ -68,7 +70,8 @@ public class UserCreater
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task SetDefaultName(User user)
+    public async Task SetDefaultName(
+        User user)
     {
         if (!string.IsNullOrEmpty(user.Name))
             return;

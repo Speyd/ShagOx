@@ -7,7 +7,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Query;
-public class ImageQueryService : IImageQueryService
+public class ImageQueryService 
+    : IImageQueryService
 {
     private readonly IImageQueryRepository _imageQueryRepository;
 

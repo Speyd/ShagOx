@@ -7,7 +7,8 @@ using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Delete;
-public class CityDeleteService : ICityDeleteService
+public class CityDeleteService 
+    : ICityDeleteService
 {
     private readonly IRepository<City> _cityRepository;
     private readonly CityValidator _cityValidator;

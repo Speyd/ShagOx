@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Query;
-public class UserAdminQueryService : IUserAdminQueryService
+public class UserAdminQueryService 
+    : IUserAdminQueryService
 {
     private readonly IUserQueryRepository _userQueryRepository;
     private readonly IUserExistsRepository _userExistsRepository;
@@ -42,7 +43,8 @@ public class UserAdminQueryService : IUserAdminQueryService
         return users.ToResultPaged(UserMapper.ToDto);
     }
 
-    public async Task<bool> ExistsByIdAsync(int id)
+    public async Task<bool> ExistsByIdAsync(
+        int id)
     {
         var result = await _userExistsRepository
             .ExistsByIdAsync(id);

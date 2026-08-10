@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Query;
-public class CityQueryService : ICityQueryService
+public class CityQueryService 
+    : ICityQueryService
 {
     private readonly ICityQueryRepository _repositoryQueryCity;
 

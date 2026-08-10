@@ -9,7 +9,8 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Update;
-public class UserUpdateService : IUserUpdateService
+public class UserUpdateService 
+    : IUserUpdateService
 {
     private readonly IRepository<User> _userRepository;
     private readonly UserValidator _userValidator;

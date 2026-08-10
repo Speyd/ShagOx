@@ -10,10 +10,11 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Create;
-public class AdvertisementCreateService : IAdvertisementCreateService
+public class AdvertisementCreateService 
+    : IAdvertisementCreateService
 {
-    private readonly IRepository<Advertisement> _advertisementRepository;
-    private readonly AdvertisementCreateValidator _advertisementValidator;
+    private readonly IRepository<Advertisement> _advertRepository;
+    private readonly AdvertisementCreateValidator _advertValidator;
  
     private readonly IImageCreateService _imageCreateService;
 
@@ -21,13 +22,13 @@ public class AdvertisementCreateService : IAdvertisementCreateService
 
 
     public AdvertisementCreateService(
-        IRepository<Advertisement> advertisementRepository,
-        AdvertisementCreateValidator advertisementValidator,
+        IRepository<Advertisement> advertRepository,
+        AdvertisementCreateValidator advertValidator,
         IImageCreateService imageCreateService,
         IUnitOfWork unitOfWork)
     {
-        _advertisementRepository = advertisementRepository;
-        _advertisementValidator = advertisementValidator;
+        _advertRepository = advertRepository;
+        _advertValidator = advertValidator;
 
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
@@ -38,11 +39,11 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         AdvertisementCreateRequest request,
         int userId)
     {
-        var validation = await _advertisementValidator
+        var validation = await _advertValidator
             .ValidateAsync(request);
 
         if (!validation.IsSuccess)
-            return Result<CreateResponse>.Fail(validation.Error!);
+            return Result<CreateResponse>.Fail(validation.Error);
         
 
         var advert = AdvertisementCreater
@@ -51,7 +52,7 @@ public class AdvertisementCreateService : IAdvertisementCreateService
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _advertisementRepository.Add(advert);
+            _advertRepository.Add(advert);
 
             await _unitOfWork.SaveChangesAsync();
 

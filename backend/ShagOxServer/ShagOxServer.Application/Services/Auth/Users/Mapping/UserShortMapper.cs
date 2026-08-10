@@ -4,7 +4,8 @@ using ShagOxServer.Domain.Entities.Account;
 namespace ShagOxServer.Application.Services.Auth.Users.Mapping;
 public static class UserShortMapper
 {
-    public static UserShortDto ToDto(User user)
+    public static UserShortDto ToDto(
+        User user)
     {
         return new UserShortDto(
             user.Id,

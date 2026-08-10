@@ -8,7 +8,8 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth;
-public class RegisterService : IRegisterService
+public class RegisterService 
+    : IRegisterService
 {
     private readonly IRepository<User> _userRepository;
     private readonly IUserExistsRepository _userExistsRepository;
@@ -37,7 +38,8 @@ public class RegisterService : IRegisterService
         {
             var user = _userCreater.CreateUser(request);
 
-            var exists = await _userExistsRepository.ExistsAsync(user.Email, user.Phone);
+            var exists = await _userExistsRepository
+                .ExistsAsync(user.Email, user.Phone);
 
             if (exists)
                 return Result<RegisterResponse>.Fail("User already exists");

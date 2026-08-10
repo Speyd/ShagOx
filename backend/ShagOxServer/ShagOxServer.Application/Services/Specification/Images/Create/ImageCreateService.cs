@@ -9,7 +9,8 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Create;
-public class ImageCreateService : IImageCreateService
+public class ImageCreateService 
+    : IImageCreateService
 {
     private readonly IRepository<Image> _imageRepository;
     private readonly IImageLoaderService _loaderService;
@@ -127,7 +128,8 @@ public class ImageCreateService : IImageCreateService
         return Success(image);
     }
 
-    private static Result<ImageCreateResponse> Success(Image image)
+    private static Result<ImageCreateResponse> Success(
+        Image image)
     {
         return Result<ImageCreateResponse>.Success(
             new ImageCreateResponse(

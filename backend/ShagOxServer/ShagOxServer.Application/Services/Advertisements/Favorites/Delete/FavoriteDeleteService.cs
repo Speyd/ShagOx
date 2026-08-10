@@ -7,7 +7,8 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Delete;
-public class FavoriteDeleteService : IFavoriteDeleteService
+public class FavoriteDeleteService 
+    : IFavoriteDeleteService
 {
     private readonly IRepository<Favorite> _favoriteRepository;
     private readonly FavoriteValidator _favoriteValidator;

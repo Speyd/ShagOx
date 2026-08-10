@@ -4,7 +4,8 @@ using ShagOxServer.Domain.Entities.Advertisements;
 namespace ShagOxServer.Application.Services.Advertisements.Mapping;
 public static class AdvertisementShortMapper
 {
-    public static AdvertisementShortDto ToDto(Advertisement x)
+    public static AdvertisementShortDto ToDto(
+        Advertisement x)
     {
         return new AdvertisementShortDto
         (

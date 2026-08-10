@@ -15,7 +15,7 @@ public class CategoryUpdateValidator
         if (name == category.Name &&
             productTypeId == category.ProductTypeId)
         {
-            return Result<(string, int)>.Fail("");
+            return Result<(string, int)>.Fail(null);
         }
 
         return Result<(string, int)>.Success((name, productTypeId));

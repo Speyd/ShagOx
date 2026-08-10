@@ -8,7 +8,8 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Update;
-public class ImageUpdateService : IImageUpdateService
+public class ImageUpdateService 
+    : IImageUpdateService
 {
     private readonly IRepository<Image> _imageRepository;
     private readonly ImageValidator _imageValidator;

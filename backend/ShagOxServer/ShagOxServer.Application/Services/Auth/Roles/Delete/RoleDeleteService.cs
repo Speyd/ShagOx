@@ -27,7 +27,8 @@ public class RoleDeleteService
     }
 
 
-    public async Task<Result<DeleteResponse>> DeleteAsync(int id)
+    public async Task<Result<DeleteResponse>> DeleteAsync(
+        int id)
     {
         var role = await _roleValidator
             .GetByIdAsync(id);

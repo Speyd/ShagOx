@@ -8,7 +8,8 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Delete;
-public class AdvertisementDeleteService : IAdvertisementDeleteService
+public class AdvertisementDeleteService 
+    : IAdvertisementDeleteService
 {
     private readonly IRepository<Advertisement> _advertisementRepository;
     private readonly AdvertisementValidator _advertisementValidator;

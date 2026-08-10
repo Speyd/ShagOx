@@ -9,7 +9,8 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Create;
-public class FavoriteCreateService : IFavoriteCreateService
+public class FavoriteCreateService 
+    : IFavoriteCreateService
 {
     private readonly IRepository<Favorite> _favoriteRepository;
 

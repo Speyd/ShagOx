@@ -1,9 +1,8 @@
-﻿using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.Interfaces.Services.Base;
 
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Delete;
 public interface IAdvertisementDeleteService
+    : IDeleteService<DeleteResponse>
 {
-    Task<Result<DeleteResponse>> DeleteAsync(
-        int id);
 }

@@ -7,7 +7,8 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Delete;
-public class RoleDeleteService : IRoleDeleteService
+public class RoleDeleteService 
+    : IRoleDeleteService
 {
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;

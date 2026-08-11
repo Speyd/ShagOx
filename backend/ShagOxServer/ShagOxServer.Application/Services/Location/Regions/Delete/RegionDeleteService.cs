@@ -1,21 +1,23 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Delete;
-public class RegionDeleteService : IRegionDeleteService
+public class RegionDeleteService 
+    : IRegionDeleteService
 {
-    private readonly IRegionRepository _regionRepository;
+    private readonly IRepository<Region> _regionRepository;
     private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RegionDeleteService(
-        IRegionRepository regionRepository,
+        IRepository<Region> regionRepository,
         RegionValidator regionValidator,
         IUnitOfWork unitOfWork)
     {

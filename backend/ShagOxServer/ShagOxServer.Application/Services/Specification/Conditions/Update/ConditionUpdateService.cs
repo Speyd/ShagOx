@@ -1,22 +1,24 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Update;
-public class ConditionUpdateService : IConditionUpdateService
+public class ConditionUpdateService 
+    : IConditionUpdateService
 {
-    private readonly IConditionRepository _conditionRepository;
+    private readonly IRepository<Condition> _conditionRepository;
     private readonly ConditionValidator _conditionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public ConditionUpdateService(
-        IConditionRepository conditionRepository,
+        IRepository<Condition> conditionRepository,
         ConditionValidator conditionValidator,
         IUnitOfWork unitOfWork)
     {
@@ -36,14 +38,13 @@ public class ConditionUpdateService : IConditionUpdateService
         if (!condition.IsSuccess)
             return Result<UpdateResponse>.Fail(condition.Error );
 
-        if (request.Name is not null)
-        {
-            var nameValidation = await _conditionValidator
-                .NotExistsByNameAsync(request.Name);
 
-            if (!nameValidation.IsSuccess)
-                Result<CreateResponse>.Fail(nameValidation.Error);
-        }
+        var validation = await
+             ValidateUpdatesAsync(condition.Value!, request);
+
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
+
 
         var updatedCount = ConditionUpdater
             .ApplyUpdates(condition.Value!, request);
@@ -71,5 +72,22 @@ public class ConditionUpdateService : IConditionUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        Condition сondition,
+        ConditionUpdateRequest request)
+    {
+        if (request.Name is not null &&
+            request.Name != сondition.Name)
+        {
+            var nameValidation = await _conditionValidator
+                .NotExistsByNameAsync(request.Name);
+
+            if (!nameValidation.IsSuccess)
+                Result<CreateResponse>.Fail(nameValidation.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

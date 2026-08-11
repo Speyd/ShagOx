@@ -1,15 +1,15 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Validator;
 public class ImageValidator
 {
-    private readonly IImageRepository _imageRepository;
+    private readonly IRepository<Image> _imageRepository;
 
 
     public ImageValidator(
-        IImageRepository imageRepository)
+        IRepository<Image> imageRepository)
     {
         _imageRepository = imageRepository;
     }

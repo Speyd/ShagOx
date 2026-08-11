@@ -7,7 +7,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Query;
-public class FavoriteQueryService : IFavoriteQueryService
+public class FavoriteQueryService 
+    : IFavoriteQueryService
 {
     private readonly IFavoriteQueryRepository _favoriteRepository;
 

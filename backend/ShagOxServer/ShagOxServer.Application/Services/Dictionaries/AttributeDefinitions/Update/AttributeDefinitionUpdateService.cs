@@ -1,16 +1,18 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;
-public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateService
+public class AttributeDefinitionUpdateService 
+    : IAttributeDefinitionUpdateService
 {
-    private readonly IAttributeDefinitionRepository _attributeRepository;
+    private readonly IRepository<AttributeDefinition> _attributeRepository;
     private readonly AttributeDefinitionValidator _attributeValidator;
     private readonly AttributeDefinitionUpdateValidator _attributeUpdateValidator;
 
@@ -18,7 +20,7 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
 
 
     public AttributeDefinitionUpdateService(
-        IAttributeDefinitionRepository attributeRepository,
+        IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
         AttributeDefinitionUpdateValidator attributeUpdateValidator,
         IUnitOfWork unitOfWork)
@@ -50,14 +52,11 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
             ));
         }
 
-        var existsValidator = await _attributeValidator
-            .NotExistsByKeyAsync(
-                changeValidator.Value!.key,
-                changeValidator.Value!.categoryId
-        );
+        var validation = await
+             ValidateUpdatesAsync(changeValidator.Value!, request);
 
-        if (!existsValidator.IsSuccess)
-            return Result<UpdateResponse>.Fail(existsValidator.Error);
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = AttributeDefinitionUpdater
@@ -86,5 +85,21 @@ public class AttributeDefinitionUpdateService : IAttributeDefinitionUpdateServic
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        (string key, int categoryId) changeValidator,
+        AttributeDefinitionUpdateRequest request)
+    {
+        var existsValidator = await _attributeValidator
+            .NotExistsByKeyAsync(
+                changeValidator.key,
+                changeValidator.categoryId
+        );
+
+        if (!existsValidator.IsSuccess)
+            return Result<bool>.Fail(existsValidator.Error);
+
+        return Result<bool>.Success(true);
     }
 }

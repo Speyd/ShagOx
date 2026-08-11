@@ -12,7 +12,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Query;
-public class UserQueryService : IUserQueryService
+public class UserQueryService 
+    : IUserQueryService
 {
     private readonly IUserQueryRepository _userQueryRepository;
     private readonly IRoleQueryRepository _roleQueryRepository;
@@ -31,7 +32,8 @@ public class UserQueryService : IUserQueryService
     }
 
 
-    public async Task<Result<UserDto>> GetByIdAsync(int id)
+    public async Task<Result<UserDto>> GetByIdAsync(
+        int id)
     {
         var user = await _userQueryRepository
             .GetByIdAsync(id);
@@ -54,6 +56,15 @@ public class UserQueryService : IUserQueryService
             .GetByUserAsync(_context.UserId, pagination);
 
         return roles.ToResultPaged(RoleMapper.ToDto);
+    }
+
+    public async Task<Result<PagedResult<UserDto>>> GetPagedAsync(
+        PaginationParams pagination)
+    {
+        var users = await _userQueryRepository
+            .GetPagedAsync(pagination);
+
+        return users.ToResultPaged(UserMapper.ToDto);
     }
 
     public async Task<Result<PagedResult<UserDto>>> Search(

@@ -36,7 +36,8 @@ public static class ImageUpdater
         return updated;
     }
 
-    public static int GetNextOrder(Advertisement advert)
+    public static int GetNextOrder(
+        Advertisement advert)
     {
         return advert.Images
             .Select(x => x.Order)

@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Query;
-public class CategoryQueryService : ICategoryQueryService
+public class CategoryQueryService 
+    : ICategoryQueryService
 {
     private readonly ICategoryQueryRepository _categoryQueryRepository;
 

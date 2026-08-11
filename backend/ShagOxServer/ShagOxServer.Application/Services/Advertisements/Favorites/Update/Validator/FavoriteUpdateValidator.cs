@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
-using ShagOxServer.Application.Services.Advertisements.Validator;
+using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

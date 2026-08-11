@@ -1,7 +1,9 @@
-﻿namespace ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
-public interface IRegionExistsRepository
-{
-    Task<bool> ExistsByIdAsync(int id);
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Domain.Entities.Location;
 
+namespace ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
+public interface IRegionExistsRepository
+    : IExistsRepository<Region>
+{
     Task<bool> ExistsByNameAsync(string? name);
 }

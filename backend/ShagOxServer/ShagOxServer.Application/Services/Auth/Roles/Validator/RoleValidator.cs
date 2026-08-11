@@ -1,16 +1,17 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Validator;
 public class RoleValidator
 {
-    private readonly IRoleRepository _roleRepository;
+    private readonly IRepository<Role> _roleRepository;
     private readonly IRoleExistsRepository _roleExistsRepository;
 
 
     public RoleValidator(
-        IRoleRepository roleRepository,
+        IRepository<Role> roleRepository,
         IRoleExistsRepository roleExistsRepository)
     {
         _roleRepository = roleRepository;

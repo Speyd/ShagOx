@@ -8,6 +8,7 @@ public static class AdvertisementQueryExtensions
         this IQueryable<Advertisement> query)
     {
         return query
+            .Include(x => x.Status)
             .Include(x => x.Currency)
             .Include(x => x.Condition)
             .Include(x => x.Category)

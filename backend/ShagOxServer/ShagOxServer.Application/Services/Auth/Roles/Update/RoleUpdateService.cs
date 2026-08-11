@@ -1,22 +1,24 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Roles.Update;
 using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Update;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Update;
-public class RoleUpdateService : IRoleUpdateService
+public class RoleUpdateService 
+    : IRoleUpdateService
 {
-    private readonly IRoleRepository _roleRepository;
+    private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RoleUpdateService(
-        IRoleRepository roleRepository,
+        IRepository<Role> roleRepository,
         RoleValidator roleValidator,
         IUnitOfWork unitOfWork)
     {
@@ -34,14 +36,12 @@ public class RoleUpdateService : IRoleUpdateService
         if (!role.IsSuccess)
             return Result<UpdateResponse>.Fail(role.Error);
 
-        if (role.Value!.Name is not null)
-        {
-            var nameValidator = await _roleValidator.
-                NotExistsByNameAsync(role.Value!.Name);
+        var validation = await
+             ValidateUpdatesAsync(role.Value!, request);
 
-            if (!nameValidator.IsSuccess)
-                return Result<UpdateResponse>.Fail(nameValidator.Error);
-        }
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
+
 
         var updatedCount = RoleUpdater.ApplyUpdates(role.Value!, request);
         var result = new UpdateResponse(
@@ -68,5 +68,22 @@ public class RoleUpdateService : IRoleUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        Role role,
+        RoleUpdateRequest request)
+    {
+        if (request.Name is not null &&
+           request.Name != role.Name)
+        {
+            var nameValidator = await _roleValidator.
+                NotExistsByNameAsync(request.Name);
+
+            if (!nameValidator.IsSuccess)
+                return Result<bool>.Fail(nameValidator.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

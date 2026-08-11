@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Query;
-public class CityQueryService : ICityQueryService
+public class CityQueryService 
+    : ICityQueryService
 {
     private readonly ICityQueryRepository _repositoryQueryCity;
 
@@ -20,7 +21,8 @@ public class CityQueryService : ICityQueryService
     }
 
 
-    public async Task<Result<CityDto>> GetByIdAsync(int id)
+    public async Task<Result<CityDto>> GetByIdAsync(
+        int id)
     {
         var city = await _repositoryQueryCity
             .GetByIdAsync(id);
@@ -37,7 +39,8 @@ public class CityQueryService : ICityQueryService
         return cities.ToResultPaged(CityMapper.ToDto);
     }
 
-    public async Task<Result<CityDto>> GetByNameAsync(string name)
+    public async Task<Result<CityDto>> GetByNameAsync(
+        string name)
     {
         var city = await _repositoryQueryCity
             .GetByNameAsync(name);

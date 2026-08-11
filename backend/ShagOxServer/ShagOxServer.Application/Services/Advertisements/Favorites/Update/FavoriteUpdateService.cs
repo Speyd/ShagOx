@@ -1,16 +1,18 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
+using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Update;
-public class FavoriteUpdateService : IFavoriteUpdateService
+public class FavoriteUpdateService 
+    : IFavoriteUpdateService
 {
-    private readonly IFavoriteRepository _favoriteRepository;
+    private readonly IRepository<Favorite> _favoriteRepository;
     private readonly FavoriteValidator _favoriteValidator;
     private readonly FavoriteUpdateValidator _favoriteUpdateValidator;
 
@@ -18,7 +20,7 @@ public class FavoriteUpdateService : IFavoriteUpdateService
 
 
     public FavoriteUpdateService(
-        IFavoriteRepository favoriteRepository,
+        IRepository<Favorite> favoriteRepository,
         FavoriteValidator favoriteValidator,
         FavoriteUpdateValidator favoriteUpdateValidator,
         IUnitOfWork unitOfWork)

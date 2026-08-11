@@ -19,10 +19,13 @@ public class AppDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<AttributeDefinition> AttributeDefinitions { get; set; }
 
+
     public DbSet<Condition> Conditions { get; set; }
     public DbSet<Currency> Currencies { get; set; }
     public DbSet<Image> Images { get; set; }
 
+
+    public DbSet<Status> Statuses { get; set; }
     public DbSet<Advertisement> Advertisements { get; set; }
     public DbSet<Favorite> Favorites { get; set; }
 

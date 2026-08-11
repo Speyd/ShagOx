@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Query;
-public class ConditionQueryService : IConditionQueryService
+public class ConditionQueryService 
+    : IConditionQueryService
 {
     private readonly IConditionQueryRepository _conditionQueryRepository;
 
@@ -20,7 +21,8 @@ public class ConditionQueryService : IConditionQueryService
     }
 
 
-    public async Task<Result<ConditionDto>> GetByIdAsync(int id)
+    public async Task<Result<ConditionDto>> GetByIdAsync(
+        int id)
     {
         var condition = await _conditionQueryRepository
             .GetByIdAsync(id);
@@ -37,7 +39,8 @@ public class ConditionQueryService : IConditionQueryService
         return conditions.ToResultPaged(ConditionMapper.ToDto);
     }
 
-    public async Task<Result<ConditionDto>> GetByNameAsync(string name)
+    public async Task<Result<ConditionDto>> GetByNameAsync(
+        string name)
     {
         var condition = await _conditionQueryRepository
             .GetByNameAsync(name);

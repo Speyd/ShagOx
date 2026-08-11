@@ -1,17 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
 public class FavoriteValidator
 {
-    private readonly IFavoriteRepository _favoriteRepository;
-    private readonly IFavoriteExistsRepository _favoriteExistsRepository;
+    private readonly IRepository<Favorite> _favoriteRepository;
+    private readonly IExistsRepository<Favorite> _favoriteExistsRepository;
 
 
     public FavoriteValidator(
-        IFavoriteRepository favoriteRepository,
-        IFavoriteExistsRepository favoriteExistsRepository)
+        IRepository<Favorite> favoriteRepository,
+        IExistsRepository<Favorite> favoriteExistsRepository)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteExistsRepository = favoriteExistsRepository;

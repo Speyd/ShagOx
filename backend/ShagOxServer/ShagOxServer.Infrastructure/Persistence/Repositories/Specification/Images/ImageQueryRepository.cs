@@ -1,19 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
 using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;
 public class ImageQueryRepository 
-    : BaseRepository, IImageQueryRepository
+    : QueryRepository<Image>, 
+      IImageQueryRepository
 {
     public ImageQueryRepository(AppDbContext db)
         : base(db)
     { }
 
 
-    public async Task<Image?> GetByIdAsync(int id)
+    public override async Task<Image?> GetByIdAsync(
+        int id)
     {
         return await _db.Images
             .WithIncludes()
@@ -29,7 +32,7 @@ public class ImageQueryRepository
            .ToListAsync();
     }
 
-    public async Task<PagedResult<Image>> GetPagedAsync(
+    public override async Task<PagedResult<Image>> GetPagedAsync(
       PaginationParams pagination)
     {
         return await _db.Images

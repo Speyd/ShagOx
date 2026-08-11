@@ -1,11 +1,9 @@
-﻿using ShagOxServer.Application.DTOs.Location.Regions.Update;
-using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Location.Regions.Update;
+using ShagOxServer.Application.Interfaces.Services.Base;
 
 namespace ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
 public interface IRegionUpdateService
+    : IUpdateService<UpdateResponse, RegionUpdateRequest>
 {
-    Task<Result<UpdateResponse>> UpdateAsync(
-       int regionId,
-       RegionUpdateRequest request);
 }

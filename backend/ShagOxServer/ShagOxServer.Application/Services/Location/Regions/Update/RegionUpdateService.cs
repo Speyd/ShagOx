@@ -1,22 +1,24 @@
-﻿using ShagOxServer.Application.DTOs.Location.Regions.Update;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Location.Regions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Update;
-public class RegionUpdateService : IRegionUpdateService
+public class RegionUpdateService 
+    : IRegionUpdateService
 {
-    private readonly IRegionRepository _regionRepository;
+    private readonly IRepository<Region> _regionRepository;
     private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public RegionUpdateService(
-        IRegionRepository regionRepository,
+        IRepository<Region> regionRepository,
         RegionValidator regionValidator,
         IUnitOfWork unitOfWork)
     {
@@ -34,14 +36,12 @@ public class RegionUpdateService : IRegionUpdateService
         if (!region.IsSuccess)
             return Result<UpdateResponse>.Fail(region.Error);
 
-        if (request.Name is not null)
-        {
-            var nameValidation = await _regionValidator
-                .NotExistsByNameAsync(request.Name);
+        var validation = await
+             ValidateUpdatesAsync(region.Value!, request);
 
-            if (!nameValidation.IsSuccess)
-                return Result<UpdateResponse>.Fail(nameValidation.Error);
-        }
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
+
 
         var updatedCount = RegionUpdater
             .ApplyUpdates(region.Value!, request);
@@ -69,5 +69,22 @@ public class RegionUpdateService : IRegionUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        Region region,
+        RegionUpdateRequest request)
+    {
+        if (request.Name is not null &&
+             request.Name != region.Name)
+        {
+            var nameValidation = await _regionValidator
+                .NotExistsByNameAsync(request.Name);
+
+            if (!nameValidation.IsSuccess)
+                return Result<bool>.Fail(nameValidation.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

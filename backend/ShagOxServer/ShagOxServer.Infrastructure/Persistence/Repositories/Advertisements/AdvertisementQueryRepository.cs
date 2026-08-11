@@ -3,18 +3,21 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extensions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 public class AdvertisementQueryRepository 
-    : BaseRepository, IAdvertisementQueryRepository
+    : QueryRepository<Advertisement>, 
+      IAdvertisementQueryRepository
 {
     public AdvertisementQueryRepository(AppDbContext db)
         : base(db)
     { }
 
 
-    public async Task<Advertisement?> GetByIdAsync(int id)
+    public override async Task<Advertisement?> GetByIdAsync(
+        int id)
     {
         return await _db.Advertisements
             .WithIncludes()
@@ -51,7 +54,7 @@ public class AdvertisementQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<PagedResult<Advertisement>> GetPagedAsync(
+    public override async Task<PagedResult<Advertisement>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Advertisements

@@ -24,6 +24,9 @@ public class Advertisement : BaseEntity
     /// </summary>
     public int PreviousPrice { get; set; }
 
+    public int StatusId { get; set; }
+    public Status Status { get; set; } = null!;
+
     public int ConditionId { get; set; }
     public Condition Condition { get; set; } = null!;
 

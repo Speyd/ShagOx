@@ -2,11 +2,13 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.UserRoles.Extensions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.UserRoles;
 public class UserRoleQueryRepository 
-    : BaseRepository, IUserRoleQueryRepository
+    : QueryRepository<UserRole>, 
+      IUserRoleQueryRepository
 {
     public UserRoleQueryRepository(AppDbContext db)
         : base(db)

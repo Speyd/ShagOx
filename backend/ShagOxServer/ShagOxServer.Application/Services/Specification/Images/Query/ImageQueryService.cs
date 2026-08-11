@@ -7,7 +7,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Query;
-public class ImageQueryService : IImageQueryService
+public class ImageQueryService 
+    : IImageQueryService
 {
     private readonly IImageQueryRepository _imageQueryRepository;
 
@@ -19,7 +20,8 @@ public class ImageQueryService : IImageQueryService
     }
 
 
-    public async Task<Result<ImageDto>> GetByIdAsync(int id)
+    public async Task<Result<ImageDto>> GetByIdAsync(
+        int id)
     {
         var image = await _imageQueryRepository
             .GetByIdAsync(id);

@@ -1,17 +1,18 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
+﻿using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.Application.DTOs.Common.Responses;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Update;
 public class CategoryUpdateService 
     : ICategoryUpdateService
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IRepository<Category> _categoryRepository;
     private readonly CategoryValidator _categoryValidator;
     private readonly CategoryUpdateValidator _categoryUpdateValidator;
 
@@ -19,7 +20,7 @@ public class CategoryUpdateService
 
 
     public CategoryUpdateService(
-        ICategoryRepository categoryRepository,
+        IRepository<Category> categoryRepository,
         CategoryValidator categoryValidator,
         CategoryUpdateValidator categoryUpdateValidator,
         IUnitOfWork unitOfWork)
@@ -39,13 +40,6 @@ public class CategoryUpdateService
         if(!category.IsSuccess)
             return Result<UpdateResponse>.Fail(category.Error);
 
-        if (request.Name is not null)
-        {
-            var nameValidator = await _categoryValidator.GetByIdAsync(categoryId);
-            if (!category.IsSuccess)
-                return Result<UpdateResponse>.Fail(category.Error);
-        }
-
         var changeValidator = _categoryUpdateValidator
             .HasChangesValidator(category.Value!, request);
 
@@ -58,15 +52,16 @@ public class CategoryUpdateService
             ));
         }
 
-        var existsValidator = await _categoryValidator.NotExistsAsync(
-           changeValidator.Value!.name,
-           changeValidator.Value!.productTypeId
-        );
 
-        if (!existsValidator.IsSuccess)
-            return Result<UpdateResponse>.Fail(existsValidator.Error);
+        var validation = await
+             ValidateUpdatesAsync(changeValidator.Value!, request);
+
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
+
 
         var updatedCount = CategoryUpdater.ApplyUpdates(category.Value!, request);
+
         var result = new UpdateResponse(
             updatedCount,
             DateTime.UtcNow
@@ -90,5 +85,20 @@ public class CategoryUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        (string name, int productTypeId) changeValidator,
+        CategoryUpdateRequest request)
+    {
+        var existsValidator = await _categoryValidator.NotExistsAsync(
+          changeValidator.name,
+          changeValidator.productTypeId
+       );
+
+        if (!existsValidator.IsSuccess)
+            return Result<bool>.Fail(existsValidator.Error);
+
+        return Result<bool>.Success(true);
     }
 }

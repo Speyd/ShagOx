@@ -1,21 +1,23 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Delete;
-public class CityDeleteService : ICityDeleteService
+public class CityDeleteService 
+    : ICityDeleteService
 {
-    private readonly ICityRepository _cityRepository;
+    private readonly IRepository<City> _cityRepository;
     private readonly CityValidator _cityValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public CityDeleteService(
-        ICityRepository cityRepository,
+        IRepository<City> cityRepository,
         CityValidator cityValidator,
         IUnitOfWork unitOfWork)
     {

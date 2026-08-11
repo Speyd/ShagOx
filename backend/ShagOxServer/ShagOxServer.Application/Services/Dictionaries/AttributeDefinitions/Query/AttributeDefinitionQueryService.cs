@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Query;
-public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
+public class AttributeDefinitionQueryService 
+    : IAttributeDefinitionQueryService
 {
     private readonly IAttributeDefinitionQueryRepository _attributeQueryRepository;
 
@@ -20,7 +21,8 @@ public class AttributeDefinitionQueryService : IAttributeDefinitionQueryService
     }
 
 
-    public async Task<Result<AttributeDefinitionDto>> GetByIdAsync(int id)
+    public async Task<Result<AttributeDefinitionDto>> GetByIdAsync(
+        int id)
     {
         var attribute = await _attributeQueryRepository
             .GetByIdAsync(id);

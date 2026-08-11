@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Validator;
 public class CurrencyValidator
 {
-    private readonly ICurrencyRepository _repository;
+    private readonly IRepository<Currency> _repository;
     private readonly ICurrencyExistsRepository _existsRepository;
 
 
     public CurrencyValidator(
-        ICurrencyRepository repository,
+        IRepository<Currency> repository,
         ICurrencyExistsRepository existsRepository)
     {
         _repository = repository;
@@ -28,7 +29,8 @@ public class CurrencyValidator
         return Result<Currency>.Success(currency);
     }
 
-    public async Task<Result<bool>> ExistsByIdAsync(int id)
+    public async Task<Result<bool>> ExistsByIdAsync(
+        int id)
     {
         if (!await _existsRepository.ExistsByIdAsync(id))
             return Result<bool>.NotFound("Currency");
@@ -36,7 +38,8 @@ public class CurrencyValidator
         return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> NotExistsByIdAsync(int id)
+    public async Task<Result<bool>> NotExistsByIdAsync(
+        int id)
     {
         if (await _existsRepository.ExistsByIdAsync(id))
             return Result<bool>.AlreadyExists("Currency");
@@ -53,10 +56,29 @@ public class CurrencyValidator
         return Result<bool>.Success(true);
     }
 
+
+    public async Task<Result<bool>> NotExistsByCodeValidator(
+        string code)
+    {
+        if (await _existsRepository.ExistsByCodeAsync(code))
+            return Result<bool>.AlreadyExists("Currency code");
+
+        return Result<bool>.Success(true);
+    }
+
     public async Task<Result<bool>> ExistsByNameValidator(
         string name)
     {
         if (!await _existsRepository.ExistsByNameAsync(name))
+            return Result<bool>.AlreadyExists("Currency name");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByNameValidator(
+        string name)
+    {
+        if (await _existsRepository.ExistsByNameAsync(name))
             return Result<bool>.AlreadyExists("Currency name");
 
         return Result<bool>.Success(true);

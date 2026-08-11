@@ -162,6 +162,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("SoldAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("StatusId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -184,6 +187,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Price");
 
                     b.HasIndex("SellerId");
+
+                    b.HasIndex("StatusId");
 
                     b.HasIndex("CategoryId", "CreatedAt");
 
@@ -220,6 +225,36 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Favorites");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", b =>
@@ -492,6 +527,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Status", "Status")
+                        .WithMany("Advertisements")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Buyer");
 
                     b.Navigation("Category");
@@ -501,6 +542,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Currency");
 
                     b.Navigation("Seller");
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Favorite", b =>
@@ -587,6 +630,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Favorites");
 
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Status", b =>
+                {
+                    b.Navigation("Advertisements");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Category", b =>

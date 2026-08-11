@@ -1,11 +1,9 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Roles.Update;
-using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.Interfaces.Services.Base;
 
 namespace ShagOxServer.Application.Interfaces.Services.Auth.Roles.Update;
 public interface IRoleUpdateService
+    : IUpdateService<UpdateResponse, RoleUpdateRequest>
 {
-    Task<Result<UpdateResponse>> UpdateAsync(
-        int roleId,
-        RoleUpdateRequest request);
 }

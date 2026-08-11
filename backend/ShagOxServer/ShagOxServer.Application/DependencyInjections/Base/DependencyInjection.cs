@@ -1,21 +1,25 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Advertisement;
+using ShagOxServer.Application.DependencyInjections.Auth;
+using ShagOxServer.Application.DependencyInjections.Dictionary;
+using ShagOxServer.Application.DependencyInjections.Location;
+using ShagOxServer.Application.DependencyInjections.Specification;
 
 namespace ShagOxServer.Application.DependencyInjections.Base;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(
+        this IServiceCollection services)
     {
         return services
-            .AddAuth()
-            .AddLocation()
-            .AddAdvertisements()
-            .AddUsers()
-            .AddRoles()
-            .AddDictionaries()
-            .AddSpecification()
-            .AddCommon()
-            .AddSettings();
+            .AddAuthApplication()
+            .AddLocationApplication()
+            .AddAdvertisementApplication()
+            .AddDictionariesApplication()
+            .AddSpecificationApplication()
+            .AddCommonApplication()
+            .AddSettingsApplication();
     }
 }

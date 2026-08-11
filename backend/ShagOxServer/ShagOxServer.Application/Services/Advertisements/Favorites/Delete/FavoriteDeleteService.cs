@@ -1,21 +1,23 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Delete;
-public class FavoriteDeleteService : IFavoriteDeleteService
+public class FavoriteDeleteService 
+    : IFavoriteDeleteService
 {
-    private readonly IFavoriteRepository _favoriteRepository;
+    private readonly IRepository<Favorite> _favoriteRepository;
     private readonly FavoriteValidator _favoriteValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public FavoriteDeleteService(
-        IFavoriteRepository favoriteRepository,
+        IRepository<Favorite> favoriteRepository,
         FavoriteValidator favoriteValidator,
         IUnitOfWork unitOfWork)
     {

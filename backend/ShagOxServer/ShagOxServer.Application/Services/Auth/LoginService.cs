@@ -9,7 +9,8 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth;
-public class LoginService : ILoginService
+public class LoginService 
+    : ILoginService
 {
     private readonly IUserQueryRepository _userQueryRepository;
 
@@ -32,7 +33,8 @@ public class LoginService : ILoginService
     } 
 
 
-    public async Task<Result<LoginResponse>> LoginAsync(LoginRequest request)
+    public async Task<Result<LoginResponse>> LoginAsync(
+        LoginRequest request)
     {
         try
         {
@@ -62,7 +64,9 @@ public class LoginService : ILoginService
         }
     }
 
-    private async Task<User?> GetUserAsync(string data, UserContactType type)
+    private async Task<User?> GetUserAsync(
+        string data,
+        UserContactType type)
     {
         return type switch
         {

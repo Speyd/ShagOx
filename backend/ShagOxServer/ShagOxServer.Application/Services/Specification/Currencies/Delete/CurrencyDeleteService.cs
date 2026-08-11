@@ -1,22 +1,24 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
-using ShagOxServer.Application.Services.Specification.Conditions.Validator;
+using ShagOxServer.Application.Services.Specification.Currencies.Validator;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Delete;
-public class CurrencyDeleteService : ICurrencyDeleteService
+public class CurrencyDeleteService 
+    : ICurrencyDeleteService
 {
-    private readonly IConditionRepository _currencyRepository;
-    private readonly ConditionValidator _currencyValidator;
+    private readonly IRepository<Currency> _currencyRepository;
+    private readonly CurrencyValidator _currencyValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public CurrencyDeleteService(
-        IConditionRepository currencyRepository,
-        ConditionValidator currencyValidator,
+        IRepository<Currency> currencyRepository,
+        CurrencyValidator currencyValidator,
         IUnitOfWork unitOfWork)
     {
         _currencyRepository = currencyRepository;

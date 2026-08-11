@@ -44,34 +44,40 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
         property.Metadata.SetValueComparer(comparer);
 
         builder.HasOne(x => x.Currency)
-               .WithMany(x => x.Advertisements)
-               .HasForeignKey(x => x.CurrencyId)
-               .OnDelete(DeleteBehavior.Restrict);
+            .WithMany(x => x.Advertisements)
+            .HasForeignKey(x => x.CurrencyId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Condition)
-               .WithMany(x => x.Advertisements)
-               .HasForeignKey(x => x.ConditionId)
-               .OnDelete(DeleteBehavior.Restrict);
+            .WithMany(x => x.Advertisements)
+            .HasForeignKey(x => x.ConditionId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Category)
-               .WithMany(x => x.Advertisements)
-               .HasForeignKey(x => x.CategoryId)
-               .OnDelete(DeleteBehavior.Restrict);
+            .WithMany(x => x.Advertisements)
+            .HasForeignKey(x => x.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Seller)
-               .WithMany(x => x.SoldAdvertisements)
-               .HasForeignKey(x => x.SellerId)
-               .OnDelete(DeleteBehavior.Restrict);
+            .WithMany(x => x.SoldAdvertisements)
+            .HasForeignKey(x => x.SellerId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Buyer)
-               .WithMany(x => x.BoughtAdvertisements)
-               .HasForeignKey(x => x.BuyerId)
-               .OnDelete(DeleteBehavior.Restrict);
+            .WithMany(x => x.BoughtAdvertisements)
+            .HasForeignKey(x => x.BuyerId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Status)
+              .WithMany(x => x.Advertisements)
+              .HasForeignKey(x => x.StatusId)
+              .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => x.SellerId);
         builder.HasIndex(x => x.CategoryId);
         builder.HasIndex(x => x.CurrencyId);
         builder.HasIndex(x => x.ConditionId);
+        builder.HasIndex(x => x.StatusId);
 
         builder.HasIndex(x => x.CreatedAt);
         builder.HasIndex(x => x.Popularity);

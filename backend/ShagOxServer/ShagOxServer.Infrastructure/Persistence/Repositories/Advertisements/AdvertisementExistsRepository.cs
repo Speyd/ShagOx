@@ -1,24 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 public class AdvertisementExistsRepository 
-    : BaseRepository, IAdvertisementExistsRepository
+    : ExistsRepository<Advertisement>, 
+      IAdvertisementExistsRepository
 {
     public AdvertisementExistsRepository(AppDbContext db)
         : base(db)
     { }
 
-
-    public async Task<bool> ExistsById(int Id)
-    {
-        var result = await _db.Advertisements
-            .AnyAsync(x => x.Id == Id);
-
-        return result;
-    }
-
-    public async Task<bool> IsOwnerAsync(int adId, int userId)
+    public async Task<bool> IsOwnerAsync(
+        int adId,
+        int userId)
     {
         var result = await _db.Advertisements
            .AnyAsync(x =>

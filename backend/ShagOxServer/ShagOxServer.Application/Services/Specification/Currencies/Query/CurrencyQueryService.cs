@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Query;
-public class CurrencyQueryService : ICurrencyQueryService
+public class CurrencyQueryService 
+    : ICurrencyQueryService
 {
     private readonly ICurrencyQueryRepository _currencyRepository;
 
@@ -20,7 +21,8 @@ public class CurrencyQueryService : ICurrencyQueryService
     }
 
 
-    public async Task<Result<CurrencyDto>> GetByIdAsync(int id)
+    public async Task<Result<CurrencyDto>> GetByIdAsync(
+        int id)
     {
         var currency = await _currencyRepository
             .GetByIdAsync(id);
@@ -37,7 +39,8 @@ public class CurrencyQueryService : ICurrencyQueryService
         return conditions.ToResultPaged(CurrencyMapper.ToDto);
     }
 
-    public async Task<Result<CurrencyDto>> GetByCodeAsync(string code)
+    public async Task<Result<CurrencyDto>> GetByCodeAsync(
+        string code)
     {
         var currencies = await _currencyRepository
             .GetByCodeAsync(code);
@@ -45,7 +48,8 @@ public class CurrencyQueryService : ICurrencyQueryService
         return currencies.ToResult(CurrencyMapper.ToDto);
     }
 
-    public async Task<Result<CurrencyDto>> GetBySymbolAsync(string symbol)
+    public async Task<Result<CurrencyDto>> GetBySymbolAsync(
+        string symbol)
     {
         var currency = await _currencyRepository
             .GetBySymbolAsync(symbol);

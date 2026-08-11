@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Validator;
 public class CityValidator
 {
-    private readonly ICityRepository _cityRepository;
+    private readonly IRepository<City> _cityRepository;
     private readonly ICityExistsRepository _cityExistsRepository;
 
 
     public CityValidator(
-        ICityRepository cityRepository,
+        IRepository<City> cityRepository,
         ICityExistsRepository cityExistsRepository)
     {
         _cityRepository = cityRepository;

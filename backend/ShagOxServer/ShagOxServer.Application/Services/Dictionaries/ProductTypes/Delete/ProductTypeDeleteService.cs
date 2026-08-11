@@ -1,22 +1,23 @@
 ﻿using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Delete;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Delete;
 public class ProductTypeDeleteService 
     : IProductTypeDeleteService
 {
-    private readonly IProductTypeRepository _productTypeRepository;
+    private readonly IRepository<ProductType> _productTypeRepository;
     private readonly ProductTypeValidator _productTypeValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public ProductTypeDeleteService(
-        IProductTypeRepository productTypeRepository,
+        IRepository<ProductType> productTypeRepository,
         ProductTypeValidator productTypeValidator,
         IUnitOfWork unitOfWork)
     {

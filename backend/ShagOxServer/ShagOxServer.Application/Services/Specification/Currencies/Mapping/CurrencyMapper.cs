@@ -4,7 +4,8 @@ using ShagOxServer.Domain.Entities.Specification;
 namespace ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 public static class CurrencyMapper
 {
-    public static CurrencyDto ToDto(Currency x)
+    public static CurrencyDto ToDto(
+        Currency x)
     {
         return new CurrencyDto
         (

@@ -1,16 +1,18 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Create;
 using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Create;
-using ShagOxServer.Application.Services.Advertisements.Validator;
+using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Validator;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Create;
-public class FavoriteCreateService : IFavoriteCreateService
+public class FavoriteCreateService 
+    : IFavoriteCreateService
 {
-    private readonly IFavoriteRepository _favoriteRepository;
+    private readonly IRepository<Favorite> _favoriteRepository;
 
     private readonly UserValidator _userValidator;
 
@@ -20,7 +22,7 @@ public class FavoriteCreateService : IFavoriteCreateService
 
 
     public FavoriteCreateService(
-        IFavoriteRepository favoriteRepository,
+        IRepository<Favorite> favoriteRepository,
         UserValidator userValidator,
         AdvertisementValidator advertValidator,
         IUnitOfWork unitOfWork)

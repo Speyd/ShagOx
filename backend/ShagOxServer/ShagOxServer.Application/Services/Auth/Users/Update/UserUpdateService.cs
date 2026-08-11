@@ -1,31 +1,30 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users.Update;
-using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Update;
-using ShagOxServer.Application.Services.Auth.Users.Update.Validator;
-using ShagOxServer.Application.Services.Auth.Users.Validator;
-using ShagOxServer.SharedKernel.Abstractions.Results;
+﻿using CloudinaryDotNet.Actions;
+using ShagOxServer.Application.DTOs.Auth.Users.Update;
 using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Update;
+using ShagOxServer.Application.Services.Auth.Users.Validator;
+using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Update;
-public class UserUpdateService : IUserUpdateService
+public class UserUpdateService 
+    : IUserUpdateService
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IRepository<User> _userRepository;
     private readonly UserValidator _userValidator;
-    private readonly UserUpdateValidator _userUpdateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public UserUpdateService(
-        IUserRepository userRepository,
+        IRepository<User> userRepository,
         UserValidator userValidator,
-        UserUpdateValidator userUpdateValidator,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
-        _userUpdateValidator = userUpdateValidator;
         _unitOfWork = unitOfWork;
     }
 
@@ -41,18 +40,11 @@ public class UserUpdateService : IUserUpdateService
             return Result<UpdateResponse>.Fail(user.Error);
 
 
-        var phone = await _userUpdateValidator
-            .ExistsPhoneValidator(request);
+        var validation = await
+            ValidateUpdatesAsync(user.Value!, request);
 
-        if (!phone.IsSuccess)
-            return Result<UpdateResponse>.Fail(phone.Error);
-
-
-        var email = await _userUpdateValidator
-            .ExistsEmailValidator(request);
-
-        if (!email.IsSuccess)
-            return Result<UpdateResponse>.Fail(email.Error);
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = UserUpdater
@@ -81,5 +73,32 @@ public class UserUpdateService : IUserUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        User user,
+        UserUpdateRequest request)
+    {
+        if (request.Phone is not null &&
+            request.Phone != user.Phone)
+        {
+            var phone = await _userValidator
+                .NotExistsByPhoneAsync(request.Phone);
+
+            if (!phone.IsSuccess)
+                return Result<bool>.Fail(phone.Error);
+        }
+
+        if (request.Email is not null &&
+            request.Email != user.Email)
+        {
+            var email = await _userValidator
+                .NotExistsByEmailAsync(request.Email);
+
+            if (!email.IsSuccess)
+                return Result<bool>.Fail(email.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Query;
-public class RegionQueryService : IRegionQueryService
+public class RegionQueryService 
+    : IRegionQueryService
 {
     private readonly IRegionQueryRepository _regionQueryRepository;
 
@@ -20,7 +21,8 @@ public class RegionQueryService : IRegionQueryService
     }
 
 
-    public async Task<Result<RegionDto>> GetByIdAsync(int id)
+    public async Task<Result<RegionDto>> GetByIdAsync(
+        int id)
     {
         var region = await _regionQueryRepository
             .GetByIdAsync(id);
@@ -37,7 +39,8 @@ public class RegionQueryService : IRegionQueryService
         return regions.ToResultPaged(RegionMapper.ToDto);
     }
 
-    public async Task<Result<RegionDto>> GetByNameAsync(string name)
+    public async Task<Result<RegionDto>> GetByNameAsync(
+        string name)
     {
         var region = await _regionQueryRepository
             .GetByNameAsync(name);

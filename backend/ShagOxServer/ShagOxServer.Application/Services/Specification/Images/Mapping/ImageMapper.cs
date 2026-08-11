@@ -4,7 +4,8 @@ using ShagOxServer.Domain.Entities.Specification;
 namespace ShagOxServer.Application.Services.Specification.Images.Mapping;
 public static class ImageMapper
 {
-    public static ImageDto ToDto(Image image)
+    public static ImageDto ToDto(
+        Image image)
     {
         return new ImageDto(
             image.Id,

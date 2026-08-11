@@ -4,7 +4,6 @@ using ShagOxServer.Application.DTOs.Specification.Currencies;
 using ShagOxServer.Application.DTOs.Specification.Images;
 
 namespace ShagOxServer.Application.DTOs.Advertisements;
-
 public sealed record AdvertisementDto
 (
     int Id,

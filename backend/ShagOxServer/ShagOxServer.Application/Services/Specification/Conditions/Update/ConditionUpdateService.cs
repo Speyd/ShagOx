@@ -38,14 +38,13 @@ public class ConditionUpdateService
         if (!condition.IsSuccess)
             return Result<UpdateResponse>.Fail(condition.Error );
 
-        if (request.Name is not null)
-        {
-            var nameValidation = await _conditionValidator
-                .NotExistsByNameAsync(request.Name);
 
-            if (!nameValidation.IsSuccess)
-                Result<CreateResponse>.Fail(nameValidation.Error);
-        }
+        var validation = await
+             ValidateUpdatesAsync(condition.Value!, request);
+
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
+
 
         var updatedCount = ConditionUpdater
             .ApplyUpdates(condition.Value!, request);
@@ -73,5 +72,22 @@ public class ConditionUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        Condition сondition,
+        ConditionUpdateRequest request)
+    {
+        if (request.Name is not null &&
+            request.Name != сondition.Name)
+        {
+            var nameValidation = await _conditionValidator
+                .NotExistsByNameAsync(request.Name);
+
+            if (!nameValidation.IsSuccess)
+                Result<CreateResponse>.Fail(nameValidation.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Services.Advertisements.Create;
-using ShagOxServer.Application.Interfaces.Services.Advertisements.Delete;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
-using ShagOxServer.Application.Interfaces.Services.Advertisements.Query;
-using ShagOxServer.Application.Interfaces.Services.Advertisements.Update;
-using ShagOxServer.Application.Services.Advertisements.Create;
-using ShagOxServer.Application.Services.Advertisements.Create.Validator;
-using ShagOxServer.Application.Services.Advertisements.Delete;
+using ShagOxServer.Application.Services.Advertisements.Core.Create;
+using ShagOxServer.Application.Services.Advertisements.Core.Create.Validator;
+using ShagOxServer.Application.Services.Advertisements.Core.Delete;
+using ShagOxServer.Application.Services.Advertisements.Core.Query;
+using ShagOxServer.Application.Services.Advertisements.Core.Update;
+using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
+using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Advertisements.Images;
-using ShagOxServer.Application.Services.Advertisements.Query;
-using ShagOxServer.Application.Services.Advertisements.Update;
-using ShagOxServer.Application.Services.Advertisements.Update.Validator;
-using ShagOxServer.Application.Services.Advertisements.Validator;
 
 namespace ShagOxServer.Application.DependencyInjections.Advertisement;
 public static class AdvertisementDependencyInjection

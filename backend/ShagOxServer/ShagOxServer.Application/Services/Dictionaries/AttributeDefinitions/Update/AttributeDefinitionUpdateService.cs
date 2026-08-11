@@ -52,14 +52,11 @@ public class AttributeDefinitionUpdateService
             ));
         }
 
-        var existsValidator = await _attributeValidator
-            .NotExistsByKeyAsync(
-                changeValidator.Value!.key,
-                changeValidator.Value!.categoryId
-        );
+        var validation = await
+             ValidateUpdatesAsync(changeValidator.Value!, request);
 
-        if (!existsValidator.IsSuccess)
-            return Result<UpdateResponse>.Fail(existsValidator.Error);
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = AttributeDefinitionUpdater
@@ -88,5 +85,21 @@ public class AttributeDefinitionUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        (string key, int categoryId) changeValidator,
+        AttributeDefinitionUpdateRequest request)
+    {
+        var existsValidator = await _attributeValidator
+            .NotExistsByKeyAsync(
+                changeValidator.key,
+                changeValidator.categoryId
+        );
+
+        if (!existsValidator.IsSuccess)
+            return Result<bool>.Fail(existsValidator.Error);
+
+        return Result<bool>.Success(true);
     }
 }

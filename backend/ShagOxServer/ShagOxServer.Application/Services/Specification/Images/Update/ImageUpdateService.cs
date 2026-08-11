@@ -2,7 +2,7 @@
 using ShagOxServer.Application.DTOs.Specification.Images.Update;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Update;
-using ShagOxServer.Application.Services.Advertisements.Validator;
+using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -51,7 +51,8 @@ public class ImageUpdateService
                 newOrder = ImageUpdater.GetNextOrder(advert.Value);
         }
 
-        var updatedCount = ImageUpdater.ApplyUpdates(image.Value!, newOrder, request);
+        var updatedCount = ImageUpdater
+            .ApplyUpdates(image.Value!, newOrder, request);
 
         var response = new UpdateResponse(
             updatedCount,

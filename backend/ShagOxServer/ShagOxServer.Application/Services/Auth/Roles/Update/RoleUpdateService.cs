@@ -36,14 +36,12 @@ public class RoleUpdateService
         if (!role.IsSuccess)
             return Result<UpdateResponse>.Fail(role.Error);
 
-        if (role.Value!.Name is not null)
-        {
-            var nameValidator = await _roleValidator.
-                NotExistsByNameAsync(role.Value!.Name);
+        var validation = await
+             ValidateUpdatesAsync(role.Value!, request);
 
-            if (!nameValidator.IsSuccess)
-                return Result<UpdateResponse>.Fail(nameValidator.Error);
-        }
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
+
 
         var updatedCount = RoleUpdater.ApplyUpdates(role.Value!, request);
         var result = new UpdateResponse(
@@ -70,5 +68,22 @@ public class RoleUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        Role role,
+        RoleUpdateRequest request)
+    {
+        if (request.Name is not null &&
+           request.Name != role.Name)
+        {
+            var nameValidator = await _roleValidator.
+                NotExistsByNameAsync(request.Name);
+
+            if (!nameValidator.IsSuccess)
+                return Result<bool>.Fail(nameValidator.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

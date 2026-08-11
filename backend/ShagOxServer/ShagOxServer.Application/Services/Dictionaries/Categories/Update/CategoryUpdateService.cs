@@ -40,13 +40,6 @@ public class CategoryUpdateService
         if(!category.IsSuccess)
             return Result<UpdateResponse>.Fail(category.Error);
 
-        if (request.Name is not null)
-        {
-            var nameValidator = await _categoryValidator.GetByIdAsync(categoryId);
-            if (!category.IsSuccess)
-                return Result<UpdateResponse>.Fail(category.Error);
-        }
-
         var changeValidator = _categoryUpdateValidator
             .HasChangesValidator(category.Value!, request);
 
@@ -59,15 +52,16 @@ public class CategoryUpdateService
             ));
         }
 
-        var existsValidator = await _categoryValidator.NotExistsAsync(
-           changeValidator.Value!.name,
-           changeValidator.Value!.productTypeId
-        );
 
-        if (!existsValidator.IsSuccess)
-            return Result<UpdateResponse>.Fail(existsValidator.Error);
+        var validation = await
+             ValidateUpdatesAsync(changeValidator.Value!, request);
+
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
+
 
         var updatedCount = CategoryUpdater.ApplyUpdates(category.Value!, request);
+
         var result = new UpdateResponse(
             updatedCount,
             DateTime.UtcNow
@@ -91,5 +85,20 @@ public class CategoryUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        (string name, int productTypeId) changeValidator,
+        CategoryUpdateRequest request)
+    {
+        var existsValidator = await _categoryValidator.NotExistsAsync(
+          changeValidator.name,
+          changeValidator.productTypeId
+       );
+
+        if (!existsValidator.IsSuccess)
+            return Result<bool>.Fail(existsValidator.Error);
+
+        return Result<bool>.Success(true);
     }
 }

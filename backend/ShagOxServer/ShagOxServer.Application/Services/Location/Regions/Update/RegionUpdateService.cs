@@ -36,14 +36,12 @@ public class RegionUpdateService
         if (!region.IsSuccess)
             return Result<UpdateResponse>.Fail(region.Error);
 
-        if (request.Name is not null)
-        {
-            var nameValidation = await _regionValidator
-                .NotExistsByNameAsync(request.Name);
+        var validation = await
+             ValidateUpdatesAsync(region.Value!, request);
 
-            if (!nameValidation.IsSuccess)
-                return Result<UpdateResponse>.Fail(nameValidation.Error);
-        }
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
+
 
         var updatedCount = RegionUpdater
             .ApplyUpdates(region.Value!, request);
@@ -71,5 +69,22 @@ public class RegionUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        Region region,
+        RegionUpdateRequest request)
+    {
+        if (request.Name is not null &&
+             request.Name != region.Name)
+        {
+            var nameValidation = await _regionValidator
+                .NotExistsByNameAsync(request.Name);
+
+            if (!nameValidation.IsSuccess)
+                return Result<bool>.Fail(nameValidation.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

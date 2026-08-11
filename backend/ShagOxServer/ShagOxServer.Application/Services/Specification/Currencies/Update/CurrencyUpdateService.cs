@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Common.Responses;
+﻿using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -32,30 +33,18 @@ public class CurrencyUpdateService
         int currencyId,
         CurrencyUpdateRequest request)
     {
-        if (request.Code is not null)
-        {
-            var codeValidator = await _currencyValidator
-                .ExistsByCodeValidator(request.Code);
-
-            if (!codeValidator.IsSuccess)
-                return Result<UpdateResponse>.Fail(codeValidator.Error);
-        }
-
-        if (request.Name is not null)
-        {
-            var nameValidator = await _currencyValidator
-            .ExistsByNameValidator(request.Name);
-
-            if (!nameValidator.IsSuccess)
-                return Result<UpdateResponse>.Fail(nameValidator.Error);
-        }
-
-
         var currency = await _currencyValidator
             .GetByIdAsync(currencyId);
 
         if (!currency.IsSuccess)
             return Result<UpdateResponse>.Fail(currency.Error);
+
+
+        var validation = await 
+            ValidateUpdatesAsync(currency.Value!, request);
+
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = CurrencyUpdater
@@ -86,5 +75,32 @@ public class CurrencyUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        Currency currency,
+        CurrencyUpdateRequest request)
+    {
+        if (request.Code is not null &&
+            request.Code != currency.Code)
+        {
+            var result = await _currencyValidator
+                .NotExistsByCodeValidator(request.Code);
+
+            if (!result.IsSuccess)
+                return Result<bool>.Fail(result.Error!);
+        }
+
+        if (request.Name is not null &&
+            request.Name != currency.Name)
+        {
+            var result = await _currencyValidator
+                .NotExistsByNameValidator(request.Name);
+
+            if (!result.IsSuccess)
+                return Result<bool>.Fail(result.Error!);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

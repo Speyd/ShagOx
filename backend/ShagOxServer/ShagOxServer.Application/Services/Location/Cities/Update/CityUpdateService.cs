@@ -52,13 +52,11 @@ public class CityUpdateService
             ));
         }
 
-        var existsValidator = await _cityValidator.NotExistsAsync(
-            changeValidator.Value!.regionId, 
-            changeValidator.Value.name
-        );
+        var validation = await
+             ValidateUpdatesAsync(changeValidator.Value!, request);
 
-        if (!existsValidator.IsSuccess)
-            return Result<UpdateResponse>.Fail(existsValidator.Error);
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = CityUpdater.ApplyUpdates(city.Value!, request);
@@ -87,5 +85,20 @@ public class CityUpdateService
 
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        (int regionId, string name) changeValidator,
+        CityUpdateRequest request)
+    {
+        var existsValidator = await _cityValidator.NotExistsAsync(
+            changeValidator.regionId,
+            changeValidator.name
+        );
+
+        if (!existsValidator.IsSuccess)
+            return Result<bool>.Fail(existsValidator.Error);
+
+        return Result<bool>.Success(true);
     }
 }

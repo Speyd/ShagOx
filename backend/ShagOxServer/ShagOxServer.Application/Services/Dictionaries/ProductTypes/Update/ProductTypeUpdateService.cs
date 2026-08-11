@@ -38,14 +38,11 @@ public class ProductTypeUpdateService
             return Result<UpdateResponse>.Fail(productType.Error);
 
 
-        if (request.Name is not null)
-        {
-            var nameValidator = await _productTypeValidator
-                .NotExistsByNameAsync(request.Name);
+        var validation = await
+             ValidateUpdatesAsync(productType.Value!, request);
 
-            if (!nameValidator.IsSuccess)
-                return Result<UpdateResponse>.Fail(nameValidator.Error);
-        }
+        if (!validation.IsSuccess)
+            return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = ProductTypeUpdater
@@ -74,5 +71,22 @@ public class ProductTypeUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task<Result<bool>> ValidateUpdatesAsync(
+        ProductType productType,
+        ProductTypeUpdateRequest request)
+    {
+        if (request.Name is not null &&
+             request.Name != productType.Name)
+        {
+            var nameValidator = await _productTypeValidator
+                .NotExistsByNameAsync(request.Name);
+
+            if (!nameValidator.IsSuccess)
+                return Result<bool>.Fail(nameValidator.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

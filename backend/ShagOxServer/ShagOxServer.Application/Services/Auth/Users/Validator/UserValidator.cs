@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+﻿using ShagOxServer.Application.DTOs.Auth.Users.Update;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -42,6 +43,42 @@ public class UserValidator
        int userId)
     {
         if (await _userExistsRepository.ExistsByIdAsync(userId))
+            return Result<bool>.AlreadyExists("User");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> ExistsByPhoneAsync(
+      string phone)
+    {
+        if (!await _userExistsRepository.ExistsPhoneAsync(phone))
+            return Result<bool>.NotFound("User");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByPhoneAsync(
+       string phone)
+    {
+        if (await _userExistsRepository.ExistsPhoneAsync(phone))
+            return Result<bool>.AlreadyExists("User");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> ExistsByEmailAsync(
+      string email)
+    {
+        if (!await _userExistsRepository.ExistsEmailAsync(email))
+            return Result<bool>.NotFound("User");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByEmailAsync(
+       string email)
+    {
+        if (await _userExistsRepository.ExistsEmailAsync(email))
             return Result<bool>.AlreadyExists("User");
 
         return Result<bool>.Success(true);

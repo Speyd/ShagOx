@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites;
-using ShagOxServer.Application.Services.Advertisements.Mapping;
+using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
 

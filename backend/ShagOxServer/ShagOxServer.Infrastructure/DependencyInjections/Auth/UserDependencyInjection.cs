@@ -5,7 +5,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 namespace ShagOxServer.Infrastructure.DependencyInjections.Auth;
 public static class UserDependencyInjection
 {
-    public static IServiceCollection AddUserInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddUserInfrastructure(
+        this IServiceCollection services)
     {
         services.AddScoped<IUserQueryRepository, UserQueryRepository>();
         services.AddScoped<IUserExistsRepository, UserExistsRepository>();

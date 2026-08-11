@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Infrastructure.Persistence;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections;

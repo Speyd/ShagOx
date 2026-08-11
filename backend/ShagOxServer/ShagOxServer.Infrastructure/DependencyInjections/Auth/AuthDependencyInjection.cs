@@ -3,7 +3,8 @@
 namespace ShagOxServer.Infrastructure.DependencyInjections.Auth;
 public static class AuthDependencyInjection
 {
-    public static IServiceCollection AddAuthInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddAuthInfrastructure(
+        this IServiceCollection services)
     {
         services.AddUserInfrastructure();
 

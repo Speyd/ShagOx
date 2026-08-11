@@ -5,7 +5,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 namespace ShagOxServer.Infrastructure.DependencyInjections.Advertisement;
 public static class AdvertisementDependencyInjection
 {
-    public static IServiceCollection AddAdvertisementsInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddAdvertisementInfrastructure(
+        this IServiceCollection services)
     {
         services.AddScoped<IAdvertisementQueryRepository, AdvertisementQueryRepository>();
         services.AddScoped<IAdvertisementExistsRepository, AdvertisementExistsRepository>();

@@ -6,16 +6,16 @@ using ShagOxServer.Infrastructure.DependencyInjections.Location;
 using ShagOxServer.Infrastructure.DependencyInjections.Specification;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Base;
-
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services)
     {
         return services
             .AddBaseRepositories()
             .AddAuthInfrastructure()
             .AddLocationInfrastructure()
-            .AddAdvertisementsInfrastructure()
+            .AddAdvertisementInfrastructure()
             .AddUnitOfWorkInfrastructure()
             .AddSpecificationInfrastructure()
             .AddDictionariesInfrastructure()

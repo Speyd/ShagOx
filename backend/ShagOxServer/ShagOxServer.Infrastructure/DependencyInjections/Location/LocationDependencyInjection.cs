@@ -3,7 +3,8 @@
 namespace ShagOxServer.Infrastructure.DependencyInjections.Location;
 public static class LocationDependencyInjection
 {
-    public static IServiceCollection AddLocationInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddLocationInfrastructure(
+        this IServiceCollection services)
     {
         services.AddRegionInfrastructure();
 

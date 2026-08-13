@@ -1,22 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
-using ShagOxServer.Domain.Filters.Advertisements;
+﻿using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Query;
+using ShagOxServer.Domain.Filters.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Statuses;
+namespace ShagOxServer.Api.Controllers.Statuses.Translations;
 
 [ApiController]
-[Route("api/statuses")]
-[Authorize(Roles = "Admin")]
-public class StatusQueriesController : ApiController
+[Route("api/statuses/translations")]
+public class StatusTranslationQueriesController : ApiController
 {
-    private readonly IStatusQueryService _queryService;
+    private readonly IStatusTranslationQueryService _queryService;
 
 
-    public StatusQueriesController(
-        IStatusQueryService queryService)
+    public StatusTranslationQueriesController(
+        IStatusTranslationQueryService queryService)
     {
         _queryService = queryService;
     }
@@ -44,7 +42,7 @@ public class StatusQueriesController : ApiController
 
     [HttpGet("search")]
     public async Task<IActionResult> Search(
-        [FromQuery] StatusSearchFilter filter,
+        [FromQuery] StatusTranslationSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService

@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Query;
-internal class StatusQueryService 
+public class StatusQueryService 
     : IStatusQueryService
 {
     private readonly IStatusQueryRepository _statusRepository;

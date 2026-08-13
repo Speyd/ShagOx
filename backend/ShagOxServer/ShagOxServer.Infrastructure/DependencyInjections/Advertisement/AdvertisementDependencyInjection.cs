@@ -15,7 +15,6 @@ public static class AdvertisementDependencyInjection
         services.AddFavoriteInfrastructure();
 
         services.AddStatusInfrastructure();
-        services.AddStatusTranslationInfrastructure();
 
         return services;
     }

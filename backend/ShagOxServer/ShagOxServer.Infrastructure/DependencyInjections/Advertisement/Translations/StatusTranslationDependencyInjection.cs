@@ -3,7 +3,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.T
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Advertisement.Translations;
-
 public static class StatusTranslationDependencyInjection
 {
     public static IServiceCollection AddStatusTranslationInfrastructure(

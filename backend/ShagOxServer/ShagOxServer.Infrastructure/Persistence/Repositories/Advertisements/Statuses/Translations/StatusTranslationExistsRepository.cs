@@ -13,6 +13,15 @@ public class StatusTranslationExistsRepository
         : base(db)
     { }
 
+    public async Task<bool> ExistsAsync(
+        int statusId,
+        string language)
+    {
+        return await _db.StatusTranslations
+            .AnyAsync(x => x.StatusId == statusId &&
+                x.Language == language);
+    }
+
     public async Task<bool> ExistsByCodeAsync(
         string name)
     {

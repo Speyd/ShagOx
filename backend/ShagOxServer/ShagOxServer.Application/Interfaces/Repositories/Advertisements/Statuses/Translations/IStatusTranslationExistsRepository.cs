@@ -5,6 +5,10 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Status
 public interface IStatusTranslationExistsRepository
      : IExistsRepository<StatusTranslation>
 {
+    Task<bool> ExistsAsync(
+        int statusId,
+        string language);
+
     Task<bool> ExistsByCodeAsync(
         string name);
 

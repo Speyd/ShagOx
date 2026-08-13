@@ -16,18 +16,6 @@ public class StatusUpdater
             countUpdated++;
         }
 
-        if (request.Name is not null)
-        {
-            status.Name = request.Name;
-            countUpdated++;
-        }
-
-        if (request.Description is not null)
-        {
-            status.Description = request.Description;
-            countUpdated++;
-        }
-
         return countUpdated;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
 namespace ShagOxServer.Infrastructure.Persistence;
 public class UnitOfWork : IUnitOfWork
@@ -7,8 +8,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _db;
     private IDbContextTransaction? _transaction;
 
-    public UnitOfWork(
-        AppDbContext db)
+    public UnitOfWork(AppDbContext db)
     {
         _db = db;
     }

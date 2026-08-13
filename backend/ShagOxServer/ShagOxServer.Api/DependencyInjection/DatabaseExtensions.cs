@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
 namespace SchagoxServer.Api.DependencyInjection;
 public static class DatabaseExtensions

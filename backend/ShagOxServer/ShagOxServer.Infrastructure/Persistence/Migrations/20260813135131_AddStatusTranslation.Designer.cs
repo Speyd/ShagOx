@@ -12,8 +12,8 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts;
 namespace ShagOxServer.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260617203936_ChoreUserConfiguration")]
-    partial class ChoreUserConfiguration
+    [Migration("20260813135131_AddStatusTranslation")]
+    partial class AddStatusTranslation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,7 +120,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisement", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -132,6 +132,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ConditionId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -163,6 +166,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("SoldAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("StatusId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -174,6 +180,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ConditionId");
+
                     b.HasIndex("CreatedAt");
 
                     b.HasIndex("CurrencyId");
@@ -184,13 +192,64 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("SellerId");
 
+                    b.HasIndex("StatusId");
+
                     b.HasIndex("CategoryId", "CreatedAt");
 
                     b.HasIndex("CategoryId", "Popularity");
 
                     b.HasIndex("CategoryId", "Price");
 
+                    b.HasIndex("SellerId", "CreatedAt");
+
+                    b.HasIndex("CategoryId", "ConditionId", "CreatedAt");
+
                     b.ToTable("Advertisements");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Favorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AdvertisementId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertisementId");
+
+                    b.HasIndex("UserId", "AdvertisementId")
+                        .IsUnique();
+
+                    b.ToTable("Favorites");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", b =>
@@ -220,8 +279,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -244,15 +302,39 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
 
-                    b.Property<string>("ProductType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductType");
+                    b.HasIndex("ProductTypeId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.ProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>
@@ -326,12 +408,25 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("Currencies");
                 });
@@ -350,6 +445,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("integer");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("text");
@@ -360,6 +460,41 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Localizations.Advertisements.StatusTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("Language", "Name")
+                        .IsUnique();
+
+                    b.ToTable("StatusTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.User", b =>
@@ -391,7 +526,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisement", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Buyer")
                         .WithMany("BoughtAdvertisements")
@@ -401,6 +536,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Category", "Category")
                         .WithMany("Advertisements")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Specification.Condition", "Condition")
+                        .WithMany("Advertisements")
+                        .HasForeignKey("ConditionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -416,13 +557,42 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Status", "Status")
+                        .WithMany("Advertisements")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Buyer");
 
                     b.Navigation("Category");
 
+                    b.Navigation("Condition");
+
                     b.Navigation("Currency");
 
                     b.Navigation("Seller");
+
+                    b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Favorite", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "Advertisement")
+                        .WithMany("Favorites")
+                        .HasForeignKey("AdvertisementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "User")
+                        .WithMany("Favorites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Advertisement");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", b =>
@@ -434,6 +604,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Category", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.ProductType", "ProductType")
+                        .WithMany("Categories")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>
@@ -449,13 +630,24 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Image", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Advertisement", "Advertisement")
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "Advertisement")
                         .WithMany("Images")
                         .HasForeignKey("AdvertisementId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Advertisement");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Localizations.Advertisements.StatusTranslation", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Status", "Status")
+                        .WithMany("Translations")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.Role", b =>
@@ -467,14 +659,25 @@ namespace ShagOxServer.Infrastructure.Migrations
                 {
                     b.Navigation("BoughtAdvertisements");
 
+                    b.Navigation("Favorites");
+
                     b.Navigation("SoldAdvertisements");
 
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisement", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
                 {
+                    b.Navigation("Favorites");
+
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Status", b =>
+                {
+                    b.Navigation("Advertisements");
+
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Category", b =>
@@ -482,6 +685,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Advertisements");
 
                     b.Navigation("Attributes");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.ProductType", b =>
+                {
+                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>
@@ -492,6 +700,11 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Region", b =>
                 {
                     b.Navigation("Cities");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>
+                {
+                    b.Navigation("Advertisements");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Currency", b =>

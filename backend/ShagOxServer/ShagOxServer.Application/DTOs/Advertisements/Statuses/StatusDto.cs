@@ -2,7 +2,5 @@
 public sealed record StatusDto
 (
     int Id,
-    string Code,
-    string Name,
-    string Description
+    string Code
 );

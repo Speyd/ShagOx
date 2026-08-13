@@ -6,6 +6,4 @@ public interface IStatusExistsRepository
     : IExistsRepository<Status>
 {
     Task<bool> ExistsByCodeAsync(string code);
-
-    Task<bool> ExistsByNameAsync(string name);
 }

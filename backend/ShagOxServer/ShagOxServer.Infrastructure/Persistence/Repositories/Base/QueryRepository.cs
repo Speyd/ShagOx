@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extensions;
+using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base;
@@ -12,7 +12,8 @@ public class QueryRepository<T>
     {
     }
 
-    public virtual async Task<T?> GetByIdAsync(int id)
+    public virtual async Task<T?> GetByIdAsync(
+        int id)
     {
         return await _db.Set<T>()
             .FindAsync(id);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;

@@ -18,18 +18,6 @@ public static class StatusFilterExtensions
                 EF.Functions.ILike(u.Code, $"%{filter.Code}%"));
         }
 
-        if (!string.IsNullOrWhiteSpace(filter.Name))
-        {
-            query = query.Where(u =>
-                 EF.Functions.ILike(u.Name, $"%{filter.Name}%"));
-        }
-
-        if (!string.IsNullOrWhiteSpace(filter.Description))
-        {
-            query = query.Where(u =>
-                 EF.Functions.ILike(u.Description, $"%{filter.Description}%"));
-        }
-
         return query;
     }
 }

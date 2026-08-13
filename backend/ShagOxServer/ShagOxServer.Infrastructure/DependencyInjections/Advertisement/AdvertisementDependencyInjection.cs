@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Infrastructure.DependencyInjections.Advertisement.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Advertisement;
@@ -14,6 +15,7 @@ public static class AdvertisementDependencyInjection
         services.AddFavoriteInfrastructure();
 
         services.AddStatusInfrastructure();
+        services.AddStatusTranslationInfrastructure();
 
         return services;
     }

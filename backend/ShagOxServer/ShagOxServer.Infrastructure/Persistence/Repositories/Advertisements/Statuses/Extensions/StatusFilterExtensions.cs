@@ -14,8 +14,8 @@ public static class StatusFilterExtensions
 
         if (!string.IsNullOrWhiteSpace(filter.Code))
         {
-            query = query.Where(u =>
-                EF.Functions.ILike(u.Code, $"%{filter.Code}%"));
+            query = query.Where(x =>
+                EF.Functions.ILike(x.Code, $"%{filter.Code}%"));
         }
 
         return query;

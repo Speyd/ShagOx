@@ -9,6 +9,6 @@ public interface IStatusQueryService
     : IQueryService<StatusDto>
 {
     Task<Result<PagedResult<StatusDto>>> Search(
-        StatusSearchFilter filter,
-        PaginationParams pagination);
+       StatusSearchFilter filter,
+       PaginationParams pagination);
 }

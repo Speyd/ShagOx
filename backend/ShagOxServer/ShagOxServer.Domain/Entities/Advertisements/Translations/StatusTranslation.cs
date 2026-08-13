@@ -1,7 +1,6 @@
 ﻿using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Advertisements;
 
-namespace ShagOxServer.Domain.Localizations.Advertisements;
+namespace ShagOxServer.Domain.Entities.Advertisements.Translations;
 public class StatusTranslation : BaseEntity
 {
     public int StatusId { get; set; }

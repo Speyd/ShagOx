@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Localizations.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements.Translations;
 
 namespace ShagOxServer.Domain.Entities.Advertisements;
 public class Status : BaseEntity

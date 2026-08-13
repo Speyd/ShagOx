@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Localizations.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements.Translations;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
 public partial class AppDbContext 

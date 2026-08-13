@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Localizations.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements.Translations;
 
-namespace ShagOxServer.Infrastructure.Persistence.Configurations.Translations.Advertisements;
+namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements.Translations;
 public class StatusTranslationConfiguration 
     : IEntityTypeConfiguration<StatusTranslation>
 {

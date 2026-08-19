@@ -64,22 +64,4 @@ public class StatusValidator
 
         return Result<bool>.Success(true);
     }
-
-    public async Task<Result<bool>> ExistsByNameAsync(
-        string name)
-    {
-        if (!await _statusExistsRepository.ExistsByNameAsync(name))
-            return Result<bool>.NotFound("Status");
-
-        return Result<bool>.Success(true);
-    }
-
-    public async Task<Result<bool>> NotExistsByNameAsync(
-        string name)
-    {
-        if (await _statusExistsRepository.ExistsByNameAsync(name))
-            return Result<bool>.AlreadyExists("Status");
-
-        return Result<bool>.Success(true);
-    }
 }

@@ -6,25 +6,20 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Advertisements.Images;
 public partial class AdvertisementImageService
 {
-    private async Task<Result<bool>> PrepareOrdersAsync(
-        Advertisement advertisement,
-        List<ImageAdvertUpdateRequest> images)
-    {
-        var ids = images
-            .Where(image => image.Id is not null)
-            .Select(image => image.Id!.Value)
-            .ToHashSet();
+    private const int TemporaryOrderOffset = -1_000_000;
 
-        var existingImages = advertisement.Images
-            .Where(image => ids.Contains(image.Id))
-            .ToList();
+    private async Task<Result<bool>> PrepareOrdersAsync(
+    Advertisement advertisement,
+    List<ImageAdvertUpdateRequest> images)
+    {
+        var existingImages = advertisement.Images.ToList();
 
         if (!existingImages.Any())
             return Result<bool>.Success(true);
 
         foreach (var image in existingImages)
         {
-            image.Order = -image.Id;
+            image.Order = TemporaryOrderOffset - image.Id;
         }
 
         await _unitOfWork.SaveChangesAsync();

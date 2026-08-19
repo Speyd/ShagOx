@@ -1,4 +1,6 @@
-﻿namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+﻿using ShagOxServer.Infrastructure.Persistence.DbContexts;
+
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 public abstract class RepositoryContext
 {
     protected readonly AppDbContext _db;

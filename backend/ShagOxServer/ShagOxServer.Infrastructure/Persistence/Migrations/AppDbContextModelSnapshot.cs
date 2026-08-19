@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
 #nullable disable
 
@@ -240,15 +241,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
@@ -467,6 +459,41 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("Images");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Localizations.Advertisements.StatusTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("Language", "Name")
+                        .IsUnique();
+
+                    b.ToTable("StatusTranslations");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.User", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Location.City", "City")
@@ -609,6 +636,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Advertisement");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Localizations.Advertisements.StatusTranslation", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Status", "Status")
+                        .WithMany("Translations")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Status");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.Role", b =>
                 {
                     b.Navigation("UserRoles");
@@ -635,6 +673,8 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Status", b =>
                 {
                     b.Navigation("Advertisements");
+
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Category", b =>

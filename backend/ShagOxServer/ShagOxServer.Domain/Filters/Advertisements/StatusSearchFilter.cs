@@ -1,7 +1,5 @@
 ﻿namespace ShagOxServer.Domain.Filters.Advertisements;
 public sealed record StatusSearchFilter
 (
-    string? Code,
-    string? Name,
-    string? Description
+    string? Code
 );

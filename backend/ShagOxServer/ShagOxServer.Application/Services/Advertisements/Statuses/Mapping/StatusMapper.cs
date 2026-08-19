@@ -10,9 +10,7 @@ public static class StatusMapper
         return new StatusDto
         (
             x.Id,
-            x.Code,
-            x.Name,
-            x.Description
+            x.Code
         );
     }
 }

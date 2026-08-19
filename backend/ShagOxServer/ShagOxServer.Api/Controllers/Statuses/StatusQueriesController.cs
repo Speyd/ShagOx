@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Statuses;
 
 [ApiController]
-[Route("api/admin/statuses")]
+[Route("api/statuses")]
 [Authorize(Roles = "Admin")]
 public class StatusQueriesController : ApiController
 {

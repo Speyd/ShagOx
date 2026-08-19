@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Advertisement.Translations;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
@@ -21,6 +22,8 @@ public static class StatusDependencyInjection
         services.AddScoped<IStatusUpdateService, StatusUpdateService>();
 
         services.AddScoped<StatusValidator>();
+
+        services.AddStatusTranslationApplication();
 
         return services;
     }

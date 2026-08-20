@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Create;
 using ShagOxServer.Application.DTOs.Common.Responses;
-using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create.File;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;

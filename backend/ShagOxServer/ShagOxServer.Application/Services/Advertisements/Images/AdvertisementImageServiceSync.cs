@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Update;
 using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
-using ShagOxServer.Application.DTOs.Specification.Images.Create;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -27,7 +27,7 @@ public partial class AdvertisementImageService
        Advertisement advertisement,
        AdvertisementUpdateRequest request)
     {
-        var loadedImage = new List<ImageCreateResponse>();
+        var loadedImage = new List<PictureCreateResponse>();
         var deletePublicIds = new List<string>();
         var originalImageOrders = new List<int>();
 
@@ -70,7 +70,7 @@ public partial class AdvertisementImageService
     private async Task<Result<bool>> SyncImageAsync(
         Advertisement advertisement,
         ImageAdvertUpdateRequest image,
-        List<ImageCreateResponse> loadedImage,
+        List<PictureCreateResponse> loadedImage,
         List<string> deletePublicIds)
     {
         var getImage = advertisement.Images

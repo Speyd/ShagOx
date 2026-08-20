@@ -1,12 +1,12 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Images;
+﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
-using ShagOxServer.Application.Interfaces.Services.Specification.Images.Query;
-using ShagOxServer.Application.Services.Specification.Images.Mapping;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Query;
+using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Application.Services.Specification.Images.Query;
+namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Query;
 public class ImageQueryService 
     : IImageQueryService
 {

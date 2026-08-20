@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images.Extensions;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images.Extensions;
 public static class ImageQueryExtensions
 {
     public static IQueryable<Image> WithIncludes(

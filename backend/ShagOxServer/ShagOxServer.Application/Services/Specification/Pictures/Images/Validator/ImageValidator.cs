@@ -2,7 +2,7 @@
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Specification.Images.Validator;
+namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 public class ImageValidator
 {
     private readonly IRepository<Image> _imageRepository;

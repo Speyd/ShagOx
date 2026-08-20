@@ -3,10 +3,10 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Im
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images.Extensions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images;
 public class ImageQueryRepository 
     : QueryRepository<Image>, 
       IImageQueryRepository

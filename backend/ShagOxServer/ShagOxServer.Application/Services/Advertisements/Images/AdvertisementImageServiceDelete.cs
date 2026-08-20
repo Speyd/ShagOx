@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
-using ShagOxServer.Application.DTOs.Specification.Images.Create;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -35,7 +35,7 @@ public partial class AdvertisementImageService
 
 
     private async Task DeleteLoadedImagesAsync(
-        List<ImageCreateResponse> loadedImage)
+        List<PictureCreateResponse> loadedImage)
     {
         foreach (var image in loadedImage)
         {

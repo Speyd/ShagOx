@@ -1,9 +1,9 @@
 ﻿using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
-using ShagOxServer.Application.DTOs.Specification.Images.Create;
-using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create.File;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
-namespace ShagOxServer.Application.Services.Specification.Images.Create;
+namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Create;
 public static class ImageCreater
 {
     public static Image Create(
@@ -20,7 +20,7 @@ public static class ImageCreater
 
     public static Image Create(
         ImageFileCreateRequest request,
-        ImageLoaderUploadResponse response)
+        PictureLoaderUploadResponse response)
     {
         return new Image
         {

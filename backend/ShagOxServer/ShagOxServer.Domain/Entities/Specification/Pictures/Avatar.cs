@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Account;
 
-namespace ShagOxServer.Domain.Entities.Specification;
+namespace ShagOxServer.Domain.Entities.Specification.Pictures;
 public class Avatar : BaseImage
 {
     public int UserId { get; set; }

@@ -15,7 +15,7 @@ public static class UserMapper
             user.Name,
             user.Phone,
             user.Email,
-            user.Avatar,
+            //user.Avatar,
             CityMapper.ToDto(user.City),
             MapRoles(user.UserRoles),
             user.LastSeenAt,

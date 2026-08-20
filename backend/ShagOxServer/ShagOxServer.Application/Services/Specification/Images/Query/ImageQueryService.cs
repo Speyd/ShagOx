@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Images;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Query;
 using ShagOxServer.Application.Services.Specification.Images.Mapping;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;

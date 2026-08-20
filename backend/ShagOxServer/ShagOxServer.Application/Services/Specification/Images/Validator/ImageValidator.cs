@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Validator;

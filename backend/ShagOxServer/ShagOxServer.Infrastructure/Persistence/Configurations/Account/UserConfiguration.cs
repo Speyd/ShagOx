@@ -4,7 +4,8 @@ using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Account;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration 
+    : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
@@ -22,9 +23,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                .HasMaxLength(254);
 
         builder.Property(x => x.PasswordHash)
-                 .HasColumnType("text");
-
-        builder.Property(x => x.Avatar)
                  .HasColumnType("text");
 
         builder.Property(x => x.LastSeenAt)

@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
 using ShagOxServer.Application.DTOs.Specification.Images.Create;
 using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Create;
 public static class ImageCreater

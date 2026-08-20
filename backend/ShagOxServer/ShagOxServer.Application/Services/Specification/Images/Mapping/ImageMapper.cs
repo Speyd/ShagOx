@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Images;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Mapping;
 public static class ImageMapper

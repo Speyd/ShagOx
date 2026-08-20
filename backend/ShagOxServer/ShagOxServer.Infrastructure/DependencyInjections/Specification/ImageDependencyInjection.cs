@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Specification;

@@ -6,7 +6,8 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using System.Text.Json;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements;
-public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement>
+public class AdvertisementConfiguration 
+    : IEntityTypeConfiguration<Advertisement>
 {
     public void Configure(EntityTypeBuilder<Advertisement> builder)
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Images.Extensions;

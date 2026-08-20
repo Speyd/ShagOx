@@ -7,7 +7,7 @@ public sealed record UserShortDto
     string? Name,
     string? Phone,
     string? Email,
-    string? Avatar,
+    //string? Avatar,
 
     int? CityId,
     string? CityName,

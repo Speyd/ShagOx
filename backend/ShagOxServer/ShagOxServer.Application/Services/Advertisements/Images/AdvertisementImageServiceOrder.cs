@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Images;

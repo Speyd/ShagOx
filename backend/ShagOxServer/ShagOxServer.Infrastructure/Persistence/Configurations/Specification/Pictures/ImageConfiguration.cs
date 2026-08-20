@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 
-namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification;
+namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification.Pictures;
 
-public class ImageConfiguration : IEntityTypeConfiguration<Image>
+public class ImageConfiguration 
+    : IEntityTypeConfiguration<Image>
 {
     public void Configure(EntityTypeBuilder<Image> builder)
     {

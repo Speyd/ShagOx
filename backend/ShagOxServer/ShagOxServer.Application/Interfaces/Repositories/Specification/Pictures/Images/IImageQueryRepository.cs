@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 
-namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Images;
+namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 public interface IImageQueryRepository
     : IQueryRepository<Image>
 {

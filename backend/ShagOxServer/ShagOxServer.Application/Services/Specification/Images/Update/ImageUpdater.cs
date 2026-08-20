@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Images.Update;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Specification.Images.Update;
 public static class ImageUpdater

@@ -9,7 +9,7 @@ public sealed record UserDto
     string? Name,
     string? Phone,
     string? Email,
-    string? Avatar,
+    //string? Avatar,
 
     CityDto City,
 

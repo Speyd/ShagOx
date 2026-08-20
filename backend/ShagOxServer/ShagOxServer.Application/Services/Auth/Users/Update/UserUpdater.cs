@@ -34,11 +34,11 @@ public static class UserUpdater
             countUpdated++;
         }
 
-        if (request.Avatar is not null)
-        {
-            user.Avatar = request.Avatar;
-            countUpdated++;
-        }
+        //if (request.Avatar is not null)
+        //{
+        //    user.Avatar = request.Avatar;
+        //    countUpdated++;
+        //}
 
         if (request.CityId is not null)
         {

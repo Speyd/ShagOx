@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Roles;
 using ShagOxServer.Application.DTOs.Location.Cities;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars;
 
 namespace ShagOxServer.Application.DTOs.Auth.Users;
 public sealed record UserDto
@@ -9,7 +10,8 @@ public sealed record UserDto
     string? Name,
     string? Phone,
     string? Email,
-    //string? Avatar,
+
+    AvatarDto? Avatar,
 
     CityDto City,
 

@@ -38,7 +38,7 @@ public class CityDeleteService
 
         try
         {
-            _cityRepository.Add(city.Value!);
+            _cityRepository.Delete(city.Value!);
 
             await _unitOfWork.CommitAsync();
         }

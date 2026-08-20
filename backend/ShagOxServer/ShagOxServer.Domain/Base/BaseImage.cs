@@ -2,5 +2,5 @@
 public abstract class BaseImage : BaseEntity
 {
     public string Url { get; set; } = "";
-    public string PublicId { get; set; } = null!;
+    public string PublicId { get; set; } = "";
 }

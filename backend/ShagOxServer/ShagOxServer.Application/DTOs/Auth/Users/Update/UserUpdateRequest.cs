@@ -1,10 +1,12 @@
-﻿namespace ShagOxServer.Application.DTOs.Auth.Users.Update;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace ShagOxServer.Application.DTOs.Auth.Users.Update;
 public sealed record UserUpdateRequest
 (
     string? Surname,
     string? Name,
     string? Phone,
     string? Email,
-    string? Avatar,
+    IFormFile? Avatar,
     int? CityId
 );

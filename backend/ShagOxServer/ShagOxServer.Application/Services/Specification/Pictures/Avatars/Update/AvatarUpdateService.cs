@@ -65,7 +65,7 @@ public class AvatarUpdateService
 
         try
         {
-            _avatarRepository.Add(avatar.Value!);
+            _avatarRepository.Update(avatar.Value!);
 
             await _unitOfWork.CommitAsync();
         }

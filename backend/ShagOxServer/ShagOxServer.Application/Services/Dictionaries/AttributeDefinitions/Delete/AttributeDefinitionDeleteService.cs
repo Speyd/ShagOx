@@ -40,7 +40,7 @@ public class AttributeDefinitionDeleteService
 
         try
         {
-            _attributeRepository.Add(attribute.Value!);
+            _attributeRepository.Delete(attribute.Value!);
 
             await _unitOfWork.CommitAsync();
         }

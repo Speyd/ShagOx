@@ -8,14 +8,17 @@ namespace ShagOxServer.Application.Services.Auth.Users.Validator;
 public class UserValidator
 {
     private readonly IRepository<User> _userRepository;
+    private readonly IUserQueryRepository _userQueryRepository;
     private readonly IUserExistsRepository _userExistsRepository;
 
 
     public UserValidator(
-        IRepository<User> userRepository, 
+        IRepository<User> userRepository,
+        IUserQueryRepository userQueryRepository,
         IUserExistsRepository userExistsRepository)
     {
         _userRepository = userRepository;
+        _userQueryRepository = userQueryRepository;
         _userExistsRepository = userExistsRepository;
     }
 
@@ -24,6 +27,16 @@ public class UserValidator
         int userId)
     {
         var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null)
+            return Result<User>.NotFound("User");
+
+        return Result<User>.Success(user);
+    }
+
+    public async Task<Result<User>> GetByIdWithIncludesAsync(
+        int userId)
+    {
+        var user = await _userQueryRepository.GetByIdAsync(userId);
         if (user is null)
             return Result<User>.NotFound("User");
 

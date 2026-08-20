@@ -1,8 +1,11 @@
-﻿using ShagOxServer.Application.DTOs.Common.Responses;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using ShagOxServer.Application.DTOs.Common.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Delete;
 using ShagOxServer.Application.Services.Auth.Users.Validator;
+using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Delete;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -13,16 +16,20 @@ public class UserDeleteService
     private readonly IRepository<User> _userRepository;
     private readonly UserValidator _userValidator;
 
+    private readonly IAvatarDeleteService _avatarDeleteService;
+
     private readonly IUnitOfWork _unitOfWork;
 
 
     public UserDeleteService(
         IRepository<User> userRepository,
         UserValidator userValidator,
+        IAvatarDeleteService avatarDeleteService,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
+        _avatarDeleteService = avatarDeleteService;
         _unitOfWork = unitOfWork;
     }
 
@@ -38,7 +45,13 @@ public class UserDeleteService
 
         try
         {
-            _userRepository.Add(user.Value!);
+            _userRepository.Delete(user.Value!);
+
+            if (user.Value!.AvatarId is not null)
+            {
+                await _avatarDeleteService
+                    .DeleteAsync(user.Value!.AvatarId.Value);
+            }
 
             await _unitOfWork.CommitAsync();
         }

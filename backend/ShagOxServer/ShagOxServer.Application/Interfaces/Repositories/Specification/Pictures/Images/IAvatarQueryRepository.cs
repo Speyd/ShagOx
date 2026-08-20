@@ -5,5 +5,5 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Picture
 public interface IAvatarQueryRepository
     : IQueryRepository<Avatar>
 {
-    Task<Avatar?> GetByUserIdAsync(int advertId);
+    Task<Avatar?> GetByUserIdAsync(int userId);
 }

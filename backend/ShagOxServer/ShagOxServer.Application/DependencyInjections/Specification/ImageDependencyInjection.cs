@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Services.Specification.Images.Create;
-using ShagOxServer.Application.Interfaces.Services.Specification.Images.Delete;
-using ShagOxServer.Application.Interfaces.Services.Specification.Images.Query;
-using ShagOxServer.Application.Interfaces.Services.Specification.Images.Update;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Query;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Update;
 using ShagOxServer.Application.Services.Specification.Images.Create;
 using ShagOxServer.Application.Services.Specification.Images.Create.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Delete;

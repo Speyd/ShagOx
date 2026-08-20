@@ -22,8 +22,8 @@ public class AvatarValidator
             .GetByIdAsync(avatarid);
 
         if (avatar is null)
-            return Result<Image>.NotFound("Avatar");
+            return Result<Avatar>.NotFound("Avatar");
 
-        return Result<Image>.Success(avatar);
+        return Result<Avatar>.Success(avatar);
     }
 }

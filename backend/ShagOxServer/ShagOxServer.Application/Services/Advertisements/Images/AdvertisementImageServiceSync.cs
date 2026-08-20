@@ -23,13 +23,13 @@ public partial class AdvertisementImageService
             request);
     }
 
-
     public async Task<Result<bool>> SyncImagesAsync(
-        Advertisement advertisement,
-        AdvertisementUpdateRequest request)
+       Advertisement advertisement,
+       AdvertisementUpdateRequest request)
     {
         var loadedImage = new List<ImageCreateResponse>();
-        var deleteImage = new List<string>();
+        var deletePublicIds = new List<string>();
+        var originalImageOrders = new List<int>();
 
         try
         {
@@ -39,74 +39,74 @@ public partial class AdvertisementImageService
                 return Result<bool>.Success(true);
             }
 
-            var prepareResult = await PrepareOrdersAsync(
-                advertisement,
-                request.Images);
+            originalImageOrders = 
+                await PrepareOrdersAsync(advertisement);
 
-            if (!prepareResult.IsSuccess)
-                return prepareResult;
 
             foreach (var image in request.Images)
             {
-                var result = await SyncImageAsync(
-                    advertisement,
+                await SyncImageAsync(
+                    advertisement, 
                     image,
                     loadedImage,
-                    deleteImage);
-
-                if (!result.IsSuccess)
-                    return result;
+                    deletePublicIds
+                 );
             }
 
-            foreach (var publicId in deleteImage)
-            {
-                await _imageLoaderService.DeleteAsync(publicId);
-            }
+            await DeleteImagesByPublicIdAsync(deletePublicIds);
 
             return Result<bool>.Success(true);
         }
         catch
         {
             await DeleteLoadedImagesAsync(loadedImage);
+
+            ToOriginalOrder(advertisement, originalImageOrders);
+
             throw;
         }
     }
-
 
     private async Task<Result<bool>> SyncImageAsync(
         Advertisement advertisement,
         ImageAdvertUpdateRequest image,
         List<ImageCreateResponse> loadedImage,
-        List<string> deleteImage)
+        List<string> deletePublicIds)
     {
-        var getImage = image.Id is null
-            ? null
-            : await _imageQueryRepository
-                .GetByIdAsync(image.Id.Value);
+        var getImage = advertisement.Images
+                    .FirstOrDefault(x => x.Id == image.Id);
+
+        Result<bool>? result = null;
 
         if (image.IsDeleted &&
             image.Id is not null)
         {
-            return await DeleteImageAsync(
-                image,
-                getImage,
-                deleteImage);
+            result = await DeleteImageAsync(
+               image,
+               getImage,
+               deletePublicIds);
         }
 
         if (!image.IsDeleted &&
             image.File is not null)
         {
-            return await CreateImageAsync(
-                advertisement.Id,
+            result = await CreateImageAsync(
+                advertisement,
                 image,
                 loadedImage);
         }
 
         if (image.Id is not null)
         {
-            return UpdateImageOrder(
+            result = UpdateImageOrder(
                 image,
                 getImage);
+        }
+
+        if (result is not null &&
+            !result.IsSuccess)
+        {
+            throw new Exception();
         }
 
         return Result<bool>.Success(true);

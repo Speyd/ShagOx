@@ -8,23 +8,34 @@ public partial class AdvertisementImageService
 {
     private const int TemporaryOrderOffset = -1_000_000;
 
-    private async Task<Result<bool>> PrepareOrdersAsync(
-    Advertisement advertisement,
-    List<ImageAdvertUpdateRequest> images)
+    private async Task<List<int>> PrepareOrdersAsync(
+        Advertisement advertisement)
     {
-        var existingImages = advertisement.Images.ToList();
+        var originalImageOrders = new List<int>();
 
-        if (!existingImages.Any())
-            return Result<bool>.Success(true);
-
-        foreach (var image in existingImages)
+        var temporaryOrder = TemporaryOrderOffset;
+        foreach (var image in advertisement.Images)
         {
-            image.Order = TemporaryOrderOffset - image.Id;
+            originalImageOrders.Add(image.Order);
+            image.Order = temporaryOrder++;
         }
 
         await _unitOfWork.SaveChangesAsync();
 
-        return Result<bool>.Success(true);
+        return originalImageOrders;
+    }
+
+    private void ToOriginalOrder(
+        Advertisement advertisement,
+        List<int> originalImageOrders)
+    {
+        if (originalImageOrders.Count != advertisement.Images.Count)
+            return;
+
+        for (int i = 0; i < advertisement.Images.Count; i++)
+        {
+            advertisement.Images[i].Order = originalImageOrders[i];
+        }
     }
 
 
@@ -32,13 +43,10 @@ public partial class AdvertisementImageService
         ImageAdvertUpdateRequest image,
         Image? getImage)
     {
-        if (getImage is null)
+        if (getImage is not null)
         {
-            return Result<bool>
-                .NotFound($"Image({image.Id})");
+            getImage.Order = image.Order;
         }
-
-        getImage.Order = image.Order;
 
         return Result<bool>.Success(true);
     }

@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Images.Create;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Images.Create.Validator;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -72,6 +73,16 @@ public class ImageCreateService
         _imageRepository.Add(image);
 
         return Success(image);
+    }
+
+    public async Task<Result<ImageCreateResponse>> CreateFromFileAsync(
+        Advertisement advertisement,
+        ImageFileCreateRequest request)
+    {
+        if (advertisement.Id != request.AdvertisementId)
+            return Result<ImageCreateResponse>.NotFound("Advertisement");
+
+        return await CreateFromFileAsync(request);
     }
 
     public async Task<Result<ImagesCreateResponse>> CreateFromFilesAsync(

@@ -35,7 +35,7 @@ public class AdvertisementUpdateService
         int advertId,
         AdvertisementUpdateRequest request)
     {
-        var advert = await _validator.GetByIdAsync(advertId);
+        var advert = await _validator.GetByIdWithIncludeAsync(advertId);
         if (!advert.IsSuccess)
             return Result<UpdateResponse>.Fail(advert.Error);
 

@@ -9,7 +9,7 @@ namespace ShagOxServer.Api.Controllers.Users.Admin;
 
 [ApiController]
 [Route("api/admin/users")]
-[Authorize(Roles = "Admin")]
+
 public class UserAdminCommandsController : ApiController
 {
     private readonly IUserDeleteService _deleteService;
@@ -38,7 +38,7 @@ public class UserAdminCommandsController : ApiController
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
         [FromRoute] int id,
-        [FromBody] UserUpdateRequest request)
+        [FromForm] UserUpdateRequest request)
     {
         var result = await _updateService
             .UpdateAsync(id, request);

@@ -73,7 +73,7 @@ public class CityUpdateService
 
         try
         {
-            _cityRepository.Add(city.Value!);
+            _cityRepository.Update(city.Value!);
 
             await _unitOfWork.CommitAsync();
         }

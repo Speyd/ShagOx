@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Specification.Pictures;
 
 namespace ShagOxServer.Application.DependencyInjections.Specification;
 public static class SpecificationDependencyInjection
@@ -10,7 +11,7 @@ public static class SpecificationDependencyInjection
 
         services.AddCurrencyApplication();
 
-        services.AddImageApplication();
+        services.AddPicturesApplication();
 
         return services;
     }

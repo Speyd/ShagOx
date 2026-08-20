@@ -4,7 +4,8 @@ using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Account;
 
-public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
+public class UserRoleConfiguration 
+    : IEntityTypeConfiguration<UserRole>
 {
     public void Configure(EntityTypeBuilder<UserRole> builder)
     {

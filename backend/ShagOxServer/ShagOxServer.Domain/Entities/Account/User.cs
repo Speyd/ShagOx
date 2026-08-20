@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Domain.Entities.Account;
 public class User : BaseEntity
@@ -13,7 +14,8 @@ public class User : BaseEntity
     public string? Phone { get; set; }
     public string? Email { get; set; }
 
-    public string? Avatar { get; set; }
+    public int? AvatarId { get; set; }
+    public Avatar? Avatar { get; set; } = null;
 
     public int? CityId { get; set; }
     public City? City { get; set; } = null;

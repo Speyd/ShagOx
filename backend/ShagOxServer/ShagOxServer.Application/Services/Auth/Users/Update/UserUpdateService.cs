@@ -1,10 +1,14 @@
-﻿using CloudinaryDotNet.Actions;
+﻿using Microsoft.AspNetCore.Http;
 using ShagOxServer.Application.DTOs.Auth.Users.Update;
 using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Update;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Delete;
 using ShagOxServer.Application.Services.Auth.Users.Validator;
+using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,16 +19,27 @@ public class UserUpdateService
     private readonly IRepository<User> _userRepository;
     private readonly UserValidator _userValidator;
 
+    private readonly CityValidator _cityValidator;
+
+    private readonly IAvatarDeleteService _avatarDeleteService;
+    private readonly IAvatarCreateService _avatarCreateService;
+
     private readonly IUnitOfWork _unitOfWork;
 
 
     public UserUpdateService(
         IRepository<User> userRepository,
         UserValidator userValidator,
+        CityValidator cityValidator,
+        IAvatarDeleteService avatarDeleteService,
+        IAvatarCreateService avatarCreateService,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
+        _cityValidator = cityValidator;
+        _avatarDeleteService = avatarDeleteService;
+        _avatarCreateService = avatarCreateService;
         _unitOfWork = unitOfWork;
     }
 
@@ -34,7 +49,7 @@ public class UserUpdateService
         UserUpdateRequest request)
     {
         var user = await _userValidator
-            .GetByIdAsync(userId);
+            .GetByIdWithIncludesAsync(userId);
 
         if (!user.IsSuccess)
             return Result<UpdateResponse>.Fail(user.Error);
@@ -64,6 +79,9 @@ public class UserUpdateService
         {
             _userRepository.Update(user.Value!);
 
+            if(request.Avatar is not null)
+                await UpdateAvatarAsync(user.Value!, request.Avatar);
+
             await _unitOfWork.CommitAsync();
         }
         catch
@@ -79,6 +97,16 @@ public class UserUpdateService
         User user,
         UserUpdateRequest request)
     {
+        if (request.CityId.HasValue &&
+           request.CityId != user.CityId)
+        {
+            var city = await _cityValidator
+                .ExistsByIdAsync(request.CityId.Value);
+
+            if (!city.IsSuccess)
+                return Result<bool>.Fail(city.Error);
+        }
+
         if (request.Phone is not null &&
             request.Phone != user.Phone)
         {
@@ -100,5 +128,25 @@ public class UserUpdateService
         }
 
         return Result<bool>.Success(true);
+    }
+
+    private async Task UpdateAvatarAsync(
+        User user,
+        IFormFile avatarFile)
+    {
+        var oldAvatar = user.Avatar;
+
+        var result = await _avatarCreateService.CreateAsync(
+            new AvatarCreateRequest(
+                avatarFile,
+                user.Id));
+
+        if (!result.IsSuccess)
+            throw new Exception(result.Error?.ToString());
+
+        if (oldAvatar is not null)
+        {
+            await _avatarDeleteService.DeleteAsync(oldAvatar.Id);
+        }
     }
 }

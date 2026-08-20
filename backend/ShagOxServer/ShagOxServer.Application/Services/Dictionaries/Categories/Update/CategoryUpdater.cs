@@ -16,7 +16,7 @@ public static class CategoryUpdater
             countUpdated++;
         }
 
-        if (request.ProductTypeId is not null)
+        if (request.ProductTypeId.HasValue)
         {
             category.ProductTypeId = request.ProductTypeId.Value;
             countUpdated++;

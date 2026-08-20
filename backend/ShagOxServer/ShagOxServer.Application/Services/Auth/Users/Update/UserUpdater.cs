@@ -36,11 +36,10 @@ public static class UserUpdater
 
         if (request.Avatar is not null)
         {
-            user.Avatar = request.Avatar;
             countUpdated++;
         }
 
-        if (request.CityId is not null)
+        if (request.CityId.HasValue)
         {
             user.CityId = request.CityId.Value;
             countUpdated++;

@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification;
-public class ConditionConfiguration : IEntityTypeConfiguration<Condition>
+public class ConditionConfiguration 
+    : IEntityTypeConfiguration<Condition>
 {
     public void Configure(EntityTypeBuilder<Condition> builder)
     {

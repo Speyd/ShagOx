@@ -16,7 +16,7 @@ public static class FavoriteUpdater
             countUpdated++;
         }
 
-        if (request.AdvertisementId is not null)
+        if (request.AdvertisementId.HasValue)
         {
             favorite.AdvertisementId = request.AdvertisementId.Value;
             countUpdated++;

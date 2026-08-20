@@ -35,7 +35,8 @@ public class AuthController : ApiController
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login(
+        [FromBody] LoginRequest request)
     {
         var result = await _loginService
             .LoginAsync(request);

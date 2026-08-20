@@ -8,6 +8,7 @@ namespace ShagOxServer.Api.Controllers.Users;
 
 [ApiController]
 [Route("api/users")]
+[Authorize]
 public class UserCommandsController : ApiController
 {
     private readonly IUserUpdateService _updateService;
@@ -20,11 +21,10 @@ public class UserCommandsController : ApiController
     }
 
 
-    [Authorize]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
         [FromRoute] int id,
-        [FromBody] UserUpdateRequest request)
+        [FromForm] UserUpdateRequest request)
     {
         if (UserId != id)
             return Forbid();

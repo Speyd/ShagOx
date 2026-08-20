@@ -1,21 +1,22 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
-using ShagOxServer.Application.DTOs.Specification.Images.Create;
-using ShagOxServer.Application.DTOs.Specification.Images.Create.File;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create.File;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Images;
 public partial class AdvertisementImageService
 {
     private async Task<Result<bool>> CreateImageAsync(
-        int advertisementId,
+        Advertisement advertisement,
         ImageAdvertUpdateRequest image,
-        List<ImageCreateResponse> loadedImage)
+        List<PictureCreateResponse> loadedImage)
     {
         var result = await _imageCreateService
-            .CreateFromFileAsync(
+            .CreateFromFileAsync(advertisement,
                 new ImageFileCreateRequest(
                     image.File!,
-                    advertisementId,
+                    advertisement.Id,
                     image.Order));
 
         if (!result.IsSuccess)

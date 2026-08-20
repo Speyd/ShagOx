@@ -8,7 +8,7 @@ public static class CloudinaryDependencyInjection
     public static IServiceCollection AddCloudinary(
         this IServiceCollection services)
     {
-        services.AddScoped<IImageLoaderService, CloudinaryImageLoader>();
+        services.AddScoped<IPictureLoaderService, CloudinaryImageLoader>();
 
         return services;
     }

@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Services.Auth.Users.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
-using ShagOxServer.Application.Services.Specification.Images.Mapping;
+using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping;

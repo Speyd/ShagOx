@@ -2,6 +2,7 @@
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Domain.Entities.Advertisements;
 

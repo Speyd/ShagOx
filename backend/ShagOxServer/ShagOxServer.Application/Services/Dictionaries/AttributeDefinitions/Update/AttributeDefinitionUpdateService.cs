@@ -74,7 +74,7 @@ public class AttributeDefinitionUpdateService
 
         try
         {
-            _attributeRepository.Add(attribute.Value!);
+            _attributeRepository.Update(attribute.Value!);
 
             await _unitOfWork.CommitAsync();
         }

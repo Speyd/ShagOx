@@ -10,7 +10,7 @@ public static class AttributeDefinitionUpdater
     {
         int countUpdated = 0;
 
-        if (request.CategoryId is not null)
+        if (request.CategoryId.HasValue)
         {
             attribute.CategoryId = request.CategoryId.Value;
             countUpdated++;
@@ -22,25 +22,25 @@ public static class AttributeDefinitionUpdater
             countUpdated++;
         }
 
-        if (request.Type is not null)
+        if (request.Type.HasValue)
         {
             attribute.Type = request.Type.Value;
             countUpdated++;
         }
 
-        if (request.Required is not null)
+        if (request.Required.HasValue)
         {
             attribute.Required = request.Required.Value;
             countUpdated++;
         }
 
-        if (request.Min is not null)
+        if (request.Min.HasValue)
         {
             attribute.Min = request.Min.Value;
             countUpdated++;
         }
 
-        if (request.Max is not null)
+        if (request.Max.HasValue)
         {
             attribute.Max = request.Max.Value;
             countUpdated++;

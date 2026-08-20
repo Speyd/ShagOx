@@ -1,6 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Create;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create.File;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Create;

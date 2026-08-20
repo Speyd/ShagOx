@@ -25,7 +25,7 @@ public static class AdvertisementUpdater
         }
 
 
-        if (request.Price is not null)
+        if (request.Price.HasValue)
         {
             var price = request.Price.Value;
 
@@ -38,35 +38,35 @@ public static class AdvertisementUpdater
         }
 
 
-        if (request.Popularity is not null)
+        if (request.Popularity.HasValue)
         {
             advert.Popularity = request.Popularity.Value;
             count++;
         }
 
 
-        if (request.CurrencyId is not null)
+        if (request.CurrencyId.HasValue)
         {
             advert.CurrencyId = request.CurrencyId.Value;
             count++;
         }
 
 
-        if (request.ConditionId is not null)
+        if (request.ConditionId.HasValue)
         {
             advert.ConditionId = request.ConditionId.Value;
             count++;
         }
 
 
-        if (request.CategoryId is not null)
+        if (request.CategoryId.HasValue)
         {
             advert.CategoryId = request.CategoryId.Value;
             count++;
         }
 
 
-        if (request.BuyerId is not null)
+        if (request.BuyerId.HasValue)
         {
             advert.BuyerId = request.BuyerId.Value;
             count++;

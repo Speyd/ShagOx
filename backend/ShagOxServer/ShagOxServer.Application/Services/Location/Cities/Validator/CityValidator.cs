@@ -29,6 +29,24 @@ public class CityValidator
         return Result<City>.Success(city);
     }
 
+    public async Task<Result<bool>> ExistsByIdAsync(
+       int cityId)
+    {
+        if (!await _cityExistsRepository.ExistsByIdAsync(cityId))
+            return Result<bool>.NotFound("City");
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsAsync(
+       int cityId)
+    {
+        if (await _cityExistsRepository.ExistsByIdAsync(cityId))
+            return Result<bool>.AlreadyExists("City");
+
+        return Result<bool>.Success(true);
+    }
+
     public async Task<Result<bool>> ExistsAsync(
        int regionId,
        string cityName)

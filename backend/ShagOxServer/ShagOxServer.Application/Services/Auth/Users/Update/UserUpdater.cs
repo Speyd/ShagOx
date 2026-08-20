@@ -39,7 +39,7 @@ public static class UserUpdater
             countUpdated++;
         }
 
-        if (request.CityId is not null)
+        if (request.CityId.HasValue)
         {
             user.CityId = request.CityId.Value;
             countUpdated++;

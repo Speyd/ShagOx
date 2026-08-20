@@ -16,7 +16,7 @@ public static class CityUpdater
             countUpdated++;
         }
 
-        if (request.RegionId is not null)
+        if (request.RegionId.HasValue)
         {
             city.RegionId = request.RegionId.Value;
             countUpdated++;

@@ -1,14 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./AdvertisementCard.module.css";
-import DeleteAdvertisementButton from "@/features/delete-advertisement";
-import Price from "@/shared/ui/Price";
+import Price from "@/shared/ui/price";
 import { formatDate } from "@/shared/lib/formatDate";
-import type { Advertisement } from "@/types/advertisements";
-import { UpdateAdvertisementButton } from "@/features/update-advertisement";
+import type { Advertisement } from "@/shared/lib/types/advertisements";
 import FavoriteButton from "@/features/favorites";
+import DeleteAdvertisementButton from "@/features/advertisement/delete-advertisement";
+import UpdateAdvertisementButton from "@/features/advertisement/update-advertisement/ui/UpdateAdvertisementButton";
+import { useAuthStore } from "@/features/auth/store/useAuthStore";
 
 export default function AdvertisementCard(props: Advertisement) {
   const navigate = useNavigate();
+
+  const user = useAuthStore((state) => state.user);
+
+  const isOwner = user?.id === props.seller.id;
 
   return (
     <div className={styles.card}>
@@ -35,10 +40,10 @@ export default function AdvertisementCard(props: Advertisement) {
       </div>
 
       <div className={styles.right}>
-        <Price value={props.price} />
+        <Price value={props.price} currency={props.currency.symbol} />
         <div className={styles.buttons}>
-          <UpdateAdvertisementButton id={props.id} />
-          <DeleteAdvertisementButton id={props.id} />
+          {isOwner && <UpdateAdvertisementButton id={props.id} />}
+          {isOwner && <DeleteAdvertisementButton id={props.id} />}
           <FavoriteButton advertisementId={props.id} />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import type { User } from "../types";
 import { me } from "../../api/api";
+import type { User } from "@/shared/lib/types/user";
 
 export function useMe() {
   return useQuery<User>({

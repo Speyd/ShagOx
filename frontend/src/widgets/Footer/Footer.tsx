@@ -1,4 +1,4 @@
-import Container from "@/shared/ui/Container";
+import Container from "@/shared/ui/container";
 import styles from "./Footer.module.css";
 
 export default function Footer() {

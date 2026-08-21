@@ -1,6 +1,6 @@
-import Container from "@/shared/ui/Container";
-import Footer from "@/widgets/Footer";
-import Header from "@/widgets/Header";
+import Container from "@/shared/ui/container";
+import Footer from "@/widgets/footer";
+import Header from "@/widgets/header";
 import { Outlet } from "react-router-dom";
 import styles from "./MainLayout.module.css";
 

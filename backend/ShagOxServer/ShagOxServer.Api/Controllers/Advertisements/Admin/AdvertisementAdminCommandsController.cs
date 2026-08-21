@@ -38,7 +38,7 @@ public class AdvertisementAdminCommandsController : ApiController
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
         [FromRoute] int id,
-        [FromBody] AdvertisementUpdateRequest request)
+        [FromForm] AdvertisementUpdateRequest request)
     {
         var result = await _updateService
             .UpdateAsync(id, request);

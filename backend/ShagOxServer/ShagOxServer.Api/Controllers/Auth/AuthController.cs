@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Auth;
 
 [ApiController]
-[Route("auth")]
+[Route("api")]
 public class AuthController : ApiController
 {
     private readonly IRegisterService _registerService;

@@ -1,22 +1,49 @@
-import HomePage from "@/pages/HomePage";
-import LoginPage from "@/pages/LoginPage";
-import RegisterPage from "@/pages/RegisterPage";
+import HomePage from "@/pages/home-page";
+import LoginPage from "@/pages/auth/login-page";
+import RegisterPage from "@/pages/auth/register-page";
 import { Routes, Route } from "react-router-dom";
-import MainLayout from "../layouts";
-import NotFoundPage from "@/pages/NotFoundPage";
-import AdvertisementPage from "@/pages/AdvertisementPage";
+import NotFoundPage from "@/pages/not-found-page";
+import AdvertisementPage from "@/pages/advertisement/advertisement-page";
 import { PublicRoute } from "./PublicRoute";
-import CreateAdvertisementPage from "@/pages/CreateAdvertisementPage/CreateAdvertisementPage";
-import UpdateAdvertisementPage from "@/pages/UpdateAdvertisementPage";
-import FavoritesPage from "@/pages/FavoritesPage";
+import CreateAdvertisementPage from "@/pages/advertisement/create-advertisement-page/CreateAdvertisementPage";
+import UserUpdateAdvertisementPage from "@/pages/advertisement/update-advertisement-page";
+import AdminAdvertisementPage from "@/pages/admin/advertisements/update-advertisement-page";
+import FavoritesPage from "@/pages/favorites-page";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { AdminRoute } from "./AdminRoute";
+import { AdminLayout, MainLayout } from "../layouts";
+import DashboardPage from "@/pages/admin/dashboard/dashboard-page/DashboardPage";
+import UsersPage from "@/pages/admin/users/users-page/UsersPage";
+import AdvertisementsPage from "@/pages/admin/advertisements/advertisements-page";
+import CategoriesPage from "@/pages/admin/categories/categories-page/CategoriesPage";
+import UpdateUserPage from "@/pages/admin/users/update-user-page/UpdateUserPage";
 
 export default function Router() {
   return (
     <>
       <Routes>
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminLayout />
+            </AdminRoute>
+          }
+        >
+          <Route index element={<DashboardPage />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="advertisements" element={<AdvertisementsPage />} />
+          <Route
+            path="update-advertisement/:id"
+            element={<AdminAdvertisementPage />}
+          />
+          <Route path="update-user/:id" element={<UpdateUserPage />} />
+          <Route path="categories" element={<CategoriesPage />} />
+        </Route>
+
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
+
           <Route
             path="/favorite"
             element={
@@ -25,6 +52,7 @@ export default function Router() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/login"
             element={
@@ -48,7 +76,7 @@ export default function Router() {
           />
           <Route
             path="/update-advertisement/:id"
-            element={<UpdateAdvertisementPage />}
+            element={<UserUpdateAdvertisementPage />}
           />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />
         </Route>

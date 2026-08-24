@@ -11,6 +11,7 @@ import {
   advertisementSchema,
   type AdvertisementFormData,
 } from "../model/schemas/schema";
+import { useGetAdminCategories } from "@/entities/category/model/useGetAdminCategories";
 
 type AdvertisementFormProps = {
   defaultValues?: AdvertisementFormData;
@@ -28,6 +29,11 @@ export default function AdvertisementForm({
   isLoading,
 }: AdvertisementFormProps) {
   const [images, setImages] = useState<ImageItem[]>([]);
+  const [imagesError, setImagesError] = useState<string>("");
+
+  const { data: categories } = useGetAdminCategories(1, 10);
+
+  console.log(categories);
 
   useEffect(() => {
     if (!defaultImages) return;
@@ -56,7 +62,16 @@ export default function AdvertisementForm({
 
   return (
     <form
-      onSubmit={handleSubmit((data) => onSubmit(data, images))}
+      onSubmit={handleSubmit((data) => {
+        if (images.length < 2) {
+          setImagesError("Додайте мінімум 2 фотографії");
+          return;
+        }
+
+        setImagesError("");
+
+        onSubmit(data, images);
+      })}
       className={styles.form}
     >
       <div className={styles.inputWrapper}>
@@ -91,7 +106,10 @@ export default function AdvertisementForm({
         images={images}
         setImages={setImages}
         onDelete={onImageDelete ? handleImageDelete : undefined}
+        setImagesError={setImagesError}
       />
+
+      {imagesError && <p className="error">{imagesError}</p>}
 
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Збереження..." : "Зберегти"}

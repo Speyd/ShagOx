@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Avatar,
   Button,
-  FileInput,
   Group,
   Paper,
   Select,

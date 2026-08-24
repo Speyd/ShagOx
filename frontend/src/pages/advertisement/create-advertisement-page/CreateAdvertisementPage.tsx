@@ -4,6 +4,7 @@ import AdvertisementForm from "@/features/advertisement/advertisement-form/ui/Ad
 import { useCreateAdvertisement } from "@/features/advertisement/create-advertisement/model/hooks/useCreateAdvertisement";
 import type { ImageItem } from "@/shared/lib/types/image";
 import { useNavigate } from "react-router-dom";
+import styles from "./CreateAdvertisementPage.module.css";
 
 export default function CreateAdvertisementPage() {
   const navigate = useNavigate();
@@ -32,6 +33,16 @@ export default function CreateAdvertisementPage() {
   }
 
   return (
-    <AdvertisementForm onSubmit={handleCreate} isLoading={mutation.isPending} />
+    <div className={styles.createAdvertisementPage}>
+      <div className={styles.title}>
+        <h2>Створення оголошення</h2>
+        <p>Заповніть форму та завантажте фотографії.</p>
+      </div>
+
+      <AdvertisementForm
+        onSubmit={handleCreate}
+        isLoading={mutation.isPending}
+      />
+    </div>
   );
 }

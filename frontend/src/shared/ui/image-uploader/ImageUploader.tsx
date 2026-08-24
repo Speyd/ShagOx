@@ -9,6 +9,7 @@ import type { ImageItem } from "@/shared/lib/types/image";
 type ImageUploaderProps = {
   images: ImageItem[];
   setImages: React.Dispatch<React.SetStateAction<ImageItem[]>>;
+  setImagesError: React.Dispatch<React.SetStateAction<string>>;
   onDelete?: (image: ImageItem) => Promise<void> | void;
 };
 
@@ -16,13 +17,34 @@ export default function ImageUploader({
   images,
   setImages,
   onDelete,
+  setImagesError,
 }: ImageUploaderProps) {
   function handleFiles(event: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(event.target.files ?? []);
 
     if (!files.length) return;
 
-    const newImages: ImageItem[] = files.map((file) => ({
+    const availableSlots = 10 - images.length;
+
+    if (availableSlots <= 0) {
+      setImagesError("Можна додати максимум 10 фотографій");
+      event.target.value = "";
+      return;
+    }
+
+    const filesToAdd = files.slice(0, availableSlots);
+
+    if (files.length > availableSlots) {
+      setImagesError(
+        `Можна додати ще тільки ${availableSlots} ${
+          availableSlots === 1 ? "фото" : "фото"
+        }`,
+      );
+    } else {
+      setImagesError("");
+    }
+
+    const newImages: ImageItem[] = filesToAdd.map((file) => ({
       id: crypto.randomUUID(),
       url: URL.createObjectURL(file),
       file,

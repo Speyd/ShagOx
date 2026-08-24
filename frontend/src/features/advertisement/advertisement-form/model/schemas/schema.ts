@@ -4,7 +4,7 @@ export const advertisementSchema = z.object({
   title: z
     .string()
     .trim()
-    .min(3, "Мінімум 3 символи")
+    .min(16, "Мінімум 16 символів")
     .max(100, "Максимум 100 символів")
     .refine(
       (value) => /[a-zA-Zа-яА-ЯіїєґІЇЄҐ0-9]/.test(value),
@@ -14,7 +14,7 @@ export const advertisementSchema = z.object({
   description: z
     .string()
     .trim()
-    .min(10, "Мінімум 10 символів")
+    .min(20, "Мінімум 20 символів")
     .max(1000, "Максимум 1000 символів"),
 
   price: z

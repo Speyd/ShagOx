@@ -16,7 +16,7 @@ import { Pencil, Search, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { modals } from "@mantine/modals";
-import { useAdminDeleteAdvertisement } from "@/features/admin/advertisement/delete-advertisement/model/hooks/useDeleteAdvertisement";
+import { useAdminDeleteAdvertisement } from "@/features/admin/advertisement/delete-advertisement/model/hooks/useAdminDeleteAdvertisement";
 import { useGetAdminAdvertisements } from "@/entities/advertisement/model/hooks/useGetAdminAdvertisements";
 
 export default function AdvertisementsPage() {
@@ -65,36 +65,43 @@ export default function AdvertisementsPage() {
       id: "image",
       header: "Image",
       cell: ({ row }) => (
-        <Avatar src={row.original.images[0]?.url} radius="md" size={56} />
+        <Avatar src={row.original.images?.[0]?.url} radius="md" size={56} />
       ),
     },
+
     {
       accessorKey: "title",
       header: "Title",
       cell: ({ row }) => (
         <Stack gap={2}>
           <Text fw={600}>{row.original.title}</Text>
+
           <Text size="sm" c="dimmed" lineClamp={1}>
             {row.original.description}
           </Text>
         </Stack>
       ),
     },
+
     {
       id: "seller",
       header: "Seller",
-      cell: ({ row }) => <Text fw={500}>{row.original.seller.name}</Text>,
+      cell: ({ row }) => (
+        <Text fw={500}>{row.original.seller?.name ?? "Unknown seller"}</Text>
+      ),
     },
+
     {
       accessorKey: "price",
       header: "Price",
       cell: ({ row }) => (
         <Text fw={700} c="blue">
-          {row.original.currency.symbol}
+          {row.original.currency?.symbol ?? ""}
           {row.original.price}
         </Text>
       ),
     },
+
     {
       id: "status",
       header: "Status",
@@ -109,6 +116,7 @@ export default function AdvertisementsPage() {
           </Badge>
         ),
     },
+
     {
       id: "actions",
       header: "Actions",

@@ -11,7 +11,6 @@ import {
   advertisementSchema,
   type AdvertisementFormData,
 } from "../model/schemas/schema";
-import { useGetAdminCategories } from "@/entities/category/model/useGetAdminCategories";
 
 type AdvertisementFormProps = {
   defaultValues?: AdvertisementFormData;
@@ -30,10 +29,6 @@ export default function AdvertisementForm({
 }: AdvertisementFormProps) {
   const [images, setImages] = useState<ImageItem[]>([]);
   const [imagesError, setImagesError] = useState<string>("");
-
-  const { data: categories } = useGetAdminCategories(1, 10);
-
-  console.log(categories);
 
   useEffect(() => {
     if (!defaultImages) return;

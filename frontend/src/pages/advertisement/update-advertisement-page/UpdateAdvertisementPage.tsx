@@ -36,25 +36,37 @@ export default function UpdateAdvertisementPage() {
   ) {
     if (!advertisement) return;
 
+    const imagesChanged =
+      deletedImageIds.length > 0 ||
+      images.length !== advertisement.images.length ||
+      images.some(
+        (image, index) =>
+          image.file != null ||
+          image.imageId == null ||
+          image.imageId !== advertisement.images[index]?.id,
+      );
+
     const dto: UpdateAdvertisementRequestDto = {
       title: data.title,
       description: data.description,
       price: data.price,
       properties: advertisement.properties,
 
-      images: [
-        ...images.map((image, index) => ({
-          id: image.imageId,
-          file: image.file,
-          order: index,
-          isDeleted: false,
-        })),
-        ...deletedImageIds.map((imageId) => ({
-          id: imageId,
-          order: 0,
-          isDeleted: true,
-        })),
-      ],
+      images: imagesChanged
+        ? [
+            ...images.map((image, index) => ({
+              id: image.imageId,
+              file: image.file,
+              order: index,
+              isDeleted: false,
+            })),
+            ...deletedImageIds.map((imageId) => ({
+              id: imageId,
+              order: 0,
+              isDeleted: true,
+            })),
+          ]
+        : undefined,
     };
 
     await mutation.mutateAsync({

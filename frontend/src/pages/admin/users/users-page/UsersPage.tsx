@@ -23,7 +23,9 @@ export default function UsersPage() {
   const pageSize = 10;
 
   const { data, isLoading } = useGetUsers(page, pageSize);
-
+  
+  console.log(data);
+  
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
@@ -39,7 +41,7 @@ export default function UsersPage() {
       id: "avatar",
       header: "Avatar",
       cell: ({ row }) => (
-        <Avatar src={row.original.avatar} radius="md" size={56}>
+        <Avatar src={row.original.avatar?.url} radius="md" size={56}>
           {row.original.name[0]}
         </Avatar>
       ),

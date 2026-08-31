@@ -3,5 +3,5 @@ public sealed record CategoryDto
 (
     int Id,
     string Name,
-    int ProductTypeId
+    CategoryProductTypeDto ProductType
 );

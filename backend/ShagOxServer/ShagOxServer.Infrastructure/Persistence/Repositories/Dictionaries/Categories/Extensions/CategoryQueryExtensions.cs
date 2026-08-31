@@ -8,6 +8,7 @@ public static class CategoryQueryExtensions
        this IQueryable<Category> query)
     {
         return query
+           .Include(x => x.ProductType)
            .Include(x => x.Attributes)
            .Include(x => x.Advertisements);
     }

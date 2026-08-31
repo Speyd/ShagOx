@@ -9,6 +9,7 @@ public static class UserQueryExtensions
         return query
             .Include(x => x.Avatar)
             .Include(x => x.City)
+                .ThenInclude(city => city!.Region)
             .Include(x => x.UserRoles)
                 .ThenInclude(r => r.Role);
     }

@@ -7,6 +7,7 @@ namespace ShagOxServer.Api.Middleware;
 
 public class UpdateLastSeenMiddleware
 {
+    private static readonly TimeSpan LastSeenUpdateInterval = TimeSpan.FromMinutes(10);
     private readonly RequestDelegate _next;
 
     public UpdateLastSeenMiddleware(RequestDelegate next)
@@ -30,7 +31,9 @@ public class UpdateLastSeenMiddleware
 
                 var user = await repository.GetByIdAsync(userId);
 
-                if (user is not null)
+                if (user is not null &&
+                    (user.LastSeenAt is null ||
+                     DateTime.UtcNow - user.LastSeenAt >= LastSeenUpdateInterval))
                 {
                     user.LastSeenAt = DateTime.UtcNow;
                     repository.Update(user);

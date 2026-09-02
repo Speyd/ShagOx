@@ -7,6 +7,10 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Status
 public interface IStatusTranslationQueryRepository
     : IQueryRepository<StatusTranslation>
 {
+    Task<PagedResult<StatusTranslation>> GetPagedAsync(
+        PaginationParams pagination,
+        string language);
+
     Task<PagedResult<StatusTranslation>> Search(
        StatusTranslationSearchFilter filter,
        PaginationParams pagination);

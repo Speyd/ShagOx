@@ -31,6 +31,16 @@ public class StatusTranslationQueryService
     }
 
     public async Task<Result<PagedResult<StatusTranslationDto>>> GetPagedAsync(
+        PaginationParams pagination,
+        string language)
+    {
+        var statuses = await _statusRepository
+            .GetPagedAsync(pagination, language);
+
+        return statuses.ToResultPaged(StatusTranslationMapper.ToDto);
+    }
+
+    public async Task<Result<PagedResult<StatusTranslationDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
         var statuses = await _statusRepository

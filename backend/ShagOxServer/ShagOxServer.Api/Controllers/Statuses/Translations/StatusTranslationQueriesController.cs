@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Query;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -11,12 +12,14 @@ namespace ShagOxServer.Api.Controllers.Statuses.Translations;
 public class StatusTranslationQueriesController : ApiController
 {
     private readonly IStatusTranslationQueryService _queryService;
-
+    private readonly ILanguageProvider _languageProvider;
 
     public StatusTranslationQueriesController(
-        IStatusTranslationQueryService queryService)
+        IStatusTranslationQueryService queryService,
+        ILanguageProvider languageProvider)
     {
         _queryService = queryService;
+        _languageProvider = languageProvider;
     }
 
 
@@ -34,8 +37,10 @@ public class StatusTranslationQueriesController : ApiController
     public async Task<IActionResult> GetPaged(
         [FromQuery] PaginationParams pagination)
     {
+        string language = _languageProvider.Language;
+
         var result = await _queryService
-            .GetPagedAsync(pagination);
+            .GetPagedAsync(pagination, language);
 
         return result.ToActionResult();
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
@@ -16,6 +17,17 @@ public class StatusQueryRepository
     public StatusQueryRepository(AppDbContext db)
         : base(db)
     { }
+
+
+    public async Task<PagedResult<Status>> GetPagedAsync(
+        PaginationParams pagination,
+        string language)
+    {
+        return await _db.Statuses
+            .WithIncludes()
+            .Where(x => x.Translations.Any(y => y.Language == language))
+            .ToPagedResultAsync(pagination);
+    }
 
     public async Task<PagedResult<Status>> Search(
         StatusSearchFilter filter,

@@ -16,6 +16,16 @@ public class StatusTranslationQueryRepository
     { }
 
 
+    public async Task<PagedResult<StatusTranslation>> GetPagedAsync(
+        PaginationParams pagination,
+        string language)
+    {
+        return await _db.StatusTranslations
+           .WithIncludes()
+           .Where(x => x.Language == language)
+           .ToPagedResultAsync(pagination);
+    }
+
     public async Task<PagedResult<StatusTranslation>> Search(
         StatusTranslationSearchFilter filter,
         PaginationParams pagination)

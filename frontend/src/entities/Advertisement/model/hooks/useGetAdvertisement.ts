@@ -1,4 +1,4 @@
-import type { Advertisement } from "@/types/advertisements";
+import type { Advertisement } from "@/shared/lib/types/advertisements";
 import { useQuery } from "@tanstack/react-query";
 import { getAdvertisement } from "../../api/api";
 

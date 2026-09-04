@@ -1,21 +1,25 @@
-import Container from "@/shared/ui/Container";
+import Container from "@/shared/ui/container";
 import styles from "./Header.module.css";
-import Button from "@/shared/ui/Button";
+import Button from "@/shared/ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/features/auth/store/useAuthStore";
-import { Heart } from "lucide-react";
+import { Heart, Shield } from "lucide-react";
 import { useLogout } from "@/features/auth/model/hooks/useLogout";
+import { hasRole } from "@/shared/lib/auth";
 
 export default function Header() {
   const navigate = useNavigate();
 
   const user = useAuthStore((state) => state.user);
+  const isAdmin = hasRole(user, "Admin");
+
   const logoutStore = useAuthStore((state) => state.logout);
 
   const logoutMutation = useLogout();
 
   const location = useLocation();
   const isFavoritePage = location.pathname === "/favorite";
+  const isAdminPage = location.pathname === "/admin";
 
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
@@ -36,6 +40,8 @@ export default function Header() {
 
           {user && <p className={styles.username}>{user.name}</p>}
 
+          {isAdmin && <p className={styles.username}>{user?.roles[0].name}</p>}
+
           <div className={styles.buttons}>
             <Button onClick={() => navigate("/create-advertisement")}>
               Додати оголошення
@@ -49,6 +55,15 @@ export default function Header() {
                 color={isFavoritePage ? "#ef4444" : "currentColor"}
               />
             </Link>
+            {isAdmin && (
+              <Link to="/admin" className={styles.favoriteButton}>
+                <Shield
+                  size={35}
+                  fill={isAdminPage ? "#2563eb" : "none"}
+                  color={isAdminPage ? "#2563eb" : "currentColor"}
+                />
+              </Link>
+            )}
           </div>
         </div>
       </Container>

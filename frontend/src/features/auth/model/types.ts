@@ -1,29 +1,35 @@
-export interface LoginRequest {
+export type LoginRequest = {
   emailOrPhone: string;
   password: string;
-}
+};
 
-export interface RegisterRequest {
+export type RegisterRequest = {
   emailOrPhone: string;
   password: string;
-}
+};
 
-export interface RegisterResponse {
+export type RegisterResponse = {
   id: number;
   emailOrPhone: string;
   name: string;
   success: boolean;
   message: string;
-}
+};
 
-export interface User {
+export type AuthUser = {
   id: number;
   emailOrPhone: string;
   name: string;
-  role: string;
-}
+  roles: Role[];
+};
 
-export interface LogoutResponse {
+export type Role = {
+  id: number;
+  name: string;
+  description: string;
+};
+
+export type LogoutResponse = {
   success: boolean;
   message: string;
-}
+};

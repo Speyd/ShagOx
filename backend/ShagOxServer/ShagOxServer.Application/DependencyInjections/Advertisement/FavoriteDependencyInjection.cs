@@ -7,6 +7,8 @@ using ShagOxServer.Application.Services.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Update;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Create;
+using ShagOxServer.Application.Services.Advertisements.Favorites.Create;
 
 namespace ShagOxServer.Application.DependencyInjections.Advertisement;
 public static class FavoriteDependencyInjection
@@ -20,7 +22,8 @@ public static class FavoriteDependencyInjection
 
         services.AddScoped<FavoriteUpdateValidator>();
         services.AddScoped<FavoriteValidator>();
-
+        services.AddScoped<IFavoriteCreateService, FavoriteCreateService>();
+        
         return services;
     }
 }

@@ -1,5 +1,5 @@
-import Input from "@/shared/ui/Input";
-import Button from "@/shared/ui/Button";
+import Input from "@/shared/ui/input";
+import Button from "@/shared/ui/button";
 import styles from "./RegisterForm.module.css";
 import { useState } from "react";
 import axios from "axios";

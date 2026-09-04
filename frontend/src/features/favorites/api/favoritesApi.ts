@@ -1,8 +1,9 @@
 import { api } from "@/shared/api/api";
-import type { FavoriteCreateRequest } from "../model/types";
+import type { Favorite, FavoriteCreateRequest } from "../model/types";
+import type { PaginatedResponse } from "@/shared/lib/types/paginatedResponse";
 
-export async function getFavorites() {
-  const response = await api.get("/favorite/me");
+export async function getFavorites(): Promise<PaginatedResponse<Favorite>> {
+  const response = await api.get<PaginatedResponse<Favorite>>("/favorite/me");
   return response.data;
 }
 

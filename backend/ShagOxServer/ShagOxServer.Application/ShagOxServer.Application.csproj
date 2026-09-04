@@ -20,4 +20,8 @@
     <ProjectReference Include="..\ShagOxServer.SharedKernel\ShagOxServer.SharedKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Location\Regions\Translations\Validator\" />
+  </ItemGroup>
+
 </Project>

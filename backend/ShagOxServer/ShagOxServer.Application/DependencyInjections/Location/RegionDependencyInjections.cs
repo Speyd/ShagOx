@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Location.Translations;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
@@ -18,6 +19,8 @@ public static class RegionDependencyInjections
         services.AddScoped<IRegionDeleteService, RegionDeleteService>();
 
         services.AddScoped<RegionValidator>();
+
+        services.AddRegionTranslationApplication();
 
         return services;
     }

@@ -10,7 +10,7 @@ public static class RegionMapper
         if(region is null)
             return new RegionDto(
                 -1,
-                "Unknown name"
+                "Unknown code"
             );
 
         return new RegionDto(

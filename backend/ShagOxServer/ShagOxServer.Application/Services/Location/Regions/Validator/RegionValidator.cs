@@ -47,19 +47,19 @@ public class RegionValidator
         return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> ExistsByNameAsync(
+    public async Task<Result<bool>> ExistsByCodeAsync(
        string name)
     {
-        if (!await _regionExistsRepository.ExistsByNameAsync(name))
+        if (!await _regionExistsRepository.ExistsByCodeAsync(name))
             return Result<bool>.NotFound("Region");
 
         return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> NotExistsByNameAsync(
+    public async Task<Result<bool>> NotExistsByCodeAsync(
        string name)
     {
-        if (await _regionExistsRepository.ExistsByNameAsync(name))
+        if (await _regionExistsRepository.ExistsByCodeAsync(name))
             return Result<bool>.AlreadyExists("Region");
 
         return Result<bool>.Success(true);

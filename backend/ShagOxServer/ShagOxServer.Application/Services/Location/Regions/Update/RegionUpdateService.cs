@@ -75,14 +75,14 @@ public class RegionUpdateService
         Region region,
         RegionUpdateRequest request)
     {
-        if (request.Name is not null &&
-             request.Name != region.Name)
+        if (request.Code is not null &&
+             request.Code != region.Code)
         {
-            var nameValidation = await _regionValidator
-                .NotExistsByNameAsync(request.Name);
+            var codeValidation = await _regionValidator
+                .NotExistsByCodeAsync(request.Code);
 
-            if (!nameValidation.IsSuccess)
-                return Result<bool>.Fail(nameValidation.Error);
+            if (!codeValidation.IsSuccess)
+                return Result<bool>.Fail(codeValidation.Error);
         }
 
         return Result<bool>.Success(true);

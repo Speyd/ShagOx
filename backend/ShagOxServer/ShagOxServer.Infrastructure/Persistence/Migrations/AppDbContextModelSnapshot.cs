@@ -402,16 +402,48 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Regions");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Translations.RegionTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<int>("RegionId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("RegionId");
 
-                    b.ToTable("Regions");
+                    b.HasIndex("Language", "Name")
+                        .IsUnique();
+
+                    b.ToTable("RegionTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>
@@ -664,6 +696,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Region");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Translations.RegionTranslation", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Location.Region", "Region")
+                        .WithMany("Translations")
+                        .HasForeignKey("RegionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Region");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Avatar", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Account.User", "User")
@@ -738,6 +781,8 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Region", b =>
                 {
                     b.Navigation("Cities");
+
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>

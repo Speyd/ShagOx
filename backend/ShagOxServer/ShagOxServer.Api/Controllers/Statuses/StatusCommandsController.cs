@@ -10,7 +10,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Statuses;
 
 [ApiController]
-[Route("api/admin/status")]
+[Route("api/admin/statuses")]
 [Authorize(Roles = "Admin")]
 public class StatusCommandsController : ApiController
 {

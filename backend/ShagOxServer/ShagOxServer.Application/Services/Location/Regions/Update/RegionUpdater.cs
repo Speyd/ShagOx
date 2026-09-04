@@ -10,9 +10,9 @@ public static class RegionUpdater
     {
         int countUpdated = 0;
 
-        if (request.Name is not null)
+        if (request.Code is not null)
         {
-            region.Name = request.Name;
+            region.Code = request.Code;
             countUpdated++;
         }
 

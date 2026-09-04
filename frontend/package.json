@@ -29,7 +29,7 @@
     "react-easy-crop": "^6.2.3",
     "react-hook-form": "^7.80.0",
     "react-router-dom": "^7.17.0",
-    "sonner": "^2.0.7",
+    "sonner": "^2.0.8",
     "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },

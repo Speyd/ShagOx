@@ -14,11 +14,11 @@ public class RegionExistsRepository
     { }
 
 
-    public async Task<bool> ExistsByNameAsync(
-        string? name)
+    public async Task<bool> ExistsByCodeAsync(
+        string? code)
     {
         return await _db.Regions
           .AnyAsync(x =>
-            (name != null && x.Name == name));
+            (code != null && x.Code == code));
     }
 }

@@ -10,7 +10,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Statuses.Translations;
 
 [ApiController]
-[Route("api/admin/status/translations")]
+[Route("api/admin/statuses/translations")]
+[Authorize(Roles = "Admin")]
 public class StatusTranslationCommandsController : ApiController
 {
     private readonly IStatusTranslationCreateService _createService;

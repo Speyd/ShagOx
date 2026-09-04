@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
-using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations;
 public class StatusTranslationExistsRepository
- : ExistsRepository<Status>,
+ : ExistsRepository<StatusTranslation>,
       IStatusTranslationExistsRepository
 {
     public StatusTranslationExistsRepository(AppDbContext db)
@@ -22,7 +22,7 @@ public class StatusTranslationExistsRepository
                 x.Language == language);
     }
 
-    public async Task<bool> ExistsByCodeAsync(
+    public async Task<bool> ExistsByNameAsync(
         string name)
     {
         return await _db.StatusTranslations

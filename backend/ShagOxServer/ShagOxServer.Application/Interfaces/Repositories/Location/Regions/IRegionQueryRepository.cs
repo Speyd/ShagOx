@@ -7,7 +7,7 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 public interface IRegionQueryRepository
     : IQueryRepository<Region>
 {
-    Task<Region?> GetByNameAsync(string name);
+    Task<Region?> GetByCodeAsync(string code);
 
     Task<PagedResult<Region>> Search(
        RegionSearchFilter filter,

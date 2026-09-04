@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Location.Regions.Translations.Create;
 using ShagOxServer.Application.DTOs.Location.Regions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Create;
@@ -10,6 +11,7 @@ namespace ShagOxServer.Api.Controllers.Regions.Translations;
 
 [ApiController]
 [Route("api/admin/regions/translations")]
+[Authorize(Roles = "Admin")]
 public class RegionTranslationCommandsController : ApiController
 {
     private readonly IRegionTranslationCreateService _createService;

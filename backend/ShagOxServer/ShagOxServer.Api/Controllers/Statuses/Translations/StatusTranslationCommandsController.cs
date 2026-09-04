@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Create;
@@ -10,6 +11,7 @@ namespace ShagOxServer.Api.Controllers.Statuses.Translations;
 
 [ApiController]
 [Route("api/admin/statuses/translations")]
+[Authorize(Roles = "Admin")]
 public class StatusTranslationCommandsController : ApiController
 {
     private readonly IStatusTranslationCreateService _createService;

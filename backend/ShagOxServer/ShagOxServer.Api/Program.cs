@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 #region Services
 
 builder.Services
-    .AddLocalization()
+    .AddLanguageProvider()
     .AddDatabase(builder.Configuration)
     .AddJWT(builder.Configuration)
     .AddCloudinary(builder.Configuration)

@@ -34,6 +34,9 @@ public class RegionTranslationQueryService
         PaginationParams pagination,
         string language)
     {
+        Console.WriteLine("\n\n\n");
+        Console.WriteLine(language);
+
         var statuses = await _regionRepository
             .GetPagedAsync(pagination, language);
 

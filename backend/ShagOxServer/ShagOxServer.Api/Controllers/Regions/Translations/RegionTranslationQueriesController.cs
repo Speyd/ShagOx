@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations
 using ShagOxServer.Domain.Filters.Location.Regions.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using System.Globalization;
 
 namespace ShagOxServer.Api.Controllers.Regions.Translations;
 
@@ -38,7 +39,9 @@ public class RegionTranslationQueriesController : ApiController
         [FromQuery] PaginationParams pagination)
     {
         string language = _languageProvider.Language;
+        var culture = CultureInfo.GetCultureInfo(language);
 
+        var languageCode = culture.TwoLetterISOLanguageName;
         var result = await _queryService
             .GetPagedAsync(pagination, language);
 

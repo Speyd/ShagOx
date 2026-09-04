@@ -1,4 +1,4 @@
-import IconButton from "@/shared/ui/IconButton";
+import IconButton from "@/shared/ui/icon-button";
 import styles from "./FavoriteButton.module.css";
 import { Heart } from "lucide-react";
 import { useAddToFavorites } from "../model/hooks/useAddToFavorites";
@@ -18,8 +18,7 @@ export default function FavoriteButton({
   const deleteMutation = useDeleteFavorite();
 
   const { data: favorites } = useGetFavorites();
-
-  const favorite = favorites?.find(
+  const favorite = favorites?.items.find(
     (x) => x.advertisement.id === advertisementId,
   );
 

@@ -1,6 +1,6 @@
-import Input from "@/shared/ui/Input";
+import Input from "@/shared/ui/input";
 import styles from "./LoginForm.module.css";
-import Button from "@/shared/ui/Button";
+import Button from "@/shared/ui/button";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {

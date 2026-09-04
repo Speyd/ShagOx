@@ -9,7 +9,7 @@ public static class RegionCreater
     {
         return new Region
         {
-            Name = request.Name
+            Code = request.Code
         };
     }
 }

@@ -32,7 +32,7 @@ public class RegionCreateService
         RegionCreateRequest request)
     {
         var validation = await _regionValidator
-            .NotExistsByNameAsync(request.Name);
+            .NotExistsByCodeAsync(request.Code);
 
         if (!validation.IsSuccess)
             return Result<CreateResponse>.Fail(validation.Error);

@@ -18,10 +18,10 @@ public class RegionQueryRepository
     { }
 
 
-    public async Task<Region?> GetByNameAsync(string name)
+    public async Task<Region?> GetByCodeAsync(string code)
     {
         return await _db.Regions
-            .FirstOrDefaultAsync(x => x.Name == name);
+            .FirstOrDefaultAsync(x => x.Code == code);
     }
 
     public async Task<PagedResult<Region>> Search(

@@ -9,10 +9,11 @@ public class RegionConfiguration
 {
     public void Configure(EntityTypeBuilder<Region> builder)
     {
-        builder.Property(x => x.Name)
-               .IsRequired()
-               .HasMaxLength(100);
+        builder.Property(x => x.Code)
+            .HasMaxLength(50)
+            .IsRequired();
 
-        builder.HasIndex(x => x.Name);
+        builder.HasIndex(x => x.Code)
+            .IsUnique();
     }
 }

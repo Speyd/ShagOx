@@ -15,7 +15,7 @@ public static class RegionMapper
 
         return new RegionDto(
             region.Id,
-            region.Name
+            region.Code
         );
     }
 }

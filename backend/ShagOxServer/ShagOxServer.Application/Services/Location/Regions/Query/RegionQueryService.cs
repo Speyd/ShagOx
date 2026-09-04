@@ -40,10 +40,10 @@ public class RegionQueryService
     }
 
     public async Task<Result<RegionDto>> GetByNameAsync(
-        string name)
+        string code)
     {
         var region = await _regionQueryRepository
-            .GetByNameAsync(name);
+            .GetByCodeAsync(code);
 
         return region.ToResult(RegionMapper.ToDto);
     }

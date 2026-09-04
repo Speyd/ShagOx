@@ -13,6 +13,6 @@ public class City : BaseEntity
 
     public override string ToString()
     {
-        return $"{Name} ({Region?.Name ?? "Unknown"})";
+        return $"{Name}";
     }
 }

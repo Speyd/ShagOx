@@ -10,7 +10,6 @@ public static class StatusTranslationMapper
         return new StatusTranslationDto
         (
             x.Id,
-            x.Language,
             x.Name,
             x.Description
         );

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Query;
+using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Update;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Create;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Query;
+using ShagOxServer.Application.Services.Location.Regions.Translations.Update;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Validator;
 
 namespace ShagOxServer.Application.DependencyInjections.Location.Translations;
@@ -20,8 +22,8 @@ public static class RegionTranslationDependencyInjection
         //services.AddScoped<IStatusTranslationDeleteService,
         //    StatusTranslationDeleteService>();
 
-        //services.AddScoped<IStatusTranslationUpdateService,
-        //    StatusTranslationUpdateService>();
+        services.AddScoped<IRegionTranslationUpdateService,
+            RegionTranslationUpdateService>();
 
         services.AddScoped<RegionTranslationValidator>();
 

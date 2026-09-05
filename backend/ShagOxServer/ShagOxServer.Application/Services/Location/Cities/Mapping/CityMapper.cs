@@ -16,7 +16,7 @@ public static class CityMapper
             );
         return new CityDto(
             city.Id,
-            city.Name,
+            city.Code,
             RegionMapper.ToDto(city.Region)
         );
     }

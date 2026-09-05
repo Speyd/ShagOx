@@ -10,14 +10,14 @@ public class CityUpdateValidator
         CityUpdateRequest request)
     {
         var regionId = request.RegionId ?? city!.RegionId;
-        var name = request.Name ?? city.Name;
+        var code = request.Code ?? city.Code;
 
         if (regionId == city.RegionId &&
-            name == city.Name)
+            code == city.Code)
         {
             return Result<(int, string)>.Fail("");
         }
 
-        return Result<(int, string)>.Success((regionId, name));
+        return Result<(int, string)>.Success((regionId, code));
     }
 }

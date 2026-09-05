@@ -10,9 +10,9 @@ public static class CityUpdater
     {
         int countUpdated = 0;
 
-        if (request.Name is not null)
+        if (request.Code is not null)
         {
-            city.Name = request.Name;
+            city.Code = request.Code;
             countUpdated++;
         }
 

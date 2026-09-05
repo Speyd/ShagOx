@@ -8,9 +8,9 @@ public class CityConfiguration
 {
     public void Configure(EntityTypeBuilder<City> builder)
     {
-        builder.Property(x => x.Name)
+        builder.Property(x => x.Code)
                .IsRequired()
-               .HasMaxLength(100);
+               .HasMaxLength(50);
 
         builder.HasOne(x => x.Region)
                .WithMany(x => x.Cities)
@@ -18,6 +18,6 @@ public class CityConfiguration
                .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => x.RegionId);
-        builder.HasIndex(x => x.Name);
+        builder.HasIndex(x => x.Code);
     }
 }

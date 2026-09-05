@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ShagOxServer.Domain.Filters.Location.Cities.Translations
-{
-    internal class CityTranslationSearchFilter
-    {
-    }
-}
+﻿namespace ShagOxServer.Domain.Filters.Location.Cities.Translations;
+public sealed record CityTranslationSearchFilter
+(
+    string? CityCode,
+    string? Language,
+    string? Name
+);

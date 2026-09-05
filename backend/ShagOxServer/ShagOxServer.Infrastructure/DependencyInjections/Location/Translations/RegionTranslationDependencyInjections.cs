@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Translations;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Location.Translations;

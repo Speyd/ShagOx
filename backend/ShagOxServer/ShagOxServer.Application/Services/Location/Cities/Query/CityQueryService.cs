@@ -39,11 +39,11 @@ public class CityQueryService
         return cities.ToResultPaged(CityMapper.ToDto);
     }
 
-    public async Task<Result<CityDto>> GetByNameAsync(
-        string name)
+    public async Task<Result<CityDto>> GetByCodeAsync(
+        string code)
     {
         var city = await _repositoryQueryCity
-            .GetByNameAsync(name);
+            .GetByCodeAsync(code);
 
         return city.ToResult(CityMapper.ToDto);
     }

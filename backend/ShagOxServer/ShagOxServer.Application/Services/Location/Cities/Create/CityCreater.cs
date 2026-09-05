@@ -9,7 +9,7 @@ public static class CityCreater
     {
         return new City
         {
-            Name = request.Name,
+            Code = request.Code,
             RegionId = request.RegionId,
         };
     }

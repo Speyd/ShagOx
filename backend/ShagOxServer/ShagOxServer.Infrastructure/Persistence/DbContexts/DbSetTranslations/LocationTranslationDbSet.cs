@@ -6,4 +6,6 @@ public partial class AppDbContext
     : DbContext
 {
     public DbSet<RegionTranslation> RegionTranslations { get; set; }
+    public DbSet<CityTranslation> CityTranslations { get; set; }
+
 }

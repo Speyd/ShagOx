@@ -34,12 +34,12 @@ public class CityQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<City?> GetByNameAsync(
-        string name)
+    public async Task<City?> GetByCodeAsync(
+        string code)
     {
         return await _db.Cities
             .WithIncludes()
-            .FirstOrDefaultAsync(x => x.Name == name);
+            .FirstOrDefaultAsync(x => x.Code == code);
     }
 
     public async Task<PagedResult<City>> GetByRegionAsync(

@@ -15,7 +15,7 @@ public static class UserShortMapper
             user.Email,
             user.Avatar?.Id,
             user.CityId,
-            user.City?.Name ?? "Unknown city name",
+            user.City?.Code ?? "Unknown city code",
             user.LastSeenAt
         );
     }

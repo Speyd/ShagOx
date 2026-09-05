@@ -9,7 +9,7 @@ namespace ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 public interface ICityQueryService
     : IQueryService<CityDto>
 {
-    Task<Result<CityDto>> GetByNameAsync(string name);
+    Task<Result<CityDto>> GetByCodeAsync(string code);
 
     Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
         int regionId,

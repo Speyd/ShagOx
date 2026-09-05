@@ -3,10 +3,12 @@
 namespace ShagOxServer.Domain.Entities.Location.Translations;
 public class CityTranslation : BaseEntity
 {
-    public string Name { get; set; } = "";
-
     public int CityId { get; set; }
-    public City Region { get; set; } = null!;
+    public City City { get; set; } = null!;
+
+    public string Name { get; set; } = null!;
+    public string Language { get; set; } = null!;
+
 
     public override string ToString()
     {

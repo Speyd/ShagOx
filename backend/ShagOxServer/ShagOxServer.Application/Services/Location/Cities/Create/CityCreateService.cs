@@ -44,7 +44,7 @@ public class CityCreateService
 
 
         var validatorName = await _cityValidator
-            .NotExistsAsync(request.RegionId, request.Name);
+            .NotExistsAsync(request.RegionId, request.Code);
 
         if (!validatorName.IsSuccess)
             Result<CreateResponse>.Fail(validatorName.Error);

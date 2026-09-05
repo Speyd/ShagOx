@@ -7,5 +7,5 @@ public interface ICityExistsRepository
 {
     Task<bool> ExistsAsync(
         int regionId,
-        string cityName);
+        string cityCode);
 }

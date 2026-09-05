@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Create;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Query;
+using ShagOxServer.Application.Services.Location.Cities.Translations.Create;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Query;
 
 namespace ShagOxServer.Application.DependencyInjections.Location.Translations;
@@ -11,8 +13,8 @@ public static class CityTranslationDependencyInjection
         services.AddScoped<ICityTranslationQueryService,
             CityTranslationQueryService>();
 
-        //services.AddScoped<IRegionTranslationCreateService,
-        //    RegionTranslationCreateService>();
+        services.AddScoped<ICityTranslationCreateService,
+            CityTranslationCreateService>();
 
         //services.AddScoped<IRegionTranslationDeleteService,
         //    RegionTranslationDeleteService>();

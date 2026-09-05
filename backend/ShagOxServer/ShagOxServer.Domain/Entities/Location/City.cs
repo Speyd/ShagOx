@@ -2,10 +2,9 @@
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Domain.Entities.Location;
-
 public class City : BaseEntity
 {
-    public string Name { get; set; } = "";
+    public string Code { get; set; } = "";
     public int RegionId { get; set; }
     public Region Region { get; set; } = null!;
 
@@ -13,6 +12,6 @@ public class City : BaseEntity
 
     public override string ToString()
     {
-        return $"{Name}";
+        return $"{Code}";
     }
 }

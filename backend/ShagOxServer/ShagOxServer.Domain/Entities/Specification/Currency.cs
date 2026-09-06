@@ -8,8 +8,7 @@ public class Currency : BaseEntity
     public string Symbol { get; set; } = "";
     public string Name { get; set; } = "";
 
-    public List<Advertisement> Advertisements { get; set; } 
-        = new List<Advertisement>();
+    public List<Advertisement> Advertisements { get; set; } = new();
 
     public override string ToString()
     {

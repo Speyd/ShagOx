@@ -5,7 +5,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 public interface IRegionTranslationQueryRepository
-    : IQueryTranslationsRepository<RegionTranslation>
+    : IQueryTranslationRepository<RegionTranslation>
 {
     Task<PagedResult<RegionTranslation>> Search(
        RegionTranslationSearchFilter filter,

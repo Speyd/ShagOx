@@ -22,11 +22,11 @@ public class CityTranslationValidator
     public async Task<Result<CityTranslation>> GetByIdAsync(
         int cityId)
     {
-        var region = await _cityRepository.GetByIdAsync(cityId);
-        if (region is null)
+        var city = await _cityRepository.GetByIdAsync(cityId);
+        if (city is null)
             return Result<CityTranslation>.NotFound("City Translation");
 
-        return Result<CityTranslation>.Success(region);
+        return Result<CityTranslation>.Success(city);
     }
 
     public async Task<Result<bool>> ExistsAsync(

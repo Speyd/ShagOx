@@ -12,7 +12,7 @@ public static class RegionTranslationUpdater
 
         if (request.RegionId.HasValue)
         {
-            region.RegionId = request.RegionId.Value;
+            region.TranslatableId = request.RegionId.Value;
             countUpdated++;
         }
 

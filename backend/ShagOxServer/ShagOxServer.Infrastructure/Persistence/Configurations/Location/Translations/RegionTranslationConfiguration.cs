@@ -16,9 +16,9 @@ public class RegionTranslationConfiguration
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.HasOne(x => x.Region)
+        builder.HasOne(x => x.Translatable)
             .WithMany(x => x.Translations)
-            .HasForeignKey(x => x.RegionId)
+            .HasForeignKey(x => x.TranslatableId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => new { x.Language, x.Name })

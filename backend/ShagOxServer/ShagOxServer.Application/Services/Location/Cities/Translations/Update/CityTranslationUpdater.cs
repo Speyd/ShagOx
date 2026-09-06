@@ -13,7 +13,7 @@ public static class CityTranslationUpdater
 
         if (request.CityId.HasValue)
         {
-            city.CityId = request.CityId.Value;
+            city.TranslatableId = request.CityId.Value;
             countUpdated++;
         }
 

@@ -79,11 +79,11 @@ public class CityTranslationUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        CityTranslation status,
+        CityTranslation city,
         CityTranslationUpdateRequest request)
     {
         if (request.CityId is not null &&
-           request.CityId != status.CityId)
+           request.CityId != city.TranslatableId)
         {
             var validator = await _cityValidator
                 .ExistsByIdAsync(request.CityId.Value);
@@ -95,12 +95,12 @@ public class CityTranslationUpdateService
         if (request.Language is not null)
         {
             if ((request.CityId is not null &&
-                request.CityId != status.CityId) ||
-                request.Language != status.Language)
+                request.CityId != city.TranslatableId) ||
+                request.Language != city.Language)
             {
                 var validator = await _cityTranslationValidator
                     .ExistsAsync(
-                        request.CityId ?? status.CityId,
+                        request.CityId ?? city.TranslatableId,
                         request.Language);
 
                 if (!validator.IsSuccess)

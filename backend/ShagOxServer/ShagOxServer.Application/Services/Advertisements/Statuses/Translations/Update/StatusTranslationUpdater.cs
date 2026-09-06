@@ -12,7 +12,7 @@ public static class StatusTranslationUpdater
 
         if (request.StatusId.HasValue)
         {
-            status.StatusId = request.StatusId.Value;
+            status.TranslatableId = request.StatusId.Value;
             countUpdated++;
         }
 

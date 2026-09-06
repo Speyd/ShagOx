@@ -30,17 +30,17 @@ public class RegionTranslationDeleteService
     public async Task<Result<DeleteResponse>> DeleteAsync(
         int id)
     {
-        var status = await _regionValidator
+        var region = await _regionValidator
             .GetByIdAsync(id);
 
-        if (!status.IsSuccess)
-            return Result<DeleteResponse>.Fail(status.Error);
+        if (!region.IsSuccess)
+            return Result<DeleteResponse>.Fail(region.Error);
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _regionRepository.Delete(status.Value!);
+            _regionRepository.Delete(region.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -52,7 +52,7 @@ public class RegionTranslationDeleteService
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
-               status.Value!.Id,
+               region.Value!.Id,
                DateTime.UtcNow
            )
        );

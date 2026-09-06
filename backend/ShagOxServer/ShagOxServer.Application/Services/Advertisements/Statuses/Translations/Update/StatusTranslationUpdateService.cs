@@ -83,7 +83,7 @@ public class StatusTranslationUpdateService
         StatusTranslationUpdateRequest request)
     {
         if (request.StatusId is not null &&
-           request.StatusId != status.StatusId)
+           request.StatusId != status.TranslatableId)
         {
             var validator = await _statusValidator
                 .ExistsByIdAsync(request.StatusId.Value);
@@ -95,12 +95,12 @@ public class StatusTranslationUpdateService
         if (request.Language is not null)
         {
             if ((request.StatusId is not null && 
-                request.StatusId != status.StatusId) ||
+                request.StatusId != status.TranslatableId) ||
                 request.Language != status.Language)
             {
                 var validator = await _statusTranslationValidator
                     .ExistsAsync(
-                        request.StatusId ?? status.StatusId, 
+                        request.StatusId ?? status.TranslatableId, 
                         request.Language);
 
                 if (!validator.IsSuccess)

@@ -5,7 +5,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 public interface IStatusTranslationQueryRepository
-    : IQueryTranslationsRepository<StatusTranslation>
+    : IQueryTranslationRepository<StatusTranslation>
 {
     Task<PagedResult<StatusTranslation>> Search(
        StatusTranslationSearchFilter filter,

@@ -20,9 +20,9 @@ public class StatusTranslationConfiguration
             .HasColumnType("text")
             .IsRequired();
 
-        builder.HasOne(x => x.Status)
+        builder.HasOne(x => x.Translatable)
             .WithMany(x => x.Translations)
-            .HasForeignKey(x => x.StatusId)
+            .HasForeignKey(x => x.TranslatableId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => new { x.Language, x.Name})

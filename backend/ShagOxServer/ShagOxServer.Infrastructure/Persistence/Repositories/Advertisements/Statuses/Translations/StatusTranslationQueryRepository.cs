@@ -3,12 +3,12 @@ using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations.Extensions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations;
 public class StatusTranslationQueryRepository
-    : QueryRepository<StatusTranslation>,
+    : QueryTranslationRepository<StatusTranslation>,
       IStatusTranslationQueryRepository
 {
     public StatusTranslationQueryRepository(AppDbContext db)
@@ -16,7 +16,7 @@ public class StatusTranslationQueryRepository
     { }
 
 
-    public async Task<PagedResult<StatusTranslation>> GetPagedAsync(
+    public override async Task<PagedResult<StatusTranslation>> GetPagedAsync(
         PaginationParams pagination,
         string language)
     {

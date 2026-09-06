@@ -9,7 +9,7 @@ public static class CityTranslationCreater
     {
         return new CityTranslation
         {
-            CityId = request.CityId,
+            TranslatableId = request.CityId,
             Language = request.Language,
             Name = request.Name
         };

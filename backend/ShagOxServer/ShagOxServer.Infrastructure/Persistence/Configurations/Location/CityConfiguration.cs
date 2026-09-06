@@ -18,6 +18,7 @@ public class CityConfiguration
                .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => x.RegionId);
-        builder.HasIndex(x => x.Code);
+        builder.HasIndex(x => x.Code)
+            .IsUnique();
     }
 }

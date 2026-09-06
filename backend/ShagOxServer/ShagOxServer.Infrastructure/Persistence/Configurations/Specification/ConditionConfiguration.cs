@@ -8,8 +8,11 @@ public class ConditionConfiguration
 {
     public void Configure(EntityTypeBuilder<Condition> builder)
     {
-        builder.Property(x => x.Name)
+        builder.Property(x => x.Code)
                .IsRequired()
                .HasMaxLength(100);
+
+        builder.HasIndex(x => x.Code)
+            .IsUnique();
     }
 }

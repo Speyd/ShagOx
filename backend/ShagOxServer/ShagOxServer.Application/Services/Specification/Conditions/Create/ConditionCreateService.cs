@@ -33,7 +33,7 @@ public class ConditionCreateService
         ConditionCreateRequest request)
     {
         var validationName = await _conditionValidator
-            .NotExistsByNameAsync(request.Name);
+            .NotExistsByCodeAsync(request.Code);
 
         if(!validationName.IsSuccess)
             Result<CreateResponse>.Fail(validationName.Error);

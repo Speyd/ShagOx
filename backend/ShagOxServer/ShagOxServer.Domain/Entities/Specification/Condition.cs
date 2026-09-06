@@ -6,7 +6,7 @@ namespace ShagOxServer.Domain.Entities.Specification;
 
 public class Condition : BaseEntity
 {
-    public string Name { get; set; } = "";
+    public string Code { get; set; } = "";
 
     public List<Advertisement> Advertisements { get; set; } = new();
 
@@ -15,6 +15,6 @@ public class Condition : BaseEntity
 
     public override string ToString()
     {
-        return Name;
+        return Code;
     }
 }

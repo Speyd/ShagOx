@@ -17,11 +17,11 @@ public class ConditionQueryRepository
     { }
 
 
-    public async Task<Condition?> GetByNameAsync(
-        string name)
+    public async Task<Condition?> GetByCodeAsync(
+        string code)
     {
         return await _db.Conditions
-            .FirstOrDefaultAsync(x => x.Name == name);
+            .FirstOrDefaultAsync(x => x.Code == code);
     }
 
     public async Task<PagedResult<Condition>> Search(

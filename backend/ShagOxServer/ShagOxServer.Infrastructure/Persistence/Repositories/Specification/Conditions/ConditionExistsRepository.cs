@@ -14,10 +14,10 @@ public class ConditionExistsRepository
     { }
 
 
-    public async Task<bool> ExistsByNameAsync(
-        string name)
+    public async Task<bool> ExistsByCodeAsync(
+        string code)
     {
         return await _db.Conditions
-            .AnyAsync(x => x.Name == name);
+            .AnyAsync(x => x.Code == code);
     }
 }

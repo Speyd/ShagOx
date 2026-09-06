@@ -1,5 +1,11 @@
 ﻿namespace ShagOxServer.Domain.Base;
-public abstract class BaseTranslation <T> 
+/// <summary>
+/// Represents a translation associated with a translatable entity.
+/// </summary>
+/// <typeparam name="T">
+/// The type of the entity being translated.
+/// </typeparam>
+public abstract class BaseTranslation<T> 
     : BaseEntity
     where T : BaseEntity
 {

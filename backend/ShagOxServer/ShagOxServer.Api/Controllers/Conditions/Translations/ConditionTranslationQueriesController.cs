@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Query;
-using ShagOxServer.Domain.Filters.Location.Cities.Translations;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Query;
+using ShagOxServer.Domain.Filters.Specification.Conditions.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 using System.Globalization;
 
-namespace ShagOxServer.Api.Controllers.Cities.Translations;
+namespace ShagOxServer.Api.Controllers.Conditions.Translations;
 
 [ApiController]
-[Route("api/cities/translations")]
-public  class CityTranslationQueriesController
+[Route("api/conditions/translations")]
+public class ConditionTranslationQueriesController
     : ApiController
 {
-    private readonly ICityTranslationQueryService _queryService;
+    private readonly IConditionTranslationQueryService _queryService;
     private readonly ILanguageProvider _languageProvider;
 
-    public CityTranslationQueriesController(
-        ICityTranslationQueryService queryService,
+    public ConditionTranslationQueriesController(
+        IConditionTranslationQueryService queryService,
         ILanguageProvider languageProvider)
     {
         _queryService = queryService;
@@ -51,7 +51,7 @@ public  class CityTranslationQueriesController
 
     [HttpGet("search")]
     public async Task<IActionResult> Search(
-        [FromQuery] CityTranslationSearchFilter filter,
+        [FromQuery] ConditionTranslationSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService

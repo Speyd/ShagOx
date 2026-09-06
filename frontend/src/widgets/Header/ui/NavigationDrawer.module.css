@@ -1,0 +1,163 @@
+.drawerContent {
+  background-color: white;
+}
+
+.drawerBody {
+  padding: 0;
+  height: 100%;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.menuTop {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.menuBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menuHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.closeButton {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px;
+
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+
+  color: var(--text-base);
+}
+
+.navigation {
+  padding: 10px;
+}
+
+.menuItem,
+.menuItemActive {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 8px 10px;
+
+  border: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  font-size: var(--font-sm);
+}
+
+.menuItem {
+  background: transparent;
+  color: var(--text-base);
+}
+
+.menuItem:hover {
+  background-color: #f1f5f9;
+}
+
+.menuItemActive {
+  background-color: #dbeafe;
+  color: var(--color-base);
+}
+
+.menuItem svg,
+.menuItemActive svg {
+  width: 18px;
+  height: 18px;
+
+  flex-shrink: 0;
+}
+
+.arrow {
+  margin-left: auto;
+}
+
+.menuFooter {
+  margin-top: auto;
+
+  padding: 10px;
+}
+
+.menuItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menuItemText {
+  font-size: var(--font-xs);
+  color: var(--text-base);
+}
+
+.menuItem .arrow {
+  margin-left: auto;
+  transition: transform 0.2s ease;
+}
+
+.arrowOpened {
+  transform: rotate(90deg);
+}
+
+.languageSection {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.languageList {
+  padding-left: 54px;
+}
+
+.languageItem {
+  width: 100%;
+  padding: 9px 16px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.languageItem:hover {
+  background: #f5f5f5;
+}

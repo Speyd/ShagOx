@@ -84,9 +84,8 @@ export default function Router() {
             element={<UserUpdateAdvertisementPage />}
           />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
-
-        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

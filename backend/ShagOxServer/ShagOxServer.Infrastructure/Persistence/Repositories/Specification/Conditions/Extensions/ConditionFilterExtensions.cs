@@ -12,10 +12,10 @@ public static class ConditionFilterExtensions
         if (filter is null)
             return query;
 
-        if (!string.IsNullOrWhiteSpace(filter.Name))
+        if (!string.IsNullOrWhiteSpace(filter.Code))
         {
-            query = query.Where(u => u.Name != null &&
-                EF.Functions.ILike(u.Name, $"%{filter.Name}%"));
+            query = query.Where(u => u.Code != null &&
+                EF.Functions.ILike(u.Code, $"%{filter.Code}%"));
         }
 
         return query;

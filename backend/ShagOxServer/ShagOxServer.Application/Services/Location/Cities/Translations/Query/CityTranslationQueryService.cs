@@ -24,38 +24,38 @@ public class CityTranslationQueryService
     public async Task<Result<CityTranslationDto>> GetByIdAsync(
         int id)
     {
-        var status = await _cityRepository
+        var city = await _cityRepository
             .GetByIdAsync(id);
 
-        return status.ToResult(CityTranslationMapper.ToDto);
+        return city.ToResult(CityTranslationMapper.ToDto);
     }
 
     public async Task<Result<PagedResult<CityTranslationDto>>> GetPagedAsync(
         PaginationParams pagination,
         string language)
     {
-        var statuses = await _cityRepository
+        var cities = await _cityRepository
             .GetPagedAsync(pagination, language);
 
-        return statuses.ToResultPaged(CityTranslationMapper.ToDto);
+        return cities.ToResultPaged(CityTranslationMapper.ToDto);
     }
 
     public async Task<Result<PagedResult<CityTranslationDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
-        var statuses = await _cityRepository
+        var cities = await _cityRepository
             .GetPagedAsync(pagination);
 
-        return statuses.ToResultPaged(CityTranslationMapper.ToDto);
+        return cities.ToResultPaged(CityTranslationMapper.ToDto);
     }
 
     public async Task<Result<PagedResult<CityTranslationDto>>> Search(
         CityTranslationSearchFilter filter,
         PaginationParams pagination)
     {
-        var statuses = await _cityRepository
+        var cities = await _cityRepository
             .Search(filter, pagination);
 
-        return statuses.ToResultPaged(CityTranslationMapper.ToDto);
+        return cities.ToResultPaged(CityTranslationMapper.ToDto);
     }
 }

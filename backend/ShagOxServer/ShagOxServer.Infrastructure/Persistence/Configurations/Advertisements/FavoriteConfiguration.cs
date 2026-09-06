@@ -6,7 +6,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements;
 public class FavoriteConfiguration 
     : IEntityTypeConfiguration<Favorite>
 {
-    public void Configure(EntityTypeBuilder<Favorite> builder)
+    public void Configure(
+        EntityTypeBuilder<Favorite> builder)
     {
 
         builder.HasOne(x => x.User)

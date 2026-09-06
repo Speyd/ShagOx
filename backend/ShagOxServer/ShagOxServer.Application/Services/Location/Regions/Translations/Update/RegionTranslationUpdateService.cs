@@ -37,22 +37,22 @@ public class RegionTranslationUpdateService
         int statusTranslationId,
         RegionTranslationUpdateRequest request)
     {
-        var status = await _regionTranslationValidator
+        var region = await _regionTranslationValidator
             .GetByIdAsync(statusTranslationId);
 
-        if (!status.IsSuccess)
-            return Result<UpdateResponse>.Fail(status.Error);
+        if (!region.IsSuccess)
+            return Result<UpdateResponse>.Fail(region.Error);
 
 
         var validation = await
-             ValidateUpdatesAsync(status.Value!, request);
+             ValidateUpdatesAsync(region.Value!, request);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = RegionTranslationUpdater
-            .ApplyUpdates(status.Value!, request);
+            .ApplyUpdates(region.Value!, request);
 
         var result = new UpdateResponse(
             updatedCount,
@@ -65,7 +65,7 @@ public class RegionTranslationUpdateService
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _regionRepository.Update(status.Value!);
+            _regionRepository.Update(region.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -79,11 +79,11 @@ public class RegionTranslationUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        RegionTranslation status,
+        RegionTranslation region,
         RegionTranslationUpdateRequest request)
     {
         if (request.RegionId is not null &&
-           request.RegionId != status.RegionId)
+           request.RegionId != region.TranslatableId)
         {
             var validator = await _regionValidator
                 .ExistsByIdAsync(request.RegionId.Value);
@@ -95,12 +95,12 @@ public class RegionTranslationUpdateService
         if (request.Language is not null)
         {
             if ((request.RegionId is not null &&
-                request.RegionId != status.RegionId) ||
-                request.Language != status.Language)
+                request.RegionId != region.TranslatableId) ||
+                request.Language != region.Language)
             {
                 var validator = await _regionTranslationValidator
                     .ExistsAsync(
-                        request.RegionId ?? status.RegionId,
+                        request.RegionId ?? region.TranslatableId,
                         request.Language);
 
                 if (!validator.IsSuccess)

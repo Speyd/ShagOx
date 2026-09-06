@@ -9,7 +9,7 @@ public static class ConditionMapper
     {
         return new ConditionDto(
             condition.Id,
-            condition.Name
+            condition.Code
         );
     }
 }

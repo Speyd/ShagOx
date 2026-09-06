@@ -6,7 +6,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements;
 public class StatusConfiguration 
     : IEntityTypeConfiguration<Status>
 {
-    public void Configure(EntityTypeBuilder<Status> builder)
+    public void Configure(
+        EntityTypeBuilder<Status> builder)
     {
         builder.Property(x => x.Code)
             .HasMaxLength(50)

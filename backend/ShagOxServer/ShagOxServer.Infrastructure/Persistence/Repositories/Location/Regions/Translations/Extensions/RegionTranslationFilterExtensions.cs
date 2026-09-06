@@ -15,7 +15,7 @@ public static class RegionTranslationFilterExtensions
         if (!string.IsNullOrWhiteSpace(filter.RegionCode))
         {
             query = query.Where(x =>
-                EF.Functions.ILike(x.Region.Code, $"%{filter.RegionCode}%"));
+                EF.Functions.ILike(x.Translatable.Code, $"%{filter.RegionCode}%"));
         }
 
         if (!string.IsNullOrWhiteSpace(filter.Language))

@@ -6,7 +6,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements.
 public class StatusTranslationConfiguration 
     : IEntityTypeConfiguration<StatusTranslation>
 {
-    public void Configure(EntityTypeBuilder<StatusTranslation> builder)
+    public void Configure(
+        EntityTypeBuilder<StatusTranslation> builder)
     {
         builder.Property(x => x.Language)
             .HasMaxLength(30)
@@ -20,9 +21,9 @@ public class StatusTranslationConfiguration
             .HasColumnType("text")
             .IsRequired();
 
-        builder.HasOne(x => x.Status)
+        builder.HasOne(x => x.Translatable)
             .WithMany(x => x.Translations)
-            .HasForeignKey(x => x.StatusId)
+            .HasForeignKey(x => x.TranslatableId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => new { x.Language, x.Name})

@@ -9,7 +9,7 @@ public static class StatusTranslationCreater
     {
         return new StatusTranslation
         {
-            StatusId = request.StatusId,
+            TranslatableId = request.StatusId,
             Language = request.Language,
             Name = request.Name,
             Description = request.Description,

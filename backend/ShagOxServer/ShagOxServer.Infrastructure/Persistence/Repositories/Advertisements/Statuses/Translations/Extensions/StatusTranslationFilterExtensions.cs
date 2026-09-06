@@ -15,7 +15,7 @@ public static class StatusTranslationFilterExtensions
         if (!string.IsNullOrWhiteSpace(filter.StatusCode))
         {
             query = query.Where(x =>
-                EF.Functions.ILike(x.Status.Code, $"%{filter.StatusCode}%"));
+                EF.Functions.ILike(x.Translatable.Code, $"%{filter.StatusCode}%"));
         }
 
         if (!string.IsNullOrWhiteSpace(filter.Language))

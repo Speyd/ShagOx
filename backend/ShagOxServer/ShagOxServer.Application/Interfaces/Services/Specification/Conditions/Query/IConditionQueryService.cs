@@ -8,7 +8,7 @@ namespace ShagOxServer.Application.Interfaces.Services.Specification.Conditions.
 public interface IConditionQueryService
     : IQueryService<ConditionDto>
 {
-    Task<Result<ConditionDto>> GetByNameAsync(string name);
+    Task<Result<ConditionDto>> GetByCodeAsync(string code);
 
     Task<Result<PagedResult<ConditionDto>>> Search(
        ConditionSearchFilter filter,

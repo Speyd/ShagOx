@@ -78,11 +78,11 @@ public class ConditionUpdateService
         Condition сondition,
         ConditionUpdateRequest request)
     {
-        if (request.Name is not null &&
-            request.Name != сondition.Name)
+        if (request.Code is not null &&
+            request.Code != сondition.Code)
         {
             var nameValidation = await _conditionValidator
-                .NotExistsByNameAsync(request.Name);
+                .NotExistsByCodeAsync(request.Code);
 
             if (!nameValidation.IsSuccess)
                 Result<CreateResponse>.Fail(nameValidation.Error);

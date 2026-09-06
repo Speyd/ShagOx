@@ -7,7 +7,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
 public class AttributeDefinitionConfiguration 
     : IEntityTypeConfiguration<AttributeDefinition>
 {
-    public void Configure(EntityTypeBuilder<AttributeDefinition> builder)
+    public void Configure(
+        EntityTypeBuilder<AttributeDefinition> builder)
     {
         builder.Property(x => x.Key)
             .IsRequired()

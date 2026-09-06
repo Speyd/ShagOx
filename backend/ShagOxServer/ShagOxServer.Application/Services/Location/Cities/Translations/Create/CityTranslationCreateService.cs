@@ -39,12 +39,12 @@ public class CityTranslationCreateService
             return Result<CreateResponse>.Fail(codeValidation.Error);
 
 
-        var status = CityTranslationCreater.Create(request);
+        var city = CityTranslationCreater.Create(request);
 
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _cityRepository.Add(status);
+            _cityRepository.Add(city);
 
             await _unitOfWork.CommitAsync();
         }
@@ -56,7 +56,7 @@ public class CityTranslationCreateService
 
         return Result<CreateResponse>.Success(
             new CreateResponse(
-                status.Id,
+                city.Id,
                 DateTime.UtcNow
         ));
     }

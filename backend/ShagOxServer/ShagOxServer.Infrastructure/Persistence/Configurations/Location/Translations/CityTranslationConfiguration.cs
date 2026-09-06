@@ -6,7 +6,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Location.Transl
 public class CityTranslationConfiguration
     : IEntityTypeConfiguration<CityTranslation>
 {
-    public void Configure(EntityTypeBuilder<CityTranslation> builder)
+    public void Configure(
+        EntityTypeBuilder<CityTranslation> builder)
     {
         builder.Property(x => x.Language)
            .HasMaxLength(30)
@@ -16,9 +17,9 @@ public class CityTranslationConfiguration
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.HasOne(x => x.City)
+        builder.HasOne(x => x.Translatable)
             .WithMany(x => x.Translations)
-            .HasForeignKey(x => x.CityId)
+            .HasForeignKey(x => x.TranslatableId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => new { x.Language, x.Name })

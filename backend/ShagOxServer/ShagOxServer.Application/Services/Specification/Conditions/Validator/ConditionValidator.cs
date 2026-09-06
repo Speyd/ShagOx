@@ -47,19 +47,19 @@ public class ConditionValidator
     }
 
     public async Task<Result<bool>> ExistsByNameAsync(
-      string name)
+        string code)
     {
 
-        if (!await _existsRepository.ExistsByNameAsync(name))
+        if (!await _existsRepository.ExistsByCodeAsync(code))
             return Result<bool>.NotFound("Condition");
 
         return Result<bool>.Success(false);
     }
 
-    public async Task<Result<bool>> NotExistsByNameAsync(
-      string name)
+    public async Task<Result<bool>> NotExistsByCodeAsync(
+        string code)
     {
-        if (!await _existsRepository.ExistsByNameAsync(name))
+        if (!await _existsRepository.ExistsByCodeAsync(code))
             return Result<bool>.AlreadyExists("Condition");
 
         return Result<bool>.Success(false);

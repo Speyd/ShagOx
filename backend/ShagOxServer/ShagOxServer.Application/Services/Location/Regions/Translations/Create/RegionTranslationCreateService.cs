@@ -39,12 +39,12 @@ public class RegionTranslationCreateService
             return Result<CreateResponse>.Fail(codeValidation.Error);
 
 
-        var status = RegionTranslationCreater.Create(request);
+        var region = RegionTranslationCreater.Create(request);
 
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _regionRepository.Add(status);
+            _regionRepository.Add(region);
 
             await _unitOfWork.CommitAsync();
         }
@@ -56,7 +56,7 @@ public class RegionTranslationCreateService
 
         return Result<CreateResponse>.Success(
             new CreateResponse(
-                status.Id,
+                region.Id,
                 DateTime.UtcNow
         ));
     }

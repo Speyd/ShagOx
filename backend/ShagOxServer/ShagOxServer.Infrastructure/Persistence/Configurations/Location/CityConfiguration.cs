@@ -6,7 +6,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Location;
 public class CityConfiguration 
     : IEntityTypeConfiguration<City>
 {
-    public void Configure(EntityTypeBuilder<City> builder)
+    public void Configure(
+        EntityTypeBuilder<City> builder)
     {
         builder.Property(x => x.Code)
                .IsRequired()
@@ -18,6 +19,7 @@ public class CityConfiguration
                .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => x.RegionId);
-        builder.HasIndex(x => x.Code);
+        builder.HasIndex(x => x.Code)
+            .IsUnique();
     }
 }

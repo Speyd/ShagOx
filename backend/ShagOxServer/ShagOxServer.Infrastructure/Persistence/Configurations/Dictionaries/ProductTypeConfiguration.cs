@@ -6,7 +6,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
 public class ProductTypeConfiguration 
     : IEntityTypeConfiguration<ProductType>
 {
-    public void Configure(EntityTypeBuilder<ProductType> builder)
+    public void Configure(
+        EntityTypeBuilder<ProductType> builder)
     {
         builder.Property(x => x.Name)
             .IsRequired()

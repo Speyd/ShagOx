@@ -8,6 +8,6 @@ public static class StatusTranslationQueryExtensions
         this IQueryable<StatusTranslation> query)
     {
         return query
-            .Include(x => x.Status);
+            .Include(x => x.Translatable);
     }
 }

@@ -24,38 +24,38 @@ public class RegionTranslationQueryService
     public async Task<Result<RegionTranslationDto>> GetByIdAsync(
         int id)
     {
-        var status = await _regionRepository
+        var region = await _regionRepository
             .GetByIdAsync(id);
 
-        return status.ToResult(RegionTranslationMapper.ToDto);
+        return region.ToResult(RegionTranslationMapper.ToDto);
     }
 
     public async Task<Result<PagedResult<RegionTranslationDto>>> GetPagedAsync(
         PaginationParams pagination,
         string language)
     {
-        var statuses = await _regionRepository
+        var regions = await _regionRepository
             .GetPagedAsync(pagination, language);
 
-        return statuses.ToResultPaged(RegionTranslationMapper.ToDto);
+        return regions.ToResultPaged(RegionTranslationMapper.ToDto);
     }
 
     public async Task<Result<PagedResult<RegionTranslationDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
-        var statuses = await _regionRepository
+        var regions = await _regionRepository
             .GetPagedAsync(pagination);
 
-        return statuses.ToResultPaged(RegionTranslationMapper.ToDto);
+        return regions.ToResultPaged(RegionTranslationMapper.ToDto);
     }
 
     public async Task<Result<PagedResult<RegionTranslationDto>>> Search(
         RegionTranslationSearchFilter filter,
         PaginationParams pagination)
     {
-        var statuses = await _regionRepository
+        var regions = await _regionRepository
             .Search(filter, pagination);
 
-        return statuses.ToResultPaged(RegionTranslationMapper.ToDto);
+        return regions.ToResultPaged(RegionTranslationMapper.ToDto);
     }
 }

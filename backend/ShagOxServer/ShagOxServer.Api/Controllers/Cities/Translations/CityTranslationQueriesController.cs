@@ -7,6 +7,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 using System.Globalization;
 
 namespace ShagOxServer.Api.Controllers.Cities.Translations;
+
 [ApiController]
 [Route("api/cities/translations")]
 public  class CityTranslationQueriesController

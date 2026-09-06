@@ -6,7 +6,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Account;
 public class RoleConfiguration 
     : IEntityTypeConfiguration<Role>
 {
-    public void Configure(EntityTypeBuilder<Role> builder)
+    public void Configure(
+        EntityTypeBuilder<Role> builder)
     {
         builder.Property(x => x.Name)
                .IsRequired()

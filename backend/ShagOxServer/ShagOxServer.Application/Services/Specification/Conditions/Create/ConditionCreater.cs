@@ -9,7 +9,7 @@ public static class ConditionCreater
     {
         return new Condition
         {
-            Name = request.Name,
+            Code = request.Code,
         };
     }
 }

@@ -39,11 +39,11 @@ public class ConditionQueryService
         return conditions.ToResultPaged(ConditionMapper.ToDto);
     }
 
-    public async Task<Result<ConditionDto>> GetByNameAsync(
-        string name)
+    public async Task<Result<ConditionDto>> GetByCodeAsync(
+        string code)
     {
         var condition = await _conditionQueryRepository
-            .GetByNameAsync(name);
+            .GetByCodeAsync(code);
 
         return condition.ToResult(ConditionMapper.ToDto);
     }

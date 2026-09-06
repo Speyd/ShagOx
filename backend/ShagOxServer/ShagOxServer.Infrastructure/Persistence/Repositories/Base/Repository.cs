@@ -1,10 +1,11 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 public  class Repository<T>
     : RepositoryContext, IRepository<T>
-    where T : class
+    where T : BaseEntity
 {
     public Repository(AppDbContext db)
         : base(db)

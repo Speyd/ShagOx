@@ -15,7 +15,7 @@ public static class CityTranslationFilterExtensions
         if (!string.IsNullOrWhiteSpace(filter.CityCode))
         {
             query = query.Where(x =>
-                EF.Functions.ILike(x.City.Code, $"%{filter.CityCode}%"));
+                EF.Functions.ILike(x.Translatable.Code, $"%{filter.CityCode}%"));
         }
 
         if (!string.IsNullOrWhiteSpace(filter.Language))

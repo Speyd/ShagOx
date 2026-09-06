@@ -10,9 +10,9 @@ public static class ConditionUpdater
     {
         int countUpdated = 0;
 
-        if (request.Name is not null)
+        if (request.Code is not null)
         {
-            condition.Name = request.Name;
+            condition.Code = request.Code;
             countUpdated++;
         }
 

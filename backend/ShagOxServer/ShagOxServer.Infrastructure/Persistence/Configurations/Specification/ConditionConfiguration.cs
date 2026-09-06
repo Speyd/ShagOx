@@ -6,10 +6,14 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification;
 public class ConditionConfiguration 
     : IEntityTypeConfiguration<Condition>
 {
-    public void Configure(EntityTypeBuilder<Condition> builder)
+    public void Configure(
+        EntityTypeBuilder<Condition> builder)
     {
-        builder.Property(x => x.Name)
+        builder.Property(x => x.Code)
                .IsRequired()
                .HasMaxLength(100);
+
+        builder.HasIndex(x => x.Code)
+            .IsUnique();
     }
 }

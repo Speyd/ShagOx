@@ -1,5 +1,4 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities.Translations.Update;
-using ShagOxServer.Application.DTOs.Location.Regions.Translations.Update;
 using ShagOxServer.Domain.Entities.Location.Translations;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Translations.Update;

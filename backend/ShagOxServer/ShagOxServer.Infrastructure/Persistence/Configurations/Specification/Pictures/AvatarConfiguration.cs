@@ -6,7 +6,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification.P
 public class AvatarConfiguration 
     : IEntityTypeConfiguration<Avatar>
 {
-    public void Configure(EntityTypeBuilder<Avatar> builder)
+    public void Configure(
+        EntityTypeBuilder<Avatar> builder)
     {
         builder.Property(x => x.Url)
                .IsRequired()

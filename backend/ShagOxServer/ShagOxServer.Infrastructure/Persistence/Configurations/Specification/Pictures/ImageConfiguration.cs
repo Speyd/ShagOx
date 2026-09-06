@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification.Pictures;
-
 public class ImageConfiguration 
     : IEntityTypeConfiguration<Image>
 {
-    public void Configure(EntityTypeBuilder<Image> builder)
+    public void Configure(
+        EntityTypeBuilder<Image> builder)
     {
         builder.Property(x => x.Url)
                .IsRequired()

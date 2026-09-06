@@ -6,7 +6,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Location.Transl
 public class RegionTranslationConfiguration
     : IEntityTypeConfiguration<RegionTranslation>
 {
-    public void Configure(EntityTypeBuilder<RegionTranslation> builder)
+    public void Configure(
+        EntityTypeBuilder<RegionTranslation> builder)
     {
         builder.Property(x => x.Language)
            .HasMaxLength(30)

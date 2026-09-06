@@ -7,7 +7,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Account;
 public class UserConfiguration 
     : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(
+        EntityTypeBuilder<User> builder)
     {
         builder.Property(x => x.Name)
                .HasMaxLength(35);

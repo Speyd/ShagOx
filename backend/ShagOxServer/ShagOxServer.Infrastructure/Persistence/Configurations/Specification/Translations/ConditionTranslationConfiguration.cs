@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Entities.Location.Translations;
+using ShagOxServer.Domain.Entities.Specification.Translations;
 
-namespace ShagOxServer.Infrastructure.Persistence.Configurations.Location.Translations;
-public class CityTranslationConfiguration
-    : IEntityTypeConfiguration<CityTranslation>
+namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification.Translations;
+public class ConditionTranslationConfiguration
+    : IEntityTypeConfiguration<ConditionTranslation>
 {
     public void Configure(
-        EntityTypeBuilder<CityTranslation> builder)
+        EntityTypeBuilder<ConditionTranslation> builder)
     {
         builder.Property(x => x.Language)
            .HasMaxLength(30)

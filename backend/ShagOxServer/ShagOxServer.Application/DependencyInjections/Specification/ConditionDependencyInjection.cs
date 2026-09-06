@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Specification.Translations;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Query;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
@@ -18,6 +19,8 @@ public static class ConditionDependencyInjection
         services.AddScoped<IConditionDeleteService, ConditionDeleteService>();
 
         services.AddScoped<ConditionValidator>();
+
+        services.AddConditionTranslationApplication();
 
         return services;
     }

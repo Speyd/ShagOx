@@ -6,7 +6,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements.
 public class StatusTranslationConfiguration 
     : IEntityTypeConfiguration<StatusTranslation>
 {
-    public void Configure(EntityTypeBuilder<StatusTranslation> builder)
+    public void Configure(
+        EntityTypeBuilder<StatusTranslation> builder)
     {
         builder.Property(x => x.Language)
             .HasMaxLength(30)

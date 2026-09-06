@@ -7,7 +7,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
 public class CategoryConfiguration 
     : IEntityTypeConfiguration<Category>
 {
-    public void Configure(EntityTypeBuilder<Category> builder)
+    public void Configure(
+        EntityTypeBuilder<Category> builder)
     {
         builder.Property(x => x.Name)
             .IsRequired()

@@ -9,7 +9,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements;
 public class AdvertisementConfiguration 
     : IEntityTypeConfiguration<Advertisement>
 {
-    public void Configure(EntityTypeBuilder<Advertisement> builder)
+    public void Configure(
+        EntityTypeBuilder<Advertisement> builder)
     {
         builder.Property(x => x.Title)
                .IsRequired()

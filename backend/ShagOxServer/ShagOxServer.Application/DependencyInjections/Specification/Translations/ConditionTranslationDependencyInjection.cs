@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Query;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Create;
+using ShagOxServer.Application.Services.Specification.Conditions.Translations.Delete;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Query;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Validator;
 
@@ -17,8 +19,8 @@ public static class ConditionTranslationDependencyInjection
         services.AddScoped<IConditionTranslationCreateService,
             ConditionTranslationCreateService>();
 
-        //services.AddScoped<ICityTranslationDeleteService,
-        //    CityTranslationDeleteService>();
+        services.AddScoped<IConditionTranslationDeleteService,
+            ConditionTranslationDeleteService>();
 
         //services.AddScoped<ICityTranslationUpdateService,
         //    CityTranslationUpdateService>();

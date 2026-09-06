@@ -1,11 +1,40 @@
 .footer {
-  background-color: #333;
+  background-color: var(--color-base);
   color: #fff;
-  padding: 20px;
+  padding: 50px 0;
 }
 
 .content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 60px;
+}
+
+.footerLink {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.footerSupportContainer {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.support {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.supportText {
+  display: flex;
+  flex-direction: column;
 }

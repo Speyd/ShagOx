@@ -17,6 +17,7 @@ import UsersPage from "@/pages/admin/users/users-page/UsersPage";
 import AdvertisementsPage from "@/pages/admin/advertisements/advertisements-page";
 import CategoriesPage from "@/pages/admin/categories/categories-page/CategoriesPage";
 import UpdateUserPage from "@/pages/admin/users/update-user-page/UpdateUserPage";
+import UpdateCategoriesPage from "@/pages/admin/categories/update-categories-page/UpdateCategoriesPage";
 
 export default function Router() {
   return (
@@ -39,6 +40,10 @@ export default function Router() {
           />
           <Route path="update-user/:id" element={<UpdateUserPage />} />
           <Route path="categories" element={<CategoriesPage />} />
+          <Route
+            path="update-category/:id"
+            element={<UpdateCategoriesPage />}
+          />
         </Route>
 
         <Route element={<MainLayout />}>
@@ -79,9 +84,8 @@ export default function Router() {
             element={<UserUpdateAdvertisementPage />}
           />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
-
-        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

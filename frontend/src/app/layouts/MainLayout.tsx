@@ -1,8 +1,8 @@
 import Container from "@/shared/ui/container";
 import Footer from "@/widgets/footer";
-import Header from "@/widgets/header";
 import { Outlet } from "react-router-dom";
 import styles from "./MainLayout.module.css";
+import { Header } from "@/widgets/header";
 
 export default function MainLayout() {
   return (

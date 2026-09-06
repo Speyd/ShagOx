@@ -19,6 +19,6 @@ public class CityExistsRepository
         string cityName)
     {
         return await _db.Cities.AnyAsync(
-            x => (x.RegionId == regionId && x.Code == x.Code));
+            x => x.RegionId == regionId && x.Name == cityName);
     }
 }

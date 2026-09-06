@@ -5,6 +5,7 @@
   padding-left: 20px;
   padding-right: 20px;
   box-sizing: border-box;
+  padding: 0 clamp(16px, 2vw, 32px);
 }
 
 @media (min-width: 768px) {

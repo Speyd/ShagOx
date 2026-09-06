@@ -14,6 +14,7 @@ public static class FavoriteQueryExtensions
                 .ThenInclude(a => a.UserRoles)
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Category)
+                    .ThenInclude(c => c.ProductType)
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Currency)
             .Include(x => x.Advertisement)

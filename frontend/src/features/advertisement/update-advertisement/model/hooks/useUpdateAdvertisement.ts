@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 import axios from "axios";
 import { updateAdvertisement } from "../../api/api";
-import type { UpdateAdvertisementRequestDto } from "@/features/admin/advertisement/update-advertisement/model/types";
+import type { UpdateAdvertisementRequestDto } from "../types";
 
 type UpdateAdvertisementRequest = {
   id: number;

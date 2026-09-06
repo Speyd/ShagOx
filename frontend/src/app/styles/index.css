@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 #root {
   display: flex;
@@ -20,16 +20,45 @@ body {
 }
 
 :root {
-  --font-base: "Poppins", sans-serif;
+  --font-base: "Inter", sans-serif;
+  --font-logo: "Poppins", sans-serif;
   --font-alt: "Manrope", sans-serif;
-  --bg-base: #f8fafc;
+  --bg-base: #f2f7fe;
   --color-base: #0c233f;
   --text-base: #334155;
-  --color-primary: #32639d;
+  --font-xs: 12px;
+  --font-sm: 14px;
+  --font-md: 16px;
+  --font-lg: 20px;
+  --font-xl: 24px;
+  --font-xxl: 30px;
 }
 
 .error {
   color: red;
   font-weight: 600;
   font-size: 12px;
+}
+
+.icon {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  color: var(--color-base);
+  stroke-width: 1.5;
+  flex-shrink: 0;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.icon:hover {
+  color: #1e40af;
+  transform: scale(1.08);
+}
+
+.iconLarge {
+  width: 30px;
+  height: 30px;
 }

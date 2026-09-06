@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import styles from "./AdvertisementPage.module.css";
 import Price from "@/shared/ui/price";
-import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGetAdvertisement";
 import UpdateAdvertisementButton from "@/features/advertisement/update-advertisement/ui/UpdateAdvertisementButton";
 import DeleteAdvertisementButton from "@/features/advertisement/delete-advertisement";
 import { useAuthStore } from "@/features/auth/store/useAuthStore";
+import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGetAdvertisement";
 
 export default function AdvertisementPage() {
   const { id } = useParams<{ id: string }>();

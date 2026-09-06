@@ -10,5 +10,5 @@ export type UpdateAdvertisementRequestDto = {
   description?: string;
   price?: number;
   properties?: Record<string, string>;
-  images: AdvertisementImageUpdate[];
+  images?: AdvertisementImageUpdate[];
 };

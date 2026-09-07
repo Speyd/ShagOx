@@ -1,24 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Entities.Advertisements.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
-namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements.Translations;
-public class StatusTranslationConfiguration 
-    : IEntityTypeConfiguration<StatusTranslation>
+namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries.Translations;
+public class AttributeDefinitionTranslationConfiguration
+    : IEntityTypeConfiguration<AttributeDefinitionTranslation>
 {
     public void Configure(
-        EntityTypeBuilder<StatusTranslation> builder)
+        EntityTypeBuilder<AttributeDefinitionTranslation> builder)
     {
         builder.Property(x => x.Language)
-            .HasMaxLength(30)
-            .IsRequired();
+           .HasMaxLength(30)
+           .IsRequired();
 
         builder.Property(x => x.Name)
             .HasMaxLength(100)
-            .IsRequired();
-
-        builder.Property(x => x.Description)
-            .HasColumnType("text")
             .IsRequired();
 
         builder.HasOne(x => x.Translatable)
@@ -26,8 +22,9 @@ public class StatusTranslationConfiguration
             .HasForeignKey(x => x.TranslatableId)
             .OnDelete(DeleteBehavior.Cascade);
 
+
         builder.HasIndex(x => new { x.TranslatableId, x.Language })
-           .IsUnique();
+            .IsUnique();
 
         builder.HasIndex(x => x.Name);
 

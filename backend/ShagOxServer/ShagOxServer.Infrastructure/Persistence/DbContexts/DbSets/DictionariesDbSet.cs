@@ -2,7 +2,6 @@
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
-
 public partial class AppDbContext : DbContext
 {
     public DbSet<ProductType> ProductTypes { get; set; }

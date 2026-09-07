@@ -3,19 +3,19 @@ using ShagOxServer.Application.DTOs.Location.Cities.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Update;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Translations.Update;
 public class CityTranslationUpdateService
-    : ICityTranslationUpdateService
+    : BaseTranslationSerivce<City, CityTranslation>,
+    ICityTranslationUpdateService
 {
     private readonly IRepository<CityTranslation> _cityRepository;
-    private readonly CityTranslationValidator _cityTranslationValidator;
-    private readonly CityValidator _cityValidator;
-
 
     private readonly IUnitOfWork _unitOfWork;
 
@@ -24,11 +24,10 @@ public class CityTranslationUpdateService
         IRepository<CityTranslation> cityRepository,
         CityTranslationValidator cityTranslationValidator,
         CityValidator cityValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork
+        ) : base(cityValidator, cityTranslationValidator)
     {
         _cityRepository = cityRepository;
-        _cityTranslationValidator = cityTranslationValidator;
-        _cityValidator = cityValidator;
         _unitOfWork = unitOfWork;
     }
 
@@ -37,7 +36,7 @@ public class CityTranslationUpdateService
         int statusTranslationId,
         CityTranslationUpdateRequest request)
     {
-        var status = await _cityTranslationValidator
+        var status = await _translationValidator
             .GetByIdAsync(statusTranslationId);
 
         if (!status.IsSuccess)
@@ -76,38 +75,5 @@ public class CityTranslationUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
-    }
-
-    private async Task<Result<bool>> ValidateUpdatesAsync(
-        CityTranslation city,
-        CityTranslationUpdateRequest request)
-    {
-        if (request.CityId is not null &&
-           request.CityId != city.TranslatableId)
-        {
-            var validator = await _cityValidator
-                .ExistsByIdAsync(request.CityId.Value);
-
-            if (!validator.IsSuccess)
-                return Result<bool>.Fail(validator.Error);
-        }
-
-        if (request.Language is not null)
-        {
-            if ((request.CityId is not null &&
-                request.CityId != city.TranslatableId) ||
-                request.Language != city.Language)
-            {
-                var validator = await _cityTranslationValidator
-                    .ExistsAsync(
-                        request.CityId ?? city.TranslatableId,
-                        request.Language);
-
-                if (!validator.IsSuccess)
-                    return Result<bool>.Fail(validator.Error);
-            }
-        }
-
-        return Result<bool>.Success(true);
     }
 }

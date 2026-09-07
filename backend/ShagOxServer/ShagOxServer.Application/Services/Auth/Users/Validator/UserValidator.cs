@@ -1,13 +1,13 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users.Update;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Validator;
 public class UserValidator
+    : BaseValidator<User>
 {
-    private readonly IRepository<User> _userRepository;
     private readonly IUserQueryRepository _userQueryRepository;
     private readonly IUserExistsRepository _userExistsRepository;
 
@@ -15,57 +15,33 @@ public class UserValidator
     public UserValidator(
         IRepository<User> userRepository,
         IUserQueryRepository userQueryRepository,
-        IUserExistsRepository userExistsRepository)
+        IUserExistsRepository userExistsRepository
+    ) : base(userRepository, userExistsRepository)
     {
-        _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
         _userExistsRepository = userExistsRepository;
     }
 
-
-    public async Task<Result<User>> GetByIdAsync(
-        int userId)
-    {
-        var user = await _userRepository.GetByIdAsync(userId);
-        if (user is null)
-            return Result<User>.NotFound("User");
-
-        return Result<User>.Success(user);
-    }
 
     public async Task<Result<User>> GetByIdWithIncludesAsync(
         int userId)
     {
         var user = await _userQueryRepository.GetByIdAsync(userId);
         if (user is null)
-            return Result<User>.NotFound("User");
+            return Result<User>.NotFound(typeof(User));
 
         return Result<User>.Success(user);
-    }
-
-    public async Task<Result<bool>> ExistsByIdAsync(
-       int userId)
-    {
-        if (!await _userExistsRepository.ExistsByIdAsync(userId))
-            return Result<bool>.NotFound("User");
-
-        return Result<bool>.Success(true);
-    }
-
-    public async Task<Result<bool>> NotExistsByIdAsync(
-       int userId)
-    {
-        if (await _userExistsRepository.ExistsByIdAsync(userId))
-            return Result<bool>.AlreadyExists("User");
-
-        return Result<bool>.Success(true);
     }
 
     public async Task<Result<bool>> ExistsByPhoneAsync(
       string phone)
     {
-        if (!await _userExistsRepository.ExistsPhoneAsync(phone))
-            return Result<bool>.NotFound("User");
+        if (!await _userExistsRepository
+                .ExistsPhoneAsync(phone))
+        {
+            return Result<bool>
+                .NotFound(typeof(User));
+        }
 
         return Result<bool>.Success(true);
     }
@@ -73,8 +49,12 @@ public class UserValidator
     public async Task<Result<bool>> NotExistsByPhoneAsync(
        string phone)
     {
-        if (await _userExistsRepository.ExistsPhoneAsync(phone))
-            return Result<bool>.AlreadyExists("User");
+        if (await _userExistsRepository
+                .ExistsPhoneAsync(phone))
+        {
+            return Result<bool>
+                .AlreadyExists(typeof(User));
+        }
 
         return Result<bool>.Success(true);
     }
@@ -82,8 +62,12 @@ public class UserValidator
     public async Task<Result<bool>> ExistsByEmailAsync(
       string email)
     {
-        if (!await _userExistsRepository.ExistsEmailAsync(email))
-            return Result<bool>.NotFound("User");
+        if (!await _userExistsRepository
+                .ExistsEmailAsync(email))
+        {
+            return Result<bool>
+                .NotFound(typeof(User));
+        }
 
         return Result<bool>.Success(true);
     }
@@ -91,8 +75,12 @@ public class UserValidator
     public async Task<Result<bool>> NotExistsByEmailAsync(
        string email)
     {
-        if (await _userExistsRepository.ExistsEmailAsync(email))
-            return Result<bool>.AlreadyExists("User");
+        if (await _userExistsRepository
+            .ExistsEmailAsync(email))
+        {
+            return Result<bool>
+                .AlreadyExists(typeof(User));
+        }
 
         return Result<bool>.Success(true);
     }

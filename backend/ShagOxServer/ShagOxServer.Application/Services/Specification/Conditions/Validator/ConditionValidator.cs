@@ -1,57 +1,34 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Validator;
 public class ConditionValidator
+    : BaseValidator<Condition>
 {
-    private readonly IRepository<Condition> _repository;
-    private readonly IConditionExistsRepository _existsRepository;
+    private readonly IConditionExistsRepository _conditionExistsRepository;
 
 
     public ConditionValidator(
         IRepository<Condition> conditionRepository,
-        IConditionExistsRepository existsRepository)
+        IConditionExistsRepository conditionExistsRepository
+    ) : base(conditionRepository, conditionExistsRepository)
     {
-        _repository = conditionRepository;
-        _existsRepository = existsRepository;
-    }
-
-    public async Task<Result<Condition>> GetByIdAsync(
-       int conditionId)
-    {
-        var condition = await _repository.GetByIdAsync(conditionId);
-        if (condition is null)
-            return Result<Condition>.NotFound("Condition");
-
-        return Result<Condition>.Success(condition);
-    }
-
-    public async Task<Result<bool>> ExistsByIdAsync(
-      int id)
-    {
-        if (!await _existsRepository.ExistsByIdAsync(id))
-            return Result<bool>.NotFound("Condition");
-
-        return Result<bool>.Success(false);
-    }
-
-    public async Task<Result<bool>> NotExistsByIdAsync(
-      int id)
-    {
-        if (await _existsRepository.ExistsByIdAsync(id))
-            return Result<bool>.AlreadyExists("Condition");
-
-        return Result<bool>.Success(false);
+        _conditionExistsRepository = conditionExistsRepository;
     }
 
     public async Task<Result<bool>> ExistsByNameAsync(
         string code)
     {
 
-        if (!await _existsRepository.ExistsByCodeAsync(code))
-            return Result<bool>.NotFound("Condition");
+        if (!await _conditionExistsRepository
+            .ExistsByCodeAsync(code))
+        {
+            return Result<bool>
+                .NotFound(typeof(Condition));
+        }
 
         return Result<bool>.Success(false);
     }
@@ -59,8 +36,12 @@ public class ConditionValidator
     public async Task<Result<bool>> NotExistsByCodeAsync(
         string code)
     {
-        if (!await _existsRepository.ExistsByCodeAsync(code))
-            return Result<bool>.AlreadyExists("Condition");
+        if (!await _conditionExistsRepository
+            .ExistsByCodeAsync(code))
+        {
+            return Result<bool>
+                .AlreadyExists(typeof(Condition));
+        }
 
         return Result<bool>.Success(false);
     }

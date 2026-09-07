@@ -5,34 +5,29 @@ using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 
 [ApiController]
-[Route("api/attributes")]
-[Authorize]
+[Route("api/admin/attributes")]
+[Authorize(Roles = "Admin")]
 public class AttributeDefinitionCommandsController : ApiController
 {
     private readonly IAttributeDefinitionCreateService _createService;
     private readonly IAttributeDefinitionUpdateService _updateService;
     private readonly IAttributeDefinitionDeleteService _deleteService;
-    private readonly ICategoryQueryService _categoryService;
 
 
     public AttributeDefinitionCommandsController(
         IAttributeDefinitionCreateService createService,
         IAttributeDefinitionUpdateService updateService,
-        IAttributeDefinitionDeleteService deleteService,
-        ICategoryQueryService categoryService
+        IAttributeDefinitionDeleteService deleteService
         )
     {
         _createService = createService;
         _updateService = updateService;
         _deleteService = deleteService;
-        _categoryService = categoryService;
     }
 
 
@@ -51,8 +46,6 @@ public class AttributeDefinitionCommandsController : ApiController
         [FromRoute] int id,
         [FromBody] AttributeDefinitionUpdateRequest request)
     {
-        var c = await _categoryService.GetByProductTypeAsync(id,  new PaginationParams());
-
         var result = await _updateService
             .UpdateAsync(id, request);
 

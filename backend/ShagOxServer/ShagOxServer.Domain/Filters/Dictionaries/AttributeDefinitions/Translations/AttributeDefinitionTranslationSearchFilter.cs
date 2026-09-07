@@ -1,7 +1,7 @@
 ﻿namespace ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions.Translations;
 public sealed record AttributeDefinitionTranslationSearchFilter
 (
-    string? AttributeDefinitionCode,
+    string? AttributeDefinitionKey,
     string? Language,
     string? Name
 );

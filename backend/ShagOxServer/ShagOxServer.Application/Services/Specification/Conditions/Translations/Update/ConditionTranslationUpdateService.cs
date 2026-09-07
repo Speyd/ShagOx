@@ -3,18 +3,20 @@ using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Update
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Update;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Validator;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Translations.Update;
 public class ConditionTranslationUpdateService
-    : IConditionTranslationUpdateService
+    : BaseTranslationSerivce<Condition, ConditionTranslation>,
+    IConditionTranslationUpdateService
 {
     private readonly IRepository<ConditionTranslation> _conditionRepository;
     private readonly ConditionTranslationValidator _conditionTranslationValidator;
-    private readonly ConditionValidator _conditionValidator;
 
 
     private readonly IUnitOfWork _unitOfWork;
@@ -24,11 +26,11 @@ public class ConditionTranslationUpdateService
         IRepository<ConditionTranslation> conditionRepository,
         ConditionTranslationValidator conditionTranslationValidator,
         ConditionValidator conditionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork
+    ) : base(conditionValidator, conditionTranslationValidator)
     {
         _conditionRepository = conditionRepository;
         _conditionTranslationValidator = conditionTranslationValidator;
-        _conditionValidator = conditionValidator;
         _unitOfWork = unitOfWork;
     }
 
@@ -76,38 +78,5 @@ public class ConditionTranslationUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
-    }
-
-    private async Task<Result<bool>> ValidateUpdatesAsync(
-        ConditionTranslation condition,
-        ConditionTranslationUpdateRequest request)
-    {
-        if (request.ConditionId is not null &&
-           request.ConditionId != condition.TranslatableId)
-        {
-            var validator = await _conditionValidator
-                .ExistsByIdAsync(request.ConditionId.Value);
-
-            if (!validator.IsSuccess)
-                return Result<bool>.Fail(validator.Error);
-        }
-
-        if (request.Language is not null)
-        {
-            if ((request.ConditionId is not null &&
-                request.ConditionId != condition.TranslatableId) ||
-                request.Language != condition.Language)
-            {
-                var validator = await _conditionTranslationValidator
-                    .ExistsAsync(
-                        request.ConditionId ?? condition.TranslatableId,
-                        request.Language);
-
-                if (!validator.IsSuccess)
-                    return Result<bool>.Fail(validator.Error);
-            }
-        }
-
-        return Result<bool>.Success(true);
     }
 }

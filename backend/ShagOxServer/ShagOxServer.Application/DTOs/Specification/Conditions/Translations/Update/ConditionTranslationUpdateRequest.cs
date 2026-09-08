@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Common.Requests.Translations;
+﻿using ShagOxServer.Application.DTOs.Base.Requests.Translations;
 
 namespace ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Update;
 public sealed record ConditionTranslationUpdateRequest

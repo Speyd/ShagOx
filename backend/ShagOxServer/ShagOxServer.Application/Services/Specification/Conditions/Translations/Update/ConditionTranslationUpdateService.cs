@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Common.Responses;
+﻿using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -12,7 +12,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Translations.Update;
 public class ConditionTranslationUpdateService
-    : BaseTranslationSerivce<Condition, ConditionTranslation>,
+    : BaseTranslationUpdateSerivce<Condition, ConditionTranslation>,
     IConditionTranslationUpdateService
 {
     private readonly IRepository<ConditionTranslation> _conditionRepository;

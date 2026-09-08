@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Update;
-using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
@@ -12,7 +12,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Update;
 public class StatusTranslationUpdateService
-    : BaseTranslationSerivce<Status, StatusTranslation>,
+    : BaseTranslationUpdateSerivce<Status, StatusTranslation>,
     IStatusTranslationUpdateService
 {
     private readonly IRepository<StatusTranslation> _statusRepository;

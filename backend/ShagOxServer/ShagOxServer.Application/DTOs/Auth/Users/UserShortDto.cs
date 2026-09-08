@@ -1,5 +1,6 @@
-﻿namespace ShagOxServer.Application.DTOs.Auth.Users;
+﻿using ShagOxServer.Application.DTOs.Base;
 
+namespace ShagOxServer.Application.DTOs.Auth.Users;
 public sealed record UserShortDto
 (
     int Id,
@@ -14,4 +15,4 @@ public sealed record UserShortDto
     string? CityName,
 
     DateTime? LastSeenAt
-);
+) : BaseDto(Id);

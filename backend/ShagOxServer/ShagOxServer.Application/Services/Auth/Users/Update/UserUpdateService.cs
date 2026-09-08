@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ShagOxServer.Application.DTOs.Auth.Users.Update;
-using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;

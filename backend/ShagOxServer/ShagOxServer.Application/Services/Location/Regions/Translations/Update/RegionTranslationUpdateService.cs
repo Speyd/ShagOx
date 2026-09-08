@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Common.Responses;
+﻿using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -12,7 +12,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Translations.Update;
 public class RegionTranslationUpdateService
-    : BaseTranslationSerivce<Region, RegionTranslation>,
+    : BaseTranslationUpdateSerivce<Region, RegionTranslation>,
     IRegionTranslationUpdateService
 {
     private readonly IRepository<RegionTranslation> _regionRepository;

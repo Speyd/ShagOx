@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Domain.Entities.Dictionaries.Enum;
+﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 
 namespace ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
-
 public sealed record AttributeDefinitionDto
 (
     int Id,
@@ -12,4 +12,4 @@ public sealed record AttributeDefinitionDto
     bool Required,
     int? Min,
     int? Max
-);
+) : BaseDto(Id);

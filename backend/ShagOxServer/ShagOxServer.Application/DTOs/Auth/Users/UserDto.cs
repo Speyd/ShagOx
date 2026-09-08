@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Roles;
+using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Location.Cities;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars;
 
@@ -19,4 +20,4 @@ public sealed record UserDto
 
     DateTime? LastSeenAt,
     DateTime RegisteredAt
-);
+) : BaseDto(Id);

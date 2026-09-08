@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Application.DTOs.Common.Requests.Translations;
+﻿namespace ShagOxServer.Application.DTOs.Base.Requests.Translations;
 public abstract record TranslationUpdateRequest
 (
     int? TranslatableId,

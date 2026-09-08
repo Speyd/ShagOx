@@ -1,47 +1,35 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 public class AttributeDefinitionValidator
+    : BaseValidator<AttributeDefinition>
 {
-    private readonly IRepository<AttributeDefinition> _attributeRepository;
     private readonly IAttributeDefinitionExistsRepository _attributeExistsRepository;
 
 
     public AttributeDefinitionValidator(
         IRepository<AttributeDefinition> attributeRepository,
-        IAttributeDefinitionExistsRepository attributeExistsRepository)
+        IAttributeDefinitionExistsRepository attributeExistsRepository
+    ) : base(attributeRepository, attributeExistsRepository)
     {
-        _attributeRepository = attributeRepository;
         _attributeExistsRepository = attributeExistsRepository;
     }
 
-    public async Task<Result<AttributeDefinition>> GetByIdAsync(
-        int attributeId)
+
+    public async Task<Result<bool>> ExistsByKeyAsync(
+      string attributeName,
+      int categoryId)
     {
-        var attribute = await _attributeRepository.GetByIdAsync(attributeId);
-        if (attribute is null)
-            return Result<AttributeDefinition>.NotFound("Attribute Definition");
-
-        return Result<AttributeDefinition>.Success(attribute);
-    }
-
-    public async Task<Result<bool>> ExistsByIdAsync(
-       int attributeId)
-    {
-        if (!await _attributeExistsRepository.ExistsByIdAsync(attributeId))
-            return Result<bool>.NotFound("Attribute Definition");
-
-        return Result<bool>.Success(true);
-    }
-
-    public async Task<Result<bool>> NotExistsByIdAsync(
-       int attributeId)
-    {
-        if (await _attributeExistsRepository.ExistsByIdAsync(attributeId))
-            return Result<bool>.AlreadyExists("Attribute Definition");
+        if (await _attributeExistsRepository
+            .ExistsByCategoryAsync(attributeName, categoryId))
+        {
+            return Result<bool>
+                .NotFound(typeof(AttributeDefinition));
+        }       
 
         return Result<bool>.Success(true);
     }
@@ -50,12 +38,13 @@ public class AttributeDefinitionValidator
       string attributeName,
       int categoryId)
     {
-        var attribute = await _attributeExistsRepository
-            .ExistsByCategoryAsync(attributeName, categoryId);
+        if (await _attributeExistsRepository
+            .ExistsByCategoryAsync(attributeName, categoryId))
+        {
+            return Result<bool>
+                .AlreadyExists(typeof(AttributeDefinition));
+        }
 
-        if (attribute)
-            return Result<bool>.AlreadyExists("Attribute Definition");
-
-        return Result<bool>.Success(attribute);
+        return Result<bool>.Success(true);
     }
 }

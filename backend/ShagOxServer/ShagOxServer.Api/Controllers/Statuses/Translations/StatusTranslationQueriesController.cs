@@ -37,7 +37,8 @@ public class StatusTranslationQueriesController : ApiController
     public async Task<IActionResult> GetPaged(
         [FromQuery] PaginationParams pagination)
     {
-        string language = _languageProvider.Language;
+        string language = _languageProvider
+           .GetTwoLetterISOName();
 
         var result = await _queryService
             .GetPagedAsync(pagination, language);

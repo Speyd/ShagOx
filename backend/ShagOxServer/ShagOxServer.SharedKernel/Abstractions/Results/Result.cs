@@ -17,6 +17,12 @@ public class Result<T>
     public static Result<T> NotFound(string objectName)
         => new() { IsSuccess = false, Error =  $"{objectName} not found" };
 
+    public static Result<T> NotFound(Type type)
+        => new() { IsSuccess = false, Error = $"{type.Name} not found" };
+
+    public static Result<T> NotFound()
+        => new() { IsSuccess = false, Error = $"{typeof(T).Name} not found" };
+
     public static Result<T> Unauthorized()
         => new() { IsSuccess = false, Error = "Unauthorized" };
 
@@ -25,4 +31,10 @@ public class Result<T>
 
     public static Result<T> AlreadyExists(string objectName)
         => new() { IsSuccess = false, Error = $"{objectName} already exists" };
+
+    public static Result<T> AlreadyExists(Type type)
+        => new() { IsSuccess = false, Error = $"{type.Name} already exists" };
+
+    public static Result<T> AlreadyExists()
+        => new() { IsSuccess = false, Error = $"{typeof(T).Name} already exists" };
 }

@@ -1,20 +1,22 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Update;
-using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
+using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Update;
 public class StatusTranslationUpdateService
-    : IStatusTranslationUpdateService
+    : BaseTranslationUpdateSerivce<Status, StatusTranslation>,
+    IStatusTranslationUpdateService
 {
     private readonly IRepository<StatusTranslation> _statusRepository;
     private readonly StatusTranslationValidator _statusTranslationValidator;
-    private readonly StatusValidator _statusValidator;
 
 
     private readonly IUnitOfWork _unitOfWork;
@@ -24,11 +26,11 @@ public class StatusTranslationUpdateService
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusTranslationValidator,
         StatusValidator statusValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork
+    ) : base(statusValidator, statusTranslationValidator)
     {
         _statusRepository = statusRepository;
         _statusTranslationValidator = statusTranslationValidator;
-        _statusValidator = statusValidator;
         _unitOfWork = unitOfWork;
     }
 
@@ -76,38 +78,5 @@ public class StatusTranslationUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
-    }
-
-    private async Task<Result<bool>> ValidateUpdatesAsync(
-        StatusTranslation status,
-        StatusTranslationUpdateRequest request)
-    {
-        if (request.StatusId is not null &&
-           request.StatusId != status.TranslatableId)
-        {
-            var validator = await _statusValidator
-                .ExistsByIdAsync(request.StatusId.Value);
-
-            if (!validator.IsSuccess)
-                return Result<bool>.Fail(validator.Error);
-        }
-
-        if (request.Language is not null)
-        {
-            if ((request.StatusId is not null && 
-                request.StatusId != status.TranslatableId) ||
-                request.Language != status.Language)
-            {
-                var validator = await _statusTranslationValidator
-                    .ExistsAsync(
-                        request.StatusId ?? status.TranslatableId, 
-                        request.Language);
-
-                if (!validator.IsSuccess)
-                    return Result<bool>.Fail(validator.Error);
-            }
-        }
-
-        return Result<bool>.Success(true);
     }
 }

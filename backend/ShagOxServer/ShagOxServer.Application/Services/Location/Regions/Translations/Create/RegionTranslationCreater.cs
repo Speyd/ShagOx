@@ -9,7 +9,7 @@ public static class RegionTranslationCreater
     {
         return new RegionTranslation
         {
-            TranslatableId = request.RegionId,
+            TranslatableId = request.TranslatableId,
             Language = request.Language,
             Name = request.Name
         };

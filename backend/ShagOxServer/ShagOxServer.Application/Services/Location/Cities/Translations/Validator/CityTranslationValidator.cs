@@ -1,103 +1,47 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
 public class CityTranslationValidator
+    : BaseTranslationValidator<CityTranslation>
 {
-    private readonly IRepository<CityTranslation> _cityRepository;
-    private readonly IRegionTranslationExistsRepository _cityExistsRepository;
+    private readonly ICityTranslationExistsRepository _cityTranslationExistsRepository;
 
 
     public CityTranslationValidator(
         IRepository<CityTranslation> cityRepository,
-        IRegionTranslationExistsRepository cityExistsRepository)
+        ICityTranslationExistsRepository cityTranslationExistsRepository
+    ) : base(cityRepository, cityTranslationExistsRepository)
+
     {
-        _cityRepository = cityRepository;
-        _cityExistsRepository = cityExistsRepository;
+        _cityTranslationExistsRepository = cityTranslationExistsRepository;
     }
 
 
-    public async Task<Result<CityTranslation>> GetByIdAsync(
-        int cityId)
+    public async Task<Result<bool>> ExistsByNameAsync(
+        string name)
     {
-        var city = await _cityRepository.GetByIdAsync(cityId);
-        if (city is null)
-            return Result<CityTranslation>.NotFound("City Translation");
-
-        return Result<CityTranslation>.Success(city);
-    }
-
-    public async Task<Result<bool>> ExistsAsync(
-        int cityId,
-        string language)
-    {
-        if (!await _cityExistsRepository
-            .ExistsAsync(cityId, language))
+        if (!await _cityTranslationExistsRepository
+                .ExistsByNameAsync(name))
         {
-            return Result<bool>.NotFound("City Translation");
+            return Result<bool>
+                .NotFound(typeof(CityTranslation));
         }
 
         return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> NotExistsAsync(
-        int cityId,
-        string language)
+    public async Task<Result<bool>> NotExistsByNameAsync(
+        string name)
     {
-        if (await _cityExistsRepository
-            .ExistsAsync(cityId, language))
+        if (await _cityTranslationExistsRepository
+                .ExistsByNameAsync(name))
         {
-            return Result<bool>.AlreadyExists("City Translation");
-        }
-
-        return Result<bool>.Success(true);
-    }
-
-    public async Task<Result<bool>> ExistsByIdAsync(
-        int cityId)
-    {
-        if (!await _cityExistsRepository
-            .ExistsByIdAsync(cityId))
-        {
-            return Result<bool>.NotFound("City Translation");
-        }
-
-        return Result<bool>.Success(true);
-    }
-
-    public async Task<Result<bool>> NotExistsByIdAsync(
-        int cityId)
-    {
-        if (await _cityExistsRepository
-            .ExistsByIdAsync(cityId))
-        {
-            return Result<bool>.AlreadyExists("City Translation");
-        }
-
-        return Result<bool>.Success(true);
-    }
-
-    public async Task<Result<bool>> ExistsByLanguageAsync(
-        string language)
-    {
-        if (!await _cityExistsRepository
-                .ExistsByLanguageAsync(language))
-        {
-            return Result<bool>.NotFound("City");
-        }
-
-        return Result<bool>.Success(true);
-    }
-
-    public async Task<Result<bool>> NotExistsByLanguageAsync(
-        string language)
-    {
-        if (await _cityExistsRepository
-                .ExistsByLanguageAsync(language))
-        {
-            return Result<bool>.AlreadyExists("City");
+            return Result<bool>
+                .AlreadyExists(typeof(CityTranslation));
         }
 
         return Result<bool>.Success(true);

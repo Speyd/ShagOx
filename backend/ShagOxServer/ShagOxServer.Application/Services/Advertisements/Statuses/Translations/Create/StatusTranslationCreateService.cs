@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Create;
-using ShagOxServer.Application.DTOs.Common.Responses;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Create;
@@ -33,7 +33,7 @@ public class StatusTranslationCreateService
         StatusTranslationCreateRequest request)
     {
         var codeValidation = await _statusValidator
-            .NotExistsAsync(request.StatusId, request.Language);
+            .NotExistsAsync(request.TranslatableId, request.Language);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

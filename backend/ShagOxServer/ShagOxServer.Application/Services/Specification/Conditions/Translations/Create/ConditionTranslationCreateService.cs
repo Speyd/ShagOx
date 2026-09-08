@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Common.Responses;
+﻿using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -33,7 +33,7 @@ public class ConditionTranslationCreateService
         ConditionTranslationCreateRequest request)
     {
         var codeValidation = await _conditionValidator
-            .NotExistsAsync(request.ConditionId, request.Language);
+            .NotExistsAsync(request.TranslatableId, request.Language);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

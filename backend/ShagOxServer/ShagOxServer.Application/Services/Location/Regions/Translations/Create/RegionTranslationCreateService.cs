@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Common.Responses;
+﻿using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -33,7 +33,7 @@ public class RegionTranslationCreateService
         RegionTranslationCreateRequest request)
     {
         var codeValidation = await _regionValidator
-            .NotExistsAsync(request.RegionId, request.Language);
+            .NotExistsAsync(request.TranslatableId, request.Language);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

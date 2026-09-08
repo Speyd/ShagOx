@@ -1,6 +1,6 @@
-﻿
-using ShagOxServer.Domain.Base;
+﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
+using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;
 public class AttributeDefinition : BaseEntity
@@ -14,6 +14,10 @@ public class AttributeDefinition : BaseEntity
 
     public int? Min { get; set; }
     public int? Max { get; set; }
+
+    public List<AttributeDefinitionTranslation> Translations { get; set; } 
+        = new();
+
 
     public override string ToString()
     {

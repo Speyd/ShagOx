@@ -9,7 +9,7 @@ public static class ConditionTranslationCreater
     {
         return new ConditionTranslation
         {
-            TranslatableId = request.ConditionId,
+            TranslatableId = request.TranslatableId,
             Language = request.Language,
             Name = request.Name
         };

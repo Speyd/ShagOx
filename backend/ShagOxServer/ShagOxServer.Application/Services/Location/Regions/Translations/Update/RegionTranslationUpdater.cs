@@ -10,9 +10,9 @@ public static class RegionTranslationUpdater
     {
         int countUpdated = 0;
 
-        if (request.RegionId.HasValue)
+        if (request.TranslatableId.HasValue)
         {
-            region.TranslatableId = request.RegionId.Value;
+            region.TranslatableId = request.TranslatableId.Value;
             countUpdated++;
         }
 

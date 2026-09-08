@@ -1,28 +1,15 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
-using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 public class ImageValidator
+    : BaseValidator<Image>
 {
-    private readonly IRepository<Image> _imageRepository;
-
-
     public ImageValidator(
-        IRepository<Image> imageRepository)
+        IRepository<Image> imageRepository,
+        IExistsRepository<Image> imageExistsRepository
+    ) : base(imageRepository, imageExistsRepository)
     {
-        _imageRepository = imageRepository;
-    }
-
-
-    public async Task<Result<Image>> GetByIdAsync(
-        int imageId)
-    {
-        var image = await _imageRepository.GetByIdAsync(imageId);
-
-        if (image is null)
-            return Result<Image>.NotFound("Image");
-
-        return Result<Image>.Success(image);
     }
 }

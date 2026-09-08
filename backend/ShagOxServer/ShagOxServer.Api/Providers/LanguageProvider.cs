@@ -42,4 +42,13 @@ public class LanguageProvider(IHttpContextAccessor httpContextAccessor)
             }
         }
     }
+
+    public string GetTwoLetterISOName()
+    {
+        var culture = CultureInfo.GetCultureInfo(Language);
+
+        var languageCode = culture.TwoLetterISOLanguageName;
+
+        return languageCode;
+    }
 }

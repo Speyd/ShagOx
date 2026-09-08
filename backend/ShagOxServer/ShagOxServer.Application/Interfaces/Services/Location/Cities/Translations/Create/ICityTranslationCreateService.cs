@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Common.Responses;
+﻿using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Cities.Translations.Create;
 using ShagOxServer.Application.Interfaces.Services.Base;
 

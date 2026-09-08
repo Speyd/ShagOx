@@ -26,7 +26,11 @@ public class StatusTranslationConfiguration
             .HasForeignKey(x => x.TranslatableId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => new { x.Language, x.Name})
-            .IsUnique();
+        builder.HasIndex(x => new { x.TranslatableId, x.Language })
+           .IsUnique();
+
+        builder.HasIndex(x => x.Name);
+
+        builder.HasIndex(x => new { x.Language, x.Name });
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ShagOxServer.Application.DTOs.Advertisements;
+﻿using ShagOxServer.Application.DTOs.Base;
+
+namespace ShagOxServer.Application.DTOs.Advertisements;
 public sealed record AdvertisementShortDto
 (
     int Id,
@@ -14,4 +16,4 @@ public sealed record AdvertisementShortDto
     Dictionary<string, string> Properties,
     DateTime? SoldAt,
     DateTime CreatedAt
-);
+) : BaseDto(Id);

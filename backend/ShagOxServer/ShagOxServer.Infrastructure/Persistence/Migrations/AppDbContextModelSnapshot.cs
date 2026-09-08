@@ -276,9 +276,11 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TranslatableId");
+                    b.HasIndex("Name");
 
-                    b.HasIndex("Language", "Name")
+                    b.HasIndex("Language", "Name");
+
+                    b.HasIndex("TranslatableId", "Language")
                         .IsUnique();
 
                     b.ToTable("StatusTranslations");
@@ -369,6 +371,39 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("ProductTypes");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Translations.AttributeDefinitionTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("TranslatableId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("Language", "Name");
+
+                    b.HasIndex("TranslatableId", "Language")
+                        .IsUnique();
+
+                    b.ToTable("AttributeDefinitionTranslations");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>
                 {
                     b.Property<int>("Id")
@@ -439,9 +474,11 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TranslatableId");
+                    b.HasIndex("Name");
 
-                    b.HasIndex("Language", "Name")
+                    b.HasIndex("Language", "Name");
+
+                    b.HasIndex("TranslatableId", "Language")
                         .IsUnique();
 
                     b.ToTable("CityTranslations");
@@ -470,9 +507,11 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TranslatableId");
+                    b.HasIndex("Name");
 
-                    b.HasIndex("Language", "Name")
+                    b.HasIndex("Language", "Name");
+
+                    b.HasIndex("TranslatableId", "Language")
                         .IsUnique();
 
                     b.ToTable("RegionTranslations");
@@ -751,6 +790,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("ProductType");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Translations.AttributeDefinitionTranslation", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", "Translatable")
+                        .WithMany("Translations")
+                        .HasForeignKey("TranslatableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Translatable");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Location.Region", "Region")
@@ -846,6 +896,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                 {
                     b.Navigation("Advertisements");
 
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", b =>
+                {
                     b.Navigation("Translations");
                 });
 

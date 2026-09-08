@@ -9,7 +9,7 @@ public static class AttributeDefinitionTranslationCreater
     {
         return new AttributeDefinitionTranslation
         {
-            TranslatableId = request.AttributeId,
+            TranslatableId = request.TranslatableId,
             Language = request.Language,
             Name = request.Name
         };

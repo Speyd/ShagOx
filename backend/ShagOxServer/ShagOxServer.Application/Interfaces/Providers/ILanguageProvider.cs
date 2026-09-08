@@ -2,4 +2,6 @@
 public interface ILanguageProvider
 {
     string Language { get; }
+
+    string GetTwoLetterISOName();
 }

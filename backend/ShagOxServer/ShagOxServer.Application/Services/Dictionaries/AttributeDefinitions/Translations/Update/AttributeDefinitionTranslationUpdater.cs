@@ -10,9 +10,9 @@ public static class AttributeDefinitionTranslationUpdater
     {
         int countUpdated = 0;
 
-        if (request.AttributeDefenitionId.HasValue)
+        if (request.TranslatableId.HasValue)
         {
-            attribute.TranslatableId = request.AttributeDefenitionId.Value;
+            attribute.TranslatableId = request.TranslatableId.Value;
             countUpdated++;
         }
 

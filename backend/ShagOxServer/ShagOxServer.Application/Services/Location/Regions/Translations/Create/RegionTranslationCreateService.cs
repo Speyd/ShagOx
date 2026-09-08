@@ -33,7 +33,7 @@ public class RegionTranslationCreateService
         RegionTranslationCreateRequest request)
     {
         var codeValidation = await _regionValidator
-            .NotExistsAsync(request.RegionId, request.Language);
+            .NotExistsAsync(request.TranslatableId, request.Language);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

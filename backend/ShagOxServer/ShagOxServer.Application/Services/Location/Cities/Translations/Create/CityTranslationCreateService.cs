@@ -33,7 +33,7 @@ public class CityTranslationCreateService
         CityTranslationCreateRequest request)
     {
         var codeValidation = await _cityValidator
-            .NotExistsAsync(request.CityId, request.Language);
+            .NotExistsAsync(request.TranslatableId, request.Language);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

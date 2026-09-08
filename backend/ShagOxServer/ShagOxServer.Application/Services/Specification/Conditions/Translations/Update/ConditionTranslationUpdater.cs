@@ -10,9 +10,9 @@ public static class ConditionTranslationUpdater
     {
         int countUpdated = 0;
 
-        if (request.ConditionId.HasValue)
+        if (request.TranslatableId.HasValue)
         {
-            condition.TranslatableId = request.ConditionId.Value;
+            condition.TranslatableId = request.TranslatableId.Value;
             countUpdated++;
         }
 

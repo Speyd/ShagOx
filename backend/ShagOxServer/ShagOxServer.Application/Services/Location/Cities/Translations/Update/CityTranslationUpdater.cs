@@ -10,9 +10,9 @@ public static class CityTranslationUpdater
     {
         int countUpdated = 0;
 
-        if (request.CityId.HasValue)
+        if (request.TranslatableId.HasValue)
         {
-            city.TranslatableId = request.CityId.Value;
+            city.TranslatableId = request.TranslatableId.Value;
             countUpdated++;
         }
 

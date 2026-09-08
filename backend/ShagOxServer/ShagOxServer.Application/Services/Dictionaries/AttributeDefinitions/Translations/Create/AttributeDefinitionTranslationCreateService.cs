@@ -33,7 +33,7 @@ public class AttributeDefinitionTranslationCreateService
         AttributeDefinitionTranslationCreateRequest request)
     {
         var codeValidation = await _attributeValidator
-            .NotExistsAsync(request.AttributeId, request.Language);
+            .NotExistsAsync(request.TranslatableId, request.Language);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

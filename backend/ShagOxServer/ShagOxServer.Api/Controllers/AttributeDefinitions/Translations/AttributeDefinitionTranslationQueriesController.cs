@@ -1,23 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Query;
-using ShagOxServer.Domain.Filters.Specification.Conditions.Translations;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Translations.Query;
+using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using System.Globalization;
 
-namespace ShagOxServer.Api.Controllers.Conditions.Translations;
+namespace ShagOxServer.Api.Controllers.AttributeDefinitions.Translations;
 
 [ApiController]
-[Route("api/conditions/translations")]
-public class ConditionTranslationQueriesController
+[Route("api/attributes/translations")]
+public class AttributeDefinitionTranslationQueriesController
     : ApiController
 {
-    private readonly IConditionTranslationQueryService _queryService;
+    private readonly IAttributeDefinitionTranslationQueryService _queryService;
     private readonly ILanguageProvider _languageProvider;
 
-    public ConditionTranslationQueriesController(
-        IConditionTranslationQueryService queryService,
+    public AttributeDefinitionTranslationQueriesController(
+        IAttributeDefinitionTranslationQueryService queryService,
         ILanguageProvider languageProvider)
     {
         _queryService = queryService;
@@ -50,7 +49,7 @@ public class ConditionTranslationQueriesController
 
     [HttpGet("search")]
     public async Task<IActionResult> Search(
-        [FromQuery] ConditionTranslationSearchFilter filter,
+        [FromQuery] AttributeDefinitionTranslationSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService

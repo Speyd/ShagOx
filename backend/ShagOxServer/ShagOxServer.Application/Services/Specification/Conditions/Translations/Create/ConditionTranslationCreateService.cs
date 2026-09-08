@@ -33,7 +33,7 @@ public class ConditionTranslationCreateService
         ConditionTranslationCreateRequest request)
     {
         var codeValidation = await _conditionValidator
-            .NotExistsAsync(request.ConditionId, request.Language);
+            .NotExistsAsync(request.TranslatableId, request.Language);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

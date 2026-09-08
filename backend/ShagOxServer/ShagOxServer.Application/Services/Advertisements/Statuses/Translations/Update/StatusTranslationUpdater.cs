@@ -10,9 +10,9 @@ public static class StatusTranslationUpdater
     {
         int countUpdated = 0;
 
-        if (request.StatusId.HasValue)
+        if (request.TranslatableId.HasValue)
         {
-            status.TranslatableId = request.StatusId.Value;
+            status.TranslatableId = request.TranslatableId.Value;
             countUpdated++;
         }
 

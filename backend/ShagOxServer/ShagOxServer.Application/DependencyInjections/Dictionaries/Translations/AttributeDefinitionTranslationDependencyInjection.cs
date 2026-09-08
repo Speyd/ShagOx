@@ -2,9 +2,11 @@
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Translations.Query;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Translations.Update;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Create;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Delete;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Query;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Update;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Validator;
 
 namespace ShagOxServer.Application.DependencyInjections.Dictionaries.Translations;
@@ -22,8 +24,8 @@ public static class AttributeDefinitionTranslationDependencyInjection
         services.AddScoped<IAttributeDefinitionTranslationDeleteService,
             AttributeDefinitionTranslationDeleteService>();
 
-        //services.AddScoped<ICityTranslationUpdateService,
-        //    CityTranslationUpdateService>();
+        services.AddScoped<IAttributeDefinitionTranslationUpdateService,
+            AttributeDefinitionTranslationUpdateService>();
 
         services.AddScoped<AttributeDefinitionTranslationValidator>();
 

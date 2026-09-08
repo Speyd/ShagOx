@@ -1,7 +1,9 @@
-﻿namespace ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Create;
+﻿using ShagOxServer.Application.DTOs.Base.Requests.Translations;
+
+namespace ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Create;
 public sealed record ConditionTranslationCreateRequest
 (
-    int ConditionId,
+    int TranslatableId,
     string Language,
     string Name
-);
+) : TranslationCreateRequest(TranslatableId, Language);

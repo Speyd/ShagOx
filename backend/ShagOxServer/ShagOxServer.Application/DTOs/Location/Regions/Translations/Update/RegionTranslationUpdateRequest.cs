@@ -3,7 +3,7 @@
 namespace ShagOxServer.Application.DTOs.Location.Regions.Translations.Update;
 public sealed record RegionTranslationUpdateRequest
 (
-    int? RegionId,
+    int? TranslatableId,
     string? Language,
     string? Name
-) : TranslationUpdateRequest(RegionId, Language);
+) : TranslationUpdateRequest(TranslatableId, Language);

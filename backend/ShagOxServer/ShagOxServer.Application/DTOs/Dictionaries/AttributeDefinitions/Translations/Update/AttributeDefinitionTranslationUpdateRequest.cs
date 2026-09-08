@@ -3,7 +3,7 @@
 namespace ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Translations.Update;
 public sealed record AttributeDefinitionTranslationUpdateRequest
 (
-    int? AttributeDefenitionId,
+    int? TranslatableId,
     string? Language,
     string? Name
-) : TranslationUpdateRequest(AttributeDefenitionId, Language);
+) : TranslationUpdateRequest(TranslatableId, Language);

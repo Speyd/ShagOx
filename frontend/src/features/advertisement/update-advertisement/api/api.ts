@@ -17,7 +17,7 @@ export async function updateAdvertisement(
     formData.append(`properties[${key}]`, value);
   }
 
-  data.images.forEach((image, index) => {
+  data.images?.forEach((image, index) => {
     if (image.id != null) {
       formData.append(`images[${index}].id`, image.id.toString());
     }

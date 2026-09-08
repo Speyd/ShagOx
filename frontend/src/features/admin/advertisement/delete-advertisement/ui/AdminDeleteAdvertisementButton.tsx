@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 import IconButton from "@/shared/ui/icon-button/IconButton";
-import { useAdminDeleteAdvertisement } from "../model/hooks/useDeleteAdvertisement";
+import { useAdminDeleteAdvertisement } from "../model/hooks/useAdminDeleteAdvertisement";
 
 type AdminDeleteAdvertisementButtonProps = {
   id: number;

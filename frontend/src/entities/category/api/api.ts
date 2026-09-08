@@ -1,5 +1,5 @@
 import { api } from "@/shared/api/api";
-import type { Category } from "@/shared/lib/types/advertisements";
+import type { Category } from "@/shared/lib/types/category";
 import type { PaginatedResponse } from "@/shared/lib/types/paginatedResponse";
 
 export async function getAdminCategories(
@@ -15,5 +15,10 @@ export async function getAdminCategories(
       },
     },
   );
+  return response.data;
+}
+
+export async function getAdminCategory(id: number): Promise<Category> {
+  const response = await api.get<Category>(`/categories/${id}`);
   return response.data;
 }

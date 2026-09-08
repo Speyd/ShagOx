@@ -4,8 +4,8 @@ import type {
   LogoutResponse,
   RegisterRequest,
   RegisterResponse,
-  User,
 } from "../model/types";
+import type { User } from "@/shared/lib/types/user";
 
 export async function login(data: LoginRequest) {
   await api.post("/login", data);

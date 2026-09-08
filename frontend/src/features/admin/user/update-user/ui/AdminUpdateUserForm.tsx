@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -23,6 +23,7 @@ import {
 } from "../model/schemas/schema";
 import useAdminUpdateUser from "../model/hooks/useAdminUpdateUser";
 import AvatarCropModal from "./AvatarCropModal";
+import type { User } from "@/shared/lib/types/user";
 
 type AdminUpdateUserFormProps = {
   id: number;
@@ -30,55 +31,6 @@ type AdminUpdateUserFormProps = {
 
 export default function AdminUpdateUserForm({ id }: AdminUpdateUserFormProps) {
   const { data: user, isLoading } = useGetUser(id);
-
-  const [cropModalOpened, setCropModalOpened] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-
-  const { data: cities } = useGetAdminCities(1, 1000);
-
-  const mutation = useAdminUpdateUser();
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    control,
-    formState: { errors, isSubmitting },
-  } = useForm<UpdateUserDto>({
-    resolver: zodResolver(adminUpdateUserSchema),
-
-    defaultValues: {
-      surname: "",
-      name: "",
-      phone: "",
-      email: "",
-      avatar: null,
-      cityId: null,
-    },
-  });
-
-  useEffect(() => {
-    if (!user) return;
-
-    setAvatarPreview(user.avatar?.url ?? null);
-
-    reset({
-      surname: user.surname ?? "",
-      name: user.name ?? "",
-      phone: user.phone ?? "",
-      email: user.email ?? "",
-      avatar: null,
-      cityId: user.city?.id ?? null,
-    });
-  }, [user, reset]);
-
-  const onSubmit = async (data: UpdateUserDto) => {
-    await mutation.mutateAsync({
-      id,
-      data: data,
-    });
-  };
 
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -88,11 +40,52 @@ export default function AdminUpdateUserForm({ id }: AdminUpdateUserFormProps) {
     return <Text>User not found</Text>;
   }
 
+  return <AdminUpdateUserFormContent id={id} user={user} />;
+}
+
+function AdminUpdateUserFormContent({ id, user }: { id: number; user: User }) {
+  const [cropModalOpened, setCropModalOpened] = useState(false);
+
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(
+    user.avatar?.url ?? null,
+  );
+
+  const { data: cities } = useGetAdminCities(1, 1000);
+
+  const mutation = useAdminUpdateUser();
+
   const cityOptions =
     cities?.items.map((city) => ({
       value: String(city.id),
       label: city.name,
     })) ?? [];
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<UpdateUserDto>({
+    resolver: zodResolver(adminUpdateUserSchema),
+
+    defaultValues: {
+      surname: user.surname ?? "",
+      name: user.name ?? "",
+      phone: user.phone ?? "",
+      email: user.email ?? "",
+      avatar: null,
+      cityId: user.city?.id ?? null,
+    },
+  });
+
+  const onSubmit = async (data: UpdateUserDto) => {
+    await mutation.mutateAsync({
+      id,
+      data,
+    });
+  };
 
   return (
     <Paper withBorder radius="lg" p="xl">

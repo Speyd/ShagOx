@@ -17,8 +17,6 @@ public class RegionTranslationUpdateService
 {
     private readonly IRepository<RegionTranslation> _regionRepository;
     private readonly RegionTranslationValidator _regionTranslationValidator;
-    private readonly RegionValidator _regionValidator;
-
 
     private readonly IUnitOfWork _unitOfWork;
 
@@ -32,7 +30,6 @@ public class RegionTranslationUpdateService
     {
         _regionRepository = regionRepository;
         _regionTranslationValidator = regionTranslationValidator;
-        _regionValidator = regionValidator;
         _unitOfWork = unitOfWork;
     }
 

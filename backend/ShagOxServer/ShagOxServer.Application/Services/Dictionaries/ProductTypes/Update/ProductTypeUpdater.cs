@@ -10,9 +10,9 @@ public static class ProductTypeUpdater
     {
         int countUpdated = 0;
 
-        if (request.Name is not null)
+        if (request.Code is not null)
         {
-            productType.Name = request.Name;
+            productType.Code = request.Code;
             countUpdated++;
         }
 

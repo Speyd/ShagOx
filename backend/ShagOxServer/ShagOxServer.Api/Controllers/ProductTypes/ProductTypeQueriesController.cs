@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Query;
 using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;

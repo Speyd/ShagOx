@@ -4,7 +4,6 @@ using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations
 using ShagOxServer.Domain.Filters.Location.Regions.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using System.Globalization;
 
 namespace ShagOxServer.Api.Controllers.Regions.Translations;
 

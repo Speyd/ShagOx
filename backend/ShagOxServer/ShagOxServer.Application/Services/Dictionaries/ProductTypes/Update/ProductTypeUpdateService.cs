@@ -77,11 +77,11 @@ public class ProductTypeUpdateService
         ProductType productType,
         ProductTypeUpdateRequest request)
     {
-        if (request.Name is not null &&
-             request.Name != productType.Name)
+        if (request.Code is not null &&
+             request.Code != productType.Code)
         {
             var nameValidator = await _productTypeValidator
-                .NotExistsByNameAsync(request.Name);
+                .NotExistsByCodeAsync(request.Code);
 
             if (!nameValidator.IsSuccess)
                 return Result<bool>.Fail(nameValidator.Error);

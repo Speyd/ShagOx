@@ -14,10 +14,10 @@ public class ProductTypeExistsRepository
     { }
 
 
-    public async Task<bool> ExistsByNameAsync(
-        string name)
+    public async Task<bool> ExistsByCodeAsync(
+        string code)
     {
         return await _db.ProductTypes
-            .AnyAsync(c => c.Name == name);
+            .AnyAsync(c => c.Code == code);
     }
 }

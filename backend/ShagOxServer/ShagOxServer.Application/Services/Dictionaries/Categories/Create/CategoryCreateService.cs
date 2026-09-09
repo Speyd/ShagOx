@@ -45,7 +45,7 @@ public class CategoryCreateService
 
 
         var nameValidator = await _categoryValidator
-            .NotExistsAsync(request.Name, request.ProductTypeId);
+            .NotExistsAsync(request.Code, request.ProductTypeId);
 
         if (!nameValidator.IsSuccess)
             Result<CreateResponse>.Fail(nameValidator.Error);  

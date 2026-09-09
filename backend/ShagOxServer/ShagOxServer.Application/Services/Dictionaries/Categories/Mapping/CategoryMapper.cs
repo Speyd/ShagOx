@@ -9,10 +9,10 @@ public static class CategoryMapper
     {
         return new CategoryDto(
             category.Id,
-            category.Name,
+            category.Code,
             new CategoryProductTypeDto(
                 category.ProductType.Id,
-                category.ProductType.Name
+                category.ProductType.Code
             )
         );
     }

@@ -20,14 +20,14 @@ public class CategoryExistsRepository
     {
         return await _db.Categories
             .AnyAsync(c =>
-                c.Name == name && c.ProductTypeId == productTypeId);
+                c.Code == name && c.ProductTypeId == productTypeId);
     }
 
-    public async Task<bool> ExistsByNameAsync(
-        string name)
+    public async Task<bool> ExistsByCodeAsync(
+        string code)
     {
         return await _db.Categories
-            .AnyAsync(c => c.Name == name);
+            .AnyAsync(c => c.Code == code);
     }
 
     public async Task<bool> ExistsByProductTypeAsync(

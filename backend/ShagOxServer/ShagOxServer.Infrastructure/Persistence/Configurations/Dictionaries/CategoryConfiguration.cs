@@ -10,9 +10,9 @@ public class CategoryConfiguration
     public void Configure(
         EntityTypeBuilder<Category> builder)
     {
-        builder.Property(x => x.Name)
+        builder.Property(x => x.Code)
             .IsRequired()
-            .HasMaxLength(150);
+            .HasMaxLength(100);
 
         builder.Property(x => x.ProductTypeId)
             .IsRequired();

@@ -9,7 +9,7 @@ public static class CategoryCreater
     {
         return new Category
         {
-            Name = request.Name,
+            Code = request.Code,
             ProductTypeId = request.ProductTypeId
         };
     }

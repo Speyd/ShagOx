@@ -10,7 +10,7 @@ public static class AttributeDefinitionMapper
         return new AttributeDefinitionDto(
             attribute.Id,
             attribute.CategoryId,
-            attribute.Category.Name,
+            attribute.Category.Code,
             attribute.Key,
             attribute.Type,
             attribute.Required,

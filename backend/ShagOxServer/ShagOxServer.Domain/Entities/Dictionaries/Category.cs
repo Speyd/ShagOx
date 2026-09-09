@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Advertisements;
 namespace ShagOxServer.Domain.Entities.Dictionaries;
 public class Category : BaseEntity
 {
-    public string Name { get; set; } = null!;
+    public string Code { get; set; } = null!;
 
     public int ProductTypeId { get; set; }
     public ProductType ProductType { get; set; } = null!;
@@ -18,6 +18,6 @@ public class Category : BaseEntity
 
     public override string ToString()
     {
-        return Name;
+        return Code;
     }
 }

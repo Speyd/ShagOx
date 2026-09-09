@@ -9,4 +9,7 @@ public partial class AppDbContext : DbContext
 
     public DbSet<ProductTypeTranslation>
         ProductTypeTranslations { get; set; }
+
+    public DbSet<CategoryTranslation>
+        CategoryTranslations { get; set; }
 }

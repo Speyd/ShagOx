@@ -27,6 +27,10 @@ public class CategoryConfiguration
             .HasForeignKey(x => x.ProductTypeId)
             .OnDelete(DeleteBehavior.Cascade);
 
+
         builder.HasIndex(x => x.ProductTypeId);
+
+        builder.HasIndex(x => new { x.ProductTypeId, x.Code })
+             .IsUnique();
     }
 }

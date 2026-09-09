@@ -9,7 +9,7 @@ public static class ProductTypeMapper
     {
         return new ProductTypeDto(
             productType.Id,
-            productType.Name,
+            productType.Code,
             productType.Description
         );
     }

@@ -33,7 +33,7 @@ public class ProductTypeCreateService
        ProductTypeCreateRequest request)
     {
         var exists = await _validator
-            .NotExistsByNameAsync(request.Name);
+            .NotExistsByCodeAsync(request.Code);
 
         if (!exists.IsSuccess)
             Result<CreateResponse>.Fail(exists.Error);

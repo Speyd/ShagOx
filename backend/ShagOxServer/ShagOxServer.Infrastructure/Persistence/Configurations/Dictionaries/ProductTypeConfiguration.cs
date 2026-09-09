@@ -9,7 +9,7 @@ public class ProductTypeConfiguration
     public void Configure(
         EntityTypeBuilder<ProductType> builder)
     {
-        builder.Property(x => x.Name)
+        builder.Property(x => x.Code)
             .IsRequired()
             .HasMaxLength(150);
 
@@ -17,7 +17,7 @@ public class ProductTypeConfiguration
             .HasColumnType("text")
             .IsRequired();
 
-        builder.HasIndex(x => x.Name)
+        builder.HasIndex(x => x.Code)
             .IsUnique();
     }
 }

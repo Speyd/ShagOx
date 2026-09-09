@@ -9,7 +9,7 @@ public static class ProductTypeCreater
     {
         return new ProductType
         {
-            Name = request.Name,
+            Code = request.Code,
             Description = request.Description
         };
     }

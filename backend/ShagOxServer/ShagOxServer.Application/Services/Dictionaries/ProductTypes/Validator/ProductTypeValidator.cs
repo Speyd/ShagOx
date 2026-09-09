@@ -20,11 +20,11 @@ public class ProductTypeValidator
     }
 
 
-    public async Task<Result<bool>> ExistsByNameAsync(
-       string name)
+    public async Task<Result<bool>> ExistsByCodeAsync(
+       string code)
     {
         if (await _productTypeExistsRepository
-            .ExistsByNameAsync(name))
+            .ExistsByCodeAsync(code))
         {
             return Result<bool>
                 .NotFound(typeof(ProductType));
@@ -33,12 +33,12 @@ public class ProductTypeValidator
         return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> NotExistsByNameAsync(
-       string name)
+    public async Task<Result<bool>> NotExistsByCodeAsync(
+       string code)
     {
 
         if (await _productTypeExistsRepository
-            .ExistsByNameAsync(name))
+            .ExistsByCodeAsync(code))
         {
             return Result<bool>
                 .AlreadyExists(typeof(ProductType));

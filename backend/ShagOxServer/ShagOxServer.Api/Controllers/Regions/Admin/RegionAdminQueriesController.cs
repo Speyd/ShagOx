@@ -10,7 +10,8 @@ namespace ShagOxServer.Api.Controllers.Regions.Admin;
 [ApiController]
 [Route("api/admin/regions")]
 [Authorize(Roles = "Admin")]
-public class RegionAdminQueriesController : ApiController
+public class RegionAdminQueriesController 
+    : ApiController
 {
     private readonly IRegionQueryService _queryService;
 

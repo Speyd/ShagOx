@@ -8,7 +8,8 @@ namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 
 [ApiController]
 [Route("api/attributes")]
-public class AttributeDefinitionQueriesController : ApiController
+public class AttributeDefinitionQueriesController 
+    : ApiController
 {
     private readonly IAttributeDefinitionQueryService _queryService;
 

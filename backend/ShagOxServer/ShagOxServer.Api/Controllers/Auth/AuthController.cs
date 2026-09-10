@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Auth;
 
 [ApiController]
 [Route("api")]
-public class AuthController : ApiController
+public class AuthController 
+    : ApiController
 {
     private readonly IRegisterService _registerService;
     private readonly ILoginService _loginService;

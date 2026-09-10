@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
+using System.Collections;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 public static class AdvertisementShortMapper
@@ -12,6 +13,7 @@ public static class AdvertisementShortMapper
             x.Id,
             x.Title,
             x.Description,
+            x.Stock,
             x.Price,
             x.PreviousPrice,
             x.CurrencyId,

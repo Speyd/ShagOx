@@ -39,22 +39,22 @@ public class ProductTypeTranslationUpdateService
         int statusTranslationId,
         ProductTypeTranslationUpdateRequest request)
     {
-        var region = await _typeTranslationValidator
+        var productType = await _typeTranslationValidator
             .GetByIdAsync(statusTranslationId);
 
-        if (!region.IsSuccess)
-            return Result<UpdateResponse>.Fail(region.Error);
+        if (!productType.IsSuccess)
+            return Result<UpdateResponse>.Fail(productType.Error);
 
 
         var validation = await
-             ValidateUpdatesAsync(region.Value!, request);
+             ValidateUpdatesAsync(productType.Value!, request);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = ProductTypeTranslationUpdater
-            .ApplyUpdates(region.Value!, request);
+            .ApplyUpdates(productType.Value!, request);
 
         var result = new UpdateResponse(
             updatedCount,
@@ -67,7 +67,7 @@ public class ProductTypeTranslationUpdateService
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _typeRepository.Update(region.Value!);
+            _typeRepository.Update(productType.Value!);
 
             await _unitOfWork.CommitAsync();
         }

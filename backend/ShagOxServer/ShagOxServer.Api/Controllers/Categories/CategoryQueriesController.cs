@@ -8,7 +8,8 @@ namespace ShagOxServer.Api.Controllers.Category;
 
 [ApiController]
 [Route("api/categories")]
-public class CategoryQueriesController : ApiController
+public class CategoryQueriesController 
+    : ApiController
 {
     private readonly ICategoryQueryService _queryService;
 

@@ -12,7 +12,8 @@ namespace ShagOxServer.Api.Controllers.Role;
 [ApiController]
 [Route("api/admin/roles")]
 [Authorize(Roles = "Admin")]
-public class RoleCommandsController : ApiController
+public class RoleCommandsController 
+    : ApiController
 {
     private readonly IRoleCreateService _createService;
     private readonly IRoleUpdateService _updateService;

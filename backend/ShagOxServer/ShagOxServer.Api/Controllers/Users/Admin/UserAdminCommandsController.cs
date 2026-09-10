@@ -10,7 +10,8 @@ namespace ShagOxServer.Api.Controllers.Users.Admin;
 [ApiController]
 [Route("api/admin/users")]
 
-public class UserAdminCommandsController : ApiController
+public class UserAdminCommandsController 
+    : ApiController
 {
     private readonly IUserDeleteService _deleteService;
     private readonly IUserUpdateService _updateService;

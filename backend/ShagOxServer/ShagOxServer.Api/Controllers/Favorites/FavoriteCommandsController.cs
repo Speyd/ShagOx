@@ -12,7 +12,8 @@ namespace ShagOxServer.Api.Controllers.Favorites;
 [ApiController]
 [Route("api/favorite")]
 [Authorize]
-public class FavoriteCommandsController : ApiController
+public class FavoriteCommandsController 
+    : ApiController
 {
     private readonly IFavoriteCreateService _createService;
     private readonly IFavoriteUpdateService _updateService;

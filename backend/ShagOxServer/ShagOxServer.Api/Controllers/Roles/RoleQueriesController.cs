@@ -11,7 +11,8 @@ namespace ShagOxServer.Api.Controllers.Role;
 [ApiController]
 [Route("api/admin/roles")]
 [Authorize(Roles = "Admin")]
-public class RoleQueriesController : ApiController
+public class RoleQueriesController 
+    : ApiController
 {
     private readonly IRoleQueryService _queryService;
     private readonly IUserRoleQueryService _queryUserRoleService;

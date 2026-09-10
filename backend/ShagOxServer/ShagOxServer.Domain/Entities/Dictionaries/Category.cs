@@ -1,10 +1,11 @@
 ﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;
 public class Category : BaseEntity
 {
-    public string Name { get; set; } = null!;
+    public string Code { get; set; } = null!;
 
     public int ProductTypeId { get; set; }
     public ProductType ProductType { get; set; } = null!;
@@ -16,8 +17,12 @@ public class Category : BaseEntity
     public List<Advertisement> Advertisements { get; set; }
         = new List<Advertisement>();
 
+    public List<CategoryTranslation> Translations { get; set; }
+        = new List<CategoryTranslation>();
+
+
     public override string ToString()
     {
-        return Name;
+        return Code;
     }
 }

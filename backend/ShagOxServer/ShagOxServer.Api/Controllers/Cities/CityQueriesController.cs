@@ -8,7 +8,8 @@ namespace ShagOxServer.Api.Controllers.Cities;
 
 [ApiController]
 [Route("api/cities")]
-public class CityQueriesController : ApiController
+public class CityQueriesController 
+    : ApiController
 {
     private readonly ICityQueryService _queryService;
 

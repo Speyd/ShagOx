@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Statuses.Translations;
 
 [ApiController]
 [Route("api/statuses/translations")]
-public class StatusTranslationQueriesController : ApiController
+public class StatusTranslationQueriesController 
+    : ApiController
 {
     private readonly IStatusTranslationQueryService _queryService;
     private readonly ILanguageProvider _languageProvider;

@@ -12,7 +12,8 @@ namespace ShagOxServer.Api.Controllers.Statuses;
 [ApiController]
 [Route("api/admin/statuses")]
 [Authorize(Roles = "Admin")]
-public class StatusCommandsController : ApiController
+public class StatusCommandsController 
+    : ApiController
 {
     private readonly IStatusCreateService _createService;
     private readonly IStatusUpdateService _updateService;

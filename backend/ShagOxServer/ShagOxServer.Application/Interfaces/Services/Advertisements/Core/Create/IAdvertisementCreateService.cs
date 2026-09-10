@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Create;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

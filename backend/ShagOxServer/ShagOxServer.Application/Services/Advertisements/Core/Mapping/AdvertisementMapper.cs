@@ -1,9 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core;
 using ShagOxServer.Application.Services.Auth.Users.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
+using System.Collections;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 public static class AdvertisementMapper
@@ -16,6 +17,7 @@ public static class AdvertisementMapper
             x.Id,
             x.Title,
             x.Description,
+            x.Stock,
             x.Price,
             x.PreviousPrice,
             CurrencyMapper.ToDto(x.Currency),

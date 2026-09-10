@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
+using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
@@ -10,6 +11,8 @@ public static class ProductTypeDependencyInjections
     {
         services.AddScoped<IProductTypeQueryRepository, ProductTypeQueryRepository>();
         services.AddScoped<IProductTypeExistsRepository, ProductTypeExistsRepository>();
+
+        services.AddProductTypeTranslationInfrastructure();
 
         return services;
     }

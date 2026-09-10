@@ -10,9 +10,9 @@ public static class CategoryUpdater
     {
         int countUpdated = 0;
 
-        if (request.Name is not null)
+        if (request.Code is not null)
         {
-            category.Name = request.Name;
+            category.Code = request.Code;
             countUpdated++;
         }
 

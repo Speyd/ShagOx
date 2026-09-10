@@ -8,7 +8,8 @@ namespace ShagOxServer.Api.Controllers.Categories.Admin;
 [ApiController]
 [Route("api/admin/categories")]
 [Authorize(Roles = "Admin")]
-public class CategoryAdminQueriesController : ApiController
+public class CategoryAdminQueriesController 
+    : ApiController
 {
     private readonly ICategoryQueryService _queryService;
 

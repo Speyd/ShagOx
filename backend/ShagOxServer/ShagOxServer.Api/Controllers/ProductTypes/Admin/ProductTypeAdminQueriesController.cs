@@ -10,7 +10,8 @@ namespace ShagOxServer.Api.Controllers.ProductTypes.Admin;
 [ApiController]
 [Route("api/admin/product-types")]
 [Authorize(Roles = "Admin")]
-public class ProductTypeAdminQueriesController : ApiController
+public class ProductTypeAdminQueriesController 
+    : ApiController
 {
     private readonly IProductTypeQueryService _queryService;
 

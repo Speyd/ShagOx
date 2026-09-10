@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Location.Translations;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
@@ -21,6 +22,7 @@ public static class CityDependencyInjections
         services.AddScoped<CityValidator>();
         services.AddScoped<CityUpdateValidator>();
 
+        services.AddCityTranslationApplication();
 
         return services;
     }

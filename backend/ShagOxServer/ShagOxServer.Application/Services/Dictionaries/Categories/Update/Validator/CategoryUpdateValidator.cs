@@ -9,15 +9,15 @@ public class CategoryUpdateValidator
        Category category,
        CategoryUpdateRequest request)
     {
-        var name = request.Name ?? category.Name;
+        var code = request.Code ?? category.Code;
         var productTypeId = request.ProductTypeId ?? category.ProductTypeId;
 
-        if (name == category.Name &&
+        if (code == category.Code &&
             productTypeId == category.ProductTypeId)
         {
             return Result<(string, int)>.Fail(null);
         }
 
-        return Result<(string, int)>.Success((name, productTypeId));
+        return Result<(string, int)>.Success((code, productTypeId));
     }
 }

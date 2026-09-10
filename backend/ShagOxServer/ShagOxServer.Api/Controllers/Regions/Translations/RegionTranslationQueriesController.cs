@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Regions.Translations;
 
 [ApiController]
 [Route("api/regions/translations")]
-public class RegionTranslationQueriesController : ApiController
+public class RegionTranslationQueriesController 
+    : ApiController
 {
     private readonly IRegionTranslationQueryService _queryService;
     private readonly ILanguageProvider _languageProvider;

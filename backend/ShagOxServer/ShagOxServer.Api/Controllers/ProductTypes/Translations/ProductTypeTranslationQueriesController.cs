@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.ProductTypes.Translations;
 [ApiController]
 [Route("api/product-types/translations")]
-public class ProductTypeTranslationQueriesController : ApiController
+public class ProductTypeTranslationQueriesController 
+    : ApiController
 {
     private readonly IProductTypeTranslationQueryService _queryService;
     private readonly ILanguageProvider _languageProvider;

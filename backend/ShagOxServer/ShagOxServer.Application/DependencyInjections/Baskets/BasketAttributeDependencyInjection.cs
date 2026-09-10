@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Query;
+using ShagOxServer.Application.Services.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Query;
+using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
 
 namespace ShagOxServer.Application.DependencyInjections.Baskets;
 public static class BasketAttributeDependencyInjection
@@ -11,8 +14,8 @@ public static class BasketAttributeDependencyInjection
         services.AddScoped<IBasketAttributeQueryService, 
             BasketAttributeQueryService>();
 
-        //services.AddScoped<IRoleCreateService,
-        //RoleCreateService>();
+        services.AddScoped<IBasketAttributeCreateService,
+            BasketAttributeCreateService>();
 
         //services.AddScoped<IRoleUpdateService,
         //RoleUpdateService>();
@@ -20,7 +23,7 @@ public static class BasketAttributeDependencyInjection
         //services.AddScoped<IRoleDeleteService,
         //RoleDeleteService>();
 
-        //services.AddScoped<RoleValidator>();
+        services.AddScoped<BasketAttributeValidator>();
 
         return services;
     }

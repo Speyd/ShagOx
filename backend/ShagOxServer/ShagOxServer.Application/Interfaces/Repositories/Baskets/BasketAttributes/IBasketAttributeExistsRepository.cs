@@ -5,6 +5,10 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttribu
 public interface IBasketAttributeExistsRepository
     : IExistsRepository<BasketAttribute>
 {
+    Task<bool> ExistsAsync(
+        int attributeDefenitionId,
+        int order);
+
     Task<bool> ExistsByCategoryAsync(
         int categoryId);
 

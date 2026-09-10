@@ -2,6 +2,7 @@
 using ShagOxServer.Application.DependencyInjection;
 using ShagOxServer.Application.DependencyInjections.Advertisement;
 using ShagOxServer.Application.DependencyInjections.Auth;
+using ShagOxServer.Application.DependencyInjections.Baskets;
 using ShagOxServer.Application.DependencyInjections.Dictionary;
 using ShagOxServer.Application.DependencyInjections.Location;
 using ShagOxServer.Application.DependencyInjections.Specification;
@@ -15,6 +16,7 @@ public static class DependencyInjection
     {
         return services
             .AddAuthApplication()
+            .AddBasketApplication()
             .AddLocationApplication()
             .AddAdvertisementApplication()
             .AddDictionariesApplication()

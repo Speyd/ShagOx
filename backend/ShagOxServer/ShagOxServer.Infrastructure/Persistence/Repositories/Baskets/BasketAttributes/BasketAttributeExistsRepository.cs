@@ -15,6 +15,17 @@ public class BasketAttributeExistsRepository
     { }
 
 
+    public async Task<bool> ExistsAsync(
+        int attributeDefenitionId,
+        int order)
+    {
+        return await _db.BasketAttributes
+            .WithIncludes()
+            .AnyAsync(c =>
+                c.AttributeDefinitionId == attributeDefenitionId &&
+                c.Order == order);       
+    }
+
     public async Task<bool> ExistsByAttributeDefenitionAsync(
         int attributeDefenitionId)
     {

@@ -43,11 +43,11 @@ public class BasketAttributeCreateService
             return Result<CreateResponse>.Fail(attributeDefinitionExists.Error);
 
 
-        var keyExists = await _attributeValidator
+        var attributeExists = await _attributeValidator
             .NotExistsAsync(request.AttributeDefinitionId, request.Order);
 
-        if (!keyExists.IsSuccess)
-            return Result<CreateResponse>.Fail(keyExists.Error);
+        if (!attributeExists.IsSuccess)
+            return Result<CreateResponse>.Fail(attributeExists.Error);
 
 
         var attribute = BasketAttributeCreater.Create(request);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.DTOs.Advertisements.Update;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

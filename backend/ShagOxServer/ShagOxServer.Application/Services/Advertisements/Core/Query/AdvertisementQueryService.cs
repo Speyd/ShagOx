@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;

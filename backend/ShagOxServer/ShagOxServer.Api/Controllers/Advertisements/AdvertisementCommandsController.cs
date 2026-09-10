@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.DTOs.Advertisements.Create;
-using ShagOxServer.Application.DTOs.Advertisements.Update;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;

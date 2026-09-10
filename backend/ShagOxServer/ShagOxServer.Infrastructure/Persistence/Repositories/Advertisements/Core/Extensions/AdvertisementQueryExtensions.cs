@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Advertisements;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extensions;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
 public static class AdvertisementQueryExtensions
 {
     public static IQueryable<Advertisement> WithIncludes(

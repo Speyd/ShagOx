@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Update.Images;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;

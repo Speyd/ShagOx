@@ -4,12 +4,13 @@ using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Application.DTOs.Specification.Currencies;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images;
 
-namespace ShagOxServer.Application.DTOs.Advertisements;
+namespace ShagOxServer.Application.DTOs.Advertisements.Core;
 public sealed record AdvertisementDto
 (
     int Id,
     string Title,
     string Description,
+    bool Stock,
     int Price,
     int PreviousPrice,
     CurrencyDto Currency,

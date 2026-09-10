@@ -20,6 +20,11 @@ public class AdvertisementConfiguration
                .IsRequired()
                .HasColumnType("text");
 
+        builder.Property(x => x.Stock)
+           .IsRequired()
+           .HasColumnType("boolean")
+           .HasDefaultValue(false);
+
         var converter = new ValueConverter<Dictionary<string, string>, string>(
             v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
             v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, (JsonSerializerOptions?)null)!

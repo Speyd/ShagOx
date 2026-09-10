@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace ShagOxServer.Application.DTOs.Advertisements.Create;
+namespace ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 public sealed record AdvertisementCreateRequest
 (
     string Title,
     string Description,
+    bool Stock,
     int Popularity,
     int Price,
     int CurrencyId,

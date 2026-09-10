@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Update;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Update;
@@ -24,6 +24,11 @@ public static class AdvertisementUpdater
             count++;
         }
 
+        if (request.Stock.HasValue)
+        {
+            advert.Stock = request.Stock.Value;
+            count++;
+        }
 
         if (request.Price.HasValue)
         {

@@ -2,7 +2,7 @@
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Extensions;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
 public static class AdvertisementFilterExtensions
 {
     public static IQueryable<Advertisement> Filter(
@@ -22,6 +22,11 @@ public static class AdvertisementFilterExtensions
         {
             query = query.Where(u =>
                  EF.Functions.ILike(u.Description, $"%{filter.Description}%"));
+        }
+
+        if (filter.Stock.HasValue)
+        {
+            query = query.Where(x => x.Stock == filter.Stock);
         }
 
         if (filter.CategoryId is not null)

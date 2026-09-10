@@ -1,10 +1,11 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Update.Images;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Update.Images;
 
-namespace ShagOxServer.Application.DTOs.Advertisements.Update;
+namespace ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 public sealed record AdvertisementUpdateRequest
 (
     string? Title,
     string? Description,
+    bool? Stock,
     int? Popularity,
     int? Price,
     int? CurrencyId,

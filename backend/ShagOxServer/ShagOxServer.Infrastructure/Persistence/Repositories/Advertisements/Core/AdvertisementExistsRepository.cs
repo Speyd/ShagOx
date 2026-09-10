@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core;
 public class AdvertisementExistsRepository 
     : ExistsRepository<Advertisement>, 
       IAdvertisementExistsRepository

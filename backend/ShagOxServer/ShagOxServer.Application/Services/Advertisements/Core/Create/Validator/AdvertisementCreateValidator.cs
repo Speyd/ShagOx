@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Create;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;

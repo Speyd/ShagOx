@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace ShagOxServer.Application.DTOs.Advertisements.Update.Images;
+namespace ShagOxServer.Application.DTOs.Advertisements.Core.Update.Images;
 public sealed record ImageAdvertUpdateRequest(
     int? Id,
     IFormFile? File,

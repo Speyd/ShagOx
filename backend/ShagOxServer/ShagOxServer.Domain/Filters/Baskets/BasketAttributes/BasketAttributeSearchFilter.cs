@@ -2,5 +2,5 @@
 public sealed record BasketAttributeSearchFilter
 (
     int? CategoryId,
-    int? AttributeDefenitionId
+    int? AttributeDefinitionId
 );

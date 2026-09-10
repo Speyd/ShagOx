@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -11,9 +12,11 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts;
 namespace ShagOxServer.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260910163246_ChangeBasketAttribute")]
+    partial class ChangeBasketAttribute
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -872,8 +875,8 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketAttribute", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", "AttributeDefinition")
-                        .WithOne("BasketAttribute")
-                        .HasForeignKey("ShagOxServer.Domain.Entities.Baskets.BasketAttribute", "AttributeDefinitionId")
+                        .WithMany("BasketAttributes")
+                        .HasForeignKey("AttributeDefinitionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1039,7 +1042,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.AttributeDefinition", b =>
                 {
-                    b.Navigation("BasketAttribute");
+                    b.Navigation("BasketAttributes");
 
                     b.Navigation("Translations");
                 });

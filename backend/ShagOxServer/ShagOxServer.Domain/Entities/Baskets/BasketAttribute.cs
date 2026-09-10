@@ -1,17 +1,18 @@
 ﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Domain.Entities.Baskets;
 public class BasketAttribute
     : BaseEntity
 {
-    public int CategoryId { get; set; }
+    public AttributeDefinition AttributeDefinition { get; set; } = null!;
     public int AttributeDefinitionId { get; set; }
 
-    public List<int> SortOrder { get; set; } 
-        = new List<int>();
+    public int Order { get; set; }
+
 
     public override string ToString()
     {
-        return $"Cat.: {CategoryId} | Attr.: {AttributeDefinitionId}";
+        return $"Attr.: {AttributeDefinitionId} | Ord.: {Order}";
     }
 }

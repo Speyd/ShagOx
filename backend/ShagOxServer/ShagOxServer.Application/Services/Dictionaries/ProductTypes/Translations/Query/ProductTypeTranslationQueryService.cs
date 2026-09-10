@@ -1,5 +1,4 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations;
-using ShagOxServer.Application.DTOs.Location.Regions.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Query;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Mapping;

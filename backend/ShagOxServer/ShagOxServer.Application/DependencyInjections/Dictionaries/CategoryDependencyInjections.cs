@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Dictionaries.Translations;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
@@ -20,6 +21,8 @@ public static class CategoryDependencyInjections
 
         services.AddScoped<CategoryValidator>();
         services.AddScoped<CategoryUpdateValidator>();
+
+        services.AddCategoryTranslationApplication();
 
         return services;
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Dictionaries.Translations;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Update;
@@ -17,9 +18,9 @@ public static class ProductTypeDependencyInjections
         services.AddScoped<IProductTypeDeleteService, ProductTypeDeleteService>();
         services.AddScoped<IProductTypeUpdateService, ProductTypeUpdateService>();
 
-
         services.AddScoped<ProductTypeValidator>();
 
+        services.AddProductTypeTranslationApplication();
 
         return services;
     }

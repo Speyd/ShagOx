@@ -1,9 +1,10 @@
 ﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
 
 namespace ShagOxServer.Application.DTOs.Baskets;
 public sealed record BasketAttributeDto
 (
     int Id,
-    int AttributeDefinition,
+    AttributeDefinitionDto AttributeDefinition,
     int Order
 ) : BaseDto(Id);

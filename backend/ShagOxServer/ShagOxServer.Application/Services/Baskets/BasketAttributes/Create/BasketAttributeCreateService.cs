@@ -2,10 +2,12 @@
 using ShagOxServer.Application.DTOs.Baskets.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Create;
@@ -13,17 +15,19 @@ public class BasketAttributeCreateService
     : IBasketAttributeCreateService
 {
     private readonly IRepository<BasketAttribute> _attributeRepository;
+
     private readonly BasketAttributeValidator _attributeValidator;
 
-    private readonly AttributeDefinitionValidator _attributeDefinitionValidator;
+    private readonly IRepository<AttributeDefinition> _attributeDefinitionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
 
     public BasketAttributeCreateService(
         IRepository<BasketAttribute> attributeRepository,
+        IBasketAttributeQueryRepository _attributeQueryRepository,
         BasketAttributeValidator attributeValidator,
-        AttributeDefinitionValidator attributeDefinitionValidator,
+        IRepository<AttributeDefinition> attributeDefinitionValidator,
         IUnitOfWork unitOfWork)
     {
         _attributeRepository = attributeRepository;
@@ -36,15 +40,15 @@ public class BasketAttributeCreateService
     public async Task<Result<CreateResponse>> CreateAsync(
         BasketAttributeCreateRequest request)
     {
-        var attributeDefinitionExists = await _attributeDefinitionValidator
-            .ExistsByIdAsync(request.AttributeDefinitionId);
+        var attributeDefinition = await _attributeDefinitionValidator
+            .GetByIdAsync(request.AttributeDefinitionId);
 
-        if (!attributeDefinitionExists.IsSuccess)
-            return Result<CreateResponse>.Fail(attributeDefinitionExists.Error);
+        if (attributeDefinition is null)
+            return Result<CreateResponse>.NotFound(typeof(AttributeDefinition));
 
 
         var attributeExists = await _attributeValidator
-            .NotExistsAsync(request.AttributeDefinitionId, request.Order);
+            .NotExistsAsync(attributeDefinition, request.Order);
 
         if (!attributeExists.IsSuccess)
             return Result<CreateResponse>.Fail(attributeExists.Error);

@@ -7,6 +7,7 @@ using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validato
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Update;
@@ -17,7 +18,7 @@ public class BasketAttributeUpdateService
     private readonly BasketAttributeValidator _attributeValidator;
     private readonly BasketAttributeUpdateValidator _attributeUpdateValidator;
 
-    private readonly AttributeDefinitionValidator _attributeDefinitionValidator;
+    private readonly IRepository<AttributeDefinition> _attributeDefinitionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
 
@@ -26,7 +27,7 @@ public class BasketAttributeUpdateService
         IRepository<BasketAttribute> attributeRepository,
         BasketAttributeValidator attributeValidator,
         BasketAttributeUpdateValidator attributeUpdateValidator,
-        AttributeDefinitionValidator attributeDefinitionValidator,
+        IRepository<AttributeDefinition> attributeDefinitionValidator,
         IUnitOfWork unitOfWork)
     {
         _attributeRepository = attributeRepository;
@@ -99,17 +100,14 @@ public class BasketAttributeUpdateService
         (int order, int attributeDefinitionId) changeValidator,
         BasketAttributeUpdateRequest request)
     {
-        var attributeDefExists = await _attributeDefinitionValidator
-            .ExistsByIdAsync(changeValidator.attributeDefinitionId);
+        var attributeDef = await _attributeDefinitionValidator
+            .GetByIdAsync(changeValidator.attributeDefinitionId);
 
-        if (!attributeDefExists.IsSuccess)
-            return attributeDefExists;
+        if (attributeDef is null)
+            return Result<bool>.NotFound(typeof(AttributeDefinition));
 
         var existsValidator = await _attributeValidator
-            .NotExistsAsync(
-                changeValidator.attributeDefinitionId,
-                changeValidator.order
-        );
+            .NotExistsAsync(attributeDef, changeValidator.order);
 
         if (!existsValidator.IsSuccess)
             return Result<bool>.Fail(existsValidator.Error);

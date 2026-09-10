@@ -6,7 +6,8 @@ public interface IBasketAttributeExistsRepository
     : IExistsRepository<BasketAttribute>
 {
     Task<bool> ExistsAsync(
-        int attributeDefenitionId,
+        int categoryId,
+        int attributeId,
         int order);
 
     Task<bool> ExistsByCategoryAsync(

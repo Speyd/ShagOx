@@ -2,7 +2,7 @@
 public sealed record AdvertisementSearchFilter
 (
     string? Title,
-    bool? Stock,
+    int? Stock,
     string? Description,
     int? CategoryId
 );

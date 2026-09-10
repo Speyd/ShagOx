@@ -34,6 +34,7 @@ public class BasketAttributeQueryRepository
             .WithIncludes()
             .Where(c =>
                 c.AttributeDefinition.CategoryId == categoryId)
+            .OrderBy(c => c.Order)
             .ToPagedResultAsync(pagination);
     }
 

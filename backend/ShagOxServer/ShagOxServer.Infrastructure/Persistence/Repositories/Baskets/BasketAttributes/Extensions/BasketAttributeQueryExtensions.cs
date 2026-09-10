@@ -8,6 +8,7 @@ public static class BasketAttributeQueryExtensions
        this IQueryable<BasketAttribute> query)
     {
         return query
-           .Include(x => x.AttributeDefinition);
+           .Include(x => x.AttributeDefinition)
+                .ThenInclude(x => x.Category);
     }
 }

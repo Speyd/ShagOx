@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Baskets;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Mapping;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
@@ -9,7 +10,8 @@ public static class BasketAttributeMapper
     {
         return new BasketAttributeDto(
             attribute.Id,
-            attribute.AttributeDefinitionId,
+            AttributeDefinitionMapper
+                .ToDto(attribute.AttributeDefinition),
             attribute.Order
         );
     }

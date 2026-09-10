@@ -22,8 +22,8 @@ public class AdvertisementConfiguration
 
         builder.Property(x => x.Stock)
            .IsRequired()
-           .HasColumnType("boolean")
-           .HasDefaultValue(false);
+           .HasColumnType("integer")
+           .HasDefaultValue(0);
 
         var converter = new ValueConverter<Dictionary<string, string>, string>(
             v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),

@@ -18,7 +18,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CategoryId = table.Column<int>(type: "integer", nullable: false),
                     AttributeDefinitionId = table.Column<int>(type: "integer", nullable: false),
                     SortOrder = table.Column<List<int>>(type: "integer[]", nullable: false)
                 },
@@ -31,24 +30,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         principalTable: "AttributeDefinitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BasketAttributes_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BasketAttributes_AttributeDefinitionId",
                 table: "BasketAttributes",
                 column: "AttributeDefinitionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BasketAttributes_CategoryId_AttributeDefinitionId",
-                table: "BasketAttributes",
-                columns: new[] { "CategoryId", "AttributeDefinitionId" },
-                unique: true);
         }
 
         /// <inheritdoc />

@@ -15,9 +15,6 @@ public class Category : BaseEntity
     public List<AttributeDefinition> Attributes { get; set; }
         = new List<AttributeDefinition>();
 
-    public List<BasketAttribute> BasketAttributes { get; set; }
-        = new List<BasketAttribute>();
-
     public List<Advertisement> Advertisements { get; set; }
         = new List<Advertisement>();
 

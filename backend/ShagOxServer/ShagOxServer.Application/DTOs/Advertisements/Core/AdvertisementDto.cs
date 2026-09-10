@@ -10,7 +10,7 @@ public sealed record AdvertisementDto
     int Id,
     string Title,
     string Description,
-    bool Stock,
+    int Stock,
     int Price,
     int PreviousPrice,
     CurrencyDto Currency,

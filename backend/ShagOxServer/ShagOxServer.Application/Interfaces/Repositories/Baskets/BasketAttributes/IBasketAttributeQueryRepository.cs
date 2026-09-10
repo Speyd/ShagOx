@@ -12,8 +12,7 @@ public interface IBasketAttributeQueryRepository
         PaginationParams pagination);
 
     Task<BasketAttribute?> GetByAttributeDefenitionAsync(
-        int attributeDefenitionId,
-        PaginationParams pagination);
+        int attributeDefenitionId);
 
     Task<PagedResult<BasketAttribute>> Search(
         BasketAttributeSearchFilter filter,

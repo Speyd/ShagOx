@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Baskets;
-using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
@@ -40,8 +38,7 @@ public class BasketAttributeQueryRepository
     }
 
     public async Task<BasketAttribute?> GetByAttributeDefenitionAsync(
-        int attributeDefenitionId,
-        PaginationParams pagination)
+        int attributeDefenitionId)
     {
         return await _db.BasketAttributes
             .WithIncludes()

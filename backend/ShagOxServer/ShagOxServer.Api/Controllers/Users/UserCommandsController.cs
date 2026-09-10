@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Users;
 [ApiController]
 [Route("api/users")]
 [Authorize]
-public class UserCommandsController : ApiController
+public class UserCommandsController 
+    : ApiController
 {
     private readonly IUserUpdateService _updateService;
 

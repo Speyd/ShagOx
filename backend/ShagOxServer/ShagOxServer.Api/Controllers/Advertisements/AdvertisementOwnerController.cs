@@ -3,7 +3,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
 
 namespace ShagOxServer.Api.Controllers.Advertisements;
-public abstract class AdvertisementOwnerController : ApiController
+public abstract class AdvertisementOwnerController 
+    : ApiController
 {
     protected readonly IAdvertisementExistsRepository _advertExistsService;
 

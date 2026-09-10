@@ -14,7 +14,8 @@ namespace ShagOxServer.Api.Controllers.ProductTypes.Translations;
 [ApiController]
 [Route("api/admin/product-types/translations")]
 [Authorize(Roles = "Admin")]
-public class ProductTypeTranslationCommandsController : ApiController
+public class ProductTypeTranslationCommandsController 
+    : ApiController
 {
     private readonly IProductTypeTranslationCreateService _createService;
     private readonly IProductTypeTranslationUpdateService _updateService;

@@ -11,7 +11,8 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Images;
 [ApiController]
 [Route("api/advertisements/{advertisementId:int}/images")]
 [Authorize(Roles = "Admin")]
-public class AdvertisementImagesCommandsController : AdvertisementOwnerController
+public class AdvertisementImagesCommandsController 
+    : AdvertisementOwnerController
 {
     private readonly IAdvertisementImageService _imageService;
 

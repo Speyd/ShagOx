@@ -8,7 +8,8 @@ namespace ShagOxServer.Api.Controllers.Favorites;
 
 [ApiController]
 [Route("api/favorite")]
-public class FavoriteQueriesController : ApiController
+public class FavoriteQueriesController 
+    : ApiController
 {
     private readonly IFavoriteQueryService _queryService;
 

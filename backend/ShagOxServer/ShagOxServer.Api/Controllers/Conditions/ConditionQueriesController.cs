@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Conditions;
 
 [ApiController]
 [Route("api/conditions")]
-public class ConditionQueriesController : ApiController
+public class ConditionQueriesController 
+    : ApiController
 {
     private readonly IConditionQueryService _queryService;
 

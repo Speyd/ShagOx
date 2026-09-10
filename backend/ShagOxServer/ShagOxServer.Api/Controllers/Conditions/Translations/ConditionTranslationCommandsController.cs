@@ -12,7 +12,8 @@ namespace ShagOxServer.Api.Controllers.Conditions.Translations;
 [ApiController]
 [Route("api/admin/conditions/translations")]
 [Authorize(Roles = "Admin")]
-public class ConditionTranslationCommandsController : ApiController
+public class ConditionTranslationCommandsController 
+    : ApiController
 {
     private readonly IConditionTranslationCreateService _createService;
     private readonly IConditionTranslationUpdateService _updateService;

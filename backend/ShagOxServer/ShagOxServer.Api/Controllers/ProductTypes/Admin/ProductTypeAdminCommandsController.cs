@@ -12,7 +12,8 @@ namespace ShagOxServer.Api.Controllers.ProductTypes.Admin;
 [ApiController]
 [Route("api/admin/product-types")]
 [Authorize(Roles = "Admin")]
-public class ProductTypeAdminCommandsController : ApiController
+public class ProductTypeAdminCommandsController 
+    : ApiController
 {
     private readonly IProductTypeCreateService _createService;
     private readonly IProductTypeUpdateService _updateService;

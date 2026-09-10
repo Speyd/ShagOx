@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Currencies;
 
 [ApiController]
 [Route("api/currencies")]
-public class CurrencyQueriesController : ApiController
+public class CurrencyQueriesController 
+    : ApiController
 {
     private readonly ICurrencyQueryService _queryService;
 

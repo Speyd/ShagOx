@@ -10,7 +10,8 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 [ApiController]
 [Route("api/admin/advertisements")]
 [Authorize(Roles = "Admin")]
-public class AdvertisementAdminCommandsController : ApiController
+public class AdvertisementAdminCommandsController 
+    : ApiController
 {
     private readonly IAdvertisementDeleteService _deleteService;
     private readonly IAdvertisementUpdateService _updateService;

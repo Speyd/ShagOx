@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Query;
-using ShagOxServer.Domain.Filters.Location.Regions.Translations;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Query;
+using ShagOxServer.Domain.Filters.Dictionaries.Categories.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Regions.Translations;
+namespace ShagOxServer.Api.Controllers.Categories.Translations;
 
 [ApiController]
-[Route("api/regions/translations")]
-public class RegionTranslationQueriesController 
+[Route("api/categories/translations")]
+public class CategoryTranslationQueriesController
     : ApiController
 {
-    private readonly IRegionTranslationQueryService _queryService;
+    private readonly ICategoryTranslationQueryService _queryService;
     private readonly ILanguageProvider _languageProvider;
 
-    public RegionTranslationQueriesController(
-        IRegionTranslationQueryService queryService,
+    public CategoryTranslationQueriesController(
+        ICategoryTranslationQueryService queryService,
         ILanguageProvider languageProvider)
     {
         _queryService = queryService;
@@ -39,7 +39,7 @@ public class RegionTranslationQueriesController
         [FromQuery] PaginationParams pagination)
     {
         string language = _languageProvider
-            .GetTwoLetterISOName();
+           .GetTwoLetterISOName();
 
         var result = await _queryService
             .GetPagedAsync(pagination, language);
@@ -49,7 +49,7 @@ public class RegionTranslationQueriesController
 
     [HttpGet("search")]
     public async Task<IActionResult> Search(
-        [FromQuery] RegionTranslationSearchFilter filter,
+        [FromQuery] CategoryTranslationSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService

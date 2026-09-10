@@ -13,7 +13,8 @@ namespace ShagOxServer.Api.Controllers.AttributeDefinitions.Translations;
 [ApiController]
 [Route("api/admin/attributes/translations")]
 [Authorize(Roles = "Admin")]
-public class AttributeDefinitionTranslationCommandsController : ApiController
+public class AttributeDefinitionTranslationCommandsController 
+    : ApiController
 {
     private readonly IAttributeDefinitionTranslationCreateService _createService;
     private readonly IAttributeDefinitionTranslationUpdateService _updateService;

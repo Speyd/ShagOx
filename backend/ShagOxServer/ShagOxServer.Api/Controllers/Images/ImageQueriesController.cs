@@ -7,7 +7,8 @@ namespace ShagOxServer.Api.Controllers.Images;
 
 [ApiController]
 [Route("api/images")]
-public class ImageQueriesController : ApiController
+public class ImageQueriesController 
+    : ApiController
 {
     private readonly IImageQueryService _queryService;
 

@@ -12,7 +12,8 @@ namespace ShagOxServer.Api.Controllers.Cities.Admin;
 [ApiController]
 [Route("api/admin/cities")]
 [Authorize(Roles = "Admin")]
-public class CityAdminCommandsController : ApiController
+public class CityAdminCommandsController 
+    : ApiController
 {
     private readonly ICityCreateService _createService;
     private readonly ICityUpdateService _updateService;

@@ -7,7 +7,8 @@ namespace ShagOxServer.Api.Controllers.Avatars;
 
 [ApiController]
 [Route("api/avatars")]
-public class AvatarQueriesController : ApiController
+public class AvatarQueriesController 
+    : ApiController
 {
     private readonly IAvatarQueryService _queryService;
 

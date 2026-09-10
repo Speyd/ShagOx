@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Users;
 
 [ApiController]
 [Route("api/users")]
-public class UserQueriesController : ApiController
+public class UserQueriesController 
+    : ApiController
 {
     private readonly IUserQueryService _queryService;
 

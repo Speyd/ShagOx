@@ -12,7 +12,8 @@ namespace ShagOxServer.Api.Controllers.Regions.Translations;
 [ApiController]
 [Route("api/admin/regions/translations")]
 [Authorize(Roles = "Admin")]
-public class RegionTranslationCommandsController : ApiController
+public class RegionTranslationCommandsController 
+    : ApiController
 {
     private readonly IRegionTranslationCreateService _createService;
     private readonly IRegionTranslationUpdateService _updateService;

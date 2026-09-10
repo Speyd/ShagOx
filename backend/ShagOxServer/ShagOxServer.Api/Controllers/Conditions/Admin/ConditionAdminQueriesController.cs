@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Conditions.Admin;
 [ApiController]
 [Route("api/admin/conditions")]
 [Authorize(Roles = "Admin")]
-public class ConditionAdminQueriesController : ApiController
+public class ConditionAdminQueriesController 
+    : ApiController
 {
     private readonly IConditionQueryService _queryService;
 

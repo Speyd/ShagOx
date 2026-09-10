@@ -39,22 +39,22 @@ public class CategoryTranslationUpdateService
         int statusTranslationId,
         CategoryTranslationUpdateRequest request)
     {
-        var region = await _categoryTranslationValidator
+        var category = await _categoryTranslationValidator
             .GetByIdAsync(statusTranslationId);
 
-        if (!region.IsSuccess)
-            return Result<UpdateResponse>.Fail(region.Error);
+        if (!category.IsSuccess)
+            return Result<UpdateResponse>.Fail(category.Error);
 
 
         var validation = await
-             ValidateUpdatesAsync(region.Value!, request);
+             ValidateUpdatesAsync(category.Value!, request);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = CategoryTranslationUpdater
-            .ApplyUpdates(region.Value!, request);
+            .ApplyUpdates(category.Value!, request);
 
         var result = new UpdateResponse(
             updatedCount,
@@ -67,7 +67,7 @@ public class CategoryTranslationUpdateService
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _categoryRepository.Update(region.Value!);
+            _categoryRepository.Update(category.Value!);
 
             await _unitOfWork.CommitAsync();
         }

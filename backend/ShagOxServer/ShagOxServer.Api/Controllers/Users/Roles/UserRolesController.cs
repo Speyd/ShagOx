@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Users.Roles;
 
 [ApiController]
 [Route("api/users")]
-public class UserRolesController : ApiController
+public class UserRolesController 
+    : ApiController
 {
     private readonly IUserQueryService _userService;
     private readonly IRoleQueryService _roleService;

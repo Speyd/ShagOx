@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Currencies.Admin;
 [ApiController]
 [Route("api/admin/currencies")]
 [Authorize(Roles = "Admin")]
-public class CurrencyAdminQueriesController : ApiController
+public class CurrencyAdminQueriesController 
+    : ApiController
 {
     private readonly ICurrencyQueryService _queryService;
 

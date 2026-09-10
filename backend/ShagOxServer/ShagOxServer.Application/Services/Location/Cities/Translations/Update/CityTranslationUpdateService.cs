@@ -36,22 +36,22 @@ public class CityTranslationUpdateService
         int statusTranslationId,
         CityTranslationUpdateRequest request)
     {
-        var status = await _translationValidator
+        var city = await _translationValidator
             .GetByIdAsync(statusTranslationId);
 
-        if (!status.IsSuccess)
-            return Result<UpdateResponse>.Fail(status.Error);
+        if (!city.IsSuccess)
+            return Result<UpdateResponse>.Fail(city.Error);
 
 
         var validation = await
-             ValidateUpdatesAsync(status.Value!, request);
+             ValidateUpdatesAsync(city.Value!, request);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = CityTranslationUpdater
-            .ApplyUpdates(status.Value!, request);
+            .ApplyUpdates(city.Value!, request);
 
         var result = new UpdateResponse(
             updatedCount,
@@ -64,7 +64,7 @@ public class CityTranslationUpdateService
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _cityRepository.Update(status.Value!);
+            _cityRepository.Update(city.Value!);
 
             await _unitOfWork.CommitAsync();
         }

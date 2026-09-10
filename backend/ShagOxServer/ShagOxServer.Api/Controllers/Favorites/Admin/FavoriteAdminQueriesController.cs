@@ -9,7 +9,8 @@ namespace ShagOxServer.Api.Controllers.Favorites.Admin;
 [ApiController]
 [Route("api/admin/favorite")]
 [Authorize]
-public class FavoriteAdminQueriesController : ApiController
+public class FavoriteAdminQueriesController 
+    : ApiController
 {
     private readonly IFavoriteQueryService _queryService;
 

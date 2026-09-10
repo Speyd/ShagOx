@@ -12,7 +12,8 @@ namespace ShagOxServer.Api.Controllers.Regions.Admin;
 [ApiController]
 [Route("api/admin/regions")]
 [Authorize(Roles = "Admin")]
-public class RegionAdminCommandsController : ApiController
+public class RegionAdminCommandsController 
+    : ApiController
 {
     private readonly IRegionCreateService _createService;
     private readonly IRegionUpdateService _updateService;

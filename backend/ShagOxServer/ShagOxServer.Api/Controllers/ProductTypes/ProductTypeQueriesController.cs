@@ -8,7 +8,8 @@ namespace ShagOxServer.Api.Controllers.ProductTypes;
 
 [ApiController]
 [Route("api/product-types")]
-public class ProductTypeQueriesController : ApiController
+public class ProductTypeQueriesController 
+    : ApiController
 {
     private readonly IProductTypeQueryService _queryService;
 

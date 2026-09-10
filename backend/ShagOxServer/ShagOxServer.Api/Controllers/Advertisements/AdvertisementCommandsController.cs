@@ -15,7 +15,8 @@ namespace ShagOxServer.Api.Controllers.Advertisements;
 [ApiController]
 [Route("api/advertisements")]
 [Authorize]
-public class AdvertisementCommandsController : AdvertisementOwnerController
+public class AdvertisementCommandsController 
+    : AdvertisementOwnerController
 {
     private readonly IAdvertisementCreateService _createService;
     private readonly IAdvertisementUpdateService _updateService;

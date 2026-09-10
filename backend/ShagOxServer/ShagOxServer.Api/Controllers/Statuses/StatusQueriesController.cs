@@ -10,7 +10,8 @@ namespace ShagOxServer.Api.Controllers.Statuses;
 [ApiController]
 [Route("api/statuses")]
 [Authorize(Roles = "Admin")]
-public class StatusQueriesController : ApiController
+public class StatusQueriesController 
+    : ApiController
 {
     private readonly IStatusQueryService _queryService;
 

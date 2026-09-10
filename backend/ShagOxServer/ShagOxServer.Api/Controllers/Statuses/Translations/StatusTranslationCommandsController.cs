@@ -12,7 +12,8 @@ namespace ShagOxServer.Api.Controllers.Statuses.Translations;
 [ApiController]
 [Route("api/admin/statuses/translations")]
 [Authorize(Roles = "Admin")]
-public class StatusTranslationCommandsController : ApiController
+public class StatusTranslationCommandsController 
+    : ApiController
 {
     private readonly IStatusTranslationCreateService _createService;
     private readonly IStatusTranslationUpdateService _updateService;

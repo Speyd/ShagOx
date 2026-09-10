@@ -12,7 +12,8 @@ namespace ShagOxServer.Api.Controllers.Cities.Translations;
 [ApiController]
 [Route("api/admin/cities/translations")]
 [Authorize(Roles = "Admin")]
-public class CityTranslationCommandsController : ApiController
+public class CityTranslationCommandsController 
+    : ApiController
 {
     private readonly ICityTranslationCreateService _createService;
     private readonly ICityTranslationUpdateService _updateService;

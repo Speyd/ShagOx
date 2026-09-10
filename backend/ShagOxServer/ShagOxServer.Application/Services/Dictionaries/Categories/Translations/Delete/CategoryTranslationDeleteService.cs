@@ -30,17 +30,17 @@ public class CategoryTranslationDeleteService
     public async Task<Result<DeleteResponse>> DeleteAsync(
         int id)
     {
-        var attributeType = await _categoryValidator
+        var category = await _categoryValidator
             .GetByIdAsync(id);
 
-        if (!attributeType.IsSuccess)
-            return Result<DeleteResponse>.Fail(attributeType.Error);
+        if (!category.IsSuccess)
+            return Result<DeleteResponse>.Fail(category.Error);
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _categoryRepository.Delete(attributeType.Value!);
+            _categoryRepository.Delete(category.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -52,7 +52,7 @@ public class CategoryTranslationDeleteService
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
-               attributeType.Value!.Id,
+               category.Value!.Id,
                DateTime.UtcNow
            )
        );

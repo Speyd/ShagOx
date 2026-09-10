@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Create;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Query;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Create;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Delete;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Query;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
 
@@ -17,8 +19,8 @@ public static class CategoryTranslationDependencyInjections
         services.AddScoped<ICategoryTranslationCreateService,
             CategoryTranslationCreateService>();
 
-        //services.AddScoped<IProductTypeTranslationDeleteService,
-        //    ProductTypeTranslationDeleteService>();
+        services.AddScoped<ICategoryTranslationDeleteService,
+            CategoryTranslationDeleteService>();
 
         //services.AddScoped<IProductTypeTranslationUpdateService,
         //    ProductTypeTranslationUpdateService>();

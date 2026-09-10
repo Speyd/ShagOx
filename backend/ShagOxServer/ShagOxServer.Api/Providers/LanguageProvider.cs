@@ -1,9 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Providers;
-
-namespace ShagOxServer.Api.Providers;
-
 using System.Globalization;
 
+namespace ShagOxServer.Api.Providers;
 public class LanguageProvider(IHttpContextAccessor httpContextAccessor)
     : ILanguageProvider
 {

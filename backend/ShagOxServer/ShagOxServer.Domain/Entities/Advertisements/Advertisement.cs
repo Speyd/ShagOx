@@ -31,7 +31,7 @@ public class Advertisement : BaseEntity
     public int ConditionId { get; set; }
     public Condition Condition { get; set; } = null!;
 
-    public bool Stock { get; set; }
+    public int Stock { get; set; }
 
     public int CurrencyId { get; set; }
     /// <summary>

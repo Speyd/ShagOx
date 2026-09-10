@@ -5,7 +5,7 @@ public sealed record AdvertisementCreateRequest
 (
     string Title,
     string Description,
-    bool Stock,
+    int Stock,
     int Popularity,
     int Price,
     int CurrencyId,

@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
@@ -16,8 +17,9 @@ public class AttributeDefinition : BaseEntity
     public int? Max { get; set; }
 
     public List<AttributeDefinitionTranslation> Translations { get; set; } 
-        = new();
+        = new List<AttributeDefinitionTranslation>();
 
+    public BasketAttribute? BasketAttribute { get; set; }
 
     public override string ToString()
     {

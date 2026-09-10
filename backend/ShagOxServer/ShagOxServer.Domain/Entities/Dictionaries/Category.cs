@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;

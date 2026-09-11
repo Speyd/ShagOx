@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShagOxServer.Domain.Entities.Baskets
+namespace ShagOxServer.Domain.Entities.Baskets;
+public class Basket
 {
-    internal class Basket
-    {
-    }
 }

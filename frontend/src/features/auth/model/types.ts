@@ -1,3 +1,7 @@
+import type { User } from "@/shared/lib/types/user";
+
+export type { User };
+
 export type LoginRequest = {
   emailOrPhone: string;
   password: string;

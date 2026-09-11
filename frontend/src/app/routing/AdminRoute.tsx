@@ -8,7 +8,9 @@ interface AdminRouteProps {
 }
 
 export function AdminRoute({ children }: AdminRouteProps) {
-  const user = useAuthStore((state) => state.user);
+  const { user, isInitialized } = useAuthStore();
+
+  if (!isInitialized) return null;
 
   if (!user) {
     return <Navigate to="/login" replace />;

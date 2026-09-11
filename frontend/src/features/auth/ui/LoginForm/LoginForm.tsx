@@ -35,7 +35,18 @@ export default function LoginForm() {
       navigate("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setServerError(String(error.response?.data));
+        const responseData = error.response?.data;
+        if (typeof responseData === "string") {
+          setServerError(responseData);
+        } else if (responseData && typeof responseData === "object") {
+          const msg = (responseData as { message?: string; detail?: string; error?: string }).message ||
+            (responseData as { detail?: string }).detail ||
+            (responseData as { error?: string }).error ||
+            "Невірний логін або пароль.";
+          setServerError(msg);
+        } else {
+          setServerError("Невірний логін або пароль.");
+        }
       }
     }
   };

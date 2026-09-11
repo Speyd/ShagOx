@@ -7,7 +7,9 @@ interface PublicRouteProps {
 }
 
 export function PublicRoute({ children }: PublicRouteProps) {
-  const user = useAuthStore((state) => state.user);
+  const { user, isInitialized } = useAuthStore();
+
+  if (!isInitialized) return null;
   
   if (user) return <Navigate to="/" replace />;
 

@@ -18,9 +18,11 @@ export default function FavoriteButton({
   const deleteMutation = useDeleteFavorite();
 
   const { data: favorites } = useGetFavorites();
-  const favorite = favorites?.items.find(
-    (x) => x.advertisement.id === advertisementId,
+  const favorite = favorites?.items?.find(
+    (x) => x.advertisement?.id === advertisementId,
   );
+
+  const isPending = addMutation.isPending || deleteMutation.isPending;
 
   function handleClick() {
     if (!user) {
@@ -41,14 +43,14 @@ export default function FavoriteButton({
   return (
     <IconButton
       onClick={handleClick}
-      disabled={addMutation.isPending}
+      disabled={isPending}
       className={styles.icon}
     >
       <Heart
         size={24}
         strokeWidth={2}
-        fill={favorite ? "#ef4444" : "none"}
-        color={favorite ? "#ef4444" : "#374151"}
+        fill={favorite ? "var(--color-base)" : "none"}
+        color={favorite ? "var(--color-base)" : "#374151"}
       />
     </IconButton>
   );

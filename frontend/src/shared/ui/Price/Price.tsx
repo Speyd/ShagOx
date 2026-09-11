@@ -1,14 +1,14 @@
 import styles from "./Price.module.css";
 
 type PriceProps = {
-  value: number;
+  price: number;
   currency?: string;
 };
 
-export default function Price({ value, currency = "₴" }: PriceProps) {
+export default function Price({ price, currency = "₴" }: PriceProps) {
   return (
     <span className={styles.price}>
-      {value.toLocaleString("uk-UA")} {currency}
+      {price.toLocaleString("uk-UA")} {currency}
     </span>
   );
 }

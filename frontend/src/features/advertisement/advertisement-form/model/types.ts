@@ -7,6 +7,8 @@ export type AdvertisementDto = {
   sellerId: number;
   categoryId: number;
   conditionId: number;
+  stock?: number;
   properties: Record<string, string>;
   images: File[];
 };
+

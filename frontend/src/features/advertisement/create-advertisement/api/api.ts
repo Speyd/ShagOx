@@ -1,7 +1,9 @@
 import { api } from "@/shared/api/api";
-import type { CreateAdvertisementDto } from "./types";
+import type { AdvertisementDto } from "@/features/advertisement/advertisement-form/model/types";
 
-export async function createAdvertisement(data: CreateAdvertisementDto) {
+export type CreateAdvertisementDto = AdvertisementDto;
+
+export async function createAdvertisement(data: AdvertisementDto) {
   const formData = new FormData();
 
   formData.append("title", data.title);
@@ -11,15 +13,16 @@ export async function createAdvertisement(data: CreateAdvertisementDto) {
   formData.append("sellerId", data.sellerId.toString());
   formData.append("categoryId", data.categoryId.toString());
   formData.append("conditionId", data.conditionId.toString());
+  formData.append("stock", (data.stock ?? 1).toString());
 
   formData.append("popularity", "0");
 
-  data.images.forEach((file) => {
+  data.images.forEach((file: File) => {
     formData.append("images", file);
   });
 
-  for (const [key, value] of Object.entries(data.properties)) {
-    formData.append(`properties[${key}]`, value);
+  for (const [key, value] of Object.entries(data.properties ?? {})) {
+    formData.append(`properties[${key}]`, String(value));
   }
 
   const response = await api.post("/advertisements", formData);

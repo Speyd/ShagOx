@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import useUpdateAdvertisement from "../model/hooks/useAdminUpdateAdvertisement";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "@/shared/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -14,6 +14,7 @@ import {
 } from "../model/schemas/schema";
 import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGetAdvertisement";
 import type { ImageItem } from "@/shared/lib/types/image";
+import type { Advertisement } from "@/shared/lib/types/advertisements";
 
 type UpdateAdvertisementFormProps = {
   advertisementId: number;
@@ -22,20 +23,47 @@ type UpdateAdvertisementFormProps = {
 export default function AdminUpdateAdvertisementForm({
   advertisementId,
 }: UpdateAdvertisementFormProps) {
-  const mutation = useUpdateAdvertisement();
-  const { data: advertisement } = useGetAdvertisement(advertisementId);
+  const { data: advertisement, isLoading } = useGetAdvertisement(advertisementId);
 
-  const [images, setImages] = useState<ImageItem[]>([]);
+  if (isLoading) return <p>Loading...</p>;
+  if (!advertisement) return <p>Advertisement not found</p>;
+
+  return (
+    <AdminUpdateAdvertisementFormContent
+      key={advertisement.id}
+      advertisement={advertisement}
+    />
+  );
+}
+
+function AdminUpdateAdvertisementFormContent({
+  advertisement,
+}: {
+  advertisement: Advertisement;
+}) {
+  const mutation = useUpdateAdvertisement();
+
+  const [images, setImages] = useState<ImageItem[]>(() =>
+    advertisement.images.map((image) => ({
+      id: String(image.id),
+      url: image.url,
+      imageId: image.id,
+    })),
+  );
   const [deletedImages, setDeletedImages] = useState<number[]>([]);
   const [imagesError, setImagesError] = useState<string>("");
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = useForm({
+  } = useForm<UpdateAdvertisementDto>({
     resolver: zodResolver(adminUpdateAdvertisementSchema),
+    defaultValues: {
+      title: advertisement.title,
+      description: advertisement.description,
+      price: advertisement.price,
+    },
   });
 
   const removeImage = (image: ImageItem) => {
@@ -45,24 +73,6 @@ export default function AdminUpdateAdvertisementForm({
 
     setImages((prev) => prev.filter((x) => x.id !== image.id));
   };
-
-  useEffect(() => {
-    if (advertisement) {
-      setImages(
-        advertisement.images.map((image) => ({
-          id: crypto.randomUUID(),
-          url: image.url,
-          imageId: image.id,
-        })),
-      );
-
-      reset({
-        title: advertisement.title,
-        description: advertisement.description,
-        price: advertisement.price,
-      });
-    }
-  }, [advertisement, reset]);
 
   const onSubmit = async (data: UpdateAdvertisementDto) => {
     if (images.length < 2) {
@@ -74,7 +84,7 @@ export default function AdminUpdateAdvertisementForm({
     }
 
     await mutation.mutateAsync({
-      id: advertisementId,
+      id: advertisement.id,
 
       data: {
         ...data,
@@ -130,7 +140,7 @@ export default function AdminUpdateAdvertisementForm({
         <div>
           <Input
             type="number"
-            {...register("price")}
+            {...register("price", { valueAsNumber: true })}
             placeholder="Enter price"
           />
           {errors.price && <p className="error">{errors.price.message}</p>}
@@ -148,6 +158,7 @@ export default function AdminUpdateAdvertisementForm({
           <ImageUploader
             images={images}
             setImages={setImages}
+            setImagesError={setImagesError}
             onDelete={removeImage}
           />
 

@@ -77,11 +77,19 @@ export default function Router() {
           />
           <Route
             path="/create-advertisement"
-            element={<CreateAdvertisementPage />}
+            element={
+              <ProtectedRoute>
+                <CreateAdvertisementPage />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/update-advertisement/:id"
-            element={<UserUpdateAdvertisementPage />}
+            element={
+              <ProtectedRoute>
+                <UserUpdateAdvertisementPage />
+              </ProtectedRoute>
+            }
           />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />
           <Route path="*" element={<NotFoundPage />} />

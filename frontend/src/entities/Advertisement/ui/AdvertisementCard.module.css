@@ -1,47 +1,53 @@
 .card {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.imageContainer {
-  cursor: pointer;
-  width: 215px;
-  height: 100%;
-}
-
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.left {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-}
-
-.right {
-  display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
+  padding: 20px;
+  border-radius: 8px;
+  gap: 15px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .info {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+}
+
+.actionButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.ratingContainer {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
-.buttons {
+.rating {
   display: flex;
-  flex-direction: row;
-  gap: 10px;
+  align-items: center;
+  gap: 5px;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.addButton {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.addButton:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
 }

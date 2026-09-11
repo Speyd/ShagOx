@@ -3,6 +3,7 @@ import styles from "./AdvertisementPage.module.css";
 import Price from "@/shared/ui/price";
 import UpdateAdvertisementButton from "@/features/advertisement/update-advertisement/ui/UpdateAdvertisementButton";
 import DeleteAdvertisementButton from "@/features/advertisement/delete-advertisement";
+import FavoriteButton from "@/features/favorites";
 import { useAuthStore } from "@/features/auth/store/useAuthStore";
 import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGetAdvertisement";
 
@@ -20,32 +21,37 @@ export default function AdvertisementPage() {
     return <div>Advertisement not found</div>;
   }
 
+  const mainImageUrl = advertisement.images?.[0]?.url || "/placeholder-image.png";
+
   return (
     <div className={styles.advertisementPage}>
       <div className={styles.left}>
         <h1>{advertisement.title}</h1>
         <div className={styles.imageContainer}>
           <img
-            src={advertisement.images[0].url}
-            alt=""
+            src={mainImageUrl}
+            alt={advertisement.title}
             className={styles.image}
           />
         </div>
         <p>{advertisement.description}</p>
-        <div>
-          <h2>Додаткова інформація</h2>
-          <ul>
-            {Object.entries(advertisement.properties).map(([key, value]) => (
-              <li key={key}>
-                <strong>{key}:</strong> {value}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {advertisement.properties && Object.keys(advertisement.properties).length > 0 && (
+          <div>
+            <h2>Додаткова інформація</h2>
+            <ul>
+              {Object.entries(advertisement.properties).map(([key, value]) => (
+                <li key={key}>
+                  <strong>{key}:</strong> {value}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className={styles.right}>
         <div className={styles.buttons}>
+          <FavoriteButton advertisementId={advertisement.id} />
           {user?.id === advertisement.seller.id && (
             <UpdateAdvertisementButton id={advertisement.id} />
           )}
@@ -54,8 +60,8 @@ export default function AdvertisementPage() {
           )}
         </div>
         <Price
-          value={advertisement.price}
-          currency={advertisement.currency.symbol}
+          price={advertisement.price}
+          currency={advertisement.currency?.symbol}
         />
       </div>
     </div>

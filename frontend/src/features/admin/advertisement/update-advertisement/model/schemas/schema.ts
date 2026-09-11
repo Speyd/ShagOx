@@ -17,7 +17,7 @@ export const adminUpdateAdvertisementSchema = z.object({
     .min(10, "Мінімум 10 символів")
     .max(1000, "Максимум 1000 символів"),
 
-  price: z.coerce
+  price: z
     .number({
       error: "Введіть ціну",
     })

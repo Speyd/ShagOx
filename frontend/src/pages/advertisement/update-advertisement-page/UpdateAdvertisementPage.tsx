@@ -91,6 +91,7 @@ export default function UpdateAdvertisementPage() {
       </div>
 
       <AdvertisementForm
+        key={advertisement.id}
         defaultValues={{
           title: advertisement.title,
           description: advertisement.description,

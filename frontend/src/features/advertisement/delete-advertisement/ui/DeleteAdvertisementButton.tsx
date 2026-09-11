@@ -7,6 +7,9 @@ type DeleteAdvertisementButtonProps = {
   id: number;
 };
 
+import { modals } from "@mantine/modals";
+import { Text } from "@mantine/core";
+
 export default function DeleteAdvertisementButton({
   id,
 }: DeleteAdvertisementButtonProps) {
@@ -14,13 +17,35 @@ export default function DeleteAdvertisementButton({
   const navigate = useNavigate();
 
   const handleDelete = () => {
-    deleteMutation.mutate(id);
-    navigate("/");
+    modals.openConfirmModal({
+      title: "Видалити оголошення",
+      centered: true,
+      children: (
+        <Text size="sm">
+          Ви дійсно бажаєте видалити це оголошення? Цю дію неможливо буде скасувати.
+        </Text>
+      ),
+      labels: {
+        confirm: "Видалити",
+        cancel: "Скасувати",
+      },
+      confirmProps: {
+        color: "red",
+      },
+      onConfirm: async () => {
+        try {
+          await deleteMutation.mutateAsync(id);
+          navigate("/");
+        } catch (error) {
+          void error;
+        }
+      },
+    });
   };
 
   return (
     <IconButton
-      onClick={() => handleDelete()}
+      onClick={handleDelete}
       disabled={deleteMutation.isPending}
     >
       <Trash2 size={20} />

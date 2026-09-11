@@ -5,7 +5,7 @@ import Input from "@/shared/ui/input";
 import TextArea from "@/shared/ui/text-area";
 import Button from "@/shared/ui/button";
 import ImageUploader from "@/shared/ui/image-uploader";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { ImageItem } from "@/shared/lib/types/image";
 import {
   advertisementSchema,
@@ -27,14 +27,8 @@ export default function AdvertisementForm({
   onImageDelete,
   isLoading,
 }: AdvertisementFormProps) {
-  const [images, setImages] = useState<ImageItem[]>([]);
+  const [images, setImages] = useState<ImageItem[]>(() => defaultImages ?? []);
   const [imagesError, setImagesError] = useState<string>("");
-
-  useEffect(() => {
-    if (!defaultImages) return;
-
-    setImages(defaultImages);
-  }, [defaultImages]);
 
   const {
     register,

@@ -1,8 +1,7 @@
-import Container from "@/shared/ui/container";
-import Footer from "@/widgets/footer";
 import { Outlet } from "react-router-dom";
 import styles from "./MainLayout.module.css";
 import { Header } from "@/widgets/header";
+import Footer from "@/widgets/footer";
 
 export default function MainLayout() {
   return (
@@ -10,9 +9,9 @@ export default function MainLayout() {
       <Header />
 
       <main className={styles.content}>
-        <Container>
-          <Outlet />
-        </Container>
+
+        <Outlet />
+
       </main>
 
       <Footer />

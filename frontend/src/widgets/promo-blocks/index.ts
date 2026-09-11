@@ -1,0 +1,1 @@
+export { default as PromoBlocks } from './ui/PromoBlocks'

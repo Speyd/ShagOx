@@ -51,6 +51,7 @@ export default function NavigationDrawer({
       opened={opened}
       onClose={onClose}
       position="left"
+      zIndex={1001}
       size={350}
       withCloseButton={false}
       classNames={{
@@ -146,9 +147,8 @@ export default function NavigationDrawer({
               <Text fz={14}>Українська мова</Text>
 
               <ChevronRight
-                className={`${styles.arrow} ${
-                  languageOpened ? styles.arrowOpened : ""
-                }`}
+                className={`${styles.arrow} ${languageOpened ? styles.arrowOpened : ""
+                  }`}
               />
             </button>
 
@@ -181,6 +181,7 @@ export default function NavigationDrawer({
         onClose={() => setLogoutModalOpened(false)}
         title="Вихід з акаунту"
         centered
+        zIndex={1002}
       >
         <Text mb="lg">Ви впевнені, що хочете вийти з акаунту?</Text>
 

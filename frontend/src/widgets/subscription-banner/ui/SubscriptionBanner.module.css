@@ -1,0 +1,15 @@
+.subscriptionBanner {
+    user-select: none;
+    width: 100%;
+    background-color: var(--color-base);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+.content {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -12,6 +12,7 @@ node_modules
 dist
 dist-ssr
 *.local
+eslint_output.json
 
 # Editor directories and files
 .vscode/*

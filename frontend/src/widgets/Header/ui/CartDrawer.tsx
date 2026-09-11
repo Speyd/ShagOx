@@ -18,6 +18,7 @@ export default function CartDrawer({ opened, onClose }: CartDrawerProps) {
       position="right"
       size={380}
       withCloseButton={false}
+      zIndex={1001}
       padding={0}
       classNames={{
         content: styles.drawerContent,

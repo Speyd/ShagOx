@@ -1,0 +1,1 @@
+export { default as CategoriesBlock } from './ui/CategoriesBlock'

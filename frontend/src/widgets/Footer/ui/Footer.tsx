@@ -51,10 +51,10 @@ export default function Footer() {
               color="var(--color-primary)"
             />
             <div className={styles.copyright}>
-              <Text c="#32639D" fz={14}>
-                © 2024 Marketly
+              <Text c="var(--color-primary)" fz={14}>
+                © 2026 Marketly
               </Text>
-              <Text c="#32639D">Усі права захищені</Text>
+              <Text c="var(--color-primary)">Усі права захищені</Text>
             </div>
           </div>
         </div>

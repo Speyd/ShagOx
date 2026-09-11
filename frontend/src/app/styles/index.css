@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yantramanav:wght@100;300;400;500;700;900&display=swap");
+@import '@mantine/carousel/styles.css';
 
 #root {
   display: flex;
@@ -21,11 +23,15 @@ body {
 
 :root {
   --font-base: "Inter", sans-serif;
+  --font-secondary: "Yantramanav", sans-serif;
   --font-logo: "Poppins", sans-serif;
   --font-alt: "Manrope", sans-serif;
   --bg-base: #f2f7fe;
   --color-base: #0c233f;
+  --color-primary: #32639D;
+  --color-primary-hover: #28527F;
   --text-base: #334155;
+  --text-secondary: #ced3d9;
   --font-xs: 12px;
   --font-sm: 14px;
   --font-md: 16px;

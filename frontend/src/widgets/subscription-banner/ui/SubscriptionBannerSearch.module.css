@@ -1,0 +1,33 @@
+.inputWrapper {
+    position: relative;
+    display: flex;
+    gap: 10px;
+}
+
+
+.button {
+    position: absolute;
+    right: 0;
+    background-color: var(--color-primary) !important;
+    width: 150px;
+    height: 100%;
+    border-radius: 12px;
+    border: none;
+    transition: 0.3s ease;
+}
+
+.button:hover {
+    background-color: var(--color-primary-hover) !important;
+}
+
+.input {
+    width: 700px;
+    padding: 15px 20px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+}
+
+.input:focus {
+    outline: none;
+
+}

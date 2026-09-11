@@ -1,0 +1,64 @@
+.promoBlock {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.promoBlockCard {
+    position: relative;
+    overflow: hidden;
+}
+
+.image {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+}
+
+.info {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30px;
+    gap: 20px;
+}
+
+.labelWrapper {
+    max-width: fit-content;
+    background: var(--color-primary);
+    border-radius: 8px;
+
+    padding: 8px 12px;
+}
+
+.label {
+    color: #a6b7c9;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.title {
+    color: var(--color-base);
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.button {
+    max-width: fit-content;
+    background: #fcfdff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #000;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #064ea62e;
+    transition: background-color 0.2s ease;
+}
+
+.button:hover {
+    background: var(--text-secondary);
+}

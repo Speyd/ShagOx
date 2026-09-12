@@ -14,7 +14,10 @@ public static class BasketDependencyInjection
         services.AddScoped<IBasketExistsRepository,
             BasketExistsRepository>();
 
+
         services.AddBasketAttributeInfrastructure();
+
+        services.AddBasketItemInfrastructure();
 
         return services;
     }

@@ -8,6 +8,12 @@ public static class BasketItemQueryExtensions
        this IQueryable<BasketItem> query)
     {
         return query
-           .Include(x => x.Advertisement);
+            .Include(x => x.Advertisement)
+                .ThenInclude(x => x.Images)
+            .Include(x => x.Advertisement)
+                .ThenInclude(x => x.Seller)
+            .Include(x => x.Advertisement)
+                .ThenInclude(x => x.Buyer)
+            .Include(x => x.Basket);
     }
 }

@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems;
 public class BasketItemExistsRepository
@@ -44,5 +45,17 @@ public class BasketItemExistsRepository
                 c.Id == itemId &&
                 c.BasketId == basketId
             );
+    }
+
+    public async Task<bool> IsOwnerAsync(
+        int enityId,
+        int userId)
+    {
+        var result = await _db.BasketItems
+            .WithIncludes()
+            .AnyAsync(x =>
+                (x.Id == enityId && x.Basket.UserId == userId));
+
+        return result;
     }
 }

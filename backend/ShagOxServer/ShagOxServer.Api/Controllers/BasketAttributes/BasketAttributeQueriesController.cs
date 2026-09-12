@@ -52,6 +52,17 @@ public class BasketAttributeQueriesController
         return result.ToActionResult();
     }
 
+
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] PaginationParams pagination)
+    {
+        var result = await _queryService
+            .GetPagedAsync(pagination);
+
+        return result.ToActionResult();
+    }
+
     [HttpGet("search")]
     public async Task<IActionResult> Search(
        [FromQuery] BasketAttributeSearchFilter filter,

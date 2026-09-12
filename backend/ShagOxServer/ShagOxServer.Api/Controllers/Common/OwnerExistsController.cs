@@ -1,29 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Special;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
 
-namespace ShagOxServer.Api.Controllers.Advertisements;
-public abstract class AdvertisementOwnerController 
+namespace ShagOxServer.Api.Controllers.Common;
+
+public abstract class OwnerExistsController
     : ApiController
 {
-    protected readonly IAdvertisementExistsRepository _advertExistsService;
-
+    protected readonly IExistsOwnerRepository _ownerRepository;
     protected readonly IUserAdminQueryService _userQueryService;
 
-
-    protected AdvertisementOwnerController(
-        IAdvertisementExistsRepository advertExistsService,
+    public OwnerExistsController(
+        IExistsOwnerRepository ownerRepository,
         IUserAdminQueryService userQueryService)
     {
-        _advertExistsService = advertExistsService;
+        _ownerRepository = ownerRepository;
         _userQueryService = userQueryService;
     }
-
 
     protected async Task<IActionResult?> CheckAdvertisementOwnerAsync(
         int advertisementId)
     {
-        var isOwner = await _advertExistsService
+        var isOwner = await _ownerRepository
             .IsOwnerAsync(
                 advertisementId,
                 UserId);
@@ -34,4 +32,5 @@ public abstract class AdvertisementOwnerController
 
         return null;
     }
+
 }

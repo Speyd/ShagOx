@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Query;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Basket;
+namespace ShagOxServer.Api.Controllers.Baskets;
 [ApiController]
 [Route("api/baskets")]
 [Authorize]
@@ -21,8 +21,7 @@ public class BasketQueriesController
 
 
     [HttpGet]
-    public async Task<IActionResult> GetById(
-        [FromRoute] int id)
+    public async Task<IActionResult> GetUserBasket()
     {
         var result = await _queryService
             .GetByUserAsync(UserId);

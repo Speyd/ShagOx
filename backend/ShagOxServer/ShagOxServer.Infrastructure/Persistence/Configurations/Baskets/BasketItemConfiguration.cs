@@ -20,7 +20,7 @@ public class BasketItemConfiguration
 
         builder.HasOne(x => x.Advertisement)
                .WithMany(x => x.BasketItems)
-               .HasForeignKey(x => x.BasketId)
+               .HasForeignKey(x => x.AdvertisementId)
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => 

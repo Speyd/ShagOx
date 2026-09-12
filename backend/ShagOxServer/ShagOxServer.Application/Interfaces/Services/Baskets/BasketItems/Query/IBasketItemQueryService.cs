@@ -9,6 +9,10 @@ namespace ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query
 public interface IBasketItemQueryService
     : IQueryService<BasketItemDto>
 {
+    Task<Result<PagedResult<BasketItemDto>>> GetPagedAsync(
+        int userId,
+        PaginationParams pagination);
+
     Task<Result<PagedResult<BasketItemDto>>> GetByBasketAsync(
         int basketId,
         PaginationParams pagination);

@@ -20,4 +20,16 @@ public class BasketExistsRepository
         return await _db.Baskets
            .AnyAsync(c => c.UserId == userId);
     }
+
+    public async Task<bool> IsOwnerAsync(
+        int basketId, 
+        int userId)
+    {
+        return await _db.Baskets
+            .AnyAsync(c =>
+                c.UserId == userId &&
+                c.Id == basketId
+            );
+
+    }
 }

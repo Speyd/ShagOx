@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Basket;
+namespace ShagOxServer.Api.Controllers.Baskets;
 
 [ApiController]
 [Route("api/baskets")]

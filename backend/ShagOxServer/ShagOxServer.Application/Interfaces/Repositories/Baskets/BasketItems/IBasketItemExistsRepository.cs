@@ -1,9 +1,10 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Special;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 public interface IBasketItemExistsRepository
-    : IExistsRepository<BasketItem>
+    : IExistsRepository<BasketItem>, IExistsOwnerRepository
 {
     Task<bool> ExistsAsync(
         int advertisementId,

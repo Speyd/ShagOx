@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Api.Controllers.Common;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
@@ -12,7 +13,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 [Route("api/admin/advertisements")]
 [Authorize(Roles = "Admin")]
 public class AdvertisementAdminQueriesController 
-    : AdvertisementOwnerController
+    : OwnerExistsController
 {
     private readonly IAdvertisementQueryService _queryAdvertService;
 
@@ -20,8 +21,8 @@ public class AdvertisementAdminQueriesController
     public AdvertisementAdminQueriesController(
        IAdvertisementQueryService queryAdvertService,
        IAdvertisementExistsRepository existsAdvertRepository,
-       IUserAdminQueryService userQueryService)
-        :base(existsAdvertRepository, userQueryService)
+       IUserAdminQueryService userQueryService
+    ) : base(existsAdvertRepository, userQueryService)
     {
         _queryAdvertService = queryAdvertService;
     }

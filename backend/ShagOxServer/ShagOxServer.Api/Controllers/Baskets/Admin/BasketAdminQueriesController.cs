@@ -5,7 +5,7 @@ using ShagOxServer.Domain.Filters.Baskets.Core;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Basket.Admin;
+namespace ShagOxServer.Api.Controllers.Baskets.Admin;
 [ApiController]
 [Route("api/admin/baskets")]
 [Authorize(Roles = "Admin")]

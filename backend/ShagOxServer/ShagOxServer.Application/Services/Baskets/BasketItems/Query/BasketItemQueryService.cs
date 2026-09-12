@@ -59,6 +59,16 @@ public class BasketItemQueryService
         return items.ToResultPaged(BasketItemMapper.ToDto);
     }
 
+    public async Task<Result<PagedResult<BasketItemDto>>> GetPagedAsync(
+        int userId,
+        PaginationParams pagination)
+    {
+        var items = await _itemQueryRepository
+            .GetPagedAsync(userId, pagination);
+
+        return items.ToResultPaged(BasketItemMapper.ToDto);
+    }
+
     public async Task<Result<PagedResult<BasketItemDto>>> Search(
        BasketItemSearchFilter filter,
        PaginationParams pagination)

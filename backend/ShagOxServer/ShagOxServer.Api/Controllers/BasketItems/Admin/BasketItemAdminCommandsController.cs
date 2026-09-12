@@ -1,28 +1,29 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.DTOs.Baskets.Core.Create;
-using ShagOxServer.Application.DTOs.Baskets.Core.Update;
-using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
-using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Delete;
-using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Update;
+using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
+using ShagOxServer.Application.DTOs.Baskets.BasketItems.Update;
+using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
+using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
+using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Basket.Admin;
+namespace ShagOxServer.Api.Controllers.BasketItems.Admin;
+
 [ApiController]
-[Route("api/admin/baskets")]
+[Route("api/admin/basket-items")]
 [Authorize(Roles = "Admin")]
-public class BasketAdminCommandsController
+public class BasketItemAdminCommandsController
     : ApiController
 {
-    private readonly IBasketCreateService _createService;
-    private readonly IBasketUpdateService _updateService;
-    private readonly IBasketDeleteService _deleteService;
+    private readonly IBasketItemCreateService _createService;
+    private readonly IBasketItemUpdateService _updateService;
+    private readonly IBasketItemDeleteService _deleteService;
 
 
-    public BasketAdminCommandsController(
-        IBasketCreateService createService,
-        IBasketUpdateService updateService,
-        IBasketDeleteService deleteService)
+    public BasketItemAdminCommandsController(
+        IBasketItemCreateService createService,
+        IBasketItemUpdateService updateService,
+        IBasketItemDeleteService deleteService)
     {
         _createService = createService;
         _updateService = updateService;
@@ -32,7 +33,7 @@ public class BasketAdminCommandsController
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] BasketCreateRequest request)
+        [FromBody] BasketItemCreateRequest request)
     {
         var result = await _createService
             .CreateAsync(request);
@@ -43,7 +44,7 @@ public class BasketAdminCommandsController
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
         [FromRoute] int id,
-        [FromBody] BasketUpdateRequest request)
+        [FromBody] BasketItemUpdateRequest request)
     {
         var result = await _updateService
             .UpdateAsync(id, request);

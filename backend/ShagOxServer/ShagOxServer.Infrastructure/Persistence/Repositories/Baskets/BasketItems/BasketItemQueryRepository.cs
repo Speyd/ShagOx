@@ -53,6 +53,16 @@ public class BasketItemQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
+    public async Task<PagedResult<BasketItem>> GetPagedAsync(
+        int userId, 
+        PaginationParams pagination)
+    {
+        return await _db.BasketItems
+            .WithIncludes()
+            .Where(x => x.Basket.UserId == userId)
+            .ToPagedResultAsync(pagination);
+    }
+
     public async Task<PagedResult<BasketItem>> Search(
         BasketItemSearchFilter filter,
         PaginationParams pagination)

@@ -29,7 +29,10 @@ public static class BasketDependencyInjection
 
         services.AddScoped<BasketValidator>();
 
+
         services.AddBasketAttributeApplication();
+
+        services.AddBasketItemApplication();
 
         return services;
     }

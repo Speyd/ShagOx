@@ -1,9 +1,11 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems;
@@ -15,13 +17,22 @@ public class BasketItemQueryRepository
         : base(db)
     { }
 
+    public override async Task<BasketItem?> GetByIdAsync(
+       int id)
+    {
+        return await _db.BasketItems
+            .WithIncludes()
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
+
     public async Task<PagedResult<BasketItem>> GetByAdvertisementAsync(
         int advertisementId,
         PaginationParams pagination)
     {
         return await _db.BasketItems
-           .Where(x => x.AdvertisementId  == advertisementId)
-           .ToPagedResultAsync(pagination);
+            .WithIncludes()
+            .Where(x => x.AdvertisementId  == advertisementId)
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<PagedResult<BasketItem>> GetByBasketAsync(
@@ -29,8 +40,17 @@ public class BasketItemQueryRepository
         PaginationParams pagination)
     {
         return await _db.BasketItems
-           .Where(x => x.BasketId == basketId)
-           .ToPagedResultAsync(pagination);
+            .WithIncludes()
+            .Where(x => x.BasketId == basketId)
+            .ToPagedResultAsync(pagination);
+    }
+
+    public override async Task<PagedResult<BasketItem>> GetPagedAsync(
+       PaginationParams pagination)
+    {
+        return await _db.BasketItems
+            .WithIncludes()
+            .ToPagedResultAsync(pagination);
     }
 
     public async Task<PagedResult<BasketItem>> Search(
@@ -38,7 +58,8 @@ public class BasketItemQueryRepository
         PaginationParams pagination)
     {
         return await _db.BasketItems
-           .Filter(filter)
-           .ToPagedResultAsync(pagination);
+            .WithIncludes()
+            .Filter(filter)
+            .ToPagedResultAsync(pagination);
     }
 }

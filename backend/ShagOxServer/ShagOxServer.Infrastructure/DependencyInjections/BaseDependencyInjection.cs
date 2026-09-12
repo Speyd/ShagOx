@@ -17,7 +17,6 @@ public static class BaseDependencyInjection
 
         services.AddScoped(typeof(IExistsTranslationRepository<>), typeof(ExistsTranslationRepository<>));
         services.AddScoped(typeof(IQueryTranslationRepository<>), typeof(QueryTranslationRepository<>));
-        
 
         return services;
     }

@@ -1,11 +1,10 @@
 ﻿using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Baskets.Update;
+using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
-using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;

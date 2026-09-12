@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.DTOs.Baskets.Create;
-using ShagOxServer.Application.DTOs.Baskets.Update;
+using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Create;
+using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Delete;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Update;
@@ -10,7 +10,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.BasketAttributes;
 
 [ApiController]
-[Route("api/admin/basket-attribute")]
+[Route("api/admin/basket-attributes")]
 [Authorize(Roles = "Admin")]
 public class BasketAttributeCommandsController
     : ApiController

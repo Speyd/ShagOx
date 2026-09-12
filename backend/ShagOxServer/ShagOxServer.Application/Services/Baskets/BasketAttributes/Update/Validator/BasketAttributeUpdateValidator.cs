@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.Update;
+﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

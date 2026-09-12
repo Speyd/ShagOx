@@ -2,7 +2,6 @@
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
-
 public static class BasketAttributeFilterExtensions
 {
     public static IQueryable<BasketAttribute> Filter(

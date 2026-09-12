@@ -26,7 +26,7 @@ public static class AdvertisementUpdater
 
         if (request.Stock.HasValue)
         {
-            advert.Stock = request.Stock.Value;
+            advert.Stock = request.Stock.Value < 0? 0 : request.Stock.Value;
             count++;
         }
 

@@ -7,7 +7,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.BasketAttributes;
 
 [ApiController]
-[Route("api/basket-attribute")]
+[Route("api/basket-attributes")]
 public class BasketAttributeQueriesController
     : ApiController
 {
@@ -48,6 +48,17 @@ public class BasketAttributeQueriesController
     {
         var result = await _queryService
             .GetByAttributeDefenitionAsync(id);
+
+        return result.ToActionResult();
+    }
+
+
+    [HttpGet]
+    public async Task<IActionResult> GetPaged(
+        [FromQuery] PaginationParams pagination)
+    {
+        var result = await _queryService
+            .GetPagedAsync(pagination);
 
         return result.ToActionResult();
     }

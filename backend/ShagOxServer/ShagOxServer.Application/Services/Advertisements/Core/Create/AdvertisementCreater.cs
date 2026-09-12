@@ -12,7 +12,7 @@ public static class AdvertisementCreater
         {
             Title = request.Title,
             Description = request.Description ?? "",
-            Stock = request.Stock,
+            Stock = request.Stock < 0? 0 : request.Stock,
             Popularity = request.Popularity,
 
             CurrencyId = request.CurrencyId,

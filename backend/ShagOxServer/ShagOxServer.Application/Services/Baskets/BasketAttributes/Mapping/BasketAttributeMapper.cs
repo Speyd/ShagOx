@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Baskets;
+﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Mapping;
 using ShagOxServer.Domain.Entities.Baskets;
 

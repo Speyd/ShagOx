@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Application.DTOs.Baskets.Update;
+﻿namespace ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 public sealed record BasketAttributeUpdateRequest
 (
     int? AttributeDefinitionId,

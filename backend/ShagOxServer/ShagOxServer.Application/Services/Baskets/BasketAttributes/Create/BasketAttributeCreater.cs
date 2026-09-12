@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.Create;
+﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Create;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Create;

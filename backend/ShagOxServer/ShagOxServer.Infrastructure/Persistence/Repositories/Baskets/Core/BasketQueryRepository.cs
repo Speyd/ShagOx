@@ -1,8 +1,10 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.Core;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -15,13 +17,28 @@ public class BasketQueryRepository
         : base(db)
     { }
 
-    public async Task<PagedResult<Basket>> GetByUserAsync(
-        int userId,
+    public override async Task<Basket?> GetByIdAsync(
+       int id)
+    {
+        return await _db.Baskets
+            .WithIncludes()
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
+
+    public async Task<Basket?> GetByUserAsync(
+        int userId)
+    {
+        return await _db.Baskets
+            .WithIncludes()
+            .FirstOrDefaultAsync(c =>
+                c.UserId == userId);
+    }
+
+    public override async Task<PagedResult<Basket>> GetPagedAsync(
         PaginationParams pagination)
     {
         return await _db.Baskets
-            .Where(c =>
-                c.UserId == userId)
+            .WithIncludes()
             .ToPagedResultAsync(pagination);
     }
 
@@ -30,6 +47,7 @@ public class BasketQueryRepository
         PaginationParams pagination)
     {
         return await _db.Baskets
+            .WithIncludes()
            .Filter(filter)
            .ToPagedResultAsync(pagination);
     }

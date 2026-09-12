@@ -7,9 +7,8 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 public interface IBasketQueryRepository
     : IQueryRepository<Basket>
 {
-    Task<PagedResult<Basket>> GetByUserAsync(
-        int userId,
-        PaginationParams pagination);
+    Task<Basket?> GetByUserAsync(
+        int userId);
 
     Task<PagedResult<Basket>> Search(
         BasketSearchFilter filter,

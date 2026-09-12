@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Baskets.Create;
+using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;

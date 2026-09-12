@@ -1,8 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes;
 using ShagOxServer.Application.DTOs.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Base;
-using ShagOxServer.Domain.Entities.Baskets;
-using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 using ShagOxServer.Domain.Filters.Baskets.Core;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;

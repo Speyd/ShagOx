@@ -7,7 +7,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.BasketAttributes;
 
 [ApiController]
-[Route("api/basket-attribute")]
+[Route("api/basket-attributes")]
 public class BasketAttributeQueriesController
     : ApiController
 {

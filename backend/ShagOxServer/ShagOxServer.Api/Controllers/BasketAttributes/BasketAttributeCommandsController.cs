@@ -10,7 +10,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.BasketAttributes;
 
 [ApiController]
-[Route("api/admin/basket-attribute")]
+[Route("api/admin/basket-attributes")]
 [Authorize(Roles = "Admin")]
 public class BasketAttributeCommandsController
     : ApiController

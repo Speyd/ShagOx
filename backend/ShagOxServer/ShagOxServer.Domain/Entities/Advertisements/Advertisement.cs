@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -74,6 +75,9 @@ public class Advertisement : BaseEntity
     /// Flexible JSON storage for category-specific product attributes.
     /// </summary>
     public Dictionary<string, string> Properties { get; set; } = new();
+
+    public List<BasketItem> BasketItems { get; set; }
+        = new List<BasketItem>();
 
     public override string ToString()
     {

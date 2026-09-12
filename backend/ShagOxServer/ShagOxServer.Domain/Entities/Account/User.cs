@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
@@ -22,6 +23,8 @@ public class User : BaseEntity
 
     public DateTime? LastSeenAt { get; set; }
     public DateTime RegisteredAt { get; set; } = DateTime.UtcNow;
+
+    public Basket Basket { get; set; } = null!;
 
     public List<UserRole> UserRoles { get; set; } = new();
 

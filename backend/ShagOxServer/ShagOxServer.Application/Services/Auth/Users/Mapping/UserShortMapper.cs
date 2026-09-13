@@ -9,8 +9,10 @@ public static class UserShortMapper
     {
         return new UserShortDto(
             user.Id,
-            user.Surname,
-            user.Name,
+            user.FirstName,
+            user.LastName,
+            user.UserName,
+            user.Bio,
             user.Phone,
             user.Email,
             user.Avatar?.Id,

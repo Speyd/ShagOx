@@ -12,7 +12,7 @@ public sealed record RegisterResponse(
         : this(
             user.Id,
             user.Email ?? user.Phone ?? "",
-            user.Name ?? ""
+            user.UserName ?? ""
         )
     {}
 }

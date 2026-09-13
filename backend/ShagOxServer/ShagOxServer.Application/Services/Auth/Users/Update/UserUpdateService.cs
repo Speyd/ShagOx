@@ -100,31 +100,41 @@ public class UserUpdateService
         if (request.CityId.HasValue &&
            request.CityId != user.CityId)
         {
-            var city = await _cityValidator
+            var cityExists = await _cityValidator
                 .ExistsByIdAsync(request.CityId.Value);
 
-            if (!city.IsSuccess)
-                return Result<bool>.Fail(city.Error);
+            if (!cityExists.IsSuccess)
+                return Result<bool>.Fail(cityExists.Error);
         }
 
         if (request.Phone is not null &&
             request.Phone != user.Phone)
         {
-            var phone = await _userValidator
+            var phoneExists = await _userValidator
                 .NotExistsByPhoneAsync(request.Phone);
 
-            if (!phone.IsSuccess)
-                return Result<bool>.Fail(phone.Error);
+            if (!phoneExists.IsSuccess)
+                return Result<bool>.Fail(phoneExists.Error);
         }
 
         if (request.Email is not null &&
             request.Email != user.Email)
         {
-            var email = await _userValidator
+            var emailExists = await _userValidator
                 .NotExistsByEmailAsync(request.Email);
 
-            if (!email.IsSuccess)
-                return Result<bool>.Fail(email.Error);
+            if (!emailExists.IsSuccess)
+                return Result<bool>.Fail(emailExists.Error);
+        }
+
+        if (request.UserName is not null &&
+            request.UserName != user.UserName)
+        {
+            var userNameExists = await _userValidator
+                .NotExistsByUserNameAsync(request.UserName);
+
+            if (!userNameExists.IsSuccess)
+                return Result<bool>.Fail(userNameExists.Error);
         }
 
         return Result<bool>.Success(true);

@@ -4,8 +4,10 @@ namespace ShagOxServer.Application.DTOs.Auth.Users;
 public sealed record UserShortDto
 (
     int Id,
-    string? Surname,
-    string? Name,
+    string? FirstName,
+    string? LastName,
+    string? UserName,
+    string? Bio,
     string? Phone,
     string? Email,
 

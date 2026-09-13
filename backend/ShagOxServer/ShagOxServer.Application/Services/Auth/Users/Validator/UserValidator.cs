@@ -37,7 +37,7 @@ public class UserValidator
       string phone)
     {
         if (!await _userExistsRepository
-                .ExistsPhoneAsync(phone))
+                .ExistsByPhoneAsync(phone))
         {
             return Result<bool>
                 .NotFound(typeof(User));
@@ -50,7 +50,7 @@ public class UserValidator
        string phone)
     {
         if (await _userExistsRepository
-                .ExistsPhoneAsync(phone))
+                .ExistsByPhoneAsync(phone))
         {
             return Result<bool>
                 .AlreadyExists(typeof(User));
@@ -63,7 +63,7 @@ public class UserValidator
       string email)
     {
         if (!await _userExistsRepository
-                .ExistsEmailAsync(email))
+                .ExistsByEmailAsync(email))
         {
             return Result<bool>
                 .NotFound(typeof(User));
@@ -76,7 +76,33 @@ public class UserValidator
        string email)
     {
         if (await _userExistsRepository
-            .ExistsEmailAsync(email))
+            .ExistsByEmailAsync(email))
+        {
+            return Result<bool>
+                .AlreadyExists(typeof(User));
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> ExistsByUserNameAsync(
+      string userName)
+    {
+        if (!await _userExistsRepository
+                .ExistsByUserNameAsync(userName))
+        {
+            return Result<bool>
+                .NotFound(typeof(User));
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByUserNameAsync(
+       string userName)
+    {
+        if (await _userExistsRepository
+            .ExistsByUserNameAsync(userName))
         {
             return Result<bool>
                 .AlreadyExists(typeof(User));

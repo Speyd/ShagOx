@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Users;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 public static class UserFilterExtensions
@@ -15,17 +14,20 @@ public static class UserFilterExtensions
 
         if (!string.IsNullOrWhiteSpace(filter.FullName))
         {
-            query = query.Where(u => (u.Name + " " + u.Surname).Contains(filter.FullName));
+            query = query.Where(u =>
+                EF.Functions.ILike((u.FirstName + " " + u.LastName), $"%{filter.FullName}%"));
         }
 
-        if (!string.IsNullOrWhiteSpace(filter.Email))
+        if (!string.IsNullOrWhiteSpace(filter.UserName))
         {
-            query = query.Where(u => u.Email != null && u.Email.Contains(filter.Email));
+            query = query.Where(u => u.UserName != null &&
+                EF.Functions.ILike(u.UserName, $"%{filter.UserName}%"));
         }
 
-        if (!string.IsNullOrWhiteSpace(filter.Phone))
+        if (!string.IsNullOrWhiteSpace(filter.Bio))
         {
-            query = query.Where(u => u.Phone != null && u.Phone.Contains(filter.Phone));
+            query = query.Where(u => u.Bio != null &&
+                EF.Functions.ILike(u.Bio, $"%{filter.Bio}%"));
         }
 
         return query;
@@ -42,7 +44,19 @@ public static class UserFilterExtensions
         if (!string.IsNullOrWhiteSpace(filter.FullName))
         {
             query = query.Where(u =>
-                EF.Functions.ILike((u.Name + " " + u.Surname), $"%{filter.FullName}%"));
+                EF.Functions.ILike((u.FirstName + " " + u.LastName), $"%{filter.FullName}%"));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.UserName))
+        {
+            query = query.Where(u => u.UserName != null &&
+                EF.Functions.ILike(u.UserName, $"%{filter.UserName}%"));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.Bio))
+        {
+            query = query.Where(u => u.Bio != null &&
+                EF.Functions.ILike(u.Bio, $"%{filter.Bio}%"));
         }
 
         if (!string.IsNullOrWhiteSpace(filter.Email))

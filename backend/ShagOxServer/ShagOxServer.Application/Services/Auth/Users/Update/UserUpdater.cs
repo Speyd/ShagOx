@@ -10,15 +10,27 @@ public static class UserUpdater
     {
         int countUpdated = 0;
 
-        if (request.Surname is not null)
+        if (request.FirstName is not null)
         {
-            user.Surname = request.Surname;
+            user.FirstName = request.FirstName;
             countUpdated++;
         }
 
-        if (request.Name is not null)
+        if (request.LastName is not null)
         {
-            user.Name = request.Name;
+            user.LastName = request.LastName;
+            countUpdated++;
+        }
+
+        if (request.UserName is not null)
+        {
+            user.UserName = request.UserName;
+            countUpdated++;
+        }
+
+        if (request.Bio is not null)
+        {
+            user.Bio = request.Bio;
             countUpdated++;
         }
 

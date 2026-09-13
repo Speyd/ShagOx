@@ -16,15 +16,24 @@ public class UserExistsRepository
 
     public async Task<bool> ExistsAsync(
         string? email,
-        string? phone)
+        string? phone,
+        string userName)
     {
         return await _db.Users.AnyAsync(x =>
             (email != null && x.Email == email) ||
-            (phone != null && x.Phone == phone)
+            (phone != null && x.Phone == phone) ||
+            x.UserName == userName
         );
     }
 
-    public async Task<bool> ExistsEmailAsync(
+    public async Task<bool> ExistsByUserNameAsync(
+        string userName)
+    {
+        return await _db.Users
+            .AnyAsync(x => x.UserName == userName);
+    }
+
+    public async Task<bool> ExistsByEmailAsync(
         string? email)
     {
         return await _db.Users.AnyAsync(x =>
@@ -32,7 +41,7 @@ public class UserExistsRepository
         );
     }
 
-    public async Task<bool> ExistsPhoneAsync(
+    public async Task<bool> ExistsByPhoneAsync(
         string? phone)
     {
         return await _db.Users.AnyAsync(x =>

@@ -3,8 +3,10 @@
 namespace ShagOxServer.Application.DTOs.Auth.Users.Update;
 public sealed record UserUpdateRequest
 (
-    string? Surname,
-    string? Name,
+    string? FirstName,
+    string? LastName,
+    string? UserName,
+    string? Bio,
     string? Phone,
     string? Email,
     IFormFile? Avatar,

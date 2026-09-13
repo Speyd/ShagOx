@@ -73,11 +73,11 @@ public class UserCreater
     public async Task SetDefaultName(
         User user)
     {
-        if (!string.IsNullOrEmpty(user.Name))
+        if (!string.IsNullOrEmpty(user.FirstName))
             return;
 
 
-        user.Name = $"user-{user.Id}";
+        user.FirstName = $"user-{user.Id}";
 
 
         _userRepository.Update(user);
@@ -89,7 +89,6 @@ public class UserCreater
     {
         var data = request.EmailOrPhone;
 
-
         var type =
             _contactValidator.Detect(data);
 
@@ -98,7 +97,7 @@ public class UserCreater
         {
             case UserContactType.Email:
                 user.Email = data;
-                user.Name =
+                user.FirstName =
                     data.Split('@')[0];
 
                 break;
@@ -109,6 +108,7 @@ public class UserCreater
                 break;
         }
 
+        user.UserName = request.UserName;
 
         return type;
     }

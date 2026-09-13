@@ -5,6 +5,6 @@ namespace ShagOxServer.Application.DTOs.Location.Cities;
 public sealed record CityDto
 (
     int Id,
-    string Name,
+    string Code,
     RegionDto Region
 ) : BaseDto(Id);

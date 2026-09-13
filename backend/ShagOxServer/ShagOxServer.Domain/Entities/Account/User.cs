@@ -7,8 +7,12 @@ using ShagOxServer.Domain.Entities.Specification.Pictures;
 namespace ShagOxServer.Domain.Entities.Account;
 public class User : BaseEntity
 {
-    public string? Surname { get; set; }
-    public string? Name { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+
+    public string UserName { get; set; } = null!;
+
+    public string? Bio { get; set; }
 
     public string PasswordHash { get; set; } = "";
 
@@ -36,6 +40,6 @@ public class User : BaseEntity
 
     public override string ToString()
     {
-        return $"{Name} {Surname}";
+        return $"{FirstName} {LastName} | {UserName}";
     }
 }

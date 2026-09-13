@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
+using ShagOxServer.Application.Interfaces.Services.Verifications;
 using ShagOxServer.Application.Services.Auth.Users.Create;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -13,6 +14,10 @@ public class RegisterService
 {
     private readonly IRepository<User> _userRepository;
     private readonly IUserExistsRepository _userExistsRepository;
+    private readonly IEmailService _emailService;
+    private readonly IVerificationCodeService _codeService;
+
+
     private readonly UserCreater _userCreater;
     
     private readonly IUnitOfWork _unitOfWork;
@@ -22,11 +27,15 @@ public class RegisterService
         IRepository<User> userRepository,
         IUserExistsRepository userExistsRepository,
         UserCreater userCreater,
+        IEmailService emailService,
+        IVerificationCodeService codeService,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _userExistsRepository = userExistsRepository;
         _userCreater = userCreater;
+        _emailService = emailService;
+        _codeService = codeService;
         _unitOfWork = unitOfWork;
     }
 
@@ -61,6 +70,17 @@ public class RegisterService
             }
 
             await _unitOfWork.CommitAsync();
+
+            if (!string.IsNullOrWhiteSpace(user.Email))
+            {
+                var code = await _codeService
+                    .CreateCodeAsync(user.Id);
+
+                await _unitOfWork.SaveChangesAsync();
+
+                await _emailService
+                    .SendVerificationCodeAsync(user.Email, code);
+            }
 
             return Result<RegisterResponse>.Success(
                new RegisterResponse(user)

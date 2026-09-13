@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Localization;
 using ShagOxServer.Application.Interfaces.Services.Verifications;
+using ShagOxServer.Application.Resources.EmailService;
 using System.Net;
 using System.Net.Mail;
 
@@ -9,14 +9,11 @@ public class EmailService
     : IEmailService
 {
     private readonly IConfiguration _configuration;
-    private readonly IStringLocalizer<Emails> _localizer;
 
     public EmailService(
-        IConfiguration configuration,
-        IStringLocalizer<Emails> localizer)
+        IConfiguration configuration)
     {
         _configuration = configuration;
-        _localizer = localizer;
     }
 
     public async Task SendVerificationCodeAsync(
@@ -38,6 +35,7 @@ public class EmailService
         var fromEmail = _configuration["Email:From"]
             ?? throw new InvalidOperationException("Sender email is not configured.");
 
+
         using var client = new SmtpClient(smtpHost, smtpPort)
         {
             EnableSsl = true,
@@ -46,10 +44,10 @@ public class EmailService
                 smtpPassword)
         };
 
-        var subject = _localizer["VerificationSubject"];
+        var subject = Emails.VerificationSubject;
 
         var body = string.Format(
-            _localizer["VerificationBody"],
+            Emails.VerificationBody,
             code);
 
         using var message = new MailMessage

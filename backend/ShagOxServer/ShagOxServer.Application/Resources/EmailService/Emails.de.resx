@@ -124,9 +124,9 @@ Ihr Bestätigungscode:
 
 {0}
 
-Der Code ist 10 Minuten gültig.
+Der Code ist 10 Minuten lang gültig.
 
-Wenn Sie sich nicht bei Marketly registriert haben, ignorieren Sie diese E-Mail einfach.</value>
+Wenn Sie sich nicht bei Marketly registriert haben, können Sie diese E-Mail einfach ignorieren.</value>
   </data>
   <data name="VerificationSubject" xml:space="preserve">
     <value>Marketly - E-Mail-Bestätigung</value>

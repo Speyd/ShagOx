@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Services.Verifications {
+namespace ShagOxServer.Application.Resources.EmailService {
     using System;
     
     
@@ -29,17 +29,17 @@ namespace ShagOxServer.Application.Services.Verifications {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public Emails() {
+        internal Emails() {
         }
         
         /// <summary>
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Services.Verifications.Emails", typeof(Emails).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.EmailService.Emails", typeof(Emails).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,12 +51,38 @@ namespace ShagOxServer.Application.Services.Verifications {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hello!
+        ///
+        ///Your verification code:
+        ///
+        ///{0}
+        ///
+        ///The code is valid for 10 minutes.
+        ///
+        ///If you did not register for Marketly, simply ignore this email..
+        /// </summary>
+        public static string VerificationBody {
+            get {
+                return ResourceManager.GetString("VerificationBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Marketly -  Email verification.
+        /// </summary>
+        public static string VerificationSubject {
+            get {
+                return ResourceManager.GetString("VerificationSubject", resourceCulture);
             }
         }
     }

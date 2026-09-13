@@ -23,18 +23,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Services\Verifications\Resources\Emails.en.Designer.cs">
+    <Compile Update="Resources\EmailService\Emails.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Emails.en.resx</DependentUpon>
+      <DependentUpon>Emails.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Services\Verifications\Resources\Emails.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Emails.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
+	<ItemGroup>
+		<EmbeddedResource Update="Resources\EmailService\Emails.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Emails.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+	
 </Project>

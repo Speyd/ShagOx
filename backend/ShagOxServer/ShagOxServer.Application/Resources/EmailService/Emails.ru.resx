@@ -129,6 +129,6 @@
 Если вы не регистрировались в Marketly, просто проигнорируйте это письмо.</value>
   </data>
   <data name="VerificationSubject" xml:space="preserve">
-    <value>Marketly - подтверждение email</value>
+    <value>Marketly - подтверждение электронной почты</value>
   </data>
 </root>

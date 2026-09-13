@@ -14,8 +14,10 @@ public static class UserMapper
     {
         return new UserDto(
             user.Id,
-            user.Surname,
-            user.Name,
+            user.FirstName,
+            user.LastName,
+            user.UserName,
+            user.Bio,
             user.Phone,
             user.Email,
             MapAvatar(user.Avatar),

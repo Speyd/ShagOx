@@ -10,15 +10,21 @@ public class UserConfiguration
     public void Configure(
         EntityTypeBuilder<User> builder)
     {
-        builder.Property(x => x.Name)
+        builder.Property(x => x.FirstName)
                .HasMaxLength(35);
 
-        builder.Property(x => x.Surname)
+        builder.Property(x => x.LastName)
                .HasMaxLength(35);
+
+        builder.Property(x => x.UserName)
+            .IsRequired()
+            .HasMaxLength(40);
+
+        builder.Property(x => x.Bio)
+               .HasMaxLength(500);
 
         builder.Property(x => x.Phone)
-               .HasMaxLength(20);
-                
+               .HasMaxLength(20);             
 
         builder.Property(x => x.Email)
                .HasMaxLength(254);
@@ -43,6 +49,9 @@ public class UserConfiguration
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => x.CityId);
+
+        builder.HasIndex(x => x.UserName)
+            .IsUnique();
 
         builder.HasIndex(x => x.Email)
                .IsUnique()

@@ -12,6 +12,6 @@ public class UserRole : BaseEntity
 
     public override string ToString()
     {
-        return $"{User?.Name} | {Role?.Name}";
+        return $"{User?.UserName} | {Role?.Name}";
     }
 }

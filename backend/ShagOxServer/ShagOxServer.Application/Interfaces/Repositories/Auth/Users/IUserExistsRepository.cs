@@ -5,9 +5,17 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 public interface IUserExistsRepository 
     : IExistsRepository<User>
 {
-    Task<bool> ExistsAsync(string? email, string? phone);
+    Task<bool> ExistsAsync(
+        string? email,
+        string? phone,
+        string userName);
 
-    Task<bool> ExistsEmailAsync(string? email);
+    Task<bool> ExistsByUserNameAsync(
+        string userName);
 
-    Task<bool> ExistsPhoneAsync(string? phone);
+    Task<bool> ExistsByEmailAsync(
+        string? email);
+
+    Task<bool> ExistsByPhoneAsync(
+        string? phone);
 }

@@ -39,10 +39,10 @@ public class RegisterService
             var user = _userCreater.CreateUser(request);
 
             var exists = await _userExistsRepository
-                .ExistsAsync(user.Email, user.Phone);
+                .ExistsAsync(user.Email, user.Phone, user.UserName);
 
             if (exists)
-                return Result<RegisterResponse>.Fail("User already exists");
+                return Result<RegisterResponse>.AlreadyExists(typeof(User));
 
             await _unitOfWork.BeginTransactionAsync();
 

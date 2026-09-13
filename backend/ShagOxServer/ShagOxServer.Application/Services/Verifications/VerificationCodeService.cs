@@ -1,0 +1,71 @@
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
+using ShagOxServer.Application.Interfaces.Services.Verifications;
+using ShagOxServer.Domain.Entities.Verifications;
+using System.Security.Cryptography;
+
+namespace ShagOxServer.Application.Services.Verifications;
+
+public class VerificationCodeService
+    : IVerificationCodeService
+{
+    private readonly IRepository<VerificationCode> _repository;
+    private readonly IVerificationCodeQueryRepository _queryRepository;
+
+
+    public VerificationCodeService(
+        IRepository<VerificationCode> repository,
+        IVerificationCodeQueryRepository queryRepository)
+    {
+        _repository = repository;
+        _queryRepository = queryRepository;
+    }
+
+    public async Task<string> CreateCodeAsync(int userId)
+    {
+        var code = RandomNumberGenerator
+            .GetInt32(100000, 1000000)
+            .ToString();
+
+        var codeHash = BCrypt.Net.BCrypt.HashPassword(code);
+
+        var verificationCode = new VerificationCode
+        {
+            UserId = userId,
+            CodeHash = codeHash,
+            ExpiresAt = DateTime.UtcNow.AddMinutes(10)
+        };
+
+        _repository.Add(verificationCode);
+
+        return code;
+    }
+
+    public async Task<bool> VerifyCodeAsync(
+        int userId,
+        string code)
+    {
+        var verificationCode =
+            await _queryRepository.GetActiveByUserIdAsync(userId);
+
+        if (verificationCode is null)
+            return false;
+
+        if (verificationCode.ExpiresAt < DateTime.UtcNow)
+            return false;
+
+        if (verificationCode.UsedAt is not null)
+            return false;
+
+        var valid = BCrypt.Net.BCrypt.Verify(
+            code,
+            verificationCode.CodeHash);
+
+        if (!valid)
+            return false;
+
+        verificationCode.UsedAt = DateTime.UtcNow;
+
+        return true;
+    }
+}

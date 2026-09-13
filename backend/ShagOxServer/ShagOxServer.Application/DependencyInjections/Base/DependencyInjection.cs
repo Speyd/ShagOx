@@ -15,6 +15,7 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
         return services
+            .AddVerificationApplication()
             .AddAuthApplication()
             .AddBasketApplication()
             .AddLocationApplication()

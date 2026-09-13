@@ -3,13 +3,16 @@ using ShagOxServer.Application.Interfaces.Services.Verifications;
 using ShagOxServer.Application.Services.Verifications;
 
 namespace ShagOxServer.Application.DependencyInjections.Verifications;
-public static class VerificationCodeDependencyInjection
+public static class VerificationEmailDependencyInjection
 {
-    public static IServiceCollection AddVerificationCodeApplication(
+    public static IServiceCollection AddVerificationEmailApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<IVerificationCodeService, 
-            VerificationCodeService>();
+        services.AddScoped<IEmailService,
+            EmailService>();
+
+        services.AddScoped<IVerificationEmailService,
+            VerificationEmailService>();
 
         return services;
     }

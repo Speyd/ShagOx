@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Localization;
 using SchagoxServer.Api.DependencyInjection;
 using ShagOxServer.Api.DependencyInjection;
 using ShagOxServer.Application.DependencyInjections.Base;

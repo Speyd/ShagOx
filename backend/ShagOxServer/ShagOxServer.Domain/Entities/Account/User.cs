@@ -19,6 +19,9 @@ public class User : BaseEntity
     public string? Phone { get; set; }
     public string? Email { get; set; }
 
+    public bool EmailConfirmed { get; set; } = false;
+    public bool PhoneConfirmed { get; set; } = false;
+
     public int? AvatarId { get; set; }
     public Avatar? Avatar { get; set; } = null;
 

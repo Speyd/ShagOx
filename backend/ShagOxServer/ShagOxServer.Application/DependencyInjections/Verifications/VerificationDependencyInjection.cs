@@ -8,6 +8,8 @@ public static class VerificationDependencyInjection
     {
         services.AddVerificationCodeApplication();
 
+        services.AddVerificationEmailApplication();
+
         return services;
     }
 }

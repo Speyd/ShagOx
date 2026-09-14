@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Verifications.Enum;
 
 namespace ShagOxServer.Domain.Entities.Verifications;
 public class VerificationCode 
@@ -17,6 +18,10 @@ public class VerificationCode
     public int Attempts { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public DateTime? InvalidatedAt { get; set; }
+
+    public VerificationCodePurpose Purpose { get; set; }
 
     public override string ToString()
     {

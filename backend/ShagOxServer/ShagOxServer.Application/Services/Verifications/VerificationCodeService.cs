@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
 using ShagOxServer.Application.Interfaces.Services.Verifications;
 using ShagOxServer.Domain.Entities.Verifications;
@@ -12,17 +13,27 @@ public class VerificationCodeService
     private readonly IRepository<VerificationCode> _repository;
     private readonly IVerificationCodeQueryRepository _queryRepository;
 
+    private readonly IUnitOfWork _unitOfWork;
+
 
     public VerificationCodeService(
         IRepository<VerificationCode> repository,
-        IVerificationCodeQueryRepository queryRepository)
+        IVerificationCodeQueryRepository queryRepository,
+        IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _queryRepository = queryRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<string> CreateCodeAsync(int userId)
     {
+        var oldCode = await _queryRepository
+            .GetActiveByUserIdAsync(userId);
+
+        if (oldCode is not null)
+            oldCode.InvalidatedAt = DateTime.UtcNow;
+
         var code = RandomNumberGenerator
             .GetInt32(100000, 1000000)
             .ToString();
@@ -51,6 +62,15 @@ public class VerificationCodeService
         if (verificationCode is null)
             return false;
 
+        if (verificationCode.Attempts >= 3)
+        {
+            verificationCode.InvalidatedAt = DateTime.UtcNow;
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return false;
+        }        
+
         if (verificationCode.ExpiresAt < DateTime.UtcNow)
             return false;
 
@@ -62,9 +82,17 @@ public class VerificationCodeService
             verificationCode.CodeHash);
 
         if (!valid)
+        {
+            verificationCode.Attempts++;
+
+            await _unitOfWork.SaveChangesAsync();
+
             return false;
+        }
 
         verificationCode.UsedAt = DateTime.UtcNow;
+
+        await _unitOfWork.SaveChangesAsync();
 
         return true;
     }

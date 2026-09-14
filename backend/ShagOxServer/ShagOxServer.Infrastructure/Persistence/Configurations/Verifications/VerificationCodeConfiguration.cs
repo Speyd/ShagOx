@@ -16,6 +16,9 @@ public class VerificationCodeConfiguration
         builder.Property(x => x.ExpiresAt)
             .HasColumnType("timestamptz");
 
+        builder.Property(x => x.InvalidatedAt)
+            .HasColumnType("timestamptz");
+
         builder.Property(x => x.UsedAt)
             .HasColumnType("timestamptz");
 

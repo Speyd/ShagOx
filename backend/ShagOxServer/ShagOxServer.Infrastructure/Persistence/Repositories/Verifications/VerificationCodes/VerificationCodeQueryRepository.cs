@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -22,7 +21,8 @@ public class VerificationCodeQueryRepository
             .FirstOrDefaultAsync(x =>
                 x.UserId == userId &&
                 x.UsedAt == null &&
-                x.ExpiresAt > DateTime.UtcNow);
+                x.ExpiresAt > DateTime.UtcNow &&
+                x.InvalidatedAt == null);
     }
 
     public async Task<VerificationCode?> GetLatestByUserIdAsync(

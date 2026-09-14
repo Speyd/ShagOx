@@ -107,26 +107,6 @@ public class UserUpdateService
                 return Result<bool>.Fail(cityExists.Error);
         }
 
-        if (request.Phone is not null &&
-            request.Phone != user.Phone)
-        {
-            var phoneExists = await _userValidator
-                .NotExistsByPhoneAsync(request.Phone);
-
-            if (!phoneExists.IsSuccess)
-                return Result<bool>.Fail(phoneExists.Error);
-        }
-
-        if (request.Email is not null &&
-            request.Email != user.Email)
-        {
-            var emailExists = await _userValidator
-                .NotExistsByEmailAsync(request.Email);
-
-            if (!emailExists.IsSuccess)
-                return Result<bool>.Fail(emailExists.Error);
-        }
-
         if (request.UserName is not null &&
             request.UserName != user.UserName)
         {

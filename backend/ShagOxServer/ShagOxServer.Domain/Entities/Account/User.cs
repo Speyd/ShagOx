@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Location;
@@ -19,6 +20,12 @@ public class User : BaseEntity
     public string? Phone { get; set; }
     public string? Email { get; set; }
 
+    public UserStatus Status { get; set; } 
+        = UserStatus.PendingVerification;
+
+    public bool EmailConfirmed { get; set; } = false;
+    public bool PhoneConfirmed { get; set; } = false;
+
     public int? AvatarId { get; set; }
     public Avatar? Avatar { get; set; } = null;
 
@@ -37,6 +44,35 @@ public class User : BaseEntity
     public List<Advertisement> BoughtAdvertisements { get; set; } = new();
 
     public List<Favorite> Favorites { get; set; } = new();
+
+
+    public User()
+    {
+    }
+
+    public User(User user)
+    {
+        FirstName = user.FirstName;
+        LastName = user.LastName;
+        UserName = user.UserName;
+        Bio = user.Bio;
+
+        PasswordHash = user.PasswordHash;
+
+        Phone = user.Phone;
+        Email = user.Email;
+
+        Status = user.Status;
+
+        EmailConfirmed = user.EmailConfirmed;
+        PhoneConfirmed = user.PhoneConfirmed;
+
+        AvatarId = user.AvatarId;
+        CityId = user.CityId;
+
+        LastSeenAt = user.LastSeenAt;
+        RegisteredAt = user.RegisteredAt;
+    }
 
     public override string ToString()
     {

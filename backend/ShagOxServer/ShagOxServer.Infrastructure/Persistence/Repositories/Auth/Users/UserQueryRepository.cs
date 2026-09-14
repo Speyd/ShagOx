@@ -32,10 +32,10 @@ public class UserQueryRepository
             .WithIncludes()
             .ToPagedResultAsync(pagination);
     }
-
     public async Task<User?> GetByContactAsync(
         string? email,
-        string? phone)
+        string? phone,
+        string? userName = null)
     {
         var query = _db.Users
             .WithIncludes();
@@ -45,6 +45,10 @@ public class UserQueryRepository
 
         if (!string.IsNullOrWhiteSpace(phone))
             query = query.Where(x => x.Phone == phone);
+
+        if (!string.IsNullOrWhiteSpace(userName))
+            query = query.Where(x => x.UserName == userName);
+
 
         return await query.FirstOrDefaultAsync();
     }
@@ -65,6 +69,13 @@ public class UserQueryRepository
             .FirstOrDefaultAsync(x => x.Phone == phone);
     }
 
+    public async Task<User?> GetByUserNameAsync(
+       string userName)
+    {
+        return await _db.Users
+            .WithIncludes()
+            .FirstOrDefaultAsync(x => x.UserName == userName);
+    }
     public async Task<PagedResult<User>> Search(
         UserSearchFilter filter, 
         PaginationParams pagination)

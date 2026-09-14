@@ -7,8 +7,6 @@ public sealed record UserUpdateRequest
     string? LastName,
     string? UserName,
     string? Bio,
-    string? Phone,
-    string? Email,
     IFormFile? Avatar,
     int? CityId
 );

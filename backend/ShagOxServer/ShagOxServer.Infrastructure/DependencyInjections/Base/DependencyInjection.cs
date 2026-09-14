@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Infrastructure.DependencyInjections.Advertisement;
 using ShagOxServer.Infrastructure.DependencyInjections.Auth;
+using ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
 using ShagOxServer.Infrastructure.DependencyInjections.Baskets;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
 using ShagOxServer.Infrastructure.DependencyInjections.Location;
 using ShagOxServer.Infrastructure.DependencyInjections.Specification;
+using ShagOxServer.Infrastructure.DependencyInjections.Verifications;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Base;
 public static class DependencyInjection
@@ -13,6 +15,8 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
         return services
+            .AddVerificationInfrastructure()
+            .AddBackgroundServiceInfrastructure()
             .AddBaseRepositories()
             .AddBasketInfrastructure()
             .AddAuthInfrastructure()

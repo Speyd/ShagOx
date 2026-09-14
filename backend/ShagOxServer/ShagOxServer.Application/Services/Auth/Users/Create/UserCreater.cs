@@ -42,14 +42,19 @@ public class UserCreater
 
         ApplyContact(user, request);
 
+        return user;
+    }
+
+    public void CreatePasswordHash(
+        User user,
+        RegisterRequest request)
+    {
 
         user.PasswordHash =
             _passwordHasher.HashPassword(
                 user,
                 request.Password
             );
-
-        return user;
     }
 
     public async Task AddDefaultRole(

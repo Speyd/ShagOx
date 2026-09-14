@@ -25,6 +25,11 @@ public class VerificationCodeConfiguration
         builder.Property(x => x.CreatedAt)
             .HasColumnType("timestamptz");
 
+        builder.Property(x => x.Purpose)
+           .HasConversion<string>()
+           .HasMaxLength(50)
+           .IsRequired();
+
         builder.HasOne(x => x.User)
             .WithMany()
             .HasForeignKey(x => x.UserId)

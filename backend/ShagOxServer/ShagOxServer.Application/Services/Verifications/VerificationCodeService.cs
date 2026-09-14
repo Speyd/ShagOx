@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
 using ShagOxServer.Application.Interfaces.Services.Verifications;
+using ShagOxServer.Application.Services.Verifications.Enum;
 using ShagOxServer.Domain.Entities.Verifications;
 using System.Security.Cryptography;
 
@@ -52,15 +53,21 @@ public class VerificationCodeService
         return code;
     }
 
-    public async Task<bool> VerifyCodeAsync(
-        int userId,
-        string code)
+    public async Task<VerificationCodeResult> VerifyCodeAsync(
+    int userId,
+    string code)
     {
         var verificationCode =
             await _queryRepository.GetActiveByUserIdAsync(userId);
 
         if (verificationCode is null)
-            return false;
+            return VerificationCodeResult.NotFound;
+
+        if (verificationCode.UsedAt is not null)
+            return VerificationCodeResult.AlreadyUsed;
+
+        if (verificationCode.ExpiresAt < DateTime.UtcNow)
+            return VerificationCodeResult.Expired;
 
         if (verificationCode.Attempts >= 3)
         {
@@ -68,14 +75,8 @@ public class VerificationCodeService
 
             await _unitOfWork.SaveChangesAsync();
 
-            return false;
-        }        
-
-        if (verificationCode.ExpiresAt < DateTime.UtcNow)
-            return false;
-
-        if (verificationCode.UsedAt is not null)
-            return false;
+            return VerificationCodeResult.AttemptsExceeded;
+        }
 
         var valid = BCrypt.Net.BCrypt.Verify(
             code,
@@ -87,13 +88,13 @@ public class VerificationCodeService
 
             await _unitOfWork.SaveChangesAsync();
 
-            return false;
+            return VerificationCodeResult.Invalid;
         }
 
         verificationCode.UsedAt = DateTime.UtcNow;
 
         await _unitOfWork.SaveChangesAsync();
 
-        return true;
+        return VerificationCodeResult.Success;
     }
 }

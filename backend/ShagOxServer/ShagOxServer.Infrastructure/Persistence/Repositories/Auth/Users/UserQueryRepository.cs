@@ -32,11 +32,10 @@ public class UserQueryRepository
             .WithIncludes()
             .ToPagedResultAsync(pagination);
     }
-
     public async Task<User?> GetByContactAsync(
         string? email,
         string? phone,
-        string? userName)
+        string? userName = null)
     {
         var query = _db.Users
             .WithIncludes();

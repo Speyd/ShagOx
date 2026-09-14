@@ -34,18 +34,6 @@ public static class UserUpdater
             countUpdated++;
         }
 
-        if (request.Phone is not null)
-        {
-            user.Phone = request.Phone;
-            countUpdated++;
-        }
-
-        if (request.Email is not null)
-        {
-            user.Email = request.Email;
-            countUpdated++;
-        }
-
         if (request.Avatar is not null)
         {
             countUpdated++;

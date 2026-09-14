@@ -16,7 +16,7 @@ public interface IUserQueryRepository
     Task<User?> GetByContactAsync(
         string? email,
         string? phone,
-        string? userName);
+        string? userName = null);
 
     Task<PagedResult<User>> Search(
         UserSearchFilter filter,

@@ -1,17 +1,13 @@
-﻿using Microsoft.AspNet.Identity;
-using ShagOxServer.Application.Common.Validators;
-using ShagOxServer.Application.DTOs.Auth.Register;
+﻿using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
-using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Verifications;
 using ShagOxServer.Application.Services.Auth.Users.Create;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ShagOxServer.Application.Services.Auth;
 public class RegisterService 
@@ -19,6 +15,8 @@ public class RegisterService
 {
     private readonly IRepository<User> _userRepository;
     private readonly IUserQueryRepository _userQueryRepository;
+    private readonly IUserExistsRepository _userExistsRepository;
+
     private readonly IEmailService _emailService;
     private readonly IVerificationCodeService _codeService;
 
@@ -30,6 +28,7 @@ public class RegisterService
     public RegisterService(
         IRepository<User> userRepository,
         IUserQueryRepository userQueryRepository,
+        IUserExistsRepository userExistsRepository,
         UserCreater userCreater,
         IEmailService emailService,
         IVerificationCodeService codeService,
@@ -37,6 +36,7 @@ public class RegisterService
     {
         _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
+        _userExistsRepository = userExistsRepository;
         _userCreater = userCreater;
         _emailService = emailService;
         _codeService = codeService;
@@ -51,32 +51,25 @@ public class RegisterService
         {
             var user = _userCreater.CreateUser(request);
 
-            var userGet = await _userQueryRepository
-                .GetByContactAsync(user.Email, user.Phone, user.UserName);
-
-            if (userGet is not null)
-            {
-                if (userGet.Status != UserStatus.PendingVerification)
-                {
-                    return Result<RegisterResponse>
-                        .AlreadyExists(typeof(User));
-                }
-                else
-                {
-                    user = userGet;
-                }
-            }
+            var result = await PrepareUserForRegistrationAsync(user, request);
+            if (result is not null && !result.IsSuccess)
+                Result<RegisterResponse>.Fail(result.Error);
 
             await _unitOfWork.BeginTransactionAsync();
 
+            user = result?.Value.User ?? user;
+
             try
             {
-                await _userCreater.AddDefaultRole(user);
-
-                if(userGet is null)
+                if (result is not null &&
+                    !result.Value.IsExisting)
+                {
                     _userRepository.Add(user);
 
-                await _userCreater.SetDefaultName(user);
+                    await _userCreater.AddDefaultRole(user);
+
+                    await _userCreater.SetDefaultName(user);
+                }
             }
             catch
             {
@@ -85,7 +78,7 @@ public class RegisterService
             }
 
             await _unitOfWork.CommitAsync();
-
+  
             await SendCode(user);
 
             return Result<RegisterResponse>.Success(
@@ -98,9 +91,46 @@ public class RegisterService
         }
     }
 
+    private async Task<Result<(User User, bool IsExisting)>> 
+        PrepareUserForRegistrationAsync(
+            User user,
+            RegisterRequest request)
+    {
+        bool isExisting = false;
+
+        var userGet = await _userQueryRepository
+            .GetByContactAsync(user.Email, user.Phone);
+
+        if (user.UserName != request.UserName &&
+            await _userExistsRepository
+                .ExistsByUserNameAsync(request.UserName))
+        {
+            return Result<(User, bool)>.AlreadyExists(typeof(User));
+        }
+
+        if (userGet is not null)
+        {
+            if (userGet.Status != UserStatus.PendingVerification)
+            {
+                return Result<(User, bool)>.AlreadyExists(typeof(User));
+            }
+
+            user = userGet;
+
+            isExisting = true;
+        }
+
+        _userCreater.CreatePasswordHash(user, request);
+        user.UserName = request.UserName;
+
+        return Result<(User, bool)>.Success((user, isExisting));
+    }
+
     private async Task SendCode(
         User user)
     {
+        user.Status = UserStatus.PendingVerification;
+
         if (!string.IsNullOrWhiteSpace(user.Email))
         {
             var code = await _codeService

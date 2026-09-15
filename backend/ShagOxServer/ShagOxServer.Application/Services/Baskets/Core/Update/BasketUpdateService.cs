@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Baskets.Core.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Update;
-using ShagOxServer.Application.Services.Auth.Users.Validator;
+using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;

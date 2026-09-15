@@ -4,7 +4,7 @@ using ShagOxServer.Api.Controllers.Common;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Images;

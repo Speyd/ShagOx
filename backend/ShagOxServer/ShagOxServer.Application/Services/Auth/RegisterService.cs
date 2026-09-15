@@ -3,10 +3,11 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
-using ShagOxServer.Application.Interfaces.Services.Verifications;
-using ShagOxServer.Application.Services.Auth.Users.Create;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Account.Enum;
+using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth;
@@ -17,8 +18,7 @@ public class RegisterService
     private readonly IUserQueryRepository _userQueryRepository;
     private readonly IUserExistsRepository _userExistsRepository;
 
-    private readonly IEmailService _emailService;
-    private readonly IVerificationCodeService _codeService;
+    private readonly IVerificationSender _senderVerification;
 
     private readonly UserCreater _userCreater;
     
@@ -30,16 +30,14 @@ public class RegisterService
         IUserQueryRepository userQueryRepository,
         IUserExistsRepository userExistsRepository,
         UserCreater userCreater,
-        IEmailService emailService,
-        IVerificationCodeService codeService,
+        IVerificationSender senderVerification,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
         _userExistsRepository = userExistsRepository;
         _userCreater = userCreater;
-        _emailService = emailService;
-        _codeService = codeService;
+        _senderVerification = senderVerification;
         _unitOfWork = unitOfWork;
     }
 
@@ -79,7 +77,7 @@ public class RegisterService
 
             await _unitOfWork.CommitAsync();
   
-            await SendCode(user);
+            await SendVerification(user);
 
             return Result<RegisterResponse>.Success(
                new RegisterResponse(user)
@@ -126,23 +124,22 @@ public class RegisterService
         return Result<(User, bool)>.Success((user, isExisting));
     }
 
-    private async Task SendCode(
+    private async Task SendVerification(
         User user)
     {
         user.Status = UserStatus.PendingVerification;
 
         if (!string.IsNullOrWhiteSpace(user.Email))
         {
-            var code = await _codeService
-                .CreateCodeAsync(user.Id);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            await _emailService
-                .SendVerificationCodeAsync(user.Email, code);
+            await _senderVerification
+                .SendAsync(user,
+                    VerificationCodePurpose.RegistrationEmail);
         }
         else if (!string.IsNullOrWhiteSpace(user.Phone))
         {
+            await _senderVerification
+                .SendAsync(user, 
+                    VerificationCodePurpose.RegistrationPhone);
         }
     }
 }

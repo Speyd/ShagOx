@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core;
-using ShagOxServer.Application.Services.Auth.Users.Mapping;
+using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;

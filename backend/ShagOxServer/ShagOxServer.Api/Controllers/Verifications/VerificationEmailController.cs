@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Verifications.VerificationEmails;
-using ShagOxServer.Application.Interfaces.Services.Verifications;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Verifications;
 
 [ApiController]
-[Route("api/auth")]
+[Route("api/verification")]
 public class VerificationEmailController
     : ApiController
 {
@@ -20,10 +20,12 @@ public class VerificationEmailController
     }
 
 
-    [HttpPost("verify-email")]
+    [HttpPost("email")]
     public async Task<IActionResult> GetById(
-        [FromQuery] VerificationEmailRequest request)
+        [FromBody] VerificationEmailRequest request)
     {
+        request = new(request.UserId ?? UserId, request.Code);
+
         var result = await _emailService
             .VerifyAsync(request);
 

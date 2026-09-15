@@ -4,7 +4,7 @@ using ShagOxServer.Api.Controllers.Common;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Update;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Update;

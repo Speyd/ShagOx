@@ -2,16 +2,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Delete;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Update;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Services.Auth.UserRoles.Query;
-using ShagOxServer.Application.Services.Auth.Users.Create;
-using ShagOxServer.Application.Services.Auth.Users.Delete;
-using ShagOxServer.Application.Services.Auth.Users.Query;
+using ShagOxServer.Application.Services.Auth.Users.Core.Create;
+using ShagOxServer.Application.Services.Auth.Users.Core.Delete;
+using ShagOxServer.Application.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Update;
-using ShagOxServer.Application.Services.Auth.Users.Validator;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.DependencyInjections.Auth;

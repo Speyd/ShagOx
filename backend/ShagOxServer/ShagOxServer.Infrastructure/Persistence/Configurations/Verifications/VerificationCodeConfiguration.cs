@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Verifications;
+using ShagOxServer.Domain.Entities.Verifications.Enum;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Verifications;
 public class VerificationCodeConfiguration
@@ -26,11 +27,15 @@ public class VerificationCodeConfiguration
             .HasColumnType("timestamptz");
 
         builder.Property(x => x.Purpose)
-           .HasConversion<string>()
-           .HasMaxLength(50)
-           .IsRequired();
+            .HasConversion<string>()
+            .HasMaxLength(50)
+            .IsRequired();
 
-        builder.HasOne(x => x.User)
+        builder.Property(x => x.PendingValue)
+            .HasMaxLength(500);
+
+
+    builder.HasOne(x => x.User)
             .WithMany()
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);

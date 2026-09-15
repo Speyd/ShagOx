@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Common;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 

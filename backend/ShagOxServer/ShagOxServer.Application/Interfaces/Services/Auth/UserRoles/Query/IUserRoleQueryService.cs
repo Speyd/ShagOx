@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Roles;
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
-using ShagOxServer.Application.DTOs.Auth.Users;
+using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.Interfaces.Services.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;

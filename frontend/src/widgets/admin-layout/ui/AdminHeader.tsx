@@ -34,7 +34,7 @@ export default function AdminHeader() {
 
       <div className={styles.right}>
         <div className={styles.user}>
-          <span className={styles.name}>{user?.name}</span>
+          <span className={styles.name}>{user?.userName}</span>
           <span className={styles.role}>Administrator</span>
         </div>
 

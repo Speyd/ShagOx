@@ -71,8 +71,10 @@ function AdminUpdateUserFormContent({ id, user }: { id: number; user: User }) {
     resolver: zodResolver(adminUpdateUserSchema),
 
     defaultValues: {
-      surname: user.surname ?? "",
-      name: user.name ?? "",
+      firstName: user.firstName ?? "",
+      lastName: user.lastName ?? "",
+      userName: user.userName ?? "",
+      bio: user.bio ?? "",
       phone: user.phone ?? "",
       email: user.email ?? "",
       avatar: null,
@@ -109,15 +111,22 @@ function AdminUpdateUserFormContent({ id, user }: { id: number; user: User }) {
             <TextInput
               label="Ім'я"
               placeholder="Введіть ім'я"
-              {...register("name")}
-              error={errors.name?.message}
+              {...register("firstName")}
+              error={errors.firstName?.message}
             />
 
             <TextInput
               label="Прізвище"
               placeholder="Введіть прізвище"
-              {...register("surname")}
-              error={errors.surname?.message}
+              {...register("lastName")}
+              error={errors.lastName?.message}
+            />
+
+            <TextInput
+              label="Нікнейм"
+              placeholder="Введіть нікнейм"
+              {...register("userName")}
+              error={errors.userName?.message}
             />
 
             <TextInput
@@ -132,6 +141,13 @@ function AdminUpdateUserFormContent({ id, user }: { id: number; user: User }) {
               placeholder="+380..."
               {...register("phone")}
               error={errors.phone?.message}
+            />
+
+            <TextInput
+              label="Біо"
+              placeholder="Розкажіть про себе..."
+              {...register("bio")}
+              error={errors.bio?.message}
             />
           </SimpleGrid>
 

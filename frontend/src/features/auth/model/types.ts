@@ -9,21 +9,20 @@ export type LoginRequest = {
 
 export type RegisterRequest = {
   emailOrPhone: string;
+  userName: string;
   password: string;
 };
 
 export type RegisterResponse = {
   id: number;
   emailOrPhone: string;
-  name: string;
-  success: boolean;
-  message: string;
+  userName: string;
 };
 
 export type AuthUser = {
   id: number;
   emailOrPhone: string;
-  name: string;
+  userName: string;
   roles: Role[];
 };
 

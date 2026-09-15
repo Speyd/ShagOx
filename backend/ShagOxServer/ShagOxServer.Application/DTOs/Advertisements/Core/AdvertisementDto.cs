@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users;
+﻿using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Application.DTOs.Specification.Currencies;

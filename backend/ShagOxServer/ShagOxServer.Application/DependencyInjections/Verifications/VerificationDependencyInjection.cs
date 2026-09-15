@@ -8,7 +8,9 @@ public static class VerificationDependencyInjection
     {
         services.AddVerificationCodeApplication();
 
-        services.AddVerificationEmailApplication();
+        services.AddConfirmationApplication();
+
+        services.AddSendingApplication();
 
         return services;
     }

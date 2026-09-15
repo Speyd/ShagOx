@@ -23,6 +23,9 @@ public class VerificationCode
 
     public VerificationCodePurpose Purpose { get; set; }
 
+    public string? PendingValue { get; set; }
+
+
     public override string ToString()
     {
         return $"Created: {CreatedAt} | Attempts: {Attempts}";

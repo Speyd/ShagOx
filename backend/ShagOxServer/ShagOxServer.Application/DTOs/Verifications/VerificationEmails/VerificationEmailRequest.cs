@@ -1,5 +1,5 @@
 ﻿namespace ShagOxServer.Application.DTOs.Verifications.VerificationEmails;
 public record VerificationEmailRequest(
-    int UserId,
+    int? UserId,
     string Code
 );

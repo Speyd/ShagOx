@@ -850,6 +850,10 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("InvalidatedAt")
                         .HasColumnType("timestamptz");
 
+                    b.Property<string>("PendingValue")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
                     b.Property<string>("Purpose")
                         .IsRequired()
                         .HasMaxLength(50)

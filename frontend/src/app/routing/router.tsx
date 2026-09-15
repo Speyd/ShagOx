@@ -19,6 +19,13 @@ import CategoriesPage from "@/pages/admin/categories/categories-page/CategoriesP
 import UpdateUserPage from "@/pages/admin/users/update-user-page/UpdateUserPage";
 import UpdateCategoriesPage from "@/pages/admin/categories/update-categories-page/UpdateCategoriesPage";
 
+import { GeneralTab } from "@/widgets/profile-general";
+import { VideosTab } from "@/widgets/profile-videos";
+import { FavoritesTab } from "@/widgets/profile-favorites";
+import { OrdersTab } from "@/widgets/profile-orders";
+import ProfileLayout from "../layouts/ProfileLayout";
+import { StatisticsTab } from "@/widgets/profile-statistics";
+
 export default function Router() {
   return (
     <>
@@ -48,6 +55,17 @@ export default function Router() {
 
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfileLayout />
+              </ProtectedRoute>}>
+            <Route index element={<GeneralTab />} />
+            <Route path="videos" element={<VideosTab />} />
+            <Route path="favorites" element={<FavoritesTab />} />
+            <Route path="orders" element={<OrdersTab />} />
+            <Route path="statistics" element={<StatisticsTab />} />
+          </Route>
 
           <Route
             path="/favorite"

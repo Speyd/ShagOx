@@ -1,0 +1,50 @@
+.profileLayout {
+  min-height: 100vh;
+  background-color: var(--bg-base);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 60px 0;
+}
+
+.pageLayout {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.pageLayout > * {
+  min-width: 0;
+}
+
+.row > :first-child {
+  flex: 0 0 380px; 
+  width: 380px;
+}
+
+.row > :last-child {
+  flex: 1 1 0%;
+}
+
+@media (max-width: 1024px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .row > :first-child {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+}

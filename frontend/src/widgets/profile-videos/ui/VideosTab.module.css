@@ -1,0 +1,44 @@
+.videosTab {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 32px !important;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.list {
+  gap: 8px !important;
+  border-bottom: 0 !important;
+}
+
+.list::before {
+  display: none !important;
+}
+
+.tab {
+  min-width: 58px;
+  padding: 8px 14px;
+  border: 1px solid #d9e4f2 !important;
+  border-radius: 8px !important;
+  color: #183250;
+  font-size: 13px;
+}
+
+.tab[data-active] {
+  border-color: #0f2238 !important;
+  background: #0f2238 !important;
+  color: #fff !important;
+}

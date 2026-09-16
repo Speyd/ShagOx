@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Register;
+﻿using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -114,7 +115,9 @@ public class RegisterService
             isExisting = true;
         }
 
-        _userCreater.CreatePasswordHash(user, request);
+        var passResult = _userCreater.CreatePasswordHash(user, request);
+        if(!passResult.IsSuccess)
+            Result<(User User, bool IsExisting)>.Fail(passResult.Error);
 
         return Result<(User, bool)>.Success((user, isExisting));
     }

@@ -10,6 +10,9 @@ public static class SettingsConfigurationExtensions
         services.Configure<VerificationCodeSettings>(
             config.GetSection("VerificationCode"));
 
+        services.Configure<BackgroundServiceSettings>(
+           config.GetSection("BackgroundServices")); 
+
         return services;
     }
 }

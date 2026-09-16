@@ -85,6 +85,22 @@ public class VerificationEmailService
 
                 break;
 
+            case VerificationCodePurpose.ResetPasswordEmail:
+            case VerificationCodePurpose.ResetPasswordPhone:
+
+                if (string.IsNullOrWhiteSpace(
+                   verificationCode.PendingValue))
+                {
+                    return Result<bool>.Fail(
+                        "Pending password not found.");
+                }
+
+                user.PasswordHash =
+                    verificationCode.PendingValue
+                    ?? user.PasswordHash;
+
+                break;
+
             default:
                 return Result<bool>.Fail(
                     "Invalid verification purpose.");

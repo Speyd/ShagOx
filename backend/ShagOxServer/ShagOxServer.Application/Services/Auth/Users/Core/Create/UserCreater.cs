@@ -54,16 +54,20 @@ public class UserCreater
         return Result<User>.Success(user);
     }
 
-    public void CreatePasswordHash(
+    public Result<bool> CreatePasswordHash(
         User user,
         RegisterRequest request)
     {
+        if (string.IsNullOrWhiteSpace(request.Password))
+            return Result<bool>.Fail("New Password is incorrect!");
 
         user.PasswordHash =
             _passwordHasher.HashPassword(
                 user,
                 request.Password
             );
+
+        return Result<bool>.Success(true);
     }
 
     public async Task AddDefaultRole(

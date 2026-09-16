@@ -37,11 +37,8 @@ public class UserExistsRepository
         string? email)
     {
         return await _db.Users.AnyAsync(x =>
-            email != null &&
-            !string.Equals(
-                x.Email,
-                email,
-                StringComparison.OrdinalIgnoreCase)
+            email != null && x.Email != null &&
+            x.Email.ToLower() == email.ToLower()
         );
     }
 

@@ -1,6 +1,8 @@
-﻿using ShagOxServer.Application.Interfaces.Persistences;
+﻿using Microsoft.AspNet.Identity;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Resources.EmailService;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Account.Enum;
@@ -43,27 +45,30 @@ public class VerificationSender
 
         switch (purpose)
         {
-            case VerificationCodePurpose.RegistrationEmail:
             case VerificationCodePurpose.ChangeEmail:
-            case VerificationCodePurpose.ResetPassword:
+                var email = pendingValue ?? user.Email;
 
-                string? email = pendingValue ?? user.Email; 
+                await SendCodeEmail(user, email, code.Value!);
 
-                if (string.IsNullOrWhiteSpace(email))
-                    return Result<bool>.Fail(
-                        "User does not have an email.");
+                break;
+
+            case VerificationCodePurpose.RegistrationEmail:
+
+                await SendCodeEmail(user, user.Email, code.Value!);
 
                 user.EmailConfirmed = false;
 
-                await _emailService
-                    .SendVerificationCodeAsync(
-                        email,
-                        code.Value!);
+                break;
+            case VerificationCodePurpose.ResetPasswordEmail:
+
+                await SendCodeEmail(user, user.Email, code.Value!);
 
                 break;
 
             case VerificationCodePurpose.RegistrationPhone:
             case VerificationCodePurpose.ChangePhone:
+            case VerificationCodePurpose.ResetPasswordPhone:
+
 
                 if (string.IsNullOrWhiteSpace(user.Phone))
                     return Result<bool>.Fail(
@@ -81,6 +86,24 @@ public class VerificationSender
         return Result<bool>.Success(true);
     }
 
+    private async Task<Result<bool>> SendCodeEmail(
+        User user,
+        string? email,
+        string code)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return Result<bool>.Fail(
+                "User does not have an email.");
+        }
+
+        await _emailService.SendVerificationCodeAsync(
+            email,
+            code);
+
+        return Result<bool>.Success(true);
+
+    }
     public async Task<Result<bool>> SendAsync(
         int userId,
         VerificationCodePurpose purpose,
@@ -99,7 +122,7 @@ public class VerificationSender
         VerificationCodePurpose purpose,
         string? pendingValue)
     {
-        user.Status = UserStatus.PendingVerification;
+        ApplyPendingStatus(user, purpose);
 
         var code = await _codeService
                 .CreateCodeAsync(user.Id, purpose, pendingValue);
@@ -113,5 +136,17 @@ public class VerificationSender
         await _unitOfWork.SaveChangesAsync();
 
         return Result<string>.Success(code);
+    }
+
+    private static void ApplyPendingStatus(
+        User user,
+        VerificationCodePurpose purpose)
+    {
+        if (purpose is
+            VerificationCodePurpose.RegistrationEmail or
+            VerificationCodePurpose.RegistrationPhone)
+        {
+            user.Status = UserStatus.PendingVerification;
+        }
     }
 }

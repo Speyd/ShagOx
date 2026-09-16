@@ -11,6 +11,9 @@ public static class ContactDependencyInjection
         services.AddScoped<IChangeEmailService,
             ChangeEmailService>();
 
+        services.AddScoped<IChangePasswordService,
+           ChangePasswordService>();
+
         return services;
     }
 }

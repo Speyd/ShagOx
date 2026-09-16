@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings;
 using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
@@ -10,10 +12,15 @@ public class PendingUserCleanupService
 {
     private readonly IServiceScopeFactory _scopeFactory;
 
+    private readonly BackgroundServiceSettings _setting;
+
+
     public PendingUserCleanupService(
-        IServiceScopeFactory scopeFactory)
+        IServiceScopeFactory scopeFactory,
+        IOptions<BackgroundServiceSettings> setting)
     {
         _scopeFactory = scopeFactory;
+        _setting = setting.Value;
     }
 
     protected override async Task ExecuteAsync(
@@ -28,7 +35,8 @@ public class PendingUserCleanupService
                 var db = scope.ServiceProvider
                     .GetRequiredService<AppDbContext>();
 
-                var expirationDate = DateTime.UtcNow.AddHours(-24);
+                var expirationDate =
+                    DateTime.UtcNow - _setting.PendingUserLifetime;
 
                 var pendingUsers = await db.Users
                     .Where(x =>
@@ -48,8 +56,9 @@ public class PendingUserCleanupService
             }
 
             await Task.Delay(
-                TimeSpan.FromHours(1),
-                stoppingToken);
+                _setting.VerificationCodeCleanupInterval,
+                stoppingToken
+            );
         }
     }
 }

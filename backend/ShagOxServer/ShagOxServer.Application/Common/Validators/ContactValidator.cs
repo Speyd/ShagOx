@@ -1,6 +1,5 @@
 ﻿using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
-using System;
 using System.Text.RegularExpressions;
 
 namespace ShagOxServer.Application.Common.Validators;

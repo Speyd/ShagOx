@@ -6,6 +6,7 @@ using ShagOxServer.Application.Services.Auth.Roles.Delete;
 using ShagOxServer.Application.Services.Auth.Roles.Query;
 using ShagOxServer.Application.Services.Auth.Roles.Update;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
+using ShagOxServer.Application.Services.Auth.Users.Roles;
 
 namespace ShagOxServer.Application.DependencyInjections.Auth;
 public static class RoleDependencyInjection
@@ -18,6 +19,8 @@ public static class RoleDependencyInjection
         services.AddScoped<IRoleDeleteService, RoleDeleteService>();
 
         services.AddScoped<RoleValidator>();
+
+        services.AddScoped<UserRoleService>();
 
         return services;
     }

@@ -5,7 +5,10 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Services.Auth.Users.Contacts;
+using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
+using ShagOxServer.Application.Services.Auth.Users.Roles;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
@@ -21,7 +24,10 @@ public class RegisterService
     private readonly IVerificationSender _senderVerification;
 
     private readonly UserCreater _userCreater;
-    
+    private readonly UserRoleService _roleService;
+    private readonly UserPasswordService _passwordService;
+    private readonly UserContactApplier _contactApplier;
+
     private readonly IUnitOfWork _unitOfWork;
 
 
@@ -29,12 +35,18 @@ public class RegisterService
         IRepository<User> userRepository,
         IUserQueryRepository userQueryRepository,
         UserCreater userCreater,
+        UserRoleService roleService,
+        UserPasswordService passwordService,
+        UserContactApplier contactApplier,
         IVerificationSender senderVerification,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
         _userCreater = userCreater;
+        _roleService = roleService;
+        _passwordService = passwordService;
+        _contactApplier = contactApplier;
         _senderVerification = senderVerification;
         _unitOfWork = unitOfWork;
     }
@@ -45,29 +57,32 @@ public class RegisterService
     {
         try
         {
-            var user = await _userCreater.CreateUser(request);
-            if (!user.IsSuccess)
-                Result<RegisterResponse>.Fail(user.Error);
+            var createUser = await _userCreater.CreateUser(request);
+            if (!createUser.IsSuccess)
+                Result<RegisterResponse>.Fail(createUser.Error);
 
+            var prepareResult =
+                await PrepareUserForRegistrationAsync(
+                createUser.Value!, request
+            );
 
-            var result = await PrepareUserForRegistrationAsync(
-                user.Value!, request);
+            if (!prepareResult.IsSuccess)
+                Result<RegisterResponse>.Fail(prepareResult.Error);
 
-            if (!result.IsSuccess)
-                Result<RegisterResponse>.Fail(result.Error);
+            var user = prepareResult.Value!.User;
 
             await _unitOfWork.BeginTransactionAsync();
 
             try
             {
-                if (result is not null &&
-                    !result.Value.IsExisting)
+                if (prepareResult is not null &&
+                    !prepareResult.Value.IsExisting)
                 {
-                    _userRepository.Add(result?.Value.User!);
+                    _userRepository.Add(user);
 
-                    await _userCreater.AddDefaultRole(result?.Value.User!);
+                    await _roleService.AddDefaultRoleAsync(user);
 
-                    await _userCreater.SetDefaultName(result?.Value.User!);
+                    await _userCreater.SetDefaultName(user);
                 }
             }
             catch
@@ -78,10 +93,10 @@ public class RegisterService
 
             await _unitOfWork.CommitAsync();
   
-            await SendVerification(result?.Value.User!);
+            await SendVerification(user);
 
             return Result<RegisterResponse>.Success(
-               new RegisterResponse(result?.Value.User!)
+               new RegisterResponse(user)
             );
         }
         catch(Exception ex)
@@ -104,18 +119,24 @@ public class RegisterService
         {
             if (userGet.Status != UserStatus.PendingVerification)
             {
-                return Result<(User, bool)>.AlreadyExists(typeof(User));
+                return Result<(User, bool)>
+                    .AlreadyExists(typeof(User));
             }
 
             user = userGet;
-            var result = await _userCreater.ApplyContact(user, request);
+
+            var result = await _contactApplier
+                .ApplyAsync(user, request);
+
             if (!result.IsSuccess)
                 Result<(User User, bool IsExisting)>.Fail(result.Error);
 
             isExisting = true;
         }
 
-        var passResult = _userCreater.CreatePasswordHash(user, request);
+        var passResult = _passwordService
+            .Apply(user, request);
+
         if(!passResult.IsSuccess)
             Result<(User User, bool IsExisting)>.Fail(passResult.Error);
 

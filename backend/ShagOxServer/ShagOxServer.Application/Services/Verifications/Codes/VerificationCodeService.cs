@@ -1,4 +1,6 @@
-﻿using ShagOxServer.Application.Interfaces.Persistences;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
@@ -14,6 +16,7 @@ public class VerificationCodeService
 {
     private readonly IRepository<VerificationCode> _repository;
     private readonly IVerificationCodeQueryRepository _queryRepository;
+    private readonly VerificationCodeSettings _options;
 
     private readonly IUnitOfWork _unitOfWork;
 
@@ -21,10 +24,12 @@ public class VerificationCodeService
     public VerificationCodeService(
         IRepository<VerificationCode> repository,
         IVerificationCodeQueryRepository queryRepository,
+        IOptions<VerificationCodeSettings> options,
         IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _queryRepository = queryRepository;
+        _options = options.Value;
         _unitOfWork = unitOfWork;
     }
 
@@ -40,7 +45,7 @@ public class VerificationCodeService
             oldCode.InvalidatedAt = DateTime.UtcNow;
 
         var code = RandomNumberGenerator
-            .GetInt32(100000, 1000000)
+            .GetInt32(_options.MinGenValue, _options.MaxGenValue)
             .ToString();
 
         var codeHash = BCrypt.Net.BCrypt.HashPassword(code);
@@ -49,7 +54,8 @@ public class VerificationCodeService
         {
             UserId = userId,
             CodeHash = codeHash,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(10),
+            ExpiresAt = DateTime.UtcNow
+                .AddMinutes(_options.ExpirationMinutes),
             Purpose = purpose,
             PendingValue = pendingValue
         };
@@ -75,7 +81,7 @@ public class VerificationCodeService
         if (code.ExpiresAt < DateTime.UtcNow)
             return new(VerificationCodeResult.Expired, code);
 
-        if (code.Attempts >= 3)
+        if (code.Attempts >= _options.MaxAttempts)
         {
             code.InvalidatedAt = DateTime.UtcNow;
 

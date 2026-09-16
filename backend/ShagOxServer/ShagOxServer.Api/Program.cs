@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Localization;
 using SchagoxServer.Api.DependencyInjection;
 using ShagOxServer.Api.DependencyInjection;
 using ShagOxServer.Application.DependencyInjections.Base;
@@ -14,6 +13,7 @@ builder.Services
     .AddDatabase(builder.Configuration)
     .AddJWT(builder.Configuration)
     .AddCloudinary(builder.Configuration)
+    .AddSettingsConfiguration(builder.Configuration)
     .AddFrontendPolicy()
     .AddControllersWithJson()
     .AddSwaggerDocumentation()

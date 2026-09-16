@@ -28,12 +28,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Emails.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Verifications\Verification.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Verification.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Update="Resources\EmailService\Emails.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Emails.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\Verification.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Verification.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 	

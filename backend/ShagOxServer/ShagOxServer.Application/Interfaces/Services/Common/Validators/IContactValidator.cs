@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Validators;
+﻿using ShagOxServer.Application.Common.Validators.Enum;
 
 namespace ShagOxServer.Application.Interfaces.Services.Common.Validators;
 public interface IContactValidator

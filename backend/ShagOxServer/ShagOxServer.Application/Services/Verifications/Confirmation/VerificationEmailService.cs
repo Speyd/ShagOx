@@ -10,7 +10,7 @@ using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Verifications.Confirmation;
 public class VerificationEmailService
-    : Verification,
+    : BaseVerification,
     IVerificationEmailService
 {
     private readonly IRepository<User> _userRepository;

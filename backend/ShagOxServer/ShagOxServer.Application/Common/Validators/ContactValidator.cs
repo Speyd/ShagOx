@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Services.Common.Validators;
+﻿using ShagOxServer.Application.Common.Validators.Enum;
+using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using System;
 using System.Text.RegularExpressions;
 
@@ -14,6 +15,9 @@ public class ContactValidator : IContactValidator
 
         if (IsPhone(value))
             return UserContactType.Phone;
+
+        if (IsUserName(value))
+            return UserContactType.UserName;
 
         throw new Exception("Invalid contact");
     }
@@ -32,6 +36,14 @@ public class ContactValidator : IContactValidator
         return Regex.IsMatch(
             value,
             @"^\+?[0-9]{10,15}$"
+        );
+    }
+
+    private bool IsUserName(string value)
+    {
+        return Regex.IsMatch(
+            value,
+            @"^[\p{L}\p{N}_]{3,20}$"
         );
     }
 }

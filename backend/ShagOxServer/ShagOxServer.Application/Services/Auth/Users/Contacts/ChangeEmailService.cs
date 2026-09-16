@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Validators;
+﻿using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;

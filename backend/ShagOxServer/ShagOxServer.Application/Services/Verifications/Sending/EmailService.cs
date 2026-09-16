@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.EmailService;
 using System.Net;
@@ -10,10 +12,14 @@ public class EmailService
 {
     private readonly IConfiguration _configuration;
 
+    private readonly VerificationCodeSettings _options;
+
     public EmailService(
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IOptions<VerificationCodeSettings> options)
     {
         _configuration = configuration;
+        _options = options.Value;
     }
 
     public async Task SendVerificationCodeAsync(
@@ -48,8 +54,8 @@ public class EmailService
 
         var body = string.Format(
             Emails.VerificationBody,
-            code);
-
+            code, _options.ExpirationMinutes);
+        
         using var message = new MailMessage
         {
             From = new MailAddress(fromEmail),

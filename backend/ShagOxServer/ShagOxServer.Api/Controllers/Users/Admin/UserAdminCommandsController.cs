@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;

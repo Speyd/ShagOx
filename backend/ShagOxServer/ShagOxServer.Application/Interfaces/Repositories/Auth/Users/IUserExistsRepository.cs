@@ -10,6 +10,9 @@ public interface IUserExistsRepository
         string? phone,
         string userName);
 
+    Task<bool> ExistsAsync(
+        string value);
+
     Task<bool> ExistsByUserNameAsync(
         string userName);
 

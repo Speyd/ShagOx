@@ -52,4 +52,14 @@ public class UserQueriesController
 
         return result.ToActionResult();
     }
+
+    [HttpGet("contact/{contact}")]
+    public async Task<IActionResult> GetByContactAsync(
+       [FromRoute] string contact)
+    {
+        var result = await _queryService
+            .GetByContactAsync(contact);
+
+        return result.ToActionResult();
+    }
 }

@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Passwords;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Auth.Users.Contacts;
+namespace ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 
 public class ChangePasswordService
     : IChangePasswordService
@@ -32,7 +32,7 @@ public class ChangePasswordService
         int userId,
         ChangePasswordRequest request)
     {
-        if (string.IsNullOrWhiteSpace(request.newPassword))
+        if (string.IsNullOrWhiteSpace(request.NewPassword))
             return Result<bool>.Fail("New Password is incorrect!");
 
         var user = await _userValidator
@@ -43,7 +43,7 @@ public class ChangePasswordService
         var verifyResult = _passwordHasher.VerifyHashedPassword(
             user.Value!,
             user.Value!.PasswordHash,
-            request.oldPassword);
+            request.OldPassword);
 
         if (verifyResult == PasswordVerificationResult.Failed)
             return Result<bool>.Fail("Invalid password");
@@ -51,7 +51,7 @@ public class ChangePasswordService
         string newPasswordHash =
            _passwordHasher.HashPassword(
                user.Value!,
-               request.newPassword
+               request.NewPassword
            );
 
         var result = await SendPasswordResetCode(

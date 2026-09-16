@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts;
-using ShagOxServer.Application.Services.Auth.Users.Contacts;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
+using ShagOxServer.Application.Services.Auth.Users.Contacts.Emails;
+using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 
 namespace ShagOxServer.Application.DependencyInjections.Auth;
 public static class ContactDependencyInjection
@@ -13,6 +15,9 @@ public static class ContactDependencyInjection
 
         services.AddScoped<IChangePasswordService,
            ChangePasswordService>();
+
+        services.AddScoped<IResetPasswordService,
+           ResetPasswordService>();
 
         return services;
     }

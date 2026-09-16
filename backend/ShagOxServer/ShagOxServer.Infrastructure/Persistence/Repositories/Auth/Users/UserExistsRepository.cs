@@ -26,6 +26,16 @@ public class UserExistsRepository
         );
     }
 
+    public async Task<bool> ExistsAsync(
+        string value)
+    {
+        return await _db.Users.AnyAsync(x =>
+            x.Email == value ||
+            x.Phone == value ||
+            x.UserName == value
+        );
+    }
+
     public async Task<bool> ExistsByUserNameAsync(
         string userName)
     {

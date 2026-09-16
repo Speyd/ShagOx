@@ -1,13 +1,13 @@
-﻿using ShagOxServer.Application.Common.Validators;
+﻿using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Auth.Users.Contacts;
+namespace ShagOxServer.Application.Services.Auth.Users.Contacts.Emails;
 public class ChangeEmailService
     : IChangeEmailService
 {

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Register;
+﻿using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -16,7 +17,6 @@ public class RegisterService
 {
     private readonly IRepository<User> _userRepository;
     private readonly IUserQueryRepository _userQueryRepository;
-    private readonly IUserExistsRepository _userExistsRepository;
 
     private readonly IVerificationSender _senderVerification;
 
@@ -28,14 +28,12 @@ public class RegisterService
     public RegisterService(
         IRepository<User> userRepository,
         IUserQueryRepository userQueryRepository,
-        IUserExistsRepository userExistsRepository,
         UserCreater userCreater,
         IVerificationSender senderVerification,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
-        _userExistsRepository = userExistsRepository;
         _userCreater = userCreater;
         _senderVerification = senderVerification;
         _unitOfWork = unitOfWork;
@@ -47,26 +45,29 @@ public class RegisterService
     {
         try
         {
-            var user = _userCreater.CreateUser(request);
+            var user = await _userCreater.CreateUser(request);
+            if (!user.IsSuccess)
+                Result<RegisterResponse>.Fail(user.Error);
 
-            var result = await PrepareUserForRegistrationAsync(user, request);
-            if (result is not null && !result.IsSuccess)
+
+            var result = await PrepareUserForRegistrationAsync(
+                user.Value!, request);
+
+            if (!result.IsSuccess)
                 Result<RegisterResponse>.Fail(result.Error);
 
             await _unitOfWork.BeginTransactionAsync();
-
-            user = result?.Value.User ?? user;
 
             try
             {
                 if (result is not null &&
                     !result.Value.IsExisting)
                 {
-                    _userRepository.Add(user);
+                    _userRepository.Add(result?.Value.User!);
 
-                    await _userCreater.AddDefaultRole(user);
+                    await _userCreater.AddDefaultRole(result?.Value.User!);
 
-                    await _userCreater.SetDefaultName(user);
+                    await _userCreater.SetDefaultName(result?.Value.User!);
                 }
             }
             catch
@@ -77,10 +78,10 @@ public class RegisterService
 
             await _unitOfWork.CommitAsync();
   
-            await SendVerification(user);
+            await SendVerification(result?.Value.User!);
 
             return Result<RegisterResponse>.Success(
-               new RegisterResponse(user)
+               new RegisterResponse(result?.Value.User!)
             );
         }
         catch(Exception ex)
@@ -99,13 +100,6 @@ public class RegisterService
         var userGet = await _userQueryRepository
             .GetByContactAsync(user.Email, user.Phone);
 
-        if (user.UserName != request.UserName &&
-            await _userExistsRepository
-                .ExistsByUserNameAsync(request.UserName))
-        {
-            return Result<(User, bool)>.AlreadyExists(typeof(User));
-        }
-
         if (userGet is not null)
         {
             if (userGet.Status != UserStatus.PendingVerification)
@@ -114,12 +108,16 @@ public class RegisterService
             }
 
             user = userGet;
+            var result = await _userCreater.ApplyContact(user, request);
+            if (!result.IsSuccess)
+                Result<(User User, bool IsExisting)>.Fail(result.Error);
 
             isExisting = true;
         }
 
-        _userCreater.CreatePasswordHash(user, request);
-        user.UserName = request.UserName;
+        var passResult = _userCreater.CreatePasswordHash(user, request);
+        if(!passResult.IsSuccess)
+            Result<(User User, bool IsExisting)>.Fail(passResult.Error);
 
         return Result<(User, bool)>.Success((user, isExisting));
     }

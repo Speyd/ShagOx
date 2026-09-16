@@ -10,7 +10,7 @@ using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Verifications.Confirmation;
 public class VerificationEmailService
-    : Verification,
+    : BaseVerification,
     IVerificationEmailService
 {
     private readonly IRepository<User> _userRepository;
@@ -82,6 +82,22 @@ public class VerificationEmailService
                 }
 
                 user.Email = verificationCode.PendingValue;
+
+                break;
+
+            case VerificationCodePurpose.ResetPasswordEmail:
+            case VerificationCodePurpose.ResetPasswordPhone:
+
+                if (string.IsNullOrWhiteSpace(
+                   verificationCode.PendingValue))
+                {
+                    return Result<bool>.Fail(
+                        "Pending password not found.");
+                }
+
+                user.PasswordHash =
+                    verificationCode.PendingValue
+                    ?? user.PasswordHash;
 
                 break;
 

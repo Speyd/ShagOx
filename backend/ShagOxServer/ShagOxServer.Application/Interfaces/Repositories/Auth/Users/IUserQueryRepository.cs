@@ -14,6 +14,9 @@ public interface IUserQueryRepository
     Task<User?> GetByUserNameAsync(string userName);
 
     Task<User?> GetByContactAsync(
+        string value);
+
+    Task<User?> GetByContactAsync(
         string? email,
         string? phone,
         string? userName = null);

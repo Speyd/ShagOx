@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Services.Verifications.Enum;
+﻿using ShagOxServer.Application.Services.Verifications.Codes;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 
 namespace ShagOxServer.Application.Interfaces.Services.Verifications.Codes;

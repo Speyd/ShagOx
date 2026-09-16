@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using ShagOxServer.Application.Common.Validators;
+using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth;
@@ -38,12 +38,11 @@ public class LoginService
     {
         try
         {
-            var type = _contactValidator.Detect(request.EmailOrPhone);
+            var type = _contactValidator.Detect(request.EmailOrPhoneOrUserName);
 
-            var user = await GetUserAsync(request.EmailOrPhone, type);
-
+            var user = await GetUserAsync(request.EmailOrPhoneOrUserName, type);
             if (user is null)
-                return Result<LoginResponse>.Fail("User not found");
+                return Result<LoginResponse>.NotFound(typeof(User));
 
             var result = _passwordHasher.VerifyHashedPassword(
                 user,
@@ -72,6 +71,7 @@ public class LoginService
         {
             UserContactType.Email => await _userQueryRepository.GetByEmailAsync(data),
             UserContactType.Phone => await _userQueryRepository.GetByPhoneAsync(data),
+            UserContactType.UserName => await _userQueryRepository.GetByUserNameAsync(data),
             _ => null
         };
     }

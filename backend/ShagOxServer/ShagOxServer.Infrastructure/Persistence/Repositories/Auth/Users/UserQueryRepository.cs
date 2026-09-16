@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Resources.EmailService;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Users;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -51,6 +52,18 @@ public class UserQueryRepository
 
 
         return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<User?> GetByContactAsync(
+       string value)
+    {
+        return await _db.Users
+            .WithIncludes()
+            .FirstOrDefaultAsync(x =>
+                x.Email == value ||
+                x.Phone == value ||
+                x.UserName == value
+            );
     }
 
     public async Task<User?> GetByEmailAsync(

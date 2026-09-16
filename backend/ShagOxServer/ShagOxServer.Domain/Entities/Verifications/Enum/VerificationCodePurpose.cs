@@ -7,5 +7,6 @@ public enum VerificationCodePurpose
     ChangeEmail = 2,
     ChangePhone = 3,
 
-    ResetPassword = 4
+    ResetPasswordEmail = 4,
+    ResetPasswordPhone = 5
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.EmailService;
@@ -10,35 +9,35 @@ namespace ShagOxServer.Application.Services.Verifications.Sending;
 public class EmailService 
     : IEmailService
 {
-    private readonly IConfiguration _configuration;
+    private readonly EmailSettings _emailOptions;
+    private readonly VerificationCodeSettings _codeOptions;
 
-    private readonly VerificationCodeSettings _options;
 
     public EmailService(
-        IConfiguration configuration,
-        IOptions<VerificationCodeSettings> options)
+        IOptions<EmailSettings> emailOptions,
+        IOptions<VerificationCodeSettings> codeOptions)
     {
-        _configuration = configuration;
-        _options = options.Value;
+        _emailOptions = emailOptions.Value;
+        _codeOptions = codeOptions.Value;
+
     }
 
     public async Task SendVerificationCodeAsync(
         string email,
         string code)
     {
-        var smtpHost = _configuration["Email:SmtpHost"]
+        var smtpHost = _emailOptions.SmtpHost
             ?? throw new InvalidOperationException("SMTP host is not configured.");
 
-        var smtpPort = int.Parse(
-            _configuration["Email:SmtpPort"] ?? "587");
+        var smtpPort = _emailOptions.SmtpPort;
 
-        var smtpUser = _configuration["Email:Username"]
+        var smtpUser = _emailOptions.Username
             ?? throw new InvalidOperationException("SMTP username is not configured.");
 
-        var smtpPassword = _configuration["Email:Password"]
+        var smtpPassword = _emailOptions.Password
             ?? throw new InvalidOperationException("SMTP password is not configured.");
 
-        var fromEmail = _configuration["Email:From"]
+        var fromEmail = _emailOptions.From
             ?? throw new InvalidOperationException("Sender email is not configured.");
 
 
@@ -54,7 +53,7 @@ public class EmailService
 
         var body = string.Format(
             Emails.VerificationBody,
-            code, _options.ExpirationMinutes);
+            code, _codeOptions.ExpirationMinutes);
         
         using var message = new MailMessage
         {

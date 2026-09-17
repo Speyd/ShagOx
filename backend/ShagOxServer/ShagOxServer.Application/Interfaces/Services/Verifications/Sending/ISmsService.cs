@@ -1,5 +1,5 @@
 ﻿namespace ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
-internal interface ISmsSerice
+public interface ISmsService
 {
     Task SendVerificationCodeAsync(
         string phone,

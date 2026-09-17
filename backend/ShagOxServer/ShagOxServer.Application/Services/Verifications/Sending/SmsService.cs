@@ -7,14 +7,14 @@ using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 
 namespace ShagOxServer.Application.Services.Verifications.Sending;
-public class SmsSerice
-    : ISmsSerice
+public class SmsService
+    : ISmsService
 {
     private readonly SmsSettings _smsOptions;
     private readonly VerificationCodeSettings _codeOptions;
 
 
-    public SmsSerice(
+    public SmsService(
         IOptions<SmsSettings> smsOptions,
          IOptions<VerificationCodeSettings> codeOptions)
     {
@@ -35,9 +35,9 @@ public class SmsSerice
             code, _codeOptions.ExpirationMinutes);
 
         var message = await MessageResource.CreateAsync(
-           new PhoneNumber("+11234567890"),
+           new PhoneNumber(phone),
            from: _smsOptions.FromPhoneNumber,
-           body: "Hello World!"
+           body: body
        );
     }
 }

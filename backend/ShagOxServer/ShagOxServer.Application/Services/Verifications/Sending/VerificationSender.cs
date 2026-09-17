@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNet.Identity;
-using ShagOxServer.Application.Interfaces.Persistences;
+﻿using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
-using ShagOxServer.Application.Resources.EmailService;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Account.Enum;
@@ -19,6 +17,8 @@ public class VerificationSender
 
     private readonly IEmailService _emailService;
 
+    private readonly ISmsService _smsService;
+
     private readonly IUnitOfWork _unitOfWork;
 
 
@@ -26,11 +26,13 @@ public class VerificationSender
         UserValidator userValidator,
         IVerificationCodeService codeService,
         IEmailService emailService,
+        ISmsService smsService,
         IUnitOfWork unitOfWork)
     {
         _userValidator = userValidator;
         _codeService = codeService;
         _emailService = emailService;
+        _smsService = smsService;
         _unitOfWork = unitOfWork;
     }
 
@@ -45,13 +47,6 @@ public class VerificationSender
 
         switch (purpose)
         {
-            case VerificationCodePurpose.ChangeEmail:
-                var email = pendingValue ?? user.Email;
-
-                await SendCodeEmail(user, email, code.Value!);
-
-                break;
-
             case VerificationCodePurpose.RegistrationEmail:
 
                 await SendCodeEmail(user, user.Email, code.Value!);
@@ -59,22 +54,43 @@ public class VerificationSender
                 user.EmailConfirmed = false;
 
                 break;
+
+            case VerificationCodePurpose.RegistrationPhone:
+
+                await SendCodePhone(user, user.Phone, code.Value!);
+
+                user.PhoneConfirmed = false;
+
+                break;
+
+            case VerificationCodePurpose.ChangeEmail:
+
+                var email = pendingValue ?? user.Email;
+
+                await SendCodeEmail(user, email, code.Value!);
+
+                break;
+
+            case VerificationCodePurpose.ChangePhone:
+
+                var phone = pendingValue ?? user.Phone;
+
+                await SendCodePhone(user, phone, code.Value!);
+
+                break;
+
             case VerificationCodePurpose.ResetPasswordEmail:
+            case VerificationCodePurpose.ChangePasswordEmail:
 
                 await SendCodeEmail(user, user.Email, code.Value!);
 
                 break;
 
-            case VerificationCodePurpose.RegistrationPhone:
-            case VerificationCodePurpose.ChangePhone:
+
             case VerificationCodePurpose.ResetPasswordPhone:
+            case VerificationCodePurpose.ChangePasswordPhone:
 
-
-                if (string.IsNullOrWhiteSpace(user.Phone))
-                    return Result<bool>.Fail(
-                        "User does not have a phone.");
-
-                user.PhoneConfirmed = false;
+                await SendCodePhone(user, user.Phone, code.Value!);
 
                 break;
 
@@ -104,6 +120,26 @@ public class VerificationSender
         return Result<bool>.Success(true);
 
     }
+
+    private async Task<Result<bool>> SendCodePhone(
+        User user,
+        string? phone,
+        string code)
+    {
+        if (string.IsNullOrWhiteSpace(phone))
+        {
+            return Result<bool>.Fail(
+                "User does not have an phone.");
+        }
+
+        await _smsService.SendVerificationCodeAsync(
+            phone,
+            code);
+
+        return Result<bool>.Success(true);
+
+    }
+
     public async Task<Result<bool>> SendAsync(
         int userId,
         VerificationCodePurpose purpose,

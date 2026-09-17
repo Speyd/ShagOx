@@ -54,7 +54,7 @@ public class ChangePasswordService
                request.NewPassword
            );
 
-        var result = await SendPasswordResetCode(
+        var result = await SendPasswordChangeCode(
             user.Value!,
             newPasswordHash);
 
@@ -64,23 +64,23 @@ public class ChangePasswordService
         return Result<bool>.Success(true);
     }
 
-    private async Task<Result<bool>> SendPasswordResetCode(
+    private async Task<Result<bool>> SendPasswordChangeCode(
         User user,
         string newPasswordHash)
     {
         if (user.EmailConfirmed)
         {
-            return await SendResetCode(
+            return await SendChangeCode(
                 user,
-                VerificationCodePurpose.ResetPasswordEmail,
+                VerificationCodePurpose.ChangePasswordEmail,
                 newPasswordHash);
         }
 
         if (user.PhoneConfirmed)
         {
-            return await SendResetCode(
+            return await SendChangeCode(
                 user,
-                VerificationCodePurpose.ResetPasswordPhone,
+                VerificationCodePurpose.ChangePasswordPhone,
                 newPasswordHash);
         }
 
@@ -88,7 +88,7 @@ public class ChangePasswordService
             "No confirmed email or phone found.");
     }
 
-    private async Task<Result<bool>> SendResetCode(
+    private async Task<Result<bool>> SendChangeCode(
         User user,
         VerificationCodePurpose purpose,
         string newPasswordHash)

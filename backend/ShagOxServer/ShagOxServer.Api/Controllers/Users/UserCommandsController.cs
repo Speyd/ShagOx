@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Passwords;
+using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -17,6 +19,7 @@ public class UserCommandsController
 {
     private readonly IUserUpdateService _updateService;
     private readonly IChangeEmailService _emailService;
+    private readonly IChangePhoneService _phoneService;
     private readonly IChangePasswordService _passwordService;
     private readonly IResetPasswordService _resetPasswordService;
 
@@ -24,11 +27,13 @@ public class UserCommandsController
     public UserCommandsController(
         IUserUpdateService updateService,
         IChangeEmailService emailService,
+        IChangePhoneService phoneService,
         IChangePasswordService passwordService,
         IResetPasswordService resetPasswordService)
     {
         _updateService = updateService;
         _emailService = emailService;
+        _phoneService = phoneService;
         _passwordService = passwordService;
         _resetPasswordService = resetPasswordService;
     }
@@ -50,7 +55,7 @@ public class UserCommandsController
 
     [Authorize]
     [HttpPut("email")]
-    public async Task<IActionResult> UpdateEmail(
+    public async Task<IActionResult> ChangeEmail(
         [FromBody] ChangeEmailRequest request)
     {
         var result = await _emailService
@@ -60,8 +65,19 @@ public class UserCommandsController
     }
 
     [Authorize]
+    [HttpPut("phone")]
+    public async Task<IActionResult> ChangePhone(
+        [FromBody] ChangePhoneRequest request)
+    {
+        var result = await _phoneService
+            .ChangePhone(UserId, request);
+
+        return result.ToActionResult();
+    }
+
+    [Authorize]
     [HttpPut("password")]
-    public async Task<IActionResult> UpdatePassword(
+    public async Task<IActionResult> ChangePassword(
         [FromBody] ChangePasswordRequest request)
     {
         var result = await _passwordService

@@ -11,8 +11,8 @@ public static class SendingDependencyInjection
         services.AddScoped<IEmailService,
             EmailService>();
 
-        services.AddScoped<ISmsSerice,
-            SmsSerice>();
+        services.AddScoped<ISmsService,
+            SmsService>();
 
         services.AddScoped<IVerificationSender,
            VerificationSender>();

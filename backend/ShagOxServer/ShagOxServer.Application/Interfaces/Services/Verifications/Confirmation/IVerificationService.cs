@@ -2,7 +2,7 @@
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
-public interface IVerificationEmailService
+public interface IVerificationService
 {
     Task<Result<bool>> VerifyAsync(
        VerificationEmailRequest request);

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
-using ShagOxServer.Application.Resources.EmailService;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Users;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;

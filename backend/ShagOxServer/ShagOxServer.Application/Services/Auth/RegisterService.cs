@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
@@ -57,22 +58,18 @@ public class RegisterService
     {
         try
         {
-            var createUser = await _userCreater.CreateUser(request);
-            if (!createUser.IsSuccess)
-                Result<RegisterResponse>.Fail(createUser.Error);
-
             var prepareResult =
                 await PrepareUserForRegistrationAsync(
-                createUser.Value!, request
+                    request
             );
-
+            
             if (!prepareResult.IsSuccess)
                 Result<RegisterResponse>.Fail(prepareResult.Error);
 
             var user = prepareResult.Value!.User;
 
             await _unitOfWork.BeginTransactionAsync();
-
+            
             try
             {
                 if (prepareResult is not null &&
@@ -81,9 +78,9 @@ public class RegisterService
                     _userRepository.Add(user);
 
                     await _roleService.AddDefaultRoleAsync(user);
-
-                    await _userCreater.SetDefaultName(user);
                 }
+
+                await _userCreater.SetDefaultName(user);
             }
             catch
             {
@@ -107,16 +104,16 @@ public class RegisterService
 
     private async Task<Result<(User User, bool IsExisting)>> 
         PrepareUserForRegistrationAsync(
-            User user,
             RegisterRequest request)
     {
         bool isExisting = false;
+        User? user = null;
 
         var userGet = await _userQueryRepository
-            .GetByContactAsync(user.Email, user.Phone);
+            .GetByContactAsync(request.EmailOrPhone);
 
         if (userGet is not null)
-        {
+        {         
             if (userGet.Status != UserStatus.PendingVerification)
             {
                 return Result<(User, bool)>
@@ -133,14 +130,24 @@ public class RegisterService
 
             isExisting = true;
         }
+        else
+        {
+            var userResult = await _userCreater
+                .CreateUser(request);
+
+            if (!userResult.IsSuccess)
+                Result<(User User, bool IsExisting)>.Fail(userResult.Error);
+
+            user = userResult.Value;
+        }
 
         var passResult = _passwordService
-            .Apply(user, request);
+            .Apply(user!, request);      
 
-        if(!passResult.IsSuccess)
+        if (!passResult.IsSuccess)
             Result<(User User, bool IsExisting)>.Fail(passResult.Error);
 
-        return Result<(User, bool)>.Success((user, isExisting));
+        return Result<(User, bool)>.Success((user!, isExisting));
     }
 
     private async Task SendVerification(

@@ -31,20 +31,13 @@ public class UserCreater
     public async Task<Result<User>> CreateUser(RegisterRequest request)
     {
         var user = new User();
-
+       
         var contactResult =
             await _contactApplier.ApplyAsync(user, request);
-
+        
         if (!contactResult.IsSuccess)
             return Result<User>.Fail(contactResult.Error);
 
-        var passwordResult =
-            _passwordService.Apply(user, request);
-
-        if (!passwordResult.IsSuccess)
-            return Result<User>.Fail(passwordResult.Error);
-
-        await _roleService.AddDefaultRoleAsync(user);
 
         return Result<User>.Success(user);
     }
@@ -52,9 +45,6 @@ public class UserCreater
     public async Task SetDefaultName(
         User user)
     {
-        if (!string.IsNullOrEmpty(user.FirstName))
-            return;
-
         if (!string.IsNullOrEmpty(user.Email))
             user.FirstName = user.Email.Split('@')[0];
         else

@@ -34,9 +34,11 @@ public class SmsService
             Emails.VerificationBody,
             code, _codeOptions.ExpirationMinutes);
 
+        var from = _smsOptions.FromTwilio;
+
         var message = await MessageResource.CreateAsync(
-           new PhoneNumber(phone),
-           from: _smsOptions.FromPhoneNumber,
+           to: new PhoneNumber(phone),
+           from: new PhoneNumber(from),
            body: body
        );
     }

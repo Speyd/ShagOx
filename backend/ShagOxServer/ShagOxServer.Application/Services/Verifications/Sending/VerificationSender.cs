@@ -44,7 +44,7 @@ public class VerificationSender
         var code = await SendCode(user, purpose, pendingValue);
         if (!code.IsSuccess)
             return Result<bool>.Fail(code.Error);
-
+        
         switch (purpose)
         {
             case VerificationCodePurpose.RegistrationEmail:
@@ -58,24 +58,20 @@ public class VerificationSender
             case VerificationCodePurpose.RegistrationPhone:
 
                 await SendCodePhone(user, user.Phone, code.Value!);
-
+   
                 user.PhoneConfirmed = false;
 
                 break;
 
             case VerificationCodePurpose.ChangeEmail:
 
-                var email = pendingValue ?? user.Email;
-
-                await SendCodeEmail(user, email, code.Value!);
+                await SendCodeEmail(user, user.Email, code.Value!);
 
                 break;
 
             case VerificationCodePurpose.ChangePhone:
 
-                var phone = pendingValue ?? user.Phone;
-
-                await SendCodePhone(user, phone, code.Value!);
+                await SendCodePhone(user, user.Phone, code.Value!);
 
                 break;
 

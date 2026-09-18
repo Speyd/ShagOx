@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
+using ShagOxServer.Application.Resources.EmailService;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -23,16 +24,18 @@ public class UserContactApplier
         User user,
         RegisterRequest request)
     {
+        var EmailOrPhone = request.EmailOrPhone.Replace(" ", "");
+
         var type =
-            _contactValidator.Detect(request.EmailOrPhone);
+            _contactValidator.Detect(EmailOrPhone);  
 
         var contactResult = type switch
         {
             UserContactType.Email =>
-                await ApplyEmailAsync(user, request.EmailOrPhone),
+                await ApplyEmailAsync(user, EmailOrPhone),
 
             UserContactType.Phone =>
-                await ApplyPhoneAsync(user, request.EmailOrPhone),
+                await ApplyPhoneAsync(user, EmailOrPhone),
 
             _ => Result<bool>.Fail("Unsupported contact type.")
         };
@@ -75,7 +78,7 @@ public class UserContactApplier
         {
             var result =
                 await _userValidator.NotExistsByPhoneAsync(phone);
-
+          
             if (!result.IsSuccess)
                 return Result<bool>.Fail(result.Error);
         }
@@ -89,10 +92,12 @@ public class UserContactApplier
         User user,
         string userName)
     {
+        userName = userName.Replace(" ", "");
+
         if (user.UserName != userName)
         {
-            var result =
-                await _userValidator.NotExistsByUserNameAsync(userName);
+            var result = await _userValidator
+                .NotExistsByUserNameAsync(userName);
 
             if (!result.IsSuccess)
                 return Result<bool>.Fail(result.Error);

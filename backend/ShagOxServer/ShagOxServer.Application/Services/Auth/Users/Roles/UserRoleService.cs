@@ -13,7 +13,8 @@ public class UserRoleService
         _roleQueryRepository = roleQueryRepository;
     }
 
-    public async Task<Result<bool>> AddDefaultRoleAsync(User user)
+    public async Task<Result<bool>> AddDefaultRoleAsync(
+        User user)
     {
         var role =
             await _roleQueryRepository

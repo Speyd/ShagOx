@@ -37,12 +37,14 @@ public class ChangeEmailService
         if (!user.IsSuccess)
             return Result<bool>.Fail(user.Error);
 
-        var type = _contactValidator.Detect(request.Email);
+        var email = request.Email.Replace(" ", "");
+
+        var type = _contactValidator.Detect(email);
         if(type != UserContactType.Email)
             return Result<bool>.Fail("Email is incorrect");
 
         var emailExists = await _userValidator
-            .NotExistsByEmailAsync(request.Email);
+            .NotExistsByEmailAsync(email);
         if (!emailExists.IsSuccess)
             return Result<bool>.Fail(emailExists.Error);
 
@@ -50,7 +52,7 @@ public class ChangeEmailService
         var result = await _verificationSender
             .SendAsync(user.Value!,
                 VerificationCodePurpose.ChangeEmail,
-                request.Email
+                email
             );
 
         return Result<bool>.Success(true);

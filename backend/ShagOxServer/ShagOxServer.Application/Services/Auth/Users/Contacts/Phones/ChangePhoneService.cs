@@ -37,12 +37,14 @@ public class ChangePhoneService
         if (!user.IsSuccess)
             return Result<bool>.Fail(user.Error);
 
-        var type = _contactValidator.Detect(request.Phone);
+        var phone = request.Phone.Replace(" ", "");
+
+        var type = _contactValidator.Detect(phone);
         if (type != UserContactType.Phone)
             return Result<bool>.Fail("Phone is incorrect");
 
         var phoneExists = await _userValidator
-            .NotExistsByPhoneAsync(request.Phone);
+            .NotExistsByPhoneAsync(phone);
         if (!phoneExists.IsSuccess)
             return Result<bool>.Fail(phoneExists.Error);
 
@@ -50,7 +52,7 @@ public class ChangePhoneService
         var result = await _verificationSender
             .SendAsync(user.Value!,
                 VerificationCodePurpose.ChangePhone,
-                request.Phone
+                phone
             );
 
         return Result<bool>.Success(true);

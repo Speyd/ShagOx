@@ -1,10 +1,10 @@
 ﻿using ShagOxServer.Application.Services.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Verifications;
-public abstract class BaseVerification
+namespace ShagOxServer.Application.Services.Verifications.Mappers;
+public static class VerificationResultMapper
 {
-    public virtual Result<bool> MapVerificationResult(
+    public static Result<bool> MapVerificationResult(
         VerificationCodeResult result)
     {
         switch (result)

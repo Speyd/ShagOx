@@ -8,8 +8,11 @@ public static class ConfirmationDependencyInjection
     public static IServiceCollection AddConfirmationApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<IVerificationEmailService,
-            VerificationEmailService>();
+        services.AddScoped<IVerificationService,
+            VerificationService>();
+
+        services.AddScoped<IUserVerificationService,
+            UserVerificationService>();
 
         return services;
     }

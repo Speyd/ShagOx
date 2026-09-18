@@ -3,29 +3,31 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
+using ShagOxServer.Application.Services.Verifications.Mappers;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Verifications.Confirmation;
-public class VerificationEmailService
-    : BaseVerification,
-    IVerificationEmailService
+public class VerificationService
+    : IVerificationService
 {
     private readonly IRepository<User> _userRepository;
+    private readonly IUserVerificationService _userVerifyService;
 
     private readonly IVerificationCodeService
         _verificationCodeService;
 
     private readonly IUnitOfWork _unitOfWork;
 
-    public VerificationEmailService(
+    public VerificationService(
         IRepository<User> userRepository,
+        IUserVerificationService userVerifyService,
         IVerificationCodeService verificationCodeService,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
+        _userVerifyService = userVerifyService;
         _verificationCodeService = verificationCodeService;
         _unitOfWork = unitOfWork;
     }
@@ -42,11 +44,13 @@ public class VerificationEmailService
         var resultVerify = await _verificationCodeService
             .VerifyCodeAsync(user.Id, request.Code);
 
-        var mapResult = MapVerificationResult(resultVerify.Result);
+        var mapResult = VerificationResultMapper
+            .MapVerificationResult(resultVerify.Result);
+
         if(!mapResult.IsSuccess)
             return Result<bool>.Fail(mapResult.Error);
 
-        var resultApply = ApplyEmailVerification(user, resultVerify.Code);
+        var resultApply = ApplyVerification(user, resultVerify.Code);
         if (!resultApply.IsSuccess)
             return Result<bool>.Fail(resultApply.Error);
 
@@ -55,7 +59,7 @@ public class VerificationEmailService
         return Result<bool>.Success(true);
     }
 
-    private Result<bool> ApplyEmailVerification(
+    private Result<bool> ApplyVerification(
         User user,
         VerificationCode? verificationCode)
     {
@@ -63,52 +67,35 @@ public class VerificationEmailService
         {
             case VerificationCodePurpose.RegistrationEmail:
 
-                if (user.EmailConfirmed)
-                    return Result<bool>.Fail("Email already confirmed.");
+                return _userVerifyService
+                    .ConfirmEmail(user, verificationCode);
 
-                user.Email =
-                    verificationCode.PendingValue
-                    ?? user.Email;
+            case VerificationCodePurpose.RegistrationPhone:
 
-                break;
+                return _userVerifyService
+                    .ConfirmPhone(user, verificationCode);
 
             case VerificationCodePurpose.ChangeEmail:
 
-                if (string.IsNullOrWhiteSpace(
-                    verificationCode.PendingValue))
-                {
-                    return Result<bool>.Fail(
-                        "Pending email not found.");
-                }
+                return _userVerifyService
+                     .ChangeEmail(user, verificationCode);
 
-                user.Email = verificationCode.PendingValue;
+            case VerificationCodePurpose.ChangePhone:
 
-                break;
+                return _userVerifyService
+                     .ChangePhone(user, verificationCode);
 
+            case VerificationCodePurpose.ChangePasswordEmail:
+            case VerificationCodePurpose.ChangePasswordPhone:
             case VerificationCodePurpose.ResetPasswordEmail:
             case VerificationCodePurpose.ResetPasswordPhone:
 
-                if (string.IsNullOrWhiteSpace(
-                   verificationCode.PendingValue))
-                {
-                    return Result<bool>.Fail(
-                        "Pending password not found.");
-                }
-
-                user.PasswordHash =
-                    verificationCode.PendingValue
-                    ?? user.PasswordHash;
-
-                break;
+                return _userVerifyService
+                    .ChangePassword(user, verificationCode);
 
             default:
                 return Result<bool>.Fail(
                     "Invalid verification purpose.");
         }
-
-        user.EmailConfirmed = true;
-        user.Status = UserStatus.Active;
-
-        return Result<bool>.Success(true);
     }
 }

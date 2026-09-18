@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Domain.Filters.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -49,6 +49,16 @@ public class UserQueriesController
     {
         var result = await _queryService
             .Search(filter, pagination);
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet("contact/{contact}")]
+    public async Task<IActionResult> GetByContactAsync(
+       [FromRoute] string contact)
+    {
+        var result = await _queryService
+            .GetByContactAsync(contact);
 
         return result.ToActionResult();
     }

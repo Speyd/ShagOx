@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Resources.EmailService;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Users;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -32,10 +33,10 @@ public class UserQueryRepository
             .WithIncludes()
             .ToPagedResultAsync(pagination);
     }
-
     public async Task<User?> GetByContactAsync(
         string? email,
-        string? phone)
+        string? phone,
+        string? userName = null)
     {
         var query = _db.Users
             .WithIncludes();
@@ -46,7 +47,23 @@ public class UserQueryRepository
         if (!string.IsNullOrWhiteSpace(phone))
             query = query.Where(x => x.Phone == phone);
 
+        if (!string.IsNullOrWhiteSpace(userName))
+            query = query.Where(x => x.UserName == userName);
+
+
         return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<User?> GetByContactAsync(
+       string value)
+    {
+        return await _db.Users
+            .WithIncludes()
+            .FirstOrDefaultAsync(x =>
+                x.Email == value ||
+                x.Phone == value ||
+                x.UserName == value
+            );
     }
 
     public async Task<User?> GetByEmailAsync(
@@ -65,6 +82,13 @@ public class UserQueryRepository
             .FirstOrDefaultAsync(x => x.Phone == phone);
     }
 
+    public async Task<User?> GetByUserNameAsync(
+       string userName)
+    {
+        return await _db.Users
+            .WithIncludes()
+            .FirstOrDefaultAsync(x => x.UserName == userName);
+    }
     public async Task<PagedResult<User>> Search(
         UserSearchFilter filter, 
         PaginationParams pagination)

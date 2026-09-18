@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.29.2" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.11" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.12" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
   </ItemGroup>
 
@@ -20,4 +22,28 @@
     <ProjectReference Include="..\ShagOxServer.SharedKernel\ShagOxServer.SharedKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\EmailService\Emails.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Emails.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Verifications\Verification.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Verification.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Resources\EmailService\Emails.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Emails.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\Verification.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Verification.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+	
 </Project>

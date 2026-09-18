@@ -13,6 +13,7 @@ builder.Services
     .AddDatabase(builder.Configuration)
     .AddJWT(builder.Configuration)
     .AddCloudinary(builder.Configuration)
+    .AddSettingsConfiguration(builder.Configuration)
     .AddFrontendPolicy()
     .AddControllersWithJson()
     .AddSwaggerDocumentation()

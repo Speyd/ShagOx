@@ -29,6 +29,11 @@ public class UserConfiguration
         builder.Property(x => x.Email)
                .HasMaxLength(254);
 
+        builder.Property(x => x.Status)
+            .HasConversion<string>()
+            .HasMaxLength(50)
+            .IsRequired();
+
         builder.Property(x => x.PasswordHash)
                  .HasColumnType("text");
 

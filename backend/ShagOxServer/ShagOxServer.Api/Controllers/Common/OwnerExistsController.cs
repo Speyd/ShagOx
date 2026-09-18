@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Special;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 
 namespace ShagOxServer.Api.Controllers.Common;
 

@@ -66,6 +66,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(254)
                         .HasColumnType("character varying(254)");
 
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("FirstName")
                         .HasMaxLength(35)
                         .HasColumnType("character varying(35)");
@@ -85,8 +88,16 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<bool>("PhoneConfirmed")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("RegisteredAt")
                         .HasColumnType("timestamptz");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -815,6 +826,52 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("ConditionTranslations");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Verifications.VerificationCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Attempts")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CodeHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<DateTime?>("InvalidatedAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<string>("PendingValue")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("VerificationCodes");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.User", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Location.City", "City")
@@ -1084,6 +1141,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Translatable");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Verifications.VerificationCode", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.Role", b =>

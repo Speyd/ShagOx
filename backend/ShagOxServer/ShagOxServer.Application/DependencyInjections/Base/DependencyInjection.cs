@@ -6,6 +6,7 @@ using ShagOxServer.Application.DependencyInjections.Baskets;
 using ShagOxServer.Application.DependencyInjections.Dictionary;
 using ShagOxServer.Application.DependencyInjections.Location;
 using ShagOxServer.Application.DependencyInjections.Specification;
+using ShagOxServer.Application.DependencyInjections.Verifications;
 
 namespace ShagOxServer.Application.DependencyInjections.Base;
 
@@ -15,6 +16,7 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
         return services
+            .AddVerificationApplication()
             .AddAuthApplication()
             .AddBasketApplication()
             .AddLocationApplication()

@@ -15,6 +15,8 @@ public static class PipelineExtensions
 
         app.UseHttpsRedirection();
 
+        app.UseRequestLocalization();
+
         app.UseCors("Frontend");
 
         app.UseAuthentication();

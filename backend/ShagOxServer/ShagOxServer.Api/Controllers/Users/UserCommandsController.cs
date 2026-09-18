@@ -1,27 +1,39 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
+using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Passwords;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using ShagOxServer.Application.DTOs.Auth.Users.Update;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Update;
 
 namespace ShagOxServer.Api.Controllers.Users;
 
 [ApiController]
 [Route("api/users")]
-[Authorize]
-public class UserCommandsController 
+public class UserCommandsController
     : ApiController
 {
     private readonly IUserUpdateService _updateService;
+    private readonly IChangeEmailService _emailService;
+    private readonly IChangePasswordService _passwordService;
+    private readonly IResetPasswordService _resetPasswordService;
 
 
     public UserCommandsController(
-        IUserUpdateService updateService)
+        IUserUpdateService updateService,
+        IChangeEmailService emailService,
+        IChangePasswordService passwordService,
+        IResetPasswordService resetPasswordService)
     {
         _updateService = updateService;
+        _emailService = emailService;
+        _passwordService = passwordService;
+        _resetPasswordService = resetPasswordService;
     }
 
-
+    [Authorize]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
         [FromRoute] int id,
@@ -32,6 +44,38 @@ public class UserCommandsController
 
         var result = await _updateService
             .UpdateAsync(id, request);
+
+        return result.ToActionResult();
+    }
+
+    [Authorize]
+    [HttpPut("email")]
+    public async Task<IActionResult> UpdateEmail(
+        [FromBody] ChangeEmailRequest request)
+    {
+        var result = await _emailService
+            .ChangeEmail(UserId, request);
+
+        return result.ToActionResult();
+    }
+
+    [Authorize]
+    [HttpPut("password")]
+    public async Task<IActionResult> UpdatePassword(
+        [FromBody] ChangePasswordRequest request)
+    {
+        var result = await _passwordService
+            .ChangePassword(UserId, request);
+
+        return result.ToActionResult();
+    }
+
+    [HttpPut("reset-password")]
+    public async Task<IActionResult> ResetPassword(
+        [FromBody] ResetPasswordRequest request)
+    {
+        var result = await _resetPasswordService
+            .ResetPassword(request);
 
         return result.ToActionResult();
     }

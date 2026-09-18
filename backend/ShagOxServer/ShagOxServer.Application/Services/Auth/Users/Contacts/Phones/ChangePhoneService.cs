@@ -1,15 +1,15 @@
 ﻿using ShagOxServer.Application.Common.Validators.Enum;
-using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
+using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Phones;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Auth.Users.Contacts.Emails;
-public class ChangeEmailService
-    : IChangeEmailService
+namespace ShagOxServer.Application.Services.Auth.Users.Contacts.Phones;
+public class ChangePhoneService
+    : IChangePhoneService
 {
     private readonly UserValidator _userValidator;
 
@@ -18,7 +18,7 @@ public class ChangeEmailService
     private readonly IVerificationSender _verificationSender;
 
 
-    public ChangeEmailService(
+    public ChangePhoneService(
         UserValidator userValidator,
         IContactValidator contactValidator,
         IVerificationSender verificationSender)
@@ -28,31 +28,31 @@ public class ChangeEmailService
         _verificationSender = verificationSender;
     }
 
-    public async Task<Result<bool>> ChangeEmail(
+    public async Task<Result<bool>> ChangePhone(
         int userId,
-        ChangeEmailRequest request)
+        ChangePhoneRequest request)
     {
         var user = await _userValidator
             .GetByIdAsync(userId);
         if (!user.IsSuccess)
             return Result<bool>.Fail(user.Error);
 
-        var email = request.Email.Replace(" ", "");
+        var phone = request.Phone.Replace(" ", "");
 
-        var type = _contactValidator.Detect(email);
-        if(type != UserContactType.Email)
-            return Result<bool>.Fail("Email is incorrect");
+        var type = _contactValidator.Detect(phone);
+        if (type != UserContactType.Phone)
+            return Result<bool>.Fail("Phone is incorrect");
 
-        var emailExists = await _userValidator
-            .NotExistsByEmailAsync(email);
-        if (!emailExists.IsSuccess)
-            return Result<bool>.Fail(emailExists.Error);
+        var phoneExists = await _userValidator
+            .NotExistsByPhoneAsync(phone);
+        if (!phoneExists.IsSuccess)
+            return Result<bool>.Fail(phoneExists.Error);
 
 
         var result = await _verificationSender
             .SendAsync(user.Value!,
-                VerificationCodePurpose.ChangeEmail,
-                email
+                VerificationCodePurpose.ChangePhone,
+                phone
             );
 
         return Result<bool>.Success(true);

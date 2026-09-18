@@ -50,20 +50,25 @@ public class UserUpdateService
     {
         var user = await _userValidator
             .GetByIdWithIncludesAsync(userId);
-
         if (!user.IsSuccess)
             return Result<UpdateResponse>.Fail(user.Error);
 
+        var userName = request.UserName?.Trim();
+        var normalizedRequest = request with
+        {
+            UserName = userName
+        };
+
 
         var validation = await
-            ValidateUpdatesAsync(user.Value!, request);
+            ValidateUpdatesAsync(user.Value!, normalizedRequest);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
 
         var updatedCount = UserUpdater
-            .ApplyUpdates(user.Value!, request);
+            .ApplyUpdates(user.Value!, normalizedRequest);
 
         var result = new UpdateResponse(
             updatedCount,
@@ -79,8 +84,10 @@ public class UserUpdateService
         {
             _userRepository.Update(user.Value!);
 
-            if(request.Avatar is not null)
-                await UpdateAvatarAsync(user.Value!, request.Avatar);
+            if(normalizedRequest.Avatar is not null)
+                await UpdateAvatarAsync(user.Value!,
+                    normalizedRequest.Avatar
+                );
 
             await _unitOfWork.CommitAsync();
         }

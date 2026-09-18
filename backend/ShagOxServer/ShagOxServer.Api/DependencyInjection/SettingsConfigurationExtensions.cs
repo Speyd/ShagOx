@@ -10,6 +10,12 @@ public static class SettingsConfigurationExtensions
         services.Configure<VerificationCodeSettings>(
             config.GetSection("VerificationCode"));
 
+        services.Configure<EmailSettings>(
+            config.GetSection("Email"));
+
+        services.Configure<SmsSettings>(
+            config.GetSection("Twilio"));
+
         services.Configure<BackgroundServiceSettings>(
            config.GetSection("BackgroundServices")); 
 

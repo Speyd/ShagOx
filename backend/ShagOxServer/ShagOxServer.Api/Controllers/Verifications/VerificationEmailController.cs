@@ -6,27 +6,27 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Verifications;
 
 [ApiController]
-[Route("api/verification")]
+[Route("api/verifications")]
 public class VerificationEmailController
     : ApiController
 {
-    private readonly IVerificationEmailService _emailService;
+    private readonly IVerificationService _verificationService;
 
 
     public VerificationEmailController(
-        IVerificationEmailService emailService)
+        IVerificationService verificationService)
     {
-        _emailService = emailService;
+        _verificationService = verificationService;
     }
 
 
-    [HttpPost("email")]
-    public async Task<IActionResult> GetById(
+    [HttpPost]
+    public async Task<IActionResult> Verification(
         [FromBody] VerificationEmailRequest request)
     {
         request = new(request.UserId ?? UserId, request.Code);
 
-        var result = await _emailService
+        var result = await _verificationService
             .VerifyAsync(request);
 
         return result.ToActionResult();

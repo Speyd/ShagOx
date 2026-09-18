@@ -10,14 +10,18 @@ export default defineConfig({
     },
   },
   server: {
+    allowedHosts: [
+      "www.dmarketly.com",
+      "dmarketly.com",
+    ],
     proxy: {
       "/api": {
-        target: "https://localhost:7263",
+        target: "api-www.dmarketly.com",
         changeOrigin: true,
         secure: false,
       },
       "/auth": {
-        target: "https://localhost:7263",
+        target: "api-www.dmarketly.com",
         changeOrigin: true,
         secure: false,
       },

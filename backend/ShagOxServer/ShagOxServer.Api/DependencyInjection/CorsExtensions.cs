@@ -10,7 +10,10 @@ public static class CorsExtensions
             options.AddPolicy("Frontend", policy =>
             {
                 policy
-                    .WithOrigins("http://localhost:5173")
+                    .WithOrigins(
+                    "http://localhost:5173",
+                    "https://dev.dmarketly.com", 
+                    "https://www.dmarketly.com")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

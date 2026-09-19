@@ -16,12 +16,12 @@ export default defineConfig({
     ],
     proxy: {
       "/api": {
-        target: "api-www.dmarketly.com",
+        target: "https://localhost:7263",
         changeOrigin: true,
         secure: false,
       },
       "/auth": {
-        target: "api-www.dmarketly.com",
+        target: "https://localhost:7263",
         changeOrigin: true,
         secure: false,
       },

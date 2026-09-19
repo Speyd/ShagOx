@@ -78,6 +78,8 @@ public class RegisterService
                     _userRepository.Add(user);
 
                     await _roleService.AddDefaultRoleAsync(user);
+
+                    await _unitOfWork.SaveChangesAsync();
                 }
 
                 await _userCreater.SetDefaultName(user);

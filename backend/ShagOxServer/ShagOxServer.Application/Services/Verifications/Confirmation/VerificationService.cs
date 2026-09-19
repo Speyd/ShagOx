@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Verifications.VerificationEmails;
+﻿using ShagOxServer.Application.DTOs.Verifications;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
@@ -33,7 +33,7 @@ public class VerificationService
     }
 
     public async Task<Result<bool>> VerifyAsync(
-        VerificationEmailRequest request)
+        VerificationRequest request)
     {
         var user = await _userRepository
             .GetByIdAsync(request.UserId!.Value);

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.DTOs.Verifications.VerificationEmails;
+using ShagOxServer.Application.DTOs.Verifications;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -22,7 +22,7 @@ public class VerificationEmailController
 
     [HttpPost]
     public async Task<IActionResult> Verification(
-        [FromBody] VerificationEmailRequest request)
+        [FromBody] VerificationRequest request)
     {
         request = new(request.UserId ?? UserId, request.Code);
 

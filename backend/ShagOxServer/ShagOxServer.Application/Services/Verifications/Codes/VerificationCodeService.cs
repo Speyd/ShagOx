@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings;
+using ShagOxServer.Application.Common.Settings.Verifivations;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;

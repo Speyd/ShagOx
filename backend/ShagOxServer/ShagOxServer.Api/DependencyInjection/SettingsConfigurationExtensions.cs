@@ -1,4 +1,6 @@
-﻿using ShagOxServer.Application.Common.Settings;
+﻿using ShagOxServer.Application.Common.Settings.Auth;
+using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Application.Common.Settings.Verifivations;
 
 namespace ShagOxServer.Api.DependencyInjection;
 public static class SettingsConfigurationExtensions
@@ -17,7 +19,13 @@ public static class SettingsConfigurationExtensions
             config.GetSection("Twilio"));
 
         services.Configure<BackgroundServiceSettings>(
-           config.GetSection("BackgroundServices")); 
+           config.GetSection("BackgroundServices"));
+
+        services.Configure<GoogleSettings>(
+           config.GetSection("Google"));
+
+        services.Configure<UserNameSettings>(
+           config.GetSection("UserNameGenerate"));
 
         return services;
     }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using ShagOxServer.Application.Common.Settings;
+using ShagOxServer.Application.Common.Settings.Systems;
 using System.Text;
 
 namespace ShagOxServer.Api.DependencyInjection;

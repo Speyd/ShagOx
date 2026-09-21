@@ -17,6 +17,8 @@ public static class AuthDependencyInjection
 
         services.AddContactApplication();
 
+        services.AddAuthExternalApplication();
+
         return services;
     }
 }

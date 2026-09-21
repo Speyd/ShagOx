@@ -7,13 +7,13 @@ namespace ShagOxServer.Api.Controllers.Verifications;
 
 [ApiController]
 [Route("api/verifications")]
-public class VerificationEmailController
+public class VerificationController
     : ApiController
 {
     private readonly IVerificationService _verificationService;
 
 
-    public VerificationEmailController(
+    public VerificationController(
         IVerificationService verificationService)
     {
         _verificationService = verificationService;

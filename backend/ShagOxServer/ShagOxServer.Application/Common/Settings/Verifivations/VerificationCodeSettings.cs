@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Application.Common.Settings;
+﻿namespace ShagOxServer.Application.Common.Settings.Verifivations;
 public sealed class VerificationCodeSettings
 {
     public int MinGenValue { get; init; } = 100000;

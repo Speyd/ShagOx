@@ -11,7 +11,7 @@ public interface IUserQueryService
 {
     Task<Result<UserDto>> GetMyProfileAsync();
 
-    Task<Result<UserDto>> GetByContactAsync(
+    Task<Result<UserShortDto>> GetByContactAsync(
         string value);
 
     Task<Result<PagedResult<RoleDto>>> GetMyRoleAsync(

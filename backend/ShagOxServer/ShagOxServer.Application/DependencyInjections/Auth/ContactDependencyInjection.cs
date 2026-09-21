@@ -2,10 +2,12 @@
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Phones;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames;
 using ShagOxServer.Application.Services.Auth.Users.Contacts;
 using ShagOxServer.Application.Services.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Services.Auth.Users.Contacts.Phones;
+using ShagOxServer.Application.Services.Auth.Users.Contacts.UserNames;
 
 namespace ShagOxServer.Application.DependencyInjections.Auth;
 public static class ContactDependencyInjection
@@ -23,6 +25,11 @@ public static class ContactDependencyInjection
         #region Phone
         services.AddScoped<IChangePhoneService,
            ChangePhoneService>();
+        #endregion
+
+        #region UserName
+        services.AddScoped<IUserNameService,
+           UserNameService>();
         #endregion
 
         #region Password

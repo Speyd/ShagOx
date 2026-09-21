@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings;
+using ShagOxServer.Application.Common.Settings.Systems;
 using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
@@ -12,15 +13,19 @@ public class PendingUserCleanupService
 {
     private readonly IServiceScopeFactory _scopeFactory;
 
+    private readonly ILogger<PendingUserCleanupService> _logger;
+
     private readonly BackgroundServiceSettings _setting;
 
 
     public PendingUserCleanupService(
         IServiceScopeFactory scopeFactory,
-        IOptions<BackgroundServiceSettings> setting)
+        IOptions<BackgroundServiceSettings> setting,
+        ILogger<PendingUserCleanupService> logger)
     {
         _scopeFactory = scopeFactory;
         _setting = setting.Value;
+        _logger = logger;
     }
 
     protected override async Task ExecuteAsync(
@@ -53,6 +58,7 @@ public class PendingUserCleanupService
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
             }
 
             await Task.Delay(

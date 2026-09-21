@@ -41,13 +41,13 @@ public class UserQueryService
         return user.ToResult(UserMapper.ToDto);
     }
 
-    public async Task<Result<UserDto>> GetByContactAsync(
+    public async Task<Result<UserShortDto>> GetByContactAsync(
         string value)
     {
         var user = await _userQueryRepository
             .GetByContactAsync(value);
 
-        return user.ToResult(UserMapper.ToDto);
+        return user.ToResult(UserShortMapper.ToDto);
     }
 
     public async Task<Result<UserDto>> GetMyProfileAsync()

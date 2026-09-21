@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Application.Common.Settings;
+﻿namespace ShagOxServer.Application.Common.Settings.Verifivations;
 public sealed class SmsSettings
 {
     public string ProductName { get; set; } = null!;

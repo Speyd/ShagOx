@@ -1,8 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Services.Auth.Users.Contacts;
-using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
-using ShagOxServer.Application.Services.Auth.Users.Roles;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -12,20 +10,14 @@ public class UserCreater
     private readonly IRepository<User> _repository;
 
     private readonly UserContactApplier _contactApplier;
-    private readonly UserPasswordService _passwordService;
-    private readonly UserRoleService _roleService;
 
 
     public UserCreater(
         IRepository<User> repository,
-        UserContactApplier contactApplier,
-        UserPasswordService passwordService,
-        UserRoleService roleService)
+        UserContactApplier contactApplier)
     {
         _repository = repository;
         _contactApplier = contactApplier;
-        _passwordService = passwordService;
-        _roleService = roleService;
     }
 
     public async Task<Result<User>> CreateUser(RegisterRequest request)

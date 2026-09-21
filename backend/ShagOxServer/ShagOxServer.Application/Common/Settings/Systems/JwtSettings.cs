@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Application.Common.Settings;
+﻿namespace ShagOxServer.Application.Common.Settings.Systems;
 public sealed class JwtSettings
 {
     public string Key { get; set; } = null!;

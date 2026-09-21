@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings;
+using ShagOxServer.Application.Common.Settings.Verifivations;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.EmailService;
 using Twilio;

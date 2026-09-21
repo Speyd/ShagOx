@@ -40,7 +40,9 @@ public partial class GoogleLoginService
                 {
                     _userRepository.Add(user);
 
-                    var roleResult = await _roleService.AddDefaultRoleAsync(user);
+                    var roleResult = await _roleService
+                        .AddDefaultRoleAsync(user);
+
                     if (!roleResult.IsSuccess)
                     {
                         await _unitOfWork.RollbackAsync();

@@ -1,19 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.Common.Settings.Systems;
 using ShagOxServer.Application.DTOs.Auth.Externals.Google;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Auth;
+
 [ApiController]
 [Route("api/auth/external")]
 public class ExternalAuthController
-    : ApiController
+    : ApiCookieController
 {
     private readonly IGoogleLoginService _googleLoginService;
 
 
     public ExternalAuthController(
-        IGoogleLoginService googleLoginService)
+        IGoogleLoginService googleLoginService,
+        IOptions<JwtSettings> jwtSettings
+    )
+    : base(jwtSettings)
     {
         _googleLoginService = googleLoginService;
     }
@@ -21,11 +27,10 @@ public class ExternalAuthController
     [HttpPost("google")]
     public async Task<IActionResult> GoogleLogin(
         [FromBody] GoogleLoginRequest request)
-    {
-        
-        var result = await _googleLoginService
+    {    
+        var responce = await _googleLoginService
             .LoginAsync(request);
 
-        return result.ToActionResult();
+        return await SetAccessToken(responce);
     }
 }

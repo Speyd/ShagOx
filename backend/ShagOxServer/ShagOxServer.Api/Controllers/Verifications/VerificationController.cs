@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Verifications;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

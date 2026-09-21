@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Location.Cities.Translations.Create;
 using ShagOxServer.Application.DTOs.Location.Cities.Translations.Update;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Create;

@@ -1,6 +1,4 @@
-﻿using CloudinaryDotNet.Actions;
-using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Application.DTOs.Auth.Register;
+﻿using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -64,7 +62,10 @@ public class RegisterService
             );
             
             if (!prepareResult.IsSuccess)
-                Result<RegisterResponse>.Fail(prepareResult.Error);
+            {
+                Result<RegisterResponse>
+                    .Fail(prepareResult.Error);
+            }
 
             var user = prepareResult.Value!.User;
 
@@ -77,7 +78,14 @@ public class RegisterService
                 {
                     _userRepository.Add(user);
 
-                    await _roleService.AddDefaultRoleAsync(user);
+                    var roleResult = await _roleService
+                        .AddDefaultRoleAsync(user);
+
+                    if (!roleResult.IsSuccess)
+                    {
+                        Result<RegisterResponse>
+                            .Fail(roleResult.Error);
+                    }
 
                     await _unitOfWork.SaveChangesAsync();
                 }

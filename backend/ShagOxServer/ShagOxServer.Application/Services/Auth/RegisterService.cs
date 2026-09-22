@@ -64,7 +64,7 @@ public class RegisterService
             );
             
             if (!prepareResult.IsSuccess)
-                Result<RegisterResponse>.Fail(prepareResult.Error);
+                return Result<RegisterResponse>.Fail(prepareResult.Error);
 
             var user = prepareResult.Value!.User;
 
@@ -77,7 +77,13 @@ public class RegisterService
                 {
                     _userRepository.Add(user);
 
-                    await _roleService.AddDefaultRoleAsync(user);
+                    var roleResult = await _roleService.AddDefaultRoleAsync(user);
+
+                    if (!roleResult.IsSuccess)
+                    {
+                        await _unitOfWork.RollbackAsync();
+                        return Result<RegisterResponse>.Fail(roleResult.Error);
+                    }
 
                     await _unitOfWork.SaveChangesAsync();
                 }
@@ -92,7 +98,10 @@ public class RegisterService
 
             await _unitOfWork.CommitAsync();
   
-            await SendVerification(user);
+            var verificationResult = await SendVerification(user);
+
+            if (!verificationResult.IsSuccess)
+                return Result<RegisterResponse>.Fail(verificationResult.Error);
 
             return Result<RegisterResponse>.Success(
                new RegisterResponse(user)
@@ -128,7 +137,7 @@ public class RegisterService
                 .ApplyAsync(user, request);
 
             if (!result.IsSuccess)
-                Result<(User User, bool IsExisting)>.Fail(result.Error);
+                return Result<(User User, bool IsExisting)>.Fail(result.Error);
 
             isExisting = true;
         }
@@ -138,7 +147,7 @@ public class RegisterService
                 .CreateUser(request);
 
             if (!userResult.IsSuccess)
-                Result<(User User, bool IsExisting)>.Fail(userResult.Error);
+                return Result<(User User, bool IsExisting)>.Fail(userResult.Error);
 
             user = userResult.Value;
         }
@@ -147,27 +156,30 @@ public class RegisterService
             .Apply(user!, request);      
 
         if (!passResult.IsSuccess)
-            Result<(User User, bool IsExisting)>.Fail(passResult.Error);
+            return Result<(User User, bool IsExisting)>.Fail(passResult.Error);
 
         return Result<(User, bool)>.Success((user!, isExisting));
     }
 
-    private async Task SendVerification(
+    private async Task<Result<bool>> SendVerification(
         User user)
     {
         user.Status = UserStatus.PendingVerification;
 
         if (!string.IsNullOrWhiteSpace(user.Email))
         {
-            await _senderVerification
+            return await _senderVerification
                 .SendAsync(user,
                     VerificationCodePurpose.RegistrationEmail);
         }
-        else if (!string.IsNullOrWhiteSpace(user.Phone))
+
+        if (!string.IsNullOrWhiteSpace(user.Phone))
         {
-            await _senderVerification
+            return await _senderVerification
                 .SendAsync(user, 
                     VerificationCodePurpose.RegistrationPhone);
         }
+
+        return Result<bool>.Fail("Email or phone is required for verification.");
     }
 }

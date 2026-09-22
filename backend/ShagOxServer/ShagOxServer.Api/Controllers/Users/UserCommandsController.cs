@@ -86,7 +86,7 @@ public class UserCommandsController
         return result.ToActionResult();
     }
 
-    [HttpPut("reset-password")]
+    [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword(
         [FromBody] ResetPasswordRequest request)
     {

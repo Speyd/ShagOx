@@ -37,16 +37,13 @@ public class EmailService
         var smtpPassword = _emailOptions.Password
             ?? throw new InvalidOperationException("SMTP password is not configured.");
 
-        var fromEmail = _emailOptions.From
-            ?? throw new InvalidOperationException("Sender email is not configured.");
-
-
         using var client = new SmtpClient(smtpHost, smtpPort)
         {
             EnableSsl = true,
+            UseDefaultCredentials = false,
             Credentials = new NetworkCredential(
                 smtpUser,
-                smtpPassword)
+                new string(smtpPassword.Where(c => !char.IsWhiteSpace(c)).ToArray()))
         };
 
         var subject = Emails.VerificationSubject;
@@ -57,11 +54,14 @@ public class EmailService
         
         using var message = new MailMessage
         {
-            From = new MailAddress(fromEmail),
+            From = new MailAddress(smtpUser, "Marketly"),
             Subject = subject,
             Body = body,
             IsBodyHtml = false
         };
+
+        if (!string.IsNullOrWhiteSpace(_emailOptions.From))
+            message.ReplyToList.Add(new MailAddress(_emailOptions.From));
 
         message.To.Add(email);
 

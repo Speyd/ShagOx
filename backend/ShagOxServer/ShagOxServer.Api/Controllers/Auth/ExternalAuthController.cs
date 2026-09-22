@@ -26,6 +26,23 @@ public class ExternalAuthController
         var result = await _googleLoginService
             .LoginAsync(request);
 
-        return result.ToActionResult();
+        if (!result.IsSuccess)
+            return result.ToActionResult();
+
+        if (result.Value?.Token is null)
+            return StatusCode(StatusCodes.Status500InternalServerError);
+
+        Response.Cookies.Append(
+            "access_token",
+            result.Value.Token,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                Expires = DateTimeOffset.UtcNow.AddDays(7),
+                SameSite = SameSiteMode.Lax
+            });
+
+        return Ok();
     }
 }

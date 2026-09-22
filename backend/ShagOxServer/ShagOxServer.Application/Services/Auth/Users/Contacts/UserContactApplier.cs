@@ -25,6 +25,7 @@ public class UserContactApplier
         RegisterRequest request)
     {
         var EmailOrPhone = request.EmailOrPhone.Replace(" ", "");
+        var UserName = request.UserName.Replace(" ", "");
 
         var type =
             _contactValidator.Detect(EmailOrPhone);  
@@ -44,7 +45,7 @@ public class UserContactApplier
             return Result<UserContactType>.Fail(contactResult.Error);
 
         var userNameResult =
-            await ApplyUserNameAsync(user, request.UserName);
+            await ApplyUserNameAsync(user, UserName);
 
         if (!userNameResult.IsSuccess)
             return Result<UserContactType>.Fail(userNameResult.Error);
@@ -92,8 +93,6 @@ public class UserContactApplier
         User user,
         string userName)
     {
-        userName = userName.Replace(" ", "");
-
         if (user.UserName != userName)
         {
             var result = await _userValidator

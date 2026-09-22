@@ -1,11 +1,8 @@
 import HomePage from "@/pages/home-page";
-import LoginPage from "@/pages/auth/login-page";
-import RegisterPage from "@/pages/auth/register-page";
 import { Routes, Route } from "react-router-dom";
 import NotFoundPage from "@/pages/not-found-page";
 import AdvertisementPage from "@/pages/advertisement/advertisement-page";
 import { PublicRoute } from "./PublicRoute";
-import CreateAdvertisementPage from "@/pages/advertisement/create-advertisement-page/CreateAdvertisementPage";
 import UserUpdateAdvertisementPage from "@/pages/advertisement/update-advertisement-page";
 import AdminAdvertisementPage from "@/pages/admin/advertisements/update-advertisement-page";
 import FavoritesPage from "@/pages/favorites-page";
@@ -25,11 +22,33 @@ import { FavoritesTab } from "@/widgets/profile-favorites";
 import { OrdersTab } from "@/widgets/profile-orders";
 import ProfileLayout from "../layouts/ProfileLayout";
 import { StatisticsTab } from "@/widgets/profile-statistics";
+import { AuthPage } from "@/pages/auth";
+import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage";
+import CategorySelectionPage from "@/pages/category-selection/CategorySelectionPage";
+import VerifyPage from "@/pages/verify-page";
 
 export default function Router() {
   return (
     <>
       <Routes>
+        <Route
+          path="/authentication"
+          element={
+            <PublicRoute>
+              <AuthPage />
+            </PublicRoute>
+          }
+        />
+
+        <Route path="/category-selection" element={<CategorySelectionPage />} />
+
+        <Route
+          path="/authentication/verify"
+          element={<VerifyPage />}
+        />
+
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
         <Route
           path="/admin"
           element={
@@ -55,11 +74,14 @@ export default function Router() {
 
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/profile"
+          <Route
+            path="/profile"
             element={
               <ProtectedRoute>
                 <ProfileLayout />
-              </ProtectedRoute>}>
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<GeneralTab />} />
             <Route path="videos" element={<VideosTab />} />
             <Route path="favorites" element={<FavoritesTab />} />
@@ -76,31 +98,6 @@ export default function Router() {
             }
           />
 
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <LoginPage />
-              </PublicRoute>
-            }
-          />
-
-          <Route
-            path="/register"
-            element={
-              <PublicRoute>
-                <RegisterPage />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/create-advertisement"
-            element={
-              <ProtectedRoute>
-                <CreateAdvertisementPage />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path="/update-advertisement/:id"
             element={

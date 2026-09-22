@@ -15,10 +15,8 @@ import {
   Autocomplete,
   Loader,
 } from "@mantine/core";
-
 import styles from "./ProfileDrawer.module.css";
 import { AtSign, Camera, Link, X } from "lucide-react";
-import { useAuthStore } from "@/features/auth/store/useAuthStore";
 import { searchCities } from "@/entities/city/api/api";
 import type { City } from "@/shared/lib/types/city";
 import {
@@ -26,6 +24,7 @@ import {
   type UpdateProfileDto,
 } from "@/features/profile/update-profile/model/schemas/schema";
 import useUpdateProfile from "@/features/profile/update-profile/model/hooks/useUpdateProfile";
+import { useAuthStore } from "@/features/auth";
 
 type ProfileDrawerProps = {
   opened: boolean;
@@ -233,7 +232,9 @@ export default function ProfileDrawer({ opened, close }: ProfileDrawerProps) {
 
             <Box>
               <Group justify="space-between" mb={3}>
-                <Text className={styles.label} fw={700} fz={14}>Про себе</Text>
+                <Text className={styles.label} fw={700} fz={14}>
+                  Про себе
+                </Text>
                 <Text className={styles.charCounter} fw={400} fz={12}>
                   {watchedBio.length}/160
                 </Text>

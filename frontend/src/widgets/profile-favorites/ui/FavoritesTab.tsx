@@ -5,7 +5,7 @@ import type { ProfileContextType } from "@/app/layouts/ProfileLayout";
 import styles from "./FavoritesTab.module.css";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { useGetFavorites } from "@/features/favorites/model/hooks/useGetFavorites";
-import AdvertisementCard from "@/entities/advertisement";
+import AdvertisementCard from "@/entities/advertisement/ui/AdvertisementCard";
 
 export default function FavoritesTab() {
   const { setOrientation } = useOutletContext<ProfileContextType>();

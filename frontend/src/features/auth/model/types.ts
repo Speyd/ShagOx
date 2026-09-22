@@ -3,8 +3,12 @@ import type { User } from "@/shared/lib/types/user";
 export type { User };
 
 export type LoginRequest = {
-  emailOrPhone: string;
+  emailOrPhoneOrUserName: string;
   password: string;
+};
+
+export type GoogleLoginRequest = {
+  code: string;
 };
 
 export type RegisterRequest = {
@@ -17,6 +21,8 @@ export type RegisterResponse = {
   id: number;
   emailOrPhone: string;
   userName: string;
+  emailVerificationRequired: boolean;
+  phoneVerificationRequired: boolean;
 };
 
 export type AuthUser = {
@@ -35,4 +41,21 @@ export type Role = {
 export type LogoutResponse = {
   success: boolean;
   message: string;
+};
+
+export type VerifyRequest = {
+  userId?: number;
+  code: string;
+};
+
+export type ConfirmResetPasswordRequest = {
+  userId: number;
+  code: string;
+  newPassword: string;
+};
+
+export type ResetPasswordRequest = {
+  userId: number;
+  emailOrPhoneOrUserName: string;
+  newPassword: string;
 };

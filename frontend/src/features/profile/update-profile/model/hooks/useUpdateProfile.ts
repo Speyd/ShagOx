@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getUser, updateUser } from "@/entities/user/api/api";
-import { useAuthStore } from "@/features/auth/store/useAuthStore";
+
 import type { UpdateProfileDto } from "../schemas/schema";
+import { useAuthStore } from "@/features/auth";
 
 type UpdateProfileRequest = {
   id: number;

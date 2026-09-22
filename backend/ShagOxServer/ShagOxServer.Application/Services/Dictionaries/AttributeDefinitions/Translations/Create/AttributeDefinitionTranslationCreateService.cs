@@ -52,7 +52,9 @@ public class AttributeDefinitionTranslationCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create attribute definition translation.");
         }
 
         return Result<CreateResponse>.Success(

@@ -80,7 +80,9 @@ public class CityUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update city.");
         }
 
 

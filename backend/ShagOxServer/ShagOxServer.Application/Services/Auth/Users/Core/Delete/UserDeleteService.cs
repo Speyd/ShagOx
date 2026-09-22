@@ -58,7 +58,9 @@ public class UserDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                     .Fail("Failed to delete user.");
         }
 
         return Result<DeleteResponse>.Success(

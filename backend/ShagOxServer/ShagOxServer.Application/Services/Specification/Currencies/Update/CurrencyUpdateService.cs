@@ -71,7 +71,9 @@ public class CurrencyUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update currency.");
         }
 
         return Result<UpdateResponse>.Success(result);

@@ -55,6 +55,6 @@ public class ChangeEmailService
                 email
             );
 
-        return Result<bool>.Success(true);
+        return result;
     }
 }

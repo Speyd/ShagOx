@@ -46,7 +46,9 @@ public class ConditionDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                 .Fail("Failed to delete condition.");
         }
 
 

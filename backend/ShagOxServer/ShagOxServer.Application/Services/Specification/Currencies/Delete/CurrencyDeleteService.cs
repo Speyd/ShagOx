@@ -46,7 +46,9 @@ public class CurrencyDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                 .Fail("Failed to delete currency.");
         }
 
         return Result<DeleteResponse>.Success(

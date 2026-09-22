@@ -47,7 +47,9 @@ public class AttributeDefinitionDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                     .Fail("Failed to delete attribute definition.");
         }
 
         return Result<DeleteResponse>.Success(

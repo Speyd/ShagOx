@@ -71,7 +71,9 @@ public class CityTranslationUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update city translation.");
         }
 
         return Result<UpdateResponse>.Success(result);

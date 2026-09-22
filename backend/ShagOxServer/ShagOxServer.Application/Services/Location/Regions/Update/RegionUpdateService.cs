@@ -65,7 +65,9 @@ public class RegionUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update region.");
         }
 
         return Result<UpdateResponse>.Success(result);

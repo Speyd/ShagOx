@@ -68,7 +68,9 @@ public class ConditionUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update condition.");
         }
 
         return Result<UpdateResponse>.Success(result);

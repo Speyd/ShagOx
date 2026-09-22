@@ -67,7 +67,9 @@ public class ProductTypeUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                .Fail("Failed to update product type.");
         }
 
         return Result<UpdateResponse>.Success(result);

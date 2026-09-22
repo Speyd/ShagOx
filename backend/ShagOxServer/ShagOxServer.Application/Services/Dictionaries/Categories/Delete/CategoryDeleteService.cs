@@ -47,7 +47,9 @@ public class CategoryDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                     .Fail("Failed to delete category.");
         }
 
         return Result<DeleteResponse>.Success(

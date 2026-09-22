@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Login;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
@@ -59,7 +60,8 @@ public class LoginService
         }
         catch (Exception ex)
         {
-            return Result<LoginResponse>.Fail(ex.Message);
+            return Result<LoginResponse>
+                     .Fail("Login failed");
         }
     }
 

@@ -57,7 +57,9 @@ public class AdvertisementDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                    .Fail("Failed to delete advertisement.");
         }
 
         return Result<DeleteResponse>.Success(

@@ -1,4 +1,5 @@
 ﻿using Google.Apis.Auth;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Externals.Google;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
@@ -28,62 +29,29 @@ public partial class GoogleLoginService
                 .InternalServer("Google OAuth is not configured.");
         }
 
-        using var httpClient = new HttpClient();
+        var tokenResult = await ExchangeCodeAsync(
+            request.Code,
+            clientId,
+            clientSecret);
 
-        var tokenResponse = await httpClient.PostAsync(
-            _googleSettings.TokenLink,
-            new FormUrlEncodedContent(new Dictionary<string, string>
-            {
-                ["code"] = request.Code,
-                ["client_id"] = clientId,
-                ["client_secret"] = clientSecret,
-                ["redirect_uri"] = _googleSettings.RedirectUri,
-                ["grant_type"] = _googleSettings.GrantType
-            })
-        );
-
-
-        if (!tokenResponse.IsSuccessStatusCode)
-        {
-            //var error = await tokenResponse.Content.ReadAsStringAsync();
-            return Result<LoginResponse>
-                .Fail("Google token exchange failed.");
-        }
-
-        var tokens = await tokenResponse.Content
-            .ReadFromJsonAsync<GoogleTokenResponse>();
-
-        if (tokens is null ||
-            string.IsNullOrWhiteSpace(tokens.IdToken))
+        if (!tokenResult.IsSuccess ||
+            tokenResult.Value is null)
         {
             return Result<LoginResponse>
-               .Fail("Google did not return an ID token.");
+                .Fail(tokenResult.Error);
         }
 
-        GoogleJsonWebSignature.Payload payload;
+        var payloadResult = await ValidateIdTokenAsync(
+            tokenResult.Value.IdToken!,
+            clientId);
 
-        try
-        {
-            var settings = new GoogleJsonWebSignature.ValidationSettings
-            {
-                Audience = new[]
-                {
-                clientId
-            }
-            };
-
-            payload = await GoogleJsonWebSignature.ValidateAsync(
-                tokens.IdToken,
-                settings
-            );
-        }
-        catch (InvalidJwtException)
+        if (!payloadResult.IsSuccess)
         {
             return Result<LoginResponse>
-              .Fail("Invalid Google ID token.");
+                .Fail(payloadResult.Error);
         }
 
-        var result = await AuthenticateAsync(payload);
+        var result = await AuthenticateAsync(payloadResult.Value!);
 
         if (!result.IsSuccess)
         {
@@ -98,5 +66,78 @@ public partial class GoogleLoginService
         }
 
         return result;
+    }
+
+    private async Task<Result<GoogleTokenResponse>> ExchangeCodeAsync(
+        string code,
+        string clientId,
+        string clientSecret)
+    {
+        using var httpClient = new HttpClient();
+
+        var response = await httpClient.PostAsync(
+            _googleSettings.TokenLink,
+            new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                ["code"] = code,
+                ["client_id"] = clientId,
+                ["client_secret"] = clientSecret,
+                ["redirect_uri"] = _googleSettings.RedirectUri,
+                ["grant_type"] = _googleSettings.GrantType
+            }));
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = await response.Content.ReadAsStringAsync();
+
+            _logger.LogError(
+                "Google token exchange failed. StatusCode: {StatusCode}, Error: {Error}",
+                response.StatusCode,
+                error);
+
+            return Result<GoogleTokenResponse>
+                .Fail("Google token exchange failed.");
+        }
+
+        var tokens = await response.Content
+            .ReadFromJsonAsync<GoogleTokenResponse>();
+
+        if (tokens is null ||
+            string.IsNullOrWhiteSpace(tokens.IdToken))
+        {
+            return Result<GoogleTokenResponse>
+                .Fail("Google did not return an ID token.");
+        }
+
+        return Result<GoogleTokenResponse>
+            .Success(tokens);
+    }
+
+    private async Task<Result<GoogleJsonWebSignature.Payload>> ValidateIdTokenAsync(
+        string idToken,
+        string clientId)
+    {
+        try
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings
+            {
+                Audience = new[]
+                {
+                clientId
+            }
+            };
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(
+                idToken,
+                settings);
+
+            return Result<GoogleJsonWebSignature.Payload>
+                .Success(payload);
+        }
+        catch (InvalidJwtException)
+        {
+            return Result<GoogleJsonWebSignature.Payload>
+                .Fail("Invalid Google ID token.");
+        }
     }
 }

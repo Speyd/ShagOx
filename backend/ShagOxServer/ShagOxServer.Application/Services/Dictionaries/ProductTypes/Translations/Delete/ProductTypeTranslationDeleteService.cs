@@ -47,7 +47,9 @@ public class ProductTypeTranslationDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                .Fail("Failed to delete product type translation.");
         }
 
         return Result<DeleteResponse>.Success(

@@ -1,7 +1,9 @@
-﻿namespace ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+﻿using ShagOxServer.SharedKernel.Abstractions.Results;
+
+namespace ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 public interface ISmsService
 {
-    Task SendVerificationCodeAsync(
+    Task<Result<bool>> SendVerificationCodeAsync(
         string phone,
         string code);
 }

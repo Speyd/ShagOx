@@ -70,7 +70,9 @@ public class BasketItemCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+            
+            return Result<CreateResponse>
+                     .Fail("Failed to create basket item.");
         }
 
         return Result<CreateResponse>.Success(

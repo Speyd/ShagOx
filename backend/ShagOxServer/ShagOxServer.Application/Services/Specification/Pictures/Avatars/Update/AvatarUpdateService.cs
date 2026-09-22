@@ -72,7 +72,9 @@ public class AvatarUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                .Fail("Failed to update avatar.");
         }
 
 

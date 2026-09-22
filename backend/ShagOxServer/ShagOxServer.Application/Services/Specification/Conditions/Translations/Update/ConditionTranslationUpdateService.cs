@@ -74,7 +74,9 @@ public class ConditionTranslationUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update condition translation.");
         }
 
         return Result<UpdateResponse>.Success(result);

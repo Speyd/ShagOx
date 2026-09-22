@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Update;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Update;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
@@ -16,15 +17,19 @@ public class ImageUpdateService
 
     private readonly AdvertisementValidator _advertValidator;
 
+    private readonly IUnitOfWork _unitOfWork;
+
 
     public ImageUpdateService(
         IRepository<Image> imageRepository,
         ImageValidator imageValidator,
-        AdvertisementValidator advertisementValidator)
+        AdvertisementValidator advertisementValidator,
+        IUnitOfWork unitOfWork)
     {
         _imageRepository = imageRepository;
         _imageValidator = imageValidator;
         _advertValidator = advertisementValidator;
+        _unitOfWork = unitOfWork;
     }
 
 
@@ -41,7 +46,8 @@ public class ImageUpdateService
         if (request.AdvertisementId is not null &&
             request.Order is not null)
         {
-            var advert = await _advertValidator.GetByIdAsync(request.AdvertisementId.Value);
+            var advert = await _advertValidator
+                .GetByIdAsync(request.AdvertisementId.Value);
 
             var orderExists = advert.Value!.Images.Any(x =>
                 x.Id != imageId &&
@@ -62,7 +68,19 @@ public class ImageUpdateService
         if (updatedCount == 0)
             return Result<UpdateResponse>.Success(response);
 
-        _imageRepository.Update(image.Value!);
+        try
+        {
+            _imageRepository.Update(image.Value!);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+
+            return Result<UpdateResponse>
+                .Fail("Failed to update image.");
+        }
 
         return Result<UpdateResponse>.Success(response);
     }

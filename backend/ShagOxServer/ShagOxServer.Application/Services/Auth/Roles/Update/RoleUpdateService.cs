@@ -64,7 +64,9 @@ public class RoleUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                     .Fail("Failed to update role.");
         }
 
         return Result<UpdateResponse>.Success(result);

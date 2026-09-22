@@ -50,6 +50,7 @@ public class AdvertisementCreateService
             .Create(request, userId);
 
         await _unitOfWork.BeginTransactionAsync();
+
         try
         {
             _advertRepository.Add(advert);
@@ -78,7 +79,9 @@ public class AdvertisementCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                    .Fail("Failed to create advertisement.");
         }
 
         return Result<CreateResponse>.Success(

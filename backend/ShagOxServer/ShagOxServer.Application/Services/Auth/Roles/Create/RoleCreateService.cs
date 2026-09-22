@@ -50,7 +50,9 @@ public class RoleCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create role.");
         }
 
         return Result<CreateResponse>.Success(

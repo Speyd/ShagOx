@@ -59,7 +59,9 @@ public class BasketItemUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                     .Fail("Failed to update basket item.");
         }
 
         return Result<UpdateResponse>.Success(result);

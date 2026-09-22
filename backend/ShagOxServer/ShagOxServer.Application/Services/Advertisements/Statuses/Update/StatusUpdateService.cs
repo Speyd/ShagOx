@@ -65,7 +65,9 @@ public class StatusUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                     .Fail("Failed to update status.");
         }
 
         return Result<UpdateResponse>.Success(result);

@@ -47,7 +47,9 @@ public class ConditionTranslationDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                 .Fail("Failed to delete condition translation.");
         }
 
         return Result<DeleteResponse>.Success(

@@ -74,7 +74,9 @@ public class ProductTypeTranslationUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update product type translation.");
         }
 
         return Result<UpdateResponse>.Success(result);

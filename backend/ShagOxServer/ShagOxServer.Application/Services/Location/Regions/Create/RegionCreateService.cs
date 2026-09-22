@@ -50,7 +50,9 @@ public class RegionCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                 .Fail("Failed to create region.");
         }
 
         return Result<CreateResponse>.Success(

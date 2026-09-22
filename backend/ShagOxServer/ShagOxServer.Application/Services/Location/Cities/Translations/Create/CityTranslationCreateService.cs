@@ -51,7 +51,9 @@ public class CityTranslationCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                 .Fail("Failed to create city translation.");
         }
 
         return Result<CreateResponse>.Success(

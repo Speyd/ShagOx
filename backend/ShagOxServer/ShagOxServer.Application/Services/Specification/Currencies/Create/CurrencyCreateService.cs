@@ -57,7 +57,9 @@ public class CurrencyCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                 .Fail("Failed to create currency.");
         }
 
         return Result<CreateResponse>.Success(

@@ -51,7 +51,9 @@ public class ConditionCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                 .Fail("Failed to create condition.");
         }
 
         return Result<CreateResponse>.Success(

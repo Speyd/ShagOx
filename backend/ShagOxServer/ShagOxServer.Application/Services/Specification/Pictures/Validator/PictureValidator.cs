@@ -18,8 +18,12 @@ public class PictureValidator
        IFormFile file)
     {
         var response = await _loaderService.UploadAsync(file);
-        if (!response.IsSuccess || response.Value is null)
-            return Result<PictureLoaderUploadResponse>.Fail("Fail Upload Image");
+        if (!response.IsSuccess
+            || response.Value is null)
+        {
+            return Result<PictureLoaderUploadResponse>
+                .Fail("Fail Upload Image");
+        }
 
         return response;
     }

@@ -51,7 +51,9 @@ public class ConditionTranslationCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                 .Fail("Failed to create condition translation.");
         }
 
         return Result<CreateResponse>.Success(

@@ -47,7 +47,9 @@ public class CityTranslationDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                 .Fail("Failed to delete city translation.");
         }
 
         return Result<DeleteResponse>.Success(

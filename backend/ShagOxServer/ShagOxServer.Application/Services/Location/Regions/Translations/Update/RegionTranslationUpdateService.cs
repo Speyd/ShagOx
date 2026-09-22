@@ -73,7 +73,9 @@ public class RegionTranslationUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                   .Fail("Failed to update region translation.");
         }
 
         return Result<UpdateResponse>.Success(result);

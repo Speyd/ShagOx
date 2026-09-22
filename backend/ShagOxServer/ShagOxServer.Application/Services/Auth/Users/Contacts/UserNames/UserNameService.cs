@@ -48,9 +48,8 @@ public class UserNameService
         }
         catch
         {
-            return Result<string>.Fail(
-                "Failed to generate a unique username."
-            );
+            return Result<string>
+                .Fail("Failed to generate a unique username.");
         }
     }
 }

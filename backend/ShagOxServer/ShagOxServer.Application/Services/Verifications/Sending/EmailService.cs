@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Verifivations;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.EmailService;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Net;
 using System.Net.Mail;
 
@@ -12,59 +14,76 @@ public class EmailService
     private readonly EmailSettings _emailOptions;
     private readonly VerificationCodeSettings _codeOptions;
 
+    private readonly ILogger<EmailService> _logger;
+
 
     public EmailService(
         IOptions<EmailSettings> emailOptions,
-        IOptions<VerificationCodeSettings> codeOptions)
+        IOptions<VerificationCodeSettings> codeOptions,
+        ILogger<EmailService> logger)
     {
         _emailOptions = emailOptions.Value;
         _codeOptions = codeOptions.Value;
-
+        _logger = logger;
     }
 
-    public async Task SendVerificationCodeAsync(
+    public async Task<Result<bool>> SendVerificationCodeAsync(
         string email,
         string code)
     {
-        var smtpHost = _emailOptions.SmtpHost
-            ?? throw new InvalidOperationException("SMTP host is not configured.");
-
-        var smtpPort = _emailOptions.SmtpPort;
-
-        var smtpUser = _emailOptions.Username
-            ?? throw new InvalidOperationException("SMTP username is not configured.");
-
-        var smtpPassword = _emailOptions.Password
-            ?? throw new InvalidOperationException("SMTP password is not configured.");
-
-        var fromEmail = _emailOptions.From
-            ?? throw new InvalidOperationException("Sender email is not configured.");
-
-
-        using var client = new SmtpClient(smtpHost, smtpPort)
+        try
         {
-            EnableSsl = true,
-            Credentials = new NetworkCredential(
-                smtpUser,
-                smtpPassword)
-        };
+            var smtpHost = _emailOptions.SmtpHost
+                ?? throw new InvalidOperationException("SMTP host is not configured.");
 
-        var subject = Emails.VerificationSubject;
+            var smtpPort = _emailOptions.SmtpPort;
 
-        var body = string.Format(
-            Emails.VerificationBody,
-            code, _codeOptions.ExpirationMinutes);
-        
-        using var message = new MailMessage
+            var smtpUser = _emailOptions.Username
+                ?? throw new InvalidOperationException("SMTP username is not configured.");
+
+            var smtpPassword = _emailOptions.Password
+                ?? throw new InvalidOperationException("SMTP password is not configured.");
+
+            var fromEmail = _emailOptions.From
+                ?? throw new InvalidOperationException("Sender email is not configured.");
+
+
+            using var client = new SmtpClient(smtpHost, smtpPort)
+            {
+                EnableSsl = true,
+                Credentials = new NetworkCredential(
+                    smtpUser,
+                    smtpPassword)
+            };
+
+            var subject = Emails.VerificationSubject;
+
+            var body = string.Format(
+                Emails.VerificationBody,
+                code, _codeOptions.ExpirationMinutes);
+
+            using var message = new MailMessage
+            {
+                From = new MailAddress(fromEmail),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = false
+            };
+
+            message.To.Add(email);
+
+            await client.SendMailAsync(message);
+
+            return Result<bool>.Success(true);
+        }
+        catch (Exception ex)
         {
-            From = new MailAddress(fromEmail),
-            Subject = subject,
-            Body = body,
-            IsBodyHtml = false
-        };
+            _logger.LogError(
+                ex,
+                "Failed to send verification email.");
 
-        message.To.Add(email);
-
-        await client.SendMailAsync(message);
+            return Result<bool>.Fail(
+                "Failed to send verification email.");
+        }
     }
 }

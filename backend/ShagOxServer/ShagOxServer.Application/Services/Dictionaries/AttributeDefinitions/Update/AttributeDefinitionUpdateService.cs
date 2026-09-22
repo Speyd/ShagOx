@@ -81,7 +81,9 @@ public class AttributeDefinitionUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                     .Fail("Failed to update attribute definition.");
         }
 
         return Result<UpdateResponse>.Success(result);

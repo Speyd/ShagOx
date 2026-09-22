@@ -47,7 +47,9 @@ public class BasketDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                     .Fail("Failed to delete basket.");
         }
 
         return Result<DeleteResponse>.Success(

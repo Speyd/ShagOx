@@ -47,7 +47,9 @@ public class RoleDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                     .Fail("Failed to delete role.");
         }
 
         return Result<DeleteResponse>.Success(

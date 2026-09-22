@@ -51,7 +51,9 @@ public class StatusCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                    .Fail("Failed to create status.");
         }
 
         return Result<CreateResponse>.Success(

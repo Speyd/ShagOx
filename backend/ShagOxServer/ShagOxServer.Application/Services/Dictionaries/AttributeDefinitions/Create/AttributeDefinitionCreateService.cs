@@ -63,7 +63,9 @@ public class AttributeDefinitionCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create attribute definition.");
         }
 
         return Result<CreateResponse>.Success(

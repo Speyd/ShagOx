@@ -52,7 +52,9 @@ public class ProductTypeCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                .Fail("Failed to create product type.");
         }
 
         return Result<CreateResponse>.Success(

@@ -66,7 +66,9 @@ public class BasketAttributeCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create basket attribute.");
         }
 
         return Result<CreateResponse>.Success(

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Register;
+﻿using ShagOxServer.Application.DTOs.Auth.Login;
+using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -108,7 +109,8 @@ public class RegisterService
         }
         catch(Exception ex)
         {
-            return Result<RegisterResponse>.Fail(ex.Message);
+            return Result<RegisterResponse>
+                     .Fail("Registration failed.");
         }
     }
 

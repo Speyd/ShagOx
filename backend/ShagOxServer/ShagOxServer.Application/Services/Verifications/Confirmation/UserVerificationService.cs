@@ -13,7 +13,10 @@ public class UserVerificationService
        VerificationCode verificationCode)
     {
         if (user.EmailConfirmed)
-            return Result<bool>.Fail("Email already confirmed.");
+        {
+            return Result<bool>
+                .Fail("Email already confirmed.");
+        }
 
         user.Email =
             verificationCode.PendingValue
@@ -46,7 +49,10 @@ public class UserVerificationService
         VerificationCode verificationCode)
     {
         if (user.PhoneConfirmed)
-            return Result<bool>.Fail("Phone already confirmed.");
+        {
+            return Result<bool>
+                .Fail("Phone already confirmed.");
+        }
 
         user.Phone =
             verificationCode.PendingValue

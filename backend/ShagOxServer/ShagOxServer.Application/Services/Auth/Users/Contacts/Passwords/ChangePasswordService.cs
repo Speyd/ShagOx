@@ -58,10 +58,7 @@ public class ChangePasswordService
             user.Value!,
             newPasswordHash);
 
-        if (!result.IsSuccess)
-            return Result<bool>.Fail(result.Error);
-
-        return Result<bool>.Success(true);
+        return result;
     }
 
     private async Task<Result<bool>> SendPasswordChangeCode(
@@ -98,9 +95,6 @@ public class ChangePasswordService
             purpose,
             newPasswordHash);
 
-        if (!result.IsSuccess)
-            return Result<bool>.Fail(result.Error);
-
-        return Result<bool>.Success(true);
+        return result;
     }
 }

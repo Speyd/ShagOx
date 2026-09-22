@@ -15,15 +15,19 @@ public class AvatarDeleteService
     private readonly AvatarValidator _avatarValidator;
     private readonly IPictureLoaderService _loaderService;
 
+    private readonly IUnitOfWork _unitOfWork;
+
 
     public AvatarDeleteService(
         IRepository<Avatar> avatarRepository,
         AvatarValidator avatarValidator,
-        IPictureLoaderService loaderService)
+        IPictureLoaderService loaderService,
+        IUnitOfWork unitOfWork)
     {
         _avatarRepository = avatarRepository;
         _avatarValidator = avatarValidator;
         _loaderService = loaderService;
+        _unitOfWork = unitOfWork;
     }
 
 
@@ -33,10 +37,29 @@ public class AvatarDeleteService
         var avatar = await _avatarValidator.GetByIdAsync(id);
         if (!avatar.IsSuccess)
             return Result<DeleteResponse>.Fail(avatar.Error);
+ 
 
-        _avatarRepository.Delete(avatar.Value!);
+        await _unitOfWork.BeginTransactionAsync();
 
-        await _loaderService.DeleteAsync(avatar.Value!.PublicId);
+        try
+        {
+            _avatarRepository.Delete(avatar.Value!);
+
+            var result = await _loaderService
+                .DeleteAsync(avatar.Value!.PublicId);
+            
+            if(!result.IsSuccess)
+                throw new Exception(result.Error);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+
+            return Result<DeleteResponse>
+                .Fail("Failed to delete avatar.");
+        }
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

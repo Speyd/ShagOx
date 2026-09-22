@@ -55,6 +55,6 @@ public class ChangePhoneService
                 phone
             );
 
-        return Result<bool>.Success(true);
+        return result;
     }
 }

@@ -1,4 +1,7 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Newtonsoft.Json.Linq;
+using ShagOxServer.Application.DTOs.Base.Responses;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
@@ -14,15 +17,19 @@ public class ImageDeleteService
     private readonly ImageValidator _imageValidator;
     private readonly IPictureLoaderService _loaderService;
 
+    private readonly IUnitOfWork _unitOfWork;
+
 
     public ImageDeleteService(
         IRepository<Image> imageRepository,
         ImageValidator imageValidator,
-        IPictureLoaderService loaderService)
+        IPictureLoaderService loaderService,
+        IUnitOfWork unitOfWork)
     {
         _imageRepository = imageRepository;
         _imageValidator = imageValidator;
         _loaderService = loaderService;
+        _unitOfWork = unitOfWork;
     }
 
 
@@ -31,15 +38,29 @@ public class ImageDeleteService
     {
         var image = await _imageValidator.GetByIdAsync(id);
         if (!image.IsSuccess)
-            return Result<DeleteResponse>.Fail(image.Error);
+            return Result<DeleteResponse>.Fail(image.Error);     
 
-        var result = await _loaderService
-            .DeleteAsync(image.Value!.PublicId);
+        await _unitOfWork.BeginTransactionAsync();
 
-        if (!result.IsSuccess)
-            return Result<DeleteResponse>.Fail(result.Error!);
+        try
+        {
+            _imageRepository.Delete(image.Value!);
 
-        _imageRepository.Delete(image.Value!);
+            var result = await _loaderService
+                .DeleteAsync(image.Value!.PublicId);
+
+            if (!result.IsSuccess)
+                throw new Exception(result.Error);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+
+            return Result<DeleteResponse>
+                .Fail("Failed to delete image.");
+        }
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -57,6 +78,20 @@ public class ImageDeleteService
             return Result<DeleteResponse>.Fail(image.Error);
 
         _imageRepository.Delete(image.Value!);
+
+        try
+        {
+            _imageRepository.Delete(image.Value!);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+
+            return Result<DeleteResponse>
+                .Fail("Failed to delete image.");
+        }
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

@@ -64,7 +64,9 @@ public class CategoryCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create category.");
         }
 
         var response = new CreateResponse(

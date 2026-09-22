@@ -73,7 +73,9 @@ public class AttributeDefinitionTranslationUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                     .Fail("Failed to update attribute definition translation.");
         }
 
         return Result<UpdateResponse>.Success(result);

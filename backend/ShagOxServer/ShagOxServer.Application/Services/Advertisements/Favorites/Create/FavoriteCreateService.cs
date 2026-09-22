@@ -64,7 +64,9 @@ public class FavoriteCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                    .Fail("Failed to create favorite.");
         }
 
         return Result<CreateResponse>.Success(

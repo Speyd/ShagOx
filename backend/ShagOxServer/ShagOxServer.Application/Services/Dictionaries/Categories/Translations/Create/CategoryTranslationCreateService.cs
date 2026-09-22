@@ -52,7 +52,9 @@ public class CategoryTranslationCreateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create category translation.");
         }
 
         return Result<CreateResponse>.Success(

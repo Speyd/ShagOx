@@ -45,7 +45,9 @@ public class RegionDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                 .Fail("Failed to delete region.");
         }
 
         return Result<DeleteResponse>.Success(

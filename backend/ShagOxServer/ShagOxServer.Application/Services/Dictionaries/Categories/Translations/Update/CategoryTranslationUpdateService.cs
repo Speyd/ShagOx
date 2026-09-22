@@ -74,7 +74,9 @@ public class CategoryTranslationUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                     .Fail("Failed to update category translation.");
         }
 
         return Result<UpdateResponse>.Success(result);

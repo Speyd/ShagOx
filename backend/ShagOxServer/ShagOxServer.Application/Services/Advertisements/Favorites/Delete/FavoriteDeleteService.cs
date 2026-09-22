@@ -50,7 +50,9 @@ public class FavoriteDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                    .Fail("Failed to delete favorite.");
         }
 
         return Result<DeleteResponse>.Success(

@@ -59,10 +59,7 @@ public class ResetPasswordService
             type,
             newPasswordHash);
 
-        if (!result.IsSuccess)
-            return Result<bool>.Fail(result.Error);
-
-        return Result<bool>.Success(true);
+        return result;
     }
 
     private async Task<Result<bool>> SendPasswordResetCode(
@@ -134,9 +131,6 @@ public class ResetPasswordService
             purpose,
             newPasswordHash);
 
-        if (!result.IsSuccess)
-            return Result<bool>.Fail(result.Error);
-
-        return Result<bool>.Success(true);
+        return result;
     }
 }

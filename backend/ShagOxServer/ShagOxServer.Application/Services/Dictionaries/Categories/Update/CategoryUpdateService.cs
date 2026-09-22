@@ -81,7 +81,9 @@ public class CategoryUpdateService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<UpdateResponse>
+                     .Fail("Failed to update category.");
         }
 
         return Result<UpdateResponse>.Success(result);

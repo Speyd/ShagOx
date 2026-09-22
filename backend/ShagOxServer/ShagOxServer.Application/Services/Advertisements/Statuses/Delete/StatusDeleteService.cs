@@ -47,7 +47,9 @@ public class StatusDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                     .Fail("Failed to delete status.");
         }
 
         return Result<DeleteResponse>.Success(

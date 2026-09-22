@@ -47,7 +47,9 @@ public class ProductTypeDeleteService
         catch
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            return Result<DeleteResponse>
+                .Fail("Failed to delete product type.");
         }
 
         return Result<DeleteResponse>.Success(

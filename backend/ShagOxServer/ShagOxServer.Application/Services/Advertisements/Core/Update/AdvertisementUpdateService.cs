@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -19,6 +20,7 @@ public class AdvertisementUpdateService
     private readonly AdvertisementUpdateValidator _validatorUpdate;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AdvertisementUpdateService> _logger;
 
 
     public AdvertisementUpdateService(
@@ -26,13 +28,15 @@ public class AdvertisementUpdateService
         IAdvertisementImageService imageService,
         AdvertisementValidator validator,
         AdvertisementUpdateValidator validatorUpdate,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AdvertisementUpdateService> logger)
     {
         _validator = validator;
         _advertRepository = advertRepository;
         _validatorUpdate = validatorUpdate;
         _imageService = imageService;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -74,6 +78,9 @@ public class AdvertisementUpdateService
 
             await _unitOfWork.CommitAsync();
 
+            _logger.LogInformation(
+                "Advertisement updated successfully. Id: {Id}",
+                advert.Value!.Id);
 
             return Result<UpdateResponse>.Success(
                 new UpdateResponse(
@@ -81,9 +88,14 @@ public class AdvertisementUpdateService
                     DateTime.UtcNow
                 ));
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to update advertisement. Id: {Id}",
+                advertId);
 
             return Result<UpdateResponse>
                     .Fail("Failed to update advertisement.");

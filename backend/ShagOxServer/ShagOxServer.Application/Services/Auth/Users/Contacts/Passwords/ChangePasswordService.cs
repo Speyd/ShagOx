@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -16,16 +18,19 @@ public class ChangePasswordService
 
     private readonly IVerificationSender _verificationSender;
     private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly ILogger<ChangePasswordService> _logger;
 
 
     public ChangePasswordService(
         UserValidator userValidator,
         IVerificationSender verificationSender,
-        IPasswordHasher<User> passwordHasher)
+        IPasswordHasher<User> passwordHasher,
+        ILogger<ChangePasswordService> logger)
     {
         _userValidator = userValidator;
         _verificationSender = verificationSender;
         _passwordHasher = passwordHasher;
+        _logger = logger;
     }
 
     public async Task<Result<bool>> ChangePassword(
@@ -54,11 +59,28 @@ public class ChangePasswordService
                request.NewPassword
            );
 
-        var result = await SendPasswordChangeCode(
-            user.Value!,
-            newPasswordHash);
+        try
+        {
+            var result = await SendPasswordChangeCode(
+                user.Value!,
+                newPasswordHash);
 
-        return result;
+            _logger.LogInformation(
+                "Password changed successfully. UserId: {UserId}",
+                user.Value!.Id);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Failed to change pasword. UserId: {UserId}",
+                userId);
+
+            return Result<bool>.Fail(
+                "Failed to change pasword.");
+        }
     }
 
     private async Task<Result<bool>> SendPasswordChangeCode(

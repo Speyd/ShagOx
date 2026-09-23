@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Verifivations;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -7,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Services.Verifications.Enum;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Security.Cryptography;
 
 namespace ShagOxServer.Application.Services.Verifications.Codes;
@@ -19,21 +21,24 @@ public class VerificationCodeService
     private readonly VerificationCodeSettings _options;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<VerificationCodeService> _logger;
 
 
     public VerificationCodeService(
         IRepository<VerificationCode> repository,
         IVerificationCodeQueryRepository queryRepository,
         IOptions<VerificationCodeSettings> options,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<VerificationCodeService> logger)
     {
         _repository = repository;
         _queryRepository = queryRepository;
         _options = options.Value;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
-    public async Task<string> CreateCodeAsync(
+    public async Task<Result<string>> CreateCodeAsync(
         int userId,
         VerificationCodePurpose purpose,
         string? pendingValue = null)
@@ -60,9 +65,32 @@ public class VerificationCodeService
             PendingValue = pendingValue
         };
 
-        _repository.Add(verificationCode);
+        await _unitOfWork.BeginTransactionAsync();
 
-        return code;
+        try
+        {
+            _repository.Add(verificationCode);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch (Exception ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+               ex,
+               "Failed to create verification code.UserId: {UserId}",
+               userId);
+
+            return Result<string>
+                .Fail("Failed to create verification code.");
+        }
+
+        _logger.LogInformation(
+            "Verification code created successfully. Id: {Id}",
+            verificationCode.Id);
+
+        return Result<string>.Success(code);
     }
 
     public async Task<VerificationResult> VerifyCodeAsync(
@@ -106,6 +134,10 @@ public class VerificationCodeService
         code.UsedAt = DateTime.UtcNow;
 
         await _unitOfWork.SaveChangesAsync();
+
+        _logger.LogInformation(
+            "Verification code verified successfully. UserId: {UserId}",
+            userId);
 
         return new(VerificationCodeResult.Success, code);
     }

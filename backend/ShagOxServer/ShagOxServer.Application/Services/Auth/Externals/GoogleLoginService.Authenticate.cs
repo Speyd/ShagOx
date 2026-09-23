@@ -79,7 +79,8 @@ public partial class GoogleLoginService
         {
             _logger.LogError(
                 ex,
-                "Failed to authenticate user with Google.");
+                "Failed to authenticate user with Google. Email{Email}",
+                payload.Email);
 
             return Result<LoginResponse>
                 .Fail("Failed to authenticate user.");

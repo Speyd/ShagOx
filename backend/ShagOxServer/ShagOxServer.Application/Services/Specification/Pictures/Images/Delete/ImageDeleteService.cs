@@ -1,6 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
@@ -18,18 +17,21 @@ public class ImageDeleteService
     private readonly IPictureLoaderService _loaderService;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ImageDeleteService> _logger;
 
 
     public ImageDeleteService(
         IRepository<Image> imageRepository,
         ImageValidator imageValidator,
         IPictureLoaderService loaderService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ImageDeleteService> logger)
     {
         _imageRepository = imageRepository;
         _imageValidator = imageValidator;
         _loaderService = loaderService;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -54,9 +56,14 @@ public class ImageDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+               ex,
+               "Failed to delete image. Id: {Id}",
+               id);
 
             return Result<DeleteResponse>
                 .Fail("Failed to delete image.");
@@ -85,13 +92,22 @@ public class ImageDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+               ex,
+               "Failed to delete image. Id: {Id}",
+               id);
 
             return Result<DeleteResponse>
                 .Fail("Failed to delete image.");
         }
+
+        _logger.LogInformation(
+            "Image deleted successfully. Id: {Id}",
+            image.Value!.Id);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

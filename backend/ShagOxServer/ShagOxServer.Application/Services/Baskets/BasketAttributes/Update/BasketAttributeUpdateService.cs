@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -20,6 +21,7 @@ public class BasketAttributeUpdateService
     private readonly IRepository<AttributeDefinition> _attributeDefinitionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<BasketAttributeUpdateService> _logger;
 
 
     public BasketAttributeUpdateService(
@@ -27,13 +29,15 @@ public class BasketAttributeUpdateService
         BasketAttributeValidator attributeValidator,
         BasketAttributeUpdateValidator attributeUpdateValidator,
         IRepository<AttributeDefinition> attributeDefinitionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<BasketAttributeUpdateService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _attributeUpdateValidator = attributeUpdateValidator;
         _attributeDefinitionValidator = attributeDefinitionValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -86,9 +90,16 @@ public class BasketAttributeUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to update basket attribute. " +
+                "Id: {Id}, AttributeDefinitionId: {AttributeDefinitionId}",
+                attributeId,
+                request.AttributeDefinitionId);
 
             return Result<UpdateResponse>
                      .Fail("Failed to update basket attribute.");

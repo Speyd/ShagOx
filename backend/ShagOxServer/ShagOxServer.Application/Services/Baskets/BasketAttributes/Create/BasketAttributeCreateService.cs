@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -20,6 +21,7 @@ public class BasketAttributeCreateService
     private readonly IRepository<AttributeDefinition> _attributeDefinitionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<BasketAttributeCreateService> _logger;
 
 
     public BasketAttributeCreateService(
@@ -27,12 +29,14 @@ public class BasketAttributeCreateService
         IBasketAttributeQueryRepository _attributeQueryRepository,
         BasketAttributeValidator attributeValidator,
         IRepository<AttributeDefinition> attributeDefinitionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<BasketAttributeCreateService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _attributeDefinitionValidator = attributeDefinitionValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -63,9 +67,15 @@ public class BasketAttributeCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to create basket attribute. " +
+                "AttributeDefinitionId: {AttributeDefinitionId}",
+                request.AttributeDefinitionId);
 
             return Result<CreateResponse>
                      .Fail("Failed to create basket attribute.");

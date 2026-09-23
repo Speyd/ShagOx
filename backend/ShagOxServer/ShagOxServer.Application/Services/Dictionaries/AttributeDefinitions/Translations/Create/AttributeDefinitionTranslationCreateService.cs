@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,17 +16,20 @@ public class AttributeDefinitionTranslationCreateService
     private readonly AttributeDefinitionTranslationValidator _attributeValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AttributeDefinitionTranslationCreateService> _logger;
 
 
     public AttributeDefinitionTranslationCreateService(
         IRepository<AttributeDefinitionTranslation> attributeRepository,
         AttributeDefinitionTranslationValidator attributeValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AttributeDefinitionTranslationCreateService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
 
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -49,9 +53,15 @@ public class AttributeDefinitionTranslationCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+               ex,
+               "Failed to create attribute definition translation. " +
+               "TranslatableId: {TranslatableId}",
+               request.TranslatableId);
 
             return Result<CreateResponse>
                      .Fail("Failed to create attribute definition translation.");

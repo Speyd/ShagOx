@@ -50,13 +50,17 @@ public class SmsService
                body: body
             );
 
+            _logger.LogInformation(
+                "Verification sms sent successfully.");
+
             return Result<bool>.Success(true);
         }
         catch(Exception ex)
         {
             _logger.LogError(
-                    ex,
-                    "Failed to send verification SMS.");
+                ex,
+                "Failed to send verification SMS. Phone: {Phone}",
+                phone);
 
             return Result<bool>.Fail(
                 "Failed to send verification SMS.");

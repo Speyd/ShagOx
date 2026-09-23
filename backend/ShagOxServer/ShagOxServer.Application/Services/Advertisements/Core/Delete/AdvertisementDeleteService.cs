@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
@@ -17,18 +18,21 @@ public class AdvertisementDeleteService
     private readonly IImageDeleteService _imageDeleteService;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AdvertisementDeleteService> _logger;
 
 
     public AdvertisementDeleteService(
         IRepository<Advertisement> advertRepository,
         AdvertisementValidator advertValidator,
         IImageDeleteService imageDeleteService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AdvertisementDeleteService> logger)
     {
         _advertRepository = advertRepository;
         _advertValidator = advertValidator;
         _imageDeleteService = imageDeleteService;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -54,13 +58,22 @@ public class AdvertisementDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to delete advertisement. Id: {Id}",
+                id);
 
             return Result<DeleteResponse>
                     .Fail("Failed to delete advertisement.");
         }
+
+        _logger.LogInformation(
+            "Advertisement deleted successfully. Id: {Id}",
+            advert.Value!.Id);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

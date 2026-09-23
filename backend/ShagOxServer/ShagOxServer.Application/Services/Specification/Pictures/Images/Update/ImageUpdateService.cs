@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -18,18 +19,21 @@ public class ImageUpdateService
     private readonly AdvertisementValidator _advertValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ImageUpdateService> _logger;
 
 
     public ImageUpdateService(
         IRepository<Image> imageRepository,
         ImageValidator imageValidator,
         AdvertisementValidator advertisementValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ImageUpdateService> logger)
     {
         _imageRepository = imageRepository;
         _imageValidator = imageValidator;
         _advertValidator = advertisementValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -74,13 +78,22 @@ public class ImageUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+               ex,
+               "Failed to delete image. Id: {Id}",
+               imageId);
 
             return Result<UpdateResponse>
                 .Fail("Failed to update image.");
         }
+
+        _logger.LogInformation(
+           "Image updated successfully. Id: {Id}",
+           image.Value!.Id);
 
         return Result<UpdateResponse>.Success(response);
     }

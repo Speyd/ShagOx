@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Externals.Google;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Net.Http.Json;
 
@@ -109,6 +110,9 @@ public partial class GoogleLoginService
                 .Fail("Google did not return an ID token.");
         }
 
+        _logger.LogInformation(
+            "Google token exchange completed successfully.");
+
         return Result<GoogleTokenResponse>
             .Success(tokens);
     }
@@ -134,8 +138,13 @@ public partial class GoogleLoginService
             return Result<GoogleJsonWebSignature.Payload>
                 .Success(payload);
         }
-        catch (InvalidJwtException)
+        catch (InvalidJwtException ex)
         {
+            _logger.LogError(
+                ex,
+                "Invalid Jwt. ClientId: {ClientId}",
+                clientId);
+
             return Result<GoogleJsonWebSignature.Payload>
                 .Fail("Invalid Google ID token.");
         }

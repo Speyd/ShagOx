@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
@@ -6,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatar
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Delete;
 public class AvatarDeleteService
@@ -16,18 +18,21 @@ public class AvatarDeleteService
     private readonly IPictureLoaderService _loaderService;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AvatarDeleteService> _logger;
 
 
     public AvatarDeleteService(
         IRepository<Avatar> avatarRepository,
         AvatarValidator avatarValidator,
         IPictureLoaderService loaderService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AvatarDeleteService> logger)
     {
         _avatarRepository = avatarRepository;
         _avatarValidator = avatarValidator;
         _loaderService = loaderService;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -53,13 +58,22 @@ public class AvatarDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+               ex,
+               "Failed to delete avatar. Id: {Id}",
+               id);
 
             return Result<DeleteResponse>
                 .Fail("Failed to delete avatar.");
         }
+
+        _logger.LogInformation(
+            "Avatar deleted successfully. Id: {Id}",
+            id);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

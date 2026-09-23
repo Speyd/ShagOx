@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -16,16 +17,19 @@ public class CurrencyUpdateService
     private readonly CurrencyValidator _currencyValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CurrencyUpdateService> _logger;
 
 
     public CurrencyUpdateService(
         IRepository<Currency> currencyRepository,
         CurrencyValidator currencyValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CurrencyUpdateService> logger)
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -68,9 +72,14 @@ public class CurrencyUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+               ex,
+               "Failed to update currency. Id: {Id}",
+               currencyId);
 
             return Result<UpdateResponse>
                  .Fail("Failed to update currency.");

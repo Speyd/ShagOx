@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -16,16 +17,19 @@ public class ProductTypeCreateService
     private readonly ProductTypeValidator _validator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ProductTypeCreateService> _logger;
 
 
     public ProductTypeCreateService(
         IRepository<ProductType> productTypeRepository,
         ProductTypeValidator validator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ProductTypeCreateService> logger)
     {
         _productTypeRepository = productTypeRepository;
         _validator = validator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -49,9 +53,14 @@ public class ProductTypeCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+               ex,
+               "Failed to update product type. Code: {Code}",
+               request.Code);
 
             return Result<CreateResponse>
                 .Fail("Failed to create product type.");

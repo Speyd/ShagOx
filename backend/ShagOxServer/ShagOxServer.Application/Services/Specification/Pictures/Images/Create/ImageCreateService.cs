@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create.File;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -23,6 +24,7 @@ public class ImageCreateService
     private readonly AdvertisementValidator _advertValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ImageCreateService> _logger;
 
 
     public ImageCreateService(
@@ -30,13 +32,15 @@ public class ImageCreateService
         IPictureLoaderService loaderService,
         PictureValidator pictureValidator,
         AdvertisementValidator advertValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ImageCreateService> logger)
     {
         _imageRepository = imageRepository;
         _loaderService = loaderService;
         _pictureValidator = pictureValidator;
         _advertValidator = advertValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -62,13 +66,25 @@ public class ImageCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
+            _logger.LogError(
+               ex,
+               "Failed to create image. " + 
+               "AdvertisementId: {AdvertisementId}",
+               request.AdvertisementId);
+
             return Result<PictureCreateResponse>
                 .Fail("Failed to create image.");
-        }     
+        }
+
+        _logger.LogInformation(
+            "Image created successfully. " + 
+            "ImageId: {ImageId}, AdvertisementId: {AdvertisementId}",
+            image.Id,
+            request.AdvertisementId);
 
         return Success(image);
     }
@@ -115,9 +131,15 @@ public class ImageCreateService
 
             await _unitOfWork.CommitAsync();
 
+            _logger.LogInformation(
+                "Image created successfully. " +
+                "ImageId: {ImageId}, AdvertisementId: {AdvertisementId}",
+                image.Id,
+                request.AdvertisementId);
+
             return Success(image);
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
@@ -126,6 +148,12 @@ public class ImageCreateService
                 await _loaderService
                     .DeleteAsync(resultLoaderValid.Value.PublicId);
             }
+
+            _logger.LogError(
+               ex,
+               "Failed to create image. " +
+               "AdvertisementId: {AdvertisementId}",
+               request.AdvertisementId);
 
             return Result<PictureCreateResponse>
                 .Fail("Failed to create image.");
@@ -210,7 +238,7 @@ public class ImageCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
@@ -220,9 +248,21 @@ public class ImageCreateService
                     .DeleteAsync(resultLoaderValid.Value.PublicId);
             }
 
+            _logger.LogError(
+               ex,
+               "Failed to create image. " +
+               "AdvertisementId: {AdvertisementId}",
+               request.AdvertisementId);
+
             return Result<PictureCreateResponse>
                 .Fail("Failed to create image.");
         }
+
+        _logger.LogInformation(
+            "Image created successfully. " +
+            "ImageId: {ImageId}, AdvertisementId: {AdvertisementId}",
+            image.Id,
+            request.AdvertisementId);
 
         return Success(image);
     }

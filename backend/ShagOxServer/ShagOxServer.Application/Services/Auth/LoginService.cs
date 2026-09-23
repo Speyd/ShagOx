@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Base.Responses;
@@ -7,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth;
@@ -19,18 +21,21 @@ public class LoginService
     private readonly IContactValidator _contactValidator;
 
     private readonly IJwtService _jwtService;
+    private readonly ILogger<LoginService> _logger;
 
 
     public LoginService(
         IUserQueryRepository userQueryRepository,
         IPasswordHasher<User> passwordHasher,
         IContactValidator contactValidator,
-        IJwtService jwtService)
+        IJwtService jwtService,
+        ILogger<LoginService> logger)
     {
         _userQueryRepository = userQueryRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
-        _jwtService = jwtService; 
+        _jwtService = jwtService;
+        _logger = logger;
     } 
 
 
@@ -54,14 +59,23 @@ public class LoginService
             if (result == PasswordVerificationResult.Failed)
                 return Result<LoginResponse>.Fail("Invalid password");
 
+            _logger.LogInformation(
+                 "User logged in successfully. UserId: {UserId}",
+                 user.Id);
+
             return Result<LoginResponse>.Success(
                 new LoginResponse(_jwtService.GenerateToken(user))
             );
         }
         catch (Exception ex)
         {
+            _logger.LogError(
+                ex,
+                "Login failed. Contact: {Contact}",
+                request.EmailOrPhoneOrUserName);
+
             return Result<LoginResponse>
-                     .Fail("Login failed");
+                .Fail("Login failed");
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Delete;
@@ -14,16 +15,19 @@ public class StatusDeleteService
     private readonly StatusValidator _statusValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<StatusDeleteService> _logger;
 
 
     public StatusDeleteService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<StatusDeleteService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -44,9 +48,14 @@ public class StatusDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to delete status. Id: {Id}",
+                id);
 
             return Result<DeleteResponse>
                      .Fail("Failed to delete status.");

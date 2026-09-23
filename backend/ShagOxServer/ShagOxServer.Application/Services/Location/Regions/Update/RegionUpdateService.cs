@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,16 +16,19 @@ public class RegionUpdateService
     private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<RegionUpdateService> _logger;
 
 
     public RegionUpdateService(
         IRepository<Region> regionRepository,
         RegionValidator regionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<RegionUpdateService> logger)
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -62,9 +66,14 @@ public class RegionUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to update region. Id: {Id}",
+                regionId);
 
             return Result<UpdateResponse>
                  .Fail("Failed to update region.");

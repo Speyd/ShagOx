@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
@@ -6,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,18 +22,21 @@ public class ResetPasswordService
 
     private readonly IVerificationSender _verificationSender;
     private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly ILogger<ResetPasswordService> _logger;
 
 
     public ResetPasswordService(
         UserValidator userValidator,
         IContactValidator contactValidator,
         IVerificationSender verificationSender,
-        IPasswordHasher<User> passwordHasher)
+        IPasswordHasher<User> passwordHasher,
+        ILogger<ResetPasswordService> logger)
     {
         _userValidator = userValidator;
         _contactValidator = contactValidator;
         _verificationSender = verificationSender;
         _passwordHasher = passwordHasher;
+        _logger = logger;
     }
 
     public async Task<Result<bool>> ResetPassword(
@@ -54,12 +59,29 @@ public class ResetPasswordService
         var type = _contactValidator.Detect(
             request.EmailOrPhoneOrUserName);
 
-        var result = await SendPasswordResetCode(
-            user.Value!,
-            type,
-            newPasswordHash);
+        try
+        {
+            var result = await SendPasswordResetCode(
+                user.Value!,
+                type,
+                newPasswordHash);
 
-        return result;
+            _logger.LogInformation(
+                "Password reseted successfully. UserId: {UserId}",
+                user.Value!.Id);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Failed to reset pasword. UserId: {UserId}",
+                request.UserId);
+
+            return Result<bool>.Fail(
+                "Failed to reset pasword.");
+        }
     }
 
     private async Task<Result<bool>> SendPasswordResetCode(

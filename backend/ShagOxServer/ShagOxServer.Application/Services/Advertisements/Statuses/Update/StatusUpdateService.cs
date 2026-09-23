@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Update;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,16 +16,19 @@ public class StatusUpdateService
     private readonly StatusValidator _statusValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<StatusUpdateService> _logger;
 
 
     public StatusUpdateService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<StatusUpdateService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -62,9 +66,14 @@ public class StatusUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to update status. Id: {Id}",
+                statusId);
 
             return Result<UpdateResponse>
                      .Fail("Failed to update status.");

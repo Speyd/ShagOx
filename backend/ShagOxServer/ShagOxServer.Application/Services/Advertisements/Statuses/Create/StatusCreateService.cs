@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Create;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,15 +16,18 @@ public class StatusCreateService
     private readonly StatusValidator _statusValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<StatusCreateService> _logger;
 
 
     public StatusCreateService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<StatusCreateService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
+        _logger = logger;
 
         _unitOfWork = unitOfWork;
     }
@@ -48,9 +52,14 @@ public class StatusCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to create status. Code: {Code}",
+                request.Code);
 
             return Result<CreateResponse>
                     .Fail("Failed to create status.");

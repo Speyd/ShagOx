@@ -1,9 +1,11 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Create;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Create;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,17 +17,19 @@ public class StatusTranslationCreateService
     private readonly StatusTranslationValidator _statusValidator;
 
     private readonly IUnitOfWork _unitOfWork;
-
+    private readonly ILogger<StatusTranslationCreateService> _logger;
 
     public StatusTranslationCreateService(
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<StatusTranslationCreateService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
 
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -48,10 +52,18 @@ public class StatusTranslationCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to create status translation. " +
+                "TranslatableId: {TranslatableId}",
+                request.TranslatableId);
+
+            return Result<CreateResponse>
+                .Fail("Failed to create status translation.");
         }
 
         return Result<CreateResponse>.Success(

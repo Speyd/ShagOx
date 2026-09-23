@@ -1,8 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Create;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Create;
+using ShagOxServer.Application.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -19,18 +21,21 @@ public class FavoriteCreateService
     private readonly AdvertisementValidator _advertValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<FavoriteCreateService> _logger;
 
 
     public FavoriteCreateService(
         IRepository<Favorite> favoriteRepository,
         UserValidator userValidator,
         AdvertisementValidator advertValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<FavoriteCreateService> logger)
     {
         _favoriteRepository = favoriteRepository;
         _userValidator = userValidator;
         _advertValidator = advertValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -61,13 +66,24 @@ public class FavoriteCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to create favorite. " +
+                "UserId: {Id}, AdvertisementId: {AdvertisementId}",
+                request.UserId,
+                request.AdvertisementId);
 
             return Result<CreateResponse>
                     .Fail("Failed to create favorite.");
         }
+
+        _logger.LogInformation(
+            "Favorite create successfully. Id: {Id}",
+            favorite.Id);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

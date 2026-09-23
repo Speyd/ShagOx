@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Delete;
@@ -14,16 +15,19 @@ public class BasketAttributeDeleteService
     private readonly BasketAttributeValidator _attributeValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<BasketAttributeDeleteService> _logger;
 
 
     public BasketAttributeDeleteService(
         IRepository<BasketAttribute> attributeRepository,
         BasketAttributeValidator attributeValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<BasketAttributeDeleteService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -44,9 +48,14 @@ public class BasketAttributeDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to delete basket attribute. Id: {Id}",
+                id);
 
             return Result<DeleteResponse>
                      .Fail("Failed to delete basket attribute.");

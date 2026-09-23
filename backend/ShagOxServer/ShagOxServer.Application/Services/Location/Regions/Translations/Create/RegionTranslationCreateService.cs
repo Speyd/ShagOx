@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,17 +16,20 @@ public class RegionTranslationCreateService
     private readonly RegionTranslationValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<RegionTranslationCreateService> _logger;
 
 
     public RegionTranslationCreateService(
         IRepository<RegionTranslation> regionRepository,
         RegionTranslationValidator regionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<RegionTranslationCreateService> logger)
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;
 
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -48,12 +52,18 @@ public class RegionTranslationCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
+            _logger.LogError(
+                ex,
+                "Failed to create region translation. " +
+                "TranslatableId: {TranslatableId}",
+                request.TranslatableId);
+
             return Result<CreateResponse>
-                 .Fail("Failed to update region translation.");
+                 .Fail("Failed to create region translation.");
         }
 
         return Result<CreateResponse>.Success(

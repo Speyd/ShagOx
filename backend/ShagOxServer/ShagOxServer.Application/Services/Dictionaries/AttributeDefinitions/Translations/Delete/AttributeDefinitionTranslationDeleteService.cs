@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Translations.Delete;
@@ -14,16 +15,19 @@ public class AttributeDefinitionTranslationDeleteService
     private readonly AttributeDefinitionTranslationValidator _attributeValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AttributeDefinitionTranslationDeleteService> _logger;
 
 
     public AttributeDefinitionTranslationDeleteService(
         IRepository<AttributeDefinitionTranslation> attributeRepository,
         AttributeDefinitionTranslationValidator attributeValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AttributeDefinitionTranslationDeleteService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -44,9 +48,14 @@ public class AttributeDefinitionTranslationDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+               ex,
+               "Failed to delete attribute definition translation. Id: {Id}",
+               id);
 
             return Result<DeleteResponse>
                      .Fail("Failed to delete attribute definition translation.");

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,16 +16,19 @@ public class CurrencyCreateService
     private readonly CurrencyCreateValidator _currencyCreateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CurrencyCreateService> _logger;
 
 
     public CurrencyCreateService(
         IRepository<Currency> currencyRepository,
         CurrencyCreateValidator currencyCreateValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CurrencyCreateService> logger)
     {
         _currencyRepository = currencyRepository;
         _currencyCreateValidator = currencyCreateValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -54,9 +58,14 @@ public class CurrencyCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to create currency. Code: {Code}",
+                request.Code);
 
             return Result<CreateResponse>
                  .Fail("Failed to create currency.");

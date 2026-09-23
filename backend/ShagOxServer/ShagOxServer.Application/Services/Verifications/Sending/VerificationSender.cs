@@ -171,7 +171,8 @@ public class VerificationSender
         var code = await _codeService
                 .CreateCodeAsync(user.Id, purpose, pendingValue);
 
-        if (code is null)
+        if (!code.IsSuccess || 
+            code.Value is null)
         { 
             return Result<string>
                 .Fail("Error during Code generation");
@@ -179,7 +180,7 @@ public class VerificationSender
 
         await _unitOfWork.SaveChangesAsync();
 
-        return Result<string>.Success(code);
+        return Result<string>.Success(code.Value!);
     }
 
     private static void ApplyPendingStatus(

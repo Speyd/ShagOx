@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles.Create;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Auth.Roles.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,16 +16,19 @@ public class RoleCreateService
     private readonly RoleValidator _roleValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<RoleCreateService> _logger;
 
 
     public RoleCreateService(
         IRepository<Role> roleRepository,
         RoleValidator roleValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<RoleCreateService> logger)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -47,9 +51,14 @@ public class RoleCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to create role. Name: {UserId}",
+                request.Name);
 
             return Result<CreateResponse>
                      .Fail("Failed to create role.");

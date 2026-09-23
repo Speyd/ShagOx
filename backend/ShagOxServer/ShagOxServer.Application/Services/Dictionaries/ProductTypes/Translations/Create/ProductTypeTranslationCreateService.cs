@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,17 +16,20 @@ public class ProductTypeTranslationCreateService
     private readonly ProductTypeTranslationValidator _typeValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ProductTypeTranslationCreateService> _logger;
 
 
     public ProductTypeTranslationCreateService(
         IRepository<ProductTypeTranslation> typeRepository,
         ProductTypeTranslationValidator typeValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ProductTypeTranslationCreateService> logger)
     {
         _typeRepository = typeRepository;
         _typeValidator = typeValidator;
 
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -49,9 +53,15 @@ public class ProductTypeTranslationCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to create product type translation. " +
+                "TranslatableId: {TranslatableId}",
+                request.TranslatableId);
 
             return Result<CreateResponse>
                 .Fail("Failed to create product type translation.");

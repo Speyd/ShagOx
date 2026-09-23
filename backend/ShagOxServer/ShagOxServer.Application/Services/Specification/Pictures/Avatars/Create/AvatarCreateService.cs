@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -7,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Validator;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -21,6 +23,7 @@ public class AvatarCreateService
     private readonly UserValidator _userValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AvatarCreateService> _logger;
 
 
     public AvatarCreateService(
@@ -28,13 +31,15 @@ public class AvatarCreateService
         PictureValidator pictureValidator,
         IPictureLoaderService loaderService,
         UserValidator userValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AvatarCreateService> logger)
     {
         _avatarRepository = avatarRepository;
         _pictureValidator = pictureValidator;
         _loaderService = loaderService;
         _userValidator = userValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<Result<PictureCreateResponse>> CreateAsync(
@@ -78,6 +83,11 @@ public class AvatarCreateService
 
             await _unitOfWork.CommitAsync();
 
+            _logger.LogInformation(
+                "Avatar created successfully. AvatarId: {AvatarId}, UserId: {UserId}",
+                avatar.Id,
+                request.UserId);
+
             return Result<PictureCreateResponse>.Success(
                new PictureCreateResponse(
                    avatar.Id,
@@ -85,7 +95,7 @@ public class AvatarCreateService
                    DateTime.UtcNow
             ));
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
@@ -94,6 +104,11 @@ public class AvatarCreateService
                 await _loaderService
                     .DeleteAsync(resultLoaderValid.Value.PublicId);
             }
+
+            _logger.LogError(
+               ex,
+               "Failed to create avatar. UserId: {UserId}",
+               request.UserId);
 
             return Result<PictureCreateResponse>
                 .Fail("Failed to create avatar.");

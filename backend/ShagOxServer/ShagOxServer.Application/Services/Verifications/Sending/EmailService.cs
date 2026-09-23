@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Verifivations;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.EmailService;
+using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Net;
 using System.Net.Mail;
@@ -74,13 +75,17 @@ public class EmailService
 
             await client.SendMailAsync(message);
 
+            _logger.LogInformation(
+                "Verification email sent successfully.");
+
             return Result<bool>.Success(true);
         }
         catch (Exception ex)
         {
             _logger.LogError(
                 ex,
-                "Failed to send verification email.");
+                "Failed to send verification email. Email: {Email}",
+                email);
 
             return Result<bool>.Fail(
                 "Failed to send verification email.");

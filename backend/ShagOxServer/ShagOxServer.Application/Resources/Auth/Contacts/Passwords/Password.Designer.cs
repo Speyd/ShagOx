@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Verifications {
+namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.Verifications {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Verification {
+    internal class Password {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Verification() {
+        internal Password() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.Verifications {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Verifications.Verification", typeof(Verification).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Contacts.Passwords.Password", typeof(Password).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,99 +63,81 @@ namespace ShagOxServer.Application.Resources.Verifications {
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string EmailAlreadyConfirmed {
+        internal static string FailedToChangePassword {
             get {
-                return ResourceManager.GetString("EmailAlreadyConfirmed", resourceCulture);
+                return ResourceManager.GetString("FailedToChangePassword", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string FailedToGenerateVerificationCode {
+        internal static string FailedToResetPassword {
             get {
-                return ResourceManager.GetString("FailedToGenerateVerificationCode", resourceCulture);
+                return ResourceManager.GetString("FailedToResetPassword", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string FailedToSendVerificationEmail {
+        internal static string InvalidContactType {
             get {
-                return ResourceManager.GetString("FailedToSendVerificationEmail", resourceCulture);
+                return ResourceManager.GetString("InvalidContactType", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string FailedToSendVerificationSms {
+        internal static string InvalidNewPassword {
             get {
-                return ResourceManager.GetString("FailedToSendVerificationSms", resourceCulture);
+                return ResourceManager.GetString("InvalidNewPassword", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string NoUserEmail {
+        internal static string InvalidPassword {
             get {
-                return ResourceManager.GetString("NoUserEmail", resourceCulture);
+                return ResourceManager.GetString("InvalidPassword", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string NoUserPhone {
+        internal static string NoConfirmedContact {
             get {
-                return ResourceManager.GetString("NoUserPhone", resourceCulture);
+                return ResourceManager.GetString("NoConfirmedContact", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string PendingEmailNotFound {
+        internal static string UserDoesNotHaveConfirmedEmail {
             get {
-                return ResourceManager.GetString("PendingEmailNotFound", resourceCulture);
+                return ResourceManager.GetString("UserDoesNotHaveConfirmedEmail", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string PendingPasswordNotFound {
+        internal static string UserDoesNotHaveConfirmedEmailOrPhone {
             get {
-                return ResourceManager.GetString("PendingPasswordNotFound", resourceCulture);
+                return ResourceManager.GetString("UserDoesNotHaveConfirmedEmailOrPhone", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string PendingPhoneNotFound {
+        internal static string UserDoesNotHaveConfirmedPhone {
             get {
-                return ResourceManager.GetString("PendingPhoneNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        internal static string PhoneAlreadyConfirmed {
-            get {
-                return ResourceManager.GetString("PhoneAlreadyConfirmed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        internal static string UnsupportedVerificationPurpose {
-            get {
-                return ResourceManager.GetString("UnsupportedVerificationPurpose", resourceCulture);
+                return ResourceManager.GetString("UserDoesNotHaveConfirmedPhone", resourceCulture);
             }
         }
     }

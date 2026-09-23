@@ -47,7 +47,6 @@ public class UserNameService
                 candidate = $"{baseUserName}{attempt + 1}";
             }
 
-
             return Result<string>.Success(candidate);
         }
         catch(Exception ex)

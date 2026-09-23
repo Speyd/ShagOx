@@ -117,37 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EmailAlreadyConfirmed" xml:space="preserve">
-    <value />
-  </data>
-  <data name="FailedToGenerateVerificationCode" xml:space="preserve">
-    <value />
-  </data>
-  <data name="FailedToSendVerificationEmail" xml:space="preserve">
-    <value />
-  </data>
-  <data name="FailedToSendVerificationSms" xml:space="preserve">
-    <value />
-  </data>
-  <data name="NoUserEmail" xml:space="preserve">
-    <value />
-  </data>
-  <data name="NoUserPhone" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PendingEmailNotFound" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PendingPasswordNotFound" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PendingPhoneNotFound" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PhoneAlreadyConfirmed" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UnsupportedVerificationPurpose" xml:space="preserve">
+  <data name="FailedToCreateVerificationCode" xml:space="preserve">
     <value />
   </data>
 </root>

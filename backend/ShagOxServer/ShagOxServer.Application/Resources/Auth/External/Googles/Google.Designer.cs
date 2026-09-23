@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Verifications {
+namespace ShagOxServer.Application.Resources.Auth.External.Googles {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.Verifications {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Verification {
+    internal class Google {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Verification() {
+        internal Google() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.Verifications {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Verifications.Verification", typeof(Verification).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.External.Googles.Google", typeof(Google).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,99 +63,63 @@ namespace ShagOxServer.Application.Resources.Verifications {
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string EmailAlreadyConfirmed {
+        internal static string GoogleAuthenticationFailed {
             get {
-                return ResourceManager.GetString("EmailAlreadyConfirmed", resourceCulture);
+                return ResourceManager.GetString("GoogleAuthenticationFailed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string FailedToGenerateVerificationCode {
+        internal static string GoogleAuthorizationCodeEmpty {
             get {
-                return ResourceManager.GetString("FailedToGenerateVerificationCode", resourceCulture);
+                return ResourceManager.GetString("GoogleAuthorizationCodeEmpty", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string FailedToSendVerificationEmail {
+        internal static string GoogleIdTokenMissing {
             get {
-                return ResourceManager.GetString("FailedToSendVerificationEmail", resourceCulture);
+                return ResourceManager.GetString("GoogleIdTokenMissing", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string FailedToSendVerificationSms {
+        internal static string GoogleInvalidIdToken {
             get {
-                return ResourceManager.GetString("FailedToSendVerificationSms", resourceCulture);
+                return ResourceManager.GetString("GoogleInvalidIdToken", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string NoUserEmail {
+        internal static string GoogleOAuthNotConfigured {
             get {
-                return ResourceManager.GetString("NoUserEmail", resourceCulture);
+                return ResourceManager.GetString("GoogleOAuthNotConfigured", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string NoUserPhone {
+        internal static string GoogleTokenExchangeFailed {
             get {
-                return ResourceManager.GetString("NoUserPhone", resourceCulture);
+                return ResourceManager.GetString("GoogleTokenExchangeFailed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string PendingEmailNotFound {
+        internal static string GoogleUserCreationFailed {
             get {
-                return ResourceManager.GetString("PendingEmailNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        internal static string PendingPasswordNotFound {
-            get {
-                return ResourceManager.GetString("PendingPasswordNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        internal static string PendingPhoneNotFound {
-            get {
-                return ResourceManager.GetString("PendingPhoneNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        internal static string PhoneAlreadyConfirmed {
-            get {
-                return ResourceManager.GetString("PhoneAlreadyConfirmed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        internal static string UnsupportedVerificationPurpose {
-            get {
-                return ResourceManager.GetString("UnsupportedVerificationPurpose", resourceCulture);
+                return ResourceManager.GetString("GoogleUserCreationFailed", resourceCulture);
             }
         }
     }

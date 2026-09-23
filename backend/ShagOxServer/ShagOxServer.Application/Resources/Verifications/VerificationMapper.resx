@@ -117,37 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EmailAlreadyConfirmed" xml:space="preserve">
-    <value />
+  <data name="AttemptsExceeded" xml:space="preserve">
+    <value>Too many attempts.</value>
   </data>
-  <data name="FailedToGenerateVerificationCode" xml:space="preserve">
-    <value />
+  <data name="CodeAlreadyUsed" xml:space="preserve">
+    <value>Verification code has already been used.</value>
   </data>
-  <data name="FailedToSendVerificationEmail" xml:space="preserve">
-    <value />
+  <data name="CodeExpired" xml:space="preserve">
+    <value>Verification code has expired.</value>
   </data>
-  <data name="FailedToSendVerificationSms" xml:space="preserve">
-    <value />
+  <data name="CodeInvalid" xml:space="preserve">
+    <value>Invalid verification code.</value>
   </data>
-  <data name="NoUserEmail" xml:space="preserve">
-    <value />
+  <data name="CodeNotFound" xml:space="preserve">
+    <value>Verification code not found.</value>
   </data>
-  <data name="NoUserPhone" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PendingEmailNotFound" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PendingPasswordNotFound" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PendingPhoneNotFound" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PhoneAlreadyConfirmed" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UnsupportedVerificationPurpose" xml:space="preserve">
-    <value />
+  <data name="UnknownResult" xml:space="preserve">
+    <value>Unknown verification result.</value>
   </data>
 </root>

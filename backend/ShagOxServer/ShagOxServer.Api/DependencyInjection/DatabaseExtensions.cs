@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
-namespace SchagoxServer.Api.DependencyInjection;
+namespace ShagOxServer.Api.DependencyInjection;
 public static class DatabaseExtensions
 {
     public static IServiceCollection AddDatabase(

@@ -12,11 +12,15 @@ public abstract class ApiCookieController
 {
     private readonly CookieSettings _cookieSettings;
 
+    private readonly ILogger<ApiCookieController> _logger;
+
 
     public ApiCookieController(
-        IOptions<CookieSettings> jwtSettings)
+        IOptions<CookieSettings> jwtSettings,
+        ILogger<ApiCookieController> logger)
     {
         _cookieSettings = jwtSettings.Value;
+        _logger = logger;
     }
 
 
@@ -24,6 +28,9 @@ public abstract class ApiCookieController
         HttpResponse response)
     {
         response.Cookies.Delete(_cookieSettings.CookieKey);
+
+        _logger.LogInformation(
+            "Access token cookie deleted successfully.");
     }
 
     public async Task<IActionResult> SetAccessToken(
@@ -43,6 +50,9 @@ public abstract class ApiCookieController
                 Expires = DateTimeOffset.UtcNow
                     .AddDays(_cookieSettings.CookieExpireDays)
             });
+
+        _logger.LogInformation(
+            "Access token cookie set successfully.");
 
         return response.ToActionResult();
     }

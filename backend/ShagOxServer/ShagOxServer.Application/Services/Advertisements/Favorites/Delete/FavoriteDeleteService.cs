@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
@@ -14,16 +15,19 @@ public class FavoriteDeleteService
     private readonly FavoriteValidator _favoriteValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<FavoriteDeleteService> _logger;
 
 
     public FavoriteDeleteService(
         IRepository<Favorite> favoriteRepository,
         FavoriteValidator favoriteValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<FavoriteDeleteService> logger)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -47,11 +51,24 @@ public class FavoriteDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to delete favorite. " +
+                "UserId: {Id}, AdvertisementId: {AdvertisementId}",
+                userId,
+                id);
+
+            return Result<DeleteResponse>
+                    .Fail("Failed to delete favorite.");
         }
+
+        _logger.LogInformation(
+            "Favorite delete successfully. Id: {Id}",
+            favorite.Value!.Id);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

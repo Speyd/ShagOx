@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
@@ -14,16 +15,19 @@ public class RoleDeleteService
     private readonly RoleValidator _roleValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<RoleDeleteService> _logger;
 
 
     public RoleDeleteService(
         IRepository<Role> roleRepository,
         RoleValidator roleValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<RoleDeleteService> logger)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -44,10 +48,17 @@ public class RoleDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to delete role. Id: {Id}",
+                id);
+
+            return Result<DeleteResponse>
+                     .Fail("Failed to delete role.");
         }
 
         return Result<DeleteResponse>.Success(

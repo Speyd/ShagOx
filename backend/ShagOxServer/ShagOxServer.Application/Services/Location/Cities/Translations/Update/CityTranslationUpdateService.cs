@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Cities.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -18,17 +19,20 @@ public class CityTranslationUpdateService
     private readonly IRepository<CityTranslation> _cityRepository;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CityTranslationUpdateService> _logger;
 
 
     public CityTranslationUpdateService(
         IRepository<CityTranslation> cityRepository,
         CityTranslationValidator cityTranslationValidator,
         CityValidator cityValidator,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        ILogger<CityTranslationUpdateService> logger
         ) : base(cityValidator, cityTranslationValidator)
     {
         _cityRepository = cityRepository;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -68,10 +72,17 @@ public class CityTranslationUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to update city translation. Id: {Id}",
+               statusTranslationId);
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update city translation.");
         }
 
         return Result<UpdateResponse>.Success(result);

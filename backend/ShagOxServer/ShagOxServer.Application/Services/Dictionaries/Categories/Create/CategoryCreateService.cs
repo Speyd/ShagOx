@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -17,20 +18,22 @@ public class CategoryCreateService
     private readonly CategoryValidator _categoryValidator;
     private readonly ProductTypeValidator _productTypeValidator;
 
-
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CategoryCreateService> _logger;
 
 
     public CategoryCreateService(
         IRepository<Category> categoryRepository,
         CategoryValidator categoryValidator,
         ProductTypeValidator productTypeValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CategoryCreateService> logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
         _productTypeValidator = productTypeValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -61,10 +64,17 @@ public class CategoryCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to create category. ProductTypeId: {ProductTypeId}",
+               request.ProductTypeId);
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create category.");
         }
 
         var response = new CreateResponse(

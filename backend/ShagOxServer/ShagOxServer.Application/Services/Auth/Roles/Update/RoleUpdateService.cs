@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles.Update;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Auth.Roles.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,16 +16,19 @@ public class RoleUpdateService
     private readonly RoleValidator _roleValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<RoleUpdateService> _logger;
 
 
     public RoleUpdateService(
         IRepository<Role> roleRepository,
         RoleValidator roleValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<RoleUpdateService> logger)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -61,10 +65,17 @@ public class RoleUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to update role. Id: {Id}",
+                roleId);
+
+            return Result<UpdateResponse>
+                     .Fail("Failed to update role.");
         }
 
         return Result<UpdateResponse>.Success(result);

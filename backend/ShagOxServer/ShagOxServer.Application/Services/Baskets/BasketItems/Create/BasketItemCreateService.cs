@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -6,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -19,9 +21,8 @@ public class BasketItemCreateService
     private readonly BasketValidator _basketValidator;
     private readonly AdvertisementValidator _advertValidator;
 
-
-
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<BasketItemCreateService> _logger;
 
 
     public BasketItemCreateService(
@@ -29,13 +30,15 @@ public class BasketItemCreateService
         BasketItemValidator itemValidator,
         BasketValidator basketValidator,
         AdvertisementValidator advertValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<BasketItemCreateService> logger)
     {
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;
         _basketValidator = basketValidator;
         _advertValidator = advertValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -67,11 +70,28 @@ public class BasketItemCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to create basket item. " +
+                "BasketId: {BasketId}, AdvertisementId: {AdvertisementId}",
+                request.BasketId,
+                request.AdvertisementId);
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create basket item.");
         }
+
+        _logger.LogInformation(
+            "Basket item created successfully. " + 
+            "BasketItemId: {BasketItemId}, BasketId: {BasketId}, " + 
+            "AdvertisementId: {AdvertisementId}",
+            item.Id,
+            request.BasketId,
+            request.AdvertisementId);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

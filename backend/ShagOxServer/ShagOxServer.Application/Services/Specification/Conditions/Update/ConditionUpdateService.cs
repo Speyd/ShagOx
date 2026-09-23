@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,16 +16,19 @@ public class ConditionUpdateService
     private readonly ConditionValidator _conditionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ConditionUpdateService> _logger;
 
 
     public ConditionUpdateService(
         IRepository<Condition> conditionRepository,
         ConditionValidator conditionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ConditionUpdateService> logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -65,10 +69,17 @@ public class ConditionUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to update condition. Id: {Id}",
+                conditionId);
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update condition.");
         }
 
         return Result<UpdateResponse>.Success(result);

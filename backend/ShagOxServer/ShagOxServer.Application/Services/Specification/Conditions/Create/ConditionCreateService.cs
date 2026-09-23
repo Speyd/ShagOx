@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -14,18 +15,20 @@ public class ConditionCreateService
     private readonly IRepository<Condition> _conditionRepository;
     private readonly ConditionValidator _conditionValidator;
 
-
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ConditionCreateService> _logger;
 
 
     public ConditionCreateService(
         IRepository<Condition> conditionRepository,
         ConditionValidator conditionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ConditionCreateService> logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -48,10 +51,17 @@ public class ConditionCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to create condition. Code: {Code}",
+                request.Code);
+
+            return Result<CreateResponse>
+                 .Fail("Failed to create condition.");
         }
 
         return Result<CreateResponse>.Success(

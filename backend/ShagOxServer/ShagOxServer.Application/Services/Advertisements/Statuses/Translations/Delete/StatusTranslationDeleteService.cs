@@ -1,11 +1,11 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
 public class StatusTranslationDeleteService
     : IStatusTranslationDeleteService
@@ -14,16 +14,19 @@ public class StatusTranslationDeleteService
     private readonly StatusTranslationValidator _statusValidator;
 
     private readonly IUnitOfWork _unitOfWork;
-
+    private readonly ILogger<StatusTranslationDeleteService> _logger;
+    
 
     public StatusTranslationDeleteService(
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<StatusTranslationDeleteService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -44,10 +47,17 @@ public class StatusTranslationDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to delete status translation. Id: {Id}",
+                id);
+
+            return Result<DeleteResponse>
+                .Fail("Failed to delete status translation.");
         }
 
         return Result<DeleteResponse>.Success(

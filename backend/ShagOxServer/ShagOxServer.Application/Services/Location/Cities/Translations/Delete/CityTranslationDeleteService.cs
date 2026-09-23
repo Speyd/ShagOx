@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Delete;
@@ -14,16 +15,19 @@ public class CityTranslationDeleteService
     private readonly CityTranslationValidator _cityValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CityTranslationDeleteService> _logger;
 
 
     public CityTranslationDeleteService(
         IRepository<CityTranslation> cityRepository,
         CityTranslationValidator cityValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CityTranslationDeleteService> logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -44,10 +48,17 @@ public class CityTranslationDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to delete city translation. Id: {Id}",
+               id);
+
+            return Result<DeleteResponse>
+                 .Fail("Failed to delete city translation.");
         }
 
         return Result<DeleteResponse>.Success(

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,17 +16,20 @@ public class ConditionTranslationCreateService
     private readonly ConditionTranslationValidator _conditionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ConditionTranslationCreateService> _logger;
 
 
     public ConditionTranslationCreateService(
         IRepository<ConditionTranslation> conditionRepository,
         ConditionTranslationValidator conditionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ConditionTranslationCreateService> logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
 
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -48,10 +52,18 @@ public class ConditionTranslationCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to create condition translation. " +
+                "TranslatableId: {TranslatableId}",
+                request.TranslatableId);
+
+            return Result<CreateResponse>
+                 .Fail("Failed to create condition translation.");
         }
 
         return Result<CreateResponse>.Success(

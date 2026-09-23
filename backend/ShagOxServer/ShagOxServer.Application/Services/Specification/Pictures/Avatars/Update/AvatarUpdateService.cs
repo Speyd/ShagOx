@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -16,20 +17,22 @@ public class AvatarUpdateService
     private readonly AvatarValidator _avatarValidator;
     private readonly UserValidator _userValidator;
 
-
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AvatarUpdateService> _logger;
 
 
     public AvatarUpdateService(
         IRepository<Avatar> avatarRepository,
         AvatarValidator avatarValidator,
         UserValidator userValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AvatarUpdateService> logger)
     {
         _avatarRepository = avatarRepository;
         _avatarValidator = avatarValidator;
         _userValidator = userValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -69,12 +72,22 @@ public class AvatarUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to update avatar. Id: {Id}",
+               avatarId);
+
+            return Result<UpdateResponse>
+                .Fail("Failed to update avatar.");
         }
 
+        _logger.LogInformation(
+            "Avatar updated successfully. Id: {Id}",
+            avatarId);
 
         return Result<UpdateResponse>.Success(result);
     }
@@ -91,9 +104,6 @@ public class AvatarUpdateService
             request.UserId.Value
         );
 
-        if (!existsValidator.IsSuccess)
-            return Result<bool>.Fail(existsValidator.Error);
-
-        return Result<bool>.Success(true);
+        return existsValidator;
     }
 }

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -18,20 +19,22 @@ public class ProductTypeTranslationUpdateService
     private readonly IRepository<ProductTypeTranslation> _typeRepository;
     private readonly ProductTypeTranslationValidator _typeTranslationValidator;
 
-
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ProductTypeTranslationUpdateService> _logger;
 
 
     public ProductTypeTranslationUpdateService(
         IRepository<ProductTypeTranslation> typeRepository,
         ProductTypeTranslationValidator typeTranslationValidator,
         ProductTypeValidator typeValidator,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        ILogger<ProductTypeTranslationUpdateService> logger
     ) : base(typeValidator, typeTranslationValidator)
     {
         _typeRepository = typeRepository;
         _typeTranslationValidator = typeTranslationValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -71,10 +74,17 @@ public class ProductTypeTranslationUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to update product type translation. Id: {Id}",
+                statusTranslationId);
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update product type translation.");
         }
 
         return Result<UpdateResponse>.Success(result);

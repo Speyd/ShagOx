@@ -49,7 +49,9 @@ public class VerificationSender
         {
             case VerificationCodePurpose.RegistrationEmail:
 
-                await SendCodeEmail(user, user.Email, code.Value!);
+                var regEmail = await SendCodeEmail(user, user.Email, code.Value!);
+                if (!regEmail.IsSuccess)
+                    Result<bool>.Fail(regEmail.Error);
 
                 user.EmailConfirmed = false;
 
@@ -57,28 +59,36 @@ public class VerificationSender
 
             case VerificationCodePurpose.RegistrationPhone:
 
-                await SendCodePhone(user, user.Phone, code.Value!);
-   
+                var regPhone = await SendCodePhone(user, user.Phone, code.Value!);
+                if (!regPhone.IsSuccess)
+                    Result<bool>.Fail(regPhone.Error);
+
                 user.PhoneConfirmed = false;
 
                 break;
 
             case VerificationCodePurpose.ChangeEmail:
 
-                await SendCodeEmail(user, user.Email, code.Value!);
+                var changeEmail = await SendCodeEmail(user, user.Email, code.Value!);
+                if (!changeEmail.IsSuccess)
+                    Result<bool>.Fail(changeEmail.Error);
 
                 break;
 
             case VerificationCodePurpose.ChangePhone:
 
-                await SendCodePhone(user, user.Phone, code.Value!);
+                var changePhone = await SendCodePhone(user, user.Phone, code.Value!);
+                if (!changePhone.IsSuccess)
+                    Result<bool>.Fail(changePhone.Error);
 
                 break;
 
             case VerificationCodePurpose.ResetPasswordEmail:
             case VerificationCodePurpose.ChangePasswordEmail:
 
-                await SendCodeEmail(user, user.Email, code.Value!);
+                var passwordEmail = await SendCodeEmail(user, user.Email, code.Value!);
+                if (!passwordEmail.IsSuccess)
+                    Result<bool>.Fail(passwordEmail.Error);
 
                 break;
 
@@ -86,7 +96,9 @@ public class VerificationSender
             case VerificationCodePurpose.ResetPasswordPhone:
             case VerificationCodePurpose.ChangePasswordPhone:
 
-                await SendCodePhone(user, user.Phone, code.Value!);
+                var passwordPhone = await SendCodePhone(user, user.Phone, code.Value!);
+                if (!passwordPhone.IsSuccess)
+                    Result<bool>.Fail(passwordPhone.Error);
 
                 break;
 
@@ -159,7 +171,8 @@ public class VerificationSender
         var code = await _codeService
                 .CreateCodeAsync(user.Id, purpose, pendingValue);
 
-        if (code is null)
+        if (!code.IsSuccess || 
+            code.Value is null)
         { 
             return Result<string>
                 .Fail("Error during Code generation");
@@ -167,7 +180,7 @@ public class VerificationSender
 
         await _unitOfWork.SaveChangesAsync();
 
-        return Result<string>.Success(code);
+        return Result<string>.Success(code.Value!);
     }
 
     private static void ApplyPendingStatus(

@@ -1,35 +1,50 @@
-using SchagoxServer.Api.DependencyInjection;
+using Serilog;
 using ShagOxServer.Api.DependencyInjection;
 using ShagOxServer.Application.DependencyInjections.Base;
 using ShagOxServer.Infrastructure.DependencyInjections.Base;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-#region Services
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
-builder.Services
-    .AddLanguageProvider()
-    .AddDatabase(builder.Configuration)
-    .AddJWT(builder.Configuration)
-    .AddCloudinary(builder.Configuration)
-    .AddSettingsConfiguration(builder.Configuration)
-    .AddFrontendPolicy()
-    .AddControllersWithJson()
-    .AddSwaggerDocumentation()
-    .AddApplication()
-    .AddInfrastructure();
+try
+{
+    #region Services
 
-builder.Services.AddHttpContextAccessor();
+    builder.Services
+        .AddLanguageProvider()
+        .AddSerilogConfiguration(builder.Configuration)
+        .AddDatabase(builder.Configuration)
+        .AddJWT(builder.Configuration)
+        .AddCloudinary(builder.Configuration)
+        .AddSettingsConfiguration(builder.Configuration)
+        .AddFrontendPolicy()
+        .AddControllersWithJson()
+        .AddSwaggerDocumentation()
+        .AddApplication()
+        .AddInfrastructure()
+        .AddHttpContextAccessor();
 
-#endregion
+    #endregion
 
-var app = builder.Build();
+    #region Pipeline
 
-#region Pipeline
+    var app = builder.Build();
 
-app.ConfigurePipeline();
+    app.ConfigurePipeline();
 
-#endregion
+    #endregion
 
-app.Run();
+    app.Run();
+
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

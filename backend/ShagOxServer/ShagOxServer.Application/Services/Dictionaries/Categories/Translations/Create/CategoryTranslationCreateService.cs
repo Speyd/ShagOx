@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,17 +16,20 @@ public class CategoryTranslationCreateService
     private readonly CategoryTranslationValidator _categoryValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CategoryTranslationCreateService> _logger;
 
 
     public CategoryTranslationCreateService(
         IRepository<CategoryTranslation> categoryRepository,
         CategoryTranslationValidator categoryValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CategoryTranslationCreateService> logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
 
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -49,10 +53,18 @@ public class CategoryTranslationCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to update category translation. " +
+               "TranslatableId: {TranslatableId}",
+               request.TranslatableId);
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create category translation.");
         }
 
         return Result<CreateResponse>.Success(

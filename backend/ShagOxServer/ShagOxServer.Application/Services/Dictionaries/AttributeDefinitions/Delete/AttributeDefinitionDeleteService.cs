@@ -1,10 +1,12 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Delete;
 public class AttributeDefinitionDeleteService 
@@ -14,16 +16,19 @@ public class AttributeDefinitionDeleteService
     private readonly AttributeDefinitionValidator _attributeValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AttributeDefinitionDeleteService> _logger;
 
 
     public AttributeDefinitionDeleteService(
         IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AttributeDefinitionDeleteService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -44,10 +49,17 @@ public class AttributeDefinitionDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to delete attribute definition. Id: {Id}",
+               id);
+
+            return Result<DeleteResponse>
+                     .Fail("Failed to delete attribute definition.");
         }
 
         return Result<DeleteResponse>.Success(

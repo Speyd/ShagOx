@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,16 +16,19 @@ public class BasketItemUpdateService
     private readonly BasketItemValidator _itemValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<BasketItemUpdateService> _logger;
 
 
     public BasketItemUpdateService(
         IRepository<BasketItem> itemRepository,
         BasketItemValidator itemValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<BasketItemUpdateService> logger)
     {
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -56,11 +60,22 @@ public class BasketItemUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to update basket item. Id: {Id}",
+                itemId);
+
+            return Result<UpdateResponse>
+                     .Fail("Failed to update basket item.");
         }
+
+        _logger.LogInformation(
+           "Basket item update successfully. BasketItemId: {BasketItemId}",
+           item.Value!.Id);
 
         return Result<UpdateResponse>.Success(result);
     }

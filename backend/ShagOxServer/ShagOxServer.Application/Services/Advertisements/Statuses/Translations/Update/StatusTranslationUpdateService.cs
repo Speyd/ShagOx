@@ -1,8 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Update;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
+using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Application.Services.Base.Translations;
@@ -18,20 +20,22 @@ public class StatusTranslationUpdateService
     private readonly IRepository<StatusTranslation> _statusRepository;
     private readonly StatusTranslationValidator _statusTranslationValidator;
 
-
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<StatusTranslationDeleteService> _logger;
 
 
     public StatusTranslationUpdateService(
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusTranslationValidator,
         StatusValidator statusValidator,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        ILogger<StatusTranslationDeleteService> logger
     ) : base(statusValidator, statusTranslationValidator)
     {
         _statusRepository = statusRepository;
         _statusTranslationValidator = statusTranslationValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -71,10 +75,18 @@ public class StatusTranslationUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to update status translation. Id: {Id}",
+                statusTranslationId);
+
+            return Result<UpdateResponse>
+                .Fail("Failed to update status translation.");
+
         }
 
         return Result<UpdateResponse>.Success(result);

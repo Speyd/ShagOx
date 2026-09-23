@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
@@ -14,16 +15,19 @@ public class CurrencyDeleteService
     private readonly CurrencyValidator _currencyValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CurrencyDeleteService> _logger;
 
 
     public CurrencyDeleteService(
         IRepository<Currency> currencyRepository,
         CurrencyValidator currencyValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CurrencyDeleteService> logger)
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -43,10 +47,17 @@ public class CurrencyDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to delete currency. Id: {Id}",
+               id);
+
+            return Result<DeleteResponse>
+                 .Fail("Failed to delete currency.");
         }
 
         return Result<DeleteResponse>.Success(

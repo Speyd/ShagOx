@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Delete;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -59,7 +60,7 @@ public class CategoryTranslationDeleteService
                id);
 
             return Result<DeleteResponse>
-                     .Fail("Failed to delete category translation.");
+                .Fail(EntityErrorResources.CategoryTranslationDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

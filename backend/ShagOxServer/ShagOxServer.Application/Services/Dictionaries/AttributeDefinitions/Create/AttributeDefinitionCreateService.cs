@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Create;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -75,8 +76,8 @@ public class AttributeDefinitionCreateService
                 request.CategoryId,
                 request.Key);
 
-            return Result<CreateResponse>
-                     .Fail("Failed to create attribute definition.");
+            return Result<CreateResponse>.Fail(
+                EntityErrorResources.AttributeDefinitionCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

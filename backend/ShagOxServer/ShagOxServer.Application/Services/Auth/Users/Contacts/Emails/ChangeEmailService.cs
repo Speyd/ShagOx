@@ -4,8 +4,8 @@ using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Resources.Auth.Contacts.Emails;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -45,8 +45,11 @@ public class ChangeEmailService
         var email = request.Email.Replace(" ", "");
 
         var type = _contactValidator.Detect(email);
-        if(type != UserContactType.Email)
-            return Result<bool>.Fail("Email is incorrect");
+        if (type != UserContactType.Email)
+        {
+            return Result<bool>
+                .Fail(EmailAuthResources.InvalidEmail);
+        }
 
         var emailExists = await _userValidator
             .NotExistsByEmailAsync(email);
@@ -75,7 +78,7 @@ public class ChangeEmailService
                 userId);
 
             return Result<bool>.Fail(
-                "Failed to send verification email.");
+                EmailAuthResources.FailedToSendVerificationEmail);
         }
     }
 }

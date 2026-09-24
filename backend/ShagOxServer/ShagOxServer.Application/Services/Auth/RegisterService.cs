@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Resources.Auth.Registrations;
 using ShagOxServer.Application.Services.Auth.Users.Contacts;
 using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
@@ -108,8 +109,8 @@ public class RegisterService
 
                 await _unitOfWork.RollbackAsync();
 
-                return Result<RegisterResponse>
-                    .Fail("Registration failed.");
+                return Result<RegisterResponse>.Fail(
+                    RegistrationAuthResources.RegistrationFailed);
             }
 
             await _unitOfWork.CommitAsync();
@@ -134,8 +135,8 @@ public class RegisterService
                 "Registration failed. Contact: {Contact}",
                 request.EmailOrPhone);
 
-            return Result<RegisterResponse>
-                .Fail("Registration failed.");
+            return Result<RegisterResponse>.Fail(
+                RegistrationAuthResources.RegistrationFailed);
         }
     }
 

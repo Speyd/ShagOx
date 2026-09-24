@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Account.Enum;
@@ -51,7 +52,7 @@ public class VerificationSender
 
                 var regEmail = await SendCodeEmail(user, user.Email, code.Value!);
                 if (!regEmail.IsSuccess)
-                    Result<bool>.Fail(regEmail.Error);
+                    return Result<bool>.Fail(regEmail.Error);
 
                 user.EmailConfirmed = false;
 
@@ -61,7 +62,7 @@ public class VerificationSender
 
                 var regPhone = await SendCodePhone(user, user.Phone, code.Value!);
                 if (!regPhone.IsSuccess)
-                    Result<bool>.Fail(regPhone.Error);
+                    return Result<bool>.Fail(regPhone.Error);
 
                 user.PhoneConfirmed = false;
 
@@ -71,7 +72,7 @@ public class VerificationSender
 
                 var changeEmail = await SendCodeEmail(user, user.Email, code.Value!);
                 if (!changeEmail.IsSuccess)
-                    Result<bool>.Fail(changeEmail.Error);
+                    return Result<bool>.Fail(changeEmail.Error);
 
                 break;
 
@@ -79,7 +80,7 @@ public class VerificationSender
 
                 var changePhone = await SendCodePhone(user, user.Phone, code.Value!);
                 if (!changePhone.IsSuccess)
-                    Result<bool>.Fail(changePhone.Error);
+                    return Result<bool>.Fail(changePhone.Error);
 
                 break;
 
@@ -88,7 +89,7 @@ public class VerificationSender
 
                 var passwordEmail = await SendCodeEmail(user, user.Email, code.Value!);
                 if (!passwordEmail.IsSuccess)
-                    Result<bool>.Fail(passwordEmail.Error);
+                    return Result<bool>.Fail(passwordEmail.Error);
 
                 break;
 
@@ -98,13 +99,13 @@ public class VerificationSender
 
                 var passwordPhone = await SendCodePhone(user, user.Phone, code.Value!);
                 if (!passwordPhone.IsSuccess)
-                    Result<bool>.Fail(passwordPhone.Error);
+                    return Result<bool>.Fail(passwordPhone.Error);
 
                 break;
 
             default:
                 return Result<bool>.Fail(
-                    "Unsupported verification purpose.");
+                    VerificationResources.UnsupportedVerificationPurpose);
         }
 
         return Result<bool>.Success(true);
@@ -118,15 +119,12 @@ public class VerificationSender
         if (string.IsNullOrWhiteSpace(email))
         {
             return Result<bool>.Fail(
-                "User does not have an email.");
+                VerificationResources.NoUserEmail);
         }
 
-        await _emailService.SendVerificationCodeAsync(
+        return await _emailService.SendVerificationCodeAsync(
             email,
             code);
-
-        return Result<bool>.Success(true);
-
     }
 
     private async Task<Result<bool>> SendCodePhone(
@@ -137,14 +135,12 @@ public class VerificationSender
         if (string.IsNullOrWhiteSpace(phone))
         {
             return Result<bool>.Fail(
-                "User does not have an phone.");
+                VerificationResources.NoUserPhone);
         }
 
-        await _smsService.SendVerificationCodeAsync(
+        return await _smsService.SendVerificationCodeAsync(
             phone,
             code);
-
-        return Result<bool>.Success(true);
 
     }
 
@@ -174,8 +170,8 @@ public class VerificationSender
         if (!code.IsSuccess || 
             code.Value is null)
         { 
-            return Result<string>
-                .Fail("Error during Code generation");
+            return Result<string>.Fail(
+                VerificationResources.FailedToGenerateVerificationCode);
         }
 
         await _unitOfWork.SaveChangesAsync();

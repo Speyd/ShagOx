@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
@@ -71,7 +72,7 @@ public class BasketCreateService
                 request.UserId);
 
             return Result<CreateResponse>
-                     .Fail("Failed to create basket.");
+                .Fail(EntityErrorResources.BasketCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

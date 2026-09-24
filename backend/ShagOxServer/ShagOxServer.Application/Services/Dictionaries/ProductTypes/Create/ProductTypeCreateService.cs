@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Create;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -62,8 +63,8 @@ public class ProductTypeCreateService
                "Failed to update product type. Code: {Code}",
                request.Code);
 
-            return Result<CreateResponse>
-                .Fail("Failed to create product type.");
+            return Result<CreateResponse>.Fail(
+                EntityErrorResources.ProductTypeCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

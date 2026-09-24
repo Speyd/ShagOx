@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Regions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -76,7 +77,7 @@ public class RegionUpdateService
                 regionId);
 
             return Result<UpdateResponse>
-                 .Fail("Failed to update region.");
+                 .Fail(EntityErrorResources.RegionUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

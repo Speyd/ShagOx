@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Update;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -75,7 +76,7 @@ public class RoleUpdateService
                 roleId);
 
             return Result<UpdateResponse>
-                     .Fail("Failed to update role.");
+                .Fail(EntityErrorResources.RoleUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

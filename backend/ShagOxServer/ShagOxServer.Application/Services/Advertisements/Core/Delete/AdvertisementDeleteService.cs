@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -68,7 +69,7 @@ public class AdvertisementDeleteService
                 id);
 
             return Result<DeleteResponse>
-                    .Fail("Failed to delete advertisement.");
+                    .Fail(EntityErrorResources.AdvertisementDeleteFailed);
         }
 
         _logger.LogInformation(

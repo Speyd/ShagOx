@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Baskets.Core.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Update;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Baskets.Core.Delete;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
@@ -81,7 +82,7 @@ public class BasketUpdateService
                 basketId);
 
             return Result<UpdateResponse>
-                     .Fail("Failed to update basket.");
+                .Fail(EntityErrorResources.BasketUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

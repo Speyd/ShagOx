@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -61,7 +62,7 @@ public class RegionCreateService
                request.Code);
 
             return Result<CreateResponse>
-                 .Fail("Failed to create region.");
+                 .Fail(EntityErrorResources.RegionCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Translatio
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Translations.Create;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -63,8 +64,8 @@ public class AttributeDefinitionTranslationCreateService
                "TranslatableId: {TranslatableId}",
                request.TranslatableId);
 
-            return Result<CreateResponse>
-                     .Fail("Failed to create attribute definition translation.");
+            return Result<CreateResponse>.Fail(
+                EntityErrorResources.AttributeDefinitionTranslationCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

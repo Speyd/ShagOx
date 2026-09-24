@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Create;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -61,7 +62,7 @@ public class ConditionCreateService
                 request.Code);
 
             return Result<CreateResponse>
-                 .Fail("Failed to create condition.");
+                 .Fail(EntityErrorResources.ConditionCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

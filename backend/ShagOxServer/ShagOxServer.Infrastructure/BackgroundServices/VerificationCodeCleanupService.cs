@@ -55,7 +55,9 @@ public class VerificationCodeCleanupService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(
+                    ex,
+                    "Failed to clean up verification codes.");
             }
 
             await Task.Delay(

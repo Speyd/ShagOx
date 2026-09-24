@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AdvertisementCreateFailed" xml:space="preserve">
+    <value>Failed to create advertisement.</value>
+  </data>
+  <data name="AdvertisementDeleteFailed" xml:space="preserve">
+    <value>Failed to delete advertisement</value>
+  </data>
+  <data name="AdvertisementUpdateFailed" xml:space="preserve">
+    <value>Failed to update advertisement.</value>
+  </data>
+  <data name="AdvertStatusCreateFailed" xml:space="preserve">
+    <value>Failed to create status.</value>
+  </data>
+  <data name="AdvertStatusDeleteFailed" xml:space="preserve">
+    <value>Failed to delete status.</value>
+  </data>
+  <data name="AdvertStatusTranslationCreateFailed" xml:space="preserve">
+    <value>Failed to create status translation.</value>
+  </data>
+  <data name="AdvertStatusTranslationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete status translation.</value>
+  </data>
+  <data name="AdvertStatusTranslationUpdateFailed" xml:space="preserve">
+    <value>Failed to update status translation.</value>
+  </data>
+  <data name="AdvertStatusUpdateFailed" xml:space="preserve">
+    <value>Failed to update status.</value>
+  </data>
+  <data name="AttributeDefinitionCreateFailed" xml:space="preserve">
+    <value>Failed to create attribute definition.</value>
+  </data>
+  <data name="AttributeDefinitionDeleteFailed" xml:space="preserve">
+    <value>Failed to delete attribute definition.</value>
+  </data>
+  <data name="AttributeDefinitionTranslationCreateFailed" xml:space="preserve">
+    <value>Failed to create attribute definition translation.</value>
+  </data>
+  <data name="AttributeDefinitionTranslationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete attribute definition translation.</value>
+  </data>
+  <data name="AttributeDefinitionTranslationUpdateFailed" xml:space="preserve">
+    <value>Failed to update attribute definition translation.</value>
+  </data>
+  <data name="AttributeDefinitionUpdateFailed" xml:space="preserve">
+    <value>Failed to update attribute definition.</value>
+  </data>
+  <data name="AvatarCreateFailed" xml:space="preserve">
+    <value>Failed to create avatar.</value>
+  </data>
+  <data name="AvatarDeleteFailed" xml:space="preserve">
+    <value>Failed to delete avatar.</value>
+  </data>
+  <data name="AvatarUpdateFailed" xml:space="preserve">
+    <value>Failed to update avatar.</value>
+  </data>
+  <data name="BasketAttributeCreateFailed" xml:space="preserve">
+    <value>Failed to create basket attribute.</value>
+  </data>
+  <data name="BasketAttributeDeleteFailed" xml:space="preserve">
+    <value>Failed to create delete attribute.</value>
+  </data>
+  <data name="BasketAttributeUpdateFailed" xml:space="preserve">
+    <value>Failed to create update attribute.</value>
+  </data>
+  <data name="BasketCreateFailed" xml:space="preserve">
+    <value>Failed to create basket.</value>
+  </data>
+  <data name="BasketDeleteFailed" xml:space="preserve">
+    <value>Failed to delete basket.</value>
+  </data>
+  <data name="BasketItemCreateFailed" xml:space="preserve">
+    <value>Failed to create basket item.</value>
+  </data>
+  <data name="BasketItemDeleteFailed" xml:space="preserve">
+    <value>Failed to delete basket item.</value>
+  </data>
+  <data name="BasketItemUpdateFailed" xml:space="preserve">
+    <value>Failed to update basket item.</value>
+  </data>
+  <data name="BasketUpdateFailed" xml:space="preserve">
+    <value>Failed to update basket.</value>
+  </data>
+  <data name="CategoryCreateFailed" xml:space="preserve">
+    <value>Failed to create category.</value>
+  </data>
+  <data name="CategoryDeleteFailed" xml:space="preserve">
+    <value>Failed to delete category.</value>
+  </data>
+  <data name="CategoryTranslationCreateFailed" xml:space="preserve">
+    <value>Failed to create category translation.</value>
+  </data>
+  <data name="CategoryTranslationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete category translation.</value>
+  </data>
+  <data name="CategoryTranslationUpdateFailed" xml:space="preserve">
+    <value>Failed to update category translation.</value>
+  </data>
+  <data name="CategoryUpdateFailed" xml:space="preserve">
+    <value>Failed to update category.</value>
+  </data>
+  <data name="CityCreateFailed" xml:space="preserve">
+    <value>Failed to create city.</value>
+  </data>
+  <data name="CityDeleteFailed" xml:space="preserve">
+    <value>Failed to delete city.</value>
+  </data>
+  <data name="CityTranslationCreateFailed" xml:space="preserve">
+    <value>Failed to create city translation.</value>
+  </data>
+  <data name="CityTranslationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete city translation.</value>
+  </data>
+  <data name="CityTranslationUpdateFailed" xml:space="preserve">
+    <value>Failed to update city translation.</value>
+  </data>
+  <data name="CityUpdateFailed" xml:space="preserve">
+    <value>Failed to update city.</value>
+  </data>
+  <data name="ConditionCreateFailed" xml:space="preserve">
+    <value>Failed to create condition.</value>
+  </data>
+  <data name="ConditionDeleteFailed" xml:space="preserve">
+    <value>Failed to delete condition.</value>
+  </data>
+  <data name="ConditionTranslationCreateFailed" xml:space="preserve">
+    <value>Failed to create condition translation.</value>
+  </data>
+  <data name="ConditionTranslationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete condition translation.</value>
+  </data>
+  <data name="ConditionTranslationUpdateFailed" xml:space="preserve">
+    <value>Failed to update condition translation.</value>
+  </data>
+  <data name="ConditionUpdateFailed" xml:space="preserve">
+    <value>Failed to update condition.</value>
+  </data>
+  <data name="CurrencyCreateFailed" xml:space="preserve">
+    <value>Failed to create currency.</value>
+  </data>
+  <data name="CurrencyDeleteFailed" xml:space="preserve">
+    <value>Failed to delete currency.</value>
+  </data>
+  <data name="CurrencyUpdateFailed" xml:space="preserve">
+    <value>Failed to update currency.</value>
+  </data>
+  <data name="FavoriteCreateFailed" xml:space="preserve">
+    <value>Failed to create favorite.</value>
+  </data>
+  <data name="FavoriteDeleteFailed" xml:space="preserve">
+    <value>Failed to delete favorite.</value>
+  </data>
+  <data name="FavoriteUpdateFailed" xml:space="preserve">
+    <value>Failed to update favorite.</value>
+  </data>
+  <data name="ImageCreateFailed" xml:space="preserve">
+    <value>Failed to create image.</value>
+  </data>
+  <data name="ImageDeleteFailed" xml:space="preserve">
+    <value>Failed to delete image.</value>
+  </data>
+  <data name="ImageUpdateFailed" xml:space="preserve">
+    <value>Failed to update image.</value>
+  </data>
+  <data name="ProductTypeCreateFailed" xml:space="preserve">
+    <value>Failed to create product type.</value>
+  </data>
+  <data name="ProductTypeDeleteFailed" xml:space="preserve">
+    <value>Failed to delete product type.</value>
+  </data>
+  <data name="ProductTypeTranslationCreateFailed" xml:space="preserve">
+    <value>Failed to create product type translation.</value>
+  </data>
+  <data name="ProductTypeTranslationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete product type translation.</value>
+  </data>
+  <data name="ProductTypeTranslationUpdateFailed" xml:space="preserve">
+    <value>Failed to update product type translation.</value>
+  </data>
+  <data name="ProductTypeUpdateFailed" xml:space="preserve">
+    <value>Failed to update product type.</value>
+  </data>
+  <data name="RegionCreateFailed" xml:space="preserve">
+    <value>Failed to create region.</value>
+  </data>
+  <data name="RegionDeleteFailed" xml:space="preserve">
+    <value>Failed to delete region.</value>
+  </data>
+  <data name="RegionTranslationCreateFailed" xml:space="preserve">
+    <value>Failed to create region translation.</value>
+  </data>
+  <data name="RegionTranslationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete region translation.</value>
+  </data>
+  <data name="RegionTranslationUpdateFailed" xml:space="preserve">
+    <value>Failed to update region translation.</value>
+  </data>
+  <data name="RegionUpdateFailed" xml:space="preserve">
+    <value>Failed to update region.</value>
+  </data>
+  <data name="RoleCreateFailed" xml:space="preserve">
+    <value>Failed to create role.</value>
+  </data>
+  <data name="RoleDeleteFailed" xml:space="preserve">
+    <value>Failed to delete role.</value>
+  </data>
+  <data name="RoleUpdateFailed" xml:space="preserve">
+    <value>Failed to update role.</value>
+  </data>
+  <data name="UserDeleteFailed" xml:space="preserve">
+    <value>Failed to delete role.</value>
+  </data>
+  <data name="UserUpdateFailed" xml:space="preserve">
+    <value>Failed to update role.</value>
+  </data>
+</root>

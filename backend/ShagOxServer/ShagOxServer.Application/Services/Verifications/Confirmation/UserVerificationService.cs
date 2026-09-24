@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
+using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Domain.Entities.Verifications;
@@ -14,8 +15,8 @@ public class UserVerificationService
     {
         if (user.EmailConfirmed)
         {
-            return Result<bool>
-                .Fail("Email already confirmed.");
+            return Result<bool>.Fail(
+                VerificationResources.EmailAlreadyConfirmed);
         }
 
         user.Email =
@@ -36,7 +37,7 @@ public class UserVerificationService
                    verificationCode.PendingValue))
         {
             return Result<bool>.Fail(
-                "Pending email not found.");
+                VerificationResources.PendingEmailNotFound);
         }
 
         user.Email = verificationCode.PendingValue;
@@ -50,8 +51,8 @@ public class UserVerificationService
     {
         if (user.PhoneConfirmed)
         {
-            return Result<bool>
-                .Fail("Phone already confirmed.");
+            return Result<bool>.Fail(
+                VerificationResources.PhoneAlreadyConfirmed);
         }
 
         user.Phone =
@@ -73,7 +74,7 @@ public class UserVerificationService
                   verificationCode.PendingValue))
         {
             return Result<bool>.Fail(
-                "Pending phone not found.");
+                VerificationResources.PendingPhoneNotFound);
         }
 
         user.Phone = verificationCode.PendingValue;
@@ -89,7 +90,7 @@ public class UserVerificationService
                   verificationCode.PendingValue))
         {
             return Result<bool>.Fail(
-                "Pending password not found.");
+                VerificationResources.PendingPasswordNotFound);
         }
 
         user.PasswordHash =

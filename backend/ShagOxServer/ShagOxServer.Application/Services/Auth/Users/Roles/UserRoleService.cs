@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
+using ShagOxServer.Application.Resources.Auth.Registrations;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -21,7 +22,10 @@ public class UserRoleService
                 .GetByNameAsync(RoleNames.User);
 
         if (role is null)
-            return Result<bool>.Fail("Default role not found.");
+        {
+            return Result<bool>.Fail(
+                RegistrationAuthResources.DefaultRoleNotFound);
+        }
 
         user.UserRoles.Add(new UserRole
         {

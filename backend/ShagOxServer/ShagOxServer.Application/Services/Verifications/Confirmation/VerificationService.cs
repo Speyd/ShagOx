@@ -3,11 +3,13 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
+using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Verifications.Mappers;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+
 namespace ShagOxServer.Application.Services.Verifications.Confirmation;
 public class VerificationService
     : IVerificationService
@@ -95,7 +97,7 @@ public class VerificationService
 
             default:
                 return Result<bool>.Fail(
-                    "Invalid verification purpose.");
+                    VerificationResources.UnsupportedVerificationPurpose);
         }
     }
 }

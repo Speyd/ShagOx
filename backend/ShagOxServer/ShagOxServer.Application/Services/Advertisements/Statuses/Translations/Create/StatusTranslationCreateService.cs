@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Create;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
@@ -63,7 +64,7 @@ public class StatusTranslationCreateService
                 request.TranslatableId);
 
             return Result<CreateResponse>
-                .Fail("Failed to create status translation.");
+                .Fail(EntityErrorResources.AdvertStatusTranslationCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

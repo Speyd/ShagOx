@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Regions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Update;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
@@ -84,7 +85,7 @@ public class RegionTranslationUpdateService
                 statusTranslationId);
 
             return Result<UpdateResponse>
-                   .Fail("Failed to update region translation.");
+                   .Fail(EntityErrorResources.RegionTranslationUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

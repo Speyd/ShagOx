@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShagOxServer.Application.DTOs.Auth.Register;
+using ShagOxServer.Application.Resources.Auth.Contacts.Passwords;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -19,7 +20,10 @@ public class UserPasswordService
         RegisterRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.Password))
-            return Result<bool>.Fail("New Password is incorrect!");
+        {
+            return Result<bool>
+                .Fail(PasswordAuthResources.InvalidNewPassword);
+        }
 
         user.PasswordHash =
             _passwordHasher.HashPassword(

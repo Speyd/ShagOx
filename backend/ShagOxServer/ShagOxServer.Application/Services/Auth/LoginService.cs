@@ -2,16 +2,14 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Login;
-using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
-using ShagOxServer.Application.Services.Auth.Users.Core.Create;
-using ShagOxServer.Application.Services.Auth.Users.Roles;
+using ShagOxServer.Application.Resources.Auth.Contacts.Passwords;
+using ShagOxServer.Application.Resources.Auth.Logins;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth;
@@ -68,7 +66,10 @@ public class LoginService : ILoginService
             );
 
             if (result == PasswordVerificationResult.Failed)
-                return Result<LoginResponse>.Fail("Invalid password");
+            {
+                return Result<LoginResponse>
+                    .Fail(PasswordAuthResources.InvalidPassword);
+            }
 
             _logger.LogInformation(
                  "User logged in successfully. UserId: {UserId}",
@@ -86,7 +87,7 @@ public class LoginService : ILoginService
                 request.EmailOrPhoneOrUserName);
 
             return Result<LoginResponse>
-                .Fail("Login failed");
+                .Fail(LoginAuthResources.LoginFailed);
         }
     }
 

@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Validator;
 using ShagOxServer.Domain.Entities.Specification;
@@ -84,7 +85,8 @@ public class AvatarCreateService
             await _unitOfWork.CommitAsync();
 
             _logger.LogInformation(
-                "Avatar created successfully. AvatarId: {AvatarId}, UserId: {UserId}",
+                "Avatar created successfully. " + 
+                "AvatarId: {AvatarId}, UserId: {UserId}",
                 avatar.Id,
                 request.UserId);
 
@@ -111,7 +113,7 @@ public class AvatarCreateService
                request.UserId);
 
             return Result<PictureCreateResponse>
-                .Fail("Failed to create avatar.");
+                .Fail(EntityErrorResources.AvatarCreateFailed);
         }
     }
 }

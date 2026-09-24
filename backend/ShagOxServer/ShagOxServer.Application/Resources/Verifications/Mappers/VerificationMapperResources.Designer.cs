@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.EmailService {
+namespace ShagOxServer.Application.Resources.Verifications.Mappers {
     using System;
     
     
@@ -22,24 +22,25 @@ namespace ShagOxServer.Application.Resources.EmailService {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Emails {
+    internal class VerificationMapperResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Emails() {
+        internal VerificationMapperResources() {
         }
         
         /// <summary>
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.EmailService.Emails", typeof(Emails).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Verifications.Mappers.VerificationMapperResour" +
+                            "ces", typeof(VerificationMapperResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +52,7 @@ namespace ShagOxServer.Application.Resources.EmailService {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,28 +62,56 @@ namespace ShagOxServer.Application.Resources.EmailService {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hello!
-        ///
-        ///Your verification code:
-        ///
-        ///{0}
-        ///
-        ///The code is valid for {1} minutes.
-        ///
-        ///If you did not register for Marketly, simply ignore this email..
+        ///   Ищет локализованную строку, похожую на Too many attempts..
         /// </summary>
-        public static string VerificationBody {
+        internal static string AttemptsExceeded {
             get {
-                return ResourceManager.GetString("VerificationBody", resourceCulture);
+                return ResourceManager.GetString("AttemptsExceeded", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Marketly -  Email verification.
+        ///   Ищет локализованную строку, похожую на Verification code has already been used..
         /// </summary>
-        public static string VerificationSubject {
+        internal static string CodeAlreadyUsed {
             get {
-                return ResourceManager.GetString("VerificationSubject", resourceCulture);
+                return ResourceManager.GetString("CodeAlreadyUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Verification code has expired..
+        /// </summary>
+        internal static string CodeExpired {
+            get {
+                return ResourceManager.GetString("CodeExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid verification code..
+        /// </summary>
+        internal static string CodeInvalid {
+            get {
+                return ResourceManager.GetString("CodeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Verification code not found..
+        /// </summary>
+        internal static string CodeNotFound {
+            get {
+                return ResourceManager.GetString("CodeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unknown verification result..
+        /// </summary>
+        internal static string UnknownResult {
+            get {
+                return ResourceManager.GetString("UnknownResult", resourceCulture);
             }
         }
     }

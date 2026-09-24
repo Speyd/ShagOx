@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -81,7 +82,7 @@ public class FavoriteUpdateService
                 request.AdvertisementId);
 
             return Result<UpdateResponse>
-                   .Fail("Failed to update favorite.");
+                   .Fail(EntityErrorResources.FavoriteUpdateFailed);
         }
 
         _logger.LogInformation(

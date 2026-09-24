@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Verifications {
+namespace ShagOxServer.Application.Resources.Auth.Registrations {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.Verifications {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Verification {
+    internal class RegistrationAuthResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Verification() {
+        internal RegistrationAuthResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.Verifications {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Verifications.Verification", typeof(Verification).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Registrations.RegistrationAuthResources", typeof(RegistrationAuthResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,29 @@ namespace ShagOxServer.Application.Resources.Verifications {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Too many attempts..
+        ///   Ищет локализованную строку, похожую на Default role not found..
         /// </summary>
-        internal static string AttemptsExceeded {
+        internal static string DefaultRoleNotFound {
             get {
-                return ResourceManager.GetString("AttemptsExceeded", resourceCulture);
+                return ResourceManager.GetString("DefaultRoleNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Verification code has already been used..
+        ///   Ищет локализованную строку, похожую на Registration failed..
         /// </summary>
-        internal static string CodeAlreadyUsed {
+        internal static string RegistrationFailed {
             get {
-                return ResourceManager.GetString("CodeAlreadyUsed", resourceCulture);
+                return ResourceManager.GetString("RegistrationFailed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Verification code has expired..
+        ///   Ищет локализованную строку, похожую на Unsupported contact type..
         /// </summary>
-        internal static string CodeExpired {
+        internal static string UnsupportedContactType {
             get {
-                return ResourceManager.GetString("CodeExpired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Invalid verification code..
-        /// </summary>
-        internal static string CodeInvalid {
-            get {
-                return ResourceManager.GetString("CodeInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Verification code not found..
-        /// </summary>
-        internal static string CodeNotFound {
-            get {
-                return ResourceManager.GetString("CodeNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Unknown verification result..
-        /// </summary>
-        internal static string UnknownResult {
-            get {
-                return ResourceManager.GetString("UnknownResult", resourceCulture);
+                return ResourceManager.GetString("UnsupportedContactType", resourceCulture);
             }
         }
     }

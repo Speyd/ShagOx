@@ -58,7 +58,9 @@ public class PendingUserCleanupService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(
+                    ex,
+                    "Failed to clean up pending users.");
             }
 
             await Task.Delay(

@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -63,7 +64,7 @@ public class FavoriteDeleteService
                 id);
 
             return Result<DeleteResponse>
-                    .Fail("Failed to delete favorite.");
+                    .Fail(EntityErrorResources.FavoriteDeleteFailed);
         }
 
         _logger.LogInformation(

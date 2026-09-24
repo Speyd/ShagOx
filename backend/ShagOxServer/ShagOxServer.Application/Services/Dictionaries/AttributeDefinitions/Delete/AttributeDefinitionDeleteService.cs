@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -58,8 +59,8 @@ public class AttributeDefinitionDeleteService
                "Failed to delete attribute definition. Id: {Id}",
                id);
 
-            return Result<DeleteResponse>
-                     .Fail("Failed to delete attribute definition.");
+            return Result<DeleteResponse>.Fail(
+                EntityErrorResources.AttributeDefinitionDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

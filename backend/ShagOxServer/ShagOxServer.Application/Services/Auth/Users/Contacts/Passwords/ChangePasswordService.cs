@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Resources.Auth.Contacts.Passwords;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -38,7 +38,10 @@ public class ChangePasswordService
         ChangePasswordRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.NewPassword))
-            return Result<bool>.Fail("New Password is incorrect!");
+        {
+            return Result<bool>
+                .Fail(PasswordAuthResources.InvalidNewPassword);
+        }
 
         var user = await _userValidator
             .GetByIdAsync(userId);
@@ -51,7 +54,10 @@ public class ChangePasswordService
             request.OldPassword);
 
         if (verifyResult == PasswordVerificationResult.Failed)
-            return Result<bool>.Fail("Invalid password");
+        {
+            return Result<bool>
+                .Fail(PasswordAuthResources.InvalidPassword);
+        }
 
         string newPasswordHash =
            _passwordHasher.HashPassword(
@@ -79,7 +85,7 @@ public class ChangePasswordService
                 userId);
 
             return Result<bool>.Fail(
-                "Failed to change pasword.");
+                PasswordAuthResources.FailedToChangePassword);
         }
     }
 
@@ -103,8 +109,8 @@ public class ChangePasswordService
                 newPasswordHash);
         }
 
-        return Result<bool>.Fail(
-            "No confirmed email or phone found.");
+        return Result<bool>
+            .Fail(PasswordAuthResources.NoConfirmedContact);
     }
 
     private async Task<Result<bool>> SendChangeCode(

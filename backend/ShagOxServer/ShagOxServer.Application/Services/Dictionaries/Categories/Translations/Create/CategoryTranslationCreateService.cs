@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Create;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -63,8 +64,8 @@ public class CategoryTranslationCreateService
                "TranslatableId: {TranslatableId}",
                request.TranslatableId);
 
-            return Result<CreateResponse>
-                     .Fail("Failed to create category translation.");
+            return Result<CreateResponse>.Fail(
+                EntityErrorResources.CategoryTranslationCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

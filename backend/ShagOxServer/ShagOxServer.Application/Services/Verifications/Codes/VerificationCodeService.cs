@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
+using ShagOxServer.Application.Resources.Verifications.Codes;
 using ShagOxServer.Application.Services.Verifications.Enum;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
@@ -12,7 +13,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Security.Cryptography;
 
 namespace ShagOxServer.Application.Services.Verifications.Codes;
-
 public class VerificationCodeService
     : IVerificationCodeService
 {
@@ -83,7 +83,7 @@ public class VerificationCodeService
                userId);
 
             return Result<string>
-                .Fail("Failed to create verification code.");
+                .Fail(VerificationCodeResources.FailedToCreateVerificationCode);
         }
 
         _logger.LogInformation(

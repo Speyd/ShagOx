@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -57,8 +58,8 @@ public class BasketItemDeleteService
                 "Failed to delete basket item. Id: {Id}",
                 id);
 
-            return Result<DeleteResponse>
-                     .Fail("Failed to delete basket item.");
+            return Result<DeleteResponse>.Fail(
+                EntityErrorResources.BasketItemDeleteFailed);
         }
 
         _logger.LogInformation(

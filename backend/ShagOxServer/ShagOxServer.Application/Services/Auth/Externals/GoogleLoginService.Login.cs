@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Externals.Google;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
-using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Application.Resources.Auth.External.Google;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Net.Http.Json;
 
@@ -16,8 +16,8 @@ public partial class GoogleLoginService
     {
         if (string.IsNullOrWhiteSpace(request.Code))
         {
-            return Result<LoginResponse>
-                .Fail("Google authorization code is empty.");
+            return Result<LoginResponse>.Fail(
+                GoogleAuthResources.GoogleAuthorizationCodeEmpty);
         }
 
         var clientId = _googleSettings.ClientId;
@@ -26,8 +26,8 @@ public partial class GoogleLoginService
         if (string.IsNullOrWhiteSpace(clientId) ||
             string.IsNullOrWhiteSpace(clientSecret))
         {
-            return Result<LoginResponse>
-                .InternalServer("Google OAuth is not configured.");
+            return Result<LoginResponse>.InternalServer(
+                GoogleAuthResources.GoogleOAuthNotConfigured);
         }
 
         var tokenResult = await ExchangeCodeAsync(
@@ -92,12 +92,13 @@ public partial class GoogleLoginService
             var error = await response.Content.ReadAsStringAsync();
 
             _logger.LogError(
-                "Google token exchange failed. StatusCode: {StatusCode}, Error: {Error}",
+                "Google token exchange failed. " +
+                "StatusCode: {StatusCode}, Error: {Error}",
                 response.StatusCode,
                 error);
 
             return Result<GoogleTokenResponse>
-                .Fail("Google token exchange failed.");
+                .Fail(GoogleAuthResources.GoogleTokenExchangeFailed);
         }
 
         var tokens = await response.Content
@@ -107,7 +108,7 @@ public partial class GoogleLoginService
             string.IsNullOrWhiteSpace(tokens.IdToken))
         {
             return Result<GoogleTokenResponse>
-                .Fail("Google did not return an ID token.");
+                .Fail(GoogleAuthResources.GoogleIdTokenMissing);
         }
 
         _logger.LogInformation(
@@ -146,7 +147,7 @@ public partial class GoogleLoginService
                 clientId);
 
             return Result<GoogleJsonWebSignature.Payload>
-                .Fail("Invalid Google ID token.");
+                .Fail(GoogleAuthResources.GoogleInvalidIdToken);
         }
     }
 }

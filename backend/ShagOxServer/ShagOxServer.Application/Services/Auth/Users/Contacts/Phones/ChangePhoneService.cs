@@ -4,8 +4,8 @@ using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Resources.Auth.Contacts.Phones;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -46,7 +46,10 @@ public class ChangePhoneService
 
         var type = _contactValidator.Detect(phone);
         if (type != UserContactType.Phone)
-            return Result<bool>.Fail("Phone is incorrect");
+        {
+            return Result<bool>
+                .Fail(PhoneAuthResources.InvalidPhone);
+        }
 
         var phoneExists = await _userValidator
             .NotExistsByPhoneAsync(phone);
@@ -71,11 +74,12 @@ public class ChangePhoneService
         {
             _logger.LogError(
                 ex,
-                "Failed to send verification code for phone change. UserId: {UserId}",
+                "Failed to send verification code for phone change. " +
+                "UserId: {UserId}",
                 userId);
 
             return Result<bool>.Fail(
-                "Failed to send verification code.");
+                PhoneAuthResources.FailedToSendVerificationCode);
         }
     }
 }

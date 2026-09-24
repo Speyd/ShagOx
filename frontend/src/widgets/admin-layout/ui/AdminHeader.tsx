@@ -1,10 +1,9 @@
 import { LogOut, ShieldCheck } from "lucide-react";
-import { useAuthStore } from "@/features/auth/store/useAuthStore";
-
 import styles from "./AdminHeader.module.css";
 import { useNavigate } from "react-router-dom";
 import { useLogout } from "@/features/auth/model/hooks/useLogout";
 import { Button } from "@mantine/core";
+import { useAuthStore } from "@/features/auth";
 
 export default function AdminHeader() {
   const user = useAuthStore((state) => state.user);
@@ -34,7 +33,7 @@ export default function AdminHeader() {
 
       <div className={styles.right}>
         <div className={styles.user}>
-          <span className={styles.name}>{user?.name}</span>
+          <span className={styles.name}>{user?.userName}</span>
           <span className={styles.role}>Administrator</span>
         </div>
 

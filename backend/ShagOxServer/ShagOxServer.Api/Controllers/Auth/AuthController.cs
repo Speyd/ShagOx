@@ -18,11 +18,12 @@ public class AuthController
 {
     private readonly IRegisterService _registerService;
     private readonly ILoginService _loginService;
-
+    private readonly IConfiguration _configuration;
 
     public AuthController(
         IRegisterService registerService,
         ILoginService loginService,
+
         IOptions<JwtSettings> jwtSettings,
         ILogger<ApiCookieController> logger
     )
@@ -32,20 +33,15 @@ public class AuthController
         _loginService = loginService;
     }
 
-
     [HttpPost("register")]
-    public async Task<IActionResult> Register(
-        [FromBody] RegisterRequest request)
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var result = await _registerService
-            .RegisterAsync(request);
-
+        var result = await _registerService.RegisterAsync(request);
         return result.ToActionResult();
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(
-        [FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var responce = await _loginService
             .LoginAsync(request);

@@ -4,34 +4,46 @@ using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
+using ShagOxServer.Application.Services.Auth.Users.Core.Create;
+using ShagOxServer.Application.Services.Auth.Users.Roles;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth;
-public class LoginService 
-    : ILoginService
-{
-    private readonly IUserQueryRepository _userQueryRepository;
 
+public class LoginService : ILoginService
+{
+    private readonly IRepository<User> _userRepository;
+    private readonly IUserQueryRepository _userQueryRepository;
+    private readonly UserCreater _userCreater;
+    private readonly UserRoleService _roleService;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
-
     private readonly IJwtService _jwtService;
+
     private readonly ILogger<LoginService> _logger;
 
 
     public LoginService(
+        IRepository<User> userRepository,
         IUserQueryRepository userQueryRepository,
+        UserCreater userCreater,
+        UserRoleService roleService,
         IPasswordHasher<User> passwordHasher,
         IContactValidator contactValidator,
         IJwtService jwtService,
+
         ILogger<LoginService> logger)
     {
+        _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
+        _userCreater = userCreater;
+        _roleService = roleService;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
         _jwtService = jwtService;
@@ -39,8 +51,7 @@ public class LoginService
     } 
 
 
-    public async Task<Result<LoginResponse>> LoginAsync(
-        LoginRequest request)
+    public async Task<Result<LoginResponse>> LoginAsync(LoginRequest request)
     {
         try
         {
@@ -78,6 +89,7 @@ public class LoginService
                 .Fail("Login failed");
         }
     }
+
 
     private async Task<User?> GetUserAsync(
         string data,

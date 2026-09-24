@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useAuthStore } from "../../store/useAuthStore";
 import { login, me } from "../../api/api";
+import { useAuthStore } from "../store/useAuthStore";
 
 export function useLogin() {
   const queryClient = useQueryClient();

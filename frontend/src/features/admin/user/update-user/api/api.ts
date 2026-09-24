@@ -4,8 +4,10 @@ import type { UpdateUserRequestDto } from "../model/types";
 export async function adminUpdateUser(id: number, data: UpdateUserRequestDto) {
   const formData = new FormData();
 
-  formData.append("surname", data.surname);
-  formData.append("name", data.name);
+  formData.append("firstName", data.firstName);
+  formData.append("lastName", data.lastName);
+  formData.append("userName", data.userName);
+  formData.append("bio", data.bio ?? "");
   formData.append("phone", data.phone);
   formData.append("email", data.email);
 

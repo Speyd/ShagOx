@@ -1,0 +1,74 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background-color: #ffffff;
+  padding: 48px;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  width: 100%;
+  max-width: 480px;
+  box-sizing: border-box;
+  border: 1px solid #ffffff80;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.submitBtn{
+  width: 100%;
+}
+.description {
+  text-align: center;
+}
+
+.codeContainer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.input {
+  width: 52px;
+  height: 60px;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.input:focus {
+  background-color: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.inputFilled {
+  background-color: #ffffff;
+  border-color: #9ca3af;
+}
+
+.verifyButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.resendBox {
+  display: flex;
+  align-self: center;
+  gap: 5px;
+}
+

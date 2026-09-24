@@ -7,16 +7,34 @@ public class ContactValidator : IContactValidator
 {
     public UserContactType Detect(string value)
     {
-        if (IsEmail(value))
-            return UserContactType.Email;
-
-        if (IsPhone(value))
-            return UserContactType.Phone;
-
-        if (IsUserName(value))
-            return UserContactType.UserName;
+        if (TryDetect(value, out var type))
+            return type;
 
         throw new Exception("Invalid contact");
+    }
+
+    public bool TryDetect(string value, out UserContactType type)
+    {
+        if (IsEmail(value))
+        {
+            type = UserContactType.Email;
+            return true;
+        }
+
+        if (IsPhone(value))
+        {
+            type = UserContactType.Phone;
+            return true;
+        }
+
+        if (IsUserName(value))
+        {
+            type = UserContactType.UserName;
+            return true;
+        }
+
+        type = default;
+        return false;
     }
 
 

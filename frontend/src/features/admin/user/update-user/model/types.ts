@@ -4,8 +4,10 @@ export type UpdateUserRequest = {
 };
 
 export type UpdateUserRequestDto = {
-  surname: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  bio: string;
   phone: string;
   email: string;
   avatar?: File | null;

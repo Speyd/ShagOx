@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  emailOrPhone: z
+  emailOrPhoneOrUserName: z
     .string()
     .min(1, "Введіть email або номер телефону")
     .refine(

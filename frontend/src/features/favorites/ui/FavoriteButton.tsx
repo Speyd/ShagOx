@@ -2,10 +2,10 @@ import IconButton from "@/shared/ui/icon-button";
 import styles from "./FavoriteButton.module.css";
 import { Heart } from "lucide-react";
 import { useAddToFavorites } from "../model/hooks/useAddToFavorites";
-import { useAuthStore } from "@/features/auth/store/useAuthStore";
 import { useDeleteFavorite } from "../model/hooks/useDeleteFavorite";
 import { useGetFavorites } from "../model/hooks/useGetFavorites";
 import { toast } from "sonner";
+import { useAuthStore } from "@/features/auth";
 
 type FavoriteButtonProps = { advertisementId: number };
 

@@ -1,0 +1,108 @@
+.drawerContent {
+  padding: 24px;
+  border-radius: 20px 0 0 20px !important;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.title {
+  color: var(--color-base);
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-base);
+  margin-top: 4px;
+}
+
+.container {
+  display: flex;
+  gap: 32px;
+}
+
+.avatarSection {
+  width: 180px;
+  flex-shrink: 0;
+}
+
+.avatar {
+  border: 1px solid var(--color-primary);
+}
+
+.avatarWrapper {
+  position: relative !important;
+  display: inline-block;
+}
+
+.cameraButton {
+  position: absolute !important;
+  bottom: 6px;
+  right: 6px;
+  border: 1px solid #eaecf0;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.fileHint {
+  font-size: 12px;
+  color: #98a2b3;
+  text-align: center;
+}
+
+.formSection {
+  flex: 1;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #101828;
+  margin-bottom: 6px;
+}
+
+.input {
+  border-color: #d0d5dd;
+  color: #101828;
+  font-size: 14px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: auto;
+}
+
+.input:focus {
+  border-color: #0f2238;
+}
+
+.urlHint {
+  font-size: 12px;
+  color: #98a2b3;
+  margin-top: 6px;
+}
+
+.charCounter {
+  font-size: 12px;
+  color: #98a2b3;
+}
+
+.actions {
+  border-top: 1px solid #f2f4f7;
+  padding-top: 20px;
+}
+
+.saveButton {
+  background-color: #0f2238;
+  color: #ffffff;
+}
+
+.saveButton:hover {
+  background-color: #183250;
+}
+
+.closeButton {
+  background-color: transparent;
+  border: none;
+}

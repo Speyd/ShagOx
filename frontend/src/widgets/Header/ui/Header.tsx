@@ -1,21 +1,14 @@
 import Container from "@/shared/ui/container";
 import styles from "./Header.module.css";
-import {
-  Bell,
-  Heart,
-  Menu,
-  Scale,
-  ShoppingBag,
-  User,
-} from "lucide-react";
+import { Bell, Heart, Menu, Scale, ShoppingBag, User } from "lucide-react";
 import { Divider, Image, Text } from "@mantine/core";
 import logo from "@/shared/assets/icons/logo.png";
 import SearchInput from "@/shared/ui/search-input/SearchInput";
 import { useDisclosure } from "@mantine/hooks";
-import NavigationDrawer from "./NavigationDrawer";
-import CartDrawer from "./CartDrawer";
 import { Link } from "react-router-dom";
 import CitySelector from "@/shared/ui/city-selector";
+import NavigationDrawer from "./NavigationDrawer";
+import CartDrawer from "./CartDrawer";
 
 export default function Header() {
   const [menuOpened, { open, close }] = useDisclosure(false);

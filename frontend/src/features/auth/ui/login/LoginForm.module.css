@@ -1,0 +1,104 @@
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputBlock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.icon {
+  position: absolute;
+  left: 14px;
+  pointer-events: none;
+  width: 18px;
+  height: 18px;
+  color: #9ca3af;
+  z-index: 1;
+}
+
+.inputBlock input {
+  width: 100%;
+  padding-left: 42px;
+  padding-right: 42px;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  transition: color 0.2s ease;
+  z-index: 1;
+}
+
+.eyeButton:hover {
+  color: #4b5563;
+}
+
+.eyeIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.error {
+  color: #ef4444;
+  font-weight: 500;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.serverError {
+  color: #ef4444;
+  font-weight: 500;
+  font-size: 13px;
+  text-align: center;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.forgotPasswordWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -4px;
+  margin-bottom: 4px;
+}
+
+.forgotLink {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.forgotLink:hover {
+  color: #111827;
+  text-decoration: underline;
+}
+
+.loginButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

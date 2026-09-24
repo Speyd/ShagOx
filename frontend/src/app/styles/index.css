@@ -15,6 +15,20 @@
   font-family: var(--font-base);
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 body {
   min-height: 100vh;
   background-color: var(--bg-base);
@@ -30,8 +44,9 @@ body {
   --color-base: #0c233f;
   --color-primary: #32639D;
   --color-primary-hover: #28527F;
+  --color-border: #d2dfef;
   --text-base: #334155;
-  --text-secondary: #ced3d9;
+  --text-secondary: #6b7280;
   --font-xs: 12px;
   --font-sm: 14px;
   --font-md: 16px;

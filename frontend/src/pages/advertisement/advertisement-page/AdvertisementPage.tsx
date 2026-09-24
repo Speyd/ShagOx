@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
 import styles from "./AdvertisementPage.module.css";
-import Price from "@/shared/ui/price";
 import UpdateAdvertisementButton from "@/features/advertisement/update-advertisement/ui/UpdateAdvertisementButton";
 import DeleteAdvertisementButton from "@/features/advertisement/delete-advertisement";
 import FavoriteButton from "@/features/favorites";
-import { useAuthStore } from "@/features/auth/store/useAuthStore";
+import { useAuthStore } from "@/features/auth";
+
+import Price from "@/shared/ui/price";
 import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGetAdvertisement";
 
 export default function AdvertisementPage() {
@@ -21,7 +22,8 @@ export default function AdvertisementPage() {
     return <div>Advertisement not found</div>;
   }
 
-  const mainImageUrl = advertisement.images?.[0]?.url || "/placeholder-image.png";
+  const mainImageUrl =
+    advertisement.images?.[0]?.url || "/placeholder-image.png";
 
   return (
     <div className={styles.advertisementPage}>
@@ -35,18 +37,21 @@ export default function AdvertisementPage() {
           />
         </div>
         <p>{advertisement.description}</p>
-        {advertisement.properties && Object.keys(advertisement.properties).length > 0 && (
-          <div>
-            <h2>Додаткова інформація</h2>
-            <ul>
-              {Object.entries(advertisement.properties).map(([key, value]) => (
-                <li key={key}>
-                  <strong>{key}:</strong> {value}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        {advertisement.properties &&
+          Object.keys(advertisement.properties).length > 0 && (
+            <div>
+              <h2>Додаткова інформація</h2>
+              <ul>
+                {Object.entries(advertisement.properties).map(
+                  ([key, value]) => (
+                    <li key={key}>
+                      <strong>{key}:</strong> {value}
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+          )}
       </div>
 
       <div className={styles.right}>

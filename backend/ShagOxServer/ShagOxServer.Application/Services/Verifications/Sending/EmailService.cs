@@ -32,6 +32,7 @@ public class EmailService
         string email,
         string code)
     {
+
         try
         {
             var smtpHost = _emailOptions.SmtpHost
@@ -82,6 +83,7 @@ public class EmailService
         }
         catch (Exception ex)
         {
+
             _logger.LogError(
                 ex,
                 "Failed to send verification email. Email: {Email}",

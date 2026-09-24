@@ -61,7 +61,15 @@ namespace ShagOxServer.Application.Resources.Messaging.Sms {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Hello!
+        ///
+        ///Your verification code:
+        ///
+        ///{0}
+        ///
+        ///The code is valid for {1} minutes.
+        ///
+        ///If you did not register for Marketly, simply ignore this email..
         /// </summary>
         internal static string VerificationBody {
             get {

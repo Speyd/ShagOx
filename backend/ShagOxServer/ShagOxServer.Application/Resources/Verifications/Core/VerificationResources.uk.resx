@@ -117,15 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="VerificationBody" xml:space="preserve">
-    <value>Hello!
-
-Your verification code:
-
-{0}
-
-The code is valid for {1} minutes.
-
-If you did not register for Marketly, simply ignore this email.</value>
+  <data name="EmailAlreadyConfirmed" xml:space="preserve">
+    <value>Електронну пошту вже підтверджено.</value>
+  </data>
+  <data name="FailedToGenerateVerificationCode" xml:space="preserve">
+    <value>Помилка під час генерації коду.</value>
+  </data>
+  <data name="FailedToSendVerificationEmail" xml:space="preserve">
+    <value>Не вдалося надіслати електронний лист для підтвердження.</value>
+  </data>
+  <data name="FailedToSendVerificationSms" xml:space="preserve">
+    <value>Не вдалося надіслати SMS із кодом підтвердження.</value>
+  </data>
+  <data name="NoUserEmail" xml:space="preserve">
+    <value>У користувача немає електронної пошти.</value>
+  </data>
+  <data name="NoUserPhone" xml:space="preserve">
+    <value>У користувача немає номера телефону.</value>
+  </data>
+  <data name="PendingEmailNotFound" xml:space="preserve">
+    <value>Очікувану електронну пошту не знайдено.</value>
+  </data>
+  <data name="PendingPasswordNotFound" xml:space="preserve">
+    <value>Пароль, що очікує підтвердження, не знайдено.</value>
+  </data>
+  <data name="PhoneAlreadyConfirmed" xml:space="preserve">
+    <value>Номер телефону вже підтверджено.</value>
+  </data>
+  <data name="UnsupportedVerificationPurpose" xml:space="preserve">
+    <value>Непідтримувана мета підтвердження.</value>
+  </data>
+  <data name="PendingPhoneNotFound" xml:space="preserve">
+    <value>Очікуваний номер телефону не знайдено.</value>
   </data>
 </root>

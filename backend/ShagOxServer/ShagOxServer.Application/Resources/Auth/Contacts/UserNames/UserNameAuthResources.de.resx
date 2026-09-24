@@ -117,15 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="VerificationBody" xml:space="preserve">
-    <value>Hello!
-
-Your verification code:
-
-{0}
-
-The code is valid for {1} minutes.
-
-If you did not register for Marketly, simply ignore this email.</value>
+  <data name="FailedToGenerateUniqueUsername" xml:space="preserve">
+    <value>Ein eindeutiger Benutzername konnte nicht erstellt werden.</value>
   </data>
 </root>

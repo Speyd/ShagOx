@@ -117,15 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="VerificationBody" xml:space="preserve">
-    <value>Hello!
-
-Your verification code:
-
-{0}
-
-The code is valid for {1} minutes.
-
-If you did not register for Marketly, simply ignore this email.</value>
+  <data name="AttemptsExceeded" xml:space="preserve">
+    <value>Забагато спроб.</value>
+  </data>
+  <data name="CodeAlreadyUsed" xml:space="preserve">
+    <value>Код підтвердження вже використано.</value>
+  </data>
+  <data name="CodeExpired" xml:space="preserve">
+    <value>Термін дії коду підтвердження минув.</value>
+  </data>
+  <data name="CodeInvalid" xml:space="preserve">
+    <value>Недійсний код підтвердження.</value>
+  </data>
+  <data name="CodeNotFound" xml:space="preserve">
+    <value>Код підтвердження не знайдено.</value>
+  </data>
+  <data name="UnknownResult" xml:space="preserve">
+    <value>Невідомий результат підтвердження.</value>
   </data>
 </root>

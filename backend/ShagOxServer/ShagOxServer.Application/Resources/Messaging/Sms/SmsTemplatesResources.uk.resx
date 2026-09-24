@@ -118,14 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="VerificationBody" xml:space="preserve">
-    <value>Hello!
+    <value>Вітаємо!
 
-Your verification code:
+Ваш код підтвердження:
 
 {0}
 
-The code is valid for {1} minutes.
+Код дійсний протягом {1} хвилин.
 
-If you did not register for Marketly, simply ignore this email.</value>
+Якщо ви не реєструвалися в Marketly, просто проігноруйте цей лист.</value>
   </data>
 </root>

@@ -117,15 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="VerificationBody" xml:space="preserve">
-    <value>Hello!
-
-Your verification code:
-
-{0}
-
-The code is valid for {1} minutes.
-
-If you did not register for Marketly, simply ignore this email.</value>
+  <data name="EmailAlreadyConfirmed" xml:space="preserve">
+    <value>Die E-Mail-Adresse wurde bereits bestätigt.</value>
+  </data>
+  <data name="FailedToGenerateVerificationCode" xml:space="preserve">
+    <value>Fehler bei der Generierung des Codes.</value>
+  </data>
+  <data name="FailedToSendVerificationEmail" xml:space="preserve">
+    <value>Die Bestätigungs-E-Mail konnte nicht gesendet werden.</value>
+  </data>
+  <data name="FailedToSendVerificationSms" xml:space="preserve">
+    <value>Die Bestätigungs-SMS konnte nicht gesendet werden.</value>
+  </data>
+  <data name="NoUserEmail" xml:space="preserve">
+    <value>Der Benutzer hat keine E-Mail-Adresse.</value>
+  </data>
+  <data name="NoUserPhone" xml:space="preserve">
+    <value>Der Benutzer hat keine Telefonnummer.</value>
+  </data>
+  <data name="PendingEmailNotFound" xml:space="preserve">
+    <value>Ausstehende E-Mail-Adresse wurde nicht gefunden.</value>
+  </data>
+  <data name="PendingPasswordNotFound" xml:space="preserve">
+    <value>Ausstehendes Passwort wurde nicht gefunden.</value>
+  </data>
+  <data name="PhoneAlreadyConfirmed" xml:space="preserve">
+    <value>Die Telefonnummer wurde bereits bestätigt.</value>
+  </data>
+  <data name="UnsupportedVerificationPurpose" xml:space="preserve">
+    <value>Nicht unterstützter Bestätigungszweck.</value>
+  </data>
+  <data name="PendingPhoneNotFound" xml:space="preserve">
+    <value>Ausstehende Telefonnummer wurde nicht gefunden.</value>
   </data>
 </root>

@@ -118,14 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="VerificationBody" xml:space="preserve">
-    <value>Hello!
+    <value>Hallo!
 
-Your verification code:
+Ihr Bestätigungscode:
 
 {0}
 
-The code is valid for {1} minutes.
+Der Code ist {1} Minuten lang gültig.
 
-If you did not register for Marketly, simply ignore this email.</value>
+Wenn Sie sich nicht bei Marketly registriert haben, können Sie diese E-Mail einfach ignorieren.</value>
   </data>
 </root>

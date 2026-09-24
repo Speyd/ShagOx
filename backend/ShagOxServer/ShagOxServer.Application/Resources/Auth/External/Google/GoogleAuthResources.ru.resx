@@ -117,15 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="VerificationBody" xml:space="preserve">
-    <value>Hello!
-
-Your verification code:
-
-{0}
-
-The code is valid for {1} minutes.
-
-If you did not register for Marketly, simply ignore this email.</value>
+  <data name="GoogleAuthenticationFailed" xml:space="preserve">
+    <value>Не удалось аутентифицировать пользователя.</value>
+  </data>
+  <data name="GoogleAuthorizationCodeEmpty" xml:space="preserve">
+    <value>Код авторизации Google пуст.</value>
+  </data>
+  <data name="GoogleIdTokenMissing" xml:space="preserve">
+    <value>Google не вернул токен идентификации.</value>
+  </data>
+  <data name="GoogleInvalidIdToken" xml:space="preserve">
+    <value>Недействительный ID-токен Google.</value>
+  </data>
+  <data name="GoogleOAuthNotConfigured" xml:space="preserve">
+    <value>Google OAuth не настроен.</value>
+  </data>
+  <data name="GoogleTokenExchangeFailed" xml:space="preserve">
+    <value>Не удалось обменять токен Google.</value>
+  </data>
+  <data name="GoogleUserCreationFailed" xml:space="preserve">
+    <value>Не удалось создать пользователя.</value>
   </data>
 </root>

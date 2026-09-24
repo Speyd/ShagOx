@@ -6,7 +6,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -78,7 +78,7 @@ public class ImageCreateService
                request.AdvertisementId);
 
             return Result<PictureCreateResponse>
-                .Fail(EntityError.ImageCreateFailed);
+                .Fail(EntityErrorResources.ImageCreateFailed);
         }
 
         _logger.LogInformation(
@@ -157,7 +157,7 @@ public class ImageCreateService
                request.AdvertisementId);
 
             return Result<PictureCreateResponse>
-                .Fail(EntityError.ImageCreateFailed);
+                .Fail(EntityErrorResources.ImageCreateFailed);
         }  
     }
 
@@ -259,7 +259,7 @@ public class ImageCreateService
                request.AdvertisementId);
 
             return Result<PictureCreateResponse>
-                .Fail(EntityError.ImageCreateFailed);
+                .Fail(EntityErrorResources.ImageCreateFailed);
         }
 
         _logger.LogInformation(

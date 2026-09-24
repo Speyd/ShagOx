@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Account.Enum;
@@ -104,7 +105,7 @@ public class VerificationSender
 
             default:
                 return Result<bool>.Fail(
-                    "Unsupported verification purpose.");
+                    VerificationResources.UnsupportedVerificationPurpose);
         }
 
         return Result<bool>.Success(true);
@@ -118,7 +119,7 @@ public class VerificationSender
         if (string.IsNullOrWhiteSpace(email))
         {
             return Result<bool>.Fail(
-                "User does not have an email.");
+                VerificationResources.NoUserEmail);
         }
 
         return await _emailService.SendVerificationCodeAsync(
@@ -134,7 +135,7 @@ public class VerificationSender
         if (string.IsNullOrWhiteSpace(phone))
         {
             return Result<bool>.Fail(
-                "User does not have an phone.");
+                VerificationResources.NoUserPhone);
         }
 
         return await _smsService.SendVerificationCodeAsync(
@@ -169,8 +170,8 @@ public class VerificationSender
         if (!code.IsSuccess || 
             code.Value is null)
         { 
-            return Result<string>
-                .Fail("Error during Code generation");
+            return Result<string>.Fail(
+                VerificationResources.FailedToGenerateVerificationCode);
         }
 
         await _unitOfWork.SaveChangesAsync();

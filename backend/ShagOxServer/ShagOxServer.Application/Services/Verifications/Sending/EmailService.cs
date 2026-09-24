@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Verifivations;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
-using ShagOxServer.Application.Resources.EmailService;
-using ShagOxServer.Domain.Entities.Verifications;
+using ShagOxServer.Application.Resources.Messaging.Email;
+using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Net;
 using System.Net.Mail;
@@ -57,10 +57,10 @@ public class EmailService
                     smtpPassword)
             };
 
-            var subject = Emails.VerificationSubject;
+            var subject = EmailTemplatesResources.VerificationSubject;
 
             var body = string.Format(
-                Emails.VerificationBody,
+                EmailTemplatesResources.VerificationBody,
                 code, _codeOptions.ExpirationMinutes);
 
             using var message = new MailMessage
@@ -88,7 +88,7 @@ public class EmailService
                 email);
 
             return Result<bool>.Fail(
-                "Failed to send verification email.");
+                VerificationResources.FailedToSendVerificationEmail);
         }
     }
 }

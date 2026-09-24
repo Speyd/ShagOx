@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.EntityErrors {
+namespace ShagOxServer.Application.Resources.EntityErrorResourcess {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EntityError {
+    internal class EntityErrorResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal EntityError() {
+        internal EntityErrorResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.EntityErrors.EntityError", typeof(EntityError).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.EntityErrorResourcess.EntityErrorResources", typeof(EntityErrorResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

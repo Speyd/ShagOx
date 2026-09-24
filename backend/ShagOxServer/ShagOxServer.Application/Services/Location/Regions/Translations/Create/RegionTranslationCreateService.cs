@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Regions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Create;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Validator;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -64,7 +64,7 @@ public class RegionTranslationCreateService
                 request.TranslatableId);
 
             return Result<CreateResponse>
-                 .Fail(EntityError.RegionTranslationCreateFailed);
+                 .Fail(EntityErrorResources.RegionTranslationCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
@@ -86,7 +86,7 @@ public class StatusTranslationUpdateService
                 statusTranslationId);
 
             return Result<UpdateResponse>
-                .Fail(EntityError.AdvertStatusTranslationUpdateFailed);
+                .Fail(EntityErrorResources.AdvertStatusTranslationUpdateFailed);
 
         }
 

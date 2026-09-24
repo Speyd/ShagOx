@@ -106,8 +106,8 @@ public class RegisterService
 
                 await _unitOfWork.RollbackAsync();
 
-                return Result<RegisterResponse>
-                    .Fail(RegistrationAuth.RegistrationFailed);
+                return Result<RegisterResponse>.Fail(
+                    RegistrationAuthResources.RegistrationFailed);
             }
 
             await _unitOfWork.CommitAsync();
@@ -129,8 +129,8 @@ public class RegisterService
                 "Registration failed. Contact: {Contact}",
                 request.EmailOrPhone);
 
-            return Result<RegisterResponse>
-                .Fail(RegistrationAuth.RegistrationFailed);
+            return Result<RegisterResponse>.Fail(
+                RegistrationAuthResources.RegistrationFailed);
         }
     }
 

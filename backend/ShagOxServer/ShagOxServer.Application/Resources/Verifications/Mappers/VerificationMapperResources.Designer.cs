@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Auth.Contacts.UserNames {
+namespace ShagOxServer.Application.Resources.Verifications.Mappers {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.UserNames {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class UserNameAuth {
+    internal class VerificationMapperResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal UserNameAuth() {
+        internal VerificationMapperResources() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.UserNames {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Contacts.UserNames.UserNameAuth", typeof(UserNameAuth).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Verifications.Mappers.VerificationMapperResour" +
+                            "ces", typeof(VerificationMapperResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +62,56 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.UserNames {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to generate a unique username..
+        ///   Ищет локализованную строку, похожую на Too many attempts..
         /// </summary>
-        internal static string FailedToGenerateUniqueUsername {
+        internal static string AttemptsExceeded {
             get {
-                return ResourceManager.GetString("FailedToGenerateUniqueUsername", resourceCulture);
+                return ResourceManager.GetString("AttemptsExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Verification code has already been used..
+        /// </summary>
+        internal static string CodeAlreadyUsed {
+            get {
+                return ResourceManager.GetString("CodeAlreadyUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Verification code has expired..
+        /// </summary>
+        internal static string CodeExpired {
+            get {
+                return ResourceManager.GetString("CodeExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid verification code..
+        /// </summary>
+        internal static string CodeInvalid {
+            get {
+                return ResourceManager.GetString("CodeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Verification code not found..
+        /// </summary>
+        internal static string CodeNotFound {
+            get {
+                return ResourceManager.GetString("CodeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unknown verification result..
+        /// </summary>
+        internal static string UnknownResult {
+            get {
+                return ResourceManager.GetString("UnknownResult", resourceCulture);
             }
         }
     }

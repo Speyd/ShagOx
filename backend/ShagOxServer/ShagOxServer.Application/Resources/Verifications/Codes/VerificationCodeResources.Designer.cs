@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Auth.External.Google {
+namespace ShagOxServer.Application.Resources.Verifications.Codes {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.Auth.External.Google {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class GoogleAuth {
+    internal class VerificationCodeResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GoogleAuth() {
+        internal VerificationCodeResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.Auth.External.Google {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.External.Google.GoogleAuth", typeof(GoogleAuth).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Verifications.Codes.VerificationCodeResources", typeof(VerificationCodeResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,65 +61,11 @@ namespace ShagOxServer.Application.Resources.Auth.External.Google {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to authenticate user..
+        ///   Ищет локализованную строку, похожую на Failed to create verification code..
         /// </summary>
-        internal static string GoogleAuthenticationFailed {
+        internal static string FailedToCreateVerificationCode {
             get {
-                return ResourceManager.GetString("GoogleAuthenticationFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Google authorization code is empty..
-        /// </summary>
-        internal static string GoogleAuthorizationCodeEmpty {
-            get {
-                return ResourceManager.GetString("GoogleAuthorizationCodeEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Google did not return an ID token..
-        /// </summary>
-        internal static string GoogleIdTokenMissing {
-            get {
-                return ResourceManager.GetString("GoogleIdTokenMissing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Invalid Google ID token..
-        /// </summary>
-        internal static string GoogleInvalidIdToken {
-            get {
-                return ResourceManager.GetString("GoogleInvalidIdToken", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Google OAuth is not configured.
-        /// </summary>
-        internal static string GoogleOAuthNotConfigured {
-            get {
-                return ResourceManager.GetString("GoogleOAuthNotConfigured", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Google token exchange failed..
-        /// </summary>
-        internal static string GoogleTokenExchangeFailed {
-            get {
-                return ResourceManager.GetString("GoogleTokenExchangeFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to create user..
-        /// </summary>
-        internal static string GoogleUserCreationFailed {
-            get {
-                return ResourceManager.GetString("GoogleUserCreationFailed", resourceCulture);
+                return ResourceManager.GetString("FailedToCreateVerificationCode", resourceCulture);
             }
         }
     }

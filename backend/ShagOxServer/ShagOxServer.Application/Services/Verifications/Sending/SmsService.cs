@@ -2,7 +2,8 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Verifivations;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
-using ShagOxServer.Application.Resources.EmailService;
+using ShagOxServer.Application.Resources.Messaging.Sms;
+using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
@@ -39,7 +40,7 @@ public class SmsService
             );
 
             var body = string.Format(
-                Emails.VerificationBody,
+                SmsTemplatesResources.VerificationBody,
                 code, _codeOptions.ExpirationMinutes);
 
             var from = _smsOptions.FromTwilio;
@@ -63,7 +64,7 @@ public class SmsService
                 phone);
 
             return Result<bool>.Fail(
-                "Failed to send verification SMS.");
+                VerificationResources.FailedToSendVerificationSms);
         }
     }
 }

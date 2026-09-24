@@ -23,8 +23,8 @@ public class UserRoleService
 
         if (role is null)
         {
-            return Result<bool>
-                .Fail(RegistrationAuth.DefaultRoleNotFound);
+            return Result<bool>.Fail(
+                RegistrationAuthResources.DefaultRoleNotFound);
         }
 
         user.UserRoles.Add(new UserRole

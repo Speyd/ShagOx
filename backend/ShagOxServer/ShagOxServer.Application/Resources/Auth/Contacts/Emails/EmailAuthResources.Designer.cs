@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Auth.Registrations {
+namespace ShagOxServer.Application.Resources.Auth.Contacts.Emails {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.Auth.Registrations {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class RegistrationAuth {
+    internal class EmailAuthResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal RegistrationAuth() {
+        internal EmailAuthResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.Auth.Registrations {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Registrations.RegistrationAuth", typeof(RegistrationAuth).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Contacts.Emails.EmailAuthResources", typeof(EmailAuthResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,20 @@ namespace ShagOxServer.Application.Resources.Auth.Registrations {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Default role not found..
+        ///   Ищет локализованную строку, похожую на Failed to send verification email..
         /// </summary>
-        internal static string DefaultRoleNotFound {
+        internal static string FailedToSendVerificationEmail {
             get {
-                return ResourceManager.GetString("DefaultRoleNotFound", resourceCulture);
+                return ResourceManager.GetString("FailedToSendVerificationEmail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Registration failed..
+        ///   Ищет локализованную строку, похожую на Email is incorrect..
         /// </summary>
-        internal static string RegistrationFailed {
+        internal static string InvalidEmail {
             get {
-                return ResourceManager.GetString("RegistrationFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Unsupported contact type..
-        /// </summary>
-        internal static string UnsupportedContactType {
-            get {
-                return ResourceManager.GetString("UnsupportedContactType", resourceCulture);
+                return ResourceManager.GetString("InvalidEmail", resourceCulture);
             }
         }
     }

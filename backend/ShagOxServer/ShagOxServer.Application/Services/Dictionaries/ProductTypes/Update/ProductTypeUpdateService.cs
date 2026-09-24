@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Update;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -80,7 +80,7 @@ public class ProductTypeUpdateService
                 productTypeId);
 
             return Result<UpdateResponse>
-                .Fail(EntityError.ProductTypeUpdateFailed);
+                .Fail(EntityErrorResources.ProductTypeUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

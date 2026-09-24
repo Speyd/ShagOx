@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.EmailService {
+namespace ShagOxServer.Application.Resources.Auth.Registrations {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace ShagOxServer.Application.Resources.EmailService {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Emails {
+    internal class RegistrationAuthResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Emails() {
+        internal RegistrationAuthResources() {
         }
         
         /// <summary>
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.EmailService.Emails", typeof(Emails).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Registrations.RegistrationAuthResources", typeof(RegistrationAuthResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace ShagOxServer.Application.Resources.EmailService {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,28 +61,29 @@ namespace ShagOxServer.Application.Resources.EmailService {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hello!
-        ///
-        ///Your verification code:
-        ///
-        ///{0}
-        ///
-        ///The code is valid for {1} minutes.
-        ///
-        ///If you did not register for Marketly, simply ignore this email..
+        ///   Ищет локализованную строку, похожую на Default role not found..
         /// </summary>
-        public static string VerificationBody {
+        internal static string DefaultRoleNotFound {
             get {
-                return ResourceManager.GetString("VerificationBody", resourceCulture);
+                return ResourceManager.GetString("DefaultRoleNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Marketly -  Email verification.
+        ///   Ищет локализованную строку, похожую на Registration failed..
         /// </summary>
-        public static string VerificationSubject {
+        internal static string RegistrationFailed {
             get {
-                return ResourceManager.GetString("VerificationSubject", resourceCulture);
+                return ResourceManager.GetString("RegistrationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unsupported contact type..
+        /// </summary>
+        internal static string UnsupportedContactType {
+            get {
+                return ResourceManager.GetString("UnsupportedContactType", resourceCulture);
             }
         }
     }

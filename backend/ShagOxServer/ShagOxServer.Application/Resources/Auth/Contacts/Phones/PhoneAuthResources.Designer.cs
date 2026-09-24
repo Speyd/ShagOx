@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Auth.Contacts.Emails {
+namespace ShagOxServer.Application.Resources.Auth.Contacts.Phones {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Emails {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EmailAuth {
+    internal class PhoneAuthResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal EmailAuth() {
+        internal PhoneAuthResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Emails {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Contacts.Emails.EmailAuth", typeof(EmailAuth).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Contacts.Phones.PhoneAuthResources", typeof(PhoneAuthResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Emails {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to send verification email..
+        ///   Ищет локализованную строку, похожую на Failed to send verification code..
         /// </summary>
-        internal static string FailedToSendVerificationEmail {
+        internal static string FailedToSendVerificationCode {
             get {
-                return ResourceManager.GetString("FailedToSendVerificationEmail", resourceCulture);
+                return ResourceManager.GetString("FailedToSendVerificationCode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Email is incorrect..
+        ///   Ищет локализованную строку, похожую на Phone is incorrect..
         /// </summary>
-        internal static string InvalidEmail {
+        internal static string InvalidPhone {
             get {
-                return ResourceManager.GetString("InvalidEmail", resourceCulture);
+                return ResourceManager.GetString("InvalidPhone", resourceCulture);
             }
         }
     }

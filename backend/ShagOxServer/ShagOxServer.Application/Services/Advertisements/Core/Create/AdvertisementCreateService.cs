@@ -6,7 +6,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Advertisements.Core.Create.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -93,7 +93,7 @@ public class AdvertisementCreateService
                 request.Title);
 
             return Result<CreateResponse>
-                    .Fail(EntityError.AdvertisementCreateFailed);
+                    .Fail(EntityErrorResources.AdvertisementCreateFailed);
         }
 
         _logger.LogInformation(

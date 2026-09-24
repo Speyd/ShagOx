@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Create
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Create;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Validator;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -64,7 +64,7 @@ public class ConditionTranslationCreateService
                 request.TranslatableId);
 
             return Result<CreateResponse>
-                 .Fail(EntityError.ConditionTranslationCreateFailed);
+                 .Fail(EntityErrorResources.ConditionTranslationCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

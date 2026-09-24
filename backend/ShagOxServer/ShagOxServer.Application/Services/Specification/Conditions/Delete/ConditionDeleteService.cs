@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Delete;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Specification.Conditions.Create;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
@@ -60,7 +60,7 @@ public class ConditionDeleteService
                 id);
 
             return Result<DeleteResponse>
-                 .Fail(EntityError.ConditionDeleteFailed);
+                 .Fail(EntityErrorResources.ConditionDeleteFailed);
         }
 
 

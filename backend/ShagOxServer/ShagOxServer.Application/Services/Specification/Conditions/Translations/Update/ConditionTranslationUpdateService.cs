@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Update
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Update;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Validator;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
@@ -85,7 +85,7 @@ public class ConditionTranslationUpdateService
                 conditionTranslationId);
 
             return Result<UpdateResponse>
-                 .Fail(EntityError.ConditionTranslationUpdateFailed);
+                 .Fail(EntityErrorResources.ConditionTranslationUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

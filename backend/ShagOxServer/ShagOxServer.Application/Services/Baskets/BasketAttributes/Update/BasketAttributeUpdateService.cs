@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Update;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
@@ -102,8 +102,8 @@ public class BasketAttributeUpdateService
                 attributeId,
                 request.AttributeDefinitionId);
 
-            return Result<UpdateResponse>
-                .Fail(EntityError.BasketAttributeUpdateFailed);
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.BasketAttributeUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

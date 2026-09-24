@@ -22,7 +22,7 @@ public class UserPasswordService
         if (string.IsNullOrWhiteSpace(request.Password))
         {
             return Result<bool>
-                .Fail(PasswordAuth.InvalidNewPassword);
+                .Fail(PasswordAuthResources.InvalidNewPassword);
         }
 
         user.PasswordHash =

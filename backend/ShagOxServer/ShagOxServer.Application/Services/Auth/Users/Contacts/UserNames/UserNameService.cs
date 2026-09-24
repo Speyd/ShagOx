@@ -56,8 +56,8 @@ public class UserNameService
                 "Failed to generate a unique username. UserName: {userName}",
                 userName);
 
-            return Result<string>
-                .Fail(UserNameAuth.FailedToGenerateUniqueUsername);
+            return Result<string>.Fail(
+                UserNameAuthResources.FailedToGenerateUniqueUsername);
         }
     }
 }

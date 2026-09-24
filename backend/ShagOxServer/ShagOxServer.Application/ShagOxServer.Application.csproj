@@ -25,116 +25,125 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\Auth\Contacts\Emails\EmailAuth.Designer.cs">
+    <Compile Update="Resources\Auth\Contacts\Emails\EmailAuthResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>EmailAuth.resx</DependentUpon>
+      <DependentUpon>EmailAuthResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\Contacts\Phones\PhoneAuth.Designer.cs">
+    <Compile Update="Resources\Auth\Contacts\Phones\PhoneAuthResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>PhoneAuth.resx</DependentUpon>
+      <DependentUpon>PhoneAuthResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\Contacts\UserNames\UserNameAuth.Designer.cs">
+    <Compile Update="Resources\Auth\Contacts\UserNames\UserNameAuthResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>UserNameAuth.resx</DependentUpon>
+      <DependentUpon>UserNameAuthResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\External\Google\GoogleAuth.Designer.cs">
+    <Compile Update="Resources\Auth\External\Google\GoogleAuthResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>GoogleAuth.resx</DependentUpon>
+      <DependentUpon>GoogleAuthResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\Logins\Login.Designer.cs">
+    <Compile Update="Resources\Auth\Logins\LoginAuthResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Login.resx</DependentUpon>
+      <DependentUpon>LoginAuthResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\Contacts\Passwords\PasswordAuth.Designer.cs">
+    <Compile Update="Resources\Auth\Contacts\Passwords\PasswordAuthResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>PasswordAuth.resx</DependentUpon>
+      <DependentUpon>PasswordAuthResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\Registrations\RegistrationAuth.Designer.cs">
+    <Compile Update="Resources\Auth\Registrations\RegistrationAuthResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>RegistrationAuth.resx</DependentUpon>
+      <DependentUpon>RegistrationAuthResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\EmailService\Emails.Designer.cs">
+    <Compile Update="Resources\Messaging\Email\EmailTemplatesResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Emails.resx</DependentUpon>
+      <DependentUpon>EmailTemplatesResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\EntityErrors\EntityError.Designer.cs">
+    <Compile Update="Resources\EntityErrorResourcess\EntityErrorResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>EntityError.resx</DependentUpon>
+      <DependentUpon>EntityErrorResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Verifications\Codes\VerificationCode.Designer.cs">
+    <Compile Update="Resources\Messaging\Sms\SmsTemplatesResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>VerificationCode.resx</DependentUpon>
+      <DependentUpon>SmsTemplatesResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Verifications\Verification.Designer.cs">
+    <Compile Update="Resources\Verifications\Codes\VerificationCodeResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Verification.resx</DependentUpon>
+      <DependentUpon>VerificationCodeResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Verifications\VerificationMapper.Designer.cs">
+    <Compile Update="Resources\Verifications\Core\VerificationResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>VerificationMapper.resx</DependentUpon>
+      <DependentUpon>VerificationResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Verifications\Mappers\VerificationMapperResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VerificationMapperResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Update="Resources\Auth\Contacts\Emails\EmailAuth.resx">
+		<EmbeddedResource Update="Resources\Auth\Contacts\Emails\EmailAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>EmailAuth.Designer.cs</LastGenOutput>
+		  <LastGenOutput>EmailAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\Contacts\Phones\PhoneAuth.resx">
+		<EmbeddedResource Update="Resources\Auth\Contacts\Phones\PhoneAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>PhoneAuth.Designer.cs</LastGenOutput>
+		  <LastGenOutput>PhoneAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\Contacts\UserNames\UserNameAuth.resx">
+		<EmbeddedResource Update="Resources\Auth\Contacts\UserNames\UserNameAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>UserNameAuth.Designer.cs</LastGenOutput>
+		  <LastGenOutput>UserNameAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\External\Google\GoogleAuth.resx">
+		<EmbeddedResource Update="Resources\Auth\External\Google\GoogleAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>GoogleAuth.Designer.cs</LastGenOutput>
+		  <LastGenOutput>GoogleAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\Logins\Login.resx">
+		<EmbeddedResource Update="Resources\Auth\Logins\LoginAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Login.Designer.cs</LastGenOutput>
+		  <LastGenOutput>LoginAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\Contacts\Passwords\PasswordAuth.resx">
+		<EmbeddedResource Update="Resources\Auth\Contacts\Passwords\PasswordAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>PasswordAuth.Designer.cs</LastGenOutput>
+		  <LastGenOutput>PasswordAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\Registrations\RegistrationAuth.resx">
+		<EmbeddedResource Update="Resources\Auth\Registrations\RegistrationAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>RegistrationAuth.Designer.cs</LastGenOutput>
+		  <LastGenOutput>RegistrationAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\EmailService\Emails.resx">
+		<EmbeddedResource Update="Resources\Messaging\Email\EmailTemplatesResources.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Emails.Designer.cs</LastGenOutput>
+			<LastGenOutput>EmailTemplatesResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\EntityErrors\EntityError.resx">
+		<EmbeddedResource Update="Resources\EntityErrorResourcess\EntityErrorResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>EntityError.Designer.cs</LastGenOutput>
+		  <LastGenOutput>EntityErrorResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Verifications\Codes\VerificationCode.resx">
+		<EmbeddedResource Update="Resources\Messaging\Sms\SmsTemplatesResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>VerificationCode.Designer.cs</LastGenOutput>
+		  <LastGenOutput>SmsTemplatesResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Verifications\Verification.resx">
+		<EmbeddedResource Update="Resources\Verifications\Codes\VerificationCodeResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Verification.Designer.cs</LastGenOutput>
+		  <LastGenOutput>VerificationCodeResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Verifications\VerificationMapper.resx">
+		<EmbeddedResource Update="Resources\Verifications\Core\VerificationResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>VerificationMapper.Designer.cs</LastGenOutput>
+		  <LastGenOutput>VerificationResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\Mappers\VerificationMapperResources.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>VerificationMapperResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 	

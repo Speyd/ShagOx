@@ -40,7 +40,7 @@ public class ChangePasswordService
         if (string.IsNullOrWhiteSpace(request.NewPassword))
         {
             return Result<bool>
-                .Fail(PasswordAuth.InvalidNewPassword);
+                .Fail(PasswordAuthResources.InvalidNewPassword);
         }
 
         var user = await _userValidator
@@ -56,7 +56,7 @@ public class ChangePasswordService
         if (verifyResult == PasswordVerificationResult.Failed)
         {
             return Result<bool>
-                .Fail(PasswordAuth.InvalidPassword);
+                .Fail(PasswordAuthResources.InvalidPassword);
         }
 
         string newPasswordHash =
@@ -84,8 +84,8 @@ public class ChangePasswordService
                 "Failed to change pasword. UserId: {UserId}",
                 userId);
 
-            return Result<bool>
-                .Fail(PasswordAuth.FailedToChangePassword);
+            return Result<bool>.Fail(
+                PasswordAuthResources.FailedToChangePassword);
         }
     }
 
@@ -110,7 +110,7 @@ public class ChangePasswordService
         }
 
         return Result<bool>
-            .Fail(PasswordAuth.NoConfirmedContact);
+            .Fail(PasswordAuthResources.NoConfirmedContact);
     }
 
     private async Task<Result<bool>> SendChangeCode(

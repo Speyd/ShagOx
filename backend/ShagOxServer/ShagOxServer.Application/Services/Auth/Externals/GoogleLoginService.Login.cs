@@ -16,8 +16,8 @@ public partial class GoogleLoginService
     {
         if (string.IsNullOrWhiteSpace(request.Code))
         {
-            return Result<LoginResponse>
-                .Fail(GoogleAuth.GoogleAuthorizationCodeEmpty);
+            return Result<LoginResponse>.Fail(
+                GoogleAuthResources.GoogleAuthorizationCodeEmpty);
         }
 
         var clientId = _googleSettings.ClientId;
@@ -26,8 +26,8 @@ public partial class GoogleLoginService
         if (string.IsNullOrWhiteSpace(clientId) ||
             string.IsNullOrWhiteSpace(clientSecret))
         {
-            return Result<LoginResponse>
-                .InternalServer(GoogleAuth.GoogleOAuthNotConfigured);
+            return Result<LoginResponse>.InternalServer(
+                GoogleAuthResources.GoogleOAuthNotConfigured);
         }
 
         var tokenResult = await ExchangeCodeAsync(
@@ -98,7 +98,7 @@ public partial class GoogleLoginService
                 error);
 
             return Result<GoogleTokenResponse>
-                .Fail(GoogleAuth.GoogleTokenExchangeFailed);
+                .Fail(GoogleAuthResources.GoogleTokenExchangeFailed);
         }
 
         var tokens = await response.Content
@@ -108,7 +108,7 @@ public partial class GoogleLoginService
             string.IsNullOrWhiteSpace(tokens.IdToken))
         {
             return Result<GoogleTokenResponse>
-                .Fail(GoogleAuth.GoogleIdTokenMissing);
+                .Fail(GoogleAuthResources.GoogleIdTokenMissing);
         }
 
         _logger.LogInformation(
@@ -147,7 +147,7 @@ public partial class GoogleLoginService
                 clientId);
 
             return Result<GoogleJsonWebSignature.Payload>
-                .Fail(GoogleAuth.GoogleInvalidIdToken);
+                .Fail(GoogleAuthResources.GoogleInvalidIdToken);
         }
     }
 }

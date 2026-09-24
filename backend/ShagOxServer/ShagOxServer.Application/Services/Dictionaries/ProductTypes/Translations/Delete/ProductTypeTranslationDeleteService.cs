@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Delete;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -59,7 +59,7 @@ public class ProductTypeTranslationDeleteService
                 id);
 
             return Result<DeleteResponse>
-                .Fail(EntityError.ProductTypeTranslationDeleteFailed);
+                .Fail(EntityErrorResources.ProductTypeTranslationDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

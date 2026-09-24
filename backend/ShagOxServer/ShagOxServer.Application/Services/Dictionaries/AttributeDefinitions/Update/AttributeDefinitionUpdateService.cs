@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -92,8 +92,8 @@ public class AttributeDefinitionUpdateService
                "Failed to update attribute definition. Id: {Id}",
                attributeId);
 
-            return Result<UpdateResponse>
-                .Fail(EntityError.AttributeDefinitionUpdateFailed);
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.AttributeDefinitionUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

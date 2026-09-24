@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -58,7 +58,7 @@ public class CityDeleteService
                 id);
 
             return Result<DeleteResponse>
-                 .Fail(EntityError.CityDeleteFailed);
+                 .Fail(EntityErrorResources.CityDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

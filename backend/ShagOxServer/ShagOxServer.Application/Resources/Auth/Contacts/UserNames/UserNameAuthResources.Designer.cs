@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Auth.Logins {
+namespace ShagOxServer.Application.Resources.Auth.Contacts.UserNames {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.Auth.Logins {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class LoginAuth {
+    internal class UserNameAuthResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal LoginAuth() {
+        internal UserNameAuthResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.Auth.Logins {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Logins.LoginAuth", typeof(LoginAuth).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Contacts.UserNames.UserNameAuthResources", typeof(UserNameAuthResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,11 @@ namespace ShagOxServer.Application.Resources.Auth.Logins {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Login failed..
+        ///   Ищет локализованную строку, похожую на Failed to generate a unique username..
         /// </summary>
-        internal static string LoginFailed {
+        internal static string FailedToGenerateUniqueUsername {
             get {
-                return ResourceManager.GetString("LoginFailed", resourceCulture);
+                return ResourceManager.GetString("FailedToGenerateUniqueUsername", resourceCulture);
             }
         }
     }

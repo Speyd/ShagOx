@@ -68,7 +68,7 @@ public partial class GoogleLoginService
                         payload.Email);
 
                     return Result<LoginResponse>
-                        .Fail(GoogleAuth.GoogleUserCreationFailed);
+                        .Fail(GoogleAuthResources.GoogleUserCreationFailed);
                 }
             }
 
@@ -83,8 +83,8 @@ public partial class GoogleLoginService
                 "Failed to authenticate user with Google. Email{Email}",
                 payload.Email);
 
-            return Result<LoginResponse>
-                .Fail(GoogleAuth.GoogleAuthenticationFailed);
+            return Result<LoginResponse>.Fail(
+                GoogleAuthResources.GoogleAuthenticationFailed);
         }
     }
 }

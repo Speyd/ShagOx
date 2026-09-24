@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Services.Verifications.Enum;
+﻿using ShagOxServer.Application.Resources.Verifications.Mappers;
+using ShagOxServer.Application.Services.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Verifications.Mappers;
@@ -11,30 +12,30 @@ public static class VerificationResultMapper
         {
             case VerificationCodeResult.NotFound:
                 return Result<bool>.Fail(
-                    "Verification code not found.");
+                    VerificationMapperResources.CodeNotFound);
 
             case VerificationCodeResult.Expired:
                 return Result<bool>.Fail(
-                    "Verification code has expired.");
+                    VerificationMapperResources.CodeExpired);
 
             case VerificationCodeResult.Invalid:
                 return Result<bool>.Fail(
-                    "Invalid verification code.");
+                    VerificationMapperResources.CodeInvalid);
 
             case VerificationCodeResult.AttemptsExceeded:
                 return Result<bool>.Fail(
-                    "Too many attempts.");
+                    VerificationMapperResources.AttemptsExceeded);
 
             case VerificationCodeResult.AlreadyUsed:
                 return Result<bool>.Fail(
-                    "Verification code has already been used.");
+                    VerificationMapperResources.CodeAlreadyUsed);
 
             case VerificationCodeResult.Success:
                 break;
 
             default:
                 return Result<bool>.Fail(
-                    "Unknown verification result.");
+                    VerificationMapperResources.UnknownResult);
         }
 
         return Result<bool>.Success(true);

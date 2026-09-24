@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Delete;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -58,8 +58,8 @@ public class ProductTypeDeleteService
                "Failed to delete product type. Id: {Id}",
                id);
 
-            return Result<DeleteResponse>
-                .Fail(EntityError.ProductTypeDeleteFailed);
+            return Result<DeleteResponse>.Fail(
+                EntityErrorResources.ProductTypeDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

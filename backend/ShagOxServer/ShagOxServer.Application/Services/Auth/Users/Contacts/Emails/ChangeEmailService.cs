@@ -48,7 +48,7 @@ public class ChangeEmailService
         if (type != UserContactType.Email)
         {
             return Result<bool>
-                .Fail(EmailAuth.InvalidEmail);
+                .Fail(EmailAuthResources.InvalidEmail);
         }
 
         var emailExists = await _userValidator
@@ -78,7 +78,7 @@ public class ChangeEmailService
                 userId);
 
             return Result<bool>.Fail(
-                EmailAuth.FailedToSendVerificationEmail);
+                EmailAuthResources.FailedToSendVerificationEmail);
         }
     }
 }

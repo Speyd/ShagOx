@@ -48,7 +48,7 @@ public class ChangePhoneService
         if (type != UserContactType.Phone)
         {
             return Result<bool>
-                .Fail(PhoneAuth.InvalidPhone);
+                .Fail(PhoneAuthResources.InvalidPhone);
         }
 
         var phoneExists = await _userValidator
@@ -78,8 +78,8 @@ public class ChangePhoneService
                 "UserId: {UserId}",
                 userId);
 
-            return Result<bool>
-                .Fail(PhoneAuth.FailedToSendVerificationCode);
+            return Result<bool>.Fail(
+                PhoneAuthResources.FailedToSendVerificationCode);
         }
     }
 }

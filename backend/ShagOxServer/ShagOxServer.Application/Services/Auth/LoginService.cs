@@ -59,7 +59,7 @@ public class LoginService
             if (result == PasswordVerificationResult.Failed)
             {
                 return Result<LoginResponse>
-                    .Fail(PasswordAuth.InvalidPassword);
+                    .Fail(PasswordAuthResources.InvalidPassword);
             }
 
             _logger.LogInformation(
@@ -78,7 +78,7 @@ public class LoginService
                 request.EmailOrPhoneOrUserName);
 
             return Result<LoginResponse>
-                .Fail(LoginAuth.LoginFailed);
+                .Fail(LoginAuthResources.LoginFailed);
         }
     }
 

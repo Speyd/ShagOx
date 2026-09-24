@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Auth.Contacts.Phones {
+namespace ShagOxServer.Application.Resources.Messaging.Email {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Phones {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class PhoneAuth {
+    public class EmailTemplatesResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PhoneAuth() {
+        internal EmailTemplatesResources() {
         }
         
         /// <summary>
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Contacts.Phones.PhoneAuth", typeof(PhoneAuth).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Messaging.Email.EmailTemplatesResources", typeof(EmailTemplatesResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Phones {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,20 +61,28 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Phones {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to send verification code..
+        ///   Ищет локализованную строку, похожую на Hello!
+        ///
+        ///Your verification code:
+        ///
+        ///{0}
+        ///
+        ///The code is valid for {1} minutes.
+        ///
+        ///If you did not register for Marketly, simply ignore this email..
         /// </summary>
-        internal static string FailedToSendVerificationCode {
+        public static string VerificationBody {
             get {
-                return ResourceManager.GetString("FailedToSendVerificationCode", resourceCulture);
+                return ResourceManager.GetString("VerificationBody", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Phone is incorrect..
+        ///   Ищет локализованную строку, похожую на Marketly -  Email verification.
         /// </summary>
-        internal static string InvalidPhone {
+        public static string VerificationSubject {
             get {
-                return ResourceManager.GetString("InvalidPhone", resourceCulture);
+                return ResourceManager.GetString("VerificationSubject", resourceCulture);
             }
         }
     }

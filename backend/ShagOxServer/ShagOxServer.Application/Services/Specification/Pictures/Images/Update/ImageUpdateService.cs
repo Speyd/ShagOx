@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Update;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -89,7 +89,7 @@ public class ImageUpdateService
                imageId);
 
             return Result<UpdateResponse>
-                .Fail(EntityError.ImageUpdateFailed);
+                .Fail(EntityErrorResources.ImageUpdateFailed);
         }
 
         _logger.LogInformation(

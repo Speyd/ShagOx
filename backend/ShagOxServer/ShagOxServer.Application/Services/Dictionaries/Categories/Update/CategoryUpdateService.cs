@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -93,7 +93,7 @@ public class CategoryUpdateService
                categoryId);
 
             return Result<UpdateResponse>
-                .Fail(EntityError.CategoryUpdateFailed);
+                .Fail(EntityErrorResources.CategoryUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

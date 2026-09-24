@@ -5,7 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
-using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -99,7 +99,7 @@ public class AdvertisementUpdateService
                 advertId);
 
             return Result<UpdateResponse>
-                    .Fail(EntityError.AdvertisementUpdateFailed);
+                    .Fail(EntityErrorResources.AdvertisementUpdateFailed);
         }
     }
 }

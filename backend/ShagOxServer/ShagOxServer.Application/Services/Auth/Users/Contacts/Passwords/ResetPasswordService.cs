@@ -44,7 +44,7 @@ public class ResetPasswordService
         if (string.IsNullOrWhiteSpace(request.NewPassword))
         {
             return Result<bool>
-                .Fail(PasswordAuth.InvalidNewPassword);
+                .Fail(PasswordAuthResources.InvalidNewPassword);
         }
 
         var user = await _userValidator
@@ -82,7 +82,7 @@ public class ResetPasswordService
                 request.UserId);
 
             return Result<bool>
-                .Fail(PasswordAuth.FailedToResetPassword);
+                .Fail(PasswordAuthResources.FailedToResetPassword);
         }
     }
 
@@ -98,8 +98,8 @@ public class ResetPasswordService
             case UserContactType.Email:
                 if (!user.EmailConfirmed)
                 {
-                    return Result<bool>
-                        .Fail(PasswordAuth.UserDoesNotHaveConfirmedEmail);
+                    return Result<bool>.Fail(
+                        PasswordAuthResources.UserDoesNotHaveConfirmedEmail);
                 }
 
                 purpose = VerificationCodePurpose.ResetPasswordEmail;
@@ -108,8 +108,8 @@ public class ResetPasswordService
             case UserContactType.Phone:
                 if (!user.PhoneConfirmed)
                 {
-                    return Result<bool>
-                        .Fail(PasswordAuth.UserDoesNotHaveConfirmedPhone);
+                    return Result<bool>.Fail(
+                        PasswordAuthResources.UserDoesNotHaveConfirmedPhone);
                 }
 
                 purpose = VerificationCodePurpose.ResetPasswordPhone;
@@ -129,11 +129,11 @@ public class ResetPasswordService
                 }
 
                 return Result<bool>
-                    .Fail(PasswordAuth.NoConfirmedContact);
+                    .Fail(PasswordAuthResources.NoConfirmedContact);
 
             default:
                 return Result<bool>
-                    .Fail(PasswordAuth.InvalidContactType);
+                    .Fail(PasswordAuthResources.InvalidContactType);
         }
 
         return await SendResetCode(

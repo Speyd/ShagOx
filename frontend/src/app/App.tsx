@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import Router from "./routing";
 import "./styles/index.css";
-import { useAuthStore } from "@/features/auth/store/useAuthStore";
+
 import { Toaster } from "sonner";
 import { useMe } from "@/features/auth/model/hooks/useMe";
+import { useAuthStore } from "@/features/auth";
 
 export default function App() {
   const setUser = useAuthStore((state) => state.setUser);

@@ -42,7 +42,7 @@ export default function UsersPage() {
       header: "Avatar",
       cell: ({ row }) => (
         <Avatar src={row.original.avatar?.url} radius="md" size={56}>
-          {row.original.name[0]}
+          {row.original.firstName?.[0] ?? row.original.userName[0]}
         </Avatar>
       ),
     },
@@ -52,8 +52,9 @@ export default function UsersPage() {
       cell: ({ row }) => (
         <Stack gap={2}>
           <Text fw={600}>
-            {row.original.name}
-            {row.original.surname && ` ${row.original.surname}`}
+            {row.original.firstName}
+            {row.original.lastName && ` ${row.original.lastName}`}
+            {!row.original.firstName && !row.original.lastName && `@${row.original.userName}`}
           </Text>
 
           <Text size="sm" c="dimmed">

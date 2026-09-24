@@ -2,7 +2,7 @@ import { Text } from "@mantine/core";
 import styles from "./NewTechReleases.module.css";
 import ReleaseCard from "./ReleaseCard";
 import Container from "@/shared/ui/container";
-import Arrow from "@/shared/ui/Arrow/Arrow";
+import Arrow from "@/shared/ui/arrow/Arrow";
 
 const releases = [
     {

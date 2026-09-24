@@ -1,0 +1,104 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  width: 100%;
+}
+
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+.category {
+  cursor: pointer;
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 150px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.category:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-base);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.category:active {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.categorySelected {
+  border: 2px solid var(--color-base);
+  background-color: rgba(0, 0, 0, 0.02);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.categorySelected:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.icon {
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.title {
+  text-align: center;
+  color: var(--text-base);
+}
+
+.selectedCount {
+  background-color: #3d4f65;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  min-height: 24px;
+}
+
+.submitBtn {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+  border-radius: 8px;
+}
+
+@media (max-width: 650px) {
+  .categoriesGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 400px) {
+  .categoriesGrid {
+    grid-template-columns: 1fr;
+  }
+}

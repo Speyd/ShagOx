@@ -1,0 +1,1 @@
+export { default as FavoritesTab } from './ui/FavoritesTab';

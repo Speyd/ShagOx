@@ -1,0 +1,1 @@
+export { default as ProfileTabs } from "./ui/ProfileTabs"

@@ -1,8 +1,9 @@
 import { useGetFavorites } from "@/features/favorites/model/hooks/useGetFavorites";
 import { Loader } from "lucide-react";
-import AdvertisementCard from "@/entities/advertisement";
+
 import Container from "@/shared/ui/container";
 import styles from "./FavoritesPage.module.css";
+import AdvertisementCard from "@/entities/advertisement/ui/AdvertisementCard";
 
 export default function FavoritesPage() {
   const { data: favorites, isLoading } = useGetFavorites();

@@ -6,4 +6,5 @@ public interface ILoginService
 {
     Task<Result<LoginResponse>> LoginAsync(
         LoginRequest request);
+
 }

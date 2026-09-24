@@ -1,0 +1,21 @@
+.tabsNav {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.tabBtn {
+    padding: 10px 18px;
+    background-color: white;
+    cursor: pointer;
+    font-size: var(--font-sm);
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+}
+
+.active {
+    background-color: var(--color-base);
+    color: white;
+}

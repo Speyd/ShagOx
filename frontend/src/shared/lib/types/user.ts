@@ -4,8 +4,10 @@ import type { Role } from "./role";
 
 export type User = {
   id: number;
-  surname: string | null;
-  name: string;
+  firstName: string | null;
+  lastName: string | null;
+  userName: string;
+  bio: string | null;
   phone: string;
   email: string | null;
   avatar: Avatar | null;

@@ -7,7 +7,8 @@ import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGet
 import AdvertisementForm from "@/features/advertisement/advertisement-form/ui/AdvertisementForm";
 import type { UpdateAdvertisementRequestDto } from "@/features/advertisement/update-advertisement/model/types";
 import styles from "./UpdateAdvertisementPage.module.css";
-import { useAuthStore } from "@/features/auth/store/useAuthStore";
+import { useAuthStore } from "@/features/auth";
+
 
 export default function UpdateAdvertisementPage() {
   const { id } = useParams();

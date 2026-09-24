@@ -1,21 +1,28 @@
 .notFoundPage {
-
+  flex: 1;
+  width: 100%;
+  min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px 24px;
-  background-color: #f8fafc;
+  background-color: var(--bg-base);
+  box-sizing: border-box;
 }
 
 .notFoundCard {
-  height: 100%;
+  width: 100%;
+  max-width: 1330px;
+  min-height: 800px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 60px 80px;
-  background-color: white;
-  border-radius: 16px;
+  justify-content: space-between;
+
+  padding: 130px;
+  background-color: #fff;
+  border-radius: 20px;
   box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
+  box-sizing: border-box;
 }
 
 .content {
@@ -33,33 +40,13 @@
   gap: 10px;
 }
 
-.subtitle {
-  font-size: var(--font-lg);
-  font-weight: 600;
-  color: var(--text-base);
-}
-
-.title {
-  font-size: 42px;
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--text-base);
-}
-
-.description {
-  margin-top: 4px;
-  font-size: var(--font-md);
-  line-height: 1.6;
-  color: var(--mantine-color-gray-6);
-}
-
 .homeLink {
   text-decoration: none;
 }
 
 .imageContainer {
   flex: 1;
-  max-width: 450px;
+  max-width: 750px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,4 +55,10 @@
 .image {
   width: 100%;
   height: auto;
+  display: block;
+}
+
+.homeButton{
+  padding: 12px 34px;
+  border-radius: 5px;
 }

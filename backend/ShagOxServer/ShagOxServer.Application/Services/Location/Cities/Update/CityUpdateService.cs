@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Cities.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
@@ -92,7 +93,7 @@ public class CityUpdateService
                cityId);
 
             return Result<UpdateResponse>
-                 .Fail("Failed to update city.");
+                 .Fail(EntityError.CityUpdateFailed);
         }
 
 

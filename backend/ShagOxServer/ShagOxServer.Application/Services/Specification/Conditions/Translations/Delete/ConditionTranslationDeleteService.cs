@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Delete;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Validator;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -58,7 +59,7 @@ public class ConditionTranslationDeleteService
                 id);
 
             return Result<DeleteResponse>
-                 .Fail("Failed to delete condition translation.");
+                 .Fail(EntityError.ConditionTranslationDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

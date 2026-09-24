@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Delete;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -69,7 +70,7 @@ public class UserDeleteService
                 id);
 
             return Result<DeleteResponse>
-                     .Fail("Failed to delete user.");
+                .Fail(EntityError.UserDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

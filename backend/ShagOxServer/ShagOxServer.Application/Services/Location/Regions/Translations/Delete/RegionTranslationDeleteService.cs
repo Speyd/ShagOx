@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Delete;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Validator;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -58,7 +59,7 @@ public class RegionTranslationDeleteService
                 id);
 
             return Result<DeleteResponse>
-                  .Fail("Failed to delete region translation.");
+                  .Fail(EntityError.RegionTranslationDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

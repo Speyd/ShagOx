@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Create;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Specification.Currencies.Create.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -68,7 +69,7 @@ public class CurrencyCreateService
                 request.Code);
 
             return Result<CreateResponse>
-                 .Fail("Failed to create currency.");
+                 .Fail(EntityError.CurrencyCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Update;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
@@ -102,7 +103,7 @@ public class BasketAttributeUpdateService
                 request.AttributeDefinitionId);
 
             return Result<UpdateResponse>
-                     .Fail("Failed to update basket attribute.");
+                .Fail(EntityError.BasketAttributeUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);
@@ -121,9 +122,6 @@ public class BasketAttributeUpdateService
         var existsValidator = await _attributeValidator
             .NotExistsAsync(attributeDef, changeValidator.order);
 
-        if (!existsValidator.IsSuccess)
-            return Result<bool>.Fail(existsValidator.Error);
-
-        return Result<bool>.Success(true);
+        return existsValidator;
     }
 }

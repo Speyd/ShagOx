@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Update;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
@@ -85,7 +86,7 @@ public class CategoryTranslationUpdateService
                statusTranslationId);
 
             return Result<UpdateResponse>
-                     .Fail("Failed to update category translation.");
+                .Fail(EntityError.CategoryTranslationUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

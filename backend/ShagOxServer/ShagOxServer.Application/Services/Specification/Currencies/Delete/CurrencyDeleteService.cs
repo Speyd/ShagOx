@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -57,7 +58,7 @@ public class CurrencyDeleteService
                id);
 
             return Result<DeleteResponse>
-                 .Fail("Failed to delete currency.");
+                 .Fail(EntityError.CurrencyDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

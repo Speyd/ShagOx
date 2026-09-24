@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Cities.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Update;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
@@ -82,7 +83,7 @@ public class CityTranslationUpdateService
                statusTranslationId);
 
             return Result<UpdateResponse>
-                 .Fail("Failed to update city translation.");
+                 .Fail(EntityError.CityTranslationUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

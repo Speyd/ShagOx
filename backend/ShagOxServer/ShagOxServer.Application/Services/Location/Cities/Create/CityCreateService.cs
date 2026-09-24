@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Cities.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Create;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
@@ -76,7 +77,7 @@ public class CityCreateService
                 request.Code);
 
             return Result<CreateResponse>
-                 .Fail("Failed to create city.");
+                 .Fail(EntityError.CityCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

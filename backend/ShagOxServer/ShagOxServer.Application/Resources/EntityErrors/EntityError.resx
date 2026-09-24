@@ -328,6 +328,6 @@
     <value>Failed to delete role.</value>
   </data>
   <data name="UserUpdateFailed" xml:space="preserve">
-    <value>Failed to create role.</value>
+    <value>Failed to update role.</value>
   </data>
 </root>

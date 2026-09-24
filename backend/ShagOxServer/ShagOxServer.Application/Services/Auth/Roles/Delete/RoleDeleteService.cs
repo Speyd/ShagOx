@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -58,7 +59,7 @@ public class RoleDeleteService
                 id);
 
             return Result<DeleteResponse>
-                     .Fail("Failed to delete role.");
+                .Fail(EntityError.RoleDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

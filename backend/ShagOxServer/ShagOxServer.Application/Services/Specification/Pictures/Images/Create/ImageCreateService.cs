@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -77,7 +78,7 @@ public class ImageCreateService
                request.AdvertisementId);
 
             return Result<PictureCreateResponse>
-                .Fail("Failed to create image.");
+                .Fail(EntityError.ImageCreateFailed);
         }
 
         _logger.LogInformation(
@@ -156,7 +157,7 @@ public class ImageCreateService
                request.AdvertisementId);
 
             return Result<PictureCreateResponse>
-                .Fail("Failed to create image.");
+                .Fail(EntityError.ImageCreateFailed);
         }  
     }
 
@@ -165,7 +166,10 @@ public class ImageCreateService
         ImageFileCreateRequest request)
     {
         if (advertisement.Id != request.AdvertisementId)
-            return Result<PictureCreateResponse>.NotFound("Advertisement");
+        {
+            return Result<PictureCreateResponse>
+                .NotFound("Advertisement");
+        }
 
         return await CreateFromFileAsync(request);
     }
@@ -255,7 +259,7 @@ public class ImageCreateService
                request.AdvertisementId);
 
             return Result<PictureCreateResponse>
-                .Fail("Failed to create image.");
+                .Fail(EntityError.ImageCreateFailed);
         }
 
         _logger.LogInformation(

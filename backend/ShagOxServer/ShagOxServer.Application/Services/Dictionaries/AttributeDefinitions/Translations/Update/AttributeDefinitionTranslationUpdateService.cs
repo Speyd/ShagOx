@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Translatio
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Translations.Update;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
@@ -84,7 +85,7 @@ public class AttributeDefinitionTranslationUpdateService
                statusTranslationId);
 
             return Result<UpdateResponse>
-                     .Fail("Failed to update attribute definition translation.");
+                .Fail(EntityError.AttributeDefinitionTranslationUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Updat
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Update;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
@@ -84,7 +85,7 @@ public class ProductTypeTranslationUpdateService
                 statusTranslationId);
 
             return Result<UpdateResponse>
-                 .Fail("Failed to update product type translation.");
+                 .Fail(EntityError.ProductTypeTranslationUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

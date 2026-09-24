@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -66,7 +67,7 @@ public class ImageDeleteService
                id);
 
             return Result<DeleteResponse>
-                .Fail("Failed to delete image.");
+                .Fail(EntityError.ImageDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(
@@ -102,7 +103,7 @@ public class ImageDeleteService
                id);
 
             return Result<DeleteResponse>
-                .Fail("Failed to delete image.");
+                .Fail(EntityError.ImageDeleteFailed);
         }
 
         _logger.LogInformation(

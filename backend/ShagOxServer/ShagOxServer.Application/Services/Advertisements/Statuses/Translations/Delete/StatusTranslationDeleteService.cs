@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -57,7 +58,7 @@ public class StatusTranslationDeleteService
                 id);
 
             return Result<DeleteResponse>
-                .Fail("Failed to delete status translation.");
+                .Fail(EntityError.AdvertStatusTranslationDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

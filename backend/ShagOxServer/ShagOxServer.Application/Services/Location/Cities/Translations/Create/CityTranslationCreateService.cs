@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Cities.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Create;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -63,7 +64,7 @@ public class CityTranslationCreateService
                request.TranslatableId);
 
             return Result<CreateResponse>
-                 .Fail("Failed to create city translation.");
+                 .Fail(EntityError.CityTranslationCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

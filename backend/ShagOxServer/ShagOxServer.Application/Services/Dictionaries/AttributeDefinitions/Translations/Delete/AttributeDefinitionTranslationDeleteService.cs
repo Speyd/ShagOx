@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Translations.Delete;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -58,7 +59,7 @@ public class AttributeDefinitionTranslationDeleteService
                id);
 
             return Result<DeleteResponse>
-                     .Fail("Failed to delete attribute definition translation.");
+                .Fail(EntityError.AttributeDefinitionTranslationDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

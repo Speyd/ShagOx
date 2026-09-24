@@ -117,10 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DefaultRoleNotFound" xml:space="preserve">
+    <value>Default role not found.</value>
+  </data>
   <data name="RegistrationFailed" xml:space="preserve">
-    <value />
+    <value>Registration failed.</value>
   </data>
   <data name="UnsupportedContactType" xml:space="preserve">
-    <value />
+    <value>Unsupported contact type.</value>
   </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
+using ShagOxServer.Application.Resources.Auth.Registrations;
 using ShagOxServer.Application.Resources.EmailService;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
@@ -38,7 +39,8 @@ public class UserContactApplier
             UserContactType.Phone =>
                 await ApplyPhoneAsync(user, EmailOrPhone),
 
-            _ => Result<bool>.Fail("Unsupported contact type.")
+            _ => Result<bool>
+                .Fail(RegistrationAuth.UnsupportedContactType)
         };
 
         if (!contactResult.IsSuccess)

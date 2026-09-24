@@ -30,15 +30,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>EmailAuth.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\Contacts\Phones\Phone.Designer.cs">
+    <Compile Update="Resources\Auth\Contacts\Phones\PhoneAuth.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Phone.resx</DependentUpon>
+      <DependentUpon>PhoneAuth.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\Contacts\UserNames\UserName.Designer.cs">
+    <Compile Update="Resources\Auth\Contacts\UserNames\UserNameAuth.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>UserName.resx</DependentUpon>
+      <DependentUpon>UserNameAuth.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Auth\External\Google\GoogleAuth.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -55,10 +55,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PasswordAuth.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\Registrations\Registration.Designer.cs">
+    <Compile Update="Resources\Auth\Registrations\RegistrationAuth.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Registration.resx</DependentUpon>
+      <DependentUpon>RegistrationAuth.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\EmailService\Emails.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -92,13 +92,13 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>EmailAuth.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\Contacts\Phones\Phone.resx">
+		<EmbeddedResource Update="Resources\Auth\Contacts\Phones\PhoneAuth.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Phone.Designer.cs</LastGenOutput>
+		  <LastGenOutput>PhoneAuth.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\Contacts\UserNames\UserName.resx">
+		<EmbeddedResource Update="Resources\Auth\Contacts\UserNames\UserNameAuth.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>UserName.Designer.cs</LastGenOutput>
+		  <LastGenOutput>UserNameAuth.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Auth\External\Google\GoogleAuth.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
@@ -112,9 +112,9 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>PasswordAuth.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\Registrations\Registration.resx">
+		<EmbeddedResource Update="Resources\Auth\Registrations\RegistrationAuth.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Registration.Designer.cs</LastGenOutput>
+		  <LastGenOutput>RegistrationAuth.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\EmailService\Emails.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

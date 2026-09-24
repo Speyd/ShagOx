@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -18,20 +19,22 @@ public class ConditionTranslationUpdateService
     private readonly IRepository<ConditionTranslation> _conditionRepository;
     private readonly ConditionTranslationValidator _conditionTranslationValidator;
 
-
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ConditionTranslationUpdateService> _logger;
 
 
     public ConditionTranslationUpdateService(
         IRepository<ConditionTranslation> conditionRepository,
         ConditionTranslationValidator conditionTranslationValidator,
         ConditionValidator conditionValidator,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        ILogger<ConditionTranslationUpdateService> logger
     ) : base(conditionValidator, conditionTranslationValidator)
     {
         _conditionRepository = conditionRepository;
         _conditionTranslationValidator = conditionTranslationValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -71,10 +74,17 @@ public class ConditionTranslationUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to update condition translation. Id: {Id}",
+                conditionTranslationId);
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update condition translation.");
         }
 
         return Result<UpdateResponse>.Success(result);

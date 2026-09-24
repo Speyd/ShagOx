@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Cities.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -18,18 +19,21 @@ public class CityCreateService
     private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CityCreateService> _logger;
 
 
     public CityCreateService(
         IRepository<City> cityRepository,
         CityValidator cityValidator,
         RegionValidator regionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CityCreateService> logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
         _regionValidator = regionValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -60,10 +64,19 @@ public class CityCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to create city. " +
+                "RegionId: {RegionId}, Code: {Code}",
+                request.RegionId,
+                request.Code);
+
+            return Result<CreateResponse>
+                 .Fail("Failed to create city.");
         }
 
         return Result<CreateResponse>.Success(

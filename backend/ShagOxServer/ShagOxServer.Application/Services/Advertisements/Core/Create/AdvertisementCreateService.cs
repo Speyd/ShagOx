@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create.File;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -6,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.Services.Advertisements.Core.Create.Validator;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -19,19 +21,22 @@ public class AdvertisementCreateService
     private readonly IImageCreateService _imageCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AdvertisementCreateService> _logger;
 
 
     public AdvertisementCreateService(
         IRepository<Advertisement> advertRepository,
         AdvertisementCreateValidator advertValidator,
         IImageCreateService imageCreateService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AdvertisementCreateService> logger)
     {
         _advertRepository = advertRepository;
         _advertValidator = advertValidator;
 
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -50,6 +55,7 @@ public class AdvertisementCreateService
             .Create(request, userId);
 
         await _unitOfWork.BeginTransactionAsync();
+
         try
         {
             _advertRepository.Add(advert);
@@ -75,11 +81,24 @@ public class AdvertisementCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to create advertisement. " +
+                "UserId: {UserId}, Title: {Title}",
+                userId,
+                request.Title);
+
+            return Result<CreateResponse>
+                    .Fail("Failed to create advertisement.");
         }
+
+        _logger.LogInformation(
+            "Advertisement created successfully. Id: {Id}",
+            advert.Id);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

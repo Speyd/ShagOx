@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -17,20 +18,22 @@ public class BasketCreateService
 
     private readonly UserValidator _userValidator;
 
-
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<BasketCreateService> _logger;
 
 
     public BasketCreateService(
         IRepository<Basket> basketRepository,
         BasketValidator basketValidator,
         UserValidator userValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<BasketCreateService> logger)
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;
         _userValidator = userValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -58,10 +61,17 @@ public class BasketCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to create basket. UserId: {UserId}",
+                request.UserId);
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create basket.");
         }
 
         return Result<CreateResponse>.Success(

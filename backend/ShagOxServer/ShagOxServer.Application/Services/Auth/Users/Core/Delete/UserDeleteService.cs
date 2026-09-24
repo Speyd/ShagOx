@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+﻿using CloudinaryDotNet.Actions;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Delete;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Delete;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -19,18 +20,21 @@ public class UserDeleteService
     private readonly IAvatarDeleteService _avatarDeleteService;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<UserDeleteService> _logger;
 
 
     public UserDeleteService(
         IRepository<User> userRepository,
         UserValidator userValidator,
         IAvatarDeleteService avatarDeleteService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<UserDeleteService> logger)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
         _avatarDeleteService = avatarDeleteService;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -55,10 +59,17 @@ public class UserDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to delete user. Id: {Id}",
+                id);
+
+            return Result<DeleteResponse>
+                     .Fail("Failed to delete user.");
         }
 
         return Result<DeleteResponse>.Success(

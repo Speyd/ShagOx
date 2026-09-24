@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Delete;
@@ -14,16 +15,19 @@ public class ConditionTranslationDeleteService
     private readonly ConditionTranslationValidator _conditionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ConditionTranslationDeleteService> _logger;
 
 
     public ConditionTranslationDeleteService(
         IRepository<ConditionTranslation> conditionRepository,
         ConditionTranslationValidator conditionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ConditionTranslationDeleteService> logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -44,10 +48,17 @@ public class ConditionTranslationDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to delete condition translation. Id: {Id}",
+                id);
+
+            return Result<DeleteResponse>
+                 .Fail("Failed to delete condition translation.");
         }
 
         return Result<DeleteResponse>.Success(

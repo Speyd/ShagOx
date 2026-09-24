@@ -7,5 +7,4 @@ public interface ILoginService
     Task<Result<LoginResponse>> LoginAsync(
         LoginRequest request);
 
-    Task<Result<LoginResponse>> GoogleLoginAsync(string email, string name, string googleId);
 }

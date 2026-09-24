@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Create;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Create;

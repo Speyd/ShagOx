@@ -1,4 +1,5 @@
 ﻿using Google.Apis.Auth;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
 using ShagOxServer.Domain.Entities.Account;
@@ -18,7 +19,8 @@ public partial class GoogleLoginService
             string name = payload.Name;
 
 
-            var user = await _userQueryRepository.GetByEmailAsync(email);
+            var user = await _userQueryRepository
+                .GetByEmailAsync(email);
 
             if (user is null)
             {
@@ -40,7 +42,9 @@ public partial class GoogleLoginService
                 {
                     _userRepository.Add(user);
 
-                    var roleResult = await _roleService.AddDefaultRoleAsync(user);
+                    var roleResult = await _roleService
+                        .AddDefaultRoleAsync(user);
+
                     if (!roleResult.IsSuccess)
                     {
                         await _unitOfWork.RollbackAsync();
@@ -53,10 +57,17 @@ public partial class GoogleLoginService
 
                     await _unitOfWork.CommitAsync();
                 }
-                catch
+                catch(Exception ex)
                 {
                     await _unitOfWork.RollbackAsync();
-                    throw;
+
+                    _logger.LogError(
+                        ex,
+                        "Failed to authenticate user with Google. Email: {Email}",
+                        payload.Email);
+
+                    return Result<LoginResponse>
+                        .Fail("Failed to create user.");
                 }
             }
 
@@ -66,7 +77,13 @@ public partial class GoogleLoginService
         }
         catch (Exception ex)
         {
-            return Result<LoginResponse>.Fail(ex.Message);
+            _logger.LogError(
+                ex,
+                "Failed to authenticate user with Google. Email{Email}",
+                payload.Email);
+
+            return Result<LoginResponse>
+                .Fail("Failed to authenticate user.");
         }
     }
 }

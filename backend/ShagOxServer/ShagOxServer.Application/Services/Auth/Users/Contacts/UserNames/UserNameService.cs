@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Auth;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames;
@@ -12,13 +13,16 @@ public class UserNameService
     private readonly IUserQueryRepository _userQueryRepository;
     private readonly UserNameSettings _userNameSettings;
 
+    private readonly ILogger<UserNameService> _logger;
+
     public UserNameService(
         IUserQueryRepository userQueryRepository,
-        IOptions<UserNameSettings> userNameSettings)
+        IOptions<UserNameSettings> userNameSettings,
+        ILogger<UserNameService> logger)
     {
         _userQueryRepository = userQueryRepository;
-
         _userNameSettings = userNameSettings.Value;
+        _logger = logger;
     }
 
 
@@ -46,11 +50,15 @@ public class UserNameService
 
             return Result<string>.Success(candidate);
         }
-        catch
+        catch(Exception ex)
         {
-            return Result<string>.Fail(
-                "Failed to generate a unique username."
-            );
+            _logger.LogError(
+                ex,
+                "Failed to generate a unique username. UserName: {userName}",
+                userName);
+
+            return Result<string>
+                .Fail("Failed to generate a unique username.");
         }
     }
 }

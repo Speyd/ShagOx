@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace ShagOxServer.Application.DTOs.Auth.Externals.Google;
-
 public sealed record GoogleTokenResponse
 (
     [property: JsonPropertyName("access_token")]

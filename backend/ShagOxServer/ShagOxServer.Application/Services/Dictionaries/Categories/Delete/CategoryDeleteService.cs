@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
@@ -14,16 +15,19 @@ public class CategoryDeleteService
     private readonly CategoryValidator _categoryValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CategoryDeleteService> _logger;
 
 
     public CategoryDeleteService(
         IRepository<Category> categoryRepository,
         CategoryValidator categoryValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CategoryDeleteService> logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -44,10 +48,17 @@ public class CategoryDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to delete category. Id: {Id}",
+               id);
+
+            return Result<DeleteResponse>
+                     .Fail("Failed to delete category.");
         }
 
         return Result<DeleteResponse>.Success(

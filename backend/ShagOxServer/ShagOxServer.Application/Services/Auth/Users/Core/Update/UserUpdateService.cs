@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Create;
@@ -25,6 +26,7 @@ public class UserUpdateService
     private readonly IAvatarCreateService _avatarCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<UserUpdateService> _logger;
 
 
     public UserUpdateService(
@@ -33,7 +35,8 @@ public class UserUpdateService
         CityValidator cityValidator,
         IAvatarDeleteService avatarDeleteService,
         IAvatarCreateService avatarCreateService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<UserUpdateService> logger)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
@@ -41,6 +44,7 @@ public class UserUpdateService
         _avatarDeleteService = avatarDeleteService;
         _avatarCreateService = avatarCreateService;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -91,10 +95,17 @@ public class UserUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to update user. Id: {Id}",
+                userId);
+
+            return Result<UpdateResponse>
+                .Fail("Failed to update user.");
         }
 
         return Result<UpdateResponse>.Success(result);

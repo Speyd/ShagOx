@@ -1,8 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Cities.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
+using ShagOxServer.Application.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Location;
@@ -17,18 +19,21 @@ public class CityUpdateService
     private readonly CityUpdateValidator _cityUpdateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CityUpdateService> _logger;
 
 
     public CityUpdateService(
         IRepository<City> cityRepository,
         CityValidator cityValidator,
         CityUpdateValidator cityUpdateValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CityUpdateService> logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
         _cityUpdateValidator = cityUpdateValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -77,10 +82,17 @@ public class CityUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to update city. Id: {Id}",
+               cityId);
+
+            return Result<UpdateResponse>
+                 .Fail("Failed to update city.");
         }
 
 

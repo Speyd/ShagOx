@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -13,17 +14,21 @@ public class ProductTypeUpdateService
 {
     private readonly IRepository<ProductType> _productTypeRepository;
     private readonly ProductTypeValidator _productTypeValidator;
+
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ProductTypeUpdateService> _logger;
 
 
     public ProductTypeUpdateService(
         IRepository<ProductType> productTypeRepository,
         ProductTypeValidator productTypeValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ProductTypeUpdateService> logger)
     {
         _productTypeRepository = productTypeRepository;
         _productTypeValidator = productTypeValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -64,10 +69,17 @@ public class ProductTypeUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to update product type. Id: {Id}",
+                productTypeId);
+
+            return Result<UpdateResponse>
+                .Fail("Failed to update product type.");
         }
 
         return Result<UpdateResponse>.Success(result);

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
@@ -14,16 +15,19 @@ public class RegionDeleteService
     private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<RegionDeleteService> _logger;
 
 
     public RegionDeleteService(
         IRepository<Region> regionRepository,
         RegionValidator regionValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<RegionDeleteService> logger)
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -42,10 +46,17 @@ public class RegionDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to delete region. Id: {Id}",
+                id);
+
+            return Result<DeleteResponse>
+                 .Fail("Failed to delete region.");
         }
 
         return Result<DeleteResponse>.Success(

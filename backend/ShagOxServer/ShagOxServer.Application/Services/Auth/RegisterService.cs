@@ -1,5 +1,5 @@
-﻿using CloudinaryDotNet.Actions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
@@ -30,6 +30,7 @@ public class RegisterService
     private readonly UserContactApplier _contactApplier;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<RegisterService> _logger;
 
 
     public RegisterService(
@@ -40,7 +41,8 @@ public class RegisterService
         UserPasswordService passwordService,
         UserContactApplier contactApplier,
         IVerificationSender senderVerification,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<RegisterService> logger)
     {
         _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
@@ -50,6 +52,7 @@ public class RegisterService
         _contactApplier = contactApplier;
         _senderVerification = senderVerification;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -64,7 +67,11 @@ public class RegisterService
             );
             
             if (!prepareResult.IsSuccess)
-                return Result<RegisterResponse>.Fail(prepareResult.Error);
+
+            {
+                return Result<RegisterResponse>
+                    .Fail(prepareResult.Error);
+            }
 
             var user = prepareResult.Value!.User;
 
@@ -77,12 +84,15 @@ public class RegisterService
                 {
                     _userRepository.Add(user);
 
-                    var roleResult = await _roleService.AddDefaultRoleAsync(user);
+
+                    var roleResult = await _roleService
+                        .AddDefaultRoleAsync(user);
 
                     if (!roleResult.IsSuccess)
                     {
-                        await _unitOfWork.RollbackAsync();
-                        return Result<RegisterResponse>.Fail(roleResult.Error);
+                        return Result<RegisterResponse>
+                            .Fail(roleResult.Error);
+
                     }
 
                     await _unitOfWork.SaveChangesAsync();
@@ -90,10 +100,16 @@ public class RegisterService
 
                 await _userCreater.SetDefaultName(user);
             }
-            catch
+            catch(Exception ex)
             {
+                _logger.LogError(
+                    ex,
+                    "Registration failed.");
+
                 await _unitOfWork.RollbackAsync();
-                throw;
+
+                return Result<RegisterResponse>
+                    .Fail("Registration failed.");
             }
 
             await _unitOfWork.CommitAsync();
@@ -103,13 +119,23 @@ public class RegisterService
             if (!verificationResult.IsSuccess)
                 return Result<RegisterResponse>.Fail(verificationResult.Error);
 
+            _logger.LogInformation(
+                "User registered successfully. UserId: {UserId}",
+                user.Id);
+
             return Result<RegisterResponse>.Success(
                new RegisterResponse(user)
             );
         }
         catch(Exception ex)
         {
-            return Result<RegisterResponse>.Fail(ex.Message);
+            _logger.LogError(
+                ex,
+                "Registration failed. Contact: {Contact}",
+                request.EmailOrPhone);
+
+            return Result<RegisterResponse>
+                .Fail("Registration failed.");
         }
     }
 
@@ -137,7 +163,11 @@ public class RegisterService
                 .ApplyAsync(user, request);
 
             if (!result.IsSuccess)
-                return Result<(User User, bool IsExisting)>.Fail(result.Error);
+
+            {
+                return Result<(User User, bool IsExisting)>
+                    .Fail(result.Error);
+            }
 
             isExisting = true;
         }
@@ -147,18 +177,27 @@ public class RegisterService
                 .CreateUser(request);
 
             if (!userResult.IsSuccess)
-                return Result<(User User, bool IsExisting)>.Fail(userResult.Error);
+
+            {
+                return Result<(User User, bool IsExisting)>
+                    .Fail(userResult.Error);
+            }
 
             user = userResult.Value;
         }
 
         var passResult = _passwordService
-            .Apply(user!, request);      
+            .Apply(user!, request);
 
         if (!passResult.IsSuccess)
-            return Result<(User User, bool IsExisting)>.Fail(passResult.Error);
 
-        return Result<(User, bool)>.Success((user!, isExisting));
+        {
+            return Result<(User User, bool IsExisting)>
+                .Fail(passResult.Error);
+        }
+
+        return Result<(User, bool)>
+            .Success((user!, isExisting));
     }
 
     private async Task<Result<bool>> SendVerification(

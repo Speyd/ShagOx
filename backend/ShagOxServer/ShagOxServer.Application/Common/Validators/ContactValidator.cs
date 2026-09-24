@@ -3,8 +3,6 @@ using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using System.Text.RegularExpressions;
 
 namespace ShagOxServer.Application.Common.Validators;
-
-
 public class ContactValidator : IContactValidator
 {
     public UserContactType Detect(string value)

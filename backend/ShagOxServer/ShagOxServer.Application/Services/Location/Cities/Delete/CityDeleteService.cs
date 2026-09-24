@@ -1,10 +1,12 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Delete;
 public class CityDeleteService 
@@ -14,16 +16,19 @@ public class CityDeleteService
     private readonly CityValidator _cityValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CityDeleteService> _logger;
 
 
     public CityDeleteService(
         IRepository<City> cityRepository,
         CityValidator cityValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CityDeleteService> logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -42,10 +47,17 @@ public class CityDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to delete city. Id: {Id}",
+                id);
+
+            return Result<DeleteResponse>
+                 .Fail("Failed to delete city.");
         }
 
         return Result<DeleteResponse>.Success(

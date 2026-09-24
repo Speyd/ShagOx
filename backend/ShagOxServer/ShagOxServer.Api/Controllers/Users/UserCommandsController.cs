@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Phones;

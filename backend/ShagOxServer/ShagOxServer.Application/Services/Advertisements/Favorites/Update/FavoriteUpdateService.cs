@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -17,18 +18,21 @@ public class FavoriteUpdateService
     private readonly FavoriteUpdateValidator _favoriteUpdateValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<FavoriteUpdateService> _logger;
 
 
     public FavoriteUpdateService(
         IRepository<Favorite> favoriteRepository,
         FavoriteValidator favoriteValidator,
         FavoriteUpdateValidator favoriteUpdateValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<FavoriteUpdateService> logger)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;
         _favoriteUpdateValidator = favoriteUpdateValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -63,11 +67,26 @@ public class FavoriteUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to update favorite. " +
+                "FavoriteId: {FavoriteIdId}, " +
+                "UserId: {UserId}, AdvertisementId: {AdvertisementId}",
+                favoriteId,
+                request.UserId,
+                request.AdvertisementId);
+
+            return Result<UpdateResponse>
+                   .Fail("Failed to update favorite.");
         }
+
+        _logger.LogInformation(
+            "Favorite update successfully. Id: {Id}",
+            favorite.Value!.Id);
 
         return Result<UpdateResponse>.Success(result);
     }

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -18,18 +19,21 @@ public class AttributeDefinitionCreateService
     private readonly CategoryValidator _categoryValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AttributeDefinitionCreateService> _logger;
 
 
     public AttributeDefinitionCreateService(
         IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
         CategoryValidator categoryValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<AttributeDefinitionCreateService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _categoryValidator = categoryValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -60,10 +64,19 @@ public class AttributeDefinitionCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+                ex,
+                "Failed to create attribute definition. " +
+                "CategoryId: {Id}, Key: {Key}",
+                request.CategoryId,
+                request.Key);
+
+            return Result<CreateResponse>
+                     .Fail("Failed to create attribute definition.");
         }
 
         return Result<CreateResponse>.Success(

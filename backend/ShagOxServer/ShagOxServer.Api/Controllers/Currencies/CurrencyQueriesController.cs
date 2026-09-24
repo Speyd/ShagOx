@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;

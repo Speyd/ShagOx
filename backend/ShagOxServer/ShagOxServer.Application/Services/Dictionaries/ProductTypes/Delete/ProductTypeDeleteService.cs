@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Delete;
@@ -14,16 +15,19 @@ public class ProductTypeDeleteService
     private readonly ProductTypeValidator _productTypeValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ProductTypeDeleteService> _logger;
 
 
     public ProductTypeDeleteService(
         IRepository<ProductType> productTypeRepository,
         ProductTypeValidator productTypeValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ProductTypeDeleteService> logger)
     {
         _productTypeRepository = productTypeRepository;
         _productTypeValidator = productTypeValidator;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -44,10 +48,17 @@ public class ProductTypeDeleteService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to delete product type. Id: {Id}",
+               id);
+
+            return Result<DeleteResponse>
+                .Fail("Failed to delete product type.");
         }
 
         return Result<DeleteResponse>.Success(

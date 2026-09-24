@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Cities.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,17 +16,20 @@ public class CityTranslationCreateService
     private readonly CityTranslationValidator _cityValidator;
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CityTranslationCreateService> _logger;
 
 
     public CityTranslationCreateService(
         IRepository<CityTranslation> cityRepository,
         CityTranslationValidator cityValidator,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CityTranslationCreateService> logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
 
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -48,10 +52,18 @@ public class CityTranslationCreateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch
+        catch(Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            throw;
+
+            _logger.LogError(
+               ex,
+               "Failed to create city translation. " +
+               "TranslatableId: {TranslatableId}",
+               request.TranslatableId);
+
+            return Result<CreateResponse>
+                 .Fail("Failed to create city translation.");
         }
 
         return Result<CreateResponse>.Success(

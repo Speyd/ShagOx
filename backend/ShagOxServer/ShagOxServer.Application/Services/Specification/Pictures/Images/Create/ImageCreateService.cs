@@ -1,6 +1,8 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
+﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create.File;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
@@ -21,17 +23,24 @@ public class ImageCreateService
 
     private readonly AdvertisementValidator _advertValidator;
 
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ImageCreateService> _logger;
+
 
     public ImageCreateService(
         IRepository<Image> imageRepository,
         IPictureLoaderService loaderService,
         PictureValidator pictureValidator,
-        AdvertisementValidator advertValidator)
+        AdvertisementValidator advertValidator,
+        IUnitOfWork unitOfWork,
+        ILogger<ImageCreateService> logger)
     {
         _imageRepository = imageRepository;
         _loaderService = loaderService;
         _pictureValidator = pictureValidator;
         _advertValidator = advertValidator;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
 
@@ -42,11 +51,40 @@ public class ImageCreateService
             .ExistsByIdAsync(request.AdvertisementId);
 
         if (!resultValid.IsSuccess)
-            return Result<PictureCreateResponse>.Fail(resultValid.Error);
+        {
+            return Result<PictureCreateResponse>
+                .Fail(resultValid.Error);
+        }
 
         var image = ImageCreater.Create(request);
 
-        _imageRepository.Add(image);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try 
+        {
+            _imageRepository.Add(image);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch(Exception ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+               ex,
+               "Failed to create image. " + 
+               "AdvertisementId: {AdvertisementId}",
+               request.AdvertisementId);
+
+            return Result<PictureCreateResponse>
+                .Fail("Failed to create image.");
+        }
+
+        _logger.LogInformation(
+            "Image created successfully. " + 
+            "ImageId: {ImageId}, AdvertisementId: {AdvertisementId}",
+            image.Id,
+            request.AdvertisementId);
 
         return Success(image);
     }
@@ -58,24 +96,68 @@ public class ImageCreateService
             .ExistsByIdAsync(request.AdvertisementId);
 
         if (!resultAdvertValid.IsSuccess)
-            return Result<PictureCreateResponse>.Fail(resultAdvertValid.Error);
-
+        {
+            return Result<PictureCreateResponse>
+                .Fail(resultAdvertValid.Error);
+        }
 
         var resultLoaderValid = await _pictureValidator
-            .PictureUploadValidator(request.File);
-
-        if (!resultLoaderValid.IsSuccess)
-            return Result<PictureCreateResponse>.Fail(resultLoaderValid.Error);
+                .PictureUploadValidator(request.File);
 
 
-        var image = ImageCreater.Create(
-            request, 
-            resultLoaderValid.Value!
-        );
+        await _unitOfWork.BeginTransactionAsync();
 
-        _imageRepository.Add(image);
+        try
+        {
+            if (!resultLoaderValid.IsSuccess)
+            {
+                if (resultLoaderValid.Value is not null)
+                {
+                    await _loaderService
+                        .DeleteAsync(resultLoaderValid.Value.PublicId);
+                }
 
-        return Success(image);
+                return Result<PictureCreateResponse>
+                    .Fail(resultLoaderValid.Error);
+            }
+
+
+            var image = ImageCreater.Create(
+                request,
+                resultLoaderValid.Value!
+            );
+
+            _imageRepository.Add(image);
+
+            await _unitOfWork.CommitAsync();
+
+            _logger.LogInformation(
+                "Image created successfully. " +
+                "ImageId: {ImageId}, AdvertisementId: {AdvertisementId}",
+                image.Id,
+                request.AdvertisementId);
+
+            return Success(image);
+        }
+        catch(Exception ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            if (resultLoaderValid.Value is not null)
+            {
+                await _loaderService
+                    .DeleteAsync(resultLoaderValid.Value.PublicId);
+            }
+
+            _logger.LogError(
+               ex,
+               "Failed to create image. " +
+               "AdvertisementId: {AdvertisementId}",
+               request.AdvertisementId);
+
+            return Result<PictureCreateResponse>
+                .Fail("Failed to create image.");
+        }  
     }
 
     public async Task<Result<PictureCreateResponse>> CreateFromFileAsync(
@@ -132,15 +214,55 @@ public class ImageCreateService
             PictureUploadValidator(request.File);
 
         if (!resultLoaderValid.IsSuccess)
+        {
+            if (resultLoaderValid.Value is not null)
+            {
+                await _loaderService
+                    .DeleteAsync(resultLoaderValid.Value.PublicId);
+            }
+
             return Result<PictureCreateResponse>
                 .Fail(resultLoaderValid.Error);
+        }
 
         var image = ImageCreater.Create(
             request,
             resultLoaderValid.Value!
         );
 
-        _imageRepository.Add(image);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            _imageRepository.Add(image);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch(Exception ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            if (resultLoaderValid.Value is not null)
+            {
+                await _loaderService
+                    .DeleteAsync(resultLoaderValid.Value.PublicId);
+            }
+
+            _logger.LogError(
+               ex,
+               "Failed to create image. " +
+               "AdvertisementId: {AdvertisementId}",
+               request.AdvertisementId);
+
+            return Result<PictureCreateResponse>
+                .Fail("Failed to create image.");
+        }
+
+        _logger.LogInformation(
+            "Image created successfully. " +
+            "ImageId: {ImageId}, AdvertisementId: {AdvertisementId}",
+            image.Id,
+            request.AdvertisementId);
 
         return Success(image);
     }

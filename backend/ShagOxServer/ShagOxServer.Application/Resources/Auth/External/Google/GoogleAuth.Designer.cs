@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Auth.External.Googles {
+namespace ShagOxServer.Application.Resources.Auth.External.Google {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.Auth.External.Googles {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Google {
+    internal class GoogleAuth {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Google() {
+        internal GoogleAuth() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.Auth.External.Googles {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.External.Googles.Google", typeof(Google).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.External.Google.GoogleAuth", typeof(GoogleAuth).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace ShagOxServer.Application.Resources.Auth.External.Googles {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Failed to authenticate user..
         /// </summary>
         internal static string GoogleAuthenticationFailed {
             get {
@@ -70,7 +70,7 @@ namespace ShagOxServer.Application.Resources.Auth.External.Googles {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Google authorization code is empty..
         /// </summary>
         internal static string GoogleAuthorizationCodeEmpty {
             get {
@@ -79,7 +79,7 @@ namespace ShagOxServer.Application.Resources.Auth.External.Googles {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Google did not return an ID token..
         /// </summary>
         internal static string GoogleIdTokenMissing {
             get {
@@ -88,7 +88,7 @@ namespace ShagOxServer.Application.Resources.Auth.External.Googles {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Invalid Google ID token..
         /// </summary>
         internal static string GoogleInvalidIdToken {
             get {
@@ -97,7 +97,7 @@ namespace ShagOxServer.Application.Resources.Auth.External.Googles {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Google OAuth is not configured.
         /// </summary>
         internal static string GoogleOAuthNotConfigured {
             get {
@@ -106,7 +106,7 @@ namespace ShagOxServer.Application.Resources.Auth.External.Googles {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Google token exchange failed..
         /// </summary>
         internal static string GoogleTokenExchangeFailed {
             get {
@@ -115,7 +115,7 @@ namespace ShagOxServer.Application.Resources.Auth.External.Googles {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Failed to create user..
         /// </summary>
         internal static string GoogleUserCreationFailed {
             get {

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
+using ShagOxServer.Application.Resources.Auth.External.Google;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -67,7 +68,7 @@ public partial class GoogleLoginService
                         payload.Email);
 
                     return Result<LoginResponse>
-                        .Fail("Failed to create user.");
+                        .Fail(GoogleAuth.GoogleUserCreationFailed);
                 }
             }
 
@@ -83,7 +84,7 @@ public partial class GoogleLoginService
                 payload.Email);
 
             return Result<LoginResponse>
-                .Fail("Failed to authenticate user.");
+                .Fail(GoogleAuth.GoogleAuthenticationFailed);
         }
     }
 }

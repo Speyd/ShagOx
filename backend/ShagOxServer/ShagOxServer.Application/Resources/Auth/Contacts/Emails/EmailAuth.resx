@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FailedToSendVerificationEmail" xml:space="preserve">
-    <value />
+    <value>Failed to send verification email.</value>
   </data>
   <data name="InvalidEmail" xml:space="preserve">
-    <value />
+    <value>Email is incorrect.</value>
   </data>
 </root>

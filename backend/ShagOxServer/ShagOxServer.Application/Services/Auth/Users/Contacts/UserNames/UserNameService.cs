@@ -3,10 +3,10 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Auth;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames;
+using ShagOxServer.Application.Resources.Auth.Contacts.UserNames;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Contacts.UserNames;
-
 public class UserNameService
     : IUserNameService
 {
@@ -57,7 +57,7 @@ public class UserNameService
                 userName);
 
             return Result<string>
-                .Fail("Failed to generate a unique username.");
+                .Fail(UserNameAuth.FailedToGenerateUniqueUsername);
         }
     }
 }

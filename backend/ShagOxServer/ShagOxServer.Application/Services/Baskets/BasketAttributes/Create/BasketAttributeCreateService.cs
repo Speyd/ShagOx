@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -78,7 +79,7 @@ public class BasketAttributeCreateService
                 request.AttributeDefinitionId);
 
             return Result<CreateResponse>
-                     .Fail("Failed to create basket attribute.");
+                .Fail(EntityError.BasketAttributeCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

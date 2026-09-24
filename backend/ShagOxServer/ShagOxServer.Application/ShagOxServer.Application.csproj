@@ -25,10 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\Auth\Contacts\Emails\Email.Designer.cs">
+    <Compile Update="Resources\Auth\Contacts\Emails\EmailAuth.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Email.resx</DependentUpon>
+      <DependentUpon>EmailAuth.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Auth\Contacts\Phones\Phone.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -40,20 +40,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>UserName.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\External\Googles\Google.Designer.cs">
+    <Compile Update="Resources\Auth\External\Google\GoogleAuth.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Google.resx</DependentUpon>
+      <DependentUpon>GoogleAuth.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Auth\Logins\Login.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Login.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Auth\Contacts\Passwords\Password.Designer.cs">
+    <Compile Update="Resources\Auth\Contacts\Passwords\PasswordAuth.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Password.resx</DependentUpon>
+      <DependentUpon>PasswordAuth.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Auth\Registrations\Registration.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -65,10 +65,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Emails.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Errors\Error.Designer.cs">
+    <Compile Update="Resources\EntityErrors\EntityError.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Error.resx</DependentUpon>
+      <DependentUpon>EntityError.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Verifications\Codes\VerificationCode.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -88,9 +88,9 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Update="Resources\Auth\Contacts\Emails\Email.resx">
+		<EmbeddedResource Update="Resources\Auth\Contacts\Emails\EmailAuth.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Email.Designer.cs</LastGenOutput>
+		  <LastGenOutput>EmailAuth.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Auth\Contacts\Phones\Phone.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
@@ -100,17 +100,17 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>UserName.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\External\Googles\Google.resx">
+		<EmbeddedResource Update="Resources\Auth\External\Google\GoogleAuth.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Google.Designer.cs</LastGenOutput>
+		  <LastGenOutput>GoogleAuth.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Auth\Logins\Login.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>Login.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Auth\Contacts\Passwords\Password.resx">
+		<EmbeddedResource Update="Resources\Auth\Contacts\Passwords\PasswordAuth.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Password.Designer.cs</LastGenOutput>
+		  <LastGenOutput>PasswordAuth.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Auth\Registrations\Registration.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
@@ -120,9 +120,9 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Emails.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Errors\Error.resx">
+		<EmbeddedResource Update="Resources\EntityErrors\EntityError.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Error.Designer.cs</LastGenOutput>
+		  <LastGenOutput>EntityError.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Verifications\Codes\VerificationCode.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>

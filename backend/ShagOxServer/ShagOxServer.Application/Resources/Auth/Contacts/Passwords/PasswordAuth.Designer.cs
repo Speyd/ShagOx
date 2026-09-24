@@ -22,14 +22,14 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Password {
+    internal class PasswordAuth {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Password() {
+        internal PasswordAuth() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Contacts.Passwords.Password", typeof(Password).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Auth.Contacts.Passwords.PasswordAuth", typeof(PasswordAuth).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Failed to change pasword..
         /// </summary>
         internal static string FailedToChangePassword {
             get {
@@ -70,7 +70,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Failed to reset pasword..
         /// </summary>
         internal static string FailedToResetPassword {
             get {
@@ -79,7 +79,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Invalid contact type..
         /// </summary>
         internal static string InvalidContactType {
             get {
@@ -88,7 +88,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на New Password is incorrect..
         /// </summary>
         internal static string InvalidNewPassword {
             get {
@@ -97,7 +97,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Invalid password..
         /// </summary>
         internal static string InvalidPassword {
             get {
@@ -106,7 +106,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на User does not have a confirmed email or phone..
         /// </summary>
         internal static string NoConfirmedContact {
             get {
@@ -115,7 +115,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на User does not have a confirmed email..
         /// </summary>
         internal static string UserDoesNotHaveConfirmedEmail {
             get {
@@ -124,7 +124,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на No confirmed email or phone found..
         /// </summary>
         internal static string UserDoesNotHaveConfirmedEmailOrPhone {
             get {
@@ -133,7 +133,7 @@ namespace ShagOxServer.Application.Resources.Auth.Contacts.Passwords {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на User does not have a confirmed phone..
         /// </summary>
         internal static string UserDoesNotHaveConfirmedPhone {
             get {

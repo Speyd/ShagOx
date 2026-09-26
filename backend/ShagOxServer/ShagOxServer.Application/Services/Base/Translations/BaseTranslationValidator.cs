@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
+using ShagOxServer.Application.Resources.EntityNames.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
@@ -24,10 +25,10 @@ public abstract class BaseTranslationValidator<TObject>
         string language)
     {
         if (!await _translationExistsRepository
-            .ExistsAsync(objectId, language))
+                .ExistsAsync(objectId, language))
         {
-            return Result<bool>
-                .NotFound(typeof(TObject).Name);
+            return Result<bool>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TObject>());
         }
 
         return Result<bool>.Success(true);
@@ -40,8 +41,8 @@ public abstract class BaseTranslationValidator<TObject>
         if (await _translationExistsRepository
             .ExistsAsync(cityId, language))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(TObject).Name);
+            return Result<bool>.AlreadyExists(
+                EntityNameExtensions.GetLocalizedName<TObject>());
         }
 
         return Result<bool>.Success(true);
@@ -53,8 +54,8 @@ public abstract class BaseTranslationValidator<TObject>
         if (!await _translationExistsRepository
                 .ExistsByLanguageAsync(language))
         {
-            return Result<bool>
-                .NotFound(typeof(TObject).Name);
+            return Result<bool>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TObject>());
         }
 
         return Result<bool>.Success(true);
@@ -66,8 +67,8 @@ public abstract class BaseTranslationValidator<TObject>
         if (await _translationExistsRepository
                 .ExistsByLanguageAsync(language))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(TObject).Name);
+            return Result<bool>.AlreadyExists(
+                EntityNameExtensions.GetLocalizedName<TObject>());
         }
 
         return Result<bool>.Success(true);

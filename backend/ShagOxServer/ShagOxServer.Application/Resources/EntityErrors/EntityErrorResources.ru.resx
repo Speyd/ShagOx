@@ -279,6 +279,9 @@
   <data name="ImageUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить изображение.</value>
   </data>
+  <data name="ImageUploadFailed" xml:space="preserve">
+    <value>Не удалось загрузить изображение.</value>
+  </data>
   <data name="ProductTypeCreateFailed" xml:space="preserve">
     <value>Не удалось создать тип товара.</value>
   </data>

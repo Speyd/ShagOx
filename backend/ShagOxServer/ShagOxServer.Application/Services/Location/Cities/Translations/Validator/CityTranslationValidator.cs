@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -27,8 +28,8 @@ public class CityTranslationValidator
         if (!await _cityTranslationExistsRepository
                 .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .NotFound(typeof(CityTranslation));
+            return Result<bool>.NotFound(
+                EntityNamesResources.CityTranslation);
         }
 
         return Result<bool>.Success(true);
@@ -40,8 +41,8 @@ public class CityTranslationValidator
         if (await _cityTranslationExistsRepository
                 .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(CityTranslation));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.CityTranslation);
         }
 
         return Result<bool>.Success(true);

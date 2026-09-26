@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -26,8 +27,8 @@ public class ProductTypeValidator
         if (await _productTypeExistsRepository
             .ExistsByCodeAsync(code))
         {
-            return Result<bool>
-                .NotFound(typeof(ProductType));
+            return Result<bool>.NotFound(
+                EntityNamesResources.ProductType);
         }
 
         return Result<bool>.Success(true);
@@ -40,8 +41,8 @@ public class ProductTypeValidator
         if (await _productTypeExistsRepository
             .ExistsByCodeAsync(code))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(ProductType));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.ProductType);
         }
 
         return Result<bool>.Success(true);

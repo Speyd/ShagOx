@@ -5,7 +5,6 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Create;
 using ShagOxServer.Application.Resources.EntityErrorResourcess;
-using ShagOxServer.Application.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;

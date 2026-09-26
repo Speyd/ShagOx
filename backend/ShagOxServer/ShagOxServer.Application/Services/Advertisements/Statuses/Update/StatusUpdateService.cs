@@ -37,17 +37,22 @@ public class StatusUpdateService
         int statusId,
         StatusUpdateRequest request)
     {
-        var status = await _statusValidator.GetByIdAsync(statusId);
+        var status = await _statusValidator.
+            GetByIdAsync(statusId);
         if (!status.IsSuccess)
-            return Result<UpdateResponse>.Fail(status.Error);
-
+        {
+            return Result<UpdateResponse>
+                .Fail(status.Error);
+        }
 
         var validation = await
              ValidateUpdatesAsync(status.Value!, request);
 
         if (!validation.IsSuccess)
-            return Result<UpdateResponse>.Fail(validation.Error);
-
+        {
+            return Result<UpdateResponse>
+                .Fail(validation.Error);
+        }
 
         var updatedCount = StatusUpdater
             .ApplyUpdates(status.Value!, request);

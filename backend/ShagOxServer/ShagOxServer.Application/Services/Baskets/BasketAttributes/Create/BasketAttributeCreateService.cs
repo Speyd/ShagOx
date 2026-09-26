@@ -7,8 +7,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
+using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
-using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Create;
@@ -17,9 +17,8 @@ public class BasketAttributeCreateService
 {
     private readonly IRepository<BasketAttribute> _attributeRepository;
 
-    private readonly BasketAttributeValidator _attributeValidator;
-
-    private readonly IRepository<AttributeDefinition> _attributeDefinitionValidator;
+    private readonly BasketAttributeValidator _basketAttributeValidator;
+    private readonly AttributeDefinitionValidator _attributeValidator;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketAttributeCreateService> _logger;
@@ -28,14 +27,14 @@ public class BasketAttributeCreateService
     public BasketAttributeCreateService(
         IRepository<BasketAttribute> attributeRepository,
         IBasketAttributeQueryRepository _attributeQueryRepository,
-        BasketAttributeValidator attributeValidator,
-        IRepository<AttributeDefinition> attributeDefinitionValidator,
+        BasketAttributeValidator basketAttributeValidator,
+        AttributeDefinitionValidator attributeValidator,
         IUnitOfWork unitOfWork,
         ILogger<BasketAttributeCreateService> logger)
     {
         _attributeRepository = attributeRepository;
+        _basketAttributeValidator = basketAttributeValidator;
         _attributeValidator = attributeValidator;
-        _attributeDefinitionValidator = attributeDefinitionValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -44,18 +43,23 @@ public class BasketAttributeCreateService
     public async Task<Result<CreateResponse>> CreateAsync(
         BasketAttributeCreateRequest request)
     {
-        var attributeDefinition = await _attributeDefinitionValidator
+        var attributeDefinition = await _attributeValidator
             .GetByIdAsync(request.AttributeDefinitionId);
 
-        if (attributeDefinition is null)
-            return Result<CreateResponse>.NotFound(typeof(AttributeDefinition));
+        if (!attributeDefinition.IsSuccess)
+        {
+            return Result<CreateResponse>
+                .Fail(attributeDefinition.Error);
+        }
 
-
-        var attributeExists = await _attributeValidator
-            .NotExistsAsync(attributeDefinition, request.Order);
+        var attributeExists = await _basketAttributeValidator
+            .NotExistsAsync(attributeDefinition.Value!, request.Order);
 
         if (!attributeExists.IsSuccess)
-            return Result<CreateResponse>.Fail(attributeExists.Error);
+        {
+            return Result<CreateResponse>
+                .Fail(attributeExists.Error);
+        }
 
 
         var attribute = BasketAttributeCreater.Create(request);

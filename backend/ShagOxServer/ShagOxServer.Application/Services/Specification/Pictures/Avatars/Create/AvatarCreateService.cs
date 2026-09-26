@@ -9,7 +9,6 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatar
 using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Validator;
-using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

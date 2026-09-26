@@ -7,7 +7,6 @@ using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Delete;
 public class CategoryTranslationDeleteService

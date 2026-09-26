@@ -33,7 +33,7 @@ public class AdvertisementImagesCommandsController
         [FromRoute] int advertisementId,
         [FromForm] AdvertisementUpdateRequest request)
     {
-        var forbidden = await CheckAdvertisementOwnerAsync(advertisementId);
+        var forbidden = await CheckOwnershipAsync(advertisementId);
         if (forbidden is not null)
             return forbidden;
 

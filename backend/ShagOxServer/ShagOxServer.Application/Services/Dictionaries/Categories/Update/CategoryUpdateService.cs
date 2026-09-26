@@ -108,9 +108,6 @@ public class CategoryUpdateService
           changeValidator.productTypeId
        );
 
-        if (!existsValidator.IsSuccess)
-            return Result<bool>.Fail(existsValidator.Error);
-
-        return Result<bool>.Success(true);
+        return existsValidator;
     }
 }

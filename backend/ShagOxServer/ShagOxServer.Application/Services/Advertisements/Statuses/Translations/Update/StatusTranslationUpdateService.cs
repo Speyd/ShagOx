@@ -85,8 +85,8 @@ public class StatusTranslationUpdateService
                 "Failed to update status translation. Id: {Id}",
                 statusTranslationId);
 
-            return Result<UpdateResponse>
-                .Fail(EntityErrorResources.AdvertStatusTranslationUpdateFailed);
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.AdvertStatusTranslationUpdateFailed);
 
         }
 

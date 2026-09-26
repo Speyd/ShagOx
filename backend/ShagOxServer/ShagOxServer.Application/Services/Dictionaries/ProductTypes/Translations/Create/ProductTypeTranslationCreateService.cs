@@ -64,8 +64,8 @@ public class ProductTypeTranslationCreateService
                 "TranslatableId: {TranslatableId}",
                 request.TranslatableId);
 
-            return Result<CreateResponse>
-                .Fail(EntityErrorResources.ProductTypeTranslationCreateFailed);
+            return Result<CreateResponse>.Fail(
+                EntityErrorResources.ProductTypeTranslationCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

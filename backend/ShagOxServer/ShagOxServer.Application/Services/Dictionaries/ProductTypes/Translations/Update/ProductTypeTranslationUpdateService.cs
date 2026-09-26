@@ -84,8 +84,8 @@ public class ProductTypeTranslationUpdateService
                 "Failed to update product type translation. Id: {Id}",
                 statusTranslationId);
 
-            return Result<UpdateResponse>
-                 .Fail(EntityErrorResources.ProductTypeTranslationUpdateFailed);
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ProductTypeTranslationUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

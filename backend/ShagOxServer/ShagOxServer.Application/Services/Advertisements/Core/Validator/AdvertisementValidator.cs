@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -29,8 +30,8 @@ public class AdvertisementValidator
 
         if (advert is null)
         {
-            return Result<Advertisement>
-                .NotFound(typeof(Advertisement));
+            return Result<Advertisement>.NotFound(
+                EntityNamesResources.Advertisement);
         }
 
         return Result<Advertisement>.Success(advert);

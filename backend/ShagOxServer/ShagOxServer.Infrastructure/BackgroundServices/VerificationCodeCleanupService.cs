@@ -53,11 +53,17 @@ public class VerificationCodeCleanupService
                     await db.SaveChangesAsync(stoppingToken);
                 }
             }
+            catch (OperationCanceledException)
+                when (stoppingToken.IsCancellationRequested)
+            {
+                _logger.LogInformation(
+                    "Verification code cleanup service stopped.");
+            }
             catch (Exception ex)
             {
                 _logger.LogError(
                     ex,
-                    "Failed to clean up verification codes.");
+                    "Pending user cleanup service failed.");
             }
 
             await Task.Delay(

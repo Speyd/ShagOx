@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -9,15 +10,33 @@ public class BasketItemValidator
     : BaseValidator<BasketItem>
 {
     private readonly IBasketItemExistsRepository _itemExistsRepository;
+    private readonly IBasketItemQueryRepository _itemQeuryRepository;
+
 
     public BasketItemValidator(
         IRepository<BasketItem> itemRepository,
-        IBasketItemExistsRepository itemExistsRepository
+        IBasketItemExistsRepository itemExistsRepository,
+        IBasketItemQueryRepository itemQeuryRepository
     ) : base(itemRepository, itemExistsRepository)
     {
         _itemExistsRepository = itemExistsRepository;
+        _itemQeuryRepository = itemQeuryRepository;
     }
 
+    public async Task<Result<BasketItem>> GetByIdWithIncludesAsync(
+        int id)
+    {
+        var item = await _itemQeuryRepository
+            .GetByIdAsync(id);
+
+        if (item is null)
+        {
+            return Result<BasketItem>.NotFound(
+                EntityNamesResources.BasketItem);
+        }
+
+        return Result<BasketItem>.Success(item);
+    }
 
     public async Task<Result<bool>> ExistsAsync(
         int advertisementId,
@@ -26,8 +45,8 @@ public class BasketItemValidator
         if (!await _itemExistsRepository
                 .ExistsAsync(advertisementId, basketId))
         {
-            return Result<bool>
-                .NotFound(typeof(BasketItem));
+            return Result<bool>.NotFound(
+                EntityNamesResources.BasketItem);
         }
 
         return Result<bool>.Success(true);
@@ -40,8 +59,8 @@ public class BasketItemValidator
         if (await _itemExistsRepository
                 .ExistsAsync(advertisementId, basketId))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(BasketItem));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.BasketItem);
         }
 
         return Result<bool>.Success(true);
@@ -54,8 +73,8 @@ public class BasketItemValidator
         if (!await _itemExistsRepository
                 .ExistsByBasketAsync(itemId, basketId))
         {
-            return Result<bool>
-                .NotFound(typeof(BasketItem));
+            return Result<bool>.NotFound(
+                EntityNamesResources.BasketItem);
         }
 
         return Result<bool>.Success(true);
@@ -68,8 +87,8 @@ public class BasketItemValidator
         if (await _itemExistsRepository
                 .ExistsByBasketAsync(itemId, basketId))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(BasketItem));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.BasketItem);
         }
 
         return Result<bool>.Success(true);
@@ -82,8 +101,8 @@ public class BasketItemValidator
         if (!await _itemExistsRepository
                 .ExistsByAdvertisementAsync(itemId, advertisementId))
         {
-            return Result<bool>
-                .NotFound(typeof(BasketItem));
+            return Result<bool>.NotFound(
+                EntityNamesResources.BasketItem);
         }
 
         return Result<bool>.Success(true);
@@ -96,8 +115,8 @@ public class BasketItemValidator
         if (await _itemExistsRepository
                 .ExistsByAdvertisementAsync(itemId, advertisementId))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(BasketItem));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.BasketItem);
         }
 
         return Result<bool>.Success(true);

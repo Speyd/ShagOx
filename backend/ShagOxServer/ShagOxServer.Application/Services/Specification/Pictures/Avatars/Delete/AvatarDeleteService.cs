@@ -8,7 +8,6 @@ using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Delete;
 public class AvatarDeleteService

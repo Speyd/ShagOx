@@ -53,7 +53,7 @@ public class AdvertisementCommandsController
         [FromRoute] int id,
         [FromForm] AdvertisementUpdateRequest request)
     {
-        var forbidden = await CheckAdvertisementOwnerAsync(id);
+        var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)
             return forbidden;
 
@@ -71,7 +71,7 @@ public class AdvertisementCommandsController
         var claim = User
             .FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        var forbidden = await CheckAdvertisementOwnerAsync(id);
+        var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)
             return forbidden;
 

@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -26,8 +27,8 @@ public class RegionTranslationValidator
         if (!await _regionExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .NotFound(typeof(RegionTranslation));
+            return Result<bool>.NotFound(
+                EntityNamesResources.RegionTranslation);
         }
 
         return Result<bool>.Success(true);
@@ -39,8 +40,8 @@ public class RegionTranslationValidator
         if (await _regionExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(RegionTranslation));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.RegionTranslation);
         }
 
         return Result<bool>.Success(true);

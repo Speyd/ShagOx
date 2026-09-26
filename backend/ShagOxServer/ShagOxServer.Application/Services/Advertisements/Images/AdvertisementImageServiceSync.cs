@@ -106,7 +106,7 @@ public partial class AdvertisementImageService
         if (result is not null &&
             !result.IsSuccess)
         {
-            throw new Exception();
+            throw new Exception("Handle image sync errors and rollback");
         }
 
         return Result<bool>.Success(true);

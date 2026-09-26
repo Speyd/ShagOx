@@ -60,6 +60,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RegistrationAuthResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\EntityNames\EntityNamesResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityNamesResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Messaging\Email\EmailTemplatesResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -120,6 +125,10 @@
 		<EmbeddedResource Update="Resources\Auth\Registrations\RegistrationAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>RegistrationAuthResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>EntityNamesResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Messaging\Email\EmailTemplatesResources.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

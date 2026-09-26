@@ -155,5 +155,9 @@
 		  <LastGenOutput>VerificationMapperResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Interfaces\Services\Dictionaries\Attributes\AttributeDictionaries\" />
+	</ItemGroup>
 	
 </Project>

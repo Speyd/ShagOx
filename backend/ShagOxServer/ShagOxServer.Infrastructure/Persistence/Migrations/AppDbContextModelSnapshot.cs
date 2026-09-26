@@ -415,6 +415,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("CategoryId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("DictionaryId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsVariant")
                         .HasColumnType("boolean");
 
@@ -441,10 +444,60 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DictionaryId");
+
                     b.HasIndex("CategoryId", "Key")
                         .IsUnique();
 
                     b.ToTable("AttributeDefinitions");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDictionary", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("AttributeDictionaries");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDictionaryValue", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<long>("DictionaryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DictionaryId", "Code")
+                        .IsUnique();
+
+                    b.ToTable("AttributeDictionaryValues");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations.AttributeDefinitionTranslation", b =>
@@ -1067,7 +1120,25 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDictionary", "Dictionary")
+                        .WithMany("Attributes")
+                        .HasForeignKey("DictionaryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Category");
+
+                    b.Navigation("Dictionary");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDictionaryValue", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDictionary", "Dictionary")
+                        .WithMany("Values")
+                        .HasForeignKey("DictionaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dictionary");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations.AttributeDefinitionTranslation", b =>
@@ -1240,6 +1311,13 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("BasketAttribute");
 
                     b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDictionary", b =>
+                {
+                    b.Navigation("Attributes");
+
+                    b.Navigation("Values");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Category", b =>

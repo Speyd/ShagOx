@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DependencyInjections.Dictionaries.Translations;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Query;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Update;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Query;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;

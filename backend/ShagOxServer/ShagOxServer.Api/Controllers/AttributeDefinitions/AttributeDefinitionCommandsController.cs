@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Create;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Delete;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Update;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Create;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.AttributeDefinitions;

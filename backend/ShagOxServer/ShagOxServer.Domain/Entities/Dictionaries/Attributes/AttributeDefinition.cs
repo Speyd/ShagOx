@@ -10,6 +10,9 @@ public class AttributeDefinition
     public long CategoryId { get; set; }
     public Category Category { get; set; } = null!;
 
+    public long? DictionaryId { get; set; }
+    public AttributeDictionary? Dictionary { get; set; }
+
     public string Key { get; set; } = null!;
     public AttributeType Type { get; set; }
     public bool Required { get; set; }
@@ -20,10 +23,10 @@ public class AttributeDefinition
     public bool IsVariant { get; set; }
     public bool Multiple { get; set; }
 
+    public BasketAttribute? BasketAttribute { get; set; }
+
     public ICollection<AttributeDefinitionTranslation> Translations { get; set; }
        = [];
-
-    public BasketAttribute? BasketAttribute { get; set; }
 
 
     public override string ToString()

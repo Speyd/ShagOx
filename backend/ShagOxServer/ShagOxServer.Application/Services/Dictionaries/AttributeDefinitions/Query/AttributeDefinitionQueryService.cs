@@ -1,8 +1,8 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinitions.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Mapping;
-using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

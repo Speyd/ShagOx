@@ -14,3 +14,14 @@ export async function getAdminCities(
   });
   return data;
 }
+
+export async function searchCities(
+  code: string,
+  page = 1,
+  pageSize = 20,
+): Promise<PaginatedResponse<City>> {
+  const { data } = await api.get<PaginatedResponse<City>>("cities/search", {
+    params: { Code: code, page, pageSize },
+  });
+  return data;
+}

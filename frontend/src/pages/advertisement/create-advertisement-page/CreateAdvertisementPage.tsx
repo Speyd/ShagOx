@@ -5,7 +5,8 @@ import { useCreateAdvertisement } from "@/features/advertisement/create-advertis
 import type { ImageItem } from "@/shared/lib/types/image";
 import { useNavigate } from "react-router-dom";
 import styles from "./CreateAdvertisementPage.module.css";
-import { useAuthStore } from "@/features/auth/store/useAuthStore";
+import { useAuthStore } from "@/features/auth";
+
 
 export default function CreateAdvertisementPage() {
   const navigate = useNavigate();

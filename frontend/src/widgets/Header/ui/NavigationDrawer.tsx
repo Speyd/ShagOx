@@ -147,8 +147,9 @@ export default function NavigationDrawer({
               <Text fz={14}>Українська мова</Text>
 
               <ChevronRight
-                className={`${styles.arrow} ${languageOpened ? styles.arrowOpened : ""
-                  }`}
+                className={`${styles.arrow} ${
+                  languageOpened ? styles.arrowOpened : ""
+                }`}
               />
             </button>
 
@@ -182,8 +183,11 @@ export default function NavigationDrawer({
         title="Вихід з акаунту"
         centered
         zIndex={1002}
+        radius="md"
       >
-        <Text mb="lg">Ви впевнені, що хочете вийти з акаунту?</Text>
+        <Text mb="xl" c="var(--text-base)">
+          Ви впевнені, що хочете вийти з акаунту?
+        </Text>
 
         <div className={styles.logoutActions}>
           <Button variant="default" onClick={() => setLogoutModalOpened(false)}>

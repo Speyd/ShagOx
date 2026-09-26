@@ -1,0 +1,129 @@
+.authPage {
+  flex: 1;
+  background-image: url("/frontend/src/shared/assets/images/hero-auth.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #ffffff;
+  padding: 48px;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  width: 100%;
+  max-width: 480px;
+  box-sizing: border-box;
+  border: 1px solid #ffffff80;
+}
+
+.link {
+  text-decoration: none;
+  color: #0f172a;
+  transition: color 0.2s ease-in-out;
+}
+
+.link:hover {
+  color: #334767;
+  outline: none;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.list {
+  border-bottom: 1px solid #e9ecef;
+}
+
+.panel {
+  margin-top: 20px;
+}
+
+.tab {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 700;
+  color: #495057;
+  padding: 20px !important;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  background-color: transparent;
+}
+
+.tab[data-active] {
+  color: #0b192c;
+  border: none;
+  border-bottom: 2px solid #0b192c;
+}
+
+.googleButton {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.googleButton:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.guestWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.guestLink {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.divider span {
+  padding: 0 12px;
+  color: #9ca3af;
+  font-size: 13px;
+}

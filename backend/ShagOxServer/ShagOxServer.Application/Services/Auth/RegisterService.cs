@@ -68,6 +68,7 @@ public class RegisterService
             );
             
             if (!prepareResult.IsSuccess)
+
             {
                 return Result<RegisterResponse>
                     .Fail(prepareResult.Error);
@@ -84,6 +85,7 @@ public class RegisterService
                 {
                     _userRepository.Add(user);
 
+
                     var roleResult = await _roleService
                         .AddDefaultRoleAsync(user);
 
@@ -91,6 +93,7 @@ public class RegisterService
                     {
                         return Result<RegisterResponse>
                             .Fail(roleResult.Error);
+
                     }
 
                     await _unitOfWork.SaveChangesAsync();
@@ -112,7 +115,10 @@ public class RegisterService
 
             await _unitOfWork.CommitAsync();
   
-            await SendVerification(user);
+            var verificationResult = await SendVerification(user);
+
+            if (!verificationResult.IsSuccess)
+                return Result<RegisterResponse>.Fail(verificationResult.Error);
 
             _logger.LogInformation(
                 "User registered successfully. UserId: {UserId}",
@@ -158,6 +164,7 @@ public class RegisterService
                 .ApplyAsync(user, request);
 
             if (!result.IsSuccess)
+
             {
                 return Result<(User User, bool IsExisting)>
                     .Fail(result.Error);
@@ -171,6 +178,7 @@ public class RegisterService
                 .CreateUser(request);
 
             if (!userResult.IsSuccess)
+
             {
                 return Result<(User User, bool IsExisting)>
                     .Fail(userResult.Error);
@@ -183,6 +191,7 @@ public class RegisterService
             .Apply(user!, request);
 
         if (!passResult.IsSuccess)
+
         {
             return Result<(User User, bool IsExisting)>
                 .Fail(passResult.Error);
@@ -192,22 +201,25 @@ public class RegisterService
             .Success((user!, isExisting));
     }
 
-    private async Task SendVerification(
+    private async Task<Result<bool>> SendVerification(
         User user)
     {
         user.Status = UserStatus.PendingVerification;
 
         if (!string.IsNullOrWhiteSpace(user.Email))
         {
-            await _senderVerification
+            return await _senderVerification
                 .SendAsync(user,
                     VerificationCodePurpose.RegistrationEmail);
         }
-        else if (!string.IsNullOrWhiteSpace(user.Phone))
+
+        if (!string.IsNullOrWhiteSpace(user.Phone))
         {
-            await _senderVerification
+            return await _senderVerification
                 .SendAsync(user, 
                     VerificationCodePurpose.RegistrationPhone);
         }
+
+        return Result<bool>.Fail("Email or phone is required for verification.");
     }
 }

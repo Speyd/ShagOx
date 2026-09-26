@@ -20,7 +20,7 @@ public abstract class BaseValidator<TObject>
 
 
     public async Task<Result<TObject>> GetByIdAsync(
-        int objcetId)
+        long objcetId)
     {
         var objcet = await _objectRepository
             .GetByIdAsync(objcetId);
@@ -35,7 +35,7 @@ public abstract class BaseValidator<TObject>
     }
 
     public async Task<Result<bool>> ExistsByIdAsync(
-        int objcetId)
+        long objcetId)
     {
         if (!await _objectExistsRepository
             .ExistsByIdAsync(objcetId))
@@ -48,7 +48,7 @@ public abstract class BaseValidator<TObject>
     }
 
     public async Task<Result<bool>> NotExistsByIdAsync(
-        int objcetId)
+        long objcetId)
     {
         if (await _objectExistsRepository
             .ExistsByIdAsync(objcetId))

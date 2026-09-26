@@ -10,15 +10,15 @@ public interface IBasketItemQueryService
     : IQueryService<BasketItemDto>
 {
     Task<Result<PagedResult<BasketItemDto>>> GetPagedAsync(
-        int userId,
+        long userId,
         PaginationParams pagination);
 
     Task<Result<PagedResult<BasketItemDto>>> GetByBasketAsync(
-        int basketId,
+        long basketId,
         PaginationParams pagination);
 
     Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementAsync(
-        int advertisementId,
+        long advertisementId,
         PaginationParams pagination);
 
     Task<Result<PagedResult<BasketItemDto>>> Search(

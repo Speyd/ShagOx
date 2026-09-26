@@ -19,7 +19,7 @@ public class BasketAttributeQueryRepository
 
 
     public override async Task<BasketAttribute?> GetByIdAsync(
-        int id)
+        long id)
     {
         return await _db.BasketAttributes
             .WithIncludes()
@@ -27,7 +27,7 @@ public class BasketAttributeQueryRepository
     }
 
     public async Task<PagedResult<BasketAttribute>> GetByCategoryAsync(
-        int categoryId,
+        long categoryId,
         PaginationParams pagination)
     {
         return await _db.BasketAttributes
@@ -39,7 +39,7 @@ public class BasketAttributeQueryRepository
     }
 
     public async Task<BasketAttribute?> GetByAttributeDefenitionAsync(
-        int attributeDefenitionId)
+        long attributeDefenitionId)
     {
         return await _db.BasketAttributes
             .WithIncludes()

@@ -22,7 +22,7 @@ public class BasketQueryService
 
 
     public async Task<Result<BasketDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var basket = await _basketQueryRepository
             .GetByIdAsync(id);
@@ -31,7 +31,7 @@ public class BasketQueryService
     }
 
     public async Task<Result<BasketDto>> GetByUserAsync(
-        int userId)
+        long userId)
     {
         var basket = await _basketQueryRepository
             .GetByUserAsync(userId);

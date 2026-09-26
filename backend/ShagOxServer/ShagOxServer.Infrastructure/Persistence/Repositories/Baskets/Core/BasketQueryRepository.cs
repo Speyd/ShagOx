@@ -18,7 +18,7 @@ public class BasketQueryRepository
     { }
 
     public override async Task<Basket?> GetByIdAsync(
-       int id)
+       long id)
     {
         return await _db.Baskets
             .WithIncludes()
@@ -26,7 +26,7 @@ public class BasketQueryRepository
     }
 
     public async Task<Basket?> GetByUserAsync(
-        int userId)
+        long userId)
     {
         return await _db.Baskets
             .WithIncludes()

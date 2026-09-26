@@ -6,7 +6,7 @@ namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 public interface IAdvertisementImageService
 {
     Task<Result<bool>> SyncImagesAsync(
-       int advertisementId,
+       long advertisementId,
        AdvertisementUpdateRequest request);
 
     Task<Result<bool>> SyncImagesAsync(

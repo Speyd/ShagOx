@@ -33,7 +33,7 @@ public class ProductTypeTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var attributeType = await _typeValidator
             .GetByIdAsync(id);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Entities.Dictionaries.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries.Translations;
 public class AttributeDefinitionTranslationConfiguration

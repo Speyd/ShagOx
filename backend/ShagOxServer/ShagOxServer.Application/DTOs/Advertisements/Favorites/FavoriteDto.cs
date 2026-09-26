@@ -5,7 +5,7 @@ using ShagOxServer.Application.DTOs.Base;
 namespace ShagOxServer.Application.DTOs.Advertisements.Favorites;
 public sealed record FavoriteDto
 (
-    int Id,
+    long Id,
     UserDto User,
     AdvertisementDto Advertisement
 ) : BaseDto(Id);

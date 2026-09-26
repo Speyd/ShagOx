@@ -7,14 +7,15 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 public interface IAdvertisementQueryRepository
     : IQueryRepository<Advertisement>
 {
-    Task<List<Advertisement>> GetByIdsAsync(List<int> ids);
+    Task<List<Advertisement>> GetByIdsAsync(
+        List<long> ids);
 
     Task<PagedResult<Advertisement>> GetBySellerAsync(
-        int userId,
+        long userId,
         PaginationParams pagination);
 
     Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
-        int userId,
+        long userId,
         PaginationParams pagination);
 
     Task<PagedResult<Advertisement>> Search(

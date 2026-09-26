@@ -38,7 +38,7 @@ public class CategoryUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int categoryId,
+        long categoryId,
         CategoryUpdateRequest request)
     {
         var category = await _categoryValidator.GetByIdAsync(categoryId);
@@ -100,7 +100,7 @@ public class CategoryUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        (string name, int productTypeId) changeValidator,
+        (string name, long productTypeId) changeValidator,
         CategoryUpdateRequest request)
     {
         var existsValidator = await _categoryValidator.NotExistsAsync(

@@ -15,7 +15,7 @@ public class VerificationCodeQueryRepository
 
 
     public async Task<VerificationCode?> GetActiveByUserIdAsync(
-        int userId)
+        long userId)
     {
         return await _db.VerificationCodes
             .FirstOrDefaultAsync(x =>
@@ -26,7 +26,7 @@ public class VerificationCodeQueryRepository
     }
 
     public async Task<VerificationCode?> GetLatestByUserIdAsync(
-        int userId)
+        long userId)
     {
         return await _db.VerificationCodes
             .Where(x => x.UserId == userId)

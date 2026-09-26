@@ -7,11 +7,14 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 public interface IUserQueryRepository
     : IQueryRepository<User>
 {
-    Task<User?> GetByEmailAsync(string email);
+    Task<User?> GetByEmailAsync(
+        string email);
 
-    Task<User?> GetByPhoneAsync(string phone);
+    Task<User?> GetByPhoneAsync(
+        string phone);
 
-    Task<User?> GetByUserNameAsync(string userName);
+    Task<User?> GetByUserNameAsync(
+        string userName);
 
     Task<User?> GetByContactAsync(
         string value);

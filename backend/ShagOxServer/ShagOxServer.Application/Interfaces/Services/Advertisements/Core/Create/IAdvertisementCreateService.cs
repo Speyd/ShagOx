@@ -7,5 +7,5 @@ public interface IAdvertisementCreateService
 {
     Task<Result<CreateResponse>> CreateAsync(
         AdvertisementCreateRequest request,
-        int userId);
+        long userId);
 }

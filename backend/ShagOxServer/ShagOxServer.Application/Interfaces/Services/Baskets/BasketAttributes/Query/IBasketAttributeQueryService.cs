@@ -9,11 +9,11 @@ public interface IBasketAttributeQueryService
     : IQueryService<BasketAttributeDto>
 {
     Task<Result<PagedResult<BasketAttributeDto>>> GetByCategoryAsync(
-        int categoryId,
+        long categoryId,
         PaginationParams pagination);
 
     Task<Result<BasketAttributeDto>> GetByAttributeDefenitionAsync(
-        int attributeDefenitionId);
+        long attributeDefenitionId);
 
     Task<Result<PagedResult<BasketAttributeDto>>> Search(
         BasketAttributeSearchFilter filter,

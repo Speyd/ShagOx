@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Translations;
-using ShagOxServer.Domain.Entities.Dictionaries.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Mapping;
 public static class AttributeDefinitionTranslationMapper

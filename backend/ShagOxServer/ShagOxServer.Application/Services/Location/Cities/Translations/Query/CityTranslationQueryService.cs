@@ -22,7 +22,7 @@ public class CityTranslationQueryService
 
 
     public async Task<Result<CityTranslationDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var city = await _cityRepository
             .GetByIdAsync(id);

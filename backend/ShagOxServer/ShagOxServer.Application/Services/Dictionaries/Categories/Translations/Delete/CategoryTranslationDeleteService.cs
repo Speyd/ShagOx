@@ -33,7 +33,7 @@ public class CategoryTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var category = await _categoryValidator
             .GetByIdAsync(id);

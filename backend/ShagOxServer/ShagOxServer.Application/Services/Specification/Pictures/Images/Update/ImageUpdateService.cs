@@ -39,7 +39,7 @@ public class ImageUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int imageId,
+        long imageId,
         ImageUpdateRequest request)
     {
         var image = await _imageValidator.GetByIdAsync(imageId);

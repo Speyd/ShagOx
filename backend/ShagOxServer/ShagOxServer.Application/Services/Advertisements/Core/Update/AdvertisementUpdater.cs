@@ -24,25 +24,6 @@ public static class AdvertisementUpdater
             count++;
         }
 
-        if (request.Stock.HasValue)
-        {
-            advert.Stock = request.Stock.Value < 0? 0 : request.Stock.Value;
-            count++;
-        }
-
-        if (request.Price.HasValue)
-        {
-            var price = request.Price.Value;
-
-            if (price < advert.Price)
-                advert.PreviousPrice = advert.Price;
-
-            advert.Price = price;
-
-            count++;
-        }
-
-
         if (request.Popularity.HasValue)
         {
             advert.Popularity = request.Popularity.Value;
@@ -78,9 +59,9 @@ public static class AdvertisementUpdater
         }
 
 
-        if (request.Properties is not null)
+        if (request.Attributes is not null)
         {
-            advert.Properties = request.Properties;
+            advert.Attributes = request.Attributes;
             count++;
         }
 

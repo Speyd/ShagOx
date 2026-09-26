@@ -22,7 +22,7 @@ public class BasketAttributeQueryService
 
 
     public async Task<Result<BasketAttributeDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var attribute = await _attributeQueryRepository
             .GetByIdAsync(id);
@@ -31,7 +31,7 @@ public class BasketAttributeQueryService
     }
 
     public async Task<Result<BasketAttributeDto>> GetByAttributeDefenitionAsync(
-        int attributeDefenitionId)
+        long attributeDefenitionId)
     {
         var attribute = await _attributeQueryRepository
             .GetByAttributeDefenitionAsync(attributeDefenitionId);
@@ -40,7 +40,7 @@ public class BasketAttributeQueryService
     }
 
     public async Task<Result<PagedResult<BasketAttributeDto>>> GetByCategoryAsync(
-        int categoryId,
+        long categoryId,
         PaginationParams pagination)
     {
         var attributes = await _attributeQueryRepository

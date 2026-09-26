@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 public sealed record AdvertisementCreateRequest
 (
     string Title,
     string Description,
-    int Stock,
     int Popularity,
-    int Price,
-    int CurrencyId,
-    int ConditionId,
-    int CategoryId,
+    long CurrencyId,
+    long ConditionId,
+    long CategoryId,
     List<IFormFile> Images,
-    Dictionary<string, string>? Properties = null
+    Dictionary<string, JsonDocument>? Attributes = null
 );

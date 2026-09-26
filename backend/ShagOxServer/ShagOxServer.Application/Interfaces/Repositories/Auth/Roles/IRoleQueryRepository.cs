@@ -8,10 +8,11 @@ public interface IRoleQueryRepository
     : IQueryRepository<Role>
 {
     Task<PagedResult<Role>> GetByUserAsync(
-        int userId,
+        long userId,
         PaginationParams pagination);
 
-    Task<Role?> GetByNameAsync(string name);
+    Task<Role?> GetByNameAsync(
+        string name);
 
     Task<PagedResult<Role>> Search(
         RoleSearchFilter filter,

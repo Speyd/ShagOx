@@ -3,6 +3,6 @@
 namespace ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations;
 public sealed record ProductTypeTranslationDto
 (
-    int Id,
+    long Id,
     string Name
 ) : BaseDto(Id);

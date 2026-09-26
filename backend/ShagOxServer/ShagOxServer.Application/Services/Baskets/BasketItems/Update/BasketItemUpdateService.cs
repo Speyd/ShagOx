@@ -34,7 +34,7 @@ public class BasketItemUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int itemId,
+        long itemId,
         BasketItemUpdateRequest request)
     {
         var item = await _itemValidator

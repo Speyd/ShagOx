@@ -8,15 +8,15 @@ public interface IBasketItemQueryRepository
     : IQueryRepository<BasketItem>
 {
     Task<PagedResult<BasketItem>> GetPagedAsync(
-        int userId,
+        long userId,
         PaginationParams pagination);
 
     Task<PagedResult<BasketItem>> GetByBasketAsync(
-        int basketId,
+        long basketId,
         PaginationParams pagination);
 
     Task<PagedResult<BasketItem>> GetByAdvertisementAsync(
-        int advertisementId,
+        long advertisementId,
         PaginationParams pagination);
 
     Task<PagedResult<BasketItem>> Search(

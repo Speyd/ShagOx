@@ -33,7 +33,7 @@ public class BasketDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var basket = await _basketValidator
             .GetByIdAsync(id);

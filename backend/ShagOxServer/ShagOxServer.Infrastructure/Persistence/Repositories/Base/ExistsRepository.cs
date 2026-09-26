@@ -14,7 +14,8 @@ public class ExistsRepository<T>
     }
 
 
-    public virtual async Task<bool> ExistsByIdAsync(int id)
+    public virtual async Task<bool> ExistsByIdAsync(
+        long id)
     {
         return await _db.Set<T>()
             .AnyAsync(x => EF.Property<int>(x, "Id") == id);

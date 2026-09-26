@@ -31,7 +31,7 @@ public class AdvertisementQueryService
     }
 
     public async Task<Result<AdvertisementDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var advert = await _advertisementRepository
             .GetByIdAsync(id);
@@ -40,7 +40,7 @@ public class AdvertisementQueryService
     }
 
     public async Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
-        int userId,
+        long userId,
         PaginationParams pagination)
     {
         var advert = await _advertisementRepository
@@ -49,7 +49,7 @@ public class AdvertisementQueryService
         return advert.ToResultPaged(AdvertisementMapper.ToDto);
     }
     public async Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
-        int userId,
+        long userId,
         PaginationParams pagination)
     {
         var advert = await _advertisementRepository

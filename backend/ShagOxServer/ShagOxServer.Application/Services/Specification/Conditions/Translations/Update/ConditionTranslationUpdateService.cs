@@ -40,7 +40,7 @@ public class ConditionTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int conditionTranslationId,
+        long conditionTranslationId,
         ConditionTranslationUpdateRequest request)
     {
         var condition = await _conditionTranslationValidator

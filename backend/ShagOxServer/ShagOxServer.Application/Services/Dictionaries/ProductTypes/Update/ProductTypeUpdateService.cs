@@ -34,7 +34,7 @@ public class ProductTypeUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int productTypeId,
+        long productTypeId,
         ProductTypeUpdateRequest request)
     {
         var productType = await _productTypeValidator

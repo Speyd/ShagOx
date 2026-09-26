@@ -22,7 +22,7 @@ public class ConditionQueryService
 
 
     public async Task<Result<ConditionDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var condition = await _conditionQueryRepository
             .GetByIdAsync(id);

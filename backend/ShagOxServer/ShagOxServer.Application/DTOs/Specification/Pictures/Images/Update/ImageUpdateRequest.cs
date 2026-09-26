@@ -3,5 +3,5 @@ public sealed record  ImageUpdateRequest
 (
     string? Url,
     int? Order,
-    int? AdvertisementId
+    long? AdvertisementId
 );

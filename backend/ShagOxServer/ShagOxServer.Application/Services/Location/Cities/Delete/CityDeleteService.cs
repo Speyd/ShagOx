@@ -34,7 +34,7 @@ public class CityDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var city = await _cityValidator.GetByIdAsync(id);
         if (!city.IsSuccess)

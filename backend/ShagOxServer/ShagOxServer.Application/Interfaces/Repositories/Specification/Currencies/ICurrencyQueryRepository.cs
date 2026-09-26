@@ -7,9 +7,11 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Currenc
 public interface ICurrencyQueryRepository
     : IQueryRepository<Currency>
 {
-    Task<Currency?> GetByCodeAsync(string code);
+    Task<Currency?> GetByCodeAsync(
+        string code);
 
-    Task<Currency?> GetBySymbolAsync(string symbol);
+    Task<Currency?> GetBySymbolAsync(
+        string symbol);
 
     Task<PagedResult<Currency>> Search(
       CurrencySearchFilter filter,

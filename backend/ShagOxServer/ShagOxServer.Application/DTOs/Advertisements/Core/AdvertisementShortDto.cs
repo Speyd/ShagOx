@@ -1,20 +1,18 @@
 ﻿using ShagOxServer.Application.DTOs.Base;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.DTOs.Advertisements;
 public sealed record AdvertisementShortDto
 (
-    int Id,
+    long Id,
     string Title,
     string Description,
-    int Stock,
-    int Price,
-    int PreviousPrice,
-    int CurrencyId,
-    int CategoryId,
-    int SellerId,
-    int? BuyerId,
-    List<int> ImageIds,
-    Dictionary<string, string> Properties,
+    long CurrencyId,
+    long CategoryId,
+    long SellerId,
+    long? BuyerId,
+    List<long> ImageIds,
+    Dictionary<string, JsonDocument> Attributes,
     DateTime? SoldAt,
     DateTime CreatedAt
 ) : BaseDto(Id);

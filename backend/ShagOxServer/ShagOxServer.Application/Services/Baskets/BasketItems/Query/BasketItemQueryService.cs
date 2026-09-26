@@ -22,7 +22,7 @@ public class BasketItemQueryService
 
 
     public async Task<Result<BasketItemDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var item = await _itemQueryRepository
             .GetByIdAsync(id);
@@ -31,7 +31,7 @@ public class BasketItemQueryService
     }
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementAsync(
-        int advertisementId,
+        long advertisementId,
         PaginationParams pagination)
     {
         var items = await _itemQueryRepository
@@ -41,7 +41,7 @@ public class BasketItemQueryService
     }
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetByBasketAsync(
-        int basketId, 
+        long basketId, 
         PaginationParams pagination)
     {
         var items = await _itemQueryRepository
@@ -60,7 +60,7 @@ public class BasketItemQueryService
     }
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetPagedAsync(
-        int userId,
+        long userId,
         PaginationParams pagination)
     {
         var items = await _itemQueryRepository

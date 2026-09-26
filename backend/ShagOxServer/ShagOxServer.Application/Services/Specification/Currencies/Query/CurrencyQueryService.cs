@@ -22,7 +22,7 @@ public class CurrencyQueryService
 
 
     public async Task<Result<CurrencyDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var currency = await _currencyRepository
             .GetByIdAsync(id);

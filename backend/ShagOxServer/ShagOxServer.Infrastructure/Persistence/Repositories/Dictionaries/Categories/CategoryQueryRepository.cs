@@ -19,7 +19,7 @@ public class CategoryQueryRepository
 
 
     public override async Task<Category?> GetByIdAsync(
-        int id)
+        long id)
     {
         return await _db.Categories
             .WithIncludes()
@@ -35,7 +35,7 @@ public class CategoryQueryRepository
     }
 
     public async Task<PagedResult<Category>> GetByProductTypeAsync(
-        int productTypeId,
+        long productTypeId,
         PaginationParams pagination)
     {
         return await _db.Categories

@@ -16,9 +16,6 @@ public static class AdvertisementMapper
             x.Id,
             x.Title,
             x.Description,
-            x.Stock,
-            x.Price,
-            x.PreviousPrice,
             CurrencyMapper.ToDto(x.Currency),
             CategoryMapper.ToDto(x.Category),
             UserShortMapper.ToDto(x.Seller),
@@ -27,7 +24,7 @@ public static class AdvertisementMapper
                 .OrderBy(i => i.Order)
                 .Select(ImageMapper.ToDto)
                 .ToList(),
-            x.Properties,
+            x.Attributes,
             x.SoldAt,
             x.CreatedAt
         );

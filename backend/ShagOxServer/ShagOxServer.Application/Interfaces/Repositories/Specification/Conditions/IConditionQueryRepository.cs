@@ -7,7 +7,8 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Conditi
 public interface IConditionQueryRepository
     : IQueryRepository<Condition>
 {
-    Task<Condition?> GetByCodeAsync(string code);
+    Task<Condition?> GetByCodeAsync(
+        string code);
 
     Task<PagedResult<Condition>> Search(
         ConditionSearchFilter filter,

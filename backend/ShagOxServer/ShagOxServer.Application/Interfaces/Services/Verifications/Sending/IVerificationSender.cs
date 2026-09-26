@@ -16,7 +16,7 @@ public interface IVerificationSender
         string? pendingValue = null);
 
     Task<Result<bool>> SendAsync(
-        int userId,
+        long userId,
         VerificationCodePurpose purpose,
         string? pendingValue = null);
 }

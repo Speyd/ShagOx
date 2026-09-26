@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Domain.Base;
 
-namespace ShagOxServer.Domain.Entities.Dictionaries.Translations;
+namespace ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 public class AttributeDefinitionTranslation
     : BaseTranslation<AttributeDefinition>
 {

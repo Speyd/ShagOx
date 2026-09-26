@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
-using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Mapping;
 public static class AttributeDefinitionMapper
@@ -15,7 +15,9 @@ public static class AttributeDefinitionMapper
             attribute.Type,
             attribute.Required,
             attribute.Min,
-            attribute.Max
+            attribute.Max,
+            attribute.IsVariant,
+            attribute.Multiple
         );
     }
 }

@@ -22,7 +22,7 @@ public class RoleQueryService
 
 
     public async Task<Result<RoleDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var role = await _roleQueryRepository
             .GetByIdAsync(id);
@@ -40,7 +40,7 @@ public class RoleQueryService
     }
 
     public async Task<Result<PagedResult<RoleDto>>> GetByUserAsync(
-       int userId,
+       long userId,
        PaginationParams pagination)
     {
         var roles = await _roleQueryRepository

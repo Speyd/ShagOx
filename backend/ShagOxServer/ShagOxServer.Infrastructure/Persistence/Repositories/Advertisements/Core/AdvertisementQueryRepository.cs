@@ -18,7 +18,7 @@ public class AdvertisementQueryRepository
 
 
     public override async Task<Advertisement?> GetByIdAsync(
-        int id)
+        long id)
     {
         return await _db.Advertisements
             .WithIncludes()
@@ -26,7 +26,7 @@ public class AdvertisementQueryRepository
     }
 
     public async Task<List<Advertisement>> GetByIdsAsync(
-        List<int> ids)
+        List<long> ids)
     {
         return await _db.Advertisements
             .WithIncludes()
@@ -35,7 +35,7 @@ public class AdvertisementQueryRepository
     }
 
     public async Task<PagedResult<Advertisement>> GetBySellerAsync(
-        int userId,
+        long userId,
         PaginationParams pagination)
     {
         return await _db.Advertisements
@@ -45,7 +45,7 @@ public class AdvertisementQueryRepository
             .ToPagedResultAsync(pagination);
     }
     public async Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
-        int userId,
+        long userId,
         PaginationParams pagination)
     {
         return await _db.Advertisements

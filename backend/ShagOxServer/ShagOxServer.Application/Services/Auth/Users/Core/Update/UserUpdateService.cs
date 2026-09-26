@@ -50,7 +50,7 @@ public class UserUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int userId,
+        long userId,
         UserUpdateRequest request)
     {
         var user = await _userValidator

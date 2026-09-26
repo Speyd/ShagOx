@@ -33,7 +33,8 @@ public class FavoriteDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id, int userId)
+        long id, 
+        long userId)
     {
         var favorite = await _favoriteValidator
             .GetByIdAsync(id);

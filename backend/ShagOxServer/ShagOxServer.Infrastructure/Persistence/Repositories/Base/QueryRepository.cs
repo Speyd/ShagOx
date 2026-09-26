@@ -14,7 +14,7 @@ public class QueryRepository<T>
     }
 
     public virtual async Task<T?> GetByIdAsync(
-        int id)
+        long id)
     {
         return await _db.Set<T>()
             .FindAsync(id);

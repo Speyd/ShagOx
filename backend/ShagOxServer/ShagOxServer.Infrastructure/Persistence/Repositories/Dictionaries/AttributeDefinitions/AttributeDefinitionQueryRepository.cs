@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
-using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
@@ -19,7 +19,7 @@ public class AttributeDefinitionQueryRepository
 
 
     public override async Task<AttributeDefinition?> GetByIdAsync(
-        int id)
+        long id)
     {
         return await _db.AttributeDefinitions
             .WithIncludes()
@@ -35,7 +35,7 @@ public class AttributeDefinitionQueryRepository
     }
 
     public async Task<List<AttributeDefinition>> GetByIdsAsync(
-        List<int> ids)
+        List<long> ids)
     {
         return await _db.AttributeDefinitions.WithIncludes()
             .Where(x => ids.Contains(x.Id))

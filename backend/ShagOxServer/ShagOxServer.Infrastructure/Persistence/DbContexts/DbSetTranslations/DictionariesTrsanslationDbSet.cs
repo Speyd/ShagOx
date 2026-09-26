@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;

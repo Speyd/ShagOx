@@ -42,7 +42,7 @@ public class AdvertisementUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int advertId,
+        long advertId,
         AdvertisementUpdateRequest request)
     {
         var advert = await _validator

@@ -6,8 +6,8 @@ public interface IVerificationCodeExistsRepository
     : IExistsRepository<VerificationCode>
 {
     Task<bool> ExistsByUserIdAsync(
-        int userId);
+        long userId);
 
     Task<bool> ExistsActiveByUserIdAsync(
-        int userId);
+        long userId);
 }

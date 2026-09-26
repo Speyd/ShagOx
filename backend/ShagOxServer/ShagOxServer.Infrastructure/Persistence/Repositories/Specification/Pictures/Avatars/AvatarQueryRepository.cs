@@ -19,7 +19,7 @@ public class AvatarQueryRepository
 
 
     public override async Task<Avatar?> GetByIdAsync(
-        int id)
+        long id)
     {
         return await _db.Avatars
             .WithIncludes()
@@ -36,7 +36,7 @@ public class AvatarQueryRepository
     }
 
     public async Task<Avatar?> GetByUserIdAsync(
-        int userId)
+        long userId)
     {
         return await _db.Avatars
           .WithIncludes()

@@ -37,7 +37,7 @@ public class AvatarDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var avatar = await _avatarValidator.GetByIdAsync(id);
         if (!avatar.IsSuccess)

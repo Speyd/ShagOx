@@ -38,7 +38,7 @@ public class AvatarUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int avatarId,
+        long avatarId,
         AvatarUpdateRequest request)
     {
         var avatar = await _avatarValidator.GetByIdAsync(avatarId);

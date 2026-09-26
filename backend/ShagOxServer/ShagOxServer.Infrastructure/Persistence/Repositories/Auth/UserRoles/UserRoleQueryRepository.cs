@@ -17,7 +17,7 @@ public class UserRoleQueryRepository
 
 
     public async Task<List<Role>> GetRolesByUserIdAsync(
-       int userId,
+       long userId,
        PaginationParams pagination)
     {
         return await _db.Roles
@@ -29,7 +29,7 @@ public class UserRoleQueryRepository
     }
 
     public async Task<List<User>> GetUsersByRoleIdAsync(
-        int roleId,
+        long roleId,
         PaginationParams pagination)
     {
         return await _db.Users

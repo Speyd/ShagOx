@@ -21,7 +21,7 @@ public class FavoriteQueryService
 
 
     public async Task<Result<FavoriteDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var favorite = await _favoriteRepository
             .GetByIdAsync(id);
@@ -39,7 +39,7 @@ public class FavoriteQueryService
     }
 
     public async Task<Result<int>> CountByAdvertisementAsync(
-        int advertisementId)
+        long advertisementId)
     {
         var count = await _favoriteRepository
             .CountByAdvertisementAsync(advertisementId);
@@ -48,7 +48,7 @@ public class FavoriteQueryService
     }
 
     public async Task<Result<PagedResult<FavoriteDto>>> GetByUserAsync(
-        int usderId,
+        long usderId,
         PaginationParams pagination)
     {
         var favorites = await _favoriteRepository

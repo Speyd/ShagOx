@@ -13,5 +13,6 @@ public interface IUserAdminQueryService
         UserAdminSearchFilter filter,
         PaginationParams pagination);
 
-    Task<bool> ExistsByIdAsync(int id);
+    Task<bool> ExistsByIdAsync(
+        long id);
 }

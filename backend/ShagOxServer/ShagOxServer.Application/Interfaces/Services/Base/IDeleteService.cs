@@ -4,5 +4,5 @@ namespace ShagOxServer.Application.Interfaces.Services.Base;
 public interface IDeleteService<TResponse>
 {
     Task<Result<TResponse>> DeleteAsync(
-        int id);
+        long id);
 }

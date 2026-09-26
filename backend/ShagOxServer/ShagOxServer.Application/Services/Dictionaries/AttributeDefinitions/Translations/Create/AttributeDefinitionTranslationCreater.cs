@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Translations.Create;
-using ShagOxServer.Domain.Entities.Dictionaries.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Create;
 public static class AttributeDefinitionTranslationCreater

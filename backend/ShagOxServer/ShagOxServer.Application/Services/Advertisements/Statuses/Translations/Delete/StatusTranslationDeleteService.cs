@@ -32,7 +32,7 @@ public class StatusTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var status = await _statusValidator
             .GetByIdAsync(id);

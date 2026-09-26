@@ -7,7 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.AttributeDefinit
 using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
-using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Update;
@@ -38,7 +38,7 @@ public class AttributeDefinitionUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int attributeId,
+        long attributeId,
         AttributeDefinitionUpdateRequest request)
     {
         var attribute = await _attributeValidator.GetByIdAsync(attributeId);
@@ -100,7 +100,7 @@ public class AttributeDefinitionUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        (string key, int categoryId) changeValidator,
+        (string key, long categoryId) changeValidator,
         AttributeDefinitionUpdateRequest request)
     {
         var existsValidator = await _attributeValidator

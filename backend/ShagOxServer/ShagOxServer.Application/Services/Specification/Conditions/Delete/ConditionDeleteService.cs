@@ -36,7 +36,7 @@ public class ConditionDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var condition = await _conditionValidator.GetByIdAsync(id);
         if (!condition.IsSuccess)

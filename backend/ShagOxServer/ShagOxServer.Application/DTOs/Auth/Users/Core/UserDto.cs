@@ -6,7 +6,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars;
 namespace ShagOxServer.Application.DTOs.Auth.Users.Core;
 public sealed record UserDto
 (
-    int Id,
+    long Id,
     string? FirstName,
     string? LastName,
     string UserName,

@@ -1,9 +1,8 @@
-﻿
-using ShagOxServer.Application.DTOs.Base;
+﻿using ShagOxServer.Application.DTOs.Base;
 
 namespace ShagOxServer.Application.DTOs.Location.Regions;
 public sealed record RegionDto
 (
-    int Id,
+    long Id,
     string Code
 ) : BaseDto(Id);

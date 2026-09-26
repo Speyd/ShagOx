@@ -9,7 +9,7 @@ namespace ShagOxServer.Application.Services.Advertisements.Images;
 public partial class AdvertisementImageService
 {
     public async Task<Result<bool>> SyncImagesAsync(
-        int advertisementId,
+        long advertisementId,
         AdvertisementUpdateRequest request)
     {
         var advertisement = await _advertValidator

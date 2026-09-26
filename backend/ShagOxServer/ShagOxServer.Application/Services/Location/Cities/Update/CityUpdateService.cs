@@ -39,7 +39,7 @@ public class CityUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int cityId, 
+        long cityId, 
         CityUpdateRequest request)
     {
         var city = await _cityValidator.GetByIdAsync(cityId);
@@ -101,7 +101,7 @@ public class CityUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        (int regionId, string name) changeValidator,
+        (long regionId, string name) changeValidator,
         CityUpdateRequest request)
     {
         var existsValidator = await _cityValidator.NotExistsAsync(
@@ -109,9 +109,6 @@ public class CityUpdateService
             changeValidator.name
         );
 
-        if (!existsValidator.IsSuccess)
-            return Result<bool>.Fail(existsValidator.Error);
-
-        return Result<bool>.Success(true);
+        return existsValidator;
     }
 }

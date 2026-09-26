@@ -40,7 +40,7 @@ public class ProductTypeTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusTranslationId,
+        long statusTranslationId,
         ProductTypeTranslationUpdateRequest request)
     {
         var productType = await _typeTranslationValidator

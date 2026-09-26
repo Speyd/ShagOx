@@ -2,5 +2,5 @@
 public sealed record CategoryCreateRequest
 (
     string Code,
-    int ProductTypeId
+    long ProductTypeId
 );

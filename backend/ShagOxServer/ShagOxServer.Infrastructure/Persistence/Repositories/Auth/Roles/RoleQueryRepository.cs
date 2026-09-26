@@ -18,7 +18,7 @@ public class RoleQueryRepository
 
 
     public async Task<PagedResult<Role>> GetByUserAsync(
-       int userId,
+       long userId,
        PaginationParams pagination)
     {
         return await _db.UserRoles

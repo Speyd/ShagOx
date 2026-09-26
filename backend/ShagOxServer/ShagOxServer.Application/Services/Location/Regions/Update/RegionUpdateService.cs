@@ -34,7 +34,7 @@ public class RegionUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int regionId,
+        long regionId,
         RegionUpdateRequest request)
     {
         var region = await _regionValidator.GetByIdAsync(regionId);

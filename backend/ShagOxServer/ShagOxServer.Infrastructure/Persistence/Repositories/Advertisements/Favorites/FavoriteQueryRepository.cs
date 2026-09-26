@@ -17,7 +17,7 @@ public class FavoriteQueryRepository
 
 
     public override async Task<Favorite?> GetByIdAsync(
-        int id)
+        long id)
     {
         return await _db.Favorites
             .WithIncludes()
@@ -33,7 +33,7 @@ public class FavoriteQueryRepository
     }
 
     public async Task<int> CountByAdvertisementAsync(
-        int advertisementId)
+        long advertisementId)
     {
         return await _db.Favorites
              .WithIncludes()
@@ -42,7 +42,7 @@ public class FavoriteQueryRepository
     }
 
     public async Task<PagedResult<Favorite>> GetByUserAsync(
-        int usderId,
+        long usderId,
         PaginationParams pagination)
     {
         return await _db.Favorites

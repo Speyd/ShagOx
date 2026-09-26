@@ -22,7 +22,7 @@ public class ProductTypeTranslationQueryService
 
 
     public async Task<Result<ProductTypeTranslationDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var region = await _typeRepository
             .GetByIdAsync(id);

@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
-using ShagOxServer.Domain.Entities.Dictionaries.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions.Translations;
 public interface IAttributeDefinitionTranslationExistsRepository

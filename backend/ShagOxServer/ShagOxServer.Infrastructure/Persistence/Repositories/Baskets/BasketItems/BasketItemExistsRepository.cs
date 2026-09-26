@@ -15,8 +15,8 @@ public class BasketItemExistsRepository
     { }
 
     public async Task<bool> ExistsAsync(
-        int advertisementId,
-        int basketId)
+        long advertisementId,
+        long basketId)
     {
         return await _db.BasketItems
             .AnyAsync(c => 
@@ -26,8 +26,8 @@ public class BasketItemExistsRepository
     }
 
     public async Task<bool> ExistsByAdvertisementAsync(
-        int itemId,
-        int advertisementId)
+        long itemId,
+        long advertisementId)
     {
         return await _db.BasketItems
             .AnyAsync(c =>
@@ -37,8 +37,8 @@ public class BasketItemExistsRepository
     }
 
     public async Task<bool> ExistsByBasketAsync(
-        int itemId,
-        int basketId)
+        long itemId,
+        long basketId)
     {
         return await _db.BasketItems
             .AnyAsync(c =>
@@ -48,8 +48,8 @@ public class BasketItemExistsRepository
     }
 
     public async Task<bool> IsOwnerAsync(
-        int enityId,
-        int userId)
+        long enityId,
+        long userId)
     {
         var result = await _db.BasketItems
             .WithIncludes()

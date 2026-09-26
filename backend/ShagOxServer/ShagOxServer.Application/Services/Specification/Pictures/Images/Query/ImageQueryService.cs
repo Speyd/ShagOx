@@ -21,7 +21,7 @@ public class ImageQueryService
 
 
     public async Task<Result<ImageDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var image = await _imageQueryRepository
             .GetByIdAsync(id);

@@ -10,10 +10,11 @@ public interface IRoleQueryService
     : IQueryService<RoleDto>
 {
     Task<Result<PagedResult<RoleDto>>> GetByUserAsync(
-       int userId,
+       long userId,
        PaginationParams pagination);
 
-    Task<Result<RoleDto>> GetByNameAsync(string name);
+    Task<Result<RoleDto>> GetByNameAsync(
+        string name);
 
     Task<Result<PagedResult<RoleDto>>> Search(
        RoleSearchFilter filter,

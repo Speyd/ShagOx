@@ -19,7 +19,7 @@ public class CityQueryRepository
 
 
     public override async Task<City?> GetByIdAsync(
-        int id)
+        long id)
     {
         return await _db.Cities
             .WithIncludes()
@@ -43,7 +43,7 @@ public class CityQueryRepository
     }
 
     public async Task<PagedResult<City>> GetByRegionAsync(
-        int regionId,
+        long regionId,
         PaginationParams pagination)
     {
         return await _db.Cities

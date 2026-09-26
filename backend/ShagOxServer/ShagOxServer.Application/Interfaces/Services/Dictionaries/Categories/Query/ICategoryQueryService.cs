@@ -9,7 +9,7 @@ public interface ICategoryQueryService
     : IQueryService<CategoryDto>
 {
     Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
-        int productTypeId,
+        long productTypeId,
         PaginationParams pagination);
 
     Task<Result<PagedResult<CategoryDto>>> Search(

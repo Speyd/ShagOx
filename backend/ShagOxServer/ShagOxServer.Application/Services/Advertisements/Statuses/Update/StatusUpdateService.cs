@@ -34,7 +34,7 @@ public class StatusUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusId,
+        long statusId,
         StatusUpdateRequest request)
     {
         var status = await _statusValidator.

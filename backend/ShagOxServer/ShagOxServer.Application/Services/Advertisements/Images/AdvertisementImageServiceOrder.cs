@@ -34,7 +34,7 @@ public partial class AdvertisementImageService
 
         for (int i = 0; i < advertisement.Images.Count; i++)
         {
-            advertisement.Images[i].Order = originalImageOrders[i];
+            advertisement.Images.ElementAt(i).Order = originalImageOrders[i];
         }
     }
 

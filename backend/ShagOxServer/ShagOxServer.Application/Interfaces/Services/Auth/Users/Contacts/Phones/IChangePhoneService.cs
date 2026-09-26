@@ -5,6 +5,6 @@ namespace ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Phone
 public interface IChangePhoneService
 {
     Task<Result<bool>> ChangePhone(
-        int userId,
+        long userId,
         ChangePhoneRequest request);
 }

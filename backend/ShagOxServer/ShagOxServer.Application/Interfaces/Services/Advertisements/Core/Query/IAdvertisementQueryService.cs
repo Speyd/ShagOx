@@ -10,11 +10,11 @@ public interface IAdvertisementQueryService
     : IQueryService<AdvertisementDto>
 {
     Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
-        int userId,
+        long userId,
         PaginationParams pagination);
 
     Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
-        int userId,
+        long userId,
         PaginationParams pagination);
 
     Task<Result<PagedResult<AdvertisementDto>>> Search(

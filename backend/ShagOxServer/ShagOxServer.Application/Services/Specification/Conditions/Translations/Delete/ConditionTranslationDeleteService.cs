@@ -33,7 +33,7 @@ public class ConditionTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var city = await _conditionValidator
             .GetByIdAsync(id);

@@ -23,7 +23,7 @@ public class AdvertisementValidator
 
 
     public async Task<Result<Advertisement>> GetByIdWithIncludeAsync(
-        int advertId)
+        long advertId)
     {
         var advert = await _advertisementQueryRepository
             .GetByIdAsync(advertId);

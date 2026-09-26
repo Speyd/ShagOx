@@ -22,7 +22,7 @@ public class AttributeDefinitionQueryService
 
 
     public async Task<Result<AttributeDefinitionDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var attribute = await _attributeQueryRepository
             .GetByIdAsync(id);

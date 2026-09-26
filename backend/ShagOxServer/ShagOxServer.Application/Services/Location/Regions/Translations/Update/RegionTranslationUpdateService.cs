@@ -40,7 +40,7 @@ public class RegionTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusTranslationId,
+        long statusTranslationId,
         RegionTranslationUpdateRequest request)
     {
         var region = await _regionTranslationValidator

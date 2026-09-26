@@ -5,9 +5,12 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Currenc
 public interface ICurrencyExistsRepository
     : IExistsRepository<Currency>
 {
-    Task<bool> ExistsByCodeAsync(string code);
+    Task<bool> ExistsByCodeAsync(
+        string code);
 
-    Task<bool> ExistsBySymbolAsync(string symbol);
+    Task<bool> ExistsBySymbolAsync(
+        string symbol);
 
-    Task<bool> ExistsByNameAsync(string name);
+    Task<bool> ExistsByNameAsync(
+        string name);
 }

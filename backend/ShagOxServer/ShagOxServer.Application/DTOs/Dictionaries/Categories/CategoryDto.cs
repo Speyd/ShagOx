@@ -3,7 +3,7 @@
 namespace ShagOxServer.Application.DTOs.Dictionaries.Categories;
 public sealed record CategoryDto
 (
-    int Id,
+    long Id,
     string Name,
     CategoryProductTypeDto ProductType
 ) : BaseDto(Id);

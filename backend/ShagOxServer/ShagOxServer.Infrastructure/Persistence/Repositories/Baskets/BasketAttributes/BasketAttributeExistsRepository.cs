@@ -16,8 +16,8 @@ public class BasketAttributeExistsRepository
 
 
     public async Task<bool> ExistsAsync(
-        int categoryId,
-        int attributeId,
+        long categoryId,
+        long attributeId,
         int order)
     {
         return await _db.BasketAttributes
@@ -29,7 +29,7 @@ public class BasketAttributeExistsRepository
     }
 
     public async Task<bool> ExistsByAttributeDefenitionAsync(
-        int attributeDefenitionId)
+        long attributeDefenitionId)
     {
         return await _db.BasketAttributes
             .WithIncludes()
@@ -37,7 +37,8 @@ public class BasketAttributeExistsRepository
                 c.AttributeDefinitionId == attributeDefenitionId);
     }
 
-    public async Task<bool> ExistsByCategoryAsync(int categoryId)
+    public async Task<bool> ExistsByCategoryAsync(
+        long categoryId)
     {
         return await _db.BasketAttributes
             .WithIncludes()

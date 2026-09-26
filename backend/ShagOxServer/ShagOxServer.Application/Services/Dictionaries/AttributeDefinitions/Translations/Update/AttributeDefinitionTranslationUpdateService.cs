@@ -8,8 +8,8 @@ using ShagOxServer.Application.Resources.EntityErrorResourcess;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
-using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Dictionaries.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Translations.Update;
@@ -40,7 +40,7 @@ public class AttributeDefinitionTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusTranslationId,
+        long statusTranslationId,
         AttributeDefinitionTranslationUpdateRequest request)
     {
         var attribute = await _attributeTranslationValidator

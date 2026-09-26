@@ -19,7 +19,7 @@ public abstract class OwnerExistsController
     }
 
     protected async Task<IActionResult?> CheckOwnershipAsync(
-        int entityId)
+        long entityId)
     {
         var isOwner = await _ownerRepository
             .IsOwnerAsync(

@@ -23,7 +23,7 @@ public class CategoryTranslationQueryService
 
 
     public async Task<Result<CategoryTranslationDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var category = await _categoryRepository
             .GetByIdAsync(id);

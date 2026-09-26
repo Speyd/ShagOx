@@ -22,7 +22,7 @@ public class ProductTypeQueryService
 
 
     public async Task<Result<ProductTypeDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var productType = await _productTypeQueryRepository
             .GetByIdAsync(id);

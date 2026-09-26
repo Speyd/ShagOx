@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
-using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
@@ -23,7 +23,7 @@ public class AttributeDefinitionValidator
 
     public async Task<Result<bool>> ExistsByKeyAsync(
       string attributeName,
-      int categoryId)
+      long categoryId)
     {
         if (await _attributeExistsRepository
             .ExistsByCategoryAsync(attributeName, categoryId))
@@ -37,7 +37,7 @@ public class AttributeDefinitionValidator
 
     public async Task<Result<bool>> NotExistsByKeyAsync(
       string attributeName,
-      int categoryId)
+      long categoryId)
     {
         if (await _attributeExistsRepository
             .ExistsByCategoryAsync(attributeName, categoryId))

@@ -34,7 +34,7 @@ public class ConditionUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int conditionId, 
+        long conditionId, 
         ConditionUpdateRequest request)
     {
         var condition = await _conditionValidator

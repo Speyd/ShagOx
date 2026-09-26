@@ -18,7 +18,7 @@ public class BasketItemQueryRepository
     { }
 
     public override async Task<BasketItem?> GetByIdAsync(
-       int id)
+       long id)
     {
         return await _db.BasketItems
             .WithIncludes()
@@ -26,7 +26,7 @@ public class BasketItemQueryRepository
     }
 
     public async Task<PagedResult<BasketItem>> GetByAdvertisementAsync(
-        int advertisementId,
+        long advertisementId,
         PaginationParams pagination)
     {
         return await _db.BasketItems
@@ -36,7 +36,7 @@ public class BasketItemQueryRepository
     }
 
     public async Task<PagedResult<BasketItem>> GetByBasketAsync(
-        int basketId,
+        long basketId,
         PaginationParams pagination)
     {
         return await _db.BasketItems
@@ -54,7 +54,7 @@ public class BasketItemQueryRepository
     }
 
     public async Task<PagedResult<BasketItem>> GetPagedAsync(
-        int userId, 
+        long userId, 
         PaginationParams pagination)
     {
         return await _db.BasketItems

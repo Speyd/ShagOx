@@ -40,7 +40,7 @@ public class UserDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var user = await _userValidator.GetByIdAsync(id);
         if (!user.IsSuccess)

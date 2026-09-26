@@ -44,7 +44,7 @@ public class BasketAttributeUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int attributeId,
+        long attributeId,
         BasketAttributeUpdateRequest request)
     {
         var attribute = await _attributeValidator
@@ -111,7 +111,7 @@ public class BasketAttributeUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        (int order, int attributeDefinitionId) changeValidator,
+        (int order, long attributeDefinitionId) changeValidator,
         BasketAttributeUpdateRequest request)
     {
         var attributeDef = await _attributeDefinitionValidator

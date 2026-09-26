@@ -3,6 +3,6 @@
 namespace ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Translations;
 public sealed record AttributeDefinitionTranslationDto
 (
-    int Id,
+    long Id,
     string Name
 ) : BaseDto(Id);

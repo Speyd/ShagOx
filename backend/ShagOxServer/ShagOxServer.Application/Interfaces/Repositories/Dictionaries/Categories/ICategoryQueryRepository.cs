@@ -8,7 +8,7 @@ public interface ICategoryQueryRepository
     : IQueryRepository<Category>
 {
     Task<PagedResult<Category>> GetByProductTypeAsync(
-        int productTypeId,
+        long productTypeId,
         PaginationParams pagination);
 
     Task<PagedResult<Category>> Search(

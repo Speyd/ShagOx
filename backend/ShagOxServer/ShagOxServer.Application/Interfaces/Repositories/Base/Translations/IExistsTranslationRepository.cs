@@ -3,7 +3,7 @@ public interface IExistsTranslationRepository<T>
     : IExistsRepository<T>
 {
     Task<bool> ExistsAsync(
-       int objectId,
+       long objectId,
        string language);
 
     Task<bool> ExistsByLanguageAsync(

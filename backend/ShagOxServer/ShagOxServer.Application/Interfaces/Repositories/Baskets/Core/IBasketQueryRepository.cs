@@ -8,7 +8,7 @@ public interface IBasketQueryRepository
     : IQueryRepository<Basket>
 {
     Task<Basket?> GetByUserAsync(
-        int userId);
+        long userId);
 
     Task<PagedResult<Basket>> Search(
         BasketSearchFilter filter,

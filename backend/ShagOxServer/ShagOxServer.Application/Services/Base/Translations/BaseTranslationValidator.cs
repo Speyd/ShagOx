@@ -21,7 +21,7 @@ public abstract class BaseTranslationValidator<TObject>
     }
 
     public async Task<Result<bool>> ExistsAsync(
-        int objectId,
+        long objectId,
         string language)
     {
         if (!await _translationExistsRepository
@@ -35,7 +35,7 @@ public abstract class BaseTranslationValidator<TObject>
     }
 
     public async Task<Result<bool>> NotExistsAsync(
-        int cityId,
+        long cityId,
         string language)
     {
         if (await _translationExistsRepository

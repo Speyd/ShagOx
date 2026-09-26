@@ -8,11 +8,11 @@ public interface IBasketAttributeQueryRepository
     : IQueryRepository<BasketAttribute>
 {
     Task<PagedResult<BasketAttribute>> GetByCategoryAsync(
-        int categoryId,
+        long categoryId,
         PaginationParams pagination);
 
     Task<BasketAttribute?> GetByAttributeDefenitionAsync(
-        int attributeDefenitionId);
+        long attributeDefenitionId);
 
     Task<PagedResult<BasketAttribute>> Search(
         BasketAttributeSearchFilter filter,

@@ -18,7 +18,7 @@ public class UserQueryRepository
 
 
     public override async Task<User?> GetByIdAsync(
-        int id)
+        long id)
     {
         return await _db.Users
             .WithIncludes()

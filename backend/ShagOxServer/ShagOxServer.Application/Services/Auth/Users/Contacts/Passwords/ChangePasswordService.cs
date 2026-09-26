@@ -34,7 +34,7 @@ public class ChangePasswordService
     }
 
     public async Task<Result<bool>> ChangePassword(
-        int userId,
+        long userId,
         ChangePasswordRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.NewPassword))

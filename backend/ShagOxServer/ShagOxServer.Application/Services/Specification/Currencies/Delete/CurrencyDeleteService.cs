@@ -33,7 +33,7 @@ public class CurrencyDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var currency = await _currencyValidator.GetByIdAsync(id);
         if (!currency.IsSuccess)

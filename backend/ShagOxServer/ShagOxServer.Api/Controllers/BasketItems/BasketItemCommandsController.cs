@@ -55,7 +55,7 @@ public class BasketItemCommandsController
 
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromBody] BasketItemUpdateRequest request)
     {
         var forbidden = await CheckOwnershipAsync(id);
@@ -70,7 +70,7 @@ public class BasketItemCommandsController
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)

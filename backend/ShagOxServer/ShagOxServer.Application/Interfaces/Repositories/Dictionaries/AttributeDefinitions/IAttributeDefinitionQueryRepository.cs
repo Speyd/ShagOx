@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.AttributeDefinitions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -7,7 +7,8 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attribut
 public interface IAttributeDefinitionQueryRepository
     : IQueryRepository<AttributeDefinition>
 {
-    Task<List<AttributeDefinition>> GetByIdsAsync(List<int> ids);
+    Task<List<AttributeDefinition>> GetByIdsAsync(
+        List<long> ids);
 
     Task<PagedResult<AttributeDefinition>> Search(
         AttributeDefinitionSearchFilter filter,

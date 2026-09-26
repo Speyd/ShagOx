@@ -21,7 +21,7 @@ public class AvatarQueryService
 
 
     public async Task<Result<AvatarDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var image = await _avatarQueryRepository
             .GetByIdAsync(id);
@@ -30,7 +30,7 @@ public class AvatarQueryService
     }
 
     public async Task<Result<AvatarDto>> GetByUserIdAsync(
-        int advertId)
+        long advertId)
     {
         var image = await _avatarQueryRepository
             .GetByUserIdAsync(advertId);

@@ -6,8 +6,8 @@ public interface IVerificationCodeQueryRepository
     : IQueryRepository<VerificationCode>
 {
     Task<VerificationCode?> GetActiveByUserIdAsync(
-       int userId);
+        long userId);
 
     Task<VerificationCode?> GetLatestByUserIdAsync(
-        int userId);
+        long userId);
 }

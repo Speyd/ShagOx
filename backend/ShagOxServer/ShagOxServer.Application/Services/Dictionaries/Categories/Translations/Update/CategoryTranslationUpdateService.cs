@@ -41,7 +41,7 @@ public class CategoryTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusTranslationId,
+        long statusTranslationId,
         CategoryTranslationUpdateRequest request)
     {
         var category = await _categoryTranslationValidator

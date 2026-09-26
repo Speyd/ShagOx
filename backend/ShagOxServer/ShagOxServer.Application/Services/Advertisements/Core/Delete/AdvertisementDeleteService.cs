@@ -38,7 +38,7 @@ public class AdvertisementDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var advert = await _advertValidator
             .GetByIdAsync(id);

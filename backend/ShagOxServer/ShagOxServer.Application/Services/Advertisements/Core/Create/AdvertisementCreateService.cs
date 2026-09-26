@@ -42,7 +42,7 @@ public class AdvertisementCreateService
 
     public async Task<Result<CreateResponse>> CreateAsync(
         AdvertisementCreateRequest request,
-        int userId)
+        long userId)
     {
         var validation = await _advertValidator
             .ValidateAsync(request);

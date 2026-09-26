@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShagOxServer.Domain.Entities.Advertisements;
-using System.Text.Json;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements;
 public class AdvertisementConfiguration 
@@ -20,35 +17,9 @@ public class AdvertisementConfiguration
                .IsRequired()
                .HasColumnType("text");
 
-        builder.Property(x => x.Stock)
-           .IsRequired()
-           .HasColumnType("integer")
-           .HasDefaultValue(0);
-
-        var converter = new ValueConverter<Dictionary<string, string>, string>(
-            v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
-            v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, (JsonSerializerOptions?)null)!
-        );
-
-        var comparer = new ValueComparer<Dictionary<string, string>>(
-            (a, b) => JsonSerializer.Serialize(a, (JsonSerializerOptions?)null)
-                      == JsonSerializer.Serialize(b, (JsonSerializerOptions?)null),
-
-            v => v == null
-                ? 0
-                : JsonSerializer.Serialize(v, (JsonSerializerOptions?)null).GetHashCode(),
-
-            v => JsonSerializer.Deserialize<Dictionary<string, string>>(
-                JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
-                (JsonSerializerOptions?)null)!
-        );
-
-        var property = builder.Property(x => x.Properties)
-            .HasConversion(converter)
+        builder.Property(x => x.Attributes)
             .HasColumnType("jsonb")
             .IsRequired();
-
-        property.Metadata.SetValueComparer(comparer);
 
         builder.HasOne(x => x.Currency)
             .WithMany(x => x.Advertisements)
@@ -80,6 +51,7 @@ public class AdvertisementConfiguration
               .HasForeignKey(x => x.StatusId)
               .OnDelete(DeleteBehavior.Restrict);
 
+
         builder.HasIndex(x => x.SellerId);
         builder.HasIndex(x => x.CategoryId);
         builder.HasIndex(x => x.CurrencyId);
@@ -88,11 +60,9 @@ public class AdvertisementConfiguration
 
         builder.HasIndex(x => x.CreatedAt);
         builder.HasIndex(x => x.Popularity);
-        builder.HasIndex(x => x.Price);
 
         builder.HasIndex(x => new { x.CategoryId, x.CreatedAt });
         builder.HasIndex(x => new { x.CategoryId, x.Popularity });
-        builder.HasIndex(x => new { x.CategoryId, x.Price });
         builder.HasIndex(x => new { x.CategoryId, x.ConditionId, x.CreatedAt });
         builder.HasIndex(x => new { x.SellerId, x.CreatedAt });
     }

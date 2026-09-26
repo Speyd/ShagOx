@@ -24,11 +24,6 @@ public static class AdvertisementFilterExtensions
                  EF.Functions.ILike(u.Description, $"%{filter.Description}%"));
         }
 
-        if (filter.Stock.HasValue)
-        {
-            query = query.Where(x => x.Stock == filter.Stock);
-        }
-
         if (filter.CategoryId is not null)
         {
             query = query

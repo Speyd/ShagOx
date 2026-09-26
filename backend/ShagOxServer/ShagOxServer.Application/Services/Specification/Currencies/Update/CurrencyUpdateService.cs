@@ -35,7 +35,7 @@ public class CurrencyUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int currencyId,
+        long currencyId,
         CurrencyUpdateRequest request)
     {
         var currency = await _currencyValidator

@@ -24,7 +24,7 @@ public class BasketItemValidator
     }
 
     public async Task<Result<BasketItem>> GetByIdWithIncludesAsync(
-        int id)
+        long id)
     {
         var item = await _itemQeuryRepository
             .GetByIdAsync(id);
@@ -39,8 +39,8 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> ExistsAsync(
-        int advertisementId,
-        int basketId)
+        long advertisementId,
+        long basketId)
     {
         if (!await _itemExistsRepository
                 .ExistsAsync(advertisementId, basketId))
@@ -53,8 +53,8 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> NotExistsAsync(
-        int advertisementId,
-        int basketId)
+        long advertisementId,
+        long basketId)
     {
         if (await _itemExistsRepository
                 .ExistsAsync(advertisementId, basketId))
@@ -67,8 +67,8 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> ExistsByBasketAsync(
-        int itemId,
-        int basketId)
+        long itemId,
+        long basketId)
     {
         if (!await _itemExistsRepository
                 .ExistsByBasketAsync(itemId, basketId))
@@ -81,8 +81,8 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> NotExistsByBasketAsync(
-        int itemId,
-        int basketId)
+        long itemId,
+        long basketId)
     {
         if (await _itemExistsRepository
                 .ExistsByBasketAsync(itemId, basketId))
@@ -95,8 +95,8 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> ExistsByAdvertisementAsync(
-        int itemId,
-        int advertisementId)
+        long itemId,
+        long advertisementId)
     {
         if (!await _itemExistsRepository
                 .ExistsByAdvertisementAsync(itemId, advertisementId))
@@ -109,8 +109,8 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> NotExistsByAdvertisementAsync(
-        int itemId,
-        int advertisementId)
+        long itemId,
+        long advertisementId)
     {
         if (await _itemExistsRepository
                 .ExistsByAdvertisementAsync(itemId, advertisementId))

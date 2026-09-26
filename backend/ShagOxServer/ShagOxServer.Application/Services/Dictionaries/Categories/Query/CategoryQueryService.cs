@@ -22,7 +22,7 @@ public class CategoryQueryService
 
 
     public async Task<Result<CategoryDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var category = await _categoryQueryRepository
             .GetByIdAsync(id);
@@ -40,7 +40,7 @@ public class CategoryQueryService
     }
 
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
-        int productTypeId,
+        long productTypeId,
         PaginationParams pagination)
     {
         var categories = await _categoryQueryRepository

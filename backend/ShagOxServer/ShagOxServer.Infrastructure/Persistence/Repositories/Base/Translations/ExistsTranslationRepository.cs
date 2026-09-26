@@ -14,12 +14,12 @@ public class ExistsTranslationRepository<T>
     }
 
     public virtual async Task<bool> ExistsAsync(
-        int translatableId,
+        long translatableId,
         string language)
     {
         return await _db.Set<T>()
             .AnyAsync(x =>
-                EF.Property<int>(
+                EF.Property<long>(
                     x,
                     nameof(BaseTranslation<T>.TranslatableId)) == translatableId &&
                 EF.Property<string>(

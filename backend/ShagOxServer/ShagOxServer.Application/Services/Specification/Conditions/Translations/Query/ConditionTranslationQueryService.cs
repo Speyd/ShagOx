@@ -22,7 +22,7 @@ public class ConditionTranslationQueryService
 
 
     public async Task<Result<ConditionTranslationDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var city = await _condtitionRepository
             .GetByIdAsync(id);

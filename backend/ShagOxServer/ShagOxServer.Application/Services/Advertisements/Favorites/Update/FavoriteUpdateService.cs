@@ -38,7 +38,7 @@ public class FavoriteUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int favoriteId,
+        long favoriteId,
         FavoriteUpdateRequest request)
     {
         var favorite = await _favoriteValidator.GetByIdAsync(favoriteId);

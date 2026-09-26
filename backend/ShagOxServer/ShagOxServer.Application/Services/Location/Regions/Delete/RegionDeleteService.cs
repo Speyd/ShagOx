@@ -33,7 +33,7 @@ public class RegionDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var region = await _regionValidator.GetByIdAsync(id);
         if (!region.IsSuccess)

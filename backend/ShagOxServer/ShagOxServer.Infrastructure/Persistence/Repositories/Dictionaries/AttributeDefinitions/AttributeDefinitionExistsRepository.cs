@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
-using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
@@ -15,8 +15,8 @@ public class AttributeDefinitionExistsRepository
 
 
     public async Task<bool> ExistsByCategoryAsync(
-        int attributeId,
-        int categoryId)
+        long attributeId,
+        long categoryId)
     {
         return await _db.AttributeDefinitions
             .AnyAsync(x =>
@@ -26,7 +26,7 @@ public class AttributeDefinitionExistsRepository
 
     public async Task<bool> ExistsByCategoryAsync(
         string attributeKey,
-        int categoryId)
+        long categoryId)
     {
         return await _db.AttributeDefinitions
             .AnyAsync(x =>

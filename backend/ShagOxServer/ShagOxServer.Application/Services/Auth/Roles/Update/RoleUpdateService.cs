@@ -34,7 +34,7 @@ public class RoleUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int roleId,
+        long roleId,
         RoleUpdateRequest request)
     {
         var role = await _roleValidator.GetByIdAsync(roleId);

@@ -10,10 +10,10 @@ public interface IUserRoleQueryService
      : IQueryService<UserRoleDto>
 {
     Task<Result<List<RoleDto>>> GetRolesByUserIdAsync(
-        int userId,
+        long userId,
 		PaginationParams pagination);
 
     Task<Result<List<UserDto>>> GetUsersByRoleIdAsync(
-        int roleId,
+        long roleId,
 		PaginationParams pagination);
 }

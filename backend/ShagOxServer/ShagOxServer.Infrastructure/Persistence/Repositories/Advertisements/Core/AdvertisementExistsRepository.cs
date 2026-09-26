@@ -14,8 +14,8 @@ public class AdvertisementExistsRepository
     { }
 
     public async Task<bool> IsOwnerAsync(
-        int adId,
-        int userId)
+        long adId,
+        long userId)
     {
         var result = await _db.Advertisements
            .AnyAsync(x =>

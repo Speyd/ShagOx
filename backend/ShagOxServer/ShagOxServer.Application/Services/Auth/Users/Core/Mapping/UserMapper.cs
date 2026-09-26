@@ -29,7 +29,7 @@ public static class UserMapper
     }
 
     private static List<RoleDto> MapRoles(
-        List<UserRole> userRoles)
+        ICollection<UserRole> userRoles)
     {
         if(userRoles is null)
             return new List<RoleDto>();

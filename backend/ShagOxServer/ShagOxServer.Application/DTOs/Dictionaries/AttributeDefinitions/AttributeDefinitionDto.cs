@@ -4,12 +4,14 @@ using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 namespace ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
 public sealed record AttributeDefinitionDto
 (
-    int Id,
-    int CategoryId,
+    long Id,
+    long CategoryId,
     string CategoryName,
     string Key,
     AttributeType Type,
     bool Required,
-    int? Min,
-    int? Max
+    decimal? Min,
+    decimal? Max,
+    bool IsVariant,
+    bool Multiple
 ) : BaseDto(Id);

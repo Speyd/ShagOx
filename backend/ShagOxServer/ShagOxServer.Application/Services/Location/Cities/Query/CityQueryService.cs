@@ -22,7 +22,7 @@ public class CityQueryService
 
 
     public async Task<Result<CityDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var city = await _repositoryQueryCity
             .GetByIdAsync(id);
@@ -49,7 +49,7 @@ public class CityQueryService
     }
 
     public async Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
-        int regionId,
+        long regionId,
         PaginationParams pagination)
     {
         var cities = await _repositoryQueryCity

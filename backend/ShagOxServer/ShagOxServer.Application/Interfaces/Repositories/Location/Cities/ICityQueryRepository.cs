@@ -7,10 +7,11 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 public interface ICityQueryRepository
     : IQueryRepository<City>
 {
-    Task<City?> GetByCodeAsync(string code);
+    Task<City?> GetByCodeAsync(
+        string code);
 
     Task<PagedResult<City>> GetByRegionAsync(
-        int regionId,
+        long regionId,
         PaginationParams pagination);
 
     Task<PagedResult<City>> Search(

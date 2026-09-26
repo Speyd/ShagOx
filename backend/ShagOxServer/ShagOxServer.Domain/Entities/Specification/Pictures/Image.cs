@@ -6,8 +6,9 @@ public class Image : BaseImage
 {
     public int Order { get; set; }
 
-    public int AdvertisementId { get; set; }
+    public long AdvertisementId { get; set; }
     public Advertisement Advertisement { get; set; } = null!;
+
 
     public override string ToString()
     {

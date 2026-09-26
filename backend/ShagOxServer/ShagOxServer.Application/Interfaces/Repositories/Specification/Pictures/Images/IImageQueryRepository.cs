@@ -5,9 +5,13 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Picture
 public interface IImageQueryRepository
     : IQueryRepository<Image>
 {
-    Task<List<Image>> GetByIdsAsync(List<int> ids);
+    Task<List<Image>> GetByIdsAsync(
+        List<long> ids);
 
-    Task<List<Image>> GetByAdvertisementIdAsync(int advertId);
+    Task<List<Image>> GetByAdvertisementIdAsync(
+        long advertId);
 
-    Task<int> GetNextOrder(int advertId, int? requestedOrder = null);
+    Task<int> GetNextOrder(
+        long advertId,
+        int? requestedOrder = null);
 }

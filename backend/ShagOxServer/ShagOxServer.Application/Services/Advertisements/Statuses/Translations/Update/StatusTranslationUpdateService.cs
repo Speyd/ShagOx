@@ -41,7 +41,7 @@ public class StatusTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusTranslationId,
+        long statusTranslationId,
         StatusTranslationUpdateRequest request)
     {
         var status = await _statusTranslationValidator

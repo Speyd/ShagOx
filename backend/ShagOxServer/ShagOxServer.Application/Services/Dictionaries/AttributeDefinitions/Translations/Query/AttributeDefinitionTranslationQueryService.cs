@@ -24,7 +24,7 @@ public class AttributeDefinitionTranslationQueryService
 
 
     public async Task<Result<AttributeDefinitionTranslationDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var city = await _attributeRepository
             .GetByIdAsync(id);

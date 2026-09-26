@@ -6,5 +6,6 @@ namespace ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Av
 public interface IAvatarQueryService
     : IQueryService<AvatarDto>
 {
-    Task<Result<AvatarDto>> GetByUserIdAsync(int userId);
+    Task<Result<AvatarDto>> GetByUserIdAsync(
+        long userId);
 }

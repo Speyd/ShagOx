@@ -17,7 +17,7 @@ public class ImageQueryRepository
 
 
     public override async Task<Image?> GetByIdAsync(
-        int id)
+        long id)
     {
         return await _db.Images
             .WithIncludes()
@@ -25,7 +25,7 @@ public class ImageQueryRepository
     }
 
     public async Task<List<Image>> GetByIdsAsync(
-        List<int> ids)
+        List<long> ids)
     {
         return await _db.Images
            .WithIncludes()
@@ -42,7 +42,7 @@ public class ImageQueryRepository
     }
 
     public async Task<List<Image>> GetByAdvertisementIdAsync(
-        int advertId)
+        long advertId)
     {
         return await _db.Images
           .WithIncludes()
@@ -51,7 +51,7 @@ public class ImageQueryRepository
     }
 
     public async Task<int> GetNextOrder(
-        int advertId,
+        long advertId,
         int? requestedOrder = null)
     {
         var orders = await _db.Images

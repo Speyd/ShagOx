@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Regions;
 namespace ShagOxServer.Application.DTOs.Location.Cities;
 public sealed record CityDto
 (
-    int Id,
+    long Id,
     string Code,
     RegionDto Region
 ) : BaseDto(Id);

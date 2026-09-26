@@ -25,7 +25,7 @@ public class UserRoleQueryService
 
 
     public async Task<Result<UserRoleDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var advert = await _queryRepository
             .GetByIdAsync(id);
@@ -43,7 +43,7 @@ public class UserRoleQueryService
     }
 
     public async Task<Result<List<RoleDto>>> GetRolesByUserIdAsync(
-        int userId,
+        long userId,
 		PaginationParams pagination)
     {
         var roles = await _queryRepository
@@ -53,7 +53,7 @@ public class UserRoleQueryService
     }
 
     public async Task<Result<List<UserDto>>> GetUsersByRoleIdAsync(
-        int roleId,
+        long roleId,
 		PaginationParams pagination)
     {
         var users = await _queryRepository

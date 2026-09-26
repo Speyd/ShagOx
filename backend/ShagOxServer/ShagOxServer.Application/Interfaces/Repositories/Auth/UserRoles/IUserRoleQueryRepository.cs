@@ -7,10 +7,10 @@ public interface IUserRoleQueryRepository
     : IQueryRepository<UserRole>
 {
     Task<List<Role>> GetRolesByUserIdAsync(
-        int userId,
+        long userId,
         PaginationParams pagination);
 
     Task<List<User>> GetUsersByRoleIdAsync(
-        int roleId,
+        long roleId,
         PaginationParams pagination);
 }

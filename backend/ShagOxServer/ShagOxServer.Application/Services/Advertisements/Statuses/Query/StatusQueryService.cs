@@ -22,7 +22,7 @@ public class StatusQueryService
 
 
     public async Task<Result<StatusDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var status = await _statusRepository
             .GetByIdAsync(id);

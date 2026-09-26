@@ -44,7 +44,7 @@ public class UserAdminQueryService
     }
 
     public async Task<bool> ExistsByIdAsync(
-        int id)
+        long id)
     {
         var result = await _userExistsRepository
             .ExistsByIdAsync(id);

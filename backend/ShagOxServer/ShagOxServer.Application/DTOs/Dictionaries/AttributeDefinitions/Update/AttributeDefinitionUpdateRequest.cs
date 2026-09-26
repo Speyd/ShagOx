@@ -3,10 +3,12 @@
 namespace ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Update;
 public sealed record AttributeDefinitionUpdateRequest
 (
-    int? CategoryId,
+    long? CategoryId,
     string? Key,
     AttributeType? Type,
     bool? Required,
     int? Min,
-    int? Max
+    int? Max,
+    bool? IsVariant,
+    bool? Multiple
 );

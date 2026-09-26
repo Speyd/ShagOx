@@ -3,10 +3,12 @@
 namespace ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Create;
 public sealed record AttributeDefinitionCreateRequest
 (
-    int CategoryId,
+    long CategoryId,
     string Key,
     AttributeType Type,
     bool Required,
-    int? Min,
-    int? Max
+    decimal? Min,
+    decimal? Max,
+    bool IsVariant,
+    bool Multiple
 );

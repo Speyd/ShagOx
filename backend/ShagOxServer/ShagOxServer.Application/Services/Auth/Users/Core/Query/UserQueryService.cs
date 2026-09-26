@@ -33,7 +33,7 @@ public class UserQueryService
 
 
     public async Task<Result<UserDto>> GetByIdAsync(
-        int id)
+        long id)
     {
         var user = await _userQueryRepository
             .GetByIdAsync(id);

@@ -3,7 +3,7 @@
 namespace ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Update;
 public sealed record ProductTypeTranslationUpdateRequest
 (
-    int? TranslatableId,
+    long? TranslatableId,
     string? Language,
     string? Name
 ) : TranslationUpdateRequest(TranslatableId, Language);

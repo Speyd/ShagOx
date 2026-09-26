@@ -12,9 +12,6 @@ public static class AdvertisementShortMapper
             x.Id,
             x.Title,
             x.Description,
-            x.Stock,
-            x.Price,
-            x.PreviousPrice,
             x.CurrencyId,
             x.CategoryId,
             x.Seller.Id,
@@ -23,7 +20,7 @@ public static class AdvertisementShortMapper
                 .OrderBy(i => i.Order)
                 .Select(i => i.Id)
                 .ToList(),
-            x.Properties,
+            x.Attributes,
             x.SoldAt,
             x.CreatedAt
         );

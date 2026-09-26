@@ -5,8 +5,8 @@ namespace ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Im
 public interface IImageDeleteService
 {
     Task<Result<DeleteResponse>> DeleteAsync(
-        int id);
+        long id);
 
     Task<Result<DeleteResponse>> DeleteRecordAsync(
-        int id);
+        long id);
 }

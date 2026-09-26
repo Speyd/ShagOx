@@ -41,7 +41,10 @@ public class StatusCreateService
             .NotExistsByCodeAsync(request.Code);
 
         if (!codeValidation.IsSuccess)
-            return Result<CreateResponse>.Fail(codeValidation.Error);
+        {
+            return Result<CreateResponse>
+                .Fail(codeValidation.Error);
+        }
 
 
         var status = StatusCreater.Create(request);

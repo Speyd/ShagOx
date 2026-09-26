@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -24,7 +25,8 @@ public class CurrencyValidator
         string code)
     {
         if (!await _existsRepository.ExistsByCodeAsync(code))
-            return Result<bool>.AlreadyExists("Currency code");
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.Currency);
 
         return Result<bool>.Success(true);
     }
@@ -34,7 +36,8 @@ public class CurrencyValidator
         string code)
     {
         if (await _existsRepository.ExistsByCodeAsync(code))
-            return Result<bool>.AlreadyExists("Currency code");
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.Currency);
 
         return Result<bool>.Success(true);
     }
@@ -43,7 +46,8 @@ public class CurrencyValidator
         string name)
     {
         if (!await _existsRepository.ExistsByNameAsync(name))
-            return Result<bool>.AlreadyExists("Currency name");
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.Currency);
 
         return Result<bool>.Success(true);
     }
@@ -52,7 +56,8 @@ public class CurrencyValidator
         string name)
     {
         if (await _existsRepository.ExistsByNameAsync(name))
-            return Result<bool>.AlreadyExists("Currency name");
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.Currency);
 
         return Result<bool>.Success(true);
     }

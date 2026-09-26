@@ -545,7 +545,18 @@ namespace ShagOxServer.Application.Resources.EntityErrorResourcess {
                 return ResourceManager.GetString("ImageUpdateFailed", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to upload image..
+        /// </summary>
+        internal static string ImageUploadFailed
+        {
+            get
+            {
+                return ResourceManager.GetString("ImageUploadFailed", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create product type..
         /// </summary>

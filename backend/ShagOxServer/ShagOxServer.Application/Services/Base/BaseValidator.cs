@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Resources.EntityNames.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base;
@@ -26,8 +27,8 @@ public abstract class BaseValidator<TObject>
 
         if (objcet is null)
         {
-            return Result<TObject>
-                .NotFound(typeof(TObject).Name);
+            return Result<TObject>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TObject>());
         }
 
         return Result<TObject>.Success(objcet);
@@ -39,8 +40,8 @@ public abstract class BaseValidator<TObject>
         if (!await _objectExistsRepository
             .ExistsByIdAsync(objcetId))
         {
-            return Result<bool>
-                .NotFound(typeof(TObject).Name);
+            return Result<bool>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TObject>());
         }
 
         return Result<bool>.Success(true);
@@ -52,8 +53,8 @@ public abstract class BaseValidator<TObject>
         if (await _objectExistsRepository
             .ExistsByIdAsync(objcetId))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(TObject).Name);
+            return Result<bool>.AlreadyExists(
+                EntityNameExtensions.GetLocalizedName<TObject>());
         }
 
         return Result<bool>.Success(true);

@@ -38,7 +38,8 @@ public class BasketItemUpdateService
         BasketItemUpdateRequest request)
     {
         var item = await _itemValidator
-            .GetByIdAsync(itemId);
+            .GetByIdWithIncludesAsync(itemId);
+
         if (!item.IsSuccess)
             return Result<UpdateResponse>.Fail(item.Error);
 

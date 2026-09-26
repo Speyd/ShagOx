@@ -5,7 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Create;
 using ShagOxServer.Application.Resources.EntityErrorResourcess;
-using ShagOxServer.Application.Services.Specification.Currencies.Create.Validator;
+using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -14,7 +14,7 @@ public class CurrencyCreateService
     : ICurrencyCreateService
 {
     private readonly IRepository<Currency> _currencyRepository;
-    private readonly CurrencyCreateValidator _currencyCreateValidator;
+    private readonly CurrencyValidator _currencyValidator;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CurrencyCreateService> _logger;
@@ -22,12 +22,12 @@ public class CurrencyCreateService
 
     public CurrencyCreateService(
         IRepository<Currency> currencyRepository,
-        CurrencyCreateValidator currencyCreateValidator,
+        CurrencyValidator currencyValidator,
         IUnitOfWork unitOfWork,
         ILogger<CurrencyCreateService> logger)
     {
         _currencyRepository = currencyRepository;
-        _currencyCreateValidator = currencyCreateValidator;
+        _currencyValidator = currencyValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -36,14 +36,14 @@ public class CurrencyCreateService
     public async Task<Result<CreateResponse>> CreateAsync(
         CurrencyCreateRequest request)
     {
-        var code = await _currencyCreateValidator
+        var code = await _currencyValidator
             .ExistsByCodeValidator(request.Code);
 
         if (!code.IsSuccess)
             return Result<CreateResponse>.Fail(code.Error);
 
 
-        var name = await _currencyCreateValidator
+        var name = await _currencyValidator
             .ExistsByNameValidator(request.Name);
 
         if (!name.IsSuccess)

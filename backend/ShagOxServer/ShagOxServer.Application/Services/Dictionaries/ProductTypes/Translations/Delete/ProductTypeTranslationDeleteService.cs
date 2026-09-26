@@ -58,8 +58,8 @@ public class ProductTypeTranslationDeleteService
                 "Failed to delete product type translation. Id: {Id}",
                 id);
 
-            return Result<DeleteResponse>
-                .Fail(EntityErrorResources.ProductTypeTranslationDeleteFailed);
+            return Result<DeleteResponse>.Fail(
+                EntityErrorResources.ProductTypeTranslationDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

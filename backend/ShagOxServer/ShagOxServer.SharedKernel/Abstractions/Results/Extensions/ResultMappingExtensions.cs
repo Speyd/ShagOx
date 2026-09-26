@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Resources.Results;
 
 namespace ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 public static class ResultMappingExtensions
@@ -6,9 +7,12 @@ public static class ResultMappingExtensions
     public static Result<TDto> ToResult<T, TDto>(
         this T? entity,
         Func<T, TDto> map,
-        string errorMessage = "Not found")
+        string? errorMessage = null)
         where T : class
     {
+        if (errorMessage is null)
+            errorMessage = ResultResources.EntityNotFound;
+
         if (entity is null)
             return Result<TDto>.Fail(errorMessage);
 
@@ -18,11 +22,17 @@ public static class ResultMappingExtensions
     public static Result<List<TDto>> ToResultList<T, TDto>(
         this IEnumerable<T> entities,
         Func<T, TDto> map,
-        string errorMessage = "Not found")
+        string? errorMessage = null)
         where T : class
     {
+        if (errorMessage is null)
+            errorMessage = ResultResources.EntityNotFound;
+
         if (entities is null)
-            return Result<List<TDto>>.Fail(errorMessage);
+        {
+            return Result<List<TDto>>
+                .Fail(errorMessage);
+        }
 
         return Result<List<TDto>>.Success(
             entities.Select(map).ToList()

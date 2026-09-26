@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Verifications.Mappers;
 using ShagOxServer.Domain.Entities.Account;
@@ -41,7 +42,7 @@ public class VerificationService
             .GetByIdAsync(request.UserId!.Value);
 
         if (user is null)
-            return Result<bool>.NotFound(typeof(User));
+            return Result<bool>.NotFound(EntityNamesResources.User);
 
         var resultVerify = await _verificationCodeService
             .VerifyCodeAsync(user.Id, request.Code);

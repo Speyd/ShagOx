@@ -41,12 +41,4 @@ public static class ActionResultExtensions
                 new BadRequestObjectResult(result.Error)
         };
     }
-    //public static IActionResult ToActionListResult<T>(
-    //    this Result<IEnumerable<T>> result)
-    //{
-    //    if (result.IsSuccess)
-    //        return new OkObjectResult(result.Value);
-
-    //    return new BadRequestObjectResult(result.Error);
-    //}
 }

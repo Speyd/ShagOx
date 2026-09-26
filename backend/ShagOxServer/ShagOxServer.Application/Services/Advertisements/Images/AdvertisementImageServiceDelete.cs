@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Update.Images;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -13,8 +14,9 @@ public partial class AdvertisementImageService
     {
         if (getImage is null)
         {
-            return Result<bool>
-                .NotFound($"Image({image.Id})");
+            return Result<bool>.NotFound(
+                string.Format(EntityNamesResources.DefiniteImage,
+                image.Id));
         }
 
         var result = await _imageDeleteService

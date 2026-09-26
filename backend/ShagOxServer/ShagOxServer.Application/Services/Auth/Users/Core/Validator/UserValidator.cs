@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -28,7 +29,8 @@ public class UserValidator
     {
         var user = await _userQueryRepository.GetByIdAsync(userId);
         if (user is null)
-            return Result<User>.NotFound(typeof(User));
+            return Result<User>.NotFound(
+                EntityNamesResources.User);
 
         return Result<User>.Success(user);
     }
@@ -39,8 +41,8 @@ public class UserValidator
         if (!await _userExistsRepository
                 .ExistsByPhoneAsync(phone))
         {
-            return Result<bool>
-                .NotFound(typeof(User));
+            return Result<bool>.NotFound(
+                EntityNamesResources.User);
         }
 
         return Result<bool>.Success(true);
@@ -52,8 +54,8 @@ public class UserValidator
         if (await _userExistsRepository
                 .ExistsByPhoneAsync(phone))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(User));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.User);
         }
 
         return Result<bool>.Success(true);
@@ -65,8 +67,8 @@ public class UserValidator
         if (!await _userExistsRepository
                 .ExistsByEmailAsync(email))
         {
-            return Result<bool>
-                .NotFound(typeof(User));
+            return Result<bool>.NotFound(
+                EntityNamesResources.User);
         }
 
         return Result<bool>.Success(true);
@@ -78,8 +80,8 @@ public class UserValidator
         if (await _userExistsRepository
             .ExistsByEmailAsync(email))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(User));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.User);
         }
 
         return Result<bool>.Success(true);
@@ -91,8 +93,8 @@ public class UserValidator
         if (!await _userExistsRepository
                 .ExistsByUserNameAsync(userName))
         {
-            return Result<bool>
-                .NotFound(typeof(User));
+            return Result<bool>.NotFound(
+                EntityNamesResources.User);
         }
 
         return Result<bool>.Success(true);
@@ -104,8 +106,8 @@ public class UserValidator
         if (await _userExistsRepository
             .ExistsByUserNameAsync(userName))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(User));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.User);
         }
 
         return Result<bool>.Success(true);

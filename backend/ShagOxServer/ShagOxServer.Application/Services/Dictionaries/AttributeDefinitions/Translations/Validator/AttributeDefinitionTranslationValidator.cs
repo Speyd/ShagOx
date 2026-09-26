@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions.Translations;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -26,8 +27,8 @@ public class AttributeDefinitionTranslationValidator
         if (!await _attributeExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .NotFound(typeof(AttributeDefinitionTranslation));
+            return Result<bool>.NotFound(
+                EntityNamesResources.AttributeDefinitionTranslation);
         }
 
         return Result<bool>.Success(true);
@@ -39,8 +40,8 @@ public class AttributeDefinitionTranslationValidator
         if (await _attributeExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(AttributeDefinitionTranslation));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.AttributeDefinitionTranslation);
         }
 
         return Result<bool>.Success(true);

@@ -63,8 +63,8 @@ public class StatusTranslationCreateService
                 "TranslatableId: {TranslatableId}",
                 request.TranslatableId);
 
-            return Result<CreateResponse>
-                .Fail(EntityErrorResources.AdvertStatusTranslationCreateFailed);
+            return Result<CreateResponse>.Fail(
+                EntityErrorResources.AdvertStatusTranslationCreateFailed);
         }
 
         return Result<CreateResponse>.Success(

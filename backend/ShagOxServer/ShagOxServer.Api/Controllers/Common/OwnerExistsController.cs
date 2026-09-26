@@ -4,7 +4,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Special;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 
 namespace ShagOxServer.Api.Controllers.Common;
-
 public abstract class OwnerExistsController
     : ApiController
 {
@@ -19,12 +18,12 @@ public abstract class OwnerExistsController
         _userQueryService = userQueryService;
     }
 
-    protected async Task<IActionResult?> CheckAdvertisementOwnerAsync(
-        int advertisementId)
+    protected async Task<IActionResult?> CheckOwnershipAsync(
+        int entityId)
     {
         var isOwner = await _ownerRepository
             .IsOwnerAsync(
-                advertisementId,
+                entityId,
                 UserId);
 
         if (!isOwner)
@@ -33,5 +32,4 @@ public abstract class OwnerExistsController
 
         return null;
     }
-
 }

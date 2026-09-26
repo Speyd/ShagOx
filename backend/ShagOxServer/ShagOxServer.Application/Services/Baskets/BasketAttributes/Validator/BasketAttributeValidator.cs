@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -21,7 +22,6 @@ public class BasketAttributeValidator
         _attributeExistsRepository = attributeExistsRepository;
     }
 
-
     public async Task<Result<bool>> ExistsAsync(
         AttributeDefinition attribute,
         int order)
@@ -29,8 +29,8 @@ public class BasketAttributeValidator
         if (!await _attributeExistsRepository
             .ExistsAsync(attribute.CategoryId, attribute.Id, order))
         {
-            return Result<bool>
-                .NotFound(typeof(BasketAttribute));
+            return Result<bool>.NotFound(
+                EntityNamesResources.BasketAttribute);
         }
 
         return Result<bool>.Success(true);
@@ -43,8 +43,8 @@ public class BasketAttributeValidator
         if (await _attributeExistsRepository
                 .ExistsAsync(attribute.CategoryId, attribute.Id, order))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(BasketAttribute));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.BasketAttribute);
         }
 
         return Result<bool>.Success(true);

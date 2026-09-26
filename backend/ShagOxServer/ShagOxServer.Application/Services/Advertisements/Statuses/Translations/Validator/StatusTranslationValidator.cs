@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -27,8 +28,8 @@ public class StatusTranslationValidator
         if (!await _statusExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .NotFound(typeof(StatusTranslation));
+            return Result<bool>.NotFound(
+                EntityNamesResources.AdvertStatusTranslation);
         }
 
         return Result<bool>.Success(true);
@@ -40,8 +41,8 @@ public class StatusTranslationValidator
         if (await _statusExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(StatusTranslation));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.AdvertStatusTranslation);
         }
 
         return Result<bool>.Success(true);

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Common;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Update;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
@@ -21,14 +21,14 @@ public class BasketItemCommandsController
     private readonly IBasketItemUpdateService _updateService;
     private readonly IBasketItemDeleteService _deleteService;
 
-    protected readonly IBasketExistsRepository _basketExistsService;
+    protected readonly IBasketItemExistsRepository _basketExistsService;
 
 
     public BasketItemCommandsController(
         IBasketItemCreateService createService,
         IBasketItemUpdateService updateService,
         IBasketItemDeleteService deleteService,
-        IBasketExistsRepository basketExistsService,
+        IBasketItemExistsRepository basketExistsService,
         IUserAdminQueryService userQueryService
     ) : base(basketExistsService, userQueryService)
     {
@@ -43,7 +43,7 @@ public class BasketItemCommandsController
     public async Task<IActionResult> Create(
         [FromBody] BasketItemCreateRequest request)
     {
-        var forbidden = await CheckAdvertisementOwnerAsync(request.BasketId);
+        var forbidden = await CheckOwnershipAsync(request.BasketId);
         if (forbidden is not null)
             return forbidden;
 
@@ -58,7 +58,7 @@ public class BasketItemCommandsController
         [FromRoute] int id,
         [FromBody] BasketItemUpdateRequest request)
     {
-        var forbidden = await CheckAdvertisementOwnerAsync(id);
+        var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)
             return forbidden;
 
@@ -72,7 +72,7 @@ public class BasketItemCommandsController
     public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        var forbidden = await CheckAdvertisementOwnerAsync(id);
+        var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)
             return forbidden;
 

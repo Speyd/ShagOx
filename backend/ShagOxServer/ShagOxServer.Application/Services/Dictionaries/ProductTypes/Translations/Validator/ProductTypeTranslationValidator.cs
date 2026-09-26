@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -26,8 +27,8 @@ public class ProductTypeTranslationValidator
         if (!await _typeExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .NotFound(typeof(ProductTypeTranslation));
+            return Result<bool>.NotFound(
+                EntityNamesResources.ProductTypeTranslation);
         }
 
         return Result<bool>.Success(true);
@@ -39,8 +40,8 @@ public class ProductTypeTranslationValidator
         if (await _typeExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(ProductTypeTranslation));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.ProductTypeTranslation);
         }
 
         return Result<bool>.Success(true);

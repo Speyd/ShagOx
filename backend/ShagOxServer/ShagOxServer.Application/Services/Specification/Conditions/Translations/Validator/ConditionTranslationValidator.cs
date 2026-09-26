@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -26,7 +27,8 @@ public class ConditionTranslationValidator
         if (!await _conditionExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>.NotFound(typeof(ConditionTranslation));
+            return Result<bool>.NotFound(
+                EntityNamesResources.ConditionTranslation);
         }
 
         return Result<bool>.Success(true);
@@ -38,7 +40,8 @@ public class ConditionTranslationValidator
         if (await _conditionExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>.AlreadyExists(typeof(ConditionTranslation));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.ConditionTranslation);
         }
 
         return Result<bool>.Success(true);

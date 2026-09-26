@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -25,8 +26,8 @@ public class BasketValidator
         if (!await _basketExistsRepository
                 .ExistsByUserAsync(userId))
         {
-            return Result<bool>
-                .NotFound(typeof(Basket));
+            return Result<bool>.NotFound(
+                EntityNamesResources.Basket);
         }
 
         return Result<bool>.Success(true);
@@ -38,8 +39,8 @@ public class BasketValidator
         if (await _basketExistsRepository
                 .ExistsByUserAsync(userId))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(Basket));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.Basket);
         }
 
         return Result<bool>.Success(true);

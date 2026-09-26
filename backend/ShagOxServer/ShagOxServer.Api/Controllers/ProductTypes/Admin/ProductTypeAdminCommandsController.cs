@@ -43,9 +43,9 @@ public class ProductTypeAdminCommandsController
         return result.ToActionResult();
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromBody] ProductTypeUpdateRequest request)
     {
         var result = await _updateService
@@ -55,9 +55,9 @@ public class ProductTypeAdminCommandsController
     }
 
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _deleteService
             .DeleteAsync(id);

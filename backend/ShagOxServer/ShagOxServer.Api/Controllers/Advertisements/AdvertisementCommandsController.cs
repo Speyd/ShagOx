@@ -48,9 +48,9 @@ public class AdvertisementCommandsController
         return result.ToActionResult();
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromForm] AdvertisementUpdateRequest request)
     {
         var forbidden = await CheckOwnershipAsync(id);
@@ -64,9 +64,9 @@ public class AdvertisementCommandsController
     }
 
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var claim = User
             .FindFirst(ClaimTypes.NameIdentifier)?.Value;

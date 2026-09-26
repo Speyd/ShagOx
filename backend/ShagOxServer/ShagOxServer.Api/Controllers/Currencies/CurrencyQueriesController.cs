@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
@@ -23,9 +22,9 @@ public class CurrencyQueriesController
     }
 
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _queryService
             .GetByIdAsync(id);

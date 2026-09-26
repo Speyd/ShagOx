@@ -35,7 +35,7 @@ public class UserAdvertisementMeController
             .GetMyProfileAsync();
 
         if (!user.IsSuccess || user.Value is null)
-            return NotFound(user.Error);
+            return user.ToActionResult();
 
         var result = await _queryService
             .GetBySellerAsync(user.Value.Id, pagination);
@@ -51,7 +51,7 @@ public class UserAdvertisementMeController
             .GetMyProfileAsync();
 
         if (!user.IsSuccess || user.Value is null)
-            return NotFound(user.Error);
+            return user.ToActionResult();
 
         var result = await _queryService
             .GetPurchasedByUserAsync(user.Value.Id, pagination);

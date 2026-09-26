@@ -40,9 +40,9 @@ public class RoleCommandsController
         return result.ToActionResult();
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromBody] RoleUpdateRequest request)
     {
         var result = await _updateService
@@ -51,9 +51,9 @@ public class RoleCommandsController
         return result.ToActionResult();
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _deleteService
             .DeleteAsync(id);

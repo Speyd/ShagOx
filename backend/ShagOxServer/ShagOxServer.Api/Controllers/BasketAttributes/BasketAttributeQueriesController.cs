@@ -22,9 +22,9 @@ public class BasketAttributeQueriesController
     }
 
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _queryService
             .GetByIdAsync(id);
@@ -32,9 +32,9 @@ public class BasketAttributeQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("category/{id:int}")]
+    [HttpGet("category/{id:long}")]
     public async Task<IActionResult> GetByCategory(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService
@@ -43,9 +43,9 @@ public class BasketAttributeQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("attribute-defenition/{id:int}")]
+    [HttpGet("attribute-defenition/{id:long}")]
     public async Task<IActionResult> GetByAttributeDefenition(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _queryService
             .GetByAttributeDefenitionAsync(id);

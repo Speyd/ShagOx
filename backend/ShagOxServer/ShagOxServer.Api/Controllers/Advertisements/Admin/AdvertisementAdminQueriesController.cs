@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Api.Controllers.Common;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.Api.Controllers.Api;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 
@@ -13,7 +13,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Admin;
 [Route("api/admin/advertisements")]
 [Authorize(Roles = "Admin")]
 public class AdvertisementAdminQueriesController 
-    : OwnerExistsController
+    : ApiOwnerExistsController
 {
     private readonly IAdvertisementQueryService _queryAdvertService;
 
@@ -28,17 +28,11 @@ public class AdvertisementAdminQueriesController
     }
 
 
-    [HttpGet("purchases/{userId:int}")]
+    [HttpGet("purchases/{userId:long}")]
     public async Task<IActionResult> GetPurchasedAdvertisements(
-        [FromRoute] int userId,
+        [FromRoute] long userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQueryService
-            .ExistsByIdAsync(userId);
-
-        if (!exists)
-            return NotFound("User not found");
-
         var advertisements = await _queryAdvertService
             .GetPurchasedByUserAsync(userId, pagination);
 

@@ -30,7 +30,7 @@ public class AdvertisementImagesCommandsController
 
     [HttpPut]
     public async Task<IActionResult> SyncImages(
-        [FromRoute] int advertisementId,
+        [FromRoute] long advertisementId,
         [FromForm] AdvertisementUpdateRequest request)
     {
         var forbidden = await CheckOwnershipAsync(advertisementId);

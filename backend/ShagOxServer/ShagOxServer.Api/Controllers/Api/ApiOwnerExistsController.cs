@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Special;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Resources.EntityNames;
+using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Common;
-public abstract class OwnerExistsController
+namespace ShagOxServer.Api.Controllers.Api;
+public abstract class ApiOwnerExistsController
     : ApiController
 {
     protected readonly IExistsOwnerRepository _ownerRepository;
     protected readonly IUserAdminQueryService _userQueryService;
 
-    public OwnerExistsController(
+    public ApiOwnerExistsController(
         IExistsOwnerRepository ownerRepository,
         IUserAdminQueryService userQueryService)
     {

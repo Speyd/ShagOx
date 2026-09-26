@@ -36,7 +36,9 @@ public class AuthController
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var result = await _registerService.RegisterAsync(request);
+        var result = await _registerService
+            .RegisterAsync(request);
+
         return result.ToActionResult();
     }
 

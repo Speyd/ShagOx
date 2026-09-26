@@ -8,7 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Api;
 public abstract class ApiCookieController
-    : ApiController, IAuthCookieService
+    : ApiController, 
+    IAuthCookieService
 {
     private readonly CookieSettings _cookieSettings;
 

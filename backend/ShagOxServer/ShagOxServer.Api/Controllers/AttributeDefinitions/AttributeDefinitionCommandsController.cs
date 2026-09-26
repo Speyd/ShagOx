@@ -11,7 +11,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 
 [ApiController]
-[Route("api/admin/attributes")]
+[Route("api/admin/attributes-definitions")]
 [Authorize(Roles = "Admin")]
 public class AttributeDefinitionCommandsController 
     : ApiController
@@ -43,9 +43,9 @@ public class AttributeDefinitionCommandsController
         return result.ToActionResult();
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromBody] AttributeDefinitionUpdateRequest request)
     {
         var result = await _updateService
@@ -55,9 +55,9 @@ public class AttributeDefinitionCommandsController
     }
 
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _deleteService
             .DeleteAsync(id);

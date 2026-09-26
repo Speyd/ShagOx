@@ -23,9 +23,9 @@ public class FavoriteAdminQueriesController
     }
 
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _queryService
             .GetByIdAsync(id);
@@ -43,9 +43,9 @@ public class FavoriteAdminQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("by-user/{userId:int}")]
+    [HttpGet("by-user/{userId:long}")]
     public async Task<IActionResult> GetByUserIdAsync(
-        [FromRoute] int userId,
+        [FromRoute] long userId,
         [FromQuery] PaginationParams pagination
         )
     {

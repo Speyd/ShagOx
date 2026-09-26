@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.AttributeDefinitions;
 
 [ApiController]
-[Route("api/attributes")]
+[Route("api/attribute-definitions")]
 public class AttributeDefinitionQueriesController 
     : ApiController
 {
@@ -22,9 +22,9 @@ public class AttributeDefinitionQueriesController
     }
 
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _queryService
             .GetByIdAsync(id);

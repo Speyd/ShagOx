@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -14,15 +13,11 @@ public class UserAdvertisementsController
     : ApiController
 {
     private readonly IAdvertisementQueryService _queryService;
-    private readonly IUserAdminQueryService _userQuery;
-
 
     public UserAdvertisementsController(
-        IAdvertisementQueryService queryService,
-        IUserAdminQueryService userQuery)
+        IAdvertisementQueryService queryService)
     {
         _queryService = queryService;
-        _userQuery = userQuery;
     }
 
 
@@ -31,12 +26,6 @@ public class UserAdvertisementsController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQuery
-            .ExistsByIdAsync(userId);
-
-        if (!exists)
-            return NotFound("User not found");
-
         var result = await _queryService
             .GetBySellerAsync(userId, pagination);
 
@@ -49,12 +38,6 @@ public class UserAdvertisementsController
         [FromRoute] int userId,
         [FromQuery] PaginationParams pagination)
     {
-        var exists = await _userQuery
-            .ExistsByIdAsync(userId);
-
-        if (!exists)
-            return NotFound("User not found");
-
         var advertisements = await _queryService.
             GetPurchasedByUserAsync(userId, pagination);
 

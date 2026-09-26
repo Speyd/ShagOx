@@ -46,9 +46,9 @@ public class FavoriteCommandsController
         return result.ToActionResult();
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromBody] FavoriteUpdateRequest request)
     {
         if (request.UserId != UserId)
@@ -60,9 +60,9 @@ public class FavoriteCommandsController
         return result.ToActionResult();
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _deleteService
             .DeleteAsync(id, UserId);

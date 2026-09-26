@@ -1,23 +1,21 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Query;
-using ShagOxServer.Domain.Filters.Baskets.Core;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Query;
+using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Baskets.Admin;
+namespace ShagOxServer.Api.Controllers.AttributeDictionaries;
 [ApiController]
-[Route("api/admin/baskets")]
-[Authorize(Roles = "Admin")]
-public class BasketAdminQueriesController
+[Route("api/attribute-dictionaries")]
+public class AttributeDictionaryQueriesController
     : ApiController
 {
-    private readonly IBasketQueryService _queryService;
+    private readonly IAttributeDictionaryQueryService _queryService;
 
 
-    public BasketAdminQueriesController(
-        IBasketQueryService queryService)
+    public AttributeDictionaryQueriesController(
+        IAttributeDictionaryQueryService queryService)
     {
         _queryService = queryService;
     }
@@ -33,7 +31,6 @@ public class BasketAdminQueriesController
         return result.ToActionResult();
     }
 
-
     [HttpGet]
     public async Task<IActionResult> GetPaged(
         [FromQuery] PaginationParams pagination)
@@ -45,9 +42,9 @@ public class BasketAdminQueriesController
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> Search(
-       [FromQuery] BasketSearchFilter filter,
-       [FromQuery] PaginationParams pagination)
+    public async Task<IActionResult> SearchByKey(
+        [FromQuery] AttributeDictionarySearchFilter filter,
+        [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService
             .Search(filter, pagination);

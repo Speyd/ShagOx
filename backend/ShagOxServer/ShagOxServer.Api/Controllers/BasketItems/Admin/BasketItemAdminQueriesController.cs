@@ -28,9 +28,9 @@ public class BasketItemAdminQueriesController
         _queryService = queryService;
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _queryService
             .GetByIdAsync(id);
@@ -38,9 +38,9 @@ public class BasketItemAdminQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("basket/{id:int}")]
+    [HttpGet("basket/{id:long}")]
     public async Task<IActionResult> GetByBasket(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService
@@ -49,9 +49,9 @@ public class BasketItemAdminQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("advertisement/{id:int}")]
+    [HttpGet("advertisement/{id:long}")]
     public async Task<IActionResult> GetByAdvertisement(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService
@@ -60,9 +60,9 @@ public class BasketItemAdminQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("user/{id:int}")]
+    [HttpGet("user/{id:long}")]
     public async Task<IActionResult> GetPaged(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService

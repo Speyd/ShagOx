@@ -42,9 +42,9 @@ public class CurrencyAdminCommandsController
     }
 
     [Authorize]
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromBody] CurrencyUpdateRequest request)
     {
         var result = await _updateService
@@ -54,9 +54,9 @@ public class CurrencyAdminCommandsController
     }
 
     [Authorize]
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _deleteService
             .DeleteAsync(id);

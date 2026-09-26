@@ -5,7 +5,6 @@ using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.
 using ShagOxServer.Domain.Filters.Location.Cities.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using System.Globalization;
 
 namespace ShagOxServer.Api.Controllers.Cities.Translations;
 
@@ -26,9 +25,9 @@ public  class CityTranslationQueriesController
     }
 
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _queryService
             .GetByIdAsync(id);

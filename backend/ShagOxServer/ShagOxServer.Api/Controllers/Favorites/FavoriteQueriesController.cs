@@ -23,9 +23,9 @@ public class FavoriteQueriesController
 
 
     [Authorize]
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _queryService
             .GetByIdAsync(id);
@@ -33,9 +33,9 @@ public class FavoriteQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("count/{advertId:int}")]
+    [HttpGet("count/{advertId:long}")]
     public async Task<IActionResult> CountByAdvertisementIdAsync(
-         [FromRoute] int advertId)
+         [FromRoute] long advertId)
     {
         var result = await _queryService
             .CountByAdvertisementAsync(advertId);

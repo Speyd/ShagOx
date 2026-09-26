@@ -23,9 +23,9 @@ public class UserQueriesController
     }
 
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(
-        [FromRoute] int id)
+        [FromRoute] long id)
     {
         var result = await _queryService
             .GetByIdAsync(id);
@@ -54,7 +54,7 @@ public class UserQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("contact/{contact}")]
+    [HttpGet("contact/{contact:string}")]
     public async Task<IActionResult> GetByContactAsync(
        [FromRoute] string contact)
     {

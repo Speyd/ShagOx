@@ -194,7 +194,40 @@ namespace ShagOxServer.Application.Resources.EntityErrorResourcess {
                 return ResourceManager.GetString("AttributeDefinitionUpdateFailed", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create attribute dictionary..
+        /// </summary>
+        internal static string AttributeDictionaryCreateFailed
+        {
+            get
+            {
+                return ResourceManager.GetString("AttributeDictionaryCreateFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete attribute dictionary..
+        /// </summary>
+        internal static string AttributeDictionaryDeleteFailed
+        {
+            get
+            {
+                return ResourceManager.GetString("AttributeDictionaryDeleteFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update attribute dictionary..
+        /// </summary>
+        internal static string AttributeDictionaryUpdateFailed
+        {
+            get
+            {
+                return ResourceManager.GetString("AttributeDictionaryUpdateFailed", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create avatar..
         /// </summary>

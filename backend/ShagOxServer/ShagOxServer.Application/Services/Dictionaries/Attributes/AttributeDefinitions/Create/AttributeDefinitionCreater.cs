@@ -15,6 +15,8 @@ public static class AttributeDefinitionCreater
             Required = request.Required,
             Min = request.Min,
             Max = request.Max,
+            IsVariant = request.IsVariant,
+            Multiple = request.Multiple,
         };
     }
 }

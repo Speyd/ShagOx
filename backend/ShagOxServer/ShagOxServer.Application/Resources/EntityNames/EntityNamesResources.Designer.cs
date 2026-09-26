@@ -97,11 +97,20 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на AttributeDefinitionTranslation.
+        ///   Ищет локализованную строку, похожую на Attribute definition translation.
         /// </summary>
         internal static string AttributeDefinitionTranslation {
             get {
                 return ResourceManager.GetString("AttributeDefinitionTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Attribute dictionary.
+        /// </summary>
+        internal static string AttributeDictionary {
+            get {
+                return ResourceManager.GetString("AttributeDictionary", resourceCulture);
             }
         }
         

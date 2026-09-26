@@ -46,6 +46,18 @@ public static class AttributeDefinitionUpdater
             countUpdated++;
         }
 
+        if (request.IsVariant.HasValue)
+        {
+            attribute.IsVariant = request.IsVariant.Value;
+            countUpdated++;
+        }
+
+        if (request.Multiple.HasValue)
+        {
+            attribute.Multiple = request.Multiple.Value;
+            countUpdated++;
+        }
+
         return countUpdated;
     }
 }

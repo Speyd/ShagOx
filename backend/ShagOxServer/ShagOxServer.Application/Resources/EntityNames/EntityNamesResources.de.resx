@@ -195,4 +195,7 @@
   <data name="DefiniteImage" xml:space="preserve">
     <value>Bild({0})</value>
   </data>
+  <data name="AttributeDictionary" xml:space="preserve">
+    <value>Attributwörterbuch</value>
+  </data>
 </root>

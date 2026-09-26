@@ -11,20 +11,20 @@ namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDic
 public class AttributeDictionaryQueryService
     : IAttributeDictionaryQueryService
 {
-    private readonly IAttributeDictionaryQueryRepository _attributeDictQueryRepository;
+    private readonly IAttributeDictionaryQueryRepository _dictionaryDictQueryRepository;
 
 
     public AttributeDictionaryQueryService(
-        IAttributeDictionaryQueryRepository attributeDictQueryRepository)
+        IAttributeDictionaryQueryRepository dictionaryDictQueryRepository)
     {
-        _attributeDictQueryRepository = attributeDictQueryRepository;
+        _dictionaryDictQueryRepository = dictionaryDictQueryRepository;
     }
 
 
     public async Task<Result<AttributeDictionaryDto>> GetByIdAsync(
         long id)
     {
-        var attribute = await _attributeDictQueryRepository
+        var attribute = await _dictionaryDictQueryRepository
             .GetByIdAsync(id);
 
         return attribute.ToResult(AttributeDictionaryMapper.ToDto);
@@ -33,7 +33,7 @@ public class AttributeDictionaryQueryService
     public async Task<Result<PagedResult<AttributeDictionaryDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
-        var attributes = await _attributeDictQueryRepository
+        var attributes = await _dictionaryDictQueryRepository
             .GetPagedAsync(pagination);
 
         return attributes.ToResultPaged(AttributeDictionaryMapper.ToDto);
@@ -43,7 +43,7 @@ public class AttributeDictionaryQueryService
        AttributeDictionarySearchFilter filter,
        PaginationParams pagination)
     {
-        var attributes = await _attributeDictQueryRepository
+        var attributes = await _dictionaryDictQueryRepository
             .Search(filter, pagination);
 
         return attributes.ToResultPaged(AttributeDictionaryMapper.ToDto);

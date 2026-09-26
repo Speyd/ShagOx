@@ -195,4 +195,7 @@
   <data name="DefiniteImage" xml:space="preserve">
     <value>Изображение({0})</value>
   </data>
+  <data name="AttributeDictionary" xml:space="preserve">
+    <value>Словарь атрибутов</value>
+  </data>
 </root>

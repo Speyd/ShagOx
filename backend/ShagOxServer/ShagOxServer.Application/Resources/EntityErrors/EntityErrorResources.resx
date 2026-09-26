@@ -162,6 +162,15 @@
   <data name="AttributeDefinitionUpdateFailed" xml:space="preserve">
     <value>Failed to update attribute definition.</value>
   </data>
+  <data name="AttributeDictionaryCreateFailed" xml:space="preserve">
+    <value>Failed to create attribute dictionary.</value>
+  </data>
+  <data name="AttributeDictionaryDeleteFailed" xml:space="preserve">
+    <value>Failed to delete attribute dictionary.</value>
+  </data>
+  <data name="AttributeDictionaryUpdateFailed" xml:space="preserve">
+    <value>Failed to update attribute dictionary.</value>
+  </data>
   <data name="AvatarCreateFailed" xml:space="preserve">
     <value>Failed to create avatar.</value>
   </data>
@@ -175,10 +184,10 @@
     <value>Failed to create basket attribute.</value>
   </data>
   <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Failed to create delete attribute.</value>
+    <value>Failed to delete basket attribute.</value>
   </data>
   <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Failed to create update attribute.</value>
+    <value>Failed to update attribute.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Failed to create basket.</value>

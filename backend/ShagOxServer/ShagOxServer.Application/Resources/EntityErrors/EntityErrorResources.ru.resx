@@ -162,6 +162,15 @@
   <data name="AttributeDefinitionUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить определение атрибута.</value>
   </data>
+  <data name="AttributeDictionaryCreateFailed" xml:space="preserve">
+    <value>Не удалось создать словарь атрибутов.</value>
+  </data>
+  <data name="AttributeDictionaryDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить словарь атрибутов.</value>
+  </data>
+  <data name="AttributeDictionaryUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить словарь атрибутов.</value>
+  </data>
   <data name="AvatarCreateFailed" xml:space="preserve">
     <value>Не удалось создать аватар.</value>
   </data>
@@ -175,10 +184,10 @@
     <value>Не удалось создать атрибут корзины.</value>
   </data>
   <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Не удалось создать атрибут удаления.</value>
+    <value>Не удалось удалить атрибут корзины.</value>
   </data>
   <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Не удалось создать атрибут обновления.</value>
+    <value>Не удалось обновить атрибут корзины.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Не удалось создать корзину.</value>

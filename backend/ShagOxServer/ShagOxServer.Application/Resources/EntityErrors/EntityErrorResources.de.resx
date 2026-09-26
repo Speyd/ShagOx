@@ -162,6 +162,15 @@
   <data name="AttributeDefinitionUpdateFailed" xml:space="preserve">
     <value>Die Attributdefinition konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="AttributeDictionaryCreateFailed" xml:space="preserve">
+    <value>Das Attributwörterbuch konnte nicht erstellt werden.</value>
+  </data>
+  <data name="AttributeDictionaryDeleteFailed" xml:space="preserve">
+    <value>Das Attributwörterbuch konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="AttributeDictionaryUpdateFailed" xml:space="preserve">
+    <value>Das Attributwörterbuch konnte nicht aktualisiert werden.</value>
+  </data>
   <data name="AvatarCreateFailed" xml:space="preserve">
     <value>Der Avatar konnte nicht erstellt werden.</value>
   </data>
@@ -175,10 +184,10 @@
     <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
   </data>
   <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Das Löschattribut konnte nicht erstellt werden.</value>
+    <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
   </data>
   <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Das Aktualisierungsattribut konnte nicht erstellt werden.</value>
+    <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Der Warenkorb konnte nicht erstellt werden.</value>

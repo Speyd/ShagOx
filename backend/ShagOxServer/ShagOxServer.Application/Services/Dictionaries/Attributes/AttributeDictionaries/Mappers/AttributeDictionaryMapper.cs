@@ -5,15 +5,15 @@ namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDic
 public static class AttributeDictionaryMapper
 {
     public static AttributeDictionaryDto ToDto(
-        AttributeDictionary attributeDict)
+        AttributeDictionary dictionary)
     {
         return new AttributeDictionaryDto(
-            attributeDict.Id,
-            attributeDict.Code,
-            attributeDict.Attributes
+            dictionary.Id,
+            dictionary.Code,
+            dictionary.Attributes
                 .Select(x => x.Id)
                 .ToList(),
-            attributeDict.Values
+            dictionary.Values
                 .Select(x => x.Id)
                 .ToList()
         );

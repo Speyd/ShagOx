@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Create;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Query;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Create;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Delete;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Query;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Validator;
 
@@ -20,7 +22,8 @@ public static class AttributeDictionaryDependencyInjections
         //services.AddScoped<IAttributeDictionaryUpdateService,
         //AttributeDictionaryUpdateService>();
 
-        //services.AddScoped<IAttributeDefinitionDeleteService, AttributeDefinitionDeleteService>();
+        services.AddScoped<IAttributeDictionaryDeleteService,
+            AttributeDictionaryDeleteService>();
 
         services.AddScoped<AttributeDictionaryValidator>();
 

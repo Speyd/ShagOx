@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Base;
-using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions;
 
 namespace ShagOxServer.Application.DTOs.Baskets.BasketAttributes;
 public sealed record BasketAttributeDto

@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes;
-using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Mapping;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Mapping;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;

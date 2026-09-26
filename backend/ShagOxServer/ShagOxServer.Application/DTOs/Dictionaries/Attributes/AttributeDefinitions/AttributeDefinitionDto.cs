@@ -1,0 +1,17 @@
+﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Domain.Entities.Dictionaries.Enum;
+
+namespace ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions;
+public sealed record AttributeDefinitionDto
+(
+    long Id,
+    long CategoryId,
+    string CategoryName,
+    string Key,
+    AttributeType Type,
+    bool Required,
+    decimal? Min,
+    decimal? Max,
+    bool IsVariant,
+    bool Multiple
+) : BaseDto(Id);

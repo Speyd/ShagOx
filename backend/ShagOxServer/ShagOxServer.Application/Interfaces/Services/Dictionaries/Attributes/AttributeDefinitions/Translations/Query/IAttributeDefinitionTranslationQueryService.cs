@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.AttributeDefinitions.Translations;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;

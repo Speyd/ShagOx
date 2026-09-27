@@ -1,0 +1,45 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
+using ShagOxServer.Domain.Filters.Dictionaries.Categories;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+
+namespace ShagOxServer.Api.Controllers.Dictionaries.Categories;
+
+[ApiController]
+[Route("api/categories")]
+public class CategoryQueriesController 
+    : ApiController
+{
+    private readonly ICategoryQueryService _queryService;
+
+
+    public CategoryQueriesController(
+        ICategoryQueryService queryService)
+    {
+        _queryService = queryService;
+    }
+
+
+    [HttpGet("{id:long}")]
+    public async Task<IActionResult> GetById(
+        [FromRoute] long id)
+    {
+        var result = await _queryService
+            .GetByIdAsync(id);
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> Search(
+       [FromQuery] CategorySearchFilter filter,
+       [FromQuery] PaginationParams pagination)
+    {
+        var result = await _queryService
+            .Search(filter, pagination);
+
+        return result.ToActionResult();
+    }
+}

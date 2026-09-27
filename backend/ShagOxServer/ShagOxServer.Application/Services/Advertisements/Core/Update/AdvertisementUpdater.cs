@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Advertisements;
 namespace ShagOxServer.Application.Services.Advertisements.Core.Update;
 public static class AdvertisementUpdater
 {
-    public static int UpdateFields(
+    public static int ApplyUpdates(
        Advertisement advert,
        AdvertisementUpdateRequest request)
     {

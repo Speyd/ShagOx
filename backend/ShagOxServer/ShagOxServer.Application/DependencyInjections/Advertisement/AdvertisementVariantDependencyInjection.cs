@@ -2,9 +2,11 @@
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Delete;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 
 namespace ShagOxServer.Application.DependencyInjections.Advertisement;
@@ -22,8 +24,8 @@ public static class AdvertisementVariantDependencyInjection
         services.AddScoped<IAdvertisementVariantDeleteService,
             AdvertisementVariantDeleteService>();
 
-        //services.AddScoped<IStatusUpdateService,
-        //    StatusUpdateService>();
+        services.AddScoped<IAdvertisementVariantUpdateService,
+            AdvertisementVariantUpdateService>();
 
         services.AddScoped<AdvertisementVariantValidator>();
 

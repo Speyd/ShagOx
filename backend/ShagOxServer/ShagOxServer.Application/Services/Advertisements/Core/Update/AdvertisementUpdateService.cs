@@ -60,7 +60,7 @@ public class AdvertisementUpdateService
         try
         {
             var updatedCount = AdvertisementUpdater
-                .UpdateFields(advert.Value!, request);
+                .ApplyUpdates(advert.Value!, request);
 
             var imagesResult = await _imageService
                 .SyncImagesAsync(

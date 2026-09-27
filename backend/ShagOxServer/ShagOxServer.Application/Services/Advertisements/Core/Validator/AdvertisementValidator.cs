@@ -37,34 +37,4 @@ public class AdvertisementValidator
 
         return Result<Advertisement>.Success(advert);
     }
-
-    public async Task<Result<Advertisement>> ExistsByJsonDocumentAsync(
-        JsonDocument attributes)
-    {
-        var advert = await _advertisementQueryRepository
-            .GetByIdAsync(advertId);
-
-        if (advert is null)
-        {
-            return Result<Advertisement>.NotFound(
-                EntityNamesResources.Advertisement);
-        }
-
-        return Result<Advertisement>.Success(advert);
-    }
-
-    public async Task<Result<Advertisement>> GetByIdWithIncludeAsync(
-        long advertId)
-    {
-        var advert = await _advertisementQueryRepository
-            .GetByIdAsync(advertId);
-
-        if (advert is null)
-        {
-            return Result<Advertisement>.NotFound(
-                EntityNamesResources.Advertisement);
-        }
-
-        return Result<Advertisement>.Success(advert);
-    }
 }

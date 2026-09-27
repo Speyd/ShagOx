@@ -105,7 +105,7 @@ public class AttributeDictionaryValueUpdateService
                 return Result<bool>.Fail(dictionaryExists.Error);
         }
 
-        if (code != value.Code &&
+        if (code != value.Code ||
             dictionaryId != value.DictionaryId)
         {
             var valueExists = await _valueValidator

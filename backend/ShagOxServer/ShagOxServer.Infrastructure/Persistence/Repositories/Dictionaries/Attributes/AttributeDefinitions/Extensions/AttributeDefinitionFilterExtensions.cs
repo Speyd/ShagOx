@@ -18,7 +18,7 @@ public static class AttributeDefinitionFilterExtensions
                 EF.Functions.ILike(u.Key, $"%{filter.Key}%"));
         }
 
-        if (filter.CategoryId is not null)
+        if (filter.CategoryId.HasValue)
         {
             query = query.Where(u => 
                 u.CategoryId == filter.CategoryId.Value!);

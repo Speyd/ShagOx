@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Api.Controllers.Common;
+using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
@@ -17,7 +17,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements;
 [Route("api/advertisements")]
 [Authorize]
 public class AdvertisementCommandsController 
-    : OwnerExistsController
+    : ApiOwnerExistsController
 {
     private readonly IAdvertisementCreateService _createService;
     private readonly IAdvertisementUpdateService _updateService;

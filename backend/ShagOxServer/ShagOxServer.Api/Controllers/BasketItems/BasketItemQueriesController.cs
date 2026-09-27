@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Api.Controllers.Common;
+using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.BasketItems;
 [Route("api/basket-items")]
 [Authorize]
 public class BasketItemQueriesController
-    : OwnerExistsController
+    : ApiOwnerExistsController
 {
     private readonly IBasketItemQueryService _queryService;
 

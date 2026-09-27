@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Api.Controllers.Common;
+using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Update;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
@@ -15,7 +15,7 @@ namespace ShagOxServer.Api.Controllers.BasketItems;
 [Route("api/basket-items")]
 [Authorize]
 public class BasketItemCommandsController
-    : OwnerExistsController
+    : ApiOwnerExistsController
 {
     private readonly IBasketItemCreateService _createService;
     private readonly IBasketItemUpdateService _updateService;

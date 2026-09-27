@@ -10,6 +10,8 @@ public static class AttributeDependencyInjections
 
         services.AddAttributeDictionaryInfrastructure();
 
+        services.AddAttributeDictionaryValueInfrastructure();
+
         return services;
     }
 }

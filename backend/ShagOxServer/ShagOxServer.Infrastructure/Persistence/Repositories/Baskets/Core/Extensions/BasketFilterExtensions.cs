@@ -12,11 +12,10 @@ public static class BasketFilterExtensions
             return query;
 
 
-        if (filter.UserId is not null)
+        if (filter.UserId.HasValue)
         {
-            query = query
-                .Where(u =>
-                    u.UserId == filter.UserId);
+            query = query.Where(u =>
+                u.UserId == filter.UserId);
         }
 
         return query;

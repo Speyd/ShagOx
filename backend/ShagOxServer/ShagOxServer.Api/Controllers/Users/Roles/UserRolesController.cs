@@ -38,9 +38,9 @@ public class UserRolesController
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpGet("{userId:int}/roles")]
+    [HttpGet("{userId:long}/roles")]
     public async Task<IActionResult> GetUserRoles(
-        [FromRoute] int userId,
+        [FromRoute] long userId,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _roleService

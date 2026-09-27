@@ -24,11 +24,11 @@ public static class AdvertisementFilterExtensions
                  EF.Functions.ILike(u.Description, $"%{filter.Description}%"));
         }
 
-        if (filter.CategoryId is not null)
+        if (filter.CategoryId.HasValue)
         {
             query = query
                 .Where(x => 
-                    x.CategoryId == filter.CategoryId.Value!)
+                    x.CategoryId == filter.CategoryId.Value)
                 .OrderByDescending(x => x.Popularity);
         }
         return query;

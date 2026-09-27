@@ -18,10 +18,10 @@ public static class CategoryFilterExtensions
                 EF.Functions.ILike(u.Code, $"%{filter.Code}%"));
         }
 
-        if (filter.ProductTypeId is not null)
+        if (filter.ProductTypeId.HasValue)
         {
-            query = query
-                .Where(u => u.ProductTypeId == filter.ProductTypeId);
+            query = query.Where(u =>
+                u.ProductTypeId == filter.ProductTypeId);
         }
         
         return query;

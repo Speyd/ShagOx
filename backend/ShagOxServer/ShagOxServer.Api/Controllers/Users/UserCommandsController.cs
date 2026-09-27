@@ -40,9 +40,9 @@ public class UserCommandsController
     }
 
     [Authorize]
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
-        [FromRoute] int id,
+        [FromRoute] long id,
         [FromForm] UserUpdateRequest request)
     {
         if (UserId != id)

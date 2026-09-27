@@ -7,23 +7,21 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using Twilio.TwiML.Voice;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes;
 public class ProductTypeQueryRepository
-    : QueryRepository<ProductType>, 
+    : QueryRepository<ProductType, ProductTypeSearchFilter>, 
       IProductTypeQueryRepository
 {
     public ProductTypeQueryRepository(AppDbContext db)
         : base(db)
     { }
 
-
-    public async Task<PagedResult<ProductType>> Search(
-        ProductTypeSearchFilter filter,
-        PaginationParams pagination)
+    protected override IQueryable<ProductType> ApplyFilter(
+        IQueryable<ProductType> query,
+        ProductTypeSearchFilter filter)
     {
-        return await _db.ProductTypes
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
+        return query.Filter(filter);
     }
 }

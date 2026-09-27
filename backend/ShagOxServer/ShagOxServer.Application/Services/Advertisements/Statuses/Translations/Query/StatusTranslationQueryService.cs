@@ -54,7 +54,7 @@ public class StatusTranslationQueryService
         PaginationParams pagination)
     {
         var statuses = await _statusRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return statuses.ToResultPaged(StatusTranslationMapper.ToDto);
     }

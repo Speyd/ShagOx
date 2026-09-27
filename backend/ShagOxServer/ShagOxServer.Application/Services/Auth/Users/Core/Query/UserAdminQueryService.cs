@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
-using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

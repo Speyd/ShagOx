@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Domain.Filters.Users;
+﻿namespace ShagOxServer.Domain.Filters.Auth.Users;
 public sealed record UserAdminSearchFilter
 (
     string? FullName,
@@ -6,7 +6,7 @@ public sealed record UserAdminSearchFilter
     string? Bio,
     string? Email,
     string? Phone,
-    int? CityId,
+    long? CityId,
     DateTime? RegisteredAfter,
     DateTime? ActiveAfter
-);
+) : BaseFilter();

@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Query;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
+using ShagOxServer.Domain.Filters.Specification.Pictures.Images;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -34,6 +35,16 @@ public class ImageQueryService
     {
         var images = await _imageQueryRepository
             .GetPagedAsync(pagination);
+
+        return images.ToResultPaged(ImageMapper.ToDto);
+    }
+
+    public async Task<Result<PagedResult<ImageDto>>> Search(
+        ImageSearchFilter filter,
+        PaginationParams pagination)
+    {
+        var images = await _imageQueryRepository
+            .SearchAsync(filter, pagination);
 
         return images.ToResultPaged(ImageMapper.ToDto);
     }

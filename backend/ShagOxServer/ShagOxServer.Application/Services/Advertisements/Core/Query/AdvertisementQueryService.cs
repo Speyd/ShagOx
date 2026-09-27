@@ -63,7 +63,7 @@ public class AdvertisementQueryService
         PaginationParams pagination)
     {
         var advert = await _advertisementRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return advert.ToResultPaged(AdvertisementMapper.ToDto);
     }

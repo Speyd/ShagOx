@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Query;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
+using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -43,6 +44,16 @@ public class AvatarQueryService
     {
         var images = await _avatarQueryRepository
             .GetPagedAsync(pagination);
+
+        return images.ToResultPaged(AvatarMapper.ToDto);
+    }
+
+    public async Task<Result<PagedResult<AvatarDto>>> Search(
+        AvatarSearchFilter filter,
+        PaginationParams pagination)
+    {
+        var images = await _avatarQueryRepository
+             .SearchAsync(filter, pagination);
 
         return images.ToResultPaged(AvatarMapper.ToDto);
     }

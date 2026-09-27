@@ -54,7 +54,7 @@ public class CategoryQueryService
         PaginationParams pagination)
     {
         var categories = await _categoryQueryRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return categories.ToResultPaged(CategoryMapper.ToDto);
     }

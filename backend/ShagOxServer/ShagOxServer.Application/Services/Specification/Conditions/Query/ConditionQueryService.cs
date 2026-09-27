@@ -53,7 +53,7 @@ public class ConditionQueryService
 	  PaginationParams pagination)
     {
         var conditions = await _conditionQueryRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return conditions.ToResultPaged(ConditionMapper.ToDto);
     }

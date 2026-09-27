@@ -6,13 +6,9 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 public interface ICategoryQueryService
-    : IQueryService<CategoryDto>
+    : IQueryService<CategoryDto, CategorySearchFilter>
 {
     Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
         long productTypeId,
-        PaginationParams pagination);
-
-    Task<Result<PagedResult<CategoryDto>>> Search(
-        CategorySearchFilter filter,
         PaginationParams pagination);
 }

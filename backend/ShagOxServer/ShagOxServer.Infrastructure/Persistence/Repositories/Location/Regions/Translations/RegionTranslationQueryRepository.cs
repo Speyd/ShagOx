@@ -4,11 +4,11 @@ using ShagOxServer.Domain.Filters.Location.Regions.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Translations.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Translations;
 public class RegionTranslationQueryRepository
-    : QueryTranslationRepository<RegionTranslation>,
+    : QueryTranslationRepository<RegionTranslation, 
+        RegionTranslationSearchFilter>,
       IRegionTranslationQueryRepository
 {
     public RegionTranslationQueryRepository(AppDbContext db)
@@ -16,12 +16,10 @@ public class RegionTranslationQueryRepository
     { }
 
 
-    public async Task<PagedResult<RegionTranslation>> Search(
-        RegionTranslationSearchFilter filter,
-        PaginationParams pagination)
+    protected override IQueryable<RegionTranslation> ApplyFilter(
+       IQueryable<RegionTranslation> query,
+       RegionTranslationSearchFilter filter)
     {
-        return await _db.RegionTranslations
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
+        return query.Filter(filter);
     }
 }

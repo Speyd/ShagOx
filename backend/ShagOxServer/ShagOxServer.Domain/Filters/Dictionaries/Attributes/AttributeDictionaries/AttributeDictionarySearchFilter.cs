@@ -2,4 +2,4 @@
 public sealed record AttributeDictionarySearchFilter
 (
     string? Code
-);
+) : BaseFilter();

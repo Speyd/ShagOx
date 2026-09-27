@@ -4,4 +4,4 @@ public sealed record CityTranslationSearchFilter
     string? CityCode,
     string? Language,
     string? Name
-);
+) : BaseFilter();

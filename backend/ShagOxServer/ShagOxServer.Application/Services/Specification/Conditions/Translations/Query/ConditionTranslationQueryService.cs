@@ -54,7 +54,7 @@ public class ConditionTranslationQueryService
         PaginationParams pagination)
     {
         var cities = await _condtitionRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return cities.ToResultPaged(ConditionTranslationMapper.ToDto);
     }

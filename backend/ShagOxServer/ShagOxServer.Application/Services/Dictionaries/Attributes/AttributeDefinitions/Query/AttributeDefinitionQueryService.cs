@@ -44,7 +44,7 @@ public class AttributeDefinitionQueryService
        PaginationParams pagination)
     {
         var attributes = await _attributeQueryRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return attributes.ToResultPaged(AttributeDefinitionMapper.ToDto);
     }

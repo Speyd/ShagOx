@@ -44,7 +44,7 @@ public class AttributeDictionaryQueryService
        PaginationParams pagination)
     {
         var attributes = await _dictionaryDictQueryRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return attributes.ToResultPaged(AttributeDictionaryMapper.ToDto);
     }

@@ -63,7 +63,7 @@ public class BasketAttributeQueryService
        PaginationParams pagination)
     {
         var attributes = await _attributeQueryRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return attributes.ToResultPaged(BasketAttributeMapper.ToDto);
     }

@@ -5,7 +5,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 public interface IAdvertisementQueryRepository
-    : IQueryRepository<Advertisement>
+    : IQueryRepository<Advertisement, AdvertisementSearchFilter>
 {
     Task<List<Advertisement>> GetByIdsAsync(
         List<long> ids);
@@ -16,9 +16,5 @@ public interface IAdvertisementQueryRepository
 
     Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
         long userId,
-        PaginationParams pagination);
-
-    Task<PagedResult<Advertisement>> Search(
-        AdvertisementSearchFilter filter,
         PaginationParams pagination);
 }

@@ -54,7 +54,7 @@ public class AttributeDefinitionTranslationQueryService
         PaginationParams pagination)
     {
         var cities = await _attributeRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return cities.ToResultPaged(AttributeDefinitionTranslationMapper.ToDto);
     }

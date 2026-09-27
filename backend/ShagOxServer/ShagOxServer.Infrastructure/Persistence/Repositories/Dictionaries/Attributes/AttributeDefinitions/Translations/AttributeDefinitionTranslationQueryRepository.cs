@@ -4,11 +4,11 @@ using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions.T
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 public class AttributeDefinitionTranslationQueryRepository
-    : QueryTranslationRepository<AttributeDefinitionTranslation>,
+    : QueryTranslationRepository<AttributeDefinitionTranslation,
+        AttributeDefinitionTranslationSearchFilter>,
       IAttributeDefinitionTranslationQueryRepository
 {
     public AttributeDefinitionTranslationQueryRepository(AppDbContext db)
@@ -16,12 +16,10 @@ public class AttributeDefinitionTranslationQueryRepository
     { }
 
 
-    public async Task<PagedResult<AttributeDefinitionTranslation>> Search(
-        AttributeDefinitionTranslationSearchFilter filter,
-        PaginationParams pagination)
+    protected override IQueryable<AttributeDefinitionTranslation> ApplyFilter(
+       IQueryable<AttributeDefinitionTranslation> query,
+       AttributeDefinitionTranslationSearchFilter filter)
     {
-        return await _db.AttributeDefinitionTranslations
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
+        return query.Filter(filter);
     }
 }

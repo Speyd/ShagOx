@@ -4,4 +4,4 @@ public sealed record AttributeDefinitionTranslationSearchFilter
     string? AttributeDefinitionKey,
     string? Language,
     string? Name
-);
+) : BaseFilter();

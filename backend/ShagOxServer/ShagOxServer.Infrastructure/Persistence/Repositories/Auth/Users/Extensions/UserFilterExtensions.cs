@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.Domain.Filters.Auth.Users;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 public static class UserFilterExtensions

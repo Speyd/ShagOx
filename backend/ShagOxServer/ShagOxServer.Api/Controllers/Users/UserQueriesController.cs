@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
-using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 

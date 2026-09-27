@@ -5,11 +5,10 @@ using ShagOxServer.Domain.Filters.Specification.Conditions;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
 public class ConditionQueryRepository 
-    : QueryRepository<Condition>, 
+    : QueryRepository<Condition, ConditionSearchFilter>, 
       IConditionQueryRepository
 {
     public ConditionQueryRepository(AppDbContext db)
@@ -17,19 +16,17 @@ public class ConditionQueryRepository
     { }
 
 
+    protected override IQueryable<Condition> ApplyFilter(
+        IQueryable<Condition> query,
+        ConditionSearchFilter filter)
+    {
+        return query.Filter(filter);
+    }
+
     public async Task<Condition?> GetByCodeAsync(
         string code)
     {
         return await _db.Conditions
             .FirstOrDefaultAsync(x => x.Code == code);
-    }
-
-    public async Task<PagedResult<Condition>> Search(
-       ConditionSearchFilter filter,
-       PaginationParams pagination)
-    {
-        return await _db.Conditions
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
     }
 }

@@ -10,7 +10,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities;
 public class CityQueryRepository 
-    : QueryRepository<City>, 
+    : QueryRepository<City, CitySearchFilter>, 
       ICityQueryRepository
 {
     public CityQueryRepository(AppDbContext db)
@@ -18,22 +18,19 @@ public class CityQueryRepository
     { }
 
 
-    public override async Task<City?> GetByIdAsync(
-        long id)
+    protected override IQueryable<City> ApplyIncludes(
+        IQueryable<City> query)
     {
-        return await _db.Cities
-            .WithIncludes()
-            .FirstOrDefaultAsync(x => x.Id == id);
+        return query.WithIncludes();
     }
 
-    public override async Task<PagedResult<City>> GetPagedAsync(
-        PaginationParams pagination)
+    protected override IQueryable<City> ApplyFilter(
+        IQueryable<City> query,
+        CitySearchFilter filter)
     {
-        return await _db.Cities
-            .WithIncludes()
-            .ToPagedResultAsync(pagination);
+        return query.Filter(filter);
     }
-
+    
     public async Task<City?> GetByCodeAsync(
         string code)
     {
@@ -49,16 +46,6 @@ public class CityQueryRepository
         return await _db.Cities
             .WithIncludes()
             .Where(x => x.RegionId == regionId)
-            .ToPagedResultAsync(pagination);
-    }
-
-    public async Task<PagedResult<City>> Search(
-        CitySearchFilter filter,
-        PaginationParams pagination)
-    {
-        return await _db.Cities
-            .WithIncludes()
-            .Filter(filter)
             .ToPagedResultAsync(pagination);
     }
 }

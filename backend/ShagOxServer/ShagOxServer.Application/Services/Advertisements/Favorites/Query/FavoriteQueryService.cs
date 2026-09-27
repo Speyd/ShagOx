@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
+using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -53,6 +54,16 @@ public class FavoriteQueryService
     {
         var favorites = await _favoriteRepository
             .GetByUserAsync(usderId, pagination);
+
+        return favorites.ToResultPaged(FavoriteMapper.ToDto);
+    }
+
+    public async Task<Result<PagedResult<FavoriteDto>>> Search(
+        FavoriteSearchFilter filter,
+        PaginationParams pagination)
+    {
+        var favorites = await _favoriteRepository
+            .SearchAsync(filter, pagination);
 
         return favorites.ToResultPaged(FavoriteMapper.ToDto);
     }

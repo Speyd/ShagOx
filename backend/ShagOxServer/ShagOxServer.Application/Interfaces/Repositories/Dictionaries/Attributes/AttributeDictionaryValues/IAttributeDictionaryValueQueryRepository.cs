@@ -5,13 +5,10 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues;
 public interface IAttributeDictionaryValueQueryRepository
-    : IQueryRepository<AttributeDictionaryValue>
+    : IQueryRepository<AttributeDictionaryValue, 
+        AttributeDictionaryValueSearchFilter>
 {
     Task<PagedResult<AttributeDictionaryValue>> GetByDictionaryAsync(
         long dictionaryId,
-        PaginationParams pagination);
-
-    Task<PagedResult<AttributeDictionaryValue>> Search(
-        AttributeDictionaryValueSearchFilter filter,
         PaginationParams pagination);
 }

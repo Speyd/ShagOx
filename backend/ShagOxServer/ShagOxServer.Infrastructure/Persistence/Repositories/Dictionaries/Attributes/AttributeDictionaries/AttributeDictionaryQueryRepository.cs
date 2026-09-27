@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
+using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDictionaries;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
@@ -10,20 +11,24 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDictionaries;
 public class AttributeDictionaryQueryRepository
-    : QueryRepository<AttributeDictionary>,
+    : QueryRepository<AttributeDictionary, AttributeDictionarySearchFilter>,
       IAttributeDictionaryQueryRepository
 {
     public AttributeDictionaryQueryRepository(AppDbContext db)
         : base(db)
     { }
 
-
-    public override async Task<AttributeDictionary?> GetByIdAsync(
-        long id)
+    protected override IQueryable<AttributeDictionary> ApplyIncludes(
+        IQueryable<AttributeDictionary> query)
     {
-        return await _db.AttributeDictionaries
-            .WithIncludes()
-            .FirstOrDefaultAsync(x => x.Id == id);
+        return query.WithIncludes();
+    }
+
+    protected override IQueryable<AttributeDictionary> ApplyFilter(
+        IQueryable<AttributeDictionary> query,
+        AttributeDictionarySearchFilter filter)
+    {
+        return query.Filter(filter);
     }
 
     public async Task<PagedResult<AttributeDefinition>> GetDefinitionsAsync(
@@ -33,24 +38,6 @@ public class AttributeDictionaryQueryRepository
         return await _db.AttributeDefinitions
             .WithIncludes()
             .Where(x => x.DictionaryId == attributeDictionaryId)
-            .ToPagedResultAsync(pagination);
-    }
-
-    public override async Task<PagedResult<AttributeDictionary>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        return await _db.AttributeDictionaries
-            .WithIncludes()
-            .ToPagedResultAsync(pagination);
-    }
-
-    public async Task<PagedResult<AttributeDictionary>> Search(
-        AttributeDictionarySearchFilter filter,
-        PaginationParams pagination)
-    {
-        return await _db.AttributeDictionaries
-            .WithIncludes()
-            .Filter(filter)
             .ToPagedResultAsync(pagination);
     }
 }

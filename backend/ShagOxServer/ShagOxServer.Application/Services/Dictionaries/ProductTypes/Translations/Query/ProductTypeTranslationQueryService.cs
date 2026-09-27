@@ -54,7 +54,7 @@ public class ProductTypeTranslationQueryService
         PaginationParams pagination)
     {
         var regions = await _typeRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return regions.ToResultPaged(ProductTypeTranslationMapper.ToDto);
     }

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -9,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
 public class CategoryQueryRepository 
-    : QueryRepository<Category>, 
+    : QueryRepository<Category, CategorySearchFilter>, 
       ICategoryQueryRepository
 {
     public CategoryQueryRepository(AppDbContext db)
@@ -17,20 +16,16 @@ public class CategoryQueryRepository
     { }
 
 
-    public override async Task<Category?> GetByIdAsync(
-        long id)
+    protected override IQueryable<Category> ApplyIncludes(
+        IQueryable<Category> query)
     {
-        return await _db.Categories
-            .WithIncludes()
-            .FirstOrDefaultAsync(c => c.Id == id);
+        return query.WithIncludes();
     }
-
-    public override async Task<PagedResult<Category>> GetPagedAsync(
-        PaginationParams pagination)
+    protected override IQueryable<Category> ApplyFilter(
+        IQueryable<Category> query,
+        CategorySearchFilter filter)
     {
-        return await _db.Categories
-            .WithIncludes()
-            .ToPagedResultAsync(pagination);
+        return query.Filter(filter);
     }
 
     public async Task<PagedResult<Category>> GetByProductTypeAsync(
@@ -40,16 +35,6 @@ public class CategoryQueryRepository
         return await _db.Categories
             .WithIncludes()
             .Where(c => c.ProductTypeId == productTypeId)
-            .ToPagedResultAsync(pagination);
-    }
-
-    public async Task<PagedResult<Category>> Search(
-        CategorySearchFilter filter,
-        PaginationParams pagination)
-    {
-        return await _db.Categories
-            .WithIncludes()
-            .Filter(filter)
             .ToPagedResultAsync(pagination);
     }
 }

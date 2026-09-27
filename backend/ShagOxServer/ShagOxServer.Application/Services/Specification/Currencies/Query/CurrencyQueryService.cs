@@ -62,7 +62,7 @@ public class CurrencyQueryService
 	 PaginationParams pagination)
     {
         var currencies = await _currencyRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return currencies.ToResultPaged(CurrencyMapper.ToDto);
     }

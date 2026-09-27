@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Users.Core;
-using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

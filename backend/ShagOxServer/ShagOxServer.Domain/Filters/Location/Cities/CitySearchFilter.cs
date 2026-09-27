@@ -2,5 +2,5 @@
 public sealed record CitySearchFilter
 (
     string? Code,
-    int? RegionId
-);
+    long? RegionId
+) : BaseFilter();

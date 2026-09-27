@@ -1,5 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users;
-using ShagOxServer.Application.DTOs.Location.Cities;
+﻿using ShagOxServer.Application.DTOs.Location.Cities;
 using ShagOxServer.Application.Interfaces.Services.Base;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -7,7 +6,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 public interface ICityQueryService
-    : IQueryService<CityDto>
+    : IQueryService<CityDto, CitySearchFilter>
 {
     Task<Result<CityDto>> GetByCodeAsync(
         string code);
@@ -15,8 +14,4 @@ public interface ICityQueryService
     Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
         long regionId,
         PaginationParams pagination);
-
-    Task<Result<PagedResult<CityDto>>> Search(
-       CitySearchFilter filter,
-       PaginationParams pagination);
 }

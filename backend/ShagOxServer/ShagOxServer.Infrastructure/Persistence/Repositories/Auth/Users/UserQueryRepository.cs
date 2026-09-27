@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
-
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 public class UserQueryRepository 
-    : QueryRepository<User>, 
+    : QueryRepository<User, UserSearchFilter>, 
       IUserQueryRepository
 {
     public UserQueryRepository(AppDbContext db)
@@ -17,21 +16,19 @@ public class UserQueryRepository
     { }
 
 
-    public override async Task<User?> GetByIdAsync(
-        long id)
+    protected override IQueryable<User> ApplyIncludes(
+        IQueryable<User> query)
     {
-        return await _db.Users
-            .WithIncludes()
-            .FirstOrDefaultAsync(x => x.Id == id);
+        return query.WithIncludes();
     }
 
-    public override async Task<PagedResult<User>> GetPagedAsync(
-        PaginationParams pagination)
+    protected override IQueryable<User> ApplyFilter(
+      IQueryable<User> query,
+      UserSearchFilter filter)
     {
-        return await _db.Users
-            .WithIncludes()
-            .ToPagedResultAsync(pagination);
+        return query.Filter(filter);
     }
+
     public async Task<User?> GetByContactAsync(
         string? email,
         string? phone,
@@ -87,15 +84,6 @@ public class UserQueryRepository
         return await _db.Users
             .WithIncludes()
             .FirstOrDefaultAsync(x => x.UserName == userName);
-    }
-    public async Task<PagedResult<User>> Search(
-        UserSearchFilter filter, 
-        PaginationParams pagination)
-    {
-        return await _db.Users
-            .WithIncludes()
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
     }
 
     public async Task<PagedResult<User>> AdminSearch(

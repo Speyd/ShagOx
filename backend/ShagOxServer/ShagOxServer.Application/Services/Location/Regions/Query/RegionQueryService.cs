@@ -49,11 +49,11 @@ public class RegionQueryService
     }
 
     public async Task<Result<PagedResult<RegionDto>>> Search(
-      RegionSearchFilter filter,
-	  PaginationParams pagination)
+        RegionSearchFilter filter,
+	    PaginationParams pagination)
     {
         var regions = await _regionQueryRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return regions.ToResultPaged(RegionMapper.ToDto);
     }

@@ -7,7 +7,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 
 public interface IBasketItemQueryService
-    : IQueryService<BasketItemDto>
+    : IQueryService<BasketItemDto, BasketItemSearchFilter>
 {
     Task<Result<PagedResult<BasketItemDto>>> GetPagedAsync(
         long userId,
@@ -19,9 +19,5 @@ public interface IBasketItemQueryService
 
     Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementAsync(
         long advertisementId,
-        PaginationParams pagination);
-
-    Task<Result<PagedResult<BasketItemDto>>> Search(
-        BasketItemSearchFilter filter,
         PaginationParams pagination);
 }

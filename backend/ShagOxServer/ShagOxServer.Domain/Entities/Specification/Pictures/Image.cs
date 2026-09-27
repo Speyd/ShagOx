@@ -2,7 +2,8 @@
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Domain.Entities.Specification.Pictures;
-public class Image : BaseImage
+public class Image 
+    : BaseImage
 {
     public int Order { get; set; }
 

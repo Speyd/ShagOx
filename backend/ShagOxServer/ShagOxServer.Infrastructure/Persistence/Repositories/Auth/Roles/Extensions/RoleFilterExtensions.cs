@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Filters.Roles;
+using ShagOxServer.Domain.Filters.Auth.Roles;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles.Extensions;
 public static class RoleFilterExtensions

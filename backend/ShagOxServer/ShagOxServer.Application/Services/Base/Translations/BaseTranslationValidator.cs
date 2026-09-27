@@ -1,21 +1,22 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
-public abstract class BaseTranslationValidator<TObject>
-    : BaseValidator<TObject>
-    where TObject : class
+public abstract class BaseTranslationValidator<TEntity>
+    : BaseValidator<TEntity>
+    where TEntity : BaseEntity
 {
-    private readonly IExistsTranslationRepository<TObject> _translationExistsRepository;
+    private readonly IExistsTranslationRepository<TEntity> _translationExistsRepository;
 
 
     public BaseTranslationValidator(
-        IRepository<TObject> objectRepository,
-        IExistsTranslationRepository<TObject> translationExistsRepository
+        IRepository<TEntity> entityRepository,
+        IExistsTranslationRepository<TEntity> translationExistsRepository
         )
-        : base(objectRepository, translationExistsRepository)
+        : base(entityRepository, translationExistsRepository)
     {
         _translationExistsRepository = translationExistsRepository;
     }
@@ -28,7 +29,7 @@ public abstract class BaseTranslationValidator<TObject>
                 .ExistsAsync(objectId, language))
         {
             return Result<bool>.NotFound(
-                EntityNameExtensions.GetLocalizedName<TObject>());
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
         return Result<bool>.Success(true);
@@ -42,7 +43,7 @@ public abstract class BaseTranslationValidator<TObject>
             .ExistsAsync(cityId, language))
         {
             return Result<bool>.AlreadyExists(
-                EntityNameExtensions.GetLocalizedName<TObject>());
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
         return Result<bool>.Success(true);
@@ -55,7 +56,7 @@ public abstract class BaseTranslationValidator<TObject>
                 .ExistsByLanguageAsync(language))
         {
             return Result<bool>.NotFound(
-                EntityNameExtensions.GetLocalizedName<TObject>());
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
         return Result<bool>.Success(true);
@@ -68,7 +69,7 @@ public abstract class BaseTranslationValidator<TObject>
                 .ExistsByLanguageAsync(language))
         {
             return Result<bool>.AlreadyExists(
-                EntityNameExtensions.GetLocalizedName<TObject>());
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
         return Result<bool>.Success(true);

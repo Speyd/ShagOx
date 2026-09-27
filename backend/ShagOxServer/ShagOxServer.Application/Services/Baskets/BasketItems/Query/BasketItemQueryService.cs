@@ -74,7 +74,7 @@ public class BasketItemQueryService
        PaginationParams pagination)
     {
         var items = await _itemQueryRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return items.ToResultPaged(BasketItemMapper.ToDto);
     }

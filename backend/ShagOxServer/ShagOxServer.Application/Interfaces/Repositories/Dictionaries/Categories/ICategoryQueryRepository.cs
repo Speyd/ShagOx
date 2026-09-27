@@ -5,13 +5,9 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 public interface ICategoryQueryRepository
-    : IQueryRepository<Category>
+    : IQueryRepository<Category, CategorySearchFilter>
 {
     Task<PagedResult<Category>> GetByProductTypeAsync(
         long productTypeId,
         PaginationParams pagination);
-
-    Task<PagedResult<Category>> Search(
-       CategorySearchFilter filter,
-       PaginationParams pagination);
 }

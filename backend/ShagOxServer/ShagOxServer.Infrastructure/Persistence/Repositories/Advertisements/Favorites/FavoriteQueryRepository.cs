@@ -1,14 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using Twilio.TwiML.Voice;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites;
 public class FavoriteQueryRepository 
-    : QueryRepository<Favorite>, 
+    : QueryRepository<Favorite, FavoriteSearchFilter>, 
       IFavoriteQueryRepository
 {
     public FavoriteQueryRepository(AppDbContext db)
@@ -16,20 +18,17 @@ public class FavoriteQueryRepository
     { }
 
 
-    public override async Task<Favorite?> GetByIdAsync(
-        long id)
+    protected override IQueryable<Favorite> ApplyIncludes(
+         IQueryable<Favorite> query)
     {
-        return await _db.Favorites
-            .WithIncludes()
-            .FirstOrDefaultAsync(x => x.Id == id);
+        return query.WithIncludes();
     }
 
-    public override async Task<PagedResult<Favorite>> GetPagedAsync(
-        PaginationParams pagination)
+    protected override IQueryable<Favorite> ApplyFilter(
+       IQueryable<Favorite> query,
+       FavoriteSearchFilter filter)
     {
-        return await _db.Favorites
-            .WithIncludes()
-            .ToPagedResultAsync(pagination);
+        return query.Filter(filter);
     }
 
     public async Task<int> CountByAdvertisementAsync(

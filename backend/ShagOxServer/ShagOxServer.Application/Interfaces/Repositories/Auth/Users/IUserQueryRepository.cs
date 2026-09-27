@@ -1,11 +1,11 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 public interface IUserQueryRepository
-    : IQueryRepository<User>
+    : IQueryRepository<User, UserSearchFilter>
 {
     Task<User?> GetByEmailAsync(
         string email);
@@ -23,10 +23,6 @@ public interface IUserQueryRepository
         string? email,
         string? phone,
         string? userName = null);
-
-    Task<PagedResult<User>> Search(
-        UserSearchFilter filter,
-        PaginationParams pagination);
 
     Task<PagedResult<User>> AdminSearch(
         UserAdminSearchFilter filter,

@@ -2,5 +2,5 @@
 public sealed record AttributeDefinitionSearchFilter
 (
     string? Key,
-    int? CategoryId
-);
+    long? CategoryId
+) : BaseFilter();

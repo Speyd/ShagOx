@@ -54,7 +54,7 @@ public class RegionTranslationQueryService
         PaginationParams pagination)
     {
         var regions = await _regionRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return regions.ToResultPaged(RegionTranslationMapper.ToDto);
     }

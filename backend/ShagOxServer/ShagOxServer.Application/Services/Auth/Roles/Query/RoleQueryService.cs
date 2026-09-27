@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
-using ShagOxServer.Domain.Filters.Roles;
+using ShagOxServer.Domain.Filters.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -63,7 +63,7 @@ public class RoleQueryService
 	   PaginationParams pagination)
     {
         var roles = await _roleQueryRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return roles.ToResultPaged(RoleMapper.ToDto);
     }

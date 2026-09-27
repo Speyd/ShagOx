@@ -3,4 +3,4 @@ public sealed record AttributeDictionaryValueSearchFilter
 (
     long? DictionaryId,
     string? Code
-);
+) : BaseFilter();

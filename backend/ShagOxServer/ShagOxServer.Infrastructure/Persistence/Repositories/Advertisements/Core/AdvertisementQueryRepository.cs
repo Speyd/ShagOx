@@ -9,20 +9,17 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core;
 public class AdvertisementQueryRepository 
-    : QueryRepository<Advertisement>, 
+    : QueryRepository<Advertisement, AdvertisementSearchFilter>, 
       IAdvertisementQueryRepository
 {
     public AdvertisementQueryRepository(AppDbContext db)
         : base(db)
     { }
 
-
-    public override async Task<Advertisement?> GetByIdAsync(
-        long id)
+    protected override IQueryable<Advertisement> ApplyIncludes(
+        IQueryable<Advertisement> query)
     {
-        return await _db.Advertisements
-            .WithIncludes()
-            .FirstOrDefaultAsync(x => x.Id == id);
+        return query.WithIncludes();
     }
 
     public async Task<List<Advertisement>> GetByIdsAsync(
@@ -55,16 +52,7 @@ public class AdvertisementQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public override async Task<PagedResult<Advertisement>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        return await _db.Advertisements
-            .WithIncludes()
-            .OrderByDescending(x => x.Popularity)
-            .ToPagedResultAsync(pagination);
-    }
-
-    public async Task<PagedResult<Advertisement>> Search(
+    public override async Task<PagedResult<Advertisement>> SearchAsync(
         AdvertisementSearchFilter filter,
         PaginationParams pagination)
     {

@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
+using ShagOxServer.Domain.Filters.Specification.Pictures.Images;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images;
 public class ImageQueryRepository 
-    : QueryRepository<Image>, 
+    : QueryRepository<Image, ImageSearchFilter>, 
       IImageQueryRepository
 {
     public ImageQueryRepository(AppDbContext db)
@@ -16,12 +17,17 @@ public class ImageQueryRepository
     { }
 
 
-    public override async Task<Image?> GetByIdAsync(
-        long id)
+    protected override IQueryable<Image> ApplyIncludes(
+        IQueryable<Image> query)
     {
-        return await _db.Images
-            .WithIncludes()
-            .FirstOrDefaultAsync(i => i.Id == id);
+        return query.WithIncludes();
+    }
+
+    protected override IQueryable<Image> ApplyFilter(
+        IQueryable<Image> query,
+        ImageSearchFilter filter)
+    {
+        return query.Filter(filter);
     }
 
     public async Task<List<Image>> GetByIdsAsync(
@@ -31,14 +37,6 @@ public class ImageQueryRepository
            .WithIncludes()
            .Where(x => ids.Contains(x.Id))
            .ToListAsync();
-    }
-
-    public override async Task<PagedResult<Image>> GetPagedAsync(
-      PaginationParams pagination)
-    {
-        return await _db.Images
-            .WithIncludes()
-            .ToPagedResultAsync(pagination);
     }
 
     public async Task<List<Image>> GetByAdvertisementIdAsync(

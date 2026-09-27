@@ -44,7 +44,7 @@ public class ProductTypeQueryService
         PaginationParams pagination)
     {
         var productTypes = await _productTypeQueryRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return productTypes.ToResultPaged(ProductTypeMapper.ToDto);
     }

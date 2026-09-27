@@ -16,14 +16,14 @@ public static class BaseRepositoryDependencyInjection
         services.AddScoped(typeof(IExistsRepository<>),
             typeof(ExistsRepository<>));
 
-        services.AddScoped(typeof(IQueryRepository<>),
-            typeof(QueryRepository<>));
+        services.AddScoped(typeof(IQueryRepository<,>),
+            typeof(QueryRepository<,>));
 
         services.AddScoped(typeof(IExistsTranslationRepository<>),
             typeof(ExistsTranslationRepository<>));
 
-        services.AddScoped(typeof(IQueryTranslationRepository<>),
-            typeof(QueryTranslationRepository<>));
+        services.AddScoped(typeof(IQueryTranslationRepository<,>),
+            typeof(QueryTranslationRepository<,>));
 
         return services;
     }

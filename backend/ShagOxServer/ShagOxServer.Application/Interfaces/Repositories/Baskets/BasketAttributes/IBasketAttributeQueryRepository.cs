@@ -5,7 +5,8 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 public interface IBasketAttributeQueryRepository
-    : IQueryRepository<BasketAttribute>
+    : IQueryRepository<BasketAttribute, 
+        BasketAttributeSearchFilter>
 {
     Task<PagedResult<BasketAttribute>> GetByCategoryAsync(
         long categoryId,
@@ -13,8 +14,4 @@ public interface IBasketAttributeQueryRepository
 
     Task<BasketAttribute?> GetByAttributeDefenitionAsync(
         long attributeDefenitionId);
-
-    Task<PagedResult<BasketAttribute>> Search(
-        BasketAttributeSearchFilter filter,
-        PaginationParams pagination);
 }

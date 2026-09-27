@@ -63,7 +63,7 @@ public class CityQueryService
        PaginationParams pagination)
     {
         var cities = await _repositoryQueryCity
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return cities.ToResultPaged(CityMapper.ToDto);
     }

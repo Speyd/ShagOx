@@ -55,7 +55,7 @@ public class CategoryTranslationQueryService
         PaginationParams pagination)
     {
         var categories = await _categoryRepository
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return categories.ToResultPaged(CategoryTranslationMapper.ToDto);
     }

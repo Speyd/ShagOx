@@ -6,7 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
-using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -81,8 +81,7 @@ public class UserQueryService
 	   PaginationParams pagination)
     {
         var users = await _userQueryRepository
-            .Search(
-            filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return users.ToResultPaged(UserMapper.ToDto);
     }

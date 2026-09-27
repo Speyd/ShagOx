@@ -126,6 +126,15 @@
   <data name="AdvertisementUpdateFailed" xml:space="preserve">
     <value>Failed to update advertisement.</value>
   </data>
+  <data name="AdvertisementVariantCreateFailed" xml:space="preserve">
+    <value>Failed to create advertisement variant.</value>
+  </data>
+  <data name="AdvertisementVariantDeleteFailed" xml:space="preserve">
+    <value>Failed to delete advertisement variant.</value>
+  </data>
+  <data name="AdvertisementVariantUpdateFailed" xml:space="preserve">
+    <value>Failed to update advertisement variant.</value>
+  </data>
   <data name="AdvertStatusCreateFailed" xml:space="preserve">
     <value>Failed to create status.</value>
   </data>

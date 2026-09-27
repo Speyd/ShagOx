@@ -126,6 +126,15 @@
   <data name="AdvertisementUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить объявление.</value>
   </data>
+  <data name="AdvertisementVariantCreateFailed" xml:space="preserve">
+    <value>Не удалось создать вариант объявления.</value>
+  </data>
+  <data name="AdvertisementVariantDeleteFailed" xml:space="preserve">
+    <value>Не удалось обновить вариант объявления.</value>
+  </data>
+  <data name="AdvertisementVariantUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить вариант объявления.</value>
+  </data>
   <data name="AdvertStatusCreateFailed" xml:space="preserve">
     <value>Не удалось создать статус.</value>
   </data>

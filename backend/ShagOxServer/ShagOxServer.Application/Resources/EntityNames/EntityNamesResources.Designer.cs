@@ -79,6 +79,15 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Advertisement variant.
+        /// </summary>
+        public static string AdvertisementVariant {
+            get {
+                return ResourceManager.GetString("AdvertisementVariant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Advertisement status translation.
         /// </summary>
         public static string AdvertStatusTranslation {

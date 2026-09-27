@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 
 namespace ShagOxServer.Application.DependencyInjections.Advertisement;
 public static class AdvertisementVariantDependencyInjection
@@ -11,8 +14,8 @@ public static class AdvertisementVariantDependencyInjection
         services.AddScoped<IAdvertisementVariantQueryService,
             AdvertisementVariantQueryService>();
 
-        //services.AddScoped<IStatusCreateService,
-        //    StatusCreateService>();
+        services.AddScoped<IAdvertisementVariantCreateService,
+            AdvertisementVariantCreateService>();
 
         //services.AddScoped<IStatusDeleteService,
         //    StatusDeleteService>();
@@ -20,7 +23,7 @@ public static class AdvertisementVariantDependencyInjection
         //services.AddScoped<IStatusUpdateService,
         //    StatusUpdateService>();
 
-        //services.AddScoped<StatusValidator>();
+        services.AddScoped<AdvertisementVariantValidator>();
 
         return services;
     }

@@ -126,6 +126,15 @@
   <data name="AdvertisementUpdateFailed" xml:space="preserve">
     <value>Die Anzeige konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="AdvertisementVariantCreateFailed" xml:space="preserve">
+    <value>Die Anzeigenvariante konnte nicht erstellt werden.</value>
+  </data>
+  <data name="AdvertisementVariantDeleteFailed" xml:space="preserve">
+    <value>Die Anzeigenvariante konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="AdvertisementVariantUpdateFailed" xml:space="preserve">
+    <value>Die Anzeigenvariante konnte nicht erstellt werden.</value>
+  </data>
   <data name="AdvertStatusCreateFailed" xml:space="preserve">
     <value>Der Status konnte nicht erstellt werden.</value>
   </data>

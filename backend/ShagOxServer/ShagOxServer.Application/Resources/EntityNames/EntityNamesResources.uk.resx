@@ -201,4 +201,7 @@
   <data name="AttributeDictionaryValue" xml:space="preserve">
     <value>Словник значень атрибута</value>
   </data>
+  <data name="AdvertisementVariant" xml:space="preserve">
+    <value>Варіант оголошення</value>
+  </data>
 </root>

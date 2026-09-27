@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -16,6 +17,8 @@ public class AttributeDictionaryValueUpdateService
     private readonly IRepository<AttributeDictionaryValue> _valueRepository;
     private readonly AttributeDictionaryValueValidator _valueValidator;
 
+    private readonly AttributeDictionaryValidator _dictionaryValidator;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDictionaryValueUpdateService> _logger;
 
@@ -23,11 +26,13 @@ public class AttributeDictionaryValueUpdateService
     public AttributeDictionaryValueUpdateService(
         IRepository<AttributeDictionaryValue> valueRepository,
         AttributeDictionaryValueValidator valueValidator,
+        AttributeDictionaryValidator dictionaryValidator,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryValueUpdateService> logger)
     {
         _valueRepository = valueRepository;
         _valueValidator = valueValidator;
+        _dictionaryValidator = dictionaryValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -90,6 +95,15 @@ public class AttributeDictionaryValueUpdateService
     {
         var code = request.Code ?? value.Code;
         var dictionaryId = request.DictionaryId ?? value.DictionaryId;
+
+        if(dictionaryId != value.DictionaryId)
+        {
+            var dictionaryExists = await _dictionaryValidator
+                .ExistsByIdAsync(dictionaryId);
+
+            if (!dictionaryExists.IsSuccess)
+                return Result<bool>.Fail(dictionaryExists.Error);
+        }
 
         if (code != value.Code &&
             dictionaryId != value.DictionaryId)

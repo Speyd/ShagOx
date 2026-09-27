@@ -86,7 +86,40 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
                 return ResourceManager.GetString("AdvertisementUpdateFailed", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create advertisement variant..
+        /// </summary>
+        internal static string AdvertisementVariantCreateFailed
+        {
+            get
+            {
+                return ResourceManager.GetString("AdvertisementVariantCreateFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete advertisement variant..
+        /// </summary>
+        internal static string AdvertisementVariantDeleteFailed
+        {
+            get
+            {
+                return ResourceManager.GetString("AdvertisementVariantDeleteFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update advertisement variant..
+        /// </summary>
+        internal static string AdvertisementVariantUpdateFailed
+        {
+            get
+            {
+                return ResourceManager.GetString("AdvertisementVariantUpdateFailed", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create status..
         /// </summary>

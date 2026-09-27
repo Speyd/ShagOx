@@ -11,7 +11,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Advertisements.Favorites;
 
 [ApiController]
-[Route("api/favorite")]
+[Route("api/favorites")]
 [Authorize]
 public class FavoriteCommandsController 
     : ApiController

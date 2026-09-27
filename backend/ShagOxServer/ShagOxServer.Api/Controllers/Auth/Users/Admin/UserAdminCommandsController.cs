@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
@@ -11,7 +10,7 @@ namespace ShagOxServer.Api.Controllers.Auth.Users.Admin;
 
 [ApiController]
 [Route("api/admin/users")]
-
+[Authorize(Roles = "Admin")]
 public class UserAdminCommandsController 
     : ApiController
 {

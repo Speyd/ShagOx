@@ -15,6 +15,12 @@ public class AdvertisementVariantQueryRepository
         : base(db)
     { }
 
+    protected override IQueryable<AdvertisementVariant> ApplyIncludes(
+        IQueryable<AdvertisementVariant> query)
+    {
+        return query.WithIncludes();
+    }
+
     protected override IQueryable<AdvertisementVariant> ApplyFilter(
         IQueryable<AdvertisementVariant> query,
         AdvertisementVariantSearchFilter filter)

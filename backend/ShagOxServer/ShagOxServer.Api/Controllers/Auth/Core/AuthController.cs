@@ -18,7 +18,6 @@ public class AuthController
 {
     private readonly IRegisterService _registerService;
     private readonly ILoginService _loginService;
-    private readonly IConfiguration _configuration;
 
     public AuthController(
         IRegisterService registerService,

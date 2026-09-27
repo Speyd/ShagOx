@@ -8,8 +8,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Advertisements.Favorites.Admin;
 
 [ApiController]
-[Route("api/admin/favorite")]
-[Authorize]
+[Route("api/admin/favorites")]
+[Authorize(Roles = "Admin")]
 public class FavoriteAdminQueriesController 
     : ApiController
 {

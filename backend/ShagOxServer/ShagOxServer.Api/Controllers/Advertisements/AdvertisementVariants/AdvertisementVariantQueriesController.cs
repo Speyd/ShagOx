@@ -1,23 +1,22 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Advertisements.Statuses;
+namespace ShagOxServer.Api.Controllers.Advertisements.AdvertisementVariants;
 
 [ApiController]
-[Route("api/statuses")]
-public class StatusQueriesController 
+[Route("api/advertisement-variants")]
+public class AdvertisementVariantQueriesController
     : ApiController
 {
-    private readonly IStatusQueryService _queryService;
+    private readonly IAdvertisementVariantQueryService _queryService;
 
 
-    public StatusQueriesController(
-        IStatusQueryService queryService)
+    public AdvertisementVariantQueriesController(
+        IAdvertisementVariantQueryService queryService)
     {
         _queryService = queryService;
     }
@@ -45,7 +44,7 @@ public class StatusQueriesController
 
     [HttpGet("search")]
     public async Task<IActionResult> Search(
-        [FromQuery] StatusSearchFilter filter,
+        [FromQuery] AdvertisementVariantSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService

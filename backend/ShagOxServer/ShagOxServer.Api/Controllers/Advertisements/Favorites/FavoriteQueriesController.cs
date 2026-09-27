@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Advertisements.Favorites;
 
 [ApiController]
-[Route("api/favorite")]
+[Route("api/favorites")]
 public class FavoriteQueriesController 
     : ApiController
 {
@@ -21,17 +21,6 @@ public class FavoriteQueriesController
         _queryService = queryService;
     }
 
-
-    [Authorize]
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] long id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
 
     [HttpGet("count/{advertId:long}")]
     public async Task<IActionResult> CountByAdvertisementIdAsync(
@@ -46,8 +35,7 @@ public class FavoriteQueriesController
     [Authorize]
     [HttpGet("me")]
     public async Task<IActionResult> GetMyfavorite(
-       [FromQuery] PaginationParams pagination
-       )
+       [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService
             .GetByUserAsync(UserId, pagination);

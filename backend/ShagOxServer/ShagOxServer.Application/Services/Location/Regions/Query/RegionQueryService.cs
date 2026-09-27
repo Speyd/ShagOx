@@ -41,6 +41,6 @@ public class RegionQueryService
         var region = await _regionQueryRepository
             .GetByCodeAsync(code);
 
-        return region.ToResult(RegionMapper.ToDto);
+        return region.ToResult(ApplyMapper);
     }
 }

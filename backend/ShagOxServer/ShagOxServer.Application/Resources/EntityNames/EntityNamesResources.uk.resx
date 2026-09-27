@@ -198,4 +198,7 @@
   <data name="AttributeDictionary" xml:space="preserve">
     <value>Словник атрибутів</value>
   </data>
+  <data name="AttributeDictionaryValue" xml:space="preserve">
+    <value>Словник значень атрибута</value>
+  </data>
 </root>

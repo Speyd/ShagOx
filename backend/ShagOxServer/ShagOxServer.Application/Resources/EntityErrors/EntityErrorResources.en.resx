@@ -171,6 +171,15 @@
   <data name="AttributeDictionaryUpdateFailed" xml:space="preserve">
     <value>Failed to update attribute dictionary.</value>
   </data>
+  <data name="AttributeDictionaryValueCreateFailed" xml:space="preserve">
+    <value>Failed to create attribute dictionary value.</value>
+  </data>
+  <data name="AttributeDictionaryValueDeleteFailed" xml:space="preserve">
+    <value>Failed to delete attribute dictionary value.</value>
+  </data>
+  <data name="AttributeDictionaryValueUpdateFailed" xml:space="preserve">
+    <value>Failed to update attribute dictionary value.</value>
+  </data>
   <data name="AvatarCreateFailed" xml:space="preserve">
     <value>Failed to create avatar.</value>
   </data>

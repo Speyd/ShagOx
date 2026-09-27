@@ -171,6 +171,15 @@
   <data name="AttributeDictionaryUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить словарь атрибутов.</value>
   </data>
+  <data name="AttributeDictionaryValueCreateFailed" xml:space="preserve">
+    <value>Не удалось создать словарь значений атрибута.</value>
+  </data>
+  <data name="AttributeDictionaryValueDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить словарь значений атрибута.</value>
+  </data>
+  <data name="AttributeDictionaryValueUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить словарь значений атрибута.</value>
+  </data>
   <data name="AvatarCreateFailed" xml:space="preserve">
     <value>Не удалось создать аватар.</value>
   </data>

@@ -8,7 +8,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Delete;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Account;

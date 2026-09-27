@@ -4,12 +4,11 @@ using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
-using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Update;

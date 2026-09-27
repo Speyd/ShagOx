@@ -42,7 +42,7 @@ public class CityQueryService
         var city = await _repositoryQueryCity
             .GetByCodeAsync(code);
 
-        return city.ToResult(CityMapper.ToDto);
+        return city.ToResult(ApplyMapper);
     }
 
     public async Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
@@ -52,6 +52,6 @@ public class CityQueryService
         var cities = await _repositoryQueryCity
             .GetByRegionAsync(regionId, pagination);
 
-        return cities.ToResultPaged(CityMapper.ToDto);
+        return cities.ToResultPaged(ApplyMapper);
     }
 }

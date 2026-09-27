@@ -36,7 +36,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.EntityNames.EntityNamesResources", typeof(EntityNamesResources).Assembly);
@@ -51,7 +51,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -59,7 +59,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Advertisement status.
         /// </summary>
@@ -68,7 +68,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("AdverStatus", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Advertisement.
         /// </summary>
@@ -77,7 +77,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("Advertisement", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Advertisement status translation.
         /// </summary>
@@ -86,7 +86,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("AdvertStatusTranslation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Attribute definition.
         /// </summary>
@@ -95,7 +95,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("AttributeDefinition", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Attribute definition translation.
         /// </summary>
@@ -104,7 +104,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("AttributeDefinitionTranslation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Attribute dictionary.
         /// </summary>
@@ -113,7 +113,16 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("AttributeDictionary", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Attribute dictionary value.
+        /// </summary>
+        public static string AttributeDictionaryValue {
+            get {
+                return ResourceManager.GetString("AttributeDictionaryValue", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Avatar.
         /// </summary>
@@ -122,7 +131,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("Avatar", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Basket.
         /// </summary>
@@ -131,7 +140,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("Basket", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Basket attribute.
         /// </summary>
@@ -140,7 +149,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("BasketAttribute", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Basket item.
         /// </summary>
@@ -149,7 +158,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("BasketItem", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Category.
         /// </summary>
@@ -158,7 +167,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("Category", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Category translation.
         /// </summary>
@@ -167,7 +176,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("CategoryTranslation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на City.
         /// </summary>
@@ -176,7 +185,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("City", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на City translation.
         /// </summary>
@@ -185,7 +194,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("CityTranslation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Condition.
         /// </summary>
@@ -194,7 +203,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("Condition", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Condition translation.
         /// </summary>
@@ -203,7 +212,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("ConditionTranslation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Currency.
         /// </summary>
@@ -212,7 +221,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("Currency", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Image(Id: {0}).
         /// </summary>
@@ -221,7 +230,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("DefiniteImage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Favorite.
         /// </summary>
@@ -230,7 +239,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("Favorite", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Image.
         /// </summary>
@@ -239,7 +248,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("Image", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Product type.
         /// </summary>
@@ -248,7 +257,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("ProductType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Product type translation.
         /// </summary>
@@ -257,7 +266,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("ProductTypeTranslation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Region.
         /// </summary>
@@ -266,7 +275,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("Region", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Region translation.
         /// </summary>
@@ -275,7 +284,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("RegionTranslation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Role.
         /// </summary>
@@ -284,7 +293,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("Role", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на User.
         /// </summary>
@@ -293,7 +302,7 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("User", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Verification code.
         /// </summary>

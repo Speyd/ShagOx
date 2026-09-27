@@ -43,6 +43,6 @@ public class CategoryQueryService
         var categories = await _categoryQueryRepository
             .GetByProductTypeAsync(productTypeId, pagination);
 
-        return categories.ToResultPaged(CategoryMapper.ToDto);
+        return categories.ToResultPaged(ApplyMapper);
     }
 }

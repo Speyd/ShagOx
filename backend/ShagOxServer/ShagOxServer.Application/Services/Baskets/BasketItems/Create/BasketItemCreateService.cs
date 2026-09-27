@@ -4,11 +4,10 @@ using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
-using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

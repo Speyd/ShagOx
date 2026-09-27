@@ -87,4 +87,17 @@ public class CategoryValidator
 
         return Result<bool>.Success(true);
     }
+
+    public async Task<Result<bool>> NotExistsByProductAsync(
+       long productTypeId)
+    {
+        if (await _categoryExistsRepository
+            .ExistsByProductTypeAsync(productTypeId))
+        {
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.Category);
+        }
+
+        return Result<bool>.Success(true);
+    }
 }

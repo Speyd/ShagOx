@@ -22,11 +22,11 @@ public class AttributeDefinitionValidator
 
 
     public async Task<Result<bool>> ExistsByKeyAsync(
-      string attributeName,
+      string key,
       long categoryId)
     {
-        if (await _attributeExistsRepository
-            .ExistsByCategoryAsync(attributeName, categoryId))
+        if (!await _attributeExistsRepository
+            .ExistsByCategoryAsync(key, categoryId))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.AttributeDefinition);
@@ -36,11 +36,11 @@ public class AttributeDefinitionValidator
     }
 
     public async Task<Result<bool>> NotExistsByKeyAsync(
-      string attributeName,
+      string key,
       long categoryId)
     {
         if (await _attributeExistsRepository
-            .ExistsByCategoryAsync(attributeName, categoryId))
+            .ExistsByCategoryAsync(key, categoryId))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.AttributeDefinition);

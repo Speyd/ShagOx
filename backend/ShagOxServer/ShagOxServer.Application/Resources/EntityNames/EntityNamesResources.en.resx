@@ -198,4 +198,7 @@
   <data name="AttributeDictionary" xml:space="preserve">
     <value>Attribute dictionary</value>
   </data>
+  <data name="AttributeDictionaryValue" xml:space="preserve">
+    <value>Attribute dictionary value</value>
+  </data>
 </root>

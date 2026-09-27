@@ -171,6 +171,15 @@
   <data name="AttributeDictionaryUpdateFailed" xml:space="preserve">
     <value>Das Attributwörterbuch konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="AttributeDictionaryValueCreateFailed" xml:space="preserve">
+    <value>Der Attributwörterbuchwert konnte nicht erstellt werden.</value>
+  </data>
+  <data name="AttributeDictionaryValueDeleteFailed" xml:space="preserve">
+    <value>Der Attributwörterbuchwert konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="AttributeDictionaryValueUpdateFailed" xml:space="preserve">
+    <value>Der Attributwörterbuchwert konnte nicht aktualisiert werden.</value>
+  </data>
   <data name="AvatarCreateFailed" xml:space="preserve">
     <value>Der Avatar konnte nicht erstellt werden.</value>
   </data>

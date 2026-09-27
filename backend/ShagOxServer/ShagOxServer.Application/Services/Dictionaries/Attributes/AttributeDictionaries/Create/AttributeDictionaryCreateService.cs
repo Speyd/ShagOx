@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionarie
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Create;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;

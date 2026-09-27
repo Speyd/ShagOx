@@ -41,6 +41,6 @@ public class AvatarQueryService
         var image = await _avatarQueryRepository
             .GetByUserIdAsync(advertId);
 
-        return image.ToResult(AvatarMapper.ToDto);
+        return image.ToResult(ApplyMapper);
     }
 }

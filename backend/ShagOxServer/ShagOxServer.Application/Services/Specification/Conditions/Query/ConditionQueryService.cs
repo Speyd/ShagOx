@@ -41,6 +41,6 @@ public class ConditionQueryService
         var condition = await _conditionQueryRepository
             .GetByCodeAsync(code);
 
-        return condition.ToResult(ConditionMapper.ToDto);
+        return condition.ToResult(ApplyMapper);
     }
 }

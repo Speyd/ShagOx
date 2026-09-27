@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.EntityErrorResourcess {
+namespace ShagOxServer.Application.Resources.EntityErrors {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.EntityErrorResourcess {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.EntityErrorResourcess.EntityErrorResources", typeof(EntityErrorResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.EntityErrors.EntityErrorResources", typeof(EntityErrorResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -194,40 +194,61 @@ namespace ShagOxServer.Application.Resources.EntityErrorResourcess {
                 return ResourceManager.GetString("AttributeDefinitionUpdateFailed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create attribute dictionary..
         /// </summary>
-        internal static string AttributeDictionaryCreateFailed
-        {
-            get
-            {
+        internal static string AttributeDictionaryCreateFailed {
+            get {
                 return ResourceManager.GetString("AttributeDictionaryCreateFailed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete attribute dictionary..
         /// </summary>
-        internal static string AttributeDictionaryDeleteFailed
-        {
-            get
-            {
+        internal static string AttributeDictionaryDeleteFailed {
+            get {
                 return ResourceManager.GetString("AttributeDictionaryDeleteFailed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update attribute dictionary..
         /// </summary>
-        internal static string AttributeDictionaryUpdateFailed
-        {
-            get
-            {
+        internal static string AttributeDictionaryUpdateFailed {
+            get {
                 return ResourceManager.GetString("AttributeDictionaryUpdateFailed", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create attribute dictionary value..
+        /// </summary>
+        internal static string AttributeDictionaryValueCreateFailed {
+            get {
+                return ResourceManager.GetString("AttributeDictionaryValueCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete attribute dictionary value..
+        /// </summary>
+        internal static string AttributeDictionaryValueDeleteFailed {
+            get {
+                return ResourceManager.GetString("AttributeDictionaryValueDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update attribute dictionary value..
+        /// </summary>
+        internal static string AttributeDictionaryValueUpdateFailed {
+            get {
+                return ResourceManager.GetString("AttributeDictionaryValueUpdateFailed", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create avatar..
         /// </summary>
@@ -265,7 +286,7 @@ namespace ShagOxServer.Application.Resources.EntityErrorResourcess {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to create delete attribute..
+        ///   Ищет локализованную строку, похожую на Failed to delete basket attribute..
         /// </summary>
         internal static string BasketAttributeDeleteFailed {
             get {
@@ -274,7 +295,7 @@ namespace ShagOxServer.Application.Resources.EntityErrorResourcess {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to create update attribute..
+        ///   Ищет локализованную строку, похожую на Failed to update attribute..
         /// </summary>
         internal static string BasketAttributeUpdateFailed {
             get {
@@ -578,18 +599,16 @@ namespace ShagOxServer.Application.Resources.EntityErrorResourcess {
                 return ResourceManager.GetString("ImageUpdateFailed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to upload image..
         /// </summary>
-        internal static string ImageUploadFailed
-        {
-            get
-            {
+        internal static string ImageUploadFailed {
+            get {
                 return ResourceManager.GetString("ImageUploadFailed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create product type..
         /// </summary>

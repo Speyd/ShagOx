@@ -24,7 +24,7 @@ public class AttributeDictionaryValidator
     public async Task<Result<bool>> ExistsByCodeAsync(
       string code)
     {
-        if (await _dictionaryExistsRepository
+        if (!await _dictionaryExistsRepository
             .ExistsByCodeAsync(code))
         {
             return Result<bool>.NotFound(

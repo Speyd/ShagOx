@@ -3,7 +3,7 @@ using ShagOxServer.Domain.Entities.Specification.Translations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
 public interface IConditionTranslationExistsRepository
-     : IExistsTranslationRepository<ConditionTranslation>
+     : ITranslationExistsRepository<ConditionTranslation>
 {
     Task<bool> ExistsByNameAsync(
         string name);

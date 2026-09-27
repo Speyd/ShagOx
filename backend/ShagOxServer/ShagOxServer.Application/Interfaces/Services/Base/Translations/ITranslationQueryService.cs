@@ -4,7 +4,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Base.Translations;
-public interface IQueryTranslationService<TDto, TFilter>
+public interface ITranslationQueryService<TDto, TFilter>
     : IQueryService<TDto, TFilter>
     where TDto : BaseDto
     where TFilter : BaseFilter

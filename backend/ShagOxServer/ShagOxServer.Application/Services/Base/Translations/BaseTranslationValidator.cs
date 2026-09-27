@@ -9,12 +9,12 @@ public abstract class BaseTranslationValidator<TEntity>
     : BaseValidator<TEntity>
     where TEntity : BaseEntity
 {
-    private readonly IExistsTranslationRepository<TEntity> _translationExistsRepository;
+    private readonly ITranslationExistsRepository<TEntity> _translationExistsRepository;
 
 
     public BaseTranslationValidator(
         IRepository<TEntity> entityRepository,
-        IExistsTranslationRepository<TEntity> translationExistsRepository
+        ITranslationExistsRepository<TEntity> translationExistsRepository
         )
         : base(entityRepository, translationExistsRepository)
     {

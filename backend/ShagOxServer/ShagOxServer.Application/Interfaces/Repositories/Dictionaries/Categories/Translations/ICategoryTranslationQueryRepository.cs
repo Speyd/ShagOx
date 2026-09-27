@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Filters.Dictionaries.Categories.Translations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 public interface ICategoryTranslationQueryRepository
-    : IQueryTranslationRepository<CategoryTranslation, 
+    : ITranslationQueryRepository<CategoryTranslation, 
         CategoryTranslationSearchFilter>
 {
 }

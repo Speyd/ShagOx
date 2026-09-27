@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Update;
 public class ProductTypeTranslationUpdateService
-    : BaseTranslationUpdateSerivce<ProductType, ProductTypeTranslation>,
+    : BaseTranslationUpdateService<ProductType, ProductTypeTranslation>,
     IProductTypeTranslationUpdateService
 {
     private readonly IRepository<ProductTypeTranslation> _typeRepository;

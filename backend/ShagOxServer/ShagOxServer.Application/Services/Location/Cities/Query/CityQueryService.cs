@@ -1,7 +1,9 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -9,34 +11,29 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Query;
 public class CityQueryService 
-    : ICityQueryService
+    : BaseQueryService<
+        CityDto,
+        City,
+        CitySearchFilter
+        >,
+    ICityQueryService
 {
     private readonly ICityQueryRepository _repositoryQueryCity;
 
 
     public CityQueryService(
-        ICityQueryRepository repositoryQueryCity)
+        ICityQueryRepository repositoryQueryCity
+    )
+        : base(repositoryQueryCity)
     {
         _repositoryQueryCity = repositoryQueryCity;
     }
 
 
-    public async Task<Result<CityDto>> GetByIdAsync(
-        long id)
+    protected override CityDto ApplyMapper(
+        City entity)
     {
-        var city = await _repositoryQueryCity
-            .GetByIdAsync(id);
-
-        return city.ToResult(CityMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<CityDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var cities = await _repositoryQueryCity
-            .GetPagedAsync(pagination);
-
-        return cities.ToResultPaged(CityMapper.ToDto);
+        return CityMapper.ToDto(entity);
     }
 
     public async Task<Result<CityDto>> GetByCodeAsync(
@@ -54,16 +51,6 @@ public class CityQueryService
     {
         var cities = await _repositoryQueryCity
             .GetByRegionAsync(regionId, pagination);
-
-        return cities.ToResultPaged(CityMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<CityDto>>> Search(
-       CitySearchFilter filter,
-       PaginationParams pagination)
-    {
-        var cities = await _repositoryQueryCity
-            .SearchAsync(filter, pagination);
 
         return cities.ToResultPaged(CityMapper.ToDto);
     }

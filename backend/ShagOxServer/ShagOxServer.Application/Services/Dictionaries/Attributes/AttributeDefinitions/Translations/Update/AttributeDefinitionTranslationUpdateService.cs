@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
 public class AttributeDefinitionTranslationUpdateService
-    : BaseTranslationUpdateSerivce<AttributeDefinition, AttributeDefinitionTranslation>,
+    : BaseTranslationUpdateService<AttributeDefinition, AttributeDefinitionTranslation>,
     IAttributeDefinitionTranslationUpdateService
 {
     private readonly IRepository<AttributeDefinitionTranslation> _attributeRepository;

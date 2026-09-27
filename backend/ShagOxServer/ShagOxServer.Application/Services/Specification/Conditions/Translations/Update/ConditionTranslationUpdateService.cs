@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Translations.Update;
 public class ConditionTranslationUpdateService
-    : BaseTranslationUpdateSerivce<Condition, ConditionTranslation>,
+    : BaseTranslationUpdateService<Condition, ConditionTranslation>,
     IConditionTranslationUpdateService
 {
     private readonly IRepository<ConditionTranslation> _conditionRepository;

@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Filters.Location.Cities.Translations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
 public interface ICityTranslationQueryRepository
-    : IQueryTranslationRepository<CityTranslation, 
+    : ITranslationQueryRepository<CityTranslation, 
         CityTranslationSearchFilter>
 {
 }

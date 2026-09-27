@@ -1,5 +1,5 @@
 ﻿namespace ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
-public interface IExistsTranslationRepository<T>
+public interface ITranslationExistsRepository<T>
     : IExistsRepository<T>
 {
     Task<bool> ExistsAsync(

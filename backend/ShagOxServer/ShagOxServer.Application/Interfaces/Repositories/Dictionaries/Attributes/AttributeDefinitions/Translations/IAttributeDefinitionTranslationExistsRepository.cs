@@ -3,7 +3,7 @@ using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 public interface IAttributeDefinitionTranslationExistsRepository
-     : IExistsTranslationRepository<AttributeDefinitionTranslation>
+     : ITranslationExistsRepository<AttributeDefinitionTranslation>
 {
     Task<bool> ExistsByNameAsync(
         string name);

@@ -3,7 +3,7 @@ using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
-public abstract class BaseTranslationUpdateSerivce<TObject, TTranslation>
+public abstract class BaseTranslationUpdateService<TObject, TTranslation>
     where TObject : BaseEntity
     where TTranslation : BaseTranslation<TObject>
 {
@@ -11,7 +11,7 @@ public abstract class BaseTranslationUpdateSerivce<TObject, TTranslation>
     protected readonly BaseTranslationValidator<TTranslation> _translationValidator;
 
 
-    public BaseTranslationUpdateSerivce(
+    public BaseTranslationUpdateService(
         BaseValidator<TObject> objectValidator,
         BaseTranslationValidator<TTranslation> translationValidator
         )

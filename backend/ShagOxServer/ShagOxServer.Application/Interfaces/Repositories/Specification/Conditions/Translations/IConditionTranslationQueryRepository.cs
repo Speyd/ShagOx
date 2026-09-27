@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Filters.Specification.Conditions.Translations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
 public interface IConditionTranslationQueryRepository
-    : IQueryTranslationRepository<ConditionTranslation, 
+    : ITranslationQueryRepository<ConditionTranslation, 
         ConditionTranslationSearchFilter>
 {
 }

@@ -1,33 +1,38 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Query;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Query;
 public class AvatarQueryService
-    : IAvatarQueryService
+    : BaseQueryService<
+        AvatarDto,
+        Avatar,
+        AvatarSearchFilter
+        >,
+    IAvatarQueryService
 {
     private readonly IAvatarQueryRepository _avatarQueryRepository;
 
 
     public AvatarQueryService(
-        IAvatarQueryRepository avatarQueryRepository)
+        IAvatarQueryRepository avatarQueryRepository
+    )
+        : base(avatarQueryRepository)
     {
         _avatarQueryRepository = avatarQueryRepository;
     }
 
 
-    public async Task<Result<AvatarDto>> GetByIdAsync(
-        long id)
+    protected override AvatarDto ApplyMapper(
+        Avatar entity)
     {
-        var image = await _avatarQueryRepository
-            .GetByIdAsync(id);
-
-        return image.ToResult(AvatarMapper.ToDto);
+        return AvatarMapper.ToDto(entity);
     }
 
     public async Task<Result<AvatarDto>> GetByUserIdAsync(
@@ -37,24 +42,5 @@ public class AvatarQueryService
             .GetByUserIdAsync(advertId);
 
         return image.ToResult(AvatarMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<AvatarDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var images = await _avatarQueryRepository
-            .GetPagedAsync(pagination);
-
-        return images.ToResultPaged(AvatarMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<AvatarDto>>> Search(
-        AvatarSearchFilter filter,
-        PaginationParams pagination)
-    {
-        var images = await _avatarQueryRepository
-             .SearchAsync(filter, pagination);
-
-        return images.ToResultPaged(AvatarMapper.ToDto);
     }
 }

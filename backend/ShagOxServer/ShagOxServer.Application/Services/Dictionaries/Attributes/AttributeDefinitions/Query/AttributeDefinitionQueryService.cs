@@ -1,51 +1,31 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Mapping;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
 public class AttributeDefinitionQueryService 
-    : IAttributeDefinitionQueryService
+    : BaseQueryService<
+        AttributeDefinitionDto,
+        AttributeDefinition,
+        AttributeDefinitionSearchFilter
+        >,
+    IAttributeDefinitionQueryService
 {
-    private readonly IAttributeDefinitionQueryRepository _attributeQueryRepository;
-
-
     public AttributeDefinitionQueryService(
-        IAttributeDefinitionQueryRepository attributeQueryRepository)
+        IAttributeDefinitionQueryRepository attributeQueryRepository
+    )
+        : base(attributeQueryRepository)
     {
-        _attributeQueryRepository = attributeQueryRepository;
     }
 
 
-    public async Task<Result<AttributeDefinitionDto>> GetByIdAsync(
-        long id)
+    protected override AttributeDefinitionDto ApplyMapper(
+        AttributeDefinition entity)
     {
-        var attribute = await _attributeQueryRepository
-            .GetByIdAsync(id);
-
-        return attribute.ToResult(AttributeDefinitionMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<AttributeDefinitionDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var attributes = await _attributeQueryRepository
-            .GetPagedAsync(pagination);
-
-        return attributes.ToResultPaged(AttributeDefinitionMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<AttributeDefinitionDto>>> Search(
-       AttributeDefinitionSearchFilter filter,
-       PaginationParams pagination)
-    {
-        var attributes = await _attributeQueryRepository
-            .SearchAsync(filter, pagination);
-
-        return attributes.ToResultPaged(AttributeDefinitionMapper.ToDto);
+        return AttributeDefinitionMapper.ToDto(entity);
     }
 }

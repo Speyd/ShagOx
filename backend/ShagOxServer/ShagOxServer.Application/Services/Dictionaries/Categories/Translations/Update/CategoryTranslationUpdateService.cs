@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Update;
 public class CategoryTranslationUpdateService
-    : BaseTranslationUpdateSerivce<Category, CategoryTranslation>,
+    : BaseTranslationUpdateService<Category, CategoryTranslation>,
     ICategoryTranslationUpdateService
 {
     private readonly IRepository<CategoryTranslation> _categoryRepository;

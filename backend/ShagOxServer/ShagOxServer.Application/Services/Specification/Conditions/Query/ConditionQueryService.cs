@@ -1,42 +1,38 @@
 ﻿using ShagOxServer.Application.DTOs.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Query;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Query;
 public class ConditionQueryService 
-    : IConditionQueryService
+    : BaseQueryService<
+        ConditionDto,
+        Condition,
+        ConditionSearchFilter
+        >,
+    IConditionQueryService
 {
     private readonly IConditionQueryRepository _conditionQueryRepository;
 
 
     public ConditionQueryService(
-        IConditionQueryRepository conditionQueryRepository)
+        IConditionQueryRepository conditionQueryRepository
+    )
+        : base(conditionQueryRepository)
     {
         _conditionQueryRepository = conditionQueryRepository;
     }
 
 
-    public async Task<Result<ConditionDto>> GetByIdAsync(
-        long id)
+    protected override ConditionDto ApplyMapper(
+        Condition entity)
     {
-        var condition = await _conditionQueryRepository
-            .GetByIdAsync(id);
-
-        return condition.ToResult(ConditionMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<ConditionDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var conditions = await _conditionQueryRepository
-            .GetPagedAsync(pagination);
-
-        return conditions.ToResultPaged(ConditionMapper.ToDto);
+        return ConditionMapper.ToDto(entity);
     }
 
     public async Task<Result<ConditionDto>> GetByCodeAsync(
@@ -46,15 +42,5 @@ public class ConditionQueryService
             .GetByCodeAsync(code);
 
         return condition.ToResult(ConditionMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<ConditionDto>>> Search(
-      ConditionSearchFilter filter,
-	  PaginationParams pagination)
-    {
-        var conditions = await _conditionQueryRepository
-            .SearchAsync(filter, pagination);
-
-        return conditions.ToResultPaged(ConditionMapper.ToDto);
     }
 }

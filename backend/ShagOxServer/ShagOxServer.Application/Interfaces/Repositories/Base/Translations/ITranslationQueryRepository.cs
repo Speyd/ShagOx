@@ -3,7 +3,7 @@ using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
-public interface IQueryTranslationRepository<TEntity, TFilter>
+public interface ITranslationQueryRepository<TEntity, TFilter>
     : IQueryRepository<TEntity, TFilter>
     where TEntity : BaseEntity
     where TFilter : BaseFilter

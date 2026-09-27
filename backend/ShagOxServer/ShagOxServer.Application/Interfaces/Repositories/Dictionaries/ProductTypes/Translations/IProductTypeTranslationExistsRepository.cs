@@ -3,7 +3,7 @@ using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
 public interface IProductTypeTranslationExistsRepository
-     : IExistsTranslationRepository<ProductTypeTranslation>
+     : ITranslationExistsRepository<ProductTypeTranslation>
 {
     Task<bool> ExistsByNameAsync(
         string name);

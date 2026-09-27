@@ -1,61 +1,32 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Query;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Mapping;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions.Translations;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Query;
 
 public class AttributeDefinitionTranslationQueryService
-    : IAttributeDefinitionTranslationQueryService
+    : BaseTranslationQueryService<
+        AttributeDefinitionTranslationDto,
+        AttributeDefinitionTranslation,
+        AttributeDefinitionTranslationSearchFilter
+        >,
+    IAttributeDefinitionTranslationQueryService
 {
-    private readonly IAttributeDefinitionTranslationQueryRepository _attributeRepository;
-
-
     public AttributeDefinitionTranslationQueryService(
-        IAttributeDefinitionTranslationQueryRepository attributeRepository)
+        IAttributeDefinitionTranslationQueryRepository attributeRepository
+    )
+        : base(attributeRepository)
     {
-        _attributeRepository = attributeRepository;
     }
 
 
-    public async Task<Result<AttributeDefinitionTranslationDto>> GetByIdAsync(
-        long id)
+    protected override AttributeDefinitionTranslationDto ApplyMapper(
+        AttributeDefinitionTranslation entity)
     {
-        var city = await _attributeRepository
-            .GetByIdAsync(id);
-
-        return city.ToResult(AttributeDefinitionTranslationMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<AttributeDefinitionTranslationDto>>> GetPagedAsync(
-        PaginationParams pagination,
-        string language)
-    {
-        var cities = await _attributeRepository
-            .GetPagedAsync(pagination, language);
-
-        return cities.ToResultPaged(AttributeDefinitionTranslationMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<AttributeDefinitionTranslationDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var cities = await _attributeRepository
-            .GetPagedAsync(pagination);
-
-        return cities.ToResultPaged(AttributeDefinitionTranslationMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<AttributeDefinitionTranslationDto>>> Search(
-        AttributeDefinitionTranslationSearchFilter filter,
-        PaginationParams pagination)
-    {
-        var cities = await _attributeRepository
-            .SearchAsync(filter, pagination);
-
-        return cities.ToResultPaged(AttributeDefinitionTranslationMapper.ToDto);
+        return AttributeDefinitionTranslationMapper
+            .ToDto(entity);
     }
 }

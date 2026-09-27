@@ -2,6 +2,8 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
+using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -9,34 +11,29 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Query;
 public class RoleQueryService 
-    : IRoleQueryService
+    : BaseQueryService<
+        RoleDto,
+        Role,
+        RoleSearchFilter
+        >,
+    IRoleQueryService
 {
     private readonly IRoleQueryRepository _roleQueryRepository;
 
 
     public RoleQueryService(
-        IRoleQueryRepository roleQueryRepository)
+        IRoleQueryRepository roleQueryRepository
+    )
+        : base(roleQueryRepository)
     {
         _roleQueryRepository = roleQueryRepository;
     }
 
 
-    public async Task<Result<RoleDto>> GetByIdAsync(
-        long id)
+    protected override RoleDto ApplyMapper(
+        Role entity)
     {
-        var role = await _roleQueryRepository
-            .GetByIdAsync(id);
-
-        return role.ToResult(RoleMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<RoleDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var roles = await _roleQueryRepository
-            .GetPagedAsync(pagination);
-
-        return roles.ToResultPaged(RoleMapper.ToDto);
+        return RoleMapper.ToDto(entity);
     }
 
     public async Task<Result<PagedResult<RoleDto>>> GetByUserAsync(
@@ -56,15 +53,5 @@ public class RoleQueryService
             .GetByNameAsync(name);
 
         return role.ToResult(RoleMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<RoleDto>>> Search(
-       RoleSearchFilter filter,
-	   PaginationParams pagination)
-    {
-        var roles = await _roleQueryRepository
-            .SearchAsync(filter, pagination);
-
-        return roles.ToResultPaged(RoleMapper.ToDto);
     }
 }

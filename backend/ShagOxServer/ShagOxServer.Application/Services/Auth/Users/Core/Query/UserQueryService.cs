@@ -6,6 +6,8 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
+using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -13,7 +15,12 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Query;
 public class UserQueryService 
-    : IUserQueryService
+    : BaseQueryService<
+        UserDto,
+        User,
+        UserSearchFilter
+        >,
+    IUserQueryService
 {
     private readonly IUserQueryRepository _userQueryRepository;
     private readonly IRoleQueryRepository _roleQueryRepository;
@@ -24,7 +31,9 @@ public class UserQueryService
     public UserQueryService(
         IUserQueryRepository userQueryRepository,
         IRoleQueryRepository roleQueryRepository,
-        IUserContext userContext)
+        IUserContext userContext
+    )
+        : base(userQueryRepository)
     {
         _userQueryRepository = userQueryRepository;
         _roleQueryRepository = roleQueryRepository;
@@ -32,13 +41,10 @@ public class UserQueryService
     }
 
 
-    public async Task<Result<UserDto>> GetByIdAsync(
-        long id)
+    protected override UserDto ApplyMapper(
+        User entity)
     {
-        var user = await _userQueryRepository
-            .GetByIdAsync(id);
-
-        return user.ToResult(UserMapper.ToDto);
+        return UserMapper.ToDto(entity);
     }
 
     public async Task<Result<UserShortDto>> GetByContactAsync(
@@ -65,24 +71,5 @@ public class UserQueryService
             .GetByUserAsync(_context.UserId, pagination);
 
         return roles.ToResultPaged(RoleMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<UserDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var users = await _userQueryRepository
-            .GetPagedAsync(pagination);
-
-        return users.ToResultPaged(UserMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<UserDto>>> Search(
-       UserSearchFilter filter,
-	   PaginationParams pagination)
-    {
-        var users = await _userQueryRepository
-            .SearchAsync(filter, pagination);
-
-        return users.ToResultPaged(UserMapper.ToDto);
     }
 }

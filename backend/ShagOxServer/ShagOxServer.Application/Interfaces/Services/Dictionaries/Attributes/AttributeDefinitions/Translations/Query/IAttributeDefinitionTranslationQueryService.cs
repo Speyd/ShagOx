@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions.T
 
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Query;
 public interface IAttributeDefinitionTranslationQueryService
-    : IQueryTranslationService<AttributeDefinitionTranslationDto, 
+    : ITranslationQueryService<AttributeDefinitionTranslationDto, 
         AttributeDefinitionTranslationSearchFilter>
 {
 }

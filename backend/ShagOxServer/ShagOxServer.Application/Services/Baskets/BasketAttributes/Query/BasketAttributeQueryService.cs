@@ -1,7 +1,9 @@
 ﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Query;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -9,25 +11,29 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Query;
 public class BasketAttributeQueryService
-    : IBasketAttributeQueryService
+    : BaseQueryService<
+        BasketAttributeDto,
+        BasketAttribute,
+        BasketAttributeSearchFilter
+        >,
+    IBasketAttributeQueryService
 {
     private readonly IBasketAttributeQueryRepository _attributeQueryRepository;
 
 
     public BasketAttributeQueryService(
-        IBasketAttributeQueryRepository attributeQueryRepository)
+        IBasketAttributeQueryRepository attributeQueryRepository
+    )
+        : base(attributeQueryRepository)
     {
         _attributeQueryRepository = attributeQueryRepository;
     }
 
 
-    public async Task<Result<BasketAttributeDto>> GetByIdAsync(
-        long id)
+    protected override BasketAttributeDto ApplyMapper(
+        BasketAttribute entity)
     {
-        var attribute = await _attributeQueryRepository
-            .GetByIdAsync(id);
-
-        return attribute.ToResult(BasketAttributeMapper.ToDto);
+        return BasketAttributeMapper.ToDto(entity);
     }
 
     public async Task<Result<BasketAttributeDto>> GetByAttributeDefenitionAsync(
@@ -45,25 +51,6 @@ public class BasketAttributeQueryService
     {
         var attributes = await _attributeQueryRepository
             .GetByCategoryAsync(categoryId, pagination);
-
-        return attributes.ToResultPaged(BasketAttributeMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<BasketAttributeDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var attributes = await _attributeQueryRepository
-            .GetPagedAsync(pagination);
-
-        return attributes.ToResultPaged(BasketAttributeMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<BasketAttributeDto>>> Search(
-       BasketAttributeSearchFilter filter,
-       PaginationParams pagination)
-    {
-        var attributes = await _attributeQueryRepository
-            .SearchAsync(filter, pagination);
 
         return attributes.ToResultPaged(BasketAttributeMapper.ToDto);
     }

@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Filters.Location.Regions.Translations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 public interface IRegionTranslationQueryRepository
-    : IQueryTranslationRepository<RegionTranslation, 
+    : ITranslationQueryRepository<RegionTranslation, 
         RegionTranslationSearchFilter>
 {
 }

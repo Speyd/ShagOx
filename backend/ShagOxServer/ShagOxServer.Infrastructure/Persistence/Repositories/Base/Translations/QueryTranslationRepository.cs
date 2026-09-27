@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 public class QueryTranslationRepository<TEnity, TFilter>
     : QueryRepository<TEnity, TFilter>, 
-    IQueryTranslationRepository<TEnity, TFilter>
+    ITranslationQueryRepository<TEnity, TFilter>
     where TEnity : BaseEntity
     where TFilter : BaseFilter
 {

@@ -15,7 +15,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Update;
 public class StatusTranslationUpdateService
-    : BaseTranslationUpdateSerivce<Status, StatusTranslation>,
+    : BaseTranslationUpdateService<Status, StatusTranslation>,
     IStatusTranslationUpdateService
 {
     private readonly IRepository<StatusTranslation> _statusRepository;

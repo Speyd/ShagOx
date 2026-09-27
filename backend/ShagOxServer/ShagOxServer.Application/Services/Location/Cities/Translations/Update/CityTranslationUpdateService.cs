@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Translations.Update;
 public class CityTranslationUpdateService
-    : BaseTranslationUpdateSerivce<City, CityTranslation>,
+    : BaseTranslationUpdateService<City, CityTranslation>,
     ICityTranslationUpdateService
 {
     private readonly IRepository<CityTranslation> _cityRepository;

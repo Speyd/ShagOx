@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Filters.Advertisements.Translations;
 
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Query;
 public interface IStatusTranslationQueryService
-    : IQueryTranslationService<StatusTranslationDto,
+    : ITranslationQueryService<StatusTranslationDto,
         StatusTranslationSearchFilter>
 {
 }

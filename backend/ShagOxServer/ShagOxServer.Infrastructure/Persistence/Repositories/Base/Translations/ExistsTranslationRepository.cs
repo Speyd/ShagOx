@@ -5,7 +5,7 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 public class ExistsTranslationRepository<T> 
-    : ExistsRepository<T>, IExistsTranslationRepository<T>
+    : ExistsRepository<T>, ITranslationExistsRepository<T>
     where T: BaseEntity
 {
     public ExistsTranslationRepository(AppDbContext db)

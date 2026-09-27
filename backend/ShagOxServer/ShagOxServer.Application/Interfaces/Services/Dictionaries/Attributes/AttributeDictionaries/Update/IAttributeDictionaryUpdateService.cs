@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Services.Base;
 
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Update;
 public interface IAttributeDictionaryUpdateService
-    : IUpdateService<UpdateResponse, AttributeDictionaryUpdateRequest>
+    : IUpdateService<UpdateResponse, 
+        AttributeDictionaryUpdateRequest>
 {
 }

@@ -42,7 +42,7 @@ public class AdvertisementQueryService
         var advert = await _advertisementRepository
             .GetBySellerAsync(userId, pagination);
 
-        return advert.ToResultPaged(AdvertisementMapper.ToDto);
+        return advert.ToResultPaged(ApplyMapper);
     }
     public async Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         long userId,
@@ -51,6 +51,6 @@ public class AdvertisementQueryService
         var advert = await _advertisementRepository
             .GetPurchasedByUserAsync(userId, pagination);
 
-        return advert.ToResultPaged(AdvertisementMapper.ToDto);
+        return advert.ToResultPaged(ApplyMapper);
     }
 }

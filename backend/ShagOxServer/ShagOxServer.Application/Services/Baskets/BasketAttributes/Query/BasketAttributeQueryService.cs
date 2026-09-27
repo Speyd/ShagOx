@@ -42,7 +42,7 @@ public class BasketAttributeQueryService
         var attribute = await _attributeQueryRepository
             .GetByAttributeDefenitionAsync(attributeDefenitionId);
 
-        return attribute.ToResult(BasketAttributeMapper.ToDto);
+        return attribute.ToResult(ApplyMapper);
     }
 
     public async Task<Result<PagedResult<BasketAttributeDto>>> GetByCategoryAsync(
@@ -52,6 +52,6 @@ public class BasketAttributeQueryService
         var attributes = await _attributeQueryRepository
             .GetByCategoryAsync(categoryId, pagination);
 
-        return attributes.ToResultPaged(BasketAttributeMapper.ToDto);
+        return attributes.ToResultPaged(ApplyMapper);
     }
 }

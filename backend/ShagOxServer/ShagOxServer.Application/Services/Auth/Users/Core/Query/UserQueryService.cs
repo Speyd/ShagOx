@@ -61,7 +61,7 @@ public class UserQueryService
         var user = await _userQueryRepository
             .GetByIdAsync(_context.UserId);
 
-        return user.ToResult(UserMapper.ToDto);
+        return user.ToResult(ApplyMapper);
     }
 
     public async Task<Result<PagedResult<RoleDto>>> GetMyRoleAsync(

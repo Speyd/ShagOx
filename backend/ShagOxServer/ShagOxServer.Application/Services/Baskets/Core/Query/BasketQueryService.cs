@@ -32,7 +32,7 @@ public class BasketQueryService
     protected override BasketDto ApplyMapper(
         Basket entity)
     {
-        return BasketMapper.ToDto(entity); ;
+        return BasketMapper.ToDto(entity);
     }
 
     public async Task<Result<BasketDto>> GetByUserAsync(
@@ -41,6 +41,6 @@ public class BasketQueryService
         var basket = await _basketQueryRepository
             .GetByUserAsync(userId);
 
-        return basket.ToResult(BasketMapper.ToDto);
+        return basket.ToResult(ApplyMapper);
     }
 }

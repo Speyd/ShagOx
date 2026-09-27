@@ -41,7 +41,7 @@ public class CurrencyQueryService
         var currencies = await _currencyRepository
             .GetByCodeAsync(code);
 
-        return currencies.ToResult(CurrencyMapper.ToDto);
+        return currencies.ToResult(ApplyMapper);
     }
 
     public async Task<Result<CurrencyDto>> GetBySymbolAsync(
@@ -50,6 +50,6 @@ public class CurrencyQueryService
         var currency = await _currencyRepository
             .GetBySymbolAsync(symbol);
 
-        return currency.ToResult(CurrencyMapper.ToDto);
+        return currency.ToResult(ApplyMapper);
     }
 }

@@ -10,6 +10,8 @@ public static class AttributeDependencyInjections
 
         services.AddAttributeDictionaryApplication();
 
+        services.AddAttributeDictionaryValueApplication();
+
         return services;
     }
 }

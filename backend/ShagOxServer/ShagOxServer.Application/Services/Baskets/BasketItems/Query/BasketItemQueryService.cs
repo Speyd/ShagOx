@@ -43,7 +43,7 @@ public class BasketItemQueryService
         var items = await _itemQueryRepository
            .GetByAdvertisementAsync(advertisementId, pagination);
 
-        return items.ToResultPaged(BasketItemMapper.ToDto);
+        return items.ToResultPaged(ApplyMapper);
     }
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetByBasketAsync(
@@ -53,7 +53,7 @@ public class BasketItemQueryService
         var items = await _itemQueryRepository
            .GetByBasketAsync(basketId, pagination);
 
-        return items.ToResultPaged(BasketItemMapper.ToDto);
+        return items.ToResultPaged(ApplyMapper);
     }
 
 
@@ -64,7 +64,7 @@ public class BasketItemQueryService
         var items = await _itemQueryRepository
             .GetPagedAsync(userId, pagination);
 
-        return items.ToResultPaged(BasketItemMapper.ToDto);
+        return items.ToResultPaged(ApplyMapper);
     }
     
 }

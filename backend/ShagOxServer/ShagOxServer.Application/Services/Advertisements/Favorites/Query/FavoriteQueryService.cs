@@ -52,6 +52,6 @@ public class FavoriteQueryService
         var favorites = await _favoriteRepository
             .GetByUserAsync(usderId, pagination);
 
-        return favorites.ToResultPaged(FavoriteMapper.ToDto);
+        return favorites.ToResultPaged(ApplyMapper);
     }
 }

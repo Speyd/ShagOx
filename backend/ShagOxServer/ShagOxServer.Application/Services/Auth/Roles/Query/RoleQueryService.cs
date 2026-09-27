@@ -43,7 +43,7 @@ public class RoleQueryService
         var roles = await _roleQueryRepository
             .GetByUserAsync(userId, pagination);
 
-        return roles.ToResultPaged(RoleMapper.ToDto);
+        return roles.ToResultPaged(ApplyMapper);
     }
 
     public async Task<Result<RoleDto>> GetByNameAsync(
@@ -52,6 +52,6 @@ public class RoleQueryService
         var role = await _roleQueryRepository
             .GetByNameAsync(name);
 
-        return role.ToResult(RoleMapper.ToDto);
+        return role.ToResult(ApplyMapper);
     }
 }

@@ -12,5 +12,5 @@ public sealed record AdvertisementUpdateRequest
     long? CategoryId,
     long? BuyerId,
     List<ImageAdvertUpdateRequest>? Images,
-    Dictionary<string, JsonDocument>? Attributes
+    JsonDocument? Attributes
 );

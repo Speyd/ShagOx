@@ -66,8 +66,7 @@ public class Advertisement
     /// <summary>
     /// Flexible JSON storage for category-specific product attributes.
     /// </summary>
-    public Dictionary<string, JsonDocument> Attributes { get; set; }
-        = new();
+    public JsonDocument Attributes { get; set; } = null!;
 
     public ICollection<AdvertisementVariant> Variants { get; set; }
         = [];

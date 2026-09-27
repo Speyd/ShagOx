@@ -12,7 +12,7 @@ public sealed record AdvertisementShortDto
     long SellerId,
     long? BuyerId,
     List<long> ImageIds,
-    Dictionary<string, JsonDocument> Attributes,
+    JsonDocument Attributes,
     DateTime? SoldAt,
     DateTime CreatedAt
 ) : BaseDto(Id);

@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 using ShagOxServer.Domain.Entities.Advertisements;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Create;
 public static class AdvertisementCreater
@@ -19,7 +20,7 @@ public static class AdvertisementCreater
             ConditionId = request.ConditionId,
             SellerId = userId,
 
-            Attributes = request.Attributes ?? new()
+            Attributes = request.Attributes ?? JsonDocument.Parse("{}")
         };
     }
 }

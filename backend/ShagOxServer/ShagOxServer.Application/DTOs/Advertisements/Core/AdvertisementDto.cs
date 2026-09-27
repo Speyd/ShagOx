@@ -16,7 +16,7 @@ public sealed record AdvertisementDto
     UserShortDto Seller,
     UserShortDto? Buyer,
     List<ImageDto> Images,
-    Dictionary<string, JsonDocument> Attributes,
+    JsonDocument Attributes,
     DateTime? SoldAt,
     DateTime CreatedAt
 ) : BaseDto(Id);

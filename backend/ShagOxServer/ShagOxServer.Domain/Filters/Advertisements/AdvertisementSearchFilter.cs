@@ -3,5 +3,6 @@ public sealed record AdvertisementSearchFilter
 (
     string? Title,
     string? Description,
-    long? CategoryId
+    long? CategoryId,
+    List<string> Attributes
 ) : BaseFilter();

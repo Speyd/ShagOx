@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Query;
-using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions.Translations;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Query;
+using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Dictionaries.Attributes.AttributeDefinitions.Translations;
+namespace ShagOxServer.Api.Controllers.Dictionaries.Attributes.AttributeDictionaryValues.Translations;
 
 [ApiController]
-[Route("api/attribute-definitions/translations")]
-public class AttributeDefinitionTranslationQueriesController
+[Route("api/attribute-dictionary-values/translations")]
+public class AttributeDictionaryValueTranslationQueriesController
     : ApiController
 {
-    private readonly IAttributeDefinitionTranslationQueryService _queryService;
+    private readonly IAttributeDictionaryValueTranslationQueryService _queryService;
     private readonly ILanguageProvider _languageProvider;
 
-    public AttributeDefinitionTranslationQueriesController(
-        IAttributeDefinitionTranslationQueryService queryService,
+    public AttributeDictionaryValueTranslationQueriesController(
+        IAttributeDictionaryValueTranslationQueryService queryService,
         ILanguageProvider languageProvider)
     {
         _queryService = queryService;
@@ -50,7 +50,7 @@ public class AttributeDefinitionTranslationQueriesController
 
     [HttpGet("search")]
     public async Task<IActionResult> Search(
-        [FromQuery] AttributeDefinitionTranslationSearchFilter filter,
+        [FromQuery] AttributeDictionaryValueTranslationSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService

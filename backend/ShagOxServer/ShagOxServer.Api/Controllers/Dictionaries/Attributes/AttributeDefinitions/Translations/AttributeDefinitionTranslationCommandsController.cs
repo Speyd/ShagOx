@@ -12,7 +12,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Dictionaries.Attributes.AttributeDefinitions.Translations;
 
 [ApiController]
-[Route("api/admin/attributes/translations")]
+[Route("api/admin/attribute-definitions/translations")]
 [Authorize(Roles = "Admin")]
 public class AttributeDefinitionTranslationCommandsController 
     : ApiController

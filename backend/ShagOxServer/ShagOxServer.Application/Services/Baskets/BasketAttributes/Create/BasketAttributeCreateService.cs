@@ -5,9 +5,9 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
-using ShagOxServer.Application.Services.Dictionaries.AttributeDefinitions.Validator;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

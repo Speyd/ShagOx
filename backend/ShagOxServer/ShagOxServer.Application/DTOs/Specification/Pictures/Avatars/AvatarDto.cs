@@ -1,7 +1,7 @@
 ﻿namespace ShagOxServer.Application.DTOs.Specification.Pictures.Avatars;
 public sealed record AvatarDto(
-    int Id,
+    long Id,
     string Url,
     string PublicId,
-    int UserId
+    long UserId
 ) : BaseImageDto(Id, Url, PublicId);

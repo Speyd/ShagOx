@@ -2,4 +2,4 @@
 public sealed record RegionSearchFilter
 (
     string? Code
-);
+) : BaseFilter();

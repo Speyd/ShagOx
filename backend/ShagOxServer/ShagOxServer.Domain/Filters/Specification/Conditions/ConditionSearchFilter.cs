@@ -2,4 +2,4 @@
 public sealed record ConditionSearchFilter
 (
     string? Code
-);
+) : BaseFilter();

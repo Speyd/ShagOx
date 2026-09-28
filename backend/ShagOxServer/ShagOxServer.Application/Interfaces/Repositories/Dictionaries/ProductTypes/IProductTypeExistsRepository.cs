@@ -5,5 +5,6 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductT
 public interface IProductTypeExistsRepository
     : IExistsRepository<ProductType>
 {
-    Task<bool> ExistsByCodeAsync(string code);
+    Task<bool> ExistsByCodeAsync(
+        string code);
 }

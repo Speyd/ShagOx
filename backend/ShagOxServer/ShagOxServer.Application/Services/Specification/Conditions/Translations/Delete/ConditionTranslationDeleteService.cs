@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Delete;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Validator;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -33,7 +33,7 @@ public class ConditionTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var city = await _conditionValidator
             .GetByIdAsync(id);

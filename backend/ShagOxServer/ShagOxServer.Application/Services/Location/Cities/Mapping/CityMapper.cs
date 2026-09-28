@@ -1,23 +1,27 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities;
-using ShagOxServer.Application.Services.Location.Regions.Mapping;
+using ShagOxServer.Application.DTOs.Location.Regions;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Mapping;
 public static class CityMapper
 {
     public static CityDto ToDto(
-        City? city)
+        City? city,
+        RegionDto regionDto,
+        string? lableCity)
     {
         if(city is null)
             return new CityDto(
                 -1,
                 "Unknown city",
-                RegionMapper.ToDto(city?.Region)
+                regionDto,
+                null
             );
         return new CityDto(
             city.Id,
             city.Code,
-            RegionMapper.ToDto(city.Region)
+            regionDto,
+            lableCity
         );
     }
 }

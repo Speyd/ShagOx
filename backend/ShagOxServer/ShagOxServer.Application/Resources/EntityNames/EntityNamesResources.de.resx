@@ -195,4 +195,16 @@
   <data name="DefiniteImage" xml:space="preserve">
     <value>Bild({0})</value>
   </data>
+  <data name="AttributeDictionary" xml:space="preserve">
+    <value>Attributwörterbuch</value>
+  </data>
+  <data name="AttributeDictionaryValue" xml:space="preserve">
+    <value>Attributwörterbuchwert</value>
+  </data>
+  <data name="AdvertisementVariant" xml:space="preserve">
+    <value>Anzeigenvariante</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslation" xml:space="preserve">
+    <value>Übersetzung des Attribut-Wörterbuchwerts.</value>
+  </data>
 </root>

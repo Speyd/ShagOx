@@ -5,6 +5,6 @@ namespace ShagOxServer.Api.Controllers.Api;
 public abstract class ApiController 
     : ControllerBase
 {
-    protected int UserId =>
-        int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+    protected long UserId =>
+        long.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 }

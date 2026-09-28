@@ -23,7 +23,7 @@ public class CategoryValidator
 
     public async Task<Result<bool>> ExistsAsync(
        string categoryName,
-       int productTypeId)
+       long productTypeId)
     {
         if (!await _categoryExistsRepository.
                 ExistsAsync(categoryName, productTypeId))
@@ -37,7 +37,7 @@ public class CategoryValidator
 
     public async Task<Result<bool>> NotExistsAsync(
        string categoryCode,
-       int productTypeId)
+       long productTypeId)
     {
         if (await _categoryExistsRepository.
                 ExistsAsync(categoryCode, productTypeId))
@@ -76,12 +76,25 @@ public class CategoryValidator
     }
 
     public async Task<Result<bool>> ExistsByProductAsync(
-       int productTypeId)
+       long productTypeId)
     {
         if (!await _categoryExistsRepository
             .ExistsByProductTypeAsync(productTypeId))
         {
             return Result<bool>.NotFound(
+                EntityNamesResources.Category);
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByProductAsync(
+       long productTypeId)
+    {
+        if (await _categoryExistsRepository
+            .ExistsByProductTypeAsync(productTypeId))
+        {
+            return Result<bool>.AlreadyExists(
                 EntityNamesResources.Category);
         }
 

@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Creat
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Create;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;

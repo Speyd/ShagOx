@@ -15,10 +15,11 @@ public class UserRoleExistsRepository
 
 
     public async Task<bool> ExistsAsync(
-        int roleId, 
-        int userId)
+        long roleId,
+        long userId)
     {
         return await _db.UserRoles
-            .AnyAsync(x => x.UserId == userId && x.RoleId == roleId);
+            .AnyAsync(x => x.UserId == userId &&
+                x.RoleId == roleId);
     }
 }

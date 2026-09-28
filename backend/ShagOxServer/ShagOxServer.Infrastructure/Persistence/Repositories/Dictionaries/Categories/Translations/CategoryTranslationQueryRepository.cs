@@ -1,16 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories.Translations;
-using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Translations.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Translations;
 public class CategoryTranslationQueryRepository
-    : QueryTranslationRepository<CategoryTranslation>,
+    : QueryTranslationRepository<Category,
+        CategoryTranslation, 
+        CategoryTranslationSearchFilter>,
       ICategoryTranslationQueryRepository
 {
     public CategoryTranslationQueryRepository(AppDbContext db)
@@ -18,12 +19,16 @@ public class CategoryTranslationQueryRepository
     { }
 
 
-    public async Task<PagedResult<CategoryTranslation>> Search(
-        CategoryTranslationSearchFilter filter,
-        PaginationParams pagination)
+    protected override IQueryable<CategoryTranslation> ApplyIncludes(
+         IQueryable<CategoryTranslation> query)
     {
-        return await _db.CategoryTranslations
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
+        return query.WithIncludes();
+    }
+
+    protected override IQueryable<CategoryTranslation> ApplyFilter(
+       IQueryable<CategoryTranslation> query,
+       CategoryTranslationSearchFilter filter)
+    {
+        return query.Filter(filter);
     }
 }

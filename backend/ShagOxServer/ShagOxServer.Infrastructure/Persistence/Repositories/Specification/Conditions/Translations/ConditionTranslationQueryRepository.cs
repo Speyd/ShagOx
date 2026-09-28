@@ -1,14 +1,17 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.Domain.Filters.Specification.Conditions.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Translations.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Translations;
 public class ConditionTranslationQueryRepository
-    : QueryTranslationRepository<ConditionTranslation>,
+    : QueryTranslationRepository<Condition,
+        ConditionTranslation, 
+        ConditionTranslationSearchFilter>,
       IConditionTranslationQueryRepository
 {
     public ConditionTranslationQueryRepository(AppDbContext db)
@@ -16,12 +19,16 @@ public class ConditionTranslationQueryRepository
     { }
 
 
-    public async Task<PagedResult<ConditionTranslation>> Search(
-        ConditionTranslationSearchFilter filter,
-        PaginationParams pagination)
+    protected override IQueryable<ConditionTranslation> ApplyIncludes(
+         IQueryable<ConditionTranslation> query)
     {
-        return await _db.ConditionTranslations
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
+        return query.WithIncludes();
+    }
+
+    protected override IQueryable<ConditionTranslation> ApplyFilter(
+       IQueryable<ConditionTranslation> query,
+       ConditionTranslationSearchFilter filter)
+    {
+        return query.Filter(filter);
     }
 }

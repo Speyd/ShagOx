@@ -16,11 +16,12 @@ public class CategoryExistsRepository
 
     public async Task<bool> ExistsAsync(
         string name,
-        int productTypeId)
+        long productTypeId)
     {
         return await _db.Categories
             .AnyAsync(c =>
-                c.Code == name && c.ProductTypeId == productTypeId);
+                c.Code == name &&
+                c.ProductTypeId == productTypeId);
     }
 
     public async Task<bool> ExistsByCodeAsync(
@@ -31,7 +32,7 @@ public class CategoryExistsRepository
     }
 
     public async Task<bool> ExistsByProductTypeAsync(
-        int productTypeId)
+        long productTypeId)
     {
         return await _db.Categories
             .AnyAsync(c => c.ProductTypeId == productTypeId);

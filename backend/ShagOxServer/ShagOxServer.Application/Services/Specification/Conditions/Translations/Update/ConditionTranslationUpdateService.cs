@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Update
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Validator;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Translations.Update;
 public class ConditionTranslationUpdateService
-    : BaseTranslationUpdateSerivce<Condition, ConditionTranslation>,
+    : BaseTranslationUpdateService<Condition, ConditionTranslation>,
     IConditionTranslationUpdateService
 {
     private readonly IRepository<ConditionTranslation> _conditionRepository;
@@ -40,7 +40,7 @@ public class ConditionTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int conditionTranslationId,
+        long conditionTranslationId,
         ConditionTranslationUpdateRequest request)
     {
         var condition = await _conditionTranslationValidator

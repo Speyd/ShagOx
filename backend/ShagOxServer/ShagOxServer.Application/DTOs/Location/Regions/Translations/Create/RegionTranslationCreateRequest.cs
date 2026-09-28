@@ -3,7 +3,7 @@
 namespace ShagOxServer.Application.DTOs.Location.Regions.Translations.Create;
 public sealed record RegionTranslationCreateRequest
 (
-    int TranslatableId,
+    long TranslatableId,
     string Language,
     string Name
 ) : TranslationCreateRequest(TranslatableId, Language);

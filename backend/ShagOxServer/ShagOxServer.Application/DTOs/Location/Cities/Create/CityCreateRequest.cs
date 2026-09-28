@@ -2,5 +2,5 @@
 public sealed record CityCreateRequest
 (
     string Code,
-    int RegionId
+    long RegionId
 );

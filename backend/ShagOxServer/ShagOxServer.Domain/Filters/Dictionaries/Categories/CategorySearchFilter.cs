@@ -2,5 +2,5 @@
 public sealed record CategorySearchFilter
 (
     string? Code,
-    int? ProductTypeId
-);
+    long? ProductTypeId
+) : BaseFilter();

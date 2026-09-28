@@ -120,6 +120,9 @@
   <data name="DefaultRoleNotFound" xml:space="preserve">
     <value>Default role not found.</value>
   </data>
+  <data name="EmailOrPhoneRequired" xml:space="preserve">
+    <value>Email or phone is required for verification.</value>
+  </data>
   <data name="RegistrationFailed" xml:space="preserve">
     <value>Registration failed.</value>
   </data>

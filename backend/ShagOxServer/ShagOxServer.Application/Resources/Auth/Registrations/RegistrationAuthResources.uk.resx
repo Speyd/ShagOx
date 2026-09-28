@@ -120,6 +120,9 @@
   <data name="DefaultRoleNotFound" xml:space="preserve">
     <value>Роль за замовчуванням не знайдено.</value>
   </data>
+  <data name="EmailOrPhoneRequired" xml:space="preserve">
+    <value>Необхідно вказати email або номер телефону для підтвердження.</value>
+  </data>
   <data name="RegistrationFailed" xml:space="preserve">
     <value>Не вдалося зареєструватися.</value>
   </data>

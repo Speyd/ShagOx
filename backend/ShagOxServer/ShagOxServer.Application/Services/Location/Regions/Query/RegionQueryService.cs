@@ -1,60 +1,46 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Regions;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Regions.Mapping;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Regions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Query;
 public class RegionQueryService 
-    : IRegionQueryService
+    : BaseTranslatableQueryService<
+        RegionDto,
+        Region,
+        RegionSearchFilter
+        >,
+    IRegionQueryService
 {
-    private readonly IRegionQueryRepository _regionQueryRepository;
+    private readonly IRegionTranslationQueryRepository _translationRepository;
 
-    
+    private readonly ILanguageProvider _language;
+
+
+
     public RegionQueryService(
-        IRegionQueryRepository regionQueryRepository)
+        IRegionQueryRepository regionQueryRepository,
+        IRegionTranslationQueryRepository translationRepository,
+        ILanguageProvider language
+    )
+        : base(regionQueryRepository)
     {
-        _regionQueryRepository = regionQueryRepository;
+        _translationRepository = translationRepository;
+        _language = language;
     }
 
 
-    public async Task<Result<RegionDto>> GetByIdAsync(
-        int id)
+    public override async Task<RegionDto> ApplyMapperAsync(
+        Region entity)
     {
-        var region = await _regionQueryRepository
-            .GetByIdAsync(id);
+        var translation = await _translationRepository
+            .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        return region.ToResult(RegionMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<RegionDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var regions = await _regionQueryRepository
-            .GetPagedAsync(pagination);
-
-        return regions.ToResultPaged(RegionMapper.ToDto);
-    }
-
-    public async Task<Result<RegionDto>> GetByNameAsync(
-        string code)
-    {
-        var region = await _regionQueryRepository
-            .GetByCodeAsync(code);
-
-        return region.ToResult(RegionMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<RegionDto>>> Search(
-      RegionSearchFilter filter,
-	  PaginationParams pagination)
-    {
-        var regions = await _regionQueryRepository
-            .Search(filter, pagination);
-
-        return regions.ToResultPaged(RegionMapper.ToDto);
+        return RegionMapper.ToDto(entity, translation?.Name);
     }
 }

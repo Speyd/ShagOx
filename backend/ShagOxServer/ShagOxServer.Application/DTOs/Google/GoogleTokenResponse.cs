@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace ShagOxServer.Application.DTOs.Auth.Google;
-
 public class GoogleTokenResponse
 {
     [JsonPropertyName("access_token")]

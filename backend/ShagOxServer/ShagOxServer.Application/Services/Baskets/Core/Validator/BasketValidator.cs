@@ -21,7 +21,7 @@ public class BasketValidator
 
 
     public async Task<Result<bool>> ExistsByUserAsync(
-        int userId)
+        long userId)
     {
         if (!await _basketExistsRepository
                 .ExistsByUserAsync(userId))
@@ -34,7 +34,7 @@ public class BasketValidator
     }
 
     public async Task<Result<bool>> NotExistsByUserAsync(
-        int userId)
+        long userId)
     {
         if (await _basketExistsRepository
                 .ExistsByUserAsync(userId))

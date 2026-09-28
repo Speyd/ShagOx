@@ -12,17 +12,16 @@ public static class BasketAttributeFilterExtensions
             return query;
 
 
-        if (filter.AttributeDefinitionId is not null)
+        if (filter.AttributeDefinitionId.HasValue)
         {
-            query = query
-                .Where(u =>
-                u.AttributeDefinitionId == filter.AttributeDefinitionId);
+            query = query.Where(u =>
+                u.AttributeDefinitionId ==
+                filter.AttributeDefinitionId);
         }
 
-        if (filter.CategoryId is not null)
+        if (filter.CategoryId.HasValue)
         {
-            query = query
-                .Where(u => 
+            query = query.Where(u => 
                 u.AttributeDefinition.CategoryId == filter.CategoryId);
         }
 

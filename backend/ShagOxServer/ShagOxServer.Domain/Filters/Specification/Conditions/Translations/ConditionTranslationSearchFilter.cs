@@ -4,4 +4,4 @@ public sealed record ConditionTranslationSearchFilter
     string? ConditionCode,
     string? Language,
     string? Name
-);
+) : BaseFilter();

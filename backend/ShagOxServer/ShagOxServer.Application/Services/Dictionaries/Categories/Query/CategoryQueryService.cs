@@ -1,7 +1,12 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
+using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -9,53 +14,49 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Query;
 public class CategoryQueryService 
-    : ICategoryQueryService
+    : BaseTranslatableQueryService<
+        CategoryDto,
+        Category,
+        CategorySearchFilter
+        >,
+    ICategoryQueryService
 {
     private readonly ICategoryQueryRepository _categoryQueryRepository;
 
+    private readonly ICategoryTranslationQueryRepository _translationRepository;
+
+    private readonly ILanguageProvider _language;
+
 
     public CategoryQueryService(
-        ICategoryQueryRepository categoryQueryRepository)
+        ICategoryQueryRepository categoryQueryRepository,
+        ICategoryTranslationQueryRepository translationRepository,
+        ILanguageProvider language
+    )
+        : base(categoryQueryRepository)
     {
         _categoryQueryRepository = categoryQueryRepository;
+        _translationRepository = translationRepository;
+        _language = language;
     }
 
 
-    public async Task<Result<CategoryDto>> GetByIdAsync(
-        int id)
+    public override async Task<CategoryDto> ApplyMapperAsync(
+        Category entity)
     {
-        var category = await _categoryQueryRepository
-            .GetByIdAsync(id);
+        var translation = await _translationRepository
+            .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        return category.ToResult(CategoryMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<CategoryDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var categories = await _categoryQueryRepository
-            .GetPagedAsync(pagination);
-
-        return categories.ToResultPaged(CategoryMapper.ToDto);
+        return CategoryMapper.ToDto(entity, translation?.Name);
     }
 
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
-        int productTypeId,
+        long productTypeId,
         PaginationParams pagination)
     {
         var categories = await _categoryQueryRepository
             .GetByProductTypeAsync(productTypeId, pagination);
 
-        return categories.ToResultPaged(CategoryMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<CategoryDto>>> Search(
-        CategorySearchFilter filter,
-        PaginationParams pagination)
-    {
-        var categories = await _categoryQueryRepository
-            .Search(filter, pagination);
-
-        return categories.ToResultPaged(CategoryMapper.ToDto);
+        return await categories.ToResultPagedAsync(ApplyMapperAsync);
     }
 }

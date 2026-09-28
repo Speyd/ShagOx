@@ -6,10 +6,10 @@ public class BasketItem
     : BaseEntity
 {
     public Basket Basket { get; set; } = null!;
-    public int BasketId { get; set; }
+    public long BasketId { get; set; }
 
     public Advertisement Advertisement { get; set; } = null!;
-    public int AdvertisementId { get; set; }
+    public long AdvertisementId { get; set; }
 
     public int Quantity { get; set; }
 

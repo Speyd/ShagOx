@@ -37,7 +37,7 @@ public class ConditionValidator
     public async Task<Result<bool>> NotExistsByCodeAsync(
         string code)
     {
-        if (!await _conditionExistsRepository
+        if (await _conditionExistsRepository
             .ExistsByCodeAsync(code))
         {
             return Result<bool>.AlreadyExists(

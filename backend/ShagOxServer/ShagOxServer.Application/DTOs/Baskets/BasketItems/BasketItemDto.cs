@@ -4,8 +4,8 @@ using ShagOxServer.Application.DTOs.Base;
 namespace ShagOxServer.Application.DTOs.Baskets.BasketItems;
 public sealed record BasketItemDto
 (
-    int Id,
-    int BasketId,
+    long Id,
+    long BasketId,
     AdvertisementShortDto Advertisement,
     int Quantity
 ) : BaseDto(Id);

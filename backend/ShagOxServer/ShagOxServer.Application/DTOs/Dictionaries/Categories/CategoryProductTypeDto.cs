@@ -2,6 +2,6 @@ namespace ShagOxServer.Application.DTOs.Dictionaries.Categories;
 
 public sealed record CategoryProductTypeDto
 (
-    int Id,
+    long Id,
     string Code
 );

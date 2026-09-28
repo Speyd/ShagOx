@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Update;
 public class CategoryTranslationUpdateService
-    : BaseTranslationUpdateSerivce<Category, CategoryTranslation>,
+    : BaseTranslationUpdateService<Category, CategoryTranslation>,
     ICategoryTranslationUpdateService
 {
     private readonly IRepository<CategoryTranslation> _categoryRepository;
@@ -41,7 +41,7 @@ public class CategoryTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusTranslationId,
+        long statusTranslationId,
         CategoryTranslationUpdateRequest request)
     {
         var category = await _categoryTranslationValidator

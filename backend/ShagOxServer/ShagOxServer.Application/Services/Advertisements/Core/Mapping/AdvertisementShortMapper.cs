@@ -1,4 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping;
@@ -12,9 +14,6 @@ public static class AdvertisementShortMapper
             x.Id,
             x.Title,
             x.Description,
-            x.Stock,
-            x.Price,
-            x.PreviousPrice,
             x.CurrencyId,
             x.CategoryId,
             x.Seller.Id,
@@ -23,7 +22,10 @@ public static class AdvertisementShortMapper
                 .OrderBy(i => i.Order)
                 .Select(i => i.Id)
                 .ToList(),
-            x.Properties,
+            x.Attributes,
+            x.Variants
+                .Select(AdvertisementVariantShortMapper.ToDto)
+                .ToList(),
             x.SoldAt,
             x.CreatedAt
         );

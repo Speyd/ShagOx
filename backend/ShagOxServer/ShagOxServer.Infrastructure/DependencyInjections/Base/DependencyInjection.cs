@@ -17,7 +17,7 @@ public static class DependencyInjection
         return services
             .AddVerificationInfrastructure()
             .AddBackgroundServiceInfrastructure()
-            .AddBaseRepositories()
+            .AddBaseRepositoryInfrastructure()
             .AddBasketInfrastructure()
             .AddAuthInfrastructure()
             .AddLocationInfrastructure()

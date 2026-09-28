@@ -1,6 +1,6 @@
 ﻿namespace ShagOxServer.Application.DTOs.Auth.Users.Contacts.Passwords;
 public sealed record ResetPasswordRequest(
-    int UserId,
+    long UserId,
     string EmailOrPhoneOrUserName,
     string NewPassword
 );

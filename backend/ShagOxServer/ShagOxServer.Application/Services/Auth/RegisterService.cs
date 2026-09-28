@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Auth.Registrations;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Auth.Users.Contacts;
 using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
@@ -155,7 +156,7 @@ public class RegisterService
             if (userGet.Status != UserStatus.PendingVerification)
             {
                 return Result<(User, bool)>
-                    .AlreadyExists(typeof(User));
+                    .AlreadyExists(EntityNamesResources.User);
             }
 
             user = userGet;
@@ -220,6 +221,7 @@ public class RegisterService
                     VerificationCodePurpose.RegistrationPhone);
         }
 
-        return Result<bool>.Fail("Email or phone is required for verification.");
+        return Result<bool>.Fail(
+            RegistrationAuthResources.EmailOrPhoneRequired);
     }
 }

@@ -87,9 +87,9 @@ public class ResetPasswordService
     }
 
     private async Task<Result<bool>> SendPasswordResetCode(
-    User user,
-    UserContactType type,
-    string newPasswordHash)
+        User user,
+        UserContactType type,
+        string newPasswordHash)
     {
         VerificationCodePurpose purpose;
 

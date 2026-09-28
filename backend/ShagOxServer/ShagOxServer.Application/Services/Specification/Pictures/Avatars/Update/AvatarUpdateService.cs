@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -38,7 +38,7 @@ public class AvatarUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int avatarId,
+        long avatarId,
         AvatarUpdateRequest request)
     {
         var avatar = await _avatarValidator.GetByIdAsync(avatarId);

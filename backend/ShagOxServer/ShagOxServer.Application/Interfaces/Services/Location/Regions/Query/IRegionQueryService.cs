@@ -1,16 +1,13 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Regions;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Translations;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Regions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 public interface IRegionQueryService
-    : IQueryService<RegionDto>
+    : ITranslatableQueryService<RegionDto, 
+        Region, 
+        RegionSearchFilter>
 {
-    Task<Result<RegionDto>> GetByNameAsync(string name);
-
-    Task<Result<PagedResult<RegionDto>>> Search(
-      RegionSearchFilter filter,
-      PaginationParams pagination);
 }

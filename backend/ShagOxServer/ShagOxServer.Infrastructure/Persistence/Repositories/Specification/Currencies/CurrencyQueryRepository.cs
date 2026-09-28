@@ -5,16 +5,22 @@ using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
 public class CurrencyQueryRepository 
-    : QueryRepository<Currency>, ICurrencyQueryRepository
+    : QueryRepository<Currency, CurrencySearchFilter>, 
+    ICurrencyQueryRepository
 {
     public CurrencyQueryRepository(AppDbContext db)
         : base(db)
     { }
 
+    protected override IQueryable<Currency> ApplyFilter(
+        IQueryable<Currency> query,
+        CurrencySearchFilter filter)
+    {
+        return query.Filter(filter);
+    }
 
     public async Task<Currency?> GetByCodeAsync(
         string code)
@@ -28,14 +34,5 @@ public class CurrencyQueryRepository
     {
         return await _db.Currencies
             .FirstOrDefaultAsync(c => c.Symbol == symbol);
-    }
-
-    public async Task<PagedResult<Currency>> Search(
-      CurrencySearchFilter filter,
-      PaginationParams pagination)
-    {
-        return await _db.Currencies
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
     }
 }

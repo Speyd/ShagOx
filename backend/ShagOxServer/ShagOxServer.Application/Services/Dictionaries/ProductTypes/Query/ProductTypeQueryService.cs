@@ -1,51 +1,44 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Query;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Mapping;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Query;
 public class ProductTypeQueryService 
-    : IProductTypeQueryService
+    : BaseTranslatableQueryService<
+        ProductTypeDto,
+        ProductType,
+        ProductTypeSearchFilter
+        >,
+    IProductTypeQueryService
 {
-    private readonly IProductTypeQueryRepository _productTypeQueryRepository;
+    private readonly IProductTypeTranslationQueryRepository _translationRepository;
+    private readonly ILanguageProvider _language;
 
 
     public ProductTypeQueryService(
-        IProductTypeQueryRepository productTypeQueryRepository)
+        IProductTypeQueryRepository productTypeQueryRepository,
+        IProductTypeTranslationQueryRepository translationRepository,
+        ILanguageProvider language
+    )
+        : base(productTypeQueryRepository)
     {
-        _productTypeQueryRepository = productTypeQueryRepository;
+        _translationRepository = translationRepository;
+        _language = language;
     }
 
 
-    public async Task<Result<ProductTypeDto>> GetByIdAsync(
-        int id)
+    public override async Task<ProductTypeDto> ApplyMapperAsync(
+        ProductType entity)
     {
-        var productType = await _productTypeQueryRepository
-            .GetByIdAsync(id);
+        var translation = await _translationRepository
+            .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        return productType.ToResult(ProductTypeMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<ProductTypeDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var productTypes = await _productTypeQueryRepository
-            .GetPagedAsync(pagination);
-
-        return productTypes.ToResultPaged(ProductTypeMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<ProductTypeDto>>> Search(
-        ProductTypeSearchFilter filter,
-        PaginationParams pagination)
-    {
-        var productTypes = await _productTypeQueryRepository
-            .Search(filter, pagination);
-
-        return productTypes.ToResultPaged(ProductTypeMapper.ToDto);
+        return ProductTypeMapper.ToDto(entity, translation?.Name);
     }
 }

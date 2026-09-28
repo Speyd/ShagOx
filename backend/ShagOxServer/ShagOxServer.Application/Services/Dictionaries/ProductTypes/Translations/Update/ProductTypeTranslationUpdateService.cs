@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Updat
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Update;
 public class ProductTypeTranslationUpdateService
-    : BaseTranslationUpdateSerivce<ProductType, ProductTypeTranslation>,
+    : BaseTranslationUpdateService<ProductType, ProductTypeTranslation>,
     IProductTypeTranslationUpdateService
 {
     private readonly IRepository<ProductTypeTranslation> _typeRepository;
@@ -40,7 +40,7 @@ public class ProductTypeTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusTranslationId,
+        long statusTranslationId,
         ProductTypeTranslationUpdateRequest request)
     {
         var productType = await _typeTranslationValidator

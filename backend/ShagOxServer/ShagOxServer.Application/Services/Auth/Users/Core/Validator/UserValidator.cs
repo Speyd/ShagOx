@@ -25,7 +25,7 @@ public class UserValidator
 
 
     public async Task<Result<User>> GetByIdWithIncludesAsync(
-        int userId)
+        long userId)
     {
         var user = await _userQueryRepository.GetByIdAsync(userId);
         if (user is null)

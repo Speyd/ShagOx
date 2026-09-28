@@ -7,14 +7,14 @@ public interface IBasketItemExistsRepository
     : IExistsRepository<BasketItem>, IExistsOwnerRepository
 {
     Task<bool> ExistsAsync(
-        int advertisementId,
-        int basketId);
+        long advertisementId,
+        long basketId);
 
     Task<bool> ExistsByBasketAsync(
-        int itemId,
-        int basketId);
+        long itemId,
+        long basketId);
 
     Task<bool> ExistsByAdvertisementAsync(
-        int itemId,
-        int advertisementId);
+        long itemId,
+        long advertisementId);
 }

@@ -2,5 +2,5 @@
 public sealed record AvatarUpdateRequest
 (
     string? Url,
-    int? UserId
+    long? UserId
 );

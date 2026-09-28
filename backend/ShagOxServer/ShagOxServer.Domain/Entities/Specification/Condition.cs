@@ -8,9 +8,11 @@ public class Condition : BaseEntity
 {
     public string Code { get; set; } = "";
 
-    public List<Advertisement> Advertisements { get; set; } = new();
+    public ICollection<Advertisement> Advertisements { get; set; }
+        = [];
 
-    public List<ConditionTranslation> Translations { get; set; }= new();
+    public ICollection<ConditionTranslation> Translations { get; set; }
+        = [];
 
 
     public override string ToString()

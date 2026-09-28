@@ -3,6 +3,6 @@
 namespace ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations;
 public sealed record CategoryTranslationDto
 (
-    int Id,
+    long Id,
     string Name
 ) : BaseDto(Id);

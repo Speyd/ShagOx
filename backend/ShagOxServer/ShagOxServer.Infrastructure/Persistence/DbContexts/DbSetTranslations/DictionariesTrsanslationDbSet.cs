@@ -8,6 +8,9 @@ public partial class AppDbContext : DbContext
     public DbSet<AttributeDefinitionTranslation>
         AttributeDefinitionTranslations { get; set; }
 
+    public DbSet<AttributeDictionaryValueTranslation>
+        AttributeDictionaryValueTranslations { get; set; }
+
     public DbSet<ProductTypeTranslation>
         ProductTypeTranslations { get; set; }
 

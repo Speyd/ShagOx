@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ShagOxServer.Domain.Base;
 
-namespace ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations
+namespace ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
+public class AttributeDictionaryValueTranslation
+    : BaseTranslation<AttributeDictionaryValue>
 {
-    internal class AttributeDictionaryValueTranslation
+    public string Name { get; set; } = null!;
+
+    public override string ToString()
     {
+        return $"{Name}";
     }
 }

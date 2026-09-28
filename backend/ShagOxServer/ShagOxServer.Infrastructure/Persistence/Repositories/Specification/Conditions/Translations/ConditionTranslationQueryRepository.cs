@@ -31,4 +31,11 @@ public class ConditionTranslationQueryRepository
     {
         return query.Filter(filter);
     }
+
+    protected override IQueryable<ConditionTranslation> ApplyIdentificatorFilter(
+        IQueryable<ConditionTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
+    }
 }

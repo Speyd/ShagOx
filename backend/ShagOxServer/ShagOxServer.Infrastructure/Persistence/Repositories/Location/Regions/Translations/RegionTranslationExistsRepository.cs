@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -20,5 +19,12 @@ public class RegionTranslationExistsRepository
          IQueryable<RegionTranslation> query)
     {
         return query.WithIncludes();
+    }
+
+    protected override IQueryable<RegionTranslation> ApplyIdentificatorFilter(
+        IQueryable<RegionTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
     }
 }

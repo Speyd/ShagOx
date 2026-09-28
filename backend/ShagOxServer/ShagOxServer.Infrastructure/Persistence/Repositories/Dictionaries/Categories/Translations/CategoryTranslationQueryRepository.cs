@@ -31,4 +31,11 @@ public class CategoryTranslationQueryRepository
     {
         return query.Filter(filter);
     }
+
+    protected override IQueryable<CategoryTranslation> ApplyIdentificatorFilter(
+        IQueryable<CategoryTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
+    }
 }

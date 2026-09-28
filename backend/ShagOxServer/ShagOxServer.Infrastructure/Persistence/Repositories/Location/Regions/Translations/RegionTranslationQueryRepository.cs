@@ -33,4 +33,11 @@ public class RegionTranslationQueryRepository
     {
         return query.Filter(filter);
     }
+
+    protected override IQueryable<RegionTranslation> ApplyIdentificatorFilter(
+        IQueryable<RegionTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
+    }
 }

@@ -23,7 +23,7 @@ public class VerificationCodeQueryService
     }
 
 
-    protected override async Task<VerificationCodeDto> ApplyMapperAsync(
+    public override async Task<VerificationCodeDto> ApplyMapperAsync(
         VerificationCode entity)
     {
         return VerificationCodeMapper.ToDto(entity);

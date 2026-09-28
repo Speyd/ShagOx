@@ -5,7 +5,8 @@ namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDef
 public static class AttributeDefinitionMapper
 {
     public static AttributeDefinitionDto ToDto(
-        AttributeDefinition attribute)
+        AttributeDefinition attribute,
+        string? lable)
     {
         return new AttributeDefinitionDto(
             attribute.Id,
@@ -17,7 +18,8 @@ public static class AttributeDefinitionMapper
             attribute.Min,
             attribute.Max,
             attribute.IsVariant,
-            attribute.Multiple
+            attribute.Multiple,
+            lable
         );
     }
 }

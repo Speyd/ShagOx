@@ -4,5 +4,6 @@ namespace ShagOxServer.Application.DTOs.Location.Regions;
 public sealed record RegionDto
 (
     long Id,
-    string Code
+    string Code,
+    string? Lable
 ) : BaseDto(Id);

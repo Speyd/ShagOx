@@ -1,6 +1,9 @@
 ﻿using ShagOxServer.Application.DTOs.Location.Cities;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
+using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Domain.Entities.Location;
@@ -20,20 +23,39 @@ public class CityQueryService
 {
     private readonly ICityQueryRepository _repositoryQueryCity;
 
+    private readonly ICityTranslationQueryRepository _translationCityRepository;
+    private readonly IRegionQueryService _regionService;
+
+    private readonly ILanguageProvider _language;
+
 
     public CityQueryService(
-        ICityQueryRepository repositoryQueryCity
+        ICityQueryRepository repositoryQueryCity,
+        ICityTranslationQueryRepository translationCityRepository,
+        IRegionQueryService regionService,
+        ILanguageProvider language
     )
         : base(repositoryQueryCity)
     {
         _repositoryQueryCity = repositoryQueryCity;
+        _translationCityRepository = translationCityRepository;
+        _regionService = regionService;
+        _language = language;
     }
 
 
-    protected override async Task<CityDto> ApplyMapperAsync(
+    public override async Task<CityDto> ApplyMapperAsync(
         City entity)
     {
-        return CityMapper.ToDto(entity);
+        var translationCity = await _translationCityRepository
+           .GetByIdentificatorAsync(entity.Code, _language.Language);
+
+        var translationRegion = await _regionService
+           .ApplyMapperAsync(entity.Region);
+
+        return CityMapper.ToDto(entity,
+            translationRegion,
+            translationCity?.Name);
     }
 
     public async Task<Result<CityDto>> GetByCodeAsync(

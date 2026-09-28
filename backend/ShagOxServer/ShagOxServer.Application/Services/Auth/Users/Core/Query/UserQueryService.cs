@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Base;
@@ -24,6 +25,8 @@ public class UserQueryService
 {
     private readonly IUserQueryRepository _userQueryRepository;
     private readonly IRoleQueryRepository _roleQueryRepository;
+    private readonly ICityQueryService _cityService;
+
 
     private readonly IUserContext _context;
 
@@ -31,20 +34,25 @@ public class UserQueryService
     public UserQueryService(
         IUserQueryRepository userQueryRepository,
         IRoleQueryRepository roleQueryRepository,
+        ICityQueryService cityService,
         IUserContext userContext
     )
         : base(userQueryRepository)
     {
         _userQueryRepository = userQueryRepository;
         _roleQueryRepository = roleQueryRepository;
+        _cityService = cityService;
         _context = userContext;
     }
 
 
-    protected override async Task<UserDto> ApplyMapperAsync(
+    public override async Task<UserDto> ApplyMapperAsync(
         User entity)
     {
-        return UserMapper.ToDto(entity);
+        var cityDto = await _cityService
+            .ApplyMapperAsync(entity.City!);
+
+        return UserMapper.ToDto(entity, cityDto);
     }
 
     public async Task<Result<UserShortDto>> GetByContactAsync(

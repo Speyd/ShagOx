@@ -4,5 +4,6 @@ namespace ShagOxServer.Application.DTOs.Specification.Conditions;
 public sealed record ConditionDto
 (
     long Id,
-    string Name
+    string Code,
+    string? Lable
 ) : BaseDto(Id);

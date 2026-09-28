@@ -6,7 +6,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 public interface IAdvertisementVariantQueryService
-    : IQueryService<AdvertisementVariantDto, 
+    : IQueryService<AdvertisementVariantDto,
+        AdvertisementVariant,
         AdvertisementVariantSearchFilter>
 {
     Task<Result<List<VariantAttributeDto>>> GetVariantAttributeAsync(

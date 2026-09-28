@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Roles;
 using ShagOxServer.Application.DTOs.Auth.Users.Core;
+using ShagOxServer.Application.DTOs.Location.Cities;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars;
-using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -10,7 +10,8 @@ namespace ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 public static class UserMapper
 {
     public static UserDto ToDto(
-        User user)
+        User user,
+        CityDto city)
     {
         return new UserDto(
             user.Id,
@@ -21,7 +22,7 @@ public static class UserMapper
             user.Phone,
             user.Email,
             MapAvatar(user.Avatar),
-            CityMapper.ToDto(user.City),
+            city,
             MapRoles(user.UserRoles),
             user.LastSeenAt,
             user.RegisteredAt

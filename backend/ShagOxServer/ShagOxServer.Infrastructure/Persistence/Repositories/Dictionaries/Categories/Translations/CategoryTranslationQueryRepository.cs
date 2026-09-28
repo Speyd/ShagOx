@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -16,10 +17,26 @@ public class CategoryTranslationQueryRepository
     { }
 
 
+    protected override IQueryable<CategoryTranslation> ApplyIncludes(
+         IQueryable<CategoryTranslation> query)
+    {
+        return query.WithIncludes();
+    }
+
     protected override IQueryable<CategoryTranslation> ApplyFilter(
        IQueryable<CategoryTranslation> query,
        CategoryTranslationSearchFilter filter)
     {
         return query.Filter(filter);
+    }
+
+    public override async Task<CategoryTranslation?> GetByIdentificatorAsync(
+        string identificator,
+        string language)
+    {
+        return await _db.CategoryTranslations
+          .FirstOrDefaultAsync(x =>
+            x.Translatable.Code == identificator &&
+            x.Language == language);
     }
 }

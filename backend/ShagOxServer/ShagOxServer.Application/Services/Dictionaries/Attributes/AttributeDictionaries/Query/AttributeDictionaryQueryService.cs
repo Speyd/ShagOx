@@ -23,7 +23,7 @@ public class AttributeDictionaryQueryService
     }
 
 
-    protected override async Task<AttributeDictionaryDto> ApplyMapperAsync(
+    public override async Task<AttributeDictionaryDto> ApplyMapperAsync(
         AttributeDictionary entity)
     {
         return AttributeDictionaryMapper.ToDto(entity);

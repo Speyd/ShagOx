@@ -1,5 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Mapping;
 using ShagOxServer.Application.Services.Base;
@@ -15,17 +17,28 @@ public class StatusQueryService
         >,
     IStatusQueryService
 {
+    private readonly IStatusTranslationQueryRepository _translationRepository;
+    private readonly ILanguageProvider _language;
+
+
     public StatusQueryService(
-        IStatusQueryRepository statusRepository
+        IStatusQueryRepository statusRepository,
+        IStatusTranslationQueryRepository translationRepository,
+        ILanguageProvider language
     )
         : base(statusRepository)
     {
+        _translationRepository = translationRepository;
+        _language = language;
     }
 
 
-    protected override async Task<StatusDto> ApplyMapperAsync(
+    public override async Task<StatusDto> ApplyMapperAsync(
         Status entity)
     {
-        return StatusMapper.ToDto(entity);
+        var translation = await _translationRepository
+            .GetByIdentificatorAsync(entity.Code, _language.Language);
+
+        return StatusMapper.ToDto(entity, translation?.Name);
     }
 }

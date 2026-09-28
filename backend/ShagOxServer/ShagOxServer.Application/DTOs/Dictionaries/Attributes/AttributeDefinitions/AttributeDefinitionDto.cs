@@ -13,5 +13,6 @@ public sealed record AttributeDefinitionDto
     decimal? Min,
     decimal? Max,
     bool IsVariant,
-    bool Multiple
+    bool Multiple,
+    string? Lable
 ) : BaseDto(Id);

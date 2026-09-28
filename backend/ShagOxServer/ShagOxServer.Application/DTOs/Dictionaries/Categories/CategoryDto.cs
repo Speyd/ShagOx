@@ -5,5 +5,6 @@ public sealed record CategoryDto
 (
     long Id,
     string Name,
-    CategoryProductTypeDto ProductType
+    CategoryProductTypeDto ProductType,
+    string? Lable
 ) : BaseDto(Id);

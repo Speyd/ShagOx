@@ -29,7 +29,7 @@ public class BasketQueryService
     }
 
 
-    protected override async Task<BasketDto> ApplyMapperAsync(
+    public override async Task<BasketDto> ApplyMapperAsync(
         Basket entity)
     {
         return BasketMapper.ToDto(entity);

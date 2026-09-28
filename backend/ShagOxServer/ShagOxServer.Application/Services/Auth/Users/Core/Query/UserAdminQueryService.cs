@@ -1,7 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
-using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -12,14 +11,17 @@ public class UserAdminQueryService
     : IUserAdminQueryService
 {
     private readonly IUserQueryRepository _userQueryRepository;
+    private readonly IUserQueryService _userQueryService;
     private readonly IUserExistsRepository _userExistsRepository;
 
 
     public UserAdminQueryService(
         IUserQueryRepository userRepository,
+        IUserQueryService userQueryService,
         IUserExistsRepository userExistsRepository)
     {
         _userQueryRepository = userRepository;
+        _userQueryService = userQueryService;
         _userExistsRepository = userExistsRepository;
     }
 
@@ -30,7 +32,8 @@ public class UserAdminQueryService
         var users = await _userQueryRepository
             .GetPagedAsync(pagination);
 
-        return users.ToResultPaged(UserMapper.ToDto);
+        return await users.ToResultPagedAsync(
+            _userQueryService.ApplyMapperAsync);
     }
 
     public async Task<Result<PagedResult<UserDto>>> Search(
@@ -40,7 +43,8 @@ public class UserAdminQueryService
         var users = await _userQueryRepository
             .AdminSearch(filter, pagination);
 
-        return users.ToResultPaged(UserMapper.ToDto);
+        return await users.ToResultPagedAsync(
+            _userQueryService.ApplyMapperAsync);
     }
 
     public async Task<bool> ExistsByIdAsync(

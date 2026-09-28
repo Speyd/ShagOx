@@ -1,12 +1,14 @@
 ﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Base.Translations;
-public interface ITranslationQueryService<TDto, TFilter>
-    : IQueryService<TDto, TFilter>
+public interface ITranslationQueryService<TDto, TEntity, TFilter>
+    : IQueryService<TDto, TEntity, TFilter>
     where TDto : BaseDto
+    where TEntity: BaseEntity
     where TFilter : BaseFilter
 
 {

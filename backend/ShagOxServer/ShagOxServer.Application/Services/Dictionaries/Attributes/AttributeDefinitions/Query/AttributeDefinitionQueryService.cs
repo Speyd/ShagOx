@@ -1,5 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Mapping;
@@ -19,19 +21,31 @@ public class AttributeDefinitionQueryService
 {
     public readonly IAttributeDefinitionQueryRepository _attributeRepository;
 
+    private readonly IAttributeDefinitionTranslationQueryRepository _translationRepository;
+
+    private readonly ILanguageProvider _language;
+
+
     public AttributeDefinitionQueryService(
-        IAttributeDefinitionQueryRepository attributeQueryRepository
+        IAttributeDefinitionQueryRepository attributeQueryRepository,
+        IAttributeDefinitionTranslationQueryRepository translationRepository,
+        ILanguageProvider language
     )
         : base(attributeQueryRepository)
     {
         _attributeRepository = attributeQueryRepository;
+        _translationRepository = translationRepository;
+        _language = language;
     }
 
 
-    protected override async Task<AttributeDefinitionDto> ApplyMapperAsync(
+    public override async Task<AttributeDefinitionDto> ApplyMapperAsync(
         AttributeDefinition entity)
     {
-        return AttributeDefinitionMapper.ToDto(entity);
+        var translation = await _translationRepository
+            .GetByIdentificatorAsync(entity.Key, _language.Language);
+
+        return AttributeDefinitionMapper.ToDto(entity, translation?.Name);
     }
 
     public async Task<Result<AttributeDefinitionDto>> GetByKeyAsync(

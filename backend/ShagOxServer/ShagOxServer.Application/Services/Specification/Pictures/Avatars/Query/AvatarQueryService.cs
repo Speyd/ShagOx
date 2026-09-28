@@ -29,7 +29,7 @@ public class AvatarQueryService
     }
 
 
-    protected override async Task<AvatarDto> ApplyMapperAsync(
+    public override async Task<AvatarDto> ApplyMapperAsync(
         Avatar entity)
     {
         return AvatarMapper.ToDto(entity);

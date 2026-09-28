@@ -29,7 +29,7 @@ public class CurrencyQueryService
     }
 
 
-    protected override async Task<CurrencyDto> ApplyMapperAsync(
+    public override async Task<CurrencyDto> ApplyMapperAsync(
         Currency entity)
     {
         return CurrencyMapper.ToDto(entity);

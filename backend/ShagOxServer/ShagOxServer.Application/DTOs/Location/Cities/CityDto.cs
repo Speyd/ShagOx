@@ -6,5 +6,6 @@ public sealed record CityDto
 (
     long Id,
     string Code,
-    RegionDto Region
+    RegionDto Region,
+    string? Lable
 ) : BaseDto(Id);

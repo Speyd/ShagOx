@@ -40,7 +40,7 @@ public partial class AdvertisementVariantQueryService
     }
 
 
-    protected override async Task<AdvertisementVariantDto> ApplyMapperAsync(
+    public override async Task<AdvertisementVariantDto> ApplyMapperAsync(
         AdvertisementVariant entity)
     {
         var attributesResult = await GetVariantAttributeAsync(entity);

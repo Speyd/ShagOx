@@ -9,7 +9,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Base;
 public abstract class BaseQueryService<TDto, TEntity, TFilter>
-    : IQueryService<TDto, TFilter>
+    : IQueryService<TDto, TEntity, TFilter>
     where TDto : BaseDto
     where TEntity : BaseEntity
     where TFilter : BaseFilter
@@ -24,7 +24,7 @@ public abstract class BaseQueryService<TDto, TEntity, TFilter>
         _queryRepository = queryRepository;
     }
 
-    protected abstract Task<TDto> ApplyMapperAsync(TEntity entity);
+    public abstract Task<TDto> ApplyMapperAsync(TEntity entity);
 
     public async Task<Result<TDto>> GetByIdAsync(long id)
     {

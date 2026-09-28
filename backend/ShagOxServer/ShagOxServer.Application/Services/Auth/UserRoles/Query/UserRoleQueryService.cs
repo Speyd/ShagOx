@@ -3,9 +3,9 @@ using ShagOxServer.Application.DTOs.Auth.UserRoles;
 using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.UserRoles.Mapping;
-using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
@@ -23,18 +23,22 @@ public class UserRoleQueryService
     IUserRoleQueryService
 {
     private readonly IUserRoleQueryRepository _userRoleQueryRepository;
+    private readonly IUserQueryService _userService;
+
 
 
     public UserRoleQueryService(
-        IUserRoleQueryRepository userRoleQueryRepository
+        IUserRoleQueryRepository userRoleQueryRepository,
+        IUserQueryService userService
     )
         : base(userRoleQueryRepository)
     {
         _userRoleQueryRepository = userRoleQueryRepository;
+        _userService = userService;
     }
 
 
-    protected override async Task<UserRoleDto> ApplyMapperAsync(
+    public override async Task<UserRoleDto> ApplyMapperAsync(
         UserRole entity)
     {
         return UserRoleMapper.ToDto(entity);
@@ -57,6 +61,7 @@ public class UserRoleQueryService
         var users = await _userRoleQueryRepository
             .GetUsersByRoleIdAsync(roleId, pagination);
 
-        return users.ToResultPaged(UserMapper.ToDto);
+        return await users.ToResultPagedAsync(
+            _userService.ApplyMapperAsync);
     }
 }

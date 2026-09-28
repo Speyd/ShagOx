@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements;
@@ -29,6 +30,17 @@ public class StatusTranslationQueryRepository
        StatusTranslationSearchFilter filter)
     {
         return query.Filter(filter);
+    }
+
+    public override async Task<StatusTranslation?> GetByIdentificatorAsync(
+        string identificator,
+        string language)
+    {
+        return await _db.StatusTranslations
+          .WithIncludes()
+          .FirstOrDefaultAsync(x => 
+            x.Translatable.Code == identificator &&
+            x.Language == language);
     }
 
     public override async Task<PagedResult<StatusTranslation>> GetPagedAsync(

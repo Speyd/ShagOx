@@ -22,7 +22,7 @@ public class CityTranslationQueryService
     {
     }
 
-    protected override async Task<CityTranslationDto> ApplyMapperAsync(
+    public override async Task<CityTranslationDto> ApplyMapperAsync(
         CityTranslation entity)
     {
         return CityTranslationMapper.ToDto(entity);

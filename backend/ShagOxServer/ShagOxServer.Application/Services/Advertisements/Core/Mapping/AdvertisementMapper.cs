@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.DTOs.Advertisements.Core;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
@@ -12,7 +13,8 @@ public static class AdvertisementMapper
 {
     public static AdvertisementDto ToDto(
         Advertisement x,
-        Dictionary<long, List<VariantAttributeDto>> variants)
+        Dictionary<long, List<VariantAttributeDto>> variants,
+        CategoryDto category)
     {
         return new AdvertisementDto
         (
@@ -20,7 +22,7 @@ public static class AdvertisementMapper
             x.Title,
             x.Description,
             CurrencyMapper.ToDto(x.Currency),
-            CategoryMapper.ToDto(x.Category),
+            category,
             UserShortMapper.ToDto(x.Seller),
             (x.Buyer is not null ? UserShortMapper.ToDto(x.Buyer) : null),
             x.Images

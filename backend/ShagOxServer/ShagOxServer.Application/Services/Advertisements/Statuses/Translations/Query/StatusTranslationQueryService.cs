@@ -23,7 +23,7 @@ public class StatusTranslationQueryService
     }
 
 
-    protected override async Task<StatusTranslationDto> ApplyMapperAsync(
+    public override async Task<StatusTranslationDto> ApplyMapperAsync(
         StatusTranslation entity)
     {
         return StatusTranslationMapper.ToDto(entity);

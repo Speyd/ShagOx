@@ -4,5 +4,6 @@ namespace ShagOxServer.Application.DTOs.Advertisements.Statuses;
 public sealed record StatusDto
 (
     long Id,
-    string Code
+    string Code,
+    string? Lable
 ) : BaseDto(Id);

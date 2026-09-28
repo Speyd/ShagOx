@@ -11,4 +11,8 @@ public interface ITranslationQueryRepository<TEntity, TFilter>
     Task<PagedResult<TEntity>> GetPagedAsync(
        PaginationParams pagination,
        string language);
+
+    Task<TEntity?> GetByIdentificatorAsync(
+        string identificator,
+        string language);
 }

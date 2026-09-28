@@ -1,6 +1,8 @@
 ﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Query;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
 using ShagOxServer.Domain.Entities.Baskets;
@@ -20,20 +22,27 @@ public class BasketAttributeQueryService
 {
     private readonly IBasketAttributeQueryRepository _attributeQueryRepository;
 
+    private readonly IAttributeDefinitionQueryService _attributeService;
+
 
     public BasketAttributeQueryService(
-        IBasketAttributeQueryRepository attributeQueryRepository
+        IBasketAttributeQueryRepository attributeQueryRepository,
+        IAttributeDefinitionQueryService attributeService
     )
         : base(attributeQueryRepository)
     {
         _attributeQueryRepository = attributeQueryRepository;
+        _attributeService = attributeService;
     }
 
 
-    protected override async Task<BasketAttributeDto> ApplyMapperAsync(
+    public override async Task<BasketAttributeDto> ApplyMapperAsync(
         BasketAttribute entity)
     {
-        return BasketAttributeMapper.ToDto(entity);
+        var attributerDto = await _attributeService
+            .ApplyMapperAsync(entity.AttributeDefinition);
+
+        return BasketAttributeMapper.ToDto(entity, attributerDto);
     }
 
     public async Task<Result<BasketAttributeDto>> GetByAttributeDefenitionAsync(

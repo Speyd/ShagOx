@@ -30,7 +30,7 @@ public class RoleQueryService
     }
 
 
-    protected override async Task<RoleDto> ApplyMapperAsync(
+    public override async Task<RoleDto> ApplyMapperAsync(
         Role entity)
     {
         return RoleMapper.ToDto(entity);

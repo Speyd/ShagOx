@@ -22,7 +22,7 @@ public class ProductTypeTranslationQueryService
     {
     }
 
-    protected override async Task<ProductTypeTranslationDto> ApplyMapperAsync(
+    public override async Task<ProductTypeTranslationDto> ApplyMapperAsync(
         ProductTypeTranslation entity)
     {
         return ProductTypeTranslationMapper.ToDto(entity);

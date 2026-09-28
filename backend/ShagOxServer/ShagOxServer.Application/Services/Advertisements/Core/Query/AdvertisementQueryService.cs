@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -22,43 +23,61 @@ public class AdvertisementQueryService
     private readonly IAdvertisementQueryRepository _advertisementRepository;
     private readonly IAdvertisementVariantQueryService _variantService;
 
+    private readonly ICategoryQueryService _categoryService;
+
+
 
 
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository,
-        IAdvertisementVariantQueryService variantService
+        IAdvertisementVariantQueryService variantService,
+        ICategoryQueryService categoryService
     )
         : base(advertisementRepository)
     {
         _advertisementRepository = advertisementRepository;
         _variantService = variantService;
+        _categoryService = categoryService;
     }
 
 
-    protected override async Task<AdvertisementDto> ApplyMapperAsync(
+    public override async Task<AdvertisementDto> ApplyMapperAsync(
         Advertisement entity)
     {
-        var attributesByVariantId =
-    new Dictionary<long, List<VariantAttributeDto>>();
+        var attributes = 
+            await GetAttributesByVariantIdAsync(entity.Variants);
 
-        foreach (var variant in entity.Variants)
-        {
-            var result = await _variantService
-                .GetVariantAttributeAsync(variant);
-
-            if (!result.IsSuccess)
-            {
-                throw new InvalidOperationException(
-                    result.Error);
-            }
-
-            attributesByVariantId[variant.Id] =
-                result.Value ?? [];
-        }
+        var categoryDto = await _categoryService
+            .ApplyMapperAsync(entity.Category);
 
         return AdvertisementMapper.ToDto(
             entity,
-            attributesByVariantId);
+            attributes,
+            categoryDto);
+    }
+
+    private async Task<Dictionary<long, List<VariantAttributeDto>>>
+    GetAttributesByVariantIdAsync(
+        IEnumerable<AdvertisementVariant> variants)
+    {
+        var result = new Dictionary<long, List<VariantAttributeDto>>();
+
+        foreach (var variant in variants)
+        {
+            var attributesResult = await _variantService
+                .GetVariantAttributeAsync(variant);
+
+            if (!attributesResult.IsSuccess)
+            {
+                throw new InvalidOperationException(
+                    attributesResult.Error);
+            }
+
+            result[variant.Id] =
+                attributesResult.Value ?? [];
+        }
+
+        return result;
     }
 
     public async Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(

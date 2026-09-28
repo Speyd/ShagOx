@@ -5,12 +5,14 @@ namespace ShagOxServer.Application.Services.Advertisements.Statuses.Mapping;
 public static class StatusMapper
 {
     public static StatusDto ToDto(
-        Status x)
+        Status x,
+        string? lable)
     {
         return new StatusDto
         (
             x.Id,
-            x.Code
+            x.Code,
+            lable
         );
     }
 }

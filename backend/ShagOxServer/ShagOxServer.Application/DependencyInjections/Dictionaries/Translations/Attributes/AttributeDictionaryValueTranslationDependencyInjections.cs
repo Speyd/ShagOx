@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Query;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Create;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Query;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Validator;
 
 namespace ShagOxServer.Application.DependencyInjections.Dictionaries.Translations.Attributes;
 public static class AttributeDictionaryValueTranslationDependencyInjections
@@ -11,8 +14,8 @@ public static class AttributeDictionaryValueTranslationDependencyInjections
         services.AddScoped<IAttributeDictionaryValueTranslationQueryService,
             AttributeDictionaryValueTranslationQueryService>();
 
-        //services.AddScoped<IAttributeDefinitionTranslationCreateService,
-        //    AttributeDefinitionTranslationCreateService>();
+        services.AddScoped<IAttributeDictionaryValueTranslationCreateService,
+            AttributeDictionaryValueTranslationCreateService>();
 
         //services.AddScoped<IAttributeDefinitionTranslationDeleteService,
         //    AttributeDefinitionTranslationDeleteService>();
@@ -20,7 +23,7 @@ public static class AttributeDictionaryValueTranslationDependencyInjections
         //services.AddScoped<IAttributeDefinitionTranslationUpdateService,
         //    AttributeDefinitionTranslationUpdateService>();
 
-        //services.AddScoped<AttributeDefinitionTranslationValidator>();
+        services.AddScoped<AttributeDictionaryValueTranslationValidator>();
 
         return services;
     }

@@ -186,6 +186,15 @@
   <data name="AttributeDictionaryValueDeleteFailed" xml:space="preserve">
     <value>Der Attributwörterbuchwert konnte nicht gelöscht werden.</value>
   </data>
+  <data name="AttributeDictionaryValueTranslationCreateFailed" xml:space="preserve">
+    <value>Die Übersetzung des Attribut-Wörterbuchwerts konnte nicht erstellt werden.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationDeleteFailed" xml:space="preserve">
+    <value>Die Übersetzung des Attribut-Wörterbuchwerts konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationUpdateFailed" xml:space="preserve">
+    <value>Die Übersetzung des Attribut-Wörterbuchwerts konnte nicht aktualisiert werden.</value>
+  </data>
   <data name="AttributeDictionaryValueUpdateFailed" xml:space="preserve">
     <value>Der Attributwörterbuchwert konnte nicht aktualisiert werden.</value>
   </data>

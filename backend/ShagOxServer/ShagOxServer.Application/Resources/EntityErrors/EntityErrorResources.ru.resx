@@ -186,6 +186,15 @@
   <data name="AttributeDictionaryValueDeleteFailed" xml:space="preserve">
     <value>Не удалось удалить словарь значений атрибута.</value>
   </data>
+  <data name="AttributeDictionaryValueTranslationCreateFailed" xml:space="preserve">
+    <value>Не удалось создать перевод значения словаря атрибутов.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить перевод значения словаря атрибутов.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить перевод значения словаря атрибутов.</value>
+  </data>
   <data name="AttributeDictionaryValueUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить словарь значений атрибута.</value>
   </data>

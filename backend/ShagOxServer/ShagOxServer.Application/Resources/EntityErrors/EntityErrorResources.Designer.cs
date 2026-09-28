@@ -86,40 +86,34 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
                 return ResourceManager.GetString("AdvertisementUpdateFailed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create advertisement variant..
         /// </summary>
-        internal static string AdvertisementVariantCreateFailed
-        {
-            get
-            {
+        internal static string AdvertisementVariantCreateFailed {
+            get {
                 return ResourceManager.GetString("AdvertisementVariantCreateFailed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete advertisement variant..
         /// </summary>
-        internal static string AdvertisementVariantDeleteFailed
-        {
-            get
-            {
+        internal static string AdvertisementVariantDeleteFailed {
+            get {
                 return ResourceManager.GetString("AdvertisementVariantDeleteFailed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update advertisement variant..
         /// </summary>
-        internal static string AdvertisementVariantUpdateFailed
-        {
-            get
-            {
+        internal static string AdvertisementVariantUpdateFailed {
+            get {
                 return ResourceManager.GetString("AdvertisementVariantUpdateFailed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create status..
         /// </summary>
@@ -270,6 +264,33 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         internal static string AttributeDictionaryValueDeleteFailed {
             get {
                 return ResourceManager.GetString("AttributeDictionaryValueDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create attribute dictionary value translation..
+        /// </summary>
+        internal static string AttributeDictionaryValueTranslationCreateFailed {
+            get {
+                return ResourceManager.GetString("AttributeDictionaryValueTranslationCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete attribute dictionary value translation..
+        /// </summary>
+        internal static string AttributeDictionaryValueTranslationDeleteFailed {
+            get {
+                return ResourceManager.GetString("AttributeDictionaryValueTranslationDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update attribute dictionary value translation..
+        /// </summary>
+        internal static string AttributeDictionaryValueTranslationUpdateFailed {
+            get {
+                return ResourceManager.GetString("AttributeDictionaryValueTranslationUpdateFailed", resourceCulture);
             }
         }
         

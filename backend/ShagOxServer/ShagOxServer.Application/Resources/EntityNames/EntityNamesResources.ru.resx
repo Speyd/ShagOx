@@ -204,4 +204,7 @@
   <data name="AdvertisementVariant" xml:space="preserve">
     <value>Вариант объявление</value>
   </data>
+  <data name="AttributeDictionaryValueTranslation" xml:space="preserve">
+    <value>Перевод значения словаря атрибутов.</value>
+  </data>
 </root>

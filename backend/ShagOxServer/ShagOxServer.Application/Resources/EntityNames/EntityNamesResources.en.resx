@@ -204,4 +204,7 @@
   <data name="AdvertisementVariant" xml:space="preserve">
     <value>Advertisement variant</value>
   </data>
+  <data name="AttributeDictionaryValueTranslation" xml:space="preserve">
+    <value>Attribute dictionary value translation</value>
+  </data>
 </root>

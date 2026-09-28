@@ -133,6 +133,15 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Attribute dictionary value translation.
+        /// </summary>
+        public static string AttributeDictionaryValueTranslation {
+            get {
+                return ResourceManager.GetString("AttributeDictionaryValueTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Avatar.
         /// </summary>
         public static string Avatar {

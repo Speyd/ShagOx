@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.Attri
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Update;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Create;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Delete;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
@@ -29,6 +30,8 @@ public static class AttributeDictionaryValueDependencyInjections
             AttributeDictionaryValueDeleteService>();
 
         services.AddScoped<AttributeDictionaryValueValidator>();
+
+        services.AddScoped<VariantAttributeQueryService>();
 
         services.AddAttributeValueTranslationApplication();
 

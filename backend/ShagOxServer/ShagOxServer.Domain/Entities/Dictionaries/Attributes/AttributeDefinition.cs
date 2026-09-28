@@ -5,7 +5,7 @@ using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 public class AttributeDefinition 
-    : BaseEntity
+    : BaseTranslatable
 {
     public long CategoryId { get; set; }
     public Category Category { get; set; } = null!;
@@ -28,6 +28,11 @@ public class AttributeDefinition
     public ICollection<AttributeDefinitionTranslation> Translations { get; set; }
        = [];
 
+
+    public override string GetIdentificator()
+    {
+        return Key;
+    }
 
     public override string ToString()
     {

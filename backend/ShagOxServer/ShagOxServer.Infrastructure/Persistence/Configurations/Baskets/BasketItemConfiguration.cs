@@ -18,13 +18,13 @@ public class BasketItemConfiguration
                .HasForeignKey(x => x.BasketId)
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(x => x.Advertisement)
+        builder.HasOne(x => x.AdvertisementVariant)
                .WithMany(x => x.BasketItems)
-               .HasForeignKey(x => x.AdvertisementId)
+               .HasForeignKey(x => x.AdvertisementVariantId)
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => 
-                new { x.BasketId, x.AdvertisementId })
+                new { x.BasketId, x.AdvertisementVariantId })
             .IsUnique();
     }
 }

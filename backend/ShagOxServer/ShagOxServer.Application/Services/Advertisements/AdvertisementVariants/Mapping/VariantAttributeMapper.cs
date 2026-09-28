@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using System.Text.Json;
 
@@ -6,31 +7,30 @@ namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants
 public static class VariantAttributeMapper
 {
     public static VariantAttributeDto ToSelectDto(
-    AttributeDefinition attribute,
-    AttributeDictionaryValue value)
+        AttributeDefinition attribute,
+        AttributeDictionaryValueDto value)
     {
         return new VariantAttributeDto(
             attribute.Id,
             attribute.Key,
-            value.Id,
-            value.Code,
-            value.Value,
-            //TODO: доделать
-            ""
+            value
         );
     }
 
     public static VariantAttributeDto ToDto(
-    AttributeDefinition attribute,
-    JsonElement value)
+        AttributeDefinition attribute,
+        JsonElement value)
     {
         return new VariantAttributeDto(
             attribute.Id,
             attribute.Key,
-            0,
-            "",
-            value.ToString(),
-            ""
+            new AttributeDictionaryValueDto(
+                0,
+                0,
+                "",
+                value.ToString(),
+                ""
+                )
         );
     }
 }

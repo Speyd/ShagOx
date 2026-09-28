@@ -2,7 +2,8 @@
 using ShagOxServer.Domain.Entities.Advertisements;
 namespace ShagOxServer.Domain.Entities.Specification;
 
-public class Currency : BaseEntity
+public class Currency 
+    : BaseEntity
 {
     public string Code { get; set; } = "";
     public string Symbol { get; set; } = "";

@@ -5,7 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
@@ -19,7 +19,7 @@ public class BasketItemCreateService
     private readonly BasketItemValidator _itemValidator;
 
     private readonly BasketValidator _basketValidator;
-    private readonly AdvertisementValidator _advertValidator;
+    private readonly AdvertisementVariantValidator _advertValidator;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketItemCreateService> _logger;
@@ -29,7 +29,7 @@ public class BasketItemCreateService
         IRepository<BasketItem> itemRepository,
         BasketItemValidator itemValidator,
         BasketValidator basketValidator,
-        AdvertisementValidator advertValidator,
+        AdvertisementVariantValidator advertValidator,
         IUnitOfWork unitOfWork,
         ILogger<BasketItemCreateService> logger)
     {
@@ -50,17 +50,17 @@ public class BasketItemCreateService
         if (!basketExists.IsSuccess)
             return Result<CreateResponse>.Fail(basketExists.Error);
 
-        var advertExists = await _advertValidator
-            .ExistsByIdAsync(request.AdvertisementId);
-        if (!advertExists.IsSuccess)
-            return Result<CreateResponse>.Fail(advertExists.Error);
+        var variant = await _advertValidator
+            .GetByIdAsync(request.AdvertisementVariantId);
+        if (!variant.IsSuccess)
+            return Result<CreateResponse>.Fail(variant.Error);
 
         var itemExists = await _itemValidator
-           .NotExistsAsync(request.AdvertisementId, request.BasketId);
+           .NotExistsAsync(request.AdvertisementVariantId, request.BasketId);
         if (!itemExists.IsSuccess)
             return Result<CreateResponse>.Fail(itemExists.Error);
 
-        var item = BasketItemCreater.Create(request);
+        var item = BasketItemCreater.Create(variant.Value!, request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -77,9 +77,9 @@ public class BasketItemCreateService
             _logger.LogError(
                 ex,
                 "Failed to create basket item. " +
-                "BasketId: {BasketId}, AdvertisementId: {AdvertisementId}",
+                "BasketId: {BasketId}, AdvertisementVariantId: {AdvertisementVariantId}",
                 request.BasketId,
-                request.AdvertisementId);
+                request.AdvertisementVariantId);
 
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.BasketItemCreateFailed);
@@ -87,11 +87,11 @@ public class BasketItemCreateService
 
         _logger.LogInformation(
             "Basket item created successfully. " + 
-            "BasketItemId: {BasketItemId}, BasketId: {BasketId}, " + 
-            "AdvertisementId: {AdvertisementId}",
+            "BasketItemId: {BasketItemId}, BasketId: {BasketId}, " +
+            "AdvertisementVariantId: {AdvertisementVariantId}",
             item.Id,
             request.BasketId,
-            request.AdvertisementId);
+            request.AdvertisementVariantId);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

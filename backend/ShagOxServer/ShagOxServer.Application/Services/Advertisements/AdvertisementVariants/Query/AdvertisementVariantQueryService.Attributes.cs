@@ -50,7 +50,7 @@ public partial class AdvertisementVariantQueryService
 
         var valuesById = values.ToDictionary(x => x.Id);
 
-        return MapAttributes(
+        return await MapAttributes(
             jsonAttributes,
             definitionsByKey,
             valuesById);
@@ -122,7 +122,7 @@ public partial class AdvertisementVariantQueryService
         return Result<List<long>>.Success(valueIds);
     }
 
-    private Result<List<VariantAttributeDto>> MapAttributes(
+    private async Task<Result<List<VariantAttributeDto>>> MapAttributes(
         List<JsonProperty> jsonAttributes,
         Dictionary<string, AttributeDefinition> definitionsByKey,
         Dictionary<long, AttributeDictionaryValue> valuesById)
@@ -133,7 +133,7 @@ public partial class AdvertisementVariantQueryService
         {
             var definition = definitionsByKey[item.Name];
 
-            var attributeResult = GetVariantAttributeDto(
+            var attributeResult = await GetVariantAttributeDto(
                 definition,
                 item.Value,
                 valuesById);

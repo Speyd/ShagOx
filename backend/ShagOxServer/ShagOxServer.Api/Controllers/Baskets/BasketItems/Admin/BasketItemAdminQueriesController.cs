@@ -55,7 +55,7 @@ public class BasketItemAdminQueriesController
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService
-            .GetByAdvertisementAsync(id, pagination);
+            .GetByAdvertisementVariantAsync(id, pagination);
 
         return result.ToActionResult();
     }

@@ -21,6 +21,7 @@ public partial class AdvertisementVariantQueryService
     protected readonly IAdvertisementVariantQueryRepository _variantRepository;
     protected readonly IAttributeDefinitionQueryRepository _attributeRepository;
     protected readonly IAttributeDictionaryValueQueryRepository _valueRepository;
+    protected readonly VariantAttributeQueryService _variantAttributeService;
 
     protected readonly ILogger<AdvertisementVariantQueryService> _logger;
 
@@ -29,6 +30,7 @@ public partial class AdvertisementVariantQueryService
         IAdvertisementVariantQueryRepository variantRepository,
         IAttributeDefinitionQueryRepository attributeRepository,
         IAttributeDictionaryValueQueryRepository valueRepository,
+        VariantAttributeQueryService variantAttributeService,
         ILogger<AdvertisementVariantQueryService> logger
     )
         : base(variantRepository)
@@ -36,6 +38,7 @@ public partial class AdvertisementVariantQueryService
         _variantRepository = variantRepository;
         _attributeRepository = attributeRepository;
         _valueRepository = valueRepository;
+        _variantAttributeService = variantAttributeService;
         _logger = logger;
     }
 

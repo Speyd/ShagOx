@@ -8,7 +8,7 @@ public class StatusTranslation
     public string Description { get; set; } = null!;
 
 
-    public override string GetIdentificator()
+    public override string GetTranslationValue()
     {
         return Name;
     }

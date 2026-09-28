@@ -1,5 +1,7 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.Core;
+﻿using ShagOxServer.Application.DTOs.Baskets.BasketItems;
+using ShagOxServer.Application.DTOs.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
+using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Query;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Baskets.Core.Mapping;
@@ -18,21 +20,35 @@ public class BasketQueryService
     IBasketQueryService
 {
     private readonly IBasketQueryRepository _basketQueryRepository;
+    private readonly IBasketItemQueryService _basketItemService;
+
 
 
     public BasketQueryService(
-        IBasketQueryRepository basketQueryRepository
+        IBasketQueryRepository basketQueryRepository,
+        IBasketItemQueryService basketItemService
     )
         : base(basketQueryRepository)
     {
         _basketQueryRepository = basketQueryRepository;
+        _basketItemService = basketItemService;
     }
 
 
     public override async Task<BasketDto> ApplyMapperAsync(
         Basket entity)
     {
-        return BasketMapper.ToDto(entity);
+        var items = new List<BasketItemDto>();
+
+        foreach(var item in entity.BasketItems)
+        {
+            var itemDto = await _basketItemService
+                .ApplyMapperAsync(item);
+
+            items.Add(itemDto);
+        }
+
+        return BasketMapper.ToDto(entity, items);
     }
 
     public async Task<Result<BasketDto>> GetByUserAsync(

@@ -5,7 +5,7 @@ using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;
 public class Category 
-    : BaseEntity
+    : BaseTranslatable
 {
     public string Code { get; set; } = null!;
 
@@ -22,6 +22,11 @@ public class Category
     public List<CategoryTranslation> Translations { get; set; }
        = [];
 
+
+    public override string GetIdentificator()
+    {
+        return Code;
+    }
 
     public override string ToString()
     {

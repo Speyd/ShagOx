@@ -2,6 +2,6 @@
 public sealed record BasketItemSearchFilter
 (
     long? BasketId,
-    long? AdvertisementId,
+    long? AdvertisementVariantId,
     int? Quantity
 ) : BaseFilter();

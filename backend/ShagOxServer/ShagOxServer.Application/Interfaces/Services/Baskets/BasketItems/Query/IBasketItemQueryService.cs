@@ -20,7 +20,7 @@ public interface IBasketItemQueryService
         long basketId,
         PaginationParams pagination);
 
-    Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementAsync(
-        long advertisementId,
+    Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementVariantAsync(
+        long advertisementVariantId,
         PaginationParams pagination);
 }

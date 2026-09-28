@@ -5,13 +5,15 @@ namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDic
 public static class AttributeDictionaryValueMapper
 {
     public static AttributeDictionaryValueDto ToDto(
-        AttributeDictionaryValue value)
+        AttributeDictionaryValue value,
+        string? label)
     {
         return new AttributeDictionaryValueDto(
             value.Id,
             value.DictionaryId,
             value.Code,
-            value.Value
+            value.Value,
+            label
         );
     }
 }

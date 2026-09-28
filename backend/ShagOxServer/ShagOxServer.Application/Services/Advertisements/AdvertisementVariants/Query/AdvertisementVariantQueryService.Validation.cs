@@ -12,7 +12,7 @@ namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants
 
 public partial class AdvertisementVariantQueryService
 {
-    private Result<VariantAttributeDto> GetVariantAttributeDto(
+    private async Task<Result<VariantAttributeDto>> GetVariantAttributeDto(
         AttributeDefinition attribute,
         JsonElement element,
         Dictionary<long, AttributeDictionaryValue> valuesById)
@@ -40,7 +40,7 @@ public partial class AdvertisementVariantQueryService
                     element);
 
             case AttributeType.Select:
-                return GetSelectAttributeDto(
+                return await GetSelectAttributeDto(
                     attribute,
                     element,
                     valuesById);
@@ -54,10 +54,10 @@ public partial class AdvertisementVariantQueryService
     }
 
 
-    private Result<VariantAttributeDto> GetSelectAttributeDto(
-    AttributeDefinition attribute,
-    JsonElement element,
-    Dictionary<long, AttributeDictionaryValue> valuesById)
+    private async Task<Result<VariantAttributeDto>> GetSelectAttributeDto(
+        AttributeDefinition attribute,
+        JsonElement element,
+        Dictionary<long, AttributeDictionaryValue> valuesById)
     {
         if (attribute.DictionaryId is null)
         {
@@ -103,16 +103,15 @@ public partial class AdvertisementVariantQueryService
             return Result<VariantAttributeDto>.NotFound(
                 EntityNamesResources.AttributeDictionaryValue);
         }
+        var resuultDto = await _variantAttributeService
+            .ApplyMapperAsync(attribute,value);
 
-        return Result<VariantAttributeDto>.Success(
-            VariantAttributeMapper.ToSelectDto(
-                attribute,
-                value));
+        return Result<VariantAttributeDto>.Success(resuultDto);
     }
 
     private Result<VariantAttributeDto> GetStringAttributeDto(
-    AttributeDefinition attribute,
-    JsonElement element)
+        AttributeDefinition attribute,
+        JsonElement element)
     {
         if (element.ValueKind != JsonValueKind.String)
         {
@@ -128,8 +127,8 @@ public partial class AdvertisementVariantQueryService
                 element));
     }
     private Result<VariantAttributeDto> GetIntegerAttributeDto(
-    AttributeDefinition attribute,
-    JsonElement element)
+        AttributeDefinition attribute,
+        JsonElement element)
     {
         if (element.ValueKind != JsonValueKind.Number ||
             !element.TryGetInt64(out _))
@@ -146,8 +145,8 @@ public partial class AdvertisementVariantQueryService
                 element));
     }
     private Result<VariantAttributeDto> GetDecimalAttributeDto(
-    AttributeDefinition attribute,
-    JsonElement element)
+        AttributeDefinition attribute,
+        JsonElement element)
     {
         if (element.ValueKind != JsonValueKind.Number ||
             !element.TryGetDecimal(out _))
@@ -164,8 +163,8 @@ public partial class AdvertisementVariantQueryService
                 element));
     }
     private Result<VariantAttributeDto> GetBooleanAttributeDto(
-    AttributeDefinition attribute,
-    JsonElement element)
+        AttributeDefinition attribute,
+        JsonElement element)
     {
         if (element.ValueKind is not JsonValueKind.True &&
             element.ValueKind is not JsonValueKind.False)

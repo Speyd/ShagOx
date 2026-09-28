@@ -9,7 +9,7 @@ namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations
 public class QueryTranslationRepository<TEntity, TTranslator, TFilter>
     : QueryRepository<TTranslator, TFilter>, 
     ITranslationQueryRepository<TEntity, TTranslator, TFilter>
-    where TEntity: BaseEntity
+    where TEntity: BaseTranslatable
     where TTranslator : BaseTranslation<TEntity>
     where TFilter : BaseFilter
 {
@@ -28,7 +28,7 @@ public class QueryTranslationRepository<TEntity, TTranslator, TFilter>
 
         return await query
           .FirstOrDefaultAsync(x =>
-            x.GetIdentificator() == identificator &&
+            x.Translatable.GetIdentificator() == identificator &&
             x.Language == language);
     }
 

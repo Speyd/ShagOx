@@ -12,7 +12,6 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Core.Admin;
 
 [ApiController]
 [Route("api/admin/advertisements")]
-[Authorize(Roles = "Admin")]
 public class AdvertisementAdminCommandsController 
     : ApiController
 {
@@ -36,12 +35,6 @@ public class AdvertisementAdminCommandsController
         [FromRoute] long userId,
         [FromForm] AdvertisementCreateRequest request)
     {
-        foreach (var formField in Request.Form)
-        {
-            Console.WriteLine(
-                $"FORM: {formField.Key} = >>>{formField.Value}<<<");
-        }
-
         var result = await _createService
             .CreateAsync(request, userId);
 

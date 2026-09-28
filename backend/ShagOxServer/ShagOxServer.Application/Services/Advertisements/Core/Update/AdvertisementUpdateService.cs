@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -8,10 +9,12 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.Validations;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Update;
 public class AdvertisementUpdateService 
@@ -21,6 +24,8 @@ public class AdvertisementUpdateService
     private readonly IAdvertisementImageService _imageService;
     private readonly AdvertisementValidator _validator;
     private readonly AdvertisementUpdateValidator _validatorUpdate;
+
+    private readonly AdvertisementVariantValidator _variantValidator;
 
     private readonly IAdvertisementVariantUpdateService _variantUpdateService;
 
@@ -33,6 +38,7 @@ public class AdvertisementUpdateService
         IAdvertisementImageService imageService,
         AdvertisementValidator validator,
         AdvertisementUpdateValidator validatorUpdate,
+        AdvertisementVariantValidator variantValidator,
         IAdvertisementVariantUpdateService variantUpdateService,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementUpdateService> logger)
@@ -40,6 +46,7 @@ public class AdvertisementUpdateService
         _validator = validator;
         _advertRepository = advertRepository;
         _validatorUpdate = validatorUpdate;
+        _variantValidator = variantValidator;
         _imageService = imageService;
         _variantUpdateService = variantUpdateService;
         _unitOfWork = unitOfWork;
@@ -61,16 +68,12 @@ public class AdvertisementUpdateService
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error!);
 
-        if (request.Variants is not null)
-        {
-            var duplicateExists = _validator
-                .HasDuplicateAttributes(request.Variants);
+        var variantsResult = ParseAndValidateVariants(request.Variants);
 
-            if (!duplicateExists.IsSuccess)
-            {
-                return Result<UpdateResponse>
-                    .Fail(duplicateExists.Error);
-            }
+        if (!variantsResult.IsSuccess)
+        {
+            return Result<UpdateResponse>
+                .Fail(variantsResult.Error!);
         }
 
         await _unitOfWork.BeginTransactionAsync();
@@ -94,12 +97,16 @@ public class AdvertisementUpdateService
                     .Fail(imagesResult.Error!);
             }
 
-            if (request.Variants is not null)
+            if (variantsResult.Value is not null)
             {
-                foreach (var variant in request.Variants)
+                var updateResult = await UpdateVariantsAsync(variantsResult.Value);
+
+                if (!updateResult.IsSuccess)
                 {
-                    await _variantUpdateService
-                        .UpdateInternalAsync(variant.Key, variant.Value);
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<UpdateResponse>
+                        .Fail(updateResult.Error!);
                 }
             }
 
@@ -131,5 +138,80 @@ public class AdvertisementUpdateService
             return Result<UpdateResponse>
                     .Fail(EntityErrorResources.AdvertisementUpdateFailed);
         }
+    }
+
+    private Result<Dictionary<long, AdvertisementVariantUpdateRequest>?>
+        ParseAndValidateVariants(string? variantsJson)
+    {
+        if (string.IsNullOrWhiteSpace(variantsJson))
+        {
+            return Result<Dictionary<long,
+                    AdvertisementVariantUpdateRequest>?>
+                .Success(null);
+        }
+
+        try
+        {
+            var variants = JsonSerializer.Deserialize<
+                Dictionary<long, AdvertisementVariantUpdateRequest>
+                    >(variantsJson);
+
+            if (variants is null)
+            {
+                return Result<Dictionary<long,
+                        AdvertisementVariantUpdateRequest>?>
+                    .Success(null);
+            }
+
+            var duplicateExists = _variantValidator
+                .ValidateUniqueAttributes(
+                    variants.Values
+                        .Select(x => x.Attributes)
+                        .ToList()
+                );
+
+            if (!duplicateExists.IsSuccess)
+            {
+                return Result<Dictionary<long, 
+                        AdvertisementVariantUpdateRequest>?>
+                    .Fail(duplicateExists.Error!);
+            }
+
+            return Result<Dictionary<long,
+                    AdvertisementVariantUpdateRequest>?>
+                .Success(variants);
+        }
+        catch (JsonException)
+        {
+            return Result<Dictionary<long, AdvertisementVariantUpdateRequest>?>
+                .Fail(ValidationResources.InvalidJson);
+        }
+    }
+
+    private async Task<Result<bool>> UpdateVariantsAsync(
+        Dictionary<long, AdvertisementVariantUpdateRequest> variants)
+    {
+        foreach (var variant in variants)
+        {
+            var updateResult = await _variantUpdateService
+                .UpdateInternalAsync(
+                    variant.Key,
+                    variant.Value
+                );
+
+            if (!updateResult.IsSuccess)
+            {
+                _logger.LogError(
+                    "Failed to update advertisement variant(variant update). " +
+                    "VariantId: {VariantId}, Error: {Error}",
+                    variant.Key,
+                    updateResult.Error
+                );
+
+                return Result<bool>.Fail(updateResult.Error!);
+            }
+        }
+
+        return Result<bool>.Success(true);
     }
 }

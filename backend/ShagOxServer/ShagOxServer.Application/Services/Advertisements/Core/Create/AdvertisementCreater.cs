@@ -20,7 +20,9 @@ public static class AdvertisementCreater
             ConditionId = request.ConditionId,
             SellerId = userId,
 
-            Attributes = request.Attributes ?? JsonDocument.Parse("{}")
+            Attributes = string.IsNullOrWhiteSpace(request.Attributes)
+                ? JsonDocument.Parse("{}")
+                : JsonDocument.Parse(request.Attributes)
         };
     }
 }

@@ -132,8 +132,14 @@
   <data name="AttributeMustBeString" xml:space="preserve">
     <value>Атрибут «{0}» має бути рядком.</value>
   </data>
+  <data name="AttributeMustBeVariant" xml:space="preserve">
+    <value>Атрибут можна використовувати лише у варіанті оголошення.</value>
+  </data>
   <data name="AttributeMustContainDictionaryValueId" xml:space="preserve">
     <value>Атрибут «{0}» має містити ідентифікатор значення довідника.</value>
+  </data>
+  <data name="InvalidJson" xml:space="preserve">
+    <value>Невірний формат JSON.</value>
   </data>
   <data name="UnsupportedAttributeType" xml:space="preserve">
     <value>Непідтримуваний тип атрибута: {0}.</value>

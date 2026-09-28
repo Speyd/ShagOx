@@ -9,13 +9,14 @@ using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Val
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Update;
 public class AdvertisementVariantUpdateService
     : IAdvertisementVariantUpdateService
 {
-    private readonly IRepository<AdvertisementVariant> _valueRepository;
-    private readonly AdvertisementVariantValidator _valueValidator;
+    private readonly IRepository<AdvertisementVariant> _variantRepository;
+    private readonly AdvertisementVariantValidator _variantValidator;
 
     private readonly AdvertisementValidator _advertValidator;
 
@@ -25,14 +26,14 @@ public class AdvertisementVariantUpdateService
 
 
     public AdvertisementVariantUpdateService(
-        IRepository<AdvertisementVariant> valueRepository,
-        AdvertisementVariantValidator valueValidator,
+        IRepository<AdvertisementVariant> variantRepository,
+        AdvertisementVariantValidator variantValidator,
         AdvertisementValidator advertValidator,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantUpdateService> logger)
     {
-        _valueRepository = valueRepository;
-        _valueValidator = valueValidator;
+        _variantRepository = variantRepository;
+        _variantValidator = variantValidator;
         _advertValidator = advertValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -74,19 +75,19 @@ public class AdvertisementVariantUpdateService
     }
 
     public async Task<Result<UpdateResponse>> UpdateInternalAsync(
-        long valueId,
+        long variantId,
         AdvertisementVariantUpdateRequest request)
     {
-        var value = await _valueValidator.GetByIdAsync(valueId);
+        var variant = await _variantValidator.GetByIdAsync(variantId);
 
-        if (!value.IsSuccess)
+        if (!variant.IsSuccess)
         {
             return Result<UpdateResponse>
-                .Fail(value.Error);
+                .Fail(variant.Error);
         }
 
         var validation = await ValidateUpdatesAsync(
-            value.Value!,
+            variant.Value!,
             request);
 
         if (!validation.IsSuccess)
@@ -96,7 +97,7 @@ public class AdvertisementVariantUpdateService
         }
 
         var updatedCount = AdvertisementVariantUpdater
-            .ApplyUpdates(value.Value!, request);
+            .ApplyUpdates(variant.Value!, request);
 
         var result = new UpdateResponse(
             updatedCount,
@@ -107,7 +108,7 @@ public class AdvertisementVariantUpdateService
             return Result<UpdateResponse>.Success(result);
         }
 
-        _valueRepository.Update(value.Value!);
+        _variantRepository.Update(variant.Value!);
 
         return Result<UpdateResponse>.Success(result);
     }
@@ -131,12 +132,28 @@ public class AdvertisementVariantUpdateService
         if (attributes != variant.Attributes ||
             advertId != variant.AdvertisementId)
         {
-            var variantExists = await _valueValidator
+            var variantExists = await _variantValidator
                 .NotExistsAsync(advertId, attributes);
 
             if (!variantExists.IsSuccess)
                 return Result<bool>.Fail(variantExists.Error);
         }
+
+        if (request.Attributes is not null)
+        {
+            
+            var isVariantExists = await _variantValidator
+                .ValidateVariantAttributesAsync(
+                    advertId,
+                    request.Attributes);
+
+            if (!isVariantExists.IsSuccess)
+            {
+                return Result<bool>
+                    .Fail(isVariantExists.Error);
+            }
+        }
+
 
         return Result<bool>.Success(true);
     }

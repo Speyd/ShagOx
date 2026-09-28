@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Domain.Entities.Advertisements;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Update;
 public static class AdvertisementUpdater
@@ -17,7 +18,6 @@ public static class AdvertisementUpdater
             count++;
         }
 
-
         if (request.Description is not null)
         {
             advert.Description = request.Description;
@@ -30,13 +30,11 @@ public static class AdvertisementUpdater
             count++;
         }
 
-
         if (request.CurrencyId.HasValue)
         {
             advert.CurrencyId = request.CurrencyId.Value;
             count++;
         }
-
 
         if (request.ConditionId.HasValue)
         {
@@ -44,13 +42,11 @@ public static class AdvertisementUpdater
             count++;
         }
 
-
         if (request.CategoryId.HasValue)
         {
             advert.CategoryId = request.CategoryId.Value;
             count++;
         }
-
 
         if (request.BuyerId.HasValue)
         {
@@ -58,13 +54,11 @@ public static class AdvertisementUpdater
             count++;
         }
 
-
-        if (request.Attributes is not null)
+        if (!string.IsNullOrWhiteSpace(request.Attributes))
         {
-            advert.Attributes = request.Attributes;
+            advert.Attributes = JsonDocument.Parse(request.Attributes);
             count++;
         }
-
 
         return count;
     }

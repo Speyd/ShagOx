@@ -132,8 +132,14 @@
   <data name="AttributeMustBeString" xml:space="preserve">
     <value>Das Attribut „{0}“ muss eine Zeichenkette sein.</value>
   </data>
+  <data name="AttributeMustBeVariant" xml:space="preserve">
+    <value>Das Attribut kann nur in einer Anzeigenvariante verwendet werden.</value>
+  </data>
   <data name="AttributeMustContainDictionaryValueId" xml:space="preserve">
     <value>Das Attribut „{0}“ muss die ID eines Wörterbuchwerts enthalten.</value>
+  </data>
+  <data name="InvalidJson" xml:space="preserve">
+    <value>Ungültiges JSON-Format.</value>
   </data>
   <data name="UnsupportedAttributeType" xml:space="preserve">
     <value>Nicht unterstützter Attributtyp: {0}.</value>

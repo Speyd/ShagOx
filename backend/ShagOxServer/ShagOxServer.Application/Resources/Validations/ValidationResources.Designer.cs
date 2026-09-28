@@ -106,11 +106,29 @@ namespace ShagOxServer.Application.Resources.Validations {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The attribute can only be used in an advertisement variant..
+        /// </summary>
+        internal static string AttributeMustBeVariant {
+            get {
+                return ResourceManager.GetString("AttributeMustBeVariant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Attribute &apos;{0}&apos; must contain a dictionary value ID..
         /// </summary>
         internal static string AttributeMustContainDictionaryValueId {
             get {
                 return ResourceManager.GetString("AttributeMustContainDictionaryValueId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid JSON format..
+        /// </summary>
+        internal static string InvalidJson {
+            get {
+                return ResourceManager.GetString("InvalidJson", resourceCulture);
             }
         }
         

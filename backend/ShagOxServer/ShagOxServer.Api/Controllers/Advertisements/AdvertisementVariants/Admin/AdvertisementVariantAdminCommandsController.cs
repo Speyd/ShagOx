@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.AdvertisementVariants.Admi
 
 [ApiController]
 [Route("api/admin/advertisement-variants")]
-[Authorize(Roles = "Admin")]
+
 public class AdvertisementVariantAdminCommandsController
     : ApiController
 {

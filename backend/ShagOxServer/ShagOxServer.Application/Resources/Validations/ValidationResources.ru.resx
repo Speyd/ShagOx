@@ -132,8 +132,14 @@
   <data name="AttributeMustBeString" xml:space="preserve">
     <value>Атрибут «{0}» должен быть строкой.</value>
   </data>
+  <data name="AttributeMustBeVariant" xml:space="preserve">
+    <value>Атрибут можно использовать только в варианте объявления.</value>
+  </data>
   <data name="AttributeMustContainDictionaryValueId" xml:space="preserve">
     <value>Атрибут «{0}» должен содержать идентификатор значения справочника.</value>
+  </data>
+  <data name="InvalidJson" xml:space="preserve">
+    <value>Неверный формат JSON.</value>
   </data>
   <data name="UnsupportedAttributeType" xml:space="preserve">
     <value>Неподдерживаемый тип атрибута: {0}.</value>

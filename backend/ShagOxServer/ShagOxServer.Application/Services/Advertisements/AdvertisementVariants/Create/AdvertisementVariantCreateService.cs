@@ -3,9 +3,11 @@ using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
+using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
@@ -24,13 +26,14 @@ public class AdvertisementVariantCreateService
     public AdvertisementVariantCreateService(
         IRepository<AdvertisementVariant> variantRepository,
         AdvertisementVariantValidator variantValidator,
+        AdvertisementValidator advertValidator,
+        IAttributeDefinitionQueryRepository attributeRepository,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantCreateService> logger)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;
         _logger = logger;
-
         _unitOfWork = unitOfWork;
     }
 
@@ -68,6 +71,7 @@ public class AdvertisementVariantCreateService
                 .Fail(EntityErrorResources.AdvertisementVariantCreateFailed);
         }
     }
+
     public async Task<Result<CreateResponse>> CreateInternalAsync(
         AdvertisementVariantCreateRequest request)
     {
@@ -81,6 +85,18 @@ public class AdvertisementVariantCreateService
             return Result<CreateResponse>
                 .Fail(variantValidation.Error);
         }
+
+        var isVariantExists = await _variantValidator
+            .ValidateVariantAttributesAsync(
+                request.AdvertisementId,
+                request.Attributes);
+
+        if (!isVariantExists.IsSuccess)
+        {
+            return Result<CreateResponse>
+                .Fail(isVariantExists.Error);
+        }
+
 
         var variant = AdvertisementVariantCreater.Create(request);
 

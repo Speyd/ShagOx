@@ -132,8 +132,14 @@
   <data name="AttributeMustBeString" xml:space="preserve">
     <value>Attribute '{0}' must be a string.</value>
   </data>
+  <data name="AttributeMustBeVariant" xml:space="preserve">
+    <value>The attribute can only be used in an advertisement variant.</value>
+  </data>
   <data name="AttributeMustContainDictionaryValueId" xml:space="preserve">
     <value>Attribute '{0}' must contain a dictionary value ID.</value>
+  </data>
+  <data name="InvalidJson" xml:space="preserve">
+    <value>Invalid JSON format.</value>
   </data>
   <data name="UnsupportedAttributeType" xml:space="preserve">
     <value>Unsupported attribute type: {0}.</value>

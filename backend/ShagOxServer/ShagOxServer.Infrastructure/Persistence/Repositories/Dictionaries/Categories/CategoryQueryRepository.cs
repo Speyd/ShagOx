@@ -23,6 +23,7 @@ public class CategoryQueryRepository
     {
         return query.WithIncludes();
     }
+
     protected override IQueryable<Category> ApplyFilter(
         IQueryable<Category> query,
         CategorySearchFilter filter)

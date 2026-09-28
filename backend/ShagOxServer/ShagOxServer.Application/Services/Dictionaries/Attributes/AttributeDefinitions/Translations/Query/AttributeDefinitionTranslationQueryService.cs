@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.A
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Query;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Mapping;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions.Translations;
 
@@ -10,6 +11,7 @@ namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDef
 public class AttributeDefinitionTranslationQueryService
     : BaseTranslationQueryService<
         AttributeDefinitionTranslationDto,
+        AttributeDefinition,
         AttributeDefinitionTranslation,
         AttributeDefinitionTranslationSearchFilter
         >,

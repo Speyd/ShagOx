@@ -4,9 +4,11 @@ using ShagOxServer.Domain.Base;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
-public class ExistsTranslationRepository<T> 
-    : ExistsRepository<T>, ITranslationExistsRepository<T>
-    where T: BaseEntity
+public class ExistsTranslationRepository<TEntity, TTranslation> 
+    : ExistsRepository<TTranslation>, 
+    ITranslationExistsRepository<TEntity, TTranslation>
+    where TEntity :BaseEntity
+    where TTranslation : BaseTranslation<TEntity>
 {
     public ExistsTranslationRepository(AppDbContext db)
         : base(db)
@@ -17,23 +19,37 @@ public class ExistsTranslationRepository<T>
         long translatableId,
         string language)
     {
-        return await _db.Set<T>()
+        return await _db.Set<TEntity>()
             .AnyAsync(x =>
                 EF.Property<long>(
                     x,
-                    nameof(BaseTranslation<T>.TranslatableId)) == translatableId &&
+                    nameof(BaseTranslation<TTranslation>.TranslatableId)) == translatableId &&
                 EF.Property<string>(
                     x,
-                    nameof(BaseTranslation<T>.Language)) == language);
+                    nameof(BaseTranslation<TTranslation>.Language)) == language);
     }
 
     public virtual async Task<bool> ExistsByLanguageAsync(
         string language)
     {
-        return await _db.Set<T>()
+        return await _db.Set<TEntity>()
             .AnyAsync(x =>
                 EF.Property<string>(
                     x,
-                    nameof(BaseTranslation<T>.Language)) == language);
+                    nameof(BaseTranslation<TTranslation>.Language)) == language);
+    }
+
+    public virtual async Task<bool> ExistsByIdentificatorAsync(
+        string identificator,
+        string language)
+    {
+        IQueryable<TTranslation> query = _db.Set<TTranslation>();
+
+        query = ApplyIncludes(query);
+
+        return await query
+            .AnyAsync(x =>
+                x.GetIdentificator() == identificator &&
+                x.Language == language);
     }
 }

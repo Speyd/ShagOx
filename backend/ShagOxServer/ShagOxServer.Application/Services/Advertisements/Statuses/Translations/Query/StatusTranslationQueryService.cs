@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.T
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Query;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Mapping;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;
 
@@ -10,6 +11,7 @@ namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations
 public class StatusTranslationQueryService
     : BaseTranslationQueryService<
         StatusTranslationDto,
+        Status,
         StatusTranslation,
         StatusTranslationSearchFilter
         >,

@@ -1,49 +1,18 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
-using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
-using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Translations.Validator;
 public class RegionTranslationValidator
-    : BaseTranslationValidator<RegionTranslation>
+    : BaseTranslationValidator<Region,
+        RegionTranslation>
 {
-    private readonly IRegionTranslationExistsRepository _regionExistsRepository;
-
-
     public RegionTranslationValidator(
         IRepository<RegionTranslation> regionRepository,
         IRegionTranslationExistsRepository regionExistsRepository
     ) : base(regionRepository, regionExistsRepository)
     {
-        _regionExistsRepository = regionExistsRepository;
-    }
-
-
-    public async Task<Result<bool>> ExistsByNameAsync(
-        string name)
-    {
-        if (!await _regionExistsRepository
-            .ExistsByNameAsync(name))
-        {
-            return Result<bool>.NotFound(
-                EntityNamesResources.RegionTranslation);
-        }
-
-        return Result<bool>.Success(true);
-    }
-
-    public async Task<Result<bool>> NotExistsByNameAsync(
-        string name)
-    {
-        if (await _regionExistsRepository
-            .ExistsByNameAsync(name))
-        {
-            return Result<bool>.AlreadyExists(
-                EntityNamesResources.RegionTranslation);
-        }
-
-        return Result<bool>.Success(true);
     }
 }

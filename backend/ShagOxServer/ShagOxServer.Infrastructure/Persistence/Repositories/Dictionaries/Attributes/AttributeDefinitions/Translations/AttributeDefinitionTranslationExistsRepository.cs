@@ -1,23 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 public class AttributeDefinitionTranslationExistsRepository
-    : ExistsTranslationRepository<AttributeDefinitionTranslation>,
+    : ExistsTranslationRepository<AttributeDefinition,
+        AttributeDefinitionTranslation>,
       IAttributeDefinitionTranslationExistsRepository
 {
     public AttributeDefinitionTranslationExistsRepository(AppDbContext db)
         : base(db)
     { }
 
-
-    public async Task<bool> ExistsByNameAsync(
-        string name)
+    protected override IQueryable<AttributeDefinitionTranslation> ApplyIncludes(
+        IQueryable<AttributeDefinitionTranslation> query)
     {
-        return await _db.CityTranslations
-            .AnyAsync(x => x.Name == name);
+        return query.WithIncludes();
     }
 }

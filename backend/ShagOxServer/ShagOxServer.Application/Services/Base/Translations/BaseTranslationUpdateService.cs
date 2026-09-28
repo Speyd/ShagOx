@@ -8,12 +8,12 @@ public abstract class BaseTranslationUpdateService<TObject, TTranslation>
     where TTranslation : BaseTranslation<TObject>
 {
     protected readonly BaseValidator<TObject> _objectValidator;
-    protected readonly BaseTranslationValidator<TTranslation> _translationValidator;
+    protected readonly BaseTranslationValidator<TObject, TTranslation> _translationValidator;
 
 
     public BaseTranslationUpdateService(
         BaseValidator<TObject> objectValidator,
-        BaseTranslationValidator<TTranslation> translationValidator
+        BaseTranslationValidator<TObject, TTranslation> translationValidator
         )
     {
         _objectValidator = objectValidator;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.Domain.Filters.Specification.Conditions.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -8,7 +9,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditi
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Translations;
 public class ConditionTranslationQueryRepository
-    : QueryTranslationRepository<ConditionTranslation, 
+    : QueryTranslationRepository<Condition,
+        ConditionTranslation, 
         ConditionTranslationSearchFilter>,
       IConditionTranslationQueryRepository
 {
@@ -28,15 +30,5 @@ public class ConditionTranslationQueryRepository
        ConditionTranslationSearchFilter filter)
     {
         return query.Filter(filter);
-    }
-
-    public override async Task<ConditionTranslation?> GetByIdentificatorAsync(
-        string identificator,
-        string language)
-    {
-        return await _db.ConditionTranslations
-          .FirstOrDefaultAsync(x =>
-            x.Translatable.Code == identificator &&
-            x.Language == language);
     }
 }

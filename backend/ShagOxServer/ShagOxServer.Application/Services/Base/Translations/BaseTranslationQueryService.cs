@@ -8,19 +8,20 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
-public abstract class BaseTranslationQueryService<TDto, TEntity, TFilter>
-    : BaseQueryService<TDto, TEntity, TFilter>,
-      ITranslationQueryService<TDto, TEntity, TFilter>
+public abstract class BaseTranslationQueryService<TDto, TEntity, TTranslation, TFilter>
+    : BaseQueryService<TDto, TTranslation, TFilter>,
+      ITranslationQueryService<TDto, TTranslation, TFilter>
     where TDto : BaseDto
     where TEntity : BaseEntity
+    where TTranslation : BaseTranslation<TEntity>
     where TFilter : BaseFilter
 {
-    protected readonly ITranslationQueryRepository<TEntity, TFilter>
+    protected readonly ITranslationQueryRepository<TEntity, TTranslation, TFilter>
         _queryTranslationRepository;
 
 
     public BaseTranslationQueryService(
-        ITranslationQueryRepository<TEntity, TFilter> queryRepository
+        ITranslationQueryRepository<TEntity, TTranslation, TFilter> queryRepository
      )
         : base(queryRepository)
     {

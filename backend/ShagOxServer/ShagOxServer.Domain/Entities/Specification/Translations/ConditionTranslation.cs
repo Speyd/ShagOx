@@ -6,6 +6,12 @@ public class ConditionTranslation
 {
     public string Name { get; set; } = null!;
 
+
+    public override string GetIdentificator()
+    {
+        return Name;
+    }
+
     public override string ToString()
     {
         return $"{Name}";

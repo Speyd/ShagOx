@@ -1,36 +1,36 @@
 ﻿using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
-using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Validator;
-using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Validator;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
-public class AttributeDefinitionTranslationUpdateService
-    : BaseTranslationUpdateService<AttributeDefinition,
-        AttributeDefinitionTranslation>,
-    IAttributeDefinitionTranslationUpdateService
+namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Update;
+
+public class AttributeDictionaryValueTranslationUpdateService
+    : BaseTranslationUpdateService<AttributeDictionaryValue, AttributeDictionaryValueTranslation>,
+    IAttributeDictionaryValueTranslationUpdateService
 {
-    private readonly IRepository<AttributeDefinitionTranslation> _attributeRepository;
-    private readonly AttributeDefinitionTranslationValidator _attributeTranslationValidator;
+    private readonly IRepository<AttributeDictionaryValueTranslation> _attributeRepository;
+    private readonly AttributeDictionaryValueTranslationValidator _attributeTranslationValidator;
 
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<AttributeDefinitionTranslationUpdateService> _logger;
+    private readonly ILogger<AttributeDictionaryValueTranslationUpdateService> _logger;
 
 
-    public AttributeDefinitionTranslationUpdateService(
-        IRepository<AttributeDefinitionTranslation> attributeRepository,
-        AttributeDefinitionTranslationValidator attributeTranslationValidator,
-        AttributeDefinitionValidator attributeValidator,
+    public AttributeDictionaryValueTranslationUpdateService(
+        IRepository<AttributeDictionaryValueTranslation> attributeRepository,
+        AttributeDictionaryValueTranslationValidator attributeTranslationValidator,
+        AttributeDictionaryValueValidator attributeValidator,
         IUnitOfWork unitOfWork,
-        ILogger<AttributeDefinitionTranslationUpdateService> logger
+        ILogger<AttributeDictionaryValueTranslationUpdateService> logger
     ) : base(attributeValidator, attributeTranslationValidator)
     {
         _attributeRepository = attributeRepository;
@@ -42,7 +42,7 @@ public class AttributeDefinitionTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long attributeTranslationId,
-        AttributeDefinitionTranslationUpdateRequest request)
+        AttributeDictionaryValueTranslationUpdateRequest request)
     {
         var attribute = await _attributeTranslationValidator
             .GetByIdAsync(attributeTranslationId);
@@ -58,7 +58,7 @@ public class AttributeDefinitionTranslationUpdateService
             return Result<UpdateResponse>.Fail(validation.Error);
 
 
-        var updatedCount = AttributeDefinitionTranslationUpdater
+        var updatedCount = AttributeDictionaryValueTranslationUpdater
             .ApplyUpdates(attribute.Value!, request);
 
         var result = new UpdateResponse(
@@ -76,17 +76,17 @@ public class AttributeDefinitionTranslationUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
             _logger.LogError(
                ex,
-               "Failed to delete attribute definition translation. Id: {Id}",
+               "Failed to delete attribute dictionary value translation. Id: {Id}",
                attributeTranslationId);
 
             return Result<UpdateResponse>.Fail(
-                EntityErrorResources.AttributeDefinitionTranslationUpdateFailed);
+                EntityErrorResources.AttributeDictionaryValueTranslationUpdateFailed);
         }
 
         return Result<UpdateResponse>.Success(result);

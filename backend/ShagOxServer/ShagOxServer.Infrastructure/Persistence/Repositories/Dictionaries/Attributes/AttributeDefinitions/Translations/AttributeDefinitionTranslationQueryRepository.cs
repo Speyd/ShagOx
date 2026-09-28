@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -8,7 +9,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attribut
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 public class AttributeDefinitionTranslationQueryRepository
-    : QueryTranslationRepository<AttributeDefinitionTranslation,
+    : QueryTranslationRepository<AttributeDefinition,
+        AttributeDefinitionTranslation,
         AttributeDefinitionTranslationSearchFilter>,
       IAttributeDefinitionTranslationQueryRepository
 {
@@ -28,15 +30,5 @@ public class AttributeDefinitionTranslationQueryRepository
        AttributeDefinitionTranslationSearchFilter filter)
     {
         return query.Filter(filter);
-    }
-
-    public override async Task<AttributeDefinitionTranslation?> GetByIdentificatorAsync(
-        string identificator,
-        string language)
-    {
-        return await _db.AttributeDefinitionTranslations
-          .FirstOrDefaultAsync(x =>
-            x.Translatable.Key == identificator &&
-            x.Language == language);
     }
 }

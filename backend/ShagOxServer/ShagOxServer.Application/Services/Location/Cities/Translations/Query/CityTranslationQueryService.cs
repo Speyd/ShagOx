@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translati
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Query;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Mapping;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Filters.Location.Cities.Translations;
 
@@ -10,6 +11,7 @@ namespace ShagOxServer.Application.Services.Location.Cities.Translations.Query;
 public class CityTranslationQueryService
     : BaseTranslationQueryService<
         CityTranslationDto,
+        City,
         CityTranslation,
         CityTranslationSearchFilter
         >,

@@ -13,4 +13,7 @@ public abstract class BaseTranslation<T>
     public T Translatable { get; set; } = null!;
 
     public string Language { get; set; } = null!;
+
+
+    public abstract string GetIdentificator();
 }

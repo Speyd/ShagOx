@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translat
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Query;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Mapping;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Filters.Location.Regions.Translations;
 
@@ -10,6 +11,7 @@ namespace ShagOxServer.Application.Services.Location.Regions.Translations.Query;
 public class RegionTranslationQueryService
     : BaseTranslationQueryService<
         RegionTranslationDto,
+        Region,
         RegionTranslation,
         RegionTranslationSearchFilter
         >,

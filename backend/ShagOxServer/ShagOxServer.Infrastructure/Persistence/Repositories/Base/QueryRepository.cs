@@ -7,7 +7,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 public class QueryRepository<TEntity, TFilter>
-    : RepositoryContext, 
+    : RepositoryContext<TEntity>, 
     IQueryRepository<TEntity, TFilter>
     where TEntity : BaseEntity
     where TFilter : BaseFilter
@@ -50,12 +50,6 @@ public class QueryRepository<TEntity, TFilter>
 
         return await query
             .ToPagedResultAsync(pagination);
-    }
-
-    protected virtual IQueryable<TEntity> ApplyIncludes(
-        IQueryable<TEntity> query)
-    {
-        return query;
     }
 
     protected virtual IQueryable<TEntity> ApplyFilter(

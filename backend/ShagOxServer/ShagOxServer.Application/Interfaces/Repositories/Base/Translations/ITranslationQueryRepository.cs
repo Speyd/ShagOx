@@ -3,16 +3,17 @@ using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
-public interface ITranslationQueryRepository<TEntity, TFilter>
-    : IQueryRepository<TEntity, TFilter>
+public interface ITranslationQueryRepository<TEntity, TTranslation, TFilter>
+    : IQueryRepository<TTranslation, TFilter>
     where TEntity : BaseEntity
+    where TTranslation : BaseTranslation<TEntity>
     where TFilter : BaseFilter
 {
-    Task<PagedResult<TEntity>> GetPagedAsync(
+    Task<PagedResult<TTranslation>> GetPagedAsync(
        PaginationParams pagination,
        string language);
 
-    Task<TEntity?> GetByIdentificatorAsync(
+    Task<TTranslation?> GetByIdentificatorAsync(
         string identificator,
         string language);
 }

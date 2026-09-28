@@ -1,10 +1,11 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Filters.Location.Cities.Translations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
 public interface ICityTranslationQueryRepository
-    : ITranslationQueryRepository<CityTranslation, 
+    : ITranslationQueryRepository<City, CityTranslation, 
         CityTranslationSearchFilter>
 {
 }

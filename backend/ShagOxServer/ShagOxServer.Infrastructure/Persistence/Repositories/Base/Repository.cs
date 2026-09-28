@@ -3,9 +3,10 @@ using ShagOxServer.Domain.Base;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base;
-public  class Repository<T>
-    : RepositoryContext, IRepository<T>
-    where T : BaseEntity
+public  class Repository<TEntity>
+    : RepositoryContext<TEntity>, 
+    IRepository<TEntity>
+    where TEntity : BaseEntity
 {
     public Repository(AppDbContext db)
         : base(db)
@@ -13,33 +14,33 @@ public  class Repository<T>
     }
 
 
-    public virtual async Task<T?> GetByIdAsync(
+    public virtual async Task<TEntity?> GetByIdAsync(
         long id)
     {
-        return await _db.Set<T>()
+        return await _db.Set<TEntity>()
             .FindAsync(id);
     }
 
     public virtual void Add(
-        T entity)
+        TEntity entity)
     {
-        _db.Set<T>()
+        _db.Set<TEntity>()
             .Add(entity);
     }
 
     public virtual void Delete(
-        T entity)
+        TEntity entity)
     {
-        _db.Set<T>()
+        _db.Set<TEntity>()
             .Remove(entity);
     }
 
     public virtual bool Update(
-        T entity)
+        TEntity entity)
     {
         try
         {
-            _db.Set<T>()
+            _db.Set<TEntity>()
                 .Update(entity);
 
             return true;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Filters.Location.Cities.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -8,7 +9,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Trans
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Translations;
 public class CityTranslationQueryRepository
-    : QueryTranslationRepository<CityTranslation,
+    : QueryTranslationRepository<City,
+        CityTranslation,
         CityTranslationSearchFilter>,
       ICityTranslationQueryRepository
 {
@@ -28,15 +30,5 @@ public class CityTranslationQueryRepository
        CityTranslationSearchFilter filter)
     {
         return query.Filter(filter);
-    }
-
-    public override async Task<CityTranslation?> GetByIdentificatorAsync(
-        string identificator,
-        string language)
-    {
-        return await _db.CityTranslations
-          .FirstOrDefaultAsync(x =>
-            x.Translatable.Code == identificator &&
-            x.Language == language);
     }
 }

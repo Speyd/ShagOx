@@ -19,11 +19,11 @@ public static class BaseRepositoryDependencyInjection
         services.AddScoped(typeof(IQueryRepository<,>),
             typeof(QueryRepository<,>));
 
-        services.AddScoped(typeof(ITranslationExistsRepository<>),
-            typeof(ExistsTranslationRepository<>));
+        services.AddScoped(typeof(ITranslationExistsRepository<,>),
+            typeof(ExistsTranslationRepository<,>));
 
-        services.AddScoped(typeof(ITranslationQueryRepository<,>),
-            typeof(QueryTranslationRepository<,>));
+        services.AddScoped(typeof(ITranslationQueryRepository<,,>),
+            typeof(QueryTranslationRepository<,,>));
 
         return services;
     }

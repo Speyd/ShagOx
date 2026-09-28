@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Dictionaries.Translations.Attributes;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
@@ -28,6 +29,8 @@ public static class AttributeDictionaryValueDependencyInjections
             AttributeDictionaryValueDeleteService>();
 
         services.AddScoped<AttributeDictionaryValueValidator>();
+
+        services.AddAttributeValueTranslationApplication();
 
         return services;
     }

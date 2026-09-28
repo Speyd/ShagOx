@@ -5,16 +5,18 @@ using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
-public abstract class BaseTranslationValidator<TEntity>
-    : BaseValidator<TEntity>
+public abstract class BaseTranslationValidator<TEntity, TTranslation>
+    : BaseValidator<TTranslation>
     where TEntity : BaseEntity
+    where TTranslation : BaseTranslation<TEntity>
 {
-    private readonly ITranslationExistsRepository<TEntity> _translationExistsRepository;
+    private readonly ITranslationExistsRepository<TEntity, TTranslation> 
+        _translationExistsRepository;
 
 
     public BaseTranslationValidator(
-        IRepository<TEntity> entityRepository,
-        ITranslationExistsRepository<TEntity> translationExistsRepository
+        IRepository<TTranslation> entityRepository,
+        ITranslationExistsRepository<TEntity, TTranslation> translationExistsRepository
         )
         : base(entityRepository, translationExistsRepository)
     {
@@ -67,6 +69,34 @@ public abstract class BaseTranslationValidator<TEntity>
     {
         if (await _translationExistsRepository
                 .ExistsByLanguageAsync(language))
+        {
+            return Result<bool>.AlreadyExists(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> ExistsByIdentificatorAsync(
+        string identificator,
+        string language)
+    {
+        if (!await _translationExistsRepository
+                .ExistsByIdentificatorAsync(identificator, language))
+        {
+            return Result<bool>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByIdentificatorAsync(
+        string identificator, 
+        string language)
+    {
+        if (await _translationExistsRepository
+                .ExistsByIdentificatorAsync(identificator, language))
         {
             return Result<bool>.AlreadyExists(
                 EntityNameExtensions.GetLocalizedName<TEntity>());

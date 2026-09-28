@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes.Translations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes.Translations;
 public class ProductTypeTranslationExistsRepository
-    : ExistsTranslationRepository<ProductTypeTranslation>,
+    : ExistsTranslationRepository<ProductType, 
+        ProductTypeTranslation>,
       IProductTypeTranslationExistsRepository
 {
     public ProductTypeTranslationExistsRepository(AppDbContext db)
@@ -14,10 +16,9 @@ public class ProductTypeTranslationExistsRepository
     { }
 
 
-    public async Task<bool> ExistsByNameAsync(
-        string name)
+    protected override IQueryable<ProductTypeTranslation> ApplyIncludes(
+         IQueryable<ProductTypeTranslation> query)
     {
-        return await _db.ProductTypeTranslations
-            .AnyAsync(x => x.Name == name);
+        return query.WithIncludes();
     }
 }

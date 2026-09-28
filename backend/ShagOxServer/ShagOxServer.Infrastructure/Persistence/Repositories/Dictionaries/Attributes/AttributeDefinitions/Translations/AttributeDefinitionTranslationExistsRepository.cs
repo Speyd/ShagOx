@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
+using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -19,5 +20,12 @@ public class AttributeDefinitionTranslationExistsRepository
         IQueryable<AttributeDefinitionTranslation> query)
     {
         return query.WithIncludes();
+    }
+
+    protected override IQueryable<AttributeDefinitionTranslation> ApplyIdentificatorFilter(
+        IQueryable<AttributeDefinitionTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Key == identificator);
     }
 }

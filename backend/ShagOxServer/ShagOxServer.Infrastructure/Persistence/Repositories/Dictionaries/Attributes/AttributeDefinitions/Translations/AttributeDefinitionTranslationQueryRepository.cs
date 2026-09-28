@@ -31,4 +31,11 @@ public class AttributeDefinitionTranslationQueryRepository
     {
         return query.Filter(filter);
     }
+
+    protected override IQueryable<AttributeDefinitionTranslation> ApplyIdentificatorFilter(
+        IQueryable<AttributeDefinitionTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Key == identificator);
+    }
 }

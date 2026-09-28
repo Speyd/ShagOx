@@ -21,4 +21,11 @@ public class CategoryTranslationExistsRepository
     {
         return query.WithIncludes();
     }
+
+    protected override IQueryable<CategoryTranslation> ApplyIdentificatorFilter(
+        IQueryable<CategoryTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
+    }
 }

@@ -47,9 +47,16 @@ public class ExistsTranslationRepository<TEntity, TTranslation>
 
         query = ApplyIncludes(query);
 
-        return await query
-            .AnyAsync(x =>
-                x.Translatable.GetIdentificator() == identificator &&
-                x.Language == language);
+        query = ApplyIdentificatorFilter(query, identificator);
+
+        return await query.AnyAsync(
+            x => x.Language == language);
+    }
+
+    protected virtual IQueryable<TTranslation> ApplyIdentificatorFilter(
+        IQueryable<TTranslation> query,
+        string identificator)
+    {
+        return query;
     }
 }

@@ -26,9 +26,10 @@ public class QueryTranslationRepository<TEntity, TTranslator, TFilter>
 
         query = ApplyIncludes(query);
 
+        query = ApplyIdentificatorFilter(query, identificator);
+
         return await query
           .FirstOrDefaultAsync(x =>
-            x.Translatable.GetIdentificator() == identificator &&
             x.Language == language);
     }
 
@@ -45,5 +46,12 @@ public class QueryTranslationRepository<TEntity, TTranslator, TFilter>
                     x,
                     nameof(BaseTranslation<TTranslator>.Language)) == language)
            .ToPagedResultAsync(pagination);
+    }
+
+    protected virtual IQueryable<TTranslator> ApplyIdentificatorFilter(
+        IQueryable<TTranslator> query,
+        string identificator)
+    {
+        return query;
     }
 }

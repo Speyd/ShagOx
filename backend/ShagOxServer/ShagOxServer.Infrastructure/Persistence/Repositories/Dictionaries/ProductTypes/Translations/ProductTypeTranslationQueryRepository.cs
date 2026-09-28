@@ -32,4 +32,11 @@ public class ProductTypeTranslationQueryRepository
     {
         return query.Filter(filter);
     }
+
+    protected override IQueryable<ProductTypeTranslation> ApplyIdentificatorFilter(
+        IQueryable<ProductTypeTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
+    }
 }

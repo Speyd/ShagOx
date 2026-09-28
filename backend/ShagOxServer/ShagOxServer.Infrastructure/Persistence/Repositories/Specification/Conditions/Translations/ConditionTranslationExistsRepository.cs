@@ -22,4 +22,11 @@ public class ConditionTranslationExistsRepository
     {
         return query.WithIncludes();
     }
+
+    protected override IQueryable<ConditionTranslation> ApplyIdentificatorFilter(
+        IQueryable<ConditionTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
+    }
 }

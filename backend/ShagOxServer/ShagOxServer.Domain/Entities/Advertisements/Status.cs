@@ -3,7 +3,7 @@ using ShagOxServer.Domain.Entities.Advertisements.Translations;
 
 namespace ShagOxServer.Domain.Entities.Advertisements;
 public class Status
-    : BaseEntity
+    : BaseTranslatable
 {
     public string Code { get; set; } = null!;
 
@@ -12,6 +12,11 @@ public class Status
 
     public ICollection<StatusTranslation> Translations { get; set; }
         = [];
+
+    public override string GetIdentificator()
+    {
+        return Code;
+    }
 
     public override string ToString()
     {

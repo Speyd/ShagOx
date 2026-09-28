@@ -5,7 +5,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 namespace ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 public interface ITranslationQueryRepository<TEntity, TTranslation, TFilter>
     : IQueryRepository<TTranslation, TFilter>
-    where TEntity : BaseEntity
+    where TEntity : BaseTranslatable
     where TTranslation : BaseTranslation<TEntity>
     where TFilter : BaseFilter
 {

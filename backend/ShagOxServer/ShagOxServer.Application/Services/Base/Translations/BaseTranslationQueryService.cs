@@ -12,7 +12,7 @@ public abstract class BaseTranslationQueryService<TDto, TEntity, TTranslation, T
     : BaseQueryService<TDto, TTranslation, TFilter>,
       ITranslationQueryService<TDto, TTranslation, TFilter>
     where TDto : BaseDto
-    where TEntity : BaseEntity
+    where TEntity : BaseTranslatable
     where TTranslation : BaseTranslation<TEntity>
     where TFilter : BaseFilter
 {

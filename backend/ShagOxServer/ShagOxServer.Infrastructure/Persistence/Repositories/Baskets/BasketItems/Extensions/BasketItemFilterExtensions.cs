@@ -18,10 +18,10 @@ public static class BasketItemFilterExtensions
                     u.BasketId == filter.BasketId);
         }
 
-        if (filter.AdvertisementId.HasValue)
+        if (filter.AdvertisementVariantId.HasValue)
         {
             query = query.Where(u =>
-                    u.AdvertisementId == filter.AdvertisementId);
+                    u.AdvertisementVariantId == filter.AdvertisementVariantId);
         }
 
         if (filter.Quantity.HasValue)

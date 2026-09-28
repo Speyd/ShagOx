@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -32,13 +33,14 @@ public class BasketItemQueryRepository
         return query.Filter(filter);
     }
 
-    public async Task<PagedResult<BasketItem>> GetByAdvertisementAsync(
-        long advertisementId,
+    public async Task<PagedResult<BasketItem>> GetByAdvertisementVariantAsync(
+        long advertisementVariantId,
         PaginationParams pagination)
     {
         return await _db.BasketItems
             .WithIncludes()
-            .Where(x => x.AdvertisementId  == advertisementId)
+            .Where(x =>
+                x.AdvertisementVariantId == advertisementVariantId)
             .ToPagedResultAsync(pagination);
     }
 

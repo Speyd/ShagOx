@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Baskets.BasketItems;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
@@ -19,29 +20,36 @@ public class BasketItemQueryService
     IBasketItemQueryService
 {
     private readonly IBasketItemQueryRepository _itemQueryRepository;
+    private readonly IAdvertisementVariantQueryService _variantService;
+
 
 
     public BasketItemQueryService(
-        IBasketItemQueryRepository itemQueryRepository
+        IBasketItemQueryRepository itemQueryRepository,
+        IAdvertisementVariantQueryService variantService
     )
         : base(itemQueryRepository)
     {
         _itemQueryRepository = itemQueryRepository;
+        _variantService = variantService;
     }
 
 
     public override async Task<BasketItemDto> ApplyMapperAsync(
         BasketItem entity)
     {
-        return BasketItemMapper.ToDto(entity);
+        var variant = await _variantService
+            .ApplyMapperAsync(entity.AdvertisementVariant);
+
+        return BasketItemMapper.ToDto(entity, variant);
     }
 
-    public async Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementAsync(
-        long advertisementId,
+    public async Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementVariantAsync(
+        long advertisementVariantId,
         PaginationParams pagination)
     {
         var items = await _itemQueryRepository
-           .GetByAdvertisementAsync(advertisementId, pagination);
+           .GetByAdvertisementVariantAsync(advertisementVariantId, pagination);
 
         return await items.ToResultPagedAsync(ApplyMapperAsync);
     }

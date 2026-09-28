@@ -3,7 +3,7 @@ using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 public class AttributeDictionaryValue
-    : BaseEntity
+    : BaseTranslatable
 {
     public long DictionaryId { get; set; }
     public AttributeDictionary Dictionary { get; set; } = null!;
@@ -15,6 +15,11 @@ public class AttributeDictionaryValue
     public ICollection<AttributeDictionaryValueTranslation> Translations { get; set; }
         = [];
 
+
+    public override string GetIdentificator()
+    {
+        return Code;
+    }
 
     public override string ToString()
     {

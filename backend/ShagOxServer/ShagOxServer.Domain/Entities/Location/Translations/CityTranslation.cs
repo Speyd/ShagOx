@@ -7,7 +7,7 @@ public class CityTranslation
     public string Name { get; set; } = null!;
 
 
-    public override string GetIdentificator()
+    public override string GetTranslationValue()
     {
         return Name;
     }

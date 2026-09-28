@@ -15,24 +15,24 @@ public class BasketItemExistsRepository
     { }
 
     public async Task<bool> ExistsAsync(
-        long advertisementId,
+        long advertisementVariantId,
         long basketId)
     {
         return await _db.BasketItems
             .AnyAsync(c => 
-                c.AdvertisementId == advertisementId &&
+                c.AdvertisementVariantId == advertisementVariantId &&
                 c.BasketId == basketId
             );               
     }
 
-    public async Task<bool> ExistsByAdvertisementAsync(
+    public async Task<bool> ExistsByAdvertisementVariantAsync(
         long itemId,
-        long advertisementId)
+        long advertisementVariantId)
     {
         return await _db.BasketItems
             .AnyAsync(c =>
                 c.Id == itemId &&
-                c.AdvertisementId == advertisementId
+                c.AdvertisementVariantId == advertisementVariantId
             );
     }
 

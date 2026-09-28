@@ -6,5 +6,6 @@ public sealed record AttributeDictionaryValueDto
     long Id,
     long DictionaryId,
     string Code,
-    string? Value
+    string? Value,
+    string? Label
 ) : BaseDto(Id);

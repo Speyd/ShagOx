@@ -14,10 +14,10 @@ public static class BasketItemUpdater
         {
             if (request.Quantity.Value < 0)
                 basket.Quantity = 0;
-            //else if (request.Quantity.Value > basket.Advertisement.Stock)
-            //    basket.Quantity = basket.Advertisement.Stock;
-            //else
-            //    basket.Quantity = request.Quantity.Value;
+            else if (request.Quantity.Value > basket.AdvertisementVariant.Stock)
+                basket.Quantity = basket.AdvertisementVariant.Stock;
+            else
+                basket.Quantity = request.Quantity.Value;
 
             countUpdated++;
         }

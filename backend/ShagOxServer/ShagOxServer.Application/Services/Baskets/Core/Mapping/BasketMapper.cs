@@ -1,19 +1,18 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.Core;
-using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
+﻿using ShagOxServer.Application.DTOs.Baskets.BasketItems;
+using ShagOxServer.Application.DTOs.Baskets.Core;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.Core.Mapping;
 public static class BasketMapper
 {
     public static BasketDto ToDto(
-        Basket basket)
+        Basket basket,
+        List<BasketItemDto> items)
     {
         return new BasketDto(
             basket.Id,
             basket.UserId,
-            basket.BasketItems
-                .Select(BasketItemMapper.ToDto)
-                .ToList()
+            items
         );
     }
 }

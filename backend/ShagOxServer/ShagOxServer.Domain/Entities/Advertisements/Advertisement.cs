@@ -71,9 +71,6 @@ public class Advertisement
     public ICollection<AdvertisementVariant> Variants { get; set; }
         = [];
 
-    public ICollection<BasketItem> BasketItems { get; set; }
-        = [];
-
 
     public override string ToString()
     {

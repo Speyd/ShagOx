@@ -7,7 +7,7 @@ namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations
 public class ExistsTranslationRepository<TEntity, TTranslation> 
     : ExistsRepository<TTranslation>, 
     ITranslationExistsRepository<TEntity, TTranslation>
-    where TEntity :BaseEntity
+    where TEntity : BaseTranslatable
     where TTranslation : BaseTranslation<TEntity>
 {
     public ExistsTranslationRepository(AppDbContext db)
@@ -49,7 +49,7 @@ public class ExistsTranslationRepository<TEntity, TTranslation>
 
         return await query
             .AnyAsync(x =>
-                x.GetIdentificator() == identificator &&
+                x.Translatable.GetIdentificator() == identificator &&
                 x.Language == language);
     }
 }

@@ -4,6 +4,7 @@ using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -30,13 +31,16 @@ public class CityQueryRepository
     {
         return query.Filter(filter);
     }
-    
-    public async Task<City?> GetByCodeAsync(
-        string code)
+
+    public async Task<City?> GetByIdentificatorAsync(
+        string identificator,
+        long? parentId = null)
     {
         return await _db.Cities
             .WithIncludes()
-            .FirstOrDefaultAsync(x => x.Code == code);
+            .FirstOrDefaultAsync(x =>
+                x.Code == identificator &&
+                (parentId.HasValue && x.RegionId == parentId));
     }
 
     public async Task<PagedResult<City>> GetByRegionAsync(

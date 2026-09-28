@@ -6,7 +6,7 @@ public static class ConditionMapper
 {
     public static ConditionDto ToDto(
         Condition condition,
-        string lable)
+        string? lable)
     {
         return new ConditionDto(
             condition.Id,

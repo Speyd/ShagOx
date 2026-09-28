@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
@@ -13,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Query;
 public class CategoryQueryService 
-    : BaseQueryService<
+    : BaseTranslatableQueryService<
         CategoryDto,
         Category,
         CategorySearchFilter

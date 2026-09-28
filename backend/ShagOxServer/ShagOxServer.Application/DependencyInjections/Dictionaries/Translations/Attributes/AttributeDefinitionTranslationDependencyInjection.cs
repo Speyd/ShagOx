@@ -9,7 +9,7 @@ using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinit
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Validator;
 
-namespace ShagOxServer.Application.DependencyInjections.Dictionaries.Translations;
+namespace ShagOxServer.Application.DependencyInjections.Dictionaries.Translations.Attributes;
 public static class AttributeDefinitionTranslationDependencyInjection
 {
     public static IServiceCollection AddAttributeTranslationApplication(

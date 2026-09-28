@@ -4,10 +4,9 @@ using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using Twilio.TwiML.Voice;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes;
 public class ProductTypeQueryRepository
@@ -23,5 +22,14 @@ public class ProductTypeQueryRepository
         ProductTypeSearchFilter filter)
     {
         return query.Filter(filter);
+    }
+
+    public async Task<ProductType?> GetByIdentificatorAsync(
+        string identificator,
+        long? parentId = null)
+    {
+        return await _db.ProductTypes
+            .FirstOrDefaultAsync(x =>
+                x.Code == identificator);
     }
 }

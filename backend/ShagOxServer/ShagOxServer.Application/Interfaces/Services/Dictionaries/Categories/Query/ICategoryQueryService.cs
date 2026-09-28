@@ -1,5 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -7,7 +7,9 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 public interface ICategoryQueryService
-    : IQueryService<CategoryDto, Category, CategorySearchFilter>
+    : ITranslatableQueryService<CategoryDto, 
+        Category, 
+        CategorySearchFilter>
 {
     Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
         long productTypeId,

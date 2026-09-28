@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
+using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -8,7 +9,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
 public abstract class BaseTranslationQueryService<TDto, TEntity, TFilter>
-    : BaseQueryService<TDto, TEntity, TFilter>
+    : BaseQueryService<TDto, TEntity, TFilter>,
+      ITranslationQueryService<TDto, TEntity, TFilter>
     where TDto : BaseDto
     where TEntity : BaseEntity
     where TFilter : BaseFilter
@@ -34,5 +36,15 @@ public abstract class BaseTranslationQueryService<TDto, TEntity, TFilter>
             .GetPagedAsync(pagination, language);
 
         return await entities.ToResultPagedAsync(ApplyMapperAsync);
+    }
+
+    public async Task<Result<TDto>> GetByIdentificatorAsync(
+        string identificator,
+        string language)
+    {
+        var entity = await _queryTranslationRepository
+            .GetByIdentificatorAsync(identificator, language);
+
+        return await entity.ToResultAsync(ApplyMapperAsync);
     }
 }

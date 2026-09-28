@@ -1,10 +1,12 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 public interface IStatusQueryService
-    : IQueryService<StatusDto, Status, StatusSearchFilter>
+    : ITranslatableQueryService<StatusDto,
+        Status, 
+        StatusSearchFilter>
 {
 }

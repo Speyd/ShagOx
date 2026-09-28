@@ -1,11 +1,11 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues;
 public interface IAttributeDictionaryValueQueryRepository
-    : IQueryRepository<AttributeDictionaryValue, 
+    : ITranslatableQueryRepository<AttributeDictionaryValue, 
         AttributeDictionaryValueSearchFilter>
 {
     Task<PagedResult<AttributeDictionaryValue>> GetByDictionaryAsync(

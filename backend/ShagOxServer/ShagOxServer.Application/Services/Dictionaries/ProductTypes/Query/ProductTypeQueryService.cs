@@ -3,14 +3,14 @@ using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Query;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Query;
 public class ProductTypeQueryService 
-    : BaseQueryService<
+    : BaseTranslatableQueryService<
         ProductTypeDto,
         ProductType,
         ProductTypeSearchFilter
@@ -29,6 +29,7 @@ public class ProductTypeQueryService
         : base(productTypeQueryRepository)
     {
         _translationRepository = translationRepository;
+        _language = language;
     }
 
 

@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translati
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
@@ -14,7 +15,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Query;
 public class CityQueryService 
-    : BaseQueryService<
+    : BaseTranslatableQueryService<
         CityDto,
         City,
         CitySearchFilter
@@ -56,15 +57,6 @@ public class CityQueryService
         return CityMapper.ToDto(entity,
             translationRegion,
             translationCity?.Name);
-    }
-
-    public async Task<Result<CityDto>> GetByCodeAsync(
-        string code)
-    {
-        var city = await _repositoryQueryCity
-            .GetByCodeAsync(code);
-
-        return await city.ToResultAsync(ApplyMapperAsync);
     }
 
     public async Task<Result<PagedResult<CityDto>>> GetByRegionAsync(

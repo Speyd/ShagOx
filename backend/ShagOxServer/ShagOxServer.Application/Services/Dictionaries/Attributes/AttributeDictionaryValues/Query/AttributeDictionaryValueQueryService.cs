@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues;
@@ -11,7 +11,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 public class AttributeDictionaryValueQueryService
-    : BaseQueryService<
+    : BaseTranslatableQueryService<
         AttributeDictionaryValueDto,
         AttributeDictionaryValue,
         AttributeDictionaryValueSearchFilter

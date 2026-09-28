@@ -32,6 +32,17 @@ public class AttributeDictionaryValueQueryRepository
         return query.Filter(filter);
     }
 
+    public async Task<AttributeDictionaryValue?> GetByIdentificatorAsync(
+        string identificator,
+        long? parentId = null)
+    {
+        return await _db.AttributeDictionaryValues
+            .WithIncludes()
+            .FirstOrDefaultAsync(x =>
+                x.Code == identificator &&
+                (parentId.HasValue && x.DictionaryId == parentId));
+    }
+
     public async Task<List<AttributeDictionaryValue>> GetByIdsAsync(
         IEnumerable<long> ids)
     {

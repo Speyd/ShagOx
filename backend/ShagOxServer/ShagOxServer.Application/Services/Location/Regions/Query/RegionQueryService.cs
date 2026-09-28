@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Regions.Mapping;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Regions;
@@ -12,7 +13,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Query;
 public class RegionQueryService 
-    : BaseQueryService<
+    : BaseTranslatableQueryService<
         RegionDto,
         Region,
         RegionSearchFilter
@@ -46,14 +47,5 @@ public class RegionQueryService
             .GetByIdentificatorAsync(entity.Code, _language.Language);
 
         return RegionMapper.ToDto(entity, translation?.Name);
-    }
-
-    public async Task<Result<RegionDto>> GetByNameAsync(
-        string code)
-    {
-        var region = await _regionQueryRepository
-            .GetByCodeAsync(code);
-
-        return await region.ToResultAsync(ApplyMapperAsync);
     }
 }

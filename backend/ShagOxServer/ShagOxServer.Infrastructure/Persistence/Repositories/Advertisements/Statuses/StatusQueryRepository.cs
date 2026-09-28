@@ -17,10 +17,20 @@ public class StatusQueryRepository
         : base(db)
     { }
 
+
     protected override IQueryable<Status> ApplyFilter(
        IQueryable<Status> query,
        StatusSearchFilter filter)
     {
         return query.Filter(filter);
+    }
+
+    public async Task<Status?> GetByIdentificatorAsync(
+        string identificator,
+        long? parentId = null)
+    {
+        return await _db.Statuses
+            .FirstOrDefaultAsync(x =>
+                x.Code == identificator);
     }
 }

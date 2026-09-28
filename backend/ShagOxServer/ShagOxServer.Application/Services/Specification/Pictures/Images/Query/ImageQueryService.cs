@@ -23,7 +23,7 @@ public class ImageQueryService
     }
 
 
-    protected override ImageDto ApplyMapper(Image entity)
+    protected override async Task<ImageDto> ApplyMapperAsync(Image entity)
     {
         return ImageMapper.ToDto(entity);
     }

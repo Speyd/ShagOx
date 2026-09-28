@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users.Core;
+﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories;
 using ShagOxServer.Application.DTOs.Specification.Currencies;
@@ -17,6 +18,7 @@ public sealed record AdvertisementDto
     UserShortDto? Buyer,
     List<ImageDto> Images,
     JsonDocument Attributes,
+    List<AdvertisementVariantDto> Variants,
     DateTime? SoldAt,
     DateTime CreatedAt
 ) : BaseDto(Id);

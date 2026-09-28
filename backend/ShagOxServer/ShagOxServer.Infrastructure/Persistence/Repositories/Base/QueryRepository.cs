@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -19,18 +20,22 @@ public class QueryRepository<TEntity, TFilter>
     public virtual async Task<TEntity?> GetByIdAsync(
         long id)
     {
-        ApplyIncludes(_db.Set<TEntity>());
+        IQueryable<TEntity> query = _db.Set<TEntity>();
 
-        return await _db.Set<TEntity>()
-            .FindAsync(id);
+        query = ApplyIncludes(query);
+
+        return await query.FirstOrDefaultAsync(
+            x => x.Id == id);
     }
 
     public virtual async Task<PagedResult<TEntity>> GetPagedAsync(
         PaginationParams pagination)
     {
-        ApplyIncludes(_db.Set<TEntity>());
+        IQueryable<TEntity> query = _db.Set<TEntity>();
 
-        return await _db.Set<TEntity>()
+        query = ApplyIncludes(query);
+
+        return await query
             .ToPagedResultAsync(pagination);
     }
 
@@ -38,10 +43,12 @@ public class QueryRepository<TEntity, TFilter>
         TFilter filter,
         PaginationParams pagination)
     {
-        ApplyIncludes(_db.Set<TEntity>());
-        ApplyFilter(_db.Set<TEntity>(), filter);
+        IQueryable<TEntity> query = _db.Set<TEntity>();
 
-        return await _db.Set<TEntity>()
+        query = ApplyIncludes(query);
+        query = ApplyFilter(_db.Set<TEntity>(), filter);
+
+        return await query
             .ToPagedResultAsync(pagination);
     }
 

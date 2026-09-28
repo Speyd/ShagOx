@@ -34,7 +34,7 @@ public class UserRoleQueryService
     }
 
 
-    protected override UserRoleDto ApplyMapper(
+    protected override async Task<UserRoleDto> ApplyMapperAsync(
         UserRole entity)
     {
         return UserRoleMapper.ToDto(entity);

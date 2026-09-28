@@ -55,7 +55,7 @@ public class ConditionTranslationQueriesController
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return result.ToActionResult();
     }

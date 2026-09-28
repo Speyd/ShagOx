@@ -9,4 +9,11 @@ public interface IAttributeDefinitionQueryRepository
 {
     Task<List<AttributeDefinition>> GetByIdsAsync(
         List<long> ids);
+
+    Task<AttributeDefinition?> GetByKeyAsync(
+        string key);
+
+    Task<List<AttributeDefinition>> GetByKeysAsync(
+        long categoryId,
+        IEnumerable<string> keys);
 }

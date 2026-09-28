@@ -29,7 +29,7 @@ public class ConditionQueryService
     }
 
 
-    protected override ConditionDto ApplyMapper(
+    protected override async Task<ConditionDto> ApplyMapperAsync(
         Condition entity)
     {
         return ConditionMapper.ToDto(entity);
@@ -41,6 +41,6 @@ public class ConditionQueryService
         var condition = await _conditionQueryRepository
             .GetByCodeAsync(code);
 
-        return condition.ToResult(ApplyMapper);
+        return await condition.ToResultAsync(ApplyMapperAsync);
     }
 }

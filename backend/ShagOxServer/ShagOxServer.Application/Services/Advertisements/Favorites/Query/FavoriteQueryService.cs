@@ -30,7 +30,7 @@ public class FavoriteQueryService
     }
 
 
-    protected override FavoriteDto ApplyMapper(
+    protected override async Task<FavoriteDto> ApplyMapperAsync(
         Favorite entity)
     {
         return FavoriteMapper.ToDto(entity);
@@ -52,6 +52,7 @@ public class FavoriteQueryService
         var favorites = await _favoriteRepository
             .GetByUserAsync(usderId, pagination);
 
-        return favorites.ToResultPaged(ApplyMapper);
+        return await favorites.ToResultPagedAsync(
+            ApplyMapperAsync);
     }
 }

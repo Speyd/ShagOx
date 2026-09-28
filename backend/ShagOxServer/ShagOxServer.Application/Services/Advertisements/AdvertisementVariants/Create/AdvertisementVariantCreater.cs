@@ -14,7 +14,9 @@ public static class AdvertisementVariantCreater
             Price = request.Price,
             PreviousPrice = request.PreviousPrice,
             Stock = request.Stock,
-            Attributes = request.Attributes ?? JsonDocument.Parse("{}")
+            Attributes = string.IsNullOrWhiteSpace(request.Attributes)
+                ? JsonDocument.Parse("{}")
+                : JsonDocument.Parse(request.Attributes)
         };
     }
 }

@@ -13,7 +13,7 @@ public static class FavoriteMapper
         (
             x.Id,
             UserMapper.ToDto(x.User),
-            AdvertisementMapper.ToDto(x.Advertisement)
+            AdvertisementShortMapper.ToDto(x.Advertisement)
         );
     }
 }

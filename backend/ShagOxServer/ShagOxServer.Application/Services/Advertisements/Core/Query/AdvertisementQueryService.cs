@@ -1,5 +1,7 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core;
+﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.DTOs.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Base;
@@ -18,21 +20,45 @@ public class AdvertisementQueryService
       IAdvertisementQueryService
 {
     private readonly IAdvertisementQueryRepository _advertisementRepository;
+    private readonly IAdvertisementVariantQueryService _variantService;
+
 
 
     public AdvertisementQueryService(
-        IAdvertisementQueryRepository advertisementRepository
+        IAdvertisementQueryRepository advertisementRepository,
+        IAdvertisementVariantQueryService variantService
     )
         : base(advertisementRepository)
     {
         _advertisementRepository = advertisementRepository;
+        _variantService = variantService;
     }
 
 
-    protected override AdvertisementDto ApplyMapper(
+    protected override async Task<AdvertisementDto> ApplyMapperAsync(
         Advertisement entity)
     {
-        return AdvertisementMapper.ToDto(entity);
+        var attributesByVariantId =
+    new Dictionary<long, List<VariantAttributeDto>>();
+
+        foreach (var variant in entity.Variants)
+        {
+            var result = await _variantService
+                .GetVariantAttributeAsync(variant);
+
+            if (!result.IsSuccess)
+            {
+                throw new InvalidOperationException(
+                    result.Error);
+            }
+
+            attributesByVariantId[variant.Id] =
+                result.Value ?? [];
+        }
+
+        return AdvertisementMapper.ToDto(
+            entity,
+            attributesByVariantId);
     }
 
     public async Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
@@ -42,7 +68,7 @@ public class AdvertisementQueryService
         var advert = await _advertisementRepository
             .GetBySellerAsync(userId, pagination);
 
-        return advert.ToResultPaged(ApplyMapper);
+        return await advert.ToResultPagedAsync(ApplyMapperAsync);
     }
     public async Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         long userId,
@@ -51,6 +77,6 @@ public class AdvertisementQueryService
         var advert = await _advertisementRepository
             .GetPurchasedByUserAsync(userId, pagination);
 
-        return advert.ToResultPaged(ApplyMapper);
+        return await advert.ToResultPagedAsync(ApplyMapperAsync);
     }
 }

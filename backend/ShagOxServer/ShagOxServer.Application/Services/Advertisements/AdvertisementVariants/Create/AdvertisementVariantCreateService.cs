@@ -8,6 +8,7 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using System.Text.Json;
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Create;
 
 public class AdvertisementVariantCreateService
@@ -37,23 +38,21 @@ public class AdvertisementVariantCreateService
     public async Task<Result<CreateResponse>> CreateAsync(
         AdvertisementVariantCreateRequest request)
     {
-        var variantValidation = await _variantValidator
-            .NotExistsAsync(request.AdvertisementId, request.Attributes);
-
-        if (!variantValidation.IsSuccess)
-        {
-            return Result<CreateResponse>
-                .Fail(variantValidation.Error);
-        }
-
-        var variant = AdvertisementVariantCreater.Create(request);
-
         await _unitOfWork.BeginTransactionAsync();
+
         try
         {
-            _variantRepository.Add(variant);
+            var result = await CreateInternalAsync(request);
+
+            if (!result.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+                return result;
+            }
 
             await _unitOfWork.CommitAsync();
+
+            return result;
         }
         catch (Exception ex)
         {
@@ -66,13 +65,30 @@ public class AdvertisementVariantCreateService
                 request.AdvertisementId);
 
             return Result<CreateResponse>
-                    .Fail(EntityErrorResources.AdvertisementVariantCreateFailed);
+                .Fail(EntityErrorResources.AdvertisementVariantCreateFailed);
         }
+    }
+    public async Task<Result<CreateResponse>> CreateInternalAsync(
+        AdvertisementVariantCreateRequest request)
+    {
+        var variantValidation = await _variantValidator
+            .NotExistsAsync(
+                request.AdvertisementId,
+                JsonDocument.Parse(request.Attributes));
+
+        if (!variantValidation.IsSuccess)
+        {
+            return Result<CreateResponse>
+                .Fail(variantValidation.Error);
+        }
+
+        var variant = AdvertisementVariantCreater.Create(request);
+
+        _variantRepository.Add(variant);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(
                 variant.Id,
-                DateTime.UtcNow
-        ));
+                DateTime.UtcNow));
     }
 }

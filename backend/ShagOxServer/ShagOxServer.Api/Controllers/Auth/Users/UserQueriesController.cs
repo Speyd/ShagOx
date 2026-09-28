@@ -49,12 +49,12 @@ public class UserQueriesController
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryService
-            .Search(filter, pagination);
+            .SearchAsync(filter, pagination);
 
         return result.ToActionResult();
     }
 
-    [HttpGet("contact/{contact:string}")]
+    [HttpGet("contact/{contact}")]
     public async Task<IActionResult> GetByContactAsync(
        [FromRoute] string contact)
     {

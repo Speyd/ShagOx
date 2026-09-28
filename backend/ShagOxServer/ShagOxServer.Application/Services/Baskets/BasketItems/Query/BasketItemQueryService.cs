@@ -30,7 +30,7 @@ public class BasketItemQueryService
     }
 
 
-    protected override BasketItemDto ApplyMapper(
+    protected override async Task<BasketItemDto> ApplyMapperAsync(
         BasketItem entity)
     {
         return BasketItemMapper.ToDto(entity);
@@ -43,7 +43,7 @@ public class BasketItemQueryService
         var items = await _itemQueryRepository
            .GetByAdvertisementAsync(advertisementId, pagination);
 
-        return items.ToResultPaged(ApplyMapper);
+        return await items.ToResultPagedAsync(ApplyMapperAsync);
     }
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetByBasketAsync(
@@ -53,7 +53,7 @@ public class BasketItemQueryService
         var items = await _itemQueryRepository
            .GetByBasketAsync(basketId, pagination);
 
-        return items.ToResultPaged(ApplyMapper);
+        return await items.ToResultPagedAsync(ApplyMapperAsync);
     }
 
 
@@ -64,7 +64,7 @@ public class BasketItemQueryService
         var items = await _itemQueryRepository
             .GetPagedAsync(userId, pagination);
 
-        return items.ToResultPaged(ApplyMapper);
+        return await items.ToResultPagedAsync(ApplyMapperAsync);
     }
     
 }

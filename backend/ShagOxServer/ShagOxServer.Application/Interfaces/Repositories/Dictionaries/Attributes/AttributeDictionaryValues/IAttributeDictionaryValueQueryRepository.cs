@@ -11,4 +11,15 @@ public interface IAttributeDictionaryValueQueryRepository
     Task<PagedResult<AttributeDictionaryValue>> GetByDictionaryAsync(
         long dictionaryId,
         PaginationParams pagination);
+
+    Task<List<AttributeDictionaryValue>> GetByIdsAsync(
+        IEnumerable<long> ids);
+
+    Task<AttributeDictionaryValue?> GetAsync(
+        string dictionaryCode,
+        long valueId);
+
+    Task<AttributeDictionaryValue?> GetAsync(
+        long dictionaryId,
+        long valueId);
 }

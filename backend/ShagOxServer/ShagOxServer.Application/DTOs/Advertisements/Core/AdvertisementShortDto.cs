@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base;
+﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.DTOs.Base;
 using System.Text.Json;
 
 namespace ShagOxServer.Application.DTOs.Advertisements;
@@ -13,6 +14,7 @@ public sealed record AdvertisementShortDto
     long? BuyerId,
     List<long> ImageIds,
     JsonDocument Attributes,
+    List<AdvertisementVariantShortDto> Variants,
     DateTime? SoldAt,
     DateTime CreatedAt
 ) : BaseDto(Id);

@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Resources.EntityErrors;
@@ -20,6 +21,8 @@ public class AdvertisementUpdateService
     private readonly AdvertisementValidator _validator;
     private readonly AdvertisementUpdateValidator _validatorUpdate;
 
+    private readonly IAdvertisementVariantUpdateService _variantUpdateService;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementUpdateService> _logger;
 
@@ -29,6 +32,7 @@ public class AdvertisementUpdateService
         IAdvertisementImageService imageService,
         AdvertisementValidator validator,
         AdvertisementUpdateValidator validatorUpdate,
+        IAdvertisementVariantUpdateService variantUpdateService,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementUpdateService> logger)
     {
@@ -36,6 +40,7 @@ public class AdvertisementUpdateService
         _advertRepository = advertRepository;
         _validatorUpdate = validatorUpdate;
         _imageService = imageService;
+        _variantUpdateService = variantUpdateService;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -68,7 +73,6 @@ public class AdvertisementUpdateService
                     request
                 );
 
-
             if (!imagesResult.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
@@ -77,9 +81,20 @@ public class AdvertisementUpdateService
                     .Fail(imagesResult.Error!);
             }
 
+            if (request.Variants is not null)
+            {
+                foreach (var variant in request.Variants)
+                {
+                    await _variantUpdateService
+                        .UpdateInternalAsync(variant.Key, variant.Value);
+                }
+            }
+
             _advertRepository.Update(advert.Value!);
 
             await _unitOfWork.CommitAsync();
+
+           
 
             _logger.LogInformation(
                 "Advertisement updated successfully. Id: {Id}",

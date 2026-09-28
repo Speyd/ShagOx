@@ -22,7 +22,7 @@ public class CategoryTranslationQueryService
     {
     }
 
-    protected override CategoryTranslationDto ApplyMapper(
+    protected override async Task<CategoryTranslationDto> ApplyMapperAsync(
         CategoryTranslation entity)
     {
         return CategoryTranslationMapper.ToDto(entity);

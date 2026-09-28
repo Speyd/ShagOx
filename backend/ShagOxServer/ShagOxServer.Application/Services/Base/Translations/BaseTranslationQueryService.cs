@@ -33,6 +33,6 @@ public abstract class BaseTranslationQueryService<TDto, TEntity, TFilter>
         var entities = await _queryTranslationRepository
             .GetPagedAsync(pagination, language);
 
-        return entities.ToResultPaged(ApplyMapper);
+        return await entities.ToResultPagedAsync(ApplyMapperAsync);
     }
 }

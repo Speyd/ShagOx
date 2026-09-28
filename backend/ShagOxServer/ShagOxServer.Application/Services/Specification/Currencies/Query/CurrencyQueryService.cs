@@ -29,7 +29,7 @@ public class CurrencyQueryService
     }
 
 
-    protected override CurrencyDto ApplyMapper(
+    protected override async Task<CurrencyDto> ApplyMapperAsync(
         Currency entity)
     {
         return CurrencyMapper.ToDto(entity);
@@ -41,7 +41,7 @@ public class CurrencyQueryService
         var currencies = await _currencyRepository
             .GetByCodeAsync(code);
 
-        return currencies.ToResult(ApplyMapper);
+        return await currencies.ToResultAsync(ApplyMapperAsync);
     }
 
     public async Task<Result<CurrencyDto>> GetBySymbolAsync(
@@ -50,6 +50,6 @@ public class CurrencyQueryService
         var currency = await _currencyRepository
             .GetBySymbolAsync(symbol);
 
-        return currency.ToResult(ApplyMapper);
+        return await currency.ToResultAsync(ApplyMapperAsync);
     }
 }

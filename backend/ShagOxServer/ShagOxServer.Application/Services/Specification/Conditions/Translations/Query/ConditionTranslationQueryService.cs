@@ -22,7 +22,7 @@ public class ConditionTranslationQueryService
     {
     }
 
-    protected override ConditionTranslationDto ApplyMapper(
+    protected override async Task<ConditionTranslationDto> ApplyMapperAsync(
         ConditionTranslation entity)
     {
         return ConditionTranslationMapper.ToDto(entity);

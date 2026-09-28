@@ -23,7 +23,8 @@ public class AttributeDefinitionTranslationQueryService
     }
 
 
-    protected override AttributeDefinitionTranslationDto ApplyMapper(
+    protected override async Task<AttributeDefinitionTranslationDto>
+        ApplyMapperAsync(
         AttributeDefinitionTranslation entity)
     {
         return AttributeDefinitionTranslationMapper

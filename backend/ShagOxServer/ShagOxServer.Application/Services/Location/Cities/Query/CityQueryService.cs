@@ -30,7 +30,7 @@ public class CityQueryService
     }
 
 
-    protected override CityDto ApplyMapper(
+    protected override async Task<CityDto> ApplyMapperAsync(
         City entity)
     {
         return CityMapper.ToDto(entity);
@@ -42,7 +42,7 @@ public class CityQueryService
         var city = await _repositoryQueryCity
             .GetByCodeAsync(code);
 
-        return city.ToResult(ApplyMapper);
+        return await city.ToResultAsync(ApplyMapperAsync);
     }
 
     public async Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
@@ -52,6 +52,6 @@ public class CityQueryService
         var cities = await _repositoryQueryCity
             .GetByRegionAsync(regionId, pagination);
 
-        return cities.ToResultPaged(ApplyMapper);
+        return await cities.ToResultPagedAsync(ApplyMapperAsync);
     }
 }

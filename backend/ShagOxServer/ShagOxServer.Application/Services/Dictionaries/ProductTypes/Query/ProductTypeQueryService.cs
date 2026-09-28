@@ -23,7 +23,7 @@ public class ProductTypeQueryService
     }
 
 
-    protected override ProductTypeDto ApplyMapper(
+    protected override async Task<ProductTypeDto> ApplyMapperAsync(
         ProductType entity)
     {
         return ProductTypeMapper.ToDto(entity);

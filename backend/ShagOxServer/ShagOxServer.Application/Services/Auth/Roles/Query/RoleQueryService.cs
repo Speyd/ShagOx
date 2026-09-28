@@ -30,7 +30,7 @@ public class RoleQueryService
     }
 
 
-    protected override RoleDto ApplyMapper(
+    protected override async Task<RoleDto> ApplyMapperAsync(
         Role entity)
     {
         return RoleMapper.ToDto(entity);
@@ -43,7 +43,7 @@ public class RoleQueryService
         var roles = await _roleQueryRepository
             .GetByUserAsync(userId, pagination);
 
-        return roles.ToResultPaged(ApplyMapper);
+        return await roles.ToResultPagedAsync(ApplyMapperAsync);
     }
 
     public async Task<Result<RoleDto>> GetByNameAsync(
@@ -52,6 +52,6 @@ public class RoleQueryService
         var role = await _roleQueryRepository
             .GetByNameAsync(name);
 
-        return role.ToResult(ApplyMapper);
+        return await role.ToResultAsync(ApplyMapperAsync);
     }
 }

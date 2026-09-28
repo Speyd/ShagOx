@@ -30,7 +30,7 @@ public class CategoryQueryService
     }
 
 
-    protected override CategoryDto ApplyMapper(
+    protected override async Task<CategoryDto> ApplyMapperAsync(
         Category entity)
     {
         return CategoryMapper.ToDto(entity);
@@ -43,6 +43,6 @@ public class CategoryQueryService
         var categories = await _categoryQueryRepository
             .GetByProductTypeAsync(productTypeId, pagination);
 
-        return categories.ToResultPaged(ApplyMapper);
+        return await categories.ToResultPagedAsync(ApplyMapperAsync);
     }
 }

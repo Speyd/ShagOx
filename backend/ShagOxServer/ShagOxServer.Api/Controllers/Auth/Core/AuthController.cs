@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Api.Controllers.Api;
@@ -33,7 +32,8 @@ public class AuthController
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterRequest request)
     {
         var result = await _registerService
             .RegisterAsync(request);
@@ -42,7 +42,8 @@ public class AuthController
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login(
+        [FromBody] LoginRequest request)
     {
         var responce = await _loginService
             .LoginAsync(request);

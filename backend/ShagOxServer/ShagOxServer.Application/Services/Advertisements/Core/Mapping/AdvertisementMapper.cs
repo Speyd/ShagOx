@@ -1,4 +1,6 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core;
+﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.DTOs.Advertisements.Core;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
@@ -9,7 +11,8 @@ namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 public static class AdvertisementMapper
 {
     public static AdvertisementDto ToDto(
-        Advertisement x)
+        Advertisement x,
+        Dictionary<long, List<VariantAttributeDto>> variants)
     {
         return new AdvertisementDto
         (
@@ -25,8 +28,25 @@ public static class AdvertisementMapper
                 .Select(ImageMapper.ToDto)
                 .ToList(),
             x.Attributes,
+            VariantToDto(x, variants),
             x.SoldAt,
             x.CreatedAt
         );
+    }
+
+    internal static List<AdvertisementVariantDto> VariantToDto(
+        Advertisement x, 
+        Dictionary<long, List<VariantAttributeDto>> variants)
+    {
+        return x.Variants.Select(variant =>
+        {
+            variants.TryGetValue(
+                variant.Id,
+                out var attributes);
+
+            return AdvertisementVariantMapper.ToDto(
+                variant,
+                attributes ?? []);
+        }).ToList();
     }
 }

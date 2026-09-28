@@ -5,7 +5,8 @@ namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants
 public static class AdvertisementVariantMapper
 {
     public static AdvertisementVariantDto ToDto(
-        AdvertisementVariant x)
+        AdvertisementVariant x,
+        IList<VariantAttributeDto> attributes)
     {
         return new AdvertisementVariantDto
         (
@@ -14,7 +15,7 @@ public static class AdvertisementVariantMapper
             x.Price,
             x.PreviousPrice,
             x.Stock,
-            x.Attributes
+            attributes
         );
     }
 }

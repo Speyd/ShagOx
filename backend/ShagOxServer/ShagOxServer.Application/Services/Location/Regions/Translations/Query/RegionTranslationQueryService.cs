@@ -23,7 +23,7 @@ public class RegionTranslationQueryService
     }
 
 
-    protected override RegionTranslationDto ApplyMapper(
+    protected override async Task<RegionTranslationDto> ApplyMapperAsync(
         RegionTranslation entity)
     {
         return RegionTranslationMapper.ToDto(entity);

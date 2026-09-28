@@ -29,7 +29,7 @@ public class RegionQueryService
     }
 
 
-    protected override RegionDto ApplyMapper(
+    protected override async Task<RegionDto> ApplyMapperAsync(
         Region entity)
     {
         return RegionMapper.ToDto(entity);
@@ -41,6 +41,6 @@ public class RegionQueryService
         var region = await _regionQueryRepository
             .GetByCodeAsync(code);
 
-        return region.ToResult(ApplyMapper);
+        return await region.ToResultAsync(ApplyMapperAsync);
     }
 }

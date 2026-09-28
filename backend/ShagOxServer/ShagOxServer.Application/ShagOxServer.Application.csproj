@@ -85,6 +85,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SmsTemplatesResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Validations\ValidationResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ValidationResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Verifications\Codes\VerificationCodeResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -150,6 +155,10 @@
 		<EmbeddedResource Update="Resources\Messaging\Sms\SmsTemplatesResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>SmsTemplatesResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Validations\ValidationResources.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ValidationResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Verifications\Codes\VerificationCodeResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>

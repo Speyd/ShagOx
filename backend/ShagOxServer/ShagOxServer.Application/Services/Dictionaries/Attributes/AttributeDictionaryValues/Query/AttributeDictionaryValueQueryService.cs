@@ -30,7 +30,7 @@ public class AttributeDictionaryValueQueryService
     }
 
 
-    protected override AttributeDictionaryValueDto ApplyMapper(
+    protected override async Task<AttributeDictionaryValueDto> ApplyMapperAsync(
         AttributeDictionaryValue entity)
     {
         return AttributeDictionaryValueMapper.ToDto(entity);
@@ -45,6 +45,6 @@ public class AttributeDictionaryValueQueryService
         var values = await _dictionaryDictQueryRepository
             .GetByDictionaryAsync(dictionaryId, pagination);
 
-        return values.ToResultPaged(ApplyMapper);
+        return await values.ToResultPagedAsync(ApplyMapperAsync);
     }
 }

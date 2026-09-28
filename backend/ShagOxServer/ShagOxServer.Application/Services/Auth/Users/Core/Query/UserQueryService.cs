@@ -41,7 +41,7 @@ public class UserQueryService
     }
 
 
-    protected override UserDto ApplyMapper(
+    protected override async Task<UserDto> ApplyMapperAsync(
         User entity)
     {
         return UserMapper.ToDto(entity);
@@ -61,7 +61,7 @@ public class UserQueryService
         var user = await _userQueryRepository
             .GetByIdAsync(_context.UserId);
 
-        return user.ToResult(ApplyMapper);
+        return await user.ToResultAsync(ApplyMapperAsync);
     }
 
     public async Task<Result<PagedResult<RoleDto>>> GetMyRoleAsync(

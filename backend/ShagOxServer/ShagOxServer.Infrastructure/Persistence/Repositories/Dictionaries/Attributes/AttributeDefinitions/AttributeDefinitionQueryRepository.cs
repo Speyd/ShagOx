@@ -33,8 +33,28 @@ public class AttributeDefinitionQueryRepository
     public async Task<List<AttributeDefinition>> GetByIdsAsync(
         List<long> ids)
     {
-        return await _db.AttributeDefinitions.WithIncludes()
+        return await _db.AttributeDefinitions
+            .WithIncludes()
             .Where(x => ids.Contains(x.Id))
             .ToListAsync();
+    }
+
+    public async Task<List<AttributeDefinition>> GetByKeysAsync(
+        long categoryId,
+        IEnumerable<string> keys)
+    {
+        return await _db.AttributeDefinitions
+            .WithIncludes()
+            .Where(x =>
+                x.CategoryId == categoryId &&
+                keys.Contains(x.Key))
+            .ToListAsync();
+    }
+
+    public async Task<AttributeDefinition?> GetByKeyAsync(string key)
+    {
+        return await _db.AttributeDefinitions
+            .WithIncludes()
+            .FirstOrDefaultAsync(x => x.Key == key);
     }
 }

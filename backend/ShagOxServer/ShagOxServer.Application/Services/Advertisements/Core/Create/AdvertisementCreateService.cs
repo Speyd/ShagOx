@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create.File;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
@@ -17,7 +18,10 @@ public class AdvertisementCreateService
 {
     private readonly IRepository<Advertisement> _advertRepository;
     private readonly AdvertisementCreateValidator _advertValidator;
- 
+
+    private readonly IAdvertisementVariantCreateService _variantCreateService;
+
+
     private readonly IImageCreateService _imageCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -27,12 +31,14 @@ public class AdvertisementCreateService
     public AdvertisementCreateService(
         IRepository<Advertisement> advertRepository,
         AdvertisementCreateValidator advertValidator,
+        IAdvertisementVariantCreateService variantCreateService,
         IImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementCreateService> logger)
     {
         _advertRepository = advertRepository;
         _advertValidator = advertValidator;
+        _variantCreateService = variantCreateService;
 
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
@@ -62,10 +68,23 @@ public class AdvertisementCreateService
 
             await _unitOfWork.SaveChangesAsync();
 
+            if (request.Variants is not null)
+            {
+                foreach(var variant in request.Variants)
+                {
+                    var newVariant = variant with
+                    {
+                        AdvertisementId = advert.Id
+                    };
+  
+                    await _variantCreateService.CreateInternalAsync(newVariant);
+                }
+            }
+
             var imagesResult = await _imageCreateService
                 .CreateFromFilesAsync(
                     new ImageFilesCreateRequest(
-                        advert.Id, 
+                        advert.Id,
                         request.Images
                     )
             );

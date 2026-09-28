@@ -14,7 +14,7 @@ public interface IQueryService<TDto, TFilter>
     Task<Result<PagedResult<TDto>>> GetPagedAsync(
         PaginationParams pagination);
 
-    Task<Result<PagedResult<TDto>>> Search(
-       TFilter filter,
-       PaginationParams pagination);
+    Task<Result<PagedResult<TDto>>> SearchAsync(
+        TFilter filter,
+        PaginationParams pagination);
 }

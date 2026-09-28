@@ -29,7 +29,7 @@ public class AvatarQueryService
     }
 
 
-    protected override AvatarDto ApplyMapper(
+    protected override async Task<AvatarDto> ApplyMapperAsync(
         Avatar entity)
     {
         return AvatarMapper.ToDto(entity);
@@ -41,6 +41,6 @@ public class AvatarQueryService
         var image = await _avatarQueryRepository
             .GetByUserIdAsync(advertId);
 
-        return image.ToResult(ApplyMapper);
+        return await image.ToResultAsync(ApplyMapperAsync);
     }
 }

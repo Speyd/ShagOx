@@ -18,6 +18,13 @@ public class AttributeDictionaryValueQueryRepository
         : base(db)
     { }
 
+
+    protected override IQueryable<AttributeDictionaryValue> ApplyIncludes(
+        IQueryable<AttributeDictionaryValue> query)
+    {
+        return query.WithIncludes();
+    }
+
     protected override IQueryable<AttributeDictionaryValue> ApplyFilter(
         IQueryable<AttributeDictionaryValue> query,
         AttributeDictionaryValueSearchFilter filter)
@@ -25,12 +32,44 @@ public class AttributeDictionaryValueQueryRepository
         return query.Filter(filter);
     }
 
+    public async Task<List<AttributeDictionaryValue>> GetByIdsAsync(
+        IEnumerable<long> ids)
+    {
+        return await _db.AttributeDictionaryValues
+            .WithIncludes()
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync();
+    }
+
+    public async Task<AttributeDictionaryValue?> GetAsync(
+        string dictionaryCode,
+        long valueId)
+    {
+        return await _db.AttributeDictionaryValues
+            .WithIncludes()
+            .FirstOrDefaultAsync(x =>
+                x.Dictionary.Code == dictionaryCode &&
+                x.Id == valueId);
+    }
+
+    public async Task<AttributeDictionaryValue?> GetAsync(
+        long dictionaryId,
+        long valueId)
+    {
+        return await _db.AttributeDictionaryValues
+            .WithIncludes()
+            .FirstOrDefaultAsync(x =>
+                x.DictionaryId == dictionaryId &&
+                x.Id == valueId);
+    }
+
     public async Task<PagedResult<AttributeDictionaryValue>> GetByDictionaryAsync(
         long dictionaryId, 
         PaginationParams pagination)
     {
         return await _db.AttributeDictionaryValues
-           .Where(x => x.DictionaryId == dictionaryId)
-           .ToPagedResultAsync(pagination);
+            .WithIncludes()
+            .Where(x => x.DictionaryId == dictionaryId)
+            .ToPagedResultAsync(pagination);
     }
 }

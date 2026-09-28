@@ -24,15 +24,14 @@ public abstract class BaseQueryService<TDto, TEntity, TFilter>
         _queryRepository = queryRepository;
     }
 
-    protected abstract TDto ApplyMapper(TEntity entity);
+    protected abstract Task<TDto> ApplyMapperAsync(TEntity entity);
 
-    public async Task<Result<TDto>> GetByIdAsync(
-        long id)
+    public async Task<Result<TDto>> GetByIdAsync(long id)
     {
-        var entity = await _queryRepository
-            .GetByIdAsync(id);
+        var entity = await _queryRepository.GetByIdAsync(id);
 
-        return entity.ToResult(ApplyMapper);
+        return await entity.ToResultAsync(
+            ApplyMapperAsync);
     }
 
     public async Task<Result<PagedResult<TDto>>> GetPagedAsync(
@@ -41,16 +40,18 @@ public abstract class BaseQueryService<TDto, TEntity, TFilter>
         var entities = await _queryRepository
            .GetPagedAsync(pagination);
 
-        return entities.ToResultPaged(ApplyMapper);
+        return await entities.ToResultPagedAsync(
+            ApplyMapperAsync);
     }
 
-    public async Task<Result<PagedResult<TDto>>> Search(
+    public async Task<Result<PagedResult<TDto>>> SearchAsync(
         TFilter filter,
         PaginationParams pagination)
     {
         var entities = await _queryRepository
             .SearchAsync(filter, pagination);
 
-        return entities.ToResultPaged(ApplyMapper);
+        return await entities.ToResultPagedAsync(
+            ApplyMapperAsync);
     }
 }

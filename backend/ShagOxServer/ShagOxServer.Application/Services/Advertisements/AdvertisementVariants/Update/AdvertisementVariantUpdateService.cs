@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
-using ShagOxServer.Application.DTOs.Advertisements.Statuses.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -42,43 +40,24 @@ public class AdvertisementVariantUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        long valueId,
-        AdvertisementVariantUpdateRequest request)
+     long valueId,
+     AdvertisementVariantUpdateRequest request)
     {
-        var value = await _valueValidator.
-            GetByIdAsync(valueId);
-        if (!value.IsSuccess)
-        {
-            return Result<UpdateResponse>
-                .Fail(value.Error);
-        }
-
-        var validation = await
-             ValidateUpdatesAsync(value.Value!, request);
-
-        if (!validation.IsSuccess)
-        {
-            return Result<UpdateResponse>
-                .Fail(validation.Error);
-        }
-
-        var updatedCount = AdvertisementVariantUpdater
-            .ApplyUpdates(value.Value!, request);
-
-        var result = new UpdateResponse(
-            updatedCount,
-            DateTime.UtcNow
-        );
-
-        if (updatedCount == 0)
-            return Result<UpdateResponse>.Success(result);
-
         await _unitOfWork.BeginTransactionAsync();
+
         try
         {
-            _valueRepository.Update(value.Value!);
+            var result = await UpdateInternalAsync(valueId, request);
+
+            if (!result.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+                return result;
+            }
 
             await _unitOfWork.CommitAsync();
+
+            return result;
         }
         catch (Exception ex)
         {
@@ -92,6 +71,43 @@ public class AdvertisementVariantUpdateService
             return Result<UpdateResponse>.Fail(
                 EntityErrorResources.AdvertisementVariantUpdateFailed);
         }
+    }
+
+    public async Task<Result<UpdateResponse>> UpdateInternalAsync(
+        long valueId,
+        AdvertisementVariantUpdateRequest request)
+    {
+        var value = await _valueValidator.GetByIdAsync(valueId);
+
+        if (!value.IsSuccess)
+        {
+            return Result<UpdateResponse>
+                .Fail(value.Error);
+        }
+
+        var validation = await ValidateUpdatesAsync(
+            value.Value!,
+            request);
+
+        if (!validation.IsSuccess)
+        {
+            return Result<UpdateResponse>
+                .Fail(validation.Error);
+        }
+
+        var updatedCount = AdvertisementVariantUpdater
+            .ApplyUpdates(value.Value!, request);
+
+        var result = new UpdateResponse(
+            updatedCount,
+            DateTime.UtcNow);
+
+        if (updatedCount == 0)
+        {
+            return Result<UpdateResponse>.Success(result);
+        }
+
+        _valueRepository.Update(value.Value!);
 
         return Result<UpdateResponse>.Success(result);
     }

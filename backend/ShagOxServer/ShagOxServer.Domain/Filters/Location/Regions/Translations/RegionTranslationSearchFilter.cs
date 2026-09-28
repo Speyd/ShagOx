@@ -4,4 +4,4 @@ public sealed record RegionTranslationSearchFilter
     string? RegionCode,
     string? Language,
     string? Name
-);
+) : BaseFilter();

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Validator;

@@ -2,13 +2,21 @@
 using ShagOxServer.Domain.Entities.Location.Translations;
 
 namespace ShagOxServer.Domain.Entities.Location;
-public class Region : BaseEntity
+public class Region 
+    : BaseTranslatable
 {
     public string Code { get; set; } = null!;
 
-    public List<City> Cities { get; set; } = new List<City>();
-    public List<RegionTranslation> Translations { get; set; } = new();
+    public ICollection<City> Cities { get; set; } 
+        = [];
+    public ICollection<RegionTranslation> Translations { get; set; }
+        = [];
 
+
+    public override string GetIdentificator()
+    {
+        return Code;
+    }
 
     public override string ToString()
     {

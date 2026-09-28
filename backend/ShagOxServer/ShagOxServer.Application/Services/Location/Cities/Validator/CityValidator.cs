@@ -21,7 +21,7 @@ public class CityValidator
     }
 
     public async Task<Result<bool>> ExistsAsync(
-       int regionId,
+       long regionId,
        string cityName)
     {
         if (!await _cityExistsRepository.ExistsAsync(regionId, cityName))
@@ -32,7 +32,7 @@ public class CityValidator
     }
 
     public async Task<Result<bool>> NotExistsAsync(
-       int regionId,
+       long regionId,
        string cityName)
     {
         if (await _cityExistsRepository.ExistsAsync(regionId, cityName))

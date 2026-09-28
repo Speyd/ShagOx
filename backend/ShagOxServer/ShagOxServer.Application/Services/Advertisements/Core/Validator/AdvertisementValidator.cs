@@ -1,6 +1,9 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Resources.EntityNames;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -10,7 +13,6 @@ public class AdvertisementValidator
     : BaseValidator<Advertisement>
 {
     private readonly IAdvertisementQueryRepository _advertisementQueryRepository;
-
 
     public AdvertisementValidator(
         IRepository<Advertisement> advertisementRepository,
@@ -23,7 +25,7 @@ public class AdvertisementValidator
 
 
     public async Task<Result<Advertisement>> GetByIdWithIncludeAsync(
-        int advertId)
+        long advertId)
     {
         var advert = await _advertisementQueryRepository
             .GetByIdAsync(advertId);

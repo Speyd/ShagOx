@@ -5,7 +5,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validator;
 public class BasketAttributeUpdateValidator
 {
-    public Result<(int order, int attributeDefinitionId)> HasChangesValidator(
+    public Result<(int order, long attributeDefinitionId)> HasChangesValidator(
        BasketAttribute attribute,
        BasketAttributeUpdateRequest request)
     {
@@ -18,9 +18,9 @@ public class BasketAttributeUpdateValidator
         if (order == attribute.Order &&
             attributeDefinitionId == attribute.AttributeDefinitionId)
         {
-            return Result<(int, int)>.Fail("");
+            return Result<(int, long)>.Fail("");
         }
 
-        return Result<(int, int)>.Success((order, attributeDefinitionId));
+        return Result<(int, long)>.Success((order, attributeDefinitionId));
     }
 }

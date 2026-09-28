@@ -16,13 +16,22 @@ public static class FavoriteDependencyInjection
     public static IServiceCollection AddFavoriteApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<IFavoriteDeleteService, FavoriteDeleteService>();
-        services.AddScoped<IFavoriteQueryService, FavoriteQueryService>();
-        services.AddScoped<IFavoriteUpdateService, FavoriteUpdateService>();
+        services.AddScoped<IFavoriteDeleteService,
+            FavoriteDeleteService>();
+
+        services.AddScoped<IFavoriteQueryService, 
+            FavoriteQueryService>();
+
+        services.AddScoped<IFavoriteUpdateService,
+            FavoriteUpdateService>();
+
+        services.AddScoped<IFavoriteCreateService,
+            FavoriteCreateService>();
+
 
         services.AddScoped<FavoriteUpdateValidator>();
-        services.AddScoped<FavoriteValidator>();
-        services.AddScoped<IFavoriteCreateService, FavoriteCreateService>();
+
+        services.AddScoped<FavoriteValidator>(); 
         
         return services;
     }

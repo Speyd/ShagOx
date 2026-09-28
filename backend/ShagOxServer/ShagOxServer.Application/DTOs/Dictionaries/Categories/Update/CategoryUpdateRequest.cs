@@ -2,7 +2,7 @@
 public sealed record CategoryUpdateRequest
 (
     string? Code,
-    int? ProductTypeId,
-    List<int>? Attributes,
-    List<int>? Advertisements
+    long? ProductTypeId,
+    List<long>? Attributes,
+    List<long>? Advertisements
 );

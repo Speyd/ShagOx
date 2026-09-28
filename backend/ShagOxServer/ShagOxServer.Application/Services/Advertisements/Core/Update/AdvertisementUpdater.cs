@@ -1,10 +1,11 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Domain.Entities.Advertisements;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Update;
 public static class AdvertisementUpdater
 {
-    public static int UpdateFields(
+    public static int ApplyUpdates(
        Advertisement advert,
        AdvertisementUpdateRequest request)
     {
@@ -17,31 +18,11 @@ public static class AdvertisementUpdater
             count++;
         }
 
-
         if (request.Description is not null)
         {
             advert.Description = request.Description;
             count++;
         }
-
-        if (request.Stock.HasValue)
-        {
-            advert.Stock = request.Stock.Value < 0? 0 : request.Stock.Value;
-            count++;
-        }
-
-        if (request.Price.HasValue)
-        {
-            var price = request.Price.Value;
-
-            if (price < advert.Price)
-                advert.PreviousPrice = advert.Price;
-
-            advert.Price = price;
-
-            count++;
-        }
-
 
         if (request.Popularity.HasValue)
         {
@@ -49,13 +30,11 @@ public static class AdvertisementUpdater
             count++;
         }
 
-
         if (request.CurrencyId.HasValue)
         {
             advert.CurrencyId = request.CurrencyId.Value;
             count++;
         }
-
 
         if (request.ConditionId.HasValue)
         {
@@ -63,13 +42,11 @@ public static class AdvertisementUpdater
             count++;
         }
 
-
         if (request.CategoryId.HasValue)
         {
             advert.CategoryId = request.CategoryId.Value;
             count++;
         }
-
 
         if (request.BuyerId.HasValue)
         {
@@ -77,13 +54,11 @@ public static class AdvertisementUpdater
             count++;
         }
 
-
-        if (request.Properties is not null)
+        if (!string.IsNullOrWhiteSpace(request.Attributes))
         {
-            advert.Properties = request.Properties;
+            advert.Attributes = JsonDocument.Parse(request.Attributes);
             count++;
         }
-
 
         return count;
     }

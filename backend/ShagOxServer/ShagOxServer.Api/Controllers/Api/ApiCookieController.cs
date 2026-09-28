@@ -2,13 +2,12 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Systems;
 using ShagOxServer.Application.DTOs.Auth.Login;
-using ShagOxServer.Application.Interfaces.Services.Auth.Cookies;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Api;
 public abstract class ApiCookieController
-    : ApiController, IAuthCookieService
+    : ApiController
 {
     private readonly CookieSettings _cookieSettings;
 
@@ -24,7 +23,7 @@ public abstract class ApiCookieController
     }
 
 
-    public void DeleteAccessToken(
+    protected void DeleteAccessToken(
         HttpResponse response)
     {
         response.Cookies.Delete(_cookieSettings.CookieKey);
@@ -33,7 +32,7 @@ public abstract class ApiCookieController
             "Access token cookie deleted successfully.");
     }
 
-    public async Task<IActionResult> SetAccessToken(
+    protected async Task<IActionResult> SetAccessToken(
         Result<LoginResponse> response)
     {
         if (!response.IsSuccess ||

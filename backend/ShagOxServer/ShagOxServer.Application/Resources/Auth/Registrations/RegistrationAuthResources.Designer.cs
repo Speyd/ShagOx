@@ -70,6 +70,15 @@ namespace ShagOxServer.Application.Resources.Auth.Registrations {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Email or phone is required for verification..
+        /// </summary>
+        internal static string EmailOrPhoneRequired {
+            get {
+                return ResourceManager.GetString("EmailOrPhoneRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Registration failed..
         /// </summary>
         internal static string RegistrationFailed {

@@ -1,7 +1,7 @@
 ﻿namespace ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
 public sealed record BasketItemCreateRequest
 (
-    int BasketId,
-    int AdvertisementId,
+    long BasketId,
+    long AdvertisementVariantId,
     int Quantity
 );

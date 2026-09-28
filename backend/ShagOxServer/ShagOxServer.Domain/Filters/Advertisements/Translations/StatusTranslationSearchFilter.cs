@@ -5,4 +5,4 @@ public sealed record StatusTranslationSearchFilter
     string? Language,
     string? Name,
     string? Description
-);
+) : BaseFilter();

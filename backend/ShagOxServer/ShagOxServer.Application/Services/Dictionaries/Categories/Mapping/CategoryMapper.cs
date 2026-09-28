@@ -5,7 +5,8 @@ namespace ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 public static class CategoryMapper
 {
     public static CategoryDto ToDto(
-       Category category)
+       Category category,
+       string? lable)
     {
         return new CategoryDto(
             category.Id,
@@ -13,7 +14,8 @@ public static class CategoryMapper
             new CategoryProductTypeDto(
                 category.ProductType.Id,
                 category.ProductType.Code
-            )
+            ),
+            lable
         );
     }
 }

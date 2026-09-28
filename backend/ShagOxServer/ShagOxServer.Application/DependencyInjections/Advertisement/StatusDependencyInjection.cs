@@ -16,10 +16,17 @@ public static class StatusDependencyInjection
     public static IServiceCollection AddStatusApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<IStatusQueryService, StatusQueryService>();
-        services.AddScoped<IStatusCreateService, StatusCreateService>();
-        services.AddScoped<IStatusDeleteService, StatusDeleteService>();
-        services.AddScoped<IStatusUpdateService, StatusUpdateService>();
+        services.AddScoped<IStatusQueryService,
+            StatusQueryService>();
+
+        services.AddScoped<IStatusCreateService, 
+            StatusCreateService>();
+
+        services.AddScoped<IStatusDeleteService,
+            StatusDeleteService>();
+
+        services.AddScoped<IStatusUpdateService,
+            StatusUpdateService>();
 
         services.AddScoped<StatusValidator>();
 

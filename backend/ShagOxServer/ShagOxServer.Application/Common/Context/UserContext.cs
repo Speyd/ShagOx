@@ -3,7 +3,8 @@ using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using System.Security.Claims;
 
 namespace ShagOxServer.Application.Common.Context;
-public class UserContext : IUserContext
+public class UserContext
+    : IUserContext
 {
     private readonly IHttpContextAccessor _http;
 
@@ -12,7 +13,7 @@ public class UserContext : IUserContext
         _http = http;
     }
 
-    public int UserId =>
-        int.Parse(_http.HttpContext!.User
+    public long UserId =>
+        long.Parse(_http.HttpContext!.User
             .FindFirst(ClaimTypes.NameIdentifier)!.Value);
 }

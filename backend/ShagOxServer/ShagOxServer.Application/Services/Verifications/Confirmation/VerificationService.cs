@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Verifications;
+﻿using ShagOxServer.Application.DTOs.Verifications.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;

@@ -2,5 +2,5 @@
 public sealed record CityUpdateRequest
 (
     string? Code,
-    int? RegionId
+    long? RegionId
 );

@@ -5,5 +5,6 @@ namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.
 public interface IFavoriteDeleteService
 {
     Task<Result<DeleteResponse>> DeleteAsync(
-       int id, int userId);
+       long id, 
+       long userId);
 }

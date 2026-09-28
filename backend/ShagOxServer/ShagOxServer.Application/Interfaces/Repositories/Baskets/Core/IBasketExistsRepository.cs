@@ -7,5 +7,5 @@ public interface IBasketExistsRepository
     : IExistsRepository<Basket>, IExistsOwnerRepository
 {
     Task<bool> ExistsByUserAsync(
-        int userId);
+        long userId);
 }

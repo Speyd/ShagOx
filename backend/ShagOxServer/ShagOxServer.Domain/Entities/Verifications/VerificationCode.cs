@@ -6,7 +6,7 @@ namespace ShagOxServer.Domain.Entities.Verifications;
 public class VerificationCode 
     : BaseEntity
 {
-    public int UserId { get; set; }
+    public long UserId { get; set; }
     public User User { get; set; } = null!;
 
     public string CodeHash { get; set; } = "";

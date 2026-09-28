@@ -5,5 +5,6 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 public interface IRoleExistsRepository 
     : IExistsRepository<Role>
 {
-    Task<bool> ExistsByNameAsync(string name);
+    Task<bool> ExistsByNameAsync(
+        string name);
 }

@@ -5,12 +5,11 @@ public sealed record AdvertisementCreateRequest
 (
     string Title,
     string Description,
-    int Stock,
     int Popularity,
-    int Price,
-    int CurrencyId,
-    int ConditionId,
-    int CategoryId,
+    long CurrencyId,
+    long ConditionId,
+    long CategoryId,
     List<IFormFile> Images,
-    Dictionary<string, string>? Properties = null
+    string? Attributes,
+    string? Variants
 );

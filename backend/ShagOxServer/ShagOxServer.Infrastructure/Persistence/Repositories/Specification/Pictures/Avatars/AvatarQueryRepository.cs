@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
+using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars;
 
 public class AvatarQueryRepository
-    : QueryRepository<Avatar>,
+    : QueryRepository<Avatar, AvatarSearchFilter>,
       IAvatarQueryRepository
 {
     public AvatarQueryRepository(AppDbContext db)
@@ -18,25 +18,21 @@ public class AvatarQueryRepository
     { }
 
 
-    public override async Task<Avatar?> GetByIdAsync(
-        int id)
+    protected override IQueryable<Avatar> ApplyIncludes(
+        IQueryable<Avatar> query)
     {
-        return await _db.Avatars
-            .WithIncludes()
-            .FirstOrDefaultAsync(i => i.Id == id);
+        return query.WithIncludes();
     }
 
-
-    public override async Task<PagedResult<Avatar>> GetPagedAsync(
-      PaginationParams pagination)
+    protected override IQueryable<Avatar> ApplyFilter(
+        IQueryable<Avatar> query,
+        AvatarSearchFilter filter)
     {
-        return await _db.Avatars
-            .WithIncludes()
-            .ToPagedResultAsync(pagination);
+        return query.Filter(filter);
     }
 
     public async Task<Avatar?> GetByUserIdAsync(
-        int userId)
+        long userId)
     {
         return await _db.Avatars
           .WithIncludes()

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create.File;
@@ -9,6 +10,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Create.Validator;
+using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -17,7 +19,9 @@ public class AdvertisementCreateService
     : IAdvertisementCreateService
 {
     private readonly IRepository<Advertisement> _advertRepository;
-    private readonly AdvertisementCreateValidator _advertValidator;
+    private readonly AdvertisementCreateValidator _advertCreateValidator;
+    private readonly AdvertisementValidator _advertValidator;
+
 
     private readonly IAdvertisementVariantCreateService _variantCreateService;
 
@@ -30,13 +34,15 @@ public class AdvertisementCreateService
 
     public AdvertisementCreateService(
         IRepository<Advertisement> advertRepository,
-        AdvertisementCreateValidator advertValidator,
+        AdvertisementCreateValidator advertCreateValidator,
+        AdvertisementValidator advertValidator,
         IAdvertisementVariantCreateService variantCreateService,
         IImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementCreateService> logger)
     {
         _advertRepository = advertRepository;
+        _advertCreateValidator = advertCreateValidator;
         _advertValidator = advertValidator;
         _variantCreateService = variantCreateService;
 
@@ -50,15 +56,29 @@ public class AdvertisementCreateService
         AdvertisementCreateRequest request,
         long userId)
     {
-        var validation = await _advertValidator
+        var validation = await _advertCreateValidator
             .ValidateAsync(request);
 
         if (!validation.IsSuccess)
             return Result<CreateResponse>.Fail(validation.Error);
+
         
+        if (request.Variants is not null)
+        {
+            var duplicateExists = _advertValidator
+                .HasDuplicateAttributes(request.Variants);
+
+            if (!duplicateExists.IsSuccess)
+            {
+                return Result<CreateResponse>
+                    .Fail(duplicateExists.Error);
+            }
+        }
 
         var advert = AdvertisementCreater
             .Create(request, userId);
+
+        Result<bool> createVariant = null!;
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -68,18 +88,12 @@ public class AdvertisementCreateService
 
             await _unitOfWork.SaveChangesAsync();
 
-            if (request.Variants is not null)
-            {
-                foreach(var variant in request.Variants)
-                {
-                    var newVariant = variant with
-                    {
-                        AdvertisementId = advert.Id
-                    };
-  
-                    await _variantCreateService.CreateInternalAsync(newVariant);
-                }
-            }
+            createVariant = await CreateVariantsAsync(
+                advert.Id, 
+                request.Variants);
+
+            if (!createVariant.IsSuccess)
+                throw new Exception("Failed create Variant.");
 
             var imagesResult = await _imageCreateService
                 .CreateFromFilesAsync(
@@ -111,6 +125,10 @@ public class AdvertisementCreateService
                 userId,
                 request.Title);
 
+            if(!createVariant.IsSuccess)
+                return Result<CreateResponse>
+                    .Fail(createVariant.Error);
+
             return Result<CreateResponse>
                     .Fail(EntityErrorResources.AdvertisementCreateFailed);
         }
@@ -124,5 +142,29 @@ public class AdvertisementCreateService
                 advert.Id,
                 advert.CreatedAt
         ));
+    }
+
+    private async Task<Result<bool>> CreateVariantsAsync(
+        long advertisementId,
+        IEnumerable<AdvertisementVariantCreateRequest>? variants)
+    {
+        if (variants is null)
+            return Result<bool>.Success(true);
+
+        foreach (var variant in variants)
+        {
+            var newVariant = variant with
+            {
+                AdvertisementId = advertisementId
+            };
+
+            var result = await _variantCreateService
+                .CreateInternalAsync(newVariant);
+
+            if (!result.IsSuccess)
+                return Result<bool>.Fail(result.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

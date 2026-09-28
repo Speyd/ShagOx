@@ -74,7 +74,7 @@ public class AdvertisementVariantCreateService
         var variantValidation = await _variantValidator
             .NotExistsAsync(
                 request.AdvertisementId,
-                JsonDocument.Parse(request.Attributes));
+                request.Attributes);
 
         if (!variantValidation.IsSuccess)
         {

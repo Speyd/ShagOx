@@ -26,8 +26,6 @@ public class AdvertisementQueryService
     private readonly ICategoryQueryService _categoryService;
 
 
-
-
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository,
         IAdvertisementVariantQueryService variantService,

@@ -10,6 +10,7 @@ public static class VariantAttributeMapper
     AttributeDictionaryValue value)
     {
         return new VariantAttributeDto(
+            attribute.Id,
             attribute.Key,
             value.Id,
             value.Code,
@@ -24,6 +25,7 @@ public static class VariantAttributeMapper
     JsonElement value)
     {
         return new VariantAttributeDto(
+            attribute.Id,
             attribute.Key,
             0,
             "",

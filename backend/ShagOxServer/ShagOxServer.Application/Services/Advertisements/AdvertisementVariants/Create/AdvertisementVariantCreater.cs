@@ -1,6 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Domain.Entities.Advertisements;
-using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Create;
 public static class AdvertisementVariantCreater
@@ -14,9 +13,7 @@ public static class AdvertisementVariantCreater
             Price = request.Price,
             PreviousPrice = request.PreviousPrice,
             Stock = request.Stock,
-            Attributes = string.IsNullOrWhiteSpace(request.Attributes)
-                ? JsonDocument.Parse("{}")
-                : JsonDocument.Parse(request.Attributes)
+            Attributes = request.Attributes
         };
     }
 }

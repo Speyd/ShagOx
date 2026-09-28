@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -59,6 +60,18 @@ public class AdvertisementUpdateService
             .ValidateAsync(request);
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error!);
+
+        if (request.Variants is not null)
+        {
+            var duplicateExists = _validator
+                .HasDuplicateAttributes(request.Variants);
+
+            if (!duplicateExists.IsSuccess)
+            {
+                return Result<UpdateResponse>
+                    .Fail(duplicateExists.Error);
+            }
+        }
 
         await _unitOfWork.BeginTransactionAsync();
 

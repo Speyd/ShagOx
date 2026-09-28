@@ -61,6 +61,15 @@ namespace ShagOxServer.Application.Resources.Validations {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Advertisement variant with the same attributes already exists..
+        /// </summary>
+        internal static string AdvertisementVariantAttributesMustBeUnique {
+            get {
+                return ResourceManager.GetString("AdvertisementVariantAttributesMustBeUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Attribute &apos;{0}&apos; must be a boolean..
         /// </summary>
         internal static string AttributeMustBeBoolean {

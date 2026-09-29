@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Baskets.BasketItems;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
-using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
@@ -20,28 +20,28 @@ public class BasketItemQueryService
     IBasketItemQueryService
 {
     private readonly IBasketItemQueryRepository _itemQueryRepository;
-    private readonly IAdvertisementVariantQueryService _variantService;
+    private readonly IAdvertisementQueryService _advertisementService;
 
 
 
     public BasketItemQueryService(
         IBasketItemQueryRepository itemQueryRepository,
-        IAdvertisementVariantQueryService variantService
+        IAdvertisementQueryService advertisementService
     )
         : base(itemQueryRepository)
     {
         _itemQueryRepository = itemQueryRepository;
-        _variantService = variantService;
+        _advertisementService = advertisementService;
     }
 
 
     public override async Task<BasketItemDto> ApplyMapperAsync(
         BasketItem entity)
     {
-        var variant = await _variantService
-            .ApplyMapperAsync(entity.AdvertisementVariant);
+        var adert = await _advertisementService
+            .ApplyMapperAsync(entity.AdvertisementVariant.Advertisement);
 
-        return BasketItemMapper.ToDto(entity, variant);
+        return BasketItemMapper.ToDto(entity, adert);
     }
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementVariantAsync(

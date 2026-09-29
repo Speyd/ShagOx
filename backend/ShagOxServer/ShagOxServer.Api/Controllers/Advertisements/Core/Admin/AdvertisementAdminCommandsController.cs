@@ -12,6 +12,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Core.Admin;
 
 [ApiController]
 [Route("api/admin/advertisements")]
+[Authorize(Roles = "Admin")]
 public class AdvertisementAdminCommandsController 
     : ApiController
 {

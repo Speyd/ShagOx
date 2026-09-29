@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems;
 using ShagOxServer.Domain.Entities.Baskets;
 
@@ -7,13 +7,13 @@ public static class BasketItemMapper
 {
     public static BasketItemDto ToDto(
         BasketItem item,
-        AdvertisementVariantDto variant)
+        AdvertisementDto advert)
     {
         return new BasketItemDto(
             item.Id,
             item.BasketId,
             item.Quantity,
-            variant
+            advert
         );
     }
 }

@@ -364,9 +364,9 @@
     <value>Не вдалося оновити роль.</value>
   </data>
   <data name="UserDeleteFailed" xml:space="preserve">
-    <value>Не вдалося видалити роль.</value>
+    <value>Не вдалося видалити користувача.</value>
   </data>
   <data name="UserUpdateFailed" xml:space="preserve">
-    <value>Не вдалося оновити роль.</value>
+    <value>Не вдалося оновити користувача.</value>
   </data>
 </root>

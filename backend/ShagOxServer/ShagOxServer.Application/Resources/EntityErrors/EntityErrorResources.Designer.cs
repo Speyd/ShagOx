@@ -799,7 +799,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to delete role..
+        ///   Ищет локализованную строку, похожую на Failed to delete user..
         /// </summary>
         internal static string UserDeleteFailed {
             get {
@@ -808,7 +808,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to update role..
+        ///   Ищет локализованную строку, похожую на Failed to update user..
         /// </summary>
         internal static string UserUpdateFailed {
             get {

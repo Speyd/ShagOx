@@ -12,6 +12,7 @@ using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Create;
+
 public class AvatarCreateService
     : IAvatarCreateService
 {
@@ -41,77 +42,89 @@ public class AvatarCreateService
         _logger = logger;
     }
 
+
     public async Task<Result<PictureCreateResponse>> CreateAsync(
+        AvatarCreateRequest request)
+    {
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            var result = await CreateInternalAsync(request);
+
+            if (!result.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return result;
+            }
+
+            await _unitOfWork.CommitAsync();
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to create avatar. UserId: {UserId}",
+                request.UserId);
+
+            return Result<PictureCreateResponse>
+                .Fail(EntityErrorResources.AvatarCreateFailed);
+        }
+    }
+
+
+    public async Task<Result<PictureCreateResponse>> CreateInternalAsync(
         AvatarCreateRequest request)
     {
         var resultAdvertValid = await _userValidator
             .ExistsByIdAsync(request.UserId);
 
         if (!resultAdvertValid.IsSuccess)
-            return Result<PictureCreateResponse>.Fail(resultAdvertValid.Error);
+            return Result<PictureCreateResponse>
+                .Fail(resultAdvertValid.Error);
+
 
         var resultLoaderValid = await _pictureValidator
             .PictureUploadValidator(request.File);
 
-
-        await _unitOfWork.BeginTransactionAsync();
-
-        try
-        {     
-            if (!resultLoaderValid.IsSuccess)
-            {
-                if (resultLoaderValid.Value is not null)
-                {
-                    await _loaderService
-                        .DeleteAsync(resultLoaderValid.Value.PublicId);
-                }
-
-                return Result<PictureCreateResponse>
-                    .Fail(resultLoaderValid.Error);
-            }
-
-
-            var avatar = AvatarCreater.Create(
-                request,
-                resultLoaderValid.Value!
-            );
-
-
-            _avatarRepository.Add(avatar);
-
-
-            await _unitOfWork.CommitAsync();
-
-            _logger.LogInformation(
-                "Avatar created successfully. " + 
-                "AvatarId: {AvatarId}, UserId: {UserId}",
-                avatar.Id,
-                request.UserId);
-
-            return Result<PictureCreateResponse>.Success(
-               new PictureCreateResponse(
-                   avatar.Id,
-                   avatar.PublicId,
-                   DateTime.UtcNow
-            ));
-        }
-        catch(Exception ex)
+        if (!resultLoaderValid.IsSuccess)
         {
-            await _unitOfWork.RollbackAsync();
-
             if (resultLoaderValid.Value is not null)
             {
                 await _loaderService
-                    .DeleteAsync(resultLoaderValid.Value.PublicId);
+                    .DeleteAsync(
+                        resultLoaderValid.Value.PublicId);
             }
 
-            _logger.LogError(
-               ex,
-               "Failed to create avatar. UserId: {UserId}",
-               request.UserId);
-
             return Result<PictureCreateResponse>
-                .Fail(EntityErrorResources.AvatarCreateFailed);
+                .Fail(resultLoaderValid.Error);
         }
+
+
+        var avatar = AvatarCreater.Create(
+            request,
+            resultLoaderValid.Value!
+        );
+
+        _avatarRepository.Add(avatar);
+
+
+        _logger.LogInformation(
+            "Avatar created successfully. " +
+            "AvatarId: {AvatarId}, UserId: {UserId}",
+            avatar.Id,
+            request.UserId);
+
+
+        return Result<PictureCreateResponse>.Success(
+            new PictureCreateResponse(
+                avatar.Id,
+                avatar.PublicId,
+                DateTime.UtcNow));
     }
 }

@@ -21,4 +21,11 @@ public class ProductTypeTranslationExistsRepository
     {
         return query.WithIncludes();
     }
+
+    protected override IQueryable<ProductTypeTranslation> ApplyIdentificatorFilter(
+        IQueryable<ProductTypeTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
+    }
 }

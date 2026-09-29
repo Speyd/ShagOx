@@ -30,4 +30,11 @@ public class StatusTranslationQueryRepository
     {
         return query.Filter(filter);
     }
+
+    protected override IQueryable<StatusTranslation> ApplyIdentificatorFilter(
+        IQueryable<StatusTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
+    }
 }

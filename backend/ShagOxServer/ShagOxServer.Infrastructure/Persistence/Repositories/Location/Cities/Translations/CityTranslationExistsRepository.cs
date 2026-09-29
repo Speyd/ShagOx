@@ -20,4 +20,11 @@ public class CityTranslationExistsRepository
     {
         return query.WithIncludes();
     }
+
+    protected override IQueryable<CityTranslation> ApplyIdentificatorFilter(
+        IQueryable<CityTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
+    }
 }

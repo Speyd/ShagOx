@@ -21,4 +21,11 @@ public class AttributeDictionaryValueTranslationExistsRepository
     {
         return query.WithIncludes();
     }
+
+    protected override IQueryable<AttributeDictionaryValueTranslation> ApplyIdentificatorFilter(
+        IQueryable<AttributeDictionaryValueTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
+    }
 }

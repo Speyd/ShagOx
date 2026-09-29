@@ -47,7 +47,7 @@ public class AttributeDictionaryValueQueryService
         var translation = await _translation
             .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        return AttributeDictionaryValueMapper.ToDto(entity, translation!.Name);
+        return AttributeDictionaryValueMapper.ToDto(entity, translation?.Name);
     }
 
 

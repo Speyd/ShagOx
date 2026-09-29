@@ -8,6 +8,7 @@ import { useAuthStore } from "@/features/auth";
 import Price from "@/shared/ui/price";
 import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGetAdvertisement";
 import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
+import AddToBasket from "@/features/basket/ui/AddToBasket";
 
 export default function AdvertisementPage() {
   const { id } = useParams<{ id: string }>();
@@ -63,6 +64,12 @@ export default function AdvertisementPage() {
           )}
           {user?.id === advertisement.seller.id && (
             <DeleteAdvertisementButton id={advertisement.id} />
+          )}
+          {advertisement.variants[0] && (
+            <AddToBasket
+              advertisementVariantId={advertisement.variants[0].id}
+              quantity={1}
+            />
           )}
         </div>
         <Price

@@ -1,0 +1,140 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.checkbox {
+  cursor: pointer;
+}
+
+.imageWrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.infoGroup {
+  flex: 1;
+}
+
+.titleLink {
+  text-decoration: none;
+  color: #0f172a;
+  transition: color 0.15s ease;
+}
+
+.titleLink:hover {
+  color: var(--color-primary, #228be6);
+}
+
+.priceGroup {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.price {
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.footerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #64748b;
+  transition: color 0.15s ease;
+}
+
+.actionLink:hover {
+  color: #0f172a;
+}
+
+.deleteLink:hover {
+  color: #ef4444;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 4px;
+  background-color: #f8fafc;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .imageWrapper {
+    width: 72px;
+    height: 72px;
+  }
+
+  .headerRow {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .priceGroup {
+    text-align: left;
+  }
+
+  .footerRow {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

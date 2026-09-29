@@ -39,10 +39,9 @@ public class BasketQueryService
         Basket entity)
     {
         var items = new List<BasketItemDto>();
-        Console.WriteLine(entity.Id);
+
         foreach(var item in entity.BasketItems)
         {
-            Console.WriteLine(item.Id);
             var itemDto = await _basketItemService
                 .ApplyMapperAsync(item);
 

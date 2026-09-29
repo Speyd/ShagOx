@@ -51,11 +51,11 @@ public class CityQueryService
         var translationCity = await _translationCityRepository
            .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        var translationRegion = await _regionService
+        var region = await _regionService
            .ApplyMapperAsync(entity.Region);
 
         return CityMapper.ToDto(entity,
-            translationRegion,
+            region,
             translationCity?.Name);
     }
 

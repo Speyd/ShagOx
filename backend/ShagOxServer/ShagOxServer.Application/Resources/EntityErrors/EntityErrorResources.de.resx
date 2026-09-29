@@ -364,9 +364,9 @@
     <value>Die Rolle konnte nicht aktualisiert werden.</value>
   </data>
   <data name="UserDeleteFailed" xml:space="preserve">
-    <value>Die Rolle konnte nicht gelöscht werden.</value>
+    <value>Die Benutzer konnte nicht gelöscht werden.</value>
   </data>
   <data name="UserUpdateFailed" xml:space="preserve">
-    <value>Die Rolle konnte nicht aktualisiert werden.</value>
+    <value>Die Benutzer konnte nicht aktualisiert werden.</value>
   </data>
 </root>

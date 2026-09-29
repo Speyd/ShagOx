@@ -16,7 +16,7 @@ public sealed record UserDto
 
     AvatarDto? Avatar,
 
-    CityDto City,
+    CityDto? City,
 
     List<RoleDto> Roles,
 

@@ -52,10 +52,10 @@ public class UserDeleteService
         {
             _userRepository.Delete(user.Value!);
 
-            if (user.Value!.AvatarId is not null)
+            if (user.Value!.Avatar is not null)
             {
                 await _avatarDeleteService
-                    .DeleteAsync(user.Value!.AvatarId.Value);
+                    .DeleteInternalAsync(user.Value!.Avatar);
             }
 
             await _unitOfWork.CommitAsync();

@@ -11,7 +11,7 @@ public static class UserMapper
 {
     public static UserDto ToDto(
         User user,
-        CityDto city)
+        CityDto? city)
     {
         return new UserDto(
             user.Id,

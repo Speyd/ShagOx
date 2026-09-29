@@ -10,6 +10,7 @@ using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Delete;
+
 public class AvatarDeleteService
     : IAvatarDeleteService
 {
@@ -39,47 +40,68 @@ public class AvatarDeleteService
     public async Task<Result<DeleteResponse>> DeleteAsync(
         long id)
     {
-        var avatar = await _avatarValidator.GetByIdAsync(id);
+        var avatar = await _avatarValidator
+            .GetByIdAsync(id);
+
         if (!avatar.IsSuccess)
-            return Result<DeleteResponse>.Fail(avatar.Error);
- 
+            return Result<DeleteResponse>
+                .Fail(avatar.Error);
+
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _avatarRepository.Delete(avatar.Value!);
+            var result = await DeleteInternalAsync(
+                avatar.Value!);
 
-            var result = await _loaderService
-                .DeleteAsync(avatar.Value!.PublicId);
-            
-            if(!result.IsSuccess)
-                throw new Exception(result.Error);
+            if (!result.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return result;
+            }
 
             await _unitOfWork.CommitAsync();
+
+            return result;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
             _logger.LogError(
-               ex,
-               "Failed to delete avatar. Id: {Id}",
-               id);
+                ex,
+                "Failed to delete avatar. Id: {Id}",
+                id);
 
             return Result<DeleteResponse>
                 .Fail(EntityErrorResources.AvatarDeleteFailed);
         }
+    }
+
+
+    public async Task<Result<DeleteResponse>> DeleteInternalAsync(
+        Avatar avatar)
+    {
+        _avatarRepository.Delete(avatar);
+
+        var result = await _loaderService
+            .DeleteAsync(avatar.PublicId);
+
+        if (!result.IsSuccess)
+        {
+            return Result<DeleteResponse>
+                .Fail(result.Error);
+        }
 
         _logger.LogInformation(
             "Avatar deleted successfully. Id: {Id}",
-            id);
+            avatar.Id);
 
         return Result<DeleteResponse>.Success(
-           new DeleteResponse(
-               avatar.Value!.Id,
-               DateTime.UtcNow
-           )
-       );
+            new DeleteResponse(
+                avatar.Id,
+                DateTime.UtcNow));
     }
 }

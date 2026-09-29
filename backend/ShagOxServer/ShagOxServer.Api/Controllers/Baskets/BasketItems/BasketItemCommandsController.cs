@@ -24,14 +24,15 @@ public class BasketItemCommandsController
 
     protected readonly IBasketExistsRepository _basketExistsService;
 
-
+    
     public BasketItemCommandsController(
         IBasketItemCreateService createService,
         IBasketItemUpdateService updateService,
         IBasketItemDeleteService deleteService,
+        IBasketItemExistsRepository basketItemExistsService,
         IBasketExistsRepository basketExistsService,
         IUserAdminQueryService userQueryService
-    ) : base(basketExistsService, userQueryService)
+    ) : base(basketItemExistsService, userQueryService)
     {
         _createService = createService;
         _updateService = updateService;

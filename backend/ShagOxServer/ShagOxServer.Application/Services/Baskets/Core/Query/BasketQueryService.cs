@@ -42,6 +42,7 @@ public class BasketQueryService
 
         foreach (var item in entity.BasketItems)
         {
+            Console.WriteLine(item.Id);
             var itemDto = await _basketItemService
                 .ApplyMapperAsync(item);
 

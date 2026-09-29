@@ -11,11 +11,19 @@ export async function adminUpdateAdvertisement(
 
   if (data.description) formData.append("description", data.description);
 
-  if (data.price != null) formData.append("price", data.price.toString());
-
-  for (const [key, value] of Object.entries(data.properties ?? {})) {
-    formData.append(`properties[${key}]`, value);
-  }
+  if (data.popularity != null)
+    formData.append("popularity", data.popularity.toString());
+  if (data.currencyId != null)
+    formData.append("currencyId", data.currencyId.toString());
+  if (data.conditionId != null)
+    formData.append("conditionId", data.conditionId.toString());
+  if (data.categoryId != null)
+    formData.append("categoryId", data.categoryId.toString());
+  if (data.buyerId != null) formData.append("buyerId", data.buyerId.toString());
+  if (data.attributes != null)
+    formData.append("attributes", JSON.stringify(data.attributes));
+  if (data.variants != null)
+    formData.append("variants", JSON.stringify(data.variants));
 
   data.images.forEach((image, index) => {
     if (image.id != null) {

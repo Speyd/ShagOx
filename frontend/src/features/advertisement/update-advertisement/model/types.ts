@@ -8,7 +8,18 @@ export type AdvertisementImageUpdate = {
 export type UpdateAdvertisementRequestDto = {
   title?: string;
   description?: string;
-  price?: number;
-  properties?: Record<string, string>;
+  popularity?: number;
+  currencyId?: number;
+  conditionId?: number;
+  categoryId?: number;
+  buyerId?: number;
+  attributes?: Record<string, unknown>;
+  variants?: Record<number, AdvertisementVariantUpdate>;
   images?: AdvertisementImageUpdate[];
+};
+
+export type AdvertisementVariantUpdate = {
+  price?: number;
+  stock?: number;
+  attributes?: Record<string, unknown>;
 };

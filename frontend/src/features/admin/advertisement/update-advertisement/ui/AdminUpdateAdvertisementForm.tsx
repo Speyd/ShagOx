@@ -15,6 +15,7 @@ import {
 import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGetAdvertisement";
 import type { ImageItem } from "@/shared/lib/types/image";
 import type { Advertisement } from "@/shared/lib/types/advertisements";
+import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
 
 type UpdateAdvertisementFormProps = {
   advertisementId: number;
@@ -62,7 +63,7 @@ function AdminUpdateAdvertisementFormContent({
     defaultValues: {
       title: advertisement.title,
       description: advertisement.description,
-      price: advertisement.price,
+      price: getAdvertisementPrice(advertisement),
     },
   });
 
@@ -88,6 +89,16 @@ function AdminUpdateAdvertisementFormContent({
 
       data: {
         ...data,
+        attributes: advertisement.attributes,
+        variants: advertisement.variants[0]
+          ? {
+              [advertisement.variants[0].id]: {
+                price: data.price,
+                stock: advertisement.variants[0].stock,
+                attributes: {},
+              },
+            }
+          : undefined,
 
         images: [
           ...images.map((image, index) => ({

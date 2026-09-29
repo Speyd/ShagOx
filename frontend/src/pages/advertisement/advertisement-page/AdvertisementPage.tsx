@@ -7,6 +7,7 @@ import { useAuthStore } from "@/features/auth";
 
 import Price from "@/shared/ui/price";
 import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGetAdvertisement";
+import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
 
 export default function AdvertisementPage() {
   const { id } = useParams<{ id: string }>();
@@ -37,15 +38,15 @@ export default function AdvertisementPage() {
           />
         </div>
         <p>{advertisement.description}</p>
-        {advertisement.properties &&
-          Object.keys(advertisement.properties).length > 0 && (
+        {advertisement.attributes &&
+          Object.keys(advertisement.attributes).length > 0 && (
             <div>
               <h2>Додаткова інформація</h2>
               <ul>
-                {Object.entries(advertisement.properties).map(
+                {Object.entries(advertisement.attributes).map(
                   ([key, value]) => (
                     <li key={key}>
-                      <strong>{key}:</strong> {value}
+                    <strong>{key}:</strong> {String(value)}
                     </li>
                   ),
                 )}
@@ -65,7 +66,7 @@ export default function AdvertisementPage() {
           )}
         </div>
         <Price
-          price={advertisement.price}
+          price={getAdvertisementPrice(advertisement)}
           currency={advertisement.currency?.symbol}
         />
       </div>

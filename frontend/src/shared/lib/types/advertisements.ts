@@ -2,22 +2,55 @@ export type Advertisement = {
   id: number;
   title: string;
   description: string;
-
-  price: number;
-  previousPrice: number;
-
   currency: Currency;
   category: Category;
-
   seller: UserShort;
   buyer: UserShort | null;
-
   images: AdvertisementImage[];
-  properties: Record<string, string>;
-  condition: Condition;
+  attributes: Record<string, unknown>;
+  variants: AdvertisementVariant[];
   createdAt: string;
   soldAt: string | null;
-  inStock: number;
+};
+
+export type AdvertisementShort = {
+  id: number;
+  title: string;
+  description: string;
+  currencyId: number;
+  categoryId: number;
+  sellerId: number;
+  buyerId: number | null;
+  imageIds: number[];
+  attributes: Record<string, unknown>;
+  variants: AdvertisementVariantShort[];
+  createdAt: string;
+  soldAt: string | null;
+};
+
+export type AdvertisementVariant = {
+  id: number;
+  advertisementId: number;
+  price: number;
+  previousPrice: number;
+  stock: number;
+  attributes: VariantAttribute[];
+};
+
+export type AdvertisementVariantShort = Omit<
+  AdvertisementVariant,
+  "attributes"
+> & {
+  attributes: Record<string, unknown>;
+};
+
+export type VariantAttribute = {
+  attributeId: number;
+  attributeKey: string;
+  valueId: number;
+  valueCode: string;
+  value: string | null;
+  valueLabel: string;
 };
 
 export type Currency = {
@@ -49,3 +82,15 @@ export type AdvertisementImage = {
   publicId: string;
   url: string;
 };
+
+export function getAdvertisementPrice(
+  advertisement: Pick<Advertisement, "variants"> | Pick<AdvertisementShort, "variants">,
+): number {
+  return advertisement.variants[0]?.price ?? 0;
+}
+
+export function getAdvertisementStock(
+  advertisement: Pick<Advertisement, "variants"> | Pick<AdvertisementShort, "variants">,
+): number {
+  return advertisement.variants[0]?.stock ?? 0;
+}

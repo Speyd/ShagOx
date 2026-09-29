@@ -145,7 +145,7 @@ public class UserUpdateService
     {
         var oldAvatar = user.Avatar;
 
-        var result = await _avatarCreateService.CreateAsync(
+        var result = await _avatarCreateService.CreateInternalAsync(
             new AvatarCreateRequest(
                 avatarFile,
                 user.Id));
@@ -155,7 +155,7 @@ public class UserUpdateService
 
         if (oldAvatar is not null)
         {
-            await _avatarDeleteService.DeleteAsync(oldAvatar.Id);
+            await _avatarDeleteService.DeleteInternalAsync(oldAvatar);
         }
     }
 }

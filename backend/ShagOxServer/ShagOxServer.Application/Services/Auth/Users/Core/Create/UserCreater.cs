@@ -20,7 +20,8 @@ public class UserCreater
         _contactApplier = contactApplier;
     }
 
-    public async Task<Result<User>> CreateUser(RegisterRequest request)
+    public async Task<Result<User>> CreateUser(
+        RegisterRequest request)
     {
         var user = new User();
        

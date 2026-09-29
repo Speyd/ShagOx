@@ -55,6 +55,17 @@ public class UserCommandsController
     }
 
     [Authorize]
+    [HttpPut("me")]
+    public async Task<IActionResult> UpdateMe(
+        [FromForm] UserUpdateRequest request)
+    {
+        var result = await _updateService
+            .UpdateAsync(UserId, request);
+
+        return result.ToActionResult();
+    }
+
+    [Authorize]
     [HttpPut("email")]
     public async Task<IActionResult> ChangeEmail(
         [FromBody] ChangeEmailRequest request)

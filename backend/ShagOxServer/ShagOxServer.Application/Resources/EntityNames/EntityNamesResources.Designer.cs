@@ -79,6 +79,15 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Advertisement variant.
+        /// </summary>
+        internal static string AdvertisementVariant {
+            get {
+                return ResourceManager.GetString("AdvertisementVariant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Advertisement status translation.
         /// </summary>
         internal static string AdvertStatusTranslation {
@@ -97,11 +106,38 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на AttributeDefinitionTranslation.
+        ///   Ищет локализованную строку, похожую на Attribute definition translation.
         /// </summary>
         internal static string AttributeDefinitionTranslation {
             get {
                 return ResourceManager.GetString("AttributeDefinitionTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Attribute dictionary.
+        /// </summary>
+        internal static string AttributeDictionary {
+            get {
+                return ResourceManager.GetString("AttributeDictionary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Attribute dictionary value.
+        /// </summary>
+        internal static string AttributeDictionaryValue {
+            get {
+                return ResourceManager.GetString("AttributeDictionaryValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Attribute dictionary value translation.
+        /// </summary>
+        internal static string AttributeDictionaryValueTranslation {
+            get {
+                return ResourceManager.GetString("AttributeDictionaryValueTranslation", resourceCulture);
             }
         }
         

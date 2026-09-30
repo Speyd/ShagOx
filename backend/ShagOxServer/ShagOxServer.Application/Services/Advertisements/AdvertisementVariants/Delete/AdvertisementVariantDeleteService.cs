@@ -9,6 +9,7 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Delete;
+
 public class AdvertisementVariantDeleteService
     : IAdvertisementVariantDeleteService
 {
@@ -39,15 +40,27 @@ public class AdvertisementVariantDeleteService
             .GetByIdAsync(id);
 
         if (!variant.IsSuccess)
-            return Result<DeleteResponse>.Fail(variant.Error);
+            return Result<DeleteResponse>
+                .Fail(variant.Error);
+
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _variantRepository.Delete(variant.Value!);
+            var result = await DeleteInternalAsync(
+                variant.Value!);
+
+            if (!result.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return result;
+            }
 
             await _unitOfWork.CommitAsync();
+
+            return result;
         }
         catch (Exception ex)
         {
@@ -59,14 +72,21 @@ public class AdvertisementVariantDeleteService
                 id);
 
             return Result<DeleteResponse>
-                     .Fail(EntityErrorResources.AdvertisementVariantDeleteFailed);
+                .Fail(
+                    EntityErrorResources
+                        .AdvertisementVariantDeleteFailed);
         }
+    }
+
+
+    public async Task<Result<DeleteResponse>> DeleteInternalAsync(
+        AdvertisementVariant variant)
+    {
+        _variantRepository.Delete(variant);
 
         return Result<DeleteResponse>.Success(
-           new DeleteResponse(
-               variant.Value!.Id,
-               DateTime.UtcNow
-           )
-       );
+            new DeleteResponse(
+                variant.Id,
+                DateTime.UtcNow));
     }
 }

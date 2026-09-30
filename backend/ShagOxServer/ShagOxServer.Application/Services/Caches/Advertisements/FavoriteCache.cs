@@ -28,6 +28,9 @@ public class FavoriteCache
         ICacheService cache,
         Favorite cachedEntity)
     {
+        await cache.RemoveAsync(CacheKeys
+            .Entity<Favorite>(cachedEntity.Id));
+
         await cache.RemoveByPatternAsync(
             ByUserPattern(cachedEntity.UserId));
     }

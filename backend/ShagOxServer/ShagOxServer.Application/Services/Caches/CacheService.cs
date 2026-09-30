@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 using StackExchange.Redis;
 using System.Text.Json;
 
@@ -28,6 +29,27 @@ public class CacheService
             return default;
 
         return JsonSerializer.Deserialize<T>(value.ToString());
+    }
+
+    public async Task<Result<T>> GetOrCreateAsync<T>(
+        string key,
+        Func<Task<Result<T>>> factory,
+        TimeSpan expiration)
+    {
+        var getResult = await GetAsync<T>(key);
+
+        if (getResult is not null)
+            return Result<T>.Success(getResult);
+
+        var resultFactory = await factory.Invoke();
+        var entity = resultFactory.Value;
+
+        if (!resultFactory.IsSuccess || entity is null)
+            return Result<T>.Fail(resultFactory.Error);
+
+        await SetAsync(key, entity, expiration);
+
+        return Result<T>.Success(entity);
     }
 
     public async Task SetAsync<T>(

@@ -7,8 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Base;
-using ShagOxServer.Domain.Caches;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -64,21 +63,22 @@ public class FavoriteQueryService
         long userId,
         PaginationParams pagination)
     {
-        var cacheKey = CacheKeys.Favorites.ByUser(
+        var cacheKey = FavoriteCache.ByUser(
             userId,
             pagination.Page,
             pagination.PageSize);
 
-        var cache = await _cache.GetAsync<PagedResult<FavoriteDto>>(
-            cacheKey);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var favorites = await _favoriteRepository
+                    .GetByUserAsync(userId, pagination);
 
-        if (cache is not null)
-            return Result<PagedResult<FavoriteDto>>.Success(cache);
-
-        var favorites = await _favoriteRepository
-            .GetByUserAsync(userId, pagination);
-
-        return await favorites.ToResultPagedAsync(
-            ApplyMapperAsync);
+                return await favorites.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

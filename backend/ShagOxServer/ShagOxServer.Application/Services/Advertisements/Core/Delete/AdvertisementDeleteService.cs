@@ -3,9 +3,11 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,6 +22,7 @@ public class AdvertisementDeleteService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementDeleteService> _logger;
+    private readonly ICacheService _cache;
 
 
     public AdvertisementDeleteService(
@@ -27,13 +30,15 @@ public class AdvertisementDeleteService
         AdvertisementValidator advertValidator,
         IImageDeleteService imageDeleteService,
         IUnitOfWork unitOfWork,
-        ILogger<AdvertisementDeleteService> logger)
+        ILogger<AdvertisementDeleteService> logger,
+        ICacheService cache)
     {
         _advertRepository = advertRepository;
         _advertValidator = advertValidator;
         _imageDeleteService = imageDeleteService;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -58,6 +63,10 @@ public class AdvertisementDeleteService
             }
 
             await _unitOfWork.CommitAsync();
+
+            await AdvertisementCache.InvalidateDeleteAsync(
+                _cache,
+                advert.Value!);
         }
         catch(Exception ex)
         {

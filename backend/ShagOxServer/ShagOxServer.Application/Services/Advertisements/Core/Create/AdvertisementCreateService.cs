@@ -7,11 +7,13 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Create.Validator;
+using ShagOxServer.Application.Services.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
@@ -24,14 +26,14 @@ public class AdvertisementCreateService
     private readonly AdvertisementCreateValidator _advertCreateValidator;
     private readonly AdvertisementVariantValidator _variantValidator;
 
-
     private readonly IAdvertisementVariantCreateService _variantCreateService;
-
 
     private readonly IImageCreateService _imageCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementCreateService> _logger;
+    private readonly ICacheService _cache;
+
 
 
     public AdvertisementCreateService(
@@ -41,7 +43,8 @@ public class AdvertisementCreateService
         IAdvertisementVariantCreateService variantCreateService,
         IImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
-        ILogger<AdvertisementCreateService> logger)
+        ILogger<AdvertisementCreateService> logger,
+        ICacheService cache)
     {
         _advertRepository = advertRepository;
         _advertCreateValidator = advertCreateValidator;
@@ -51,6 +54,7 @@ public class AdvertisementCreateService
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -115,6 +119,10 @@ public class AdvertisementCreateService
 
 
             await _unitOfWork.CommitAsync();
+
+            await AdvertisementCache.InvalidateCreateAsync(
+                _cache, 
+                advert);
         }
         catch(Exception ex)
         {

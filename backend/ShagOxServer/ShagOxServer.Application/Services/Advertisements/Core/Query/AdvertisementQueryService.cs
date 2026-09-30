@@ -2,7 +2,6 @@
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.DTOs.Advertisements.Core;
-using ShagOxServer.Application.DTOs.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
@@ -10,7 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Base;
-using ShagOxServer.Domain.Caches;
+using ShagOxServer.Application.Services.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -89,38 +88,45 @@ public class AdvertisementQueryService
         long userId,
         PaginationParams pagination)
     {
-        var cacheKey = CacheKeys.Advertisements.BySeller(
+        var cacheKey = AdvertisementCache.BySeller(
            userId,
            pagination.Page,
            pagination.PageSize);
 
-        var cache = await _cache.GetAsync<PagedResult<AdvertisementDto>>(
-            cacheKey);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var advert = await _advertisementRepository
+                    .GetBySellerAsync(userId, pagination);
 
-        if (cache is not null)
-            return Result<PagedResult<AdvertisementDto>>.Success(cache);
-
-        var advert = await _advertisementRepository
-            .GetBySellerAsync(userId, pagination);
-
-        return await advert.ToResultPagedAsync(ApplyMapperAsync);
+                return await advert.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 
     public async Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         long userId,
         PaginationParams pagination)
     {
-        var cacheKey = CacheKeys.Advertisements.ByBuyer(
+        var cacheKey = AdvertisementCache.ByBuyer(
            userId,
            pagination.Page,
            pagination.PageSize);
 
-        var cache = await _cache.GetAsync<PagedResult<AdvertisementDto>>(
-            cacheKey);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var advert = await _advertisementRepository
+                    .GetPurchasedByUserAsync(userId, pagination);
 
-        var advert = await _advertisementRepository
-            .GetPurchasedByUserAsync(userId, pagination);
-
-        return await advert.ToResultPagedAsync(ApplyMapperAsync);
+                return await advert.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

@@ -7,11 +7,13 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
@@ -31,6 +33,7 @@ public class AdvertisementUpdateService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementUpdateService> _logger;
+    private readonly ICacheService _cache;
 
 
     public AdvertisementUpdateService(
@@ -41,7 +44,8 @@ public class AdvertisementUpdateService
         AdvertisementVariantValidator variantValidator,
         IAdvertisementVariantUpdateService variantUpdateService,
         IUnitOfWork unitOfWork,
-        ILogger<AdvertisementUpdateService> logger)
+        ILogger<AdvertisementUpdateService> logger,
+        ICacheService cache)
     {
         _validator = validator;
         _advertRepository = advertRepository;
@@ -51,6 +55,7 @@ public class AdvertisementUpdateService
         _variantUpdateService = variantUpdateService;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -114,7 +119,9 @@ public class AdvertisementUpdateService
 
             await _unitOfWork.CommitAsync();
 
-           
+            await AdvertisementCache.InvalidateUpdateAsync(
+                 _cache,
+                 advert.Value!);
 
             _logger.LogInformation(
                 "Advertisement updated successfully. Id: {Id}",

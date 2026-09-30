@@ -3,8 +3,10 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
+using ShagOxServer.Application.Services.Caches.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
@@ -16,18 +18,21 @@ public class StatusTranslationDeleteService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusTranslationDeleteService> _logger;
-    
+    private readonly ICacheService _cache;
+
 
     public StatusTranslationDeleteService(
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusValidator,
         IUnitOfWork unitOfWork,
-        ILogger<StatusTranslationDeleteService> logger)
+        ILogger<StatusTranslationDeleteService> logger,
+        ICacheService cache)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -47,6 +52,9 @@ public class StatusTranslationDeleteService
             _statusRepository.Delete(status.Value!);
 
             await _unitOfWork.CommitAsync();
+
+            await StatusTranslationCache
+                .InvalidateDeleteAsync(_cache, status.Value!);
         }
         catch(Exception ex)
         {

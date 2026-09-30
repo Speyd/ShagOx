@@ -4,8 +4,10 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Create;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
+using ShagOxServer.Application.Services.Caches.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -18,18 +20,22 @@ public class StatusTranslationCreateService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusTranslationCreateService> _logger;
+    private readonly ICacheService _cache;
+
 
     public StatusTranslationCreateService(
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusValidator,
         IUnitOfWork unitOfWork,
-        ILogger<StatusTranslationCreateService> logger)
+        ILogger<StatusTranslationCreateService> logger,
+        ICacheService cache)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
 
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -51,6 +57,9 @@ public class StatusTranslationCreateService
             _statusRepository.Add(status);
 
             await _unitOfWork.CommitAsync();
+
+            await StatusTranslationCache
+                .InvalidateCreateAsync(_cache, status);
         }
         catch(Exception ex)
         {

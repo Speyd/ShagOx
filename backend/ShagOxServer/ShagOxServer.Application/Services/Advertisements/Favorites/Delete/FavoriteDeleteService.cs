@@ -58,7 +58,7 @@ public class FavoriteDeleteService
 
             await _unitOfWork.CommitAsync();
 
-            await FavoriteCache.InvalidateAsync(_cache, 
+            await FavoriteCache.InvalidateDeleteAsync(_cache, 
                 favorite.Value!);
         }
         catch(Exception ex)

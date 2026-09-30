@@ -16,14 +16,30 @@ public class FavoriteCache
     public static string ByUserPattern(long userId)
         => $"{Prefix}:user:{userId}:page:*";
 
-    public static async Task InvalidateAsync(
+    public static async Task InvalidateCreateAsync(
         ICacheService cache,
-        Favorite favorite)
+        Favorite cachedEntity)
+    {
+        await cache.RemoveByPatternAsync(
+            ByUserPattern(cachedEntity.UserId));
+    }
+
+    public static async Task InvalidateDeleteAsync(
+        ICacheService cache,
+        Favorite cachedEntity)
+    {
+        await cache.RemoveByPatternAsync(
+            ByUserPattern(cachedEntity.UserId));
+    }
+
+    public static async Task InvalidateUpdateAsync(
+        ICacheService cache,
+        Favorite cachedEntity)
     {
         await cache.RemoveAsync(CacheKeys
-            .Entity<Favorite>(favorite.Id));
+            .Entity<Favorite>(cachedEntity.Id));
 
         await cache.RemoveByPatternAsync(
-            ByUserPattern(favorite.UserId));
+            ByUserPattern(cachedEntity.UserId));
     }
 }

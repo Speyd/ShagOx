@@ -73,7 +73,8 @@ public class FavoriteCreateService
 
             await _unitOfWork.CommitAsync();
 
-            await FavoriteCache.InvalidateAsync(_cache, favorite);
+            await FavoriteCache.InvalidateCreateAsync(_cache, 
+                favorite);
         }
         catch(Exception ex)
         {

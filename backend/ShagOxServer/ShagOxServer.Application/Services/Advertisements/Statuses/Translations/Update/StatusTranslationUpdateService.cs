@@ -4,11 +4,13 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Caches.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -23,6 +25,8 @@ public class StatusTranslationUpdateService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusTranslationDeleteService> _logger;
+    private readonly ICacheService _cache;
+
 
 
     public StatusTranslationUpdateService(
@@ -30,13 +34,15 @@ public class StatusTranslationUpdateService
         StatusTranslationValidator statusTranslationValidator,
         StatusValidator statusValidator,
         IUnitOfWork unitOfWork,
-        ILogger<StatusTranslationDeleteService> logger
+        ILogger<StatusTranslationDeleteService> logger,
+        ICacheService cache
     ) : base(statusValidator, statusTranslationValidator)
     {
         _statusRepository = statusRepository;
         _statusTranslationValidator = statusTranslationValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -75,6 +81,9 @@ public class StatusTranslationUpdateService
             _statusRepository.Update(status.Value!);
 
             await _unitOfWork.CommitAsync();
+
+            await StatusTranslationCache
+                .InvalidateUpdateAsync(_cache, status.Value!);
         }
         catch(Exception ex)
         {

@@ -74,7 +74,7 @@ public class FavoriteUpdateService
 
             await _unitOfWork.CommitAsync();
 
-            await FavoriteCache.InvalidateAsync(_cache,
+            await FavoriteCache.InvalidateUpdateAsync(_cache,
                 favorite.Value!);
         }
         catch(Exception ex)

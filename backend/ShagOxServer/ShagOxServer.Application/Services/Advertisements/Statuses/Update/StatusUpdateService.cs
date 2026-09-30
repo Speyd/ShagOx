@@ -7,10 +7,9 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Updat
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
-using ShagOxServer.Domain.Caches;
+using ShagOxServer.Application.Services.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System.Globalization;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Update;
 public class StatusUpdateService
@@ -79,13 +78,9 @@ public class StatusUpdateService
 
             await _unitOfWork.CommitAsync();
 
-            await _cache.RemoveAsync(
-                CacheKeys.Entity<Status>(statusId));
-
-            await _cache.RemoveAsync(
-                CacheKeys.Translation<Status>(
-                    statusId,
-                    CultureInfo.CurrentCulture.Name));
+            await StatusCache.InvalidateUpdateAsync(
+                _cache, 
+                status.Value!);
         }
         catch(Exception ex)
         {

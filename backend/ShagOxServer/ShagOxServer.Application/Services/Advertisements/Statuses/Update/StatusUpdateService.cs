@@ -7,8 +7,8 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Updat
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
+using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Caches;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Globalization;
 

@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Domain.Entities.Advertisements;
 
-namespace ShagOxServer.Domain.Entities.Caches;
+namespace ShagOxServer.Domain.Caches;
 public static class CacheKeys
 {
     public static string Entity<T>(long id)

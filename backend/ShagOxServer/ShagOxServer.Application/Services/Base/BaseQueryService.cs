@@ -5,7 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Base;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Caches;
+using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;

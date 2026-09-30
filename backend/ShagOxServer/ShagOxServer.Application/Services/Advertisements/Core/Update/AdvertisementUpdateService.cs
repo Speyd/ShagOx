@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
@@ -30,6 +31,8 @@ public class AdvertisementUpdateService
     private readonly AdvertisementVariantValidator _variantValidator;
 
     private readonly IAdvertisementVariantUpdateService _variantUpdateService;
+    private readonly IFavoriteQueryRepository _favoriteRepository;
+
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementUpdateService> _logger;
@@ -43,6 +46,7 @@ public class AdvertisementUpdateService
         AdvertisementUpdateValidator validatorUpdate,
         AdvertisementVariantValidator variantValidator,
         IAdvertisementVariantUpdateService variantUpdateService,
+        IFavoriteQueryRepository favoriteRepository,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementUpdateService> logger,
         ICacheService cache)
@@ -53,6 +57,7 @@ public class AdvertisementUpdateService
         _variantValidator = variantValidator;
         _imageService = imageService;
         _variantUpdateService = variantUpdateService;
+        _favoriteRepository = favoriteRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
         _cache = cache;
@@ -121,6 +126,7 @@ public class AdvertisementUpdateService
 
             await AdvertisementCache.InvalidateUpdateAsync(
                  _cache,
+                 _favoriteRepository,
                  advert.Value!);
 
             _logger.LogInformation(

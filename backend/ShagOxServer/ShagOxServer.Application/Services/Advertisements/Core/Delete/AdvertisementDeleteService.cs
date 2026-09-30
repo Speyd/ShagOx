@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -19,6 +20,7 @@ public class AdvertisementDeleteService
     private readonly AdvertisementValidator _advertValidator;
 
     private readonly IImageDeleteService _imageDeleteService;
+    private readonly IFavoriteQueryRepository _favoriteRepository;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementDeleteService> _logger;
@@ -29,6 +31,7 @@ public class AdvertisementDeleteService
         IRepository<Advertisement> advertRepository,
         AdvertisementValidator advertValidator,
         IImageDeleteService imageDeleteService,
+        IFavoriteQueryRepository favoriteRepository,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementDeleteService> logger,
         ICacheService cache)
@@ -36,6 +39,7 @@ public class AdvertisementDeleteService
         _advertRepository = advertRepository;
         _advertValidator = advertValidator;
         _imageDeleteService = imageDeleteService;
+        _favoriteRepository = favoriteRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
         _cache = cache;
@@ -66,6 +70,7 @@ public class AdvertisementDeleteService
 
             await AdvertisementCache.InvalidateDeleteAsync(
                 _cache,
+                _favoriteRepository,
                 advert.Value!);
         }
         catch(Exception ex)

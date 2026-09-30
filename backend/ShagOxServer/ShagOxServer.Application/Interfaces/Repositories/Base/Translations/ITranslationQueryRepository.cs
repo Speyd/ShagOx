@@ -16,4 +16,7 @@ public interface ITranslationQueryRepository<TEntity, TTranslation, TFilter>
     Task<TTranslation?> GetByIdentificatorAsync(
         string identificator,
         string language);
+
+    Task<List<long>> GetTranslationIdsByTranslatableAsync(
+        long translatableId);
 }

@@ -2,6 +2,8 @@
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -10,6 +12,7 @@ using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Del
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Caches.Advertisements;
 using ShagOxServer.Application.Services.Caches.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
@@ -23,8 +26,11 @@ public class StatusTranslationUpdateService
     private readonly IRepository<StatusTranslation> _statusRepository;
     private readonly StatusTranslationValidator _statusTranslationValidator;
 
+    private readonly IAdvertisementQueryRepository _advertRepository;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusTranslationDeleteService> _logger;
+    private readonly ILanguageProvider _language;
     private readonly ICacheService _cache;
 
 
@@ -33,15 +39,19 @@ public class StatusTranslationUpdateService
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusTranslationValidator,
         StatusValidator statusValidator,
+        IAdvertisementQueryRepository advertRepository,
         IUnitOfWork unitOfWork,
         ILogger<StatusTranslationDeleteService> logger,
+        ILanguageProvider language,
         ICacheService cache
     ) : base(statusValidator, statusTranslationValidator)
     {
         _statusRepository = statusRepository;
         _statusTranslationValidator = statusTranslationValidator;
+        _advertRepository = advertRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _language = language;
         _cache = cache;
     }
 
@@ -82,8 +92,7 @@ public class StatusTranslationUpdateService
 
             await _unitOfWork.CommitAsync();
 
-            await StatusTranslationCache
-                .InvalidateUpdateAsync(_cache, status.Value!);
+            await CacheInvalidate(status.Value!);
         }
         catch(Exception ex)
         {
@@ -100,5 +109,25 @@ public class StatusTranslationUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task CacheInvalidate(
+        StatusTranslation status)
+    {
+        await StatusTranslationCache
+            .InvalidateUpdateAsync(_cache, status);
+
+        await StatusCache
+            .InvalidateByTranslationAsync(_cache,
+                status,
+                status.Translatable);
+
+        if (_language.Language == status.Language)
+        {
+            await AdvertisementCache
+                .InvalidateByStatusTranslationAsync(_cache,
+                    _advertRepository,
+                    status);
+        }
     }
 }

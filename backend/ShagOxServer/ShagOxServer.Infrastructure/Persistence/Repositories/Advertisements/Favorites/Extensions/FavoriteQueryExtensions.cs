@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Advertisements.Core;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
@@ -25,5 +27,13 @@ public static class FavoriteQueryExtensions
                 .ThenInclude(a => a.Condition)
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Images);
+    }
+
+    public static IQueryable<FavoriteCacheInfo> SelectCacheInfo(
+        this IQueryable<Favorite> query)
+    {
+        return query.Select(x => new FavoriteCacheInfo(
+            x.Id,
+            x.UserId));
     }
 }

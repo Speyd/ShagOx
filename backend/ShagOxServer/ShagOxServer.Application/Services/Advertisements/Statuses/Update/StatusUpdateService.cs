@@ -2,6 +2,7 @@
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Update;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -18,6 +19,8 @@ public class StatusUpdateService
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
 
+    private readonly IAdvertisementQueryRepository _advertRepository;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusUpdateService> _logger;
     private readonly ICacheService _cache;
@@ -27,12 +30,14 @@ public class StatusUpdateService
     public StatusUpdateService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
+        IAdvertisementQueryRepository advertRepository,
         IUnitOfWork unitOfWork,
         ILogger<StatusUpdateService> logger,
         ICacheService cache)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
+        _advertRepository = advertRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
         _cache = cache;
@@ -78,9 +83,7 @@ public class StatusUpdateService
 
             await _unitOfWork.CommitAsync();
 
-            await StatusCache.InvalidateUpdateAsync(
-                _cache, 
-                status.Value!);
+            await CacheInvalidate(status.Value);
         }
         catch(Exception ex)
         {
@@ -96,6 +99,18 @@ public class StatusUpdateService
         }
 
         return Result<UpdateResponse>.Success(result);
+    }
+
+    private async Task CacheInvalidate(
+        Status status)
+    {
+        await StatusCache.InvalidateUpdateAsync(
+                _cache,
+                status);
+
+        await AdvertisementCache
+            .InvalidateByStatusAsync(
+                _cache, _advertRepository, status.Id);
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(

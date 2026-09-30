@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -17,4 +18,7 @@ public interface IAdvertisementQueryRepository
     Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
         long userId,
         PaginationParams pagination);
+
+    Task<List<AdvertisementCacheInfo>> GetCacheInfoByStatusAsync(
+        long statusId);
 }

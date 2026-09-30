@@ -45,4 +45,16 @@ public class FavoriteCache
         await cache.RemoveByPatternAsync(
             ByUserPattern(cachedEntity.UserId));
     }
+
+    public static async Task InvalidateAsync(
+        ICacheService cache,
+        long userId,
+        long cachedEntityId)
+    {
+        await cache.RemoveAsync(CacheKeys
+            .Entity<Favorite>(cachedEntityId));
+
+        await cache.RemoveByPatternAsync(
+            ByUserPattern(userId));
+    }
 }

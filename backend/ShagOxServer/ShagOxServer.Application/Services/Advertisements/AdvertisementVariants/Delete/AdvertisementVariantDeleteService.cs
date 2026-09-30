@@ -3,8 +3,10 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Delete;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
+using ShagOxServer.Application.Services.Caches;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -18,18 +20,21 @@ public class AdvertisementVariantDeleteService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementVariantDeleteService> _logger;
+    private readonly ICacheService _cache;
 
 
     public AdvertisementVariantDeleteService(
         IRepository<AdvertisementVariant> variantRepository,
         AdvertisementVariantValidator variantValidator,
         IUnitOfWork unitOfWork,
-        ILogger<AdvertisementVariantDeleteService> logger)
+        ILogger<AdvertisementVariantDeleteService> logger,
+        ICacheService cache)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -59,6 +64,9 @@ public class AdvertisementVariantDeleteService
             }
 
             await _unitOfWork.CommitAsync();
+
+            await AdvertisementVariantCache
+                .InvalidateDeleteAsync(_cache, variant.Value!);
 
             return result;
         }

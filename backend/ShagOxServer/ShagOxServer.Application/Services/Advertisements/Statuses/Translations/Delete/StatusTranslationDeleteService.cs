@@ -1,14 +1,18 @@
 ﻿using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
+using ShagOxServer.Application.Services.Caches.Advertisements;
 using ShagOxServer.Application.Services.Caches.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
 public class StatusTranslationDeleteService
     : IStatusTranslationDeleteService
@@ -16,22 +20,29 @@ public class StatusTranslationDeleteService
     private readonly IRepository<StatusTranslation> _statusRepository;
     private readonly StatusTranslationValidator _statusValidator;
 
+    private readonly IAdvertisementQueryRepository _advertRepository;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusTranslationDeleteService> _logger;
+    private readonly ILanguageProvider _language;
     private readonly ICacheService _cache;
 
 
     public StatusTranslationDeleteService(
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusValidator,
+        IAdvertisementQueryRepository advertRepository,
         IUnitOfWork unitOfWork,
         ILogger<StatusTranslationDeleteService> logger,
+        ILanguageProvider language,
         ICacheService cache)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
+        _advertRepository = advertRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _language = language;
         _cache = cache;
     }
 
@@ -53,8 +64,7 @@ public class StatusTranslationDeleteService
 
             await _unitOfWork.CommitAsync();
 
-            await StatusTranslationCache
-                .InvalidateDeleteAsync(_cache, status.Value!);
+            await CacheInvalidate(status.Value!);
         }
         catch(Exception ex)
         {
@@ -75,5 +85,25 @@ public class StatusTranslationDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    private async Task CacheInvalidate(
+       StatusTranslation status)
+    {
+        await StatusTranslationCache
+            .InvalidateDeleteAsync(_cache, status);
+
+        await StatusCache
+            .InvalidateByTranslationAsync(_cache,
+                status,
+                status.Translatable);
+
+        if (_language.Language == status.Language)
+        {
+            await AdvertisementCache
+                .InvalidateByStatusTranslationAsync(_cache,
+                    _advertRepository,
+                    status);
+        }
     }
 }

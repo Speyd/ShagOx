@@ -4,12 +4,13 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Caches;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Update;
 public class AdvertisementVariantUpdateService
@@ -23,6 +24,7 @@ public class AdvertisementVariantUpdateService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementVariantUpdateService> _logger;
+    private readonly ICacheService _cache;
 
 
     public AdvertisementVariantUpdateService(
@@ -30,19 +32,21 @@ public class AdvertisementVariantUpdateService
         AdvertisementVariantValidator variantValidator,
         AdvertisementValidator advertValidator,
         IUnitOfWork unitOfWork,
-        ILogger<AdvertisementVariantUpdateService> logger)
+        ILogger<AdvertisementVariantUpdateService> logger,
+        ICacheService cache)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;
         _advertValidator = advertValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-     long valueId,
-     AdvertisementVariantUpdateRequest request)
+        long valueId,
+        AdvertisementVariantUpdateRequest request)
     {
         await _unitOfWork.BeginTransactionAsync();
 
@@ -57,6 +61,9 @@ public class AdvertisementVariantUpdateService
             }
 
             await _unitOfWork.CommitAsync();
+
+            await AdvertisementVariantCache
+                .InvalidateUpdateAsync(_cache, valueId);
 
             return result;
         }

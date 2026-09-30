@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -53,5 +54,16 @@ public class QueryTranslationRepository<TEntity, TTranslator, TFilter>
         string identificator)
     {
         return query;
+    }
+
+    public virtual async Task<List<long>> GetTranslationIdsByTranslatableAsync(
+        long translatableId)
+    {
+        IQueryable<TTranslator> query = _db.Set<TTranslator>();
+
+        return await query
+            .Where(x => x.TranslatableId == translatableId)
+            .Select(x => x.Id)
+            .ToListAsync();
     }
 }

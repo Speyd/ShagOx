@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Delete;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -17,6 +19,9 @@ public class StatusDeleteService
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
 
+    private readonly IAdvertisementQueryRepository _advertRepository;
+    private readonly IStatusTranslationQueryRepository _repository;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusDeleteService> _logger;
     private readonly ICacheService _cache;
@@ -25,12 +30,16 @@ public class StatusDeleteService
     public StatusDeleteService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
+        IAdvertisementQueryRepository advertRepository,
+        IStatusTranslationQueryRepository repository,
         IUnitOfWork unitOfWork,
         ILogger<StatusDeleteService> logger,
         ICacheService cache)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
+        _advertRepository = advertRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
         _logger = logger;
         _cache = cache;
@@ -54,9 +63,7 @@ public class StatusDeleteService
 
             await _unitOfWork.CommitAsync();
 
-            await StatusCache.InvalidateDeleteAsync(
-                _cache, 
-                status.Value!);
+            await CacheInvalidate(status.Value!);
         }
         catch(Exception ex)
         {
@@ -77,5 +84,18 @@ public class StatusDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    private async Task CacheInvalidate(
+        Status status)
+    {
+        await StatusCache.InvalidateDeleteAsync(
+                _cache,
+                _repository,
+                status);
+
+        await AdvertisementCache
+            .InvalidateByStatusAsync(
+                _cache, _advertRepository, status.Id);
     }
 }

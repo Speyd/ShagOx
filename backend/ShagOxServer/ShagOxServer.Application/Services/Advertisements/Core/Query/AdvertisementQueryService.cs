@@ -5,6 +5,7 @@ using ShagOxServer.Application.DTOs.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
@@ -28,6 +29,8 @@ public class AdvertisementQueryService
     private readonly IAdvertisementVariantQueryService _variantService;
 
     private readonly ICategoryQueryService _categoryService;
+    private readonly IStatusQueryService _statusService;
+
 
 
     public AdvertisementQueryService(
@@ -35,6 +38,7 @@ public class AdvertisementQueryService
         IAdvertisementVariantQueryService variantService,
         ICategoryQueryService categoryService,
         ICacheService cacheService,
+        IStatusQueryService statusService,
         IOptions<CacheSettings> settings
     )
         : base(advertisementRepository, cacheService, settings)
@@ -42,6 +46,7 @@ public class AdvertisementQueryService
         _advertisementRepository = advertisementRepository;
         _variantService = variantService;
         _categoryService = categoryService;
+        _statusService = statusService;
     }
 
 
@@ -54,10 +59,14 @@ public class AdvertisementQueryService
         var categoryDto = await _categoryService
             .ApplyMapperAsync(entity.Category);
 
+        var statusDto = await _statusService
+            .ApplyMapperAsync(entity.Status);
+
         return AdvertisementMapper.ToDto(
             entity,
             attributes,
-            categoryDto);
+            categoryDto,
+            statusDto);
     }
 
     private async Task<Dictionary<long, List<VariantAttributeDto>>>

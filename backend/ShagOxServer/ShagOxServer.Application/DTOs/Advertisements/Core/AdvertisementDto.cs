@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses;
 using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories;
@@ -12,6 +13,7 @@ public sealed record AdvertisementDto
     long Id,
     string Title,
     string Description,
+    StatusDto Status,
     CurrencyDto Currency,
     CategoryDto Category,
     UserShortDto Seller,

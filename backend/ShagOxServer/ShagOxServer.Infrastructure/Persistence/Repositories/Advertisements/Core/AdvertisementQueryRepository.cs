@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
@@ -68,5 +69,14 @@ public class AdvertisementQueryRepository
             .Filter(filter)
             .OrderByDescending(x => x.Popularity)
             .ToPagedResultAsync(pagination);
+    }
+
+    public async Task<List<AdvertisementCacheInfo>> GetCacheInfoByStatusAsync(
+        long statusId)
+    {
+        return await _db.Advertisements
+            .Where(x => x.StatusId == statusId)
+            .SelectCacheInfo()
+            .ToListAsync();
     }
 }

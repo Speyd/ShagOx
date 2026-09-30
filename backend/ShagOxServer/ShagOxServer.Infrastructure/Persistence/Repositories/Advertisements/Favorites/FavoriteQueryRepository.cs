@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Advertisements.Core;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -48,5 +51,14 @@ public class FavoriteQueryRepository
              .WithIncludes()
              .Where(x => x.UserId == usderId)
              .ToPagedResultAsync(pagination);
+    }
+
+    public async Task<List<FavoriteCacheInfo>> GetCacheInfoByAdvertisementAsync(
+        long advertId)
+    {
+        return await _db.Favorites
+            .Where(x => x.AdvertisementId == advertId)
+            .SelectCacheInfo()
+            .ToListAsync();
     }
 }

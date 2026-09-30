@@ -120,9 +120,6 @@
   <data name="Advertisement" xml:space="preserve">
     <value>Advertisement</value>
   </data>
-  <data name="AdverStatus" xml:space="preserve">
-    <value>Advertisement status</value>
-  </data>
   <data name="AdvertStatusTranslation" xml:space="preserve">
     <value>Advertisement status translation</value>
   </data>
@@ -194,5 +191,20 @@
   </data>
   <data name="DefiniteImage" xml:space="preserve">
     <value>Image({0})</value>
+  </data>
+  <data name="AttributeDictionary" xml:space="preserve">
+    <value>Attribute dictionary</value>
+  </data>
+  <data name="AttributeDictionaryValue" xml:space="preserve">
+    <value>Attribute dictionary value</value>
+  </data>
+  <data name="AdvertisementVariant" xml:space="preserve">
+    <value>Advertisement variant</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslation" xml:space="preserve">
+    <value>Attribute dictionary value translation</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Advertisement status</value>
   </data>
 </root>

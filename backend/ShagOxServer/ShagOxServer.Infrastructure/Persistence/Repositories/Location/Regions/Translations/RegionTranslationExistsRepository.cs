@@ -1,22 +1,30 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Translations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Translations;
 public class RegionTranslationExistsRepository
-    : ExistsTranslationRepository<RegionTranslation>,
+    : ExistsTranslationRepository<Region,
+        RegionTranslation>,
       IRegionTranslationExistsRepository
 {
     public RegionTranslationExistsRepository(AppDbContext db)
         : base(db)
     { }
 
-    public async Task<bool> ExistsByNameAsync(
-        string name)
+    protected override IQueryable<RegionTranslation> ApplyIncludes(
+         IQueryable<RegionTranslation> query)
     {
-        return await _db.RegionTranslations
-            .AnyAsync(x => x.Name == name);
+        return query.WithIncludes();
+    }
+
+    protected override IQueryable<RegionTranslation> ApplyIdentificatorFilter(
+        IQueryable<RegionTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
     }
 }

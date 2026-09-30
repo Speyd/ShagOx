@@ -5,6 +5,6 @@ namespace ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Email
 public interface IChangeEmailService
 {
     Task<Result<bool>> ChangeEmail(
-        int userId,
+        long userId,
         ChangeEmailRequest request);
 }

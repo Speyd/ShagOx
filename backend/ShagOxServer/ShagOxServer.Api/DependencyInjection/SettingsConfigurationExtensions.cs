@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.Common.Settings.Auth;
+using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.Common.Settings.Systems;
 using ShagOxServer.Application.Common.Settings.Verifivations;
 
@@ -26,6 +27,9 @@ public static class SettingsConfigurationExtensions
 
         services.Configure<UserNameSettings>(
            config.GetSection("UserNameGenerate"));
+
+        services.Configure<CacheSettings>(
+           config.GetSection("Cache"));
 
         return services;
     }

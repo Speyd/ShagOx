@@ -5,7 +5,7 @@ namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations
 public static class StatusTranslationMapper
 {
     public static StatusTranslationDto ToDto(
-        StatusTranslation x)
+        StatusTranslation x )
     {
         return new StatusTranslationDto
         (

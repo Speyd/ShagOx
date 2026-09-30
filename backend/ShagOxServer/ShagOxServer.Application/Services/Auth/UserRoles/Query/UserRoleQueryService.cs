@@ -1,64 +1,72 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Auth.Roles;
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
 using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.UserRoles.Mapping;
-using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
+using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Auth.UserRoles.Query;
 public class UserRoleQueryService 
-    : IUserRoleQueryService
+    : BaseQueryService<
+        UserRoleDto,
+        UserRole,
+        UserRoleSearchFilter
+        >,
+    IUserRoleQueryService
 {
-    private readonly IUserRoleQueryRepository _queryRepository;
+    private readonly IUserRoleQueryRepository _userRoleQueryRepository;
+    private readonly IUserQueryService _userService;
+
 
 
     public UserRoleQueryService(
-        IUserRoleQueryRepository queryRepository)
+        IUserRoleQueryRepository userRoleQueryRepository,
+        IUserQueryService userService,
+        ICacheService cache,
+        IOptions<CacheSettings> settings
+    )
+        : base(userRoleQueryRepository, cache, settings)
     {
-        _queryRepository = queryRepository;
+        _userRoleQueryRepository = userRoleQueryRepository;
+        _userService = userService;
     }
 
 
-    public async Task<Result<UserRoleDto>> GetByIdAsync(
-        int id)
+    public override async Task<UserRoleDto> ApplyMapperAsync(
+        UserRole entity)
     {
-        var advert = await _queryRepository
-            .GetByIdAsync(id);
-
-        return advert.ToResult(UserRoleMapper.ToDto);
+        return UserRoleMapper.ToDto(entity);
     }
 
-    public async Task<Result<PagedResult<UserRoleDto>>> GetPagedAsync(
-       PaginationParams pagination)
-    {
-        var adverts = await _queryRepository
-            .GetPagedAsync(pagination);
-
-        return adverts.ToResultPaged(UserRoleMapper.ToDto);
-    }
-
-    public async Task<Result<List<RoleDto>>> GetRolesByUserIdAsync(
-        int userId,
+    public async Task<Result<PagedResult<RoleDto>>> GetRolesByUserIdAsync(
+        long userId,
 		PaginationParams pagination)
     {
-        var roles = await _queryRepository
+        var roles = await _userRoleQueryRepository
             .GetRolesByUserIdAsync(userId, pagination);
 
-        return roles.ToResultList(RoleMapper.ToDto);
+        return roles.ToResultPaged(RoleMapper.ToDto);
     }
 
-    public async Task<Result<List<UserDto>>> GetUsersByRoleIdAsync(
-        int roleId,
+    public async Task<Result<PagedResult<UserDto>>> GetUsersByRoleIdAsync(
+        long roleId,
 		PaginationParams pagination)
     {
-        var users = await _queryRepository
+        var users = await _userRoleQueryRepository
             .GetUsersByRoleIdAsync(roleId, pagination);
 
-        return users.ToResultList(UserMapper.ToDto);
+        return await users.ToResultPagedAsync(
+            _userService.ApplyMapperAsync);
     }
 }

@@ -1,48 +1,51 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
-public abstract class BaseTranslationValidator<TObject>
-    : BaseValidator<TObject>
-    where TObject : class
+public abstract class BaseTranslationValidator<TEntity, TTranslation>
+    : BaseValidator<TTranslation>
+    where TEntity : BaseEntity
+    where TTranslation : BaseTranslation<TEntity>
 {
-    private readonly IExistsTranslationRepository<TObject> _translationExistsRepository;
+    private readonly ITranslationExistsRepository<TEntity, TTranslation> 
+        _translationExistsRepository;
 
 
     public BaseTranslationValidator(
-        IRepository<TObject> objectRepository,
-        IExistsTranslationRepository<TObject> translationExistsRepository
+        IRepository<TTranslation> entityRepository,
+        ITranslationExistsRepository<TEntity, TTranslation> translationExistsRepository
         )
-        : base(objectRepository, translationExistsRepository)
+        : base(entityRepository, translationExistsRepository)
     {
         _translationExistsRepository = translationExistsRepository;
     }
 
     public async Task<Result<bool>> ExistsAsync(
-        int objectId,
+        long objectId,
         string language)
     {
         if (!await _translationExistsRepository
                 .ExistsAsync(objectId, language))
         {
             return Result<bool>.NotFound(
-                EntityNameExtensions.GetLocalizedName<TObject>());
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
         return Result<bool>.Success(true);
     }
 
     public async Task<Result<bool>> NotExistsAsync(
-        int cityId,
+        long cityId,
         string language)
     {
         if (await _translationExistsRepository
             .ExistsAsync(cityId, language))
         {
             return Result<bool>.AlreadyExists(
-                EntityNameExtensions.GetLocalizedName<TObject>());
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
         return Result<bool>.Success(true);
@@ -55,7 +58,7 @@ public abstract class BaseTranslationValidator<TObject>
                 .ExistsByLanguageAsync(language))
         {
             return Result<bool>.NotFound(
-                EntityNameExtensions.GetLocalizedName<TObject>());
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
         return Result<bool>.Success(true);
@@ -68,7 +71,35 @@ public abstract class BaseTranslationValidator<TObject>
                 .ExistsByLanguageAsync(language))
         {
             return Result<bool>.AlreadyExists(
-                EntityNameExtensions.GetLocalizedName<TObject>());
+                EntityNameExtensions.GetLocalizedName<TEntity>());
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> ExistsByIdentificatorAsync(
+        string identificator,
+        string language)
+    {
+        if (!await _translationExistsRepository
+                .ExistsByIdentificatorAsync(identificator, language))
+        {
+            return Result<bool>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsByIdentificatorAsync(
+        string identificator, 
+        string language)
+    {
+        if (await _translationExistsRepository
+                .ExistsByIdentificatorAsync(identificator, language))
+        {
+            return Result<bool>.AlreadyExists(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
         return Result<bool>.Success(true);

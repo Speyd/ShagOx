@@ -120,6 +120,9 @@
   <data name="DefaultRoleNotFound" xml:space="preserve">
     <value>Die Standardrolle wurde nicht gefunden.</value>
   </data>
+  <data name="EmailOrPhoneRequired" xml:space="preserve">
+    <value>Für die Bestätigung ist eine E-Mail-Adresse oder Telefonnummer erforderlich.</value>
+  </data>
   <data name="RegistrationFailed" xml:space="preserve">
     <value>Die Registrierung ist fehlgeschlagen.</value>
   </data>

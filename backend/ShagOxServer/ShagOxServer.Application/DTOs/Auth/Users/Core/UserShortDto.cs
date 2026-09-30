@@ -3,7 +3,7 @@
 namespace ShagOxServer.Application.DTOs.Auth.Users.Core;
 public sealed record UserShortDto
 (
-    int Id,
+    long Id,
     string? FirstName,
     string? LastName,
     string? UserName,
@@ -11,9 +11,9 @@ public sealed record UserShortDto
     string? Phone,
     string? Email,
 
-    int? Avatar,
+    long? Avatar,
 
-    int? CityId,
+    long? CityId,
     string? CityName,
 
     DateTime? LastSeenAt

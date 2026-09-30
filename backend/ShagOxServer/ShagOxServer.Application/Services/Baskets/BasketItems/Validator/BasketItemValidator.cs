@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -24,7 +25,7 @@ public class BasketItemValidator
     }
 
     public async Task<Result<BasketItem>> GetByIdWithIncludesAsync(
-        int id)
+        long id)
     {
         var item = await _itemQeuryRepository
             .GetByIdAsync(id);
@@ -39,11 +40,11 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> ExistsAsync(
-        int advertisementId,
-        int basketId)
+        long advertisementVariantId,
+        long basketId)
     {
         if (!await _itemExistsRepository
-                .ExistsAsync(advertisementId, basketId))
+                .ExistsAsync(advertisementVariantId, basketId))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.BasketItem);
@@ -53,11 +54,11 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> NotExistsAsync(
-        int advertisementId,
-        int basketId)
+        long advertisementVariantId,
+        long basketId)
     {
         if (await _itemExistsRepository
-                .ExistsAsync(advertisementId, basketId))
+                .ExistsAsync(advertisementVariantId, basketId))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.BasketItem);
@@ -67,8 +68,8 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> ExistsByBasketAsync(
-        int itemId,
-        int basketId)
+        long itemId,
+        long basketId)
     {
         if (!await _itemExistsRepository
                 .ExistsByBasketAsync(itemId, basketId))
@@ -81,8 +82,8 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> NotExistsByBasketAsync(
-        int itemId,
-        int basketId)
+        long itemId,
+        long basketId)
     {
         if (await _itemExistsRepository
                 .ExistsByBasketAsync(itemId, basketId))
@@ -95,11 +96,12 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> ExistsByAdvertisementAsync(
-        int itemId,
-        int advertisementId)
+        long itemId,
+        long advertisementVariantId)
     {
         if (!await _itemExistsRepository
-                .ExistsByAdvertisementAsync(itemId, advertisementId))
+                .ExistsByAdvertisementVariantAsync(itemId,
+                    advertisementVariantId))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.BasketItem);
@@ -109,11 +111,12 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> NotExistsByAdvertisementAsync(
-        int itemId,
-        int advertisementId)
+        long itemId,
+        long advertisementVariantId)
     {
         if (await _itemExistsRepository
-                .ExistsByAdvertisementAsync(itemId, advertisementId))
+                .ExistsByAdvertisementVariantAsync(itemId,
+                    advertisementVariantId))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.BasketItem);

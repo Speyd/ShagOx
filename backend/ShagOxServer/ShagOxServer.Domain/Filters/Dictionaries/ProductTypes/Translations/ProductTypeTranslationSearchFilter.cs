@@ -4,4 +4,4 @@ public sealed record ProductTypeTranslationSearchFilter
     string? ProductTypeCode,
     string? Language,
     string? Name
-);
+) : BaseFilter();

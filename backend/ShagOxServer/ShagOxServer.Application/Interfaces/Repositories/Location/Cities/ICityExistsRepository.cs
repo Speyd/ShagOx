@@ -6,6 +6,6 @@ public interface ICityExistsRepository
     : IExistsRepository<City>
 {
     Task<bool> ExistsAsync(
-        int regionId,
+        long regionId,
         string cityCode);
 }

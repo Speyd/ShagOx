@@ -3,7 +3,7 @@
 namespace ShagOxServer.Application.DTOs.Auth.Register;
 
 public sealed record RegisterResponse(
-    int Id,
+    long Id,
     string EmailOrPhone,
     string UserName,
     bool EmailVerificationRequired,

@@ -24,7 +24,7 @@ public class ProductTypeValidator
     public async Task<Result<bool>> ExistsByCodeAsync(
        string code)
     {
-        if (await _productTypeExistsRepository
+        if (!await _productTypeExistsRepository
             .ExistsByCodeAsync(code))
         {
             return Result<bool>.NotFound(

@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Cities.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Translations.Update;
 public class CityTranslationUpdateService
-    : BaseTranslationUpdateSerivce<City, CityTranslation>,
+    : BaseTranslationUpdateService<City, CityTranslation>,
     ICityTranslationUpdateService
 {
     private readonly IRepository<CityTranslation> _cityRepository;
@@ -38,7 +38,7 @@ public class CityTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusTranslationId,
+        long statusTranslationId,
         CityTranslationUpdateRequest request)
     {
         var city = await _translationValidator

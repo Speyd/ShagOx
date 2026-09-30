@@ -1,18 +1,18 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 using ShagOxServer.Domain.Entities.Advertisements;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Create;
 public static class AdvertisementCreater
 {
     public static Advertisement Create(
        AdvertisementCreateRequest request,
-       int userId)
+       long userId)
     {
         return new Advertisement
         {
             Title = request.Title,
             Description = request.Description ?? "",
-            Stock = request.Stock < 0? 0 : request.Stock,
             Popularity = request.Popularity,
 
             CurrencyId = request.CurrencyId,
@@ -20,10 +20,9 @@ public static class AdvertisementCreater
             ConditionId = request.ConditionId,
             SellerId = userId,
 
-            Price = request.Price,
-            PreviousPrice = request.Price,
-
-            Properties = request.Properties ?? new()
+            Attributes = string.IsNullOrWhiteSpace(request.Attributes)
+                ? JsonDocument.Parse("{}")
+                : JsonDocument.Parse(request.Attributes)
         };
     }
 }

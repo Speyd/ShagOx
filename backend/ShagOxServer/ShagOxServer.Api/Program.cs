@@ -13,6 +13,9 @@ try
 {
     #region Services
 
+    await builder.Services
+        .AddCache(builder.Configuration);
+
     builder.Services
         .AddLanguageProvider()
         .AddSerilogConfiguration(builder.Configuration)

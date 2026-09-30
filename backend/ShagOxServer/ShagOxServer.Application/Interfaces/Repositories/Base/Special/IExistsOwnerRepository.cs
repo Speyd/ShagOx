@@ -1,5 +1,7 @@
 ﻿namespace ShagOxServer.Application.Interfaces.Repositories.Base.Special;
 public interface IExistsOwnerRepository
 {
-    Task<bool> IsOwnerAsync(int entityId, int userId);
+    Task<bool> IsOwnerAsync(
+        long entityId,
+        long userId);
 }

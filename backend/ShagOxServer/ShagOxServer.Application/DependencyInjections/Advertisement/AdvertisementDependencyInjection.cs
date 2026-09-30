@@ -35,6 +35,8 @@ public static class AdvertisementDependencyInjection
 
         services.AddStatusApplication();
 
+        services.AddAdvertisementVariantApplication();
+
         return services;
     }
 }

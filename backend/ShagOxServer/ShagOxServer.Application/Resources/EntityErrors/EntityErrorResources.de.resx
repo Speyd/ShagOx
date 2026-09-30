@@ -126,6 +126,15 @@
   <data name="AdvertisementUpdateFailed" xml:space="preserve">
     <value>Die Anzeige konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="AdvertisementVariantCreateFailed" xml:space="preserve">
+    <value>Die Anzeigenvariante konnte nicht erstellt werden.</value>
+  </data>
+  <data name="AdvertisementVariantDeleteFailed" xml:space="preserve">
+    <value>Die Anzeigenvariante konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="AdvertisementVariantUpdateFailed" xml:space="preserve">
+    <value>Die Anzeigenvariante konnte nicht erstellt werden.</value>
+  </data>
   <data name="AdvertStatusCreateFailed" xml:space="preserve">
     <value>Der Status konnte nicht erstellt werden.</value>
   </data>
@@ -162,6 +171,33 @@
   <data name="AttributeDefinitionUpdateFailed" xml:space="preserve">
     <value>Die Attributdefinition konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="AttributeDictionaryCreateFailed" xml:space="preserve">
+    <value>Das Attributwörterbuch konnte nicht erstellt werden.</value>
+  </data>
+  <data name="AttributeDictionaryDeleteFailed" xml:space="preserve">
+    <value>Das Attributwörterbuch konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="AttributeDictionaryUpdateFailed" xml:space="preserve">
+    <value>Das Attributwörterbuch konnte nicht aktualisiert werden.</value>
+  </data>
+  <data name="AttributeDictionaryValueCreateFailed" xml:space="preserve">
+    <value>Der Attributwörterbuchwert konnte nicht erstellt werden.</value>
+  </data>
+  <data name="AttributeDictionaryValueDeleteFailed" xml:space="preserve">
+    <value>Der Attributwörterbuchwert konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationCreateFailed" xml:space="preserve">
+    <value>Die Übersetzung des Attribut-Wörterbuchwerts konnte nicht erstellt werden.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationDeleteFailed" xml:space="preserve">
+    <value>Die Übersetzung des Attribut-Wörterbuchwerts konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationUpdateFailed" xml:space="preserve">
+    <value>Die Übersetzung des Attribut-Wörterbuchwerts konnte nicht aktualisiert werden.</value>
+  </data>
+  <data name="AttributeDictionaryValueUpdateFailed" xml:space="preserve">
+    <value>Der Attributwörterbuchwert konnte nicht aktualisiert werden.</value>
+  </data>
   <data name="AvatarCreateFailed" xml:space="preserve">
     <value>Der Avatar konnte nicht erstellt werden.</value>
   </data>
@@ -175,10 +211,10 @@
     <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
   </data>
   <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Das Löschattribut konnte nicht erstellt werden.</value>
+    <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
   </data>
   <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Das Aktualisierungsattribut konnte nicht erstellt werden.</value>
+    <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Der Warenkorb konnte nicht erstellt werden.</value>
@@ -328,9 +364,9 @@
     <value>Die Rolle konnte nicht aktualisiert werden.</value>
   </data>
   <data name="UserDeleteFailed" xml:space="preserve">
-    <value>Die Rolle konnte nicht gelöscht werden.</value>
+    <value>Die Benutzer konnte nicht gelöscht werden.</value>
   </data>
   <data name="UserUpdateFailed" xml:space="preserve">
-    <value>Die Rolle konnte nicht aktualisiert werden.</value>
+    <value>Die Benutzer konnte nicht aktualisiert werden.</value>
   </data>
 </root>

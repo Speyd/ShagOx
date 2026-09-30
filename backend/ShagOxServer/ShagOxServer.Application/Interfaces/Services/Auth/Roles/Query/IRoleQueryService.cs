@@ -1,21 +1,18 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites;
-using ShagOxServer.Application.DTOs.Auth.Roles;
+﻿using ShagOxServer.Application.DTOs.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Services.Base;
-using ShagOxServer.Domain.Filters.Roles;
+using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Filters.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
 public interface IRoleQueryService
-    : IQueryService<RoleDto>
+    : IQueryService<RoleDto, Role, RoleSearchFilter>
 {
     Task<Result<PagedResult<RoleDto>>> GetByUserAsync(
-       int userId,
+       long userId,
        PaginationParams pagination);
 
-    Task<Result<RoleDto>> GetByNameAsync(string name);
-
-    Task<Result<PagedResult<RoleDto>>> Search(
-       RoleSearchFilter filter,
-       PaginationParams pagination);
+    Task<Result<RoleDto>> GetByNameAsync(
+        string name);
 }

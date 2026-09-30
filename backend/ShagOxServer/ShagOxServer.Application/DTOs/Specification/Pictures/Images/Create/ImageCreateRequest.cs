@@ -3,5 +3,5 @@ public sealed record ImageCreateRequest
 (
     string Url,
     int Order,
-    int AdvertisementId
+    long AdvertisementId
 );

@@ -3,7 +3,7 @@
 namespace ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations;
 public sealed record StatusTranslationDto
 (
-    int Id,
+    long Id,
     string Name,
     string Description
 ) : BaseDto(Id);

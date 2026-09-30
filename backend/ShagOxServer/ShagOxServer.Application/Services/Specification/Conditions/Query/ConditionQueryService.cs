@@ -1,60 +1,47 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Conditions;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Query;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Query;
 public class ConditionQueryService 
-    : IConditionQueryService
+    : BaseTranslatableQueryService<
+        ConditionDto,
+        Condition,
+        ConditionSearchFilter
+        >,
+    IConditionQueryService
 {
-    private readonly IConditionQueryRepository _conditionQueryRepository;
+    private readonly IConditionTranslationQueryRepository _translationRepository;
 
 
     public ConditionQueryService(
-        IConditionQueryRepository conditionQueryRepository)
+        IConditionQueryRepository conditionQueryRepository,
+        IConditionTranslationQueryRepository translationRepository,
+        ILanguageProvider language,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
+    )
+        : base(conditionQueryRepository, language, cacheService, settings)
     {
-        _conditionQueryRepository = conditionQueryRepository;
+        _translationRepository = translationRepository;
     }
 
 
-    public async Task<Result<ConditionDto>> GetByIdAsync(
-        int id)
+    public override async Task<ConditionDto> ApplyMapperAsync(
+        Condition entity)
     {
-        var condition = await _conditionQueryRepository
-            .GetByIdAsync(id);
+        var translation = await _translationRepository
+            .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        return condition.ToResult(ConditionMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<ConditionDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var conditions = await _conditionQueryRepository
-            .GetPagedAsync(pagination);
-
-        return conditions.ToResultPaged(ConditionMapper.ToDto);
-    }
-
-    public async Task<Result<ConditionDto>> GetByCodeAsync(
-        string code)
-    {
-        var condition = await _conditionQueryRepository
-            .GetByCodeAsync(code);
-
-        return condition.ToResult(ConditionMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<ConditionDto>>> Search(
-      ConditionSearchFilter filter,
-	  PaginationParams pagination)
-    {
-        var conditions = await _conditionQueryRepository
-            .Search(filter, pagination);
-
-        return conditions.ToResultPaged(ConditionMapper.ToDto);
+        return ConditionMapper.ToDto(entity, translation?.Name);
     }
 }

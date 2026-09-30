@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -10,52 +11,45 @@ namespace ShagOxServer.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Favorite_Advertisements_AdvertisementId",
-                table: "Favorite");
+            migrationBuilder.CreateTable(
+                name: "Favorites",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Favorite_Users_UserId",
-                table: "Favorite");
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    AdvertisementId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favorites", x => x.Id);
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Favorite",
-                table: "Favorite");
+                    table.ForeignKey(
+                        name: "FK_Favorites_Advertisements_AdvertisementId",
+                        column: x => x.AdvertisementId,
+                        principalTable: "Advertisements",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.RenameTable(
-                name: "Favorite",
-                newName: "Favorites");
+                    table.ForeignKey(
+                        name: "FK_Favorites_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
-            migrationBuilder.RenameIndex(
-                name: "IX_Favorite_UserId_AdvertisementId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Favorites_AdvertisementId",
                 table: "Favorites",
-                newName: "IX_Favorites_UserId_AdvertisementId");
+                column: "AdvertisementId");
 
-            migrationBuilder.RenameIndex(
-                name: "IX_Favorite_AdvertisementId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Favorites_UserId_AdvertisementId",
                 table: "Favorites",
-                newName: "IX_Favorites_AdvertisementId");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Favorites",
-                table: "Favorites",
-                column: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Favorites_Advertisements_AdvertisementId",
-                table: "Favorites",
-                column: "AdvertisementId",
-                principalTable: "Advertisements",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Favorites_Users_UserId",
-                table: "Favorites",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                columns: new[] { "UserId", "AdvertisementId" },
+                unique: true);
         }
 
         /// <inheritdoc />

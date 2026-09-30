@@ -39,7 +39,7 @@ public class VerificationCodeService
     }
 
     public async Task<Result<string>> CreateCodeAsync(
-        int userId,
+        long userId,
         VerificationCodePurpose purpose,
         string? pendingValue = null)
     {
@@ -94,7 +94,7 @@ public class VerificationCodeService
     }
 
     public async Task<VerificationResult> VerifyCodeAsync(
-        int userId,
+        long userId,
         string hashCode)
     {
         var code =

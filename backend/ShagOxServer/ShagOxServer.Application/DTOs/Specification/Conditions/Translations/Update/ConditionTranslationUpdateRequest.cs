@@ -3,7 +3,7 @@
 namespace ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Update;
 public sealed record ConditionTranslationUpdateRequest
 (
-    int? TranslatableId,
+    long? TranslatableId,
     string? Language,
     string? Name
 ) : TranslationUpdateRequest(TranslatableId, Language);

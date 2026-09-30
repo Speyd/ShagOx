@@ -12,24 +12,21 @@ public static class BasketItemFilterExtensions
             return query;
 
 
-        if (filter.BasketId is not null)
+        if (filter.BasketId.HasValue)
         {
-            query = query
-                .Where(u =>
+            query = query.Where(u =>
                     u.BasketId == filter.BasketId);
         }
 
-        if (filter.AdvertisementId is not null)
+        if (filter.AdvertisementVariantId.HasValue)
         {
-            query = query
-                .Where(u =>
-                    u.AdvertisementId == filter.AdvertisementId);
+            query = query.Where(u =>
+                    u.AdvertisementVariantId == filter.AdvertisementVariantId);
         }
 
-        if (filter.Quantity is not null)
+        if (filter.Quantity.HasValue)
         {
-            query = query
-                .Where(u =>
+            query = query.Where(u =>
                     u.Quantity == filter.Quantity);
         }
 

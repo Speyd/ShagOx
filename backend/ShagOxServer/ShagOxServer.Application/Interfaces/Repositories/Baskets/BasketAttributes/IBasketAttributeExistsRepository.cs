@@ -6,13 +6,13 @@ public interface IBasketAttributeExistsRepository
     : IExistsRepository<BasketAttribute>
 {
     Task<bool> ExistsAsync(
-        int categoryId,
-        int attributeId,
+        long categoryId,
+        long attributeId,
         int order);
 
     Task<bool> ExistsByCategoryAsync(
-        int categoryId);
+        long categoryId);
 
     Task<bool> ExistsByAttributeDefenitionAsync(
-        int attributeDefenitionId);
+        long attributeDefenitionId);
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries.Attributes;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
 public static class DictionariesDependencyInjection

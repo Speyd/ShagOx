@@ -4,13 +4,13 @@ using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Regions;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 public class RegionQueryRepository 
-    : QueryRepository<Region>, 
+    : QueryRepository<Region, RegionSearchFilter>, 
       IRegionQueryRepository
 {
     public RegionQueryRepository(AppDbContext db)
@@ -18,18 +18,19 @@ public class RegionQueryRepository
     { }
 
 
-    public async Task<Region?> GetByCodeAsync(string code)
+    protected override IQueryable<Region> ApplyFilter(
+        IQueryable<Region> query,
+        RegionSearchFilter filter)
     {
-        return await _db.Regions
-            .FirstOrDefaultAsync(x => x.Code == code);
+        return query.Filter(filter);
     }
 
-    public async Task<PagedResult<Region>> Search(
-        RegionSearchFilter filter,
-        PaginationParams pagination)
+    public async Task<Region?> GetByIdentificatorAsync(
+        string identificator,
+        long? parentId = null)
     {
         return await _db.Regions
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
+            .FirstOrDefaultAsync(x =>
+                x.Code == identificator);
     }
 }

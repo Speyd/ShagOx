@@ -10,7 +10,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes;
 public class BasketAttributeQueryRepository
-    : QueryRepository<BasketAttribute>,
+    : QueryRepository<BasketAttribute, BasketAttributeSearchFilter>,
       IBasketAttributeQueryRepository
 {
     public BasketAttributeQueryRepository(AppDbContext db)
@@ -18,16 +18,21 @@ public class BasketAttributeQueryRepository
     { }
 
 
-    public override async Task<BasketAttribute?> GetByIdAsync(
-        int id)
+    protected override IQueryable<BasketAttribute> ApplyIncludes(
+        IQueryable<BasketAttribute> query)
     {
-        return await _db.BasketAttributes
-            .WithIncludes()
-            .FirstOrDefaultAsync(c => c.Id == id);
+        return query.WithIncludes();
+    }
+
+    protected override IQueryable<BasketAttribute> ApplyFilter(
+      IQueryable<BasketAttribute> query,
+      BasketAttributeSearchFilter filter)
+    {
+        return query.Filter(filter);
     }
 
     public async Task<PagedResult<BasketAttribute>> GetByCategoryAsync(
-        int categoryId,
+        long categoryId,
         PaginationParams pagination)
     {
         return await _db.BasketAttributes
@@ -39,29 +44,11 @@ public class BasketAttributeQueryRepository
     }
 
     public async Task<BasketAttribute?> GetByAttributeDefenitionAsync(
-        int attributeDefenitionId)
+        long attributeDefenitionId)
     {
         return await _db.BasketAttributes
             .WithIncludes()
             .FirstOrDefaultAsync(c =>
                 c.AttributeDefinitionId == attributeDefenitionId);
-    }
-
-    public override async Task<PagedResult<BasketAttribute>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        return await _db.BasketAttributes
-            .WithIncludes()
-            .ToPagedResultAsync(pagination);
-    }
-
-    public async Task<PagedResult<BasketAttribute>> Search(
-        BasketAttributeSearchFilter filter,
-        PaginationParams pagination)
-    {
-        return await _db.BasketAttributes
-           .WithIncludes()
-           .Filter(filter)
-           .ToPagedResultAsync(pagination);
     }
 }

@@ -5,6 +5,6 @@ namespace ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passw
 public interface IChangePasswordService
 {
     Task<Result<bool>> ChangePassword(
-        int userId,
+        long userId,
         ChangePasswordRequest request);
 }

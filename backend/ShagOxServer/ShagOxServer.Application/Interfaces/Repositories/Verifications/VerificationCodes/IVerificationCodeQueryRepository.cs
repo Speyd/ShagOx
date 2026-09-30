@@ -1,13 +1,15 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Verifications;
+using ShagOxServer.Domain.Filters.Verifications.VerificationCodes;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
 public interface IVerificationCodeQueryRepository
-    : IQueryRepository<VerificationCode>
+    : IQueryRepository<VerificationCode, 
+        VerificationCodeSearchFilter>
 {
     Task<VerificationCode?> GetActiveByUserIdAsync(
-       int userId);
+        long userId);
 
     Task<VerificationCode?> GetLatestByUserIdAsync(
-        int userId);
+        long userId);
 }

@@ -8,5 +8,5 @@ public sealed record UserUpdateRequest
     string? UserName,
     string? Bio,
     IFormFile? Avatar,
-    int? CityId
+    long? CityId
 );

@@ -15,15 +15,15 @@ public class BasketExistsRepository
 
 
     public async Task<bool> ExistsByUserAsync(
-        int userId)
+        long userId)
     {
         return await _db.Baskets
            .AnyAsync(c => c.UserId == userId);
     }
 
     public async Task<bool> IsOwnerAsync(
-        int basketId, 
-        int userId)
+        long basketId,
+        long userId)
     {
         return await _db.Baskets
             .AnyAsync(c =>

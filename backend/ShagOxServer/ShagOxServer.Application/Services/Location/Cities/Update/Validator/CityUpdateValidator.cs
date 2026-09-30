@@ -5,7 +5,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Location.Cities.Update.Validator;
 public class CityUpdateValidator
 {
-    public Result<(int regionId, string name)> HasChangesValidator(
+    public Result<(long regionId, string name)> HasChangesValidator(
         City city,
         CityUpdateRequest request)
     {
@@ -15,9 +15,9 @@ public class CityUpdateValidator
         if (regionId == city.RegionId &&
             code == city.Code)
         {
-            return Result<(int, string)>.Fail("");
+            return Result<(long, string)>.Fail("");
         }
 
-        return Result<(int, string)>.Success((regionId, code));
+        return Result<(long, string)>.Success((regionId, code));
     }
 }

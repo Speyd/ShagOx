@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -34,7 +34,7 @@ public class ProductTypeUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int productTypeId,
+        long productTypeId,
         ProductTypeUpdateRequest request)
     {
         var productType = await _productTypeValidator

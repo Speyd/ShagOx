@@ -120,9 +120,6 @@
   <data name="Advertisement" xml:space="preserve">
     <value>Оголошення</value>
   </data>
-  <data name="AdverStatus" xml:space="preserve">
-    <value>Статус оголошення</value>
-  </data>
   <data name="AdvertStatusTranslation" xml:space="preserve">
     <value>Статус оголошення</value>
   </data>
@@ -194,5 +191,20 @@
   </data>
   <data name="DefiniteImage" xml:space="preserve">
     <value>Зображення({0})</value>
+  </data>
+  <data name="AttributeDictionary" xml:space="preserve">
+    <value>Словник атрибутів</value>
+  </data>
+  <data name="AttributeDictionaryValue" xml:space="preserve">
+    <value>Словник значень атрибута</value>
+  </data>
+  <data name="AdvertisementVariant" xml:space="preserve">
+    <value>Варіант оголошення</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslation" xml:space="preserve">
+    <value>Переклад значення словника атрибутів.</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Статус оголошення</value>
   </data>
 </root>

@@ -1,12 +1,12 @@
 ﻿using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Domain.Entities.Baskets;
 public class BasketAttribute
     : BaseEntity
 {
     public AttributeDefinition AttributeDefinition { get; set; } = null!;
-    public int AttributeDefinitionId { get; set; }
+    public long AttributeDefinitionId { get; set; }
 
     public int Order { get; set; }
 

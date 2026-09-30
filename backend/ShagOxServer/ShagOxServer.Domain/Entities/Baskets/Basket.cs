@@ -6,11 +6,12 @@ public class Basket
     : BaseEntity
 {
     public User User { get; set; } = null!;
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
 
-    public List<BasketItem> BasketItems { get; set; } 
-        = new List<BasketItem>();
+    public ICollection<BasketItem> BasketItems { get; set; }
+        = [];
+
 
     public override string ToString()
     {

@@ -3,7 +3,7 @@
 namespace ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Create;
 public sealed record StatusTranslationCreateRequest
 (
-    int TranslatableId,
+    long TranslatableId,
     string Language,
     string Name,
     string Description

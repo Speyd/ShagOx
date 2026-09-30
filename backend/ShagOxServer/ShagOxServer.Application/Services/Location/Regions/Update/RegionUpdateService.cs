@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Regions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -34,7 +34,7 @@ public class RegionUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int regionId,
+        long regionId,
         RegionUpdateRequest request)
     {
         var region = await _regionValidator.GetByIdAsync(regionId);

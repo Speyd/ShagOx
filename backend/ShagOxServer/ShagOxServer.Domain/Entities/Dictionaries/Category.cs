@@ -1,26 +1,32 @@
 ﻿using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;
-public class Category : BaseEntity
+public class Category 
+    : BaseTranslatable
 {
     public string Code { get; set; } = null!;
 
-    public int ProductTypeId { get; set; }
+    public long ProductTypeId { get; set; }
     public ProductType ProductType { get; set; } = null!;
 
 
-    public List<AttributeDefinition> Attributes { get; set; }
-        = new List<AttributeDefinition>();
+    public ICollection<AttributeDefinition> Attributes { get; set; }
+        = [];
 
-    public List<Advertisement> Advertisements { get; set; }
-        = new List<Advertisement>();
+    public ICollection<Advertisement> Advertisements { get; set; }
+       = [];
 
     public List<CategoryTranslation> Translations { get; set; }
-        = new List<CategoryTranslation>();
+       = [];
 
+
+    public override string GetIdentificator()
+    {
+        return Code;
+    }
 
     public override string ToString()
     {

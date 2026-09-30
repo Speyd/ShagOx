@@ -4,10 +4,13 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Caches;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using System.Globalization;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Update;
 public class StatusUpdateService
@@ -18,23 +21,27 @@ public class StatusUpdateService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusUpdateService> _logger;
+    private readonly ICacheService _cache;
+
 
 
     public StatusUpdateService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
         IUnitOfWork unitOfWork,
-        ILogger<StatusUpdateService> logger)
+        ILogger<StatusUpdateService> logger,
+        ICacheService cache)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusId,
+        long statusId,
         StatusUpdateRequest request)
     {
         var status = await _statusValidator.
@@ -71,6 +78,14 @@ public class StatusUpdateService
             _statusRepository.Update(status.Value!);
 
             await _unitOfWork.CommitAsync();
+
+            await _cache.RemoveAsync(
+                CacheKeys.Entity<Status>(statusId));
+
+            await _cache.RemoveAsync(
+                CacheKeys.Translation<Status>(
+                    statusId,
+                    CultureInfo.CurrentCulture.Name));
         }
         catch(Exception ex)
         {
@@ -96,7 +111,7 @@ public class StatusUpdateService
            request.Code != status.Code)
         {
             var validator = await _statusValidator
-                .ExistsByCodeAsync(request.Code);
+                .NotExistsByCodeAsync(request.Code);
 
             if (!validator.IsSuccess)
                 return Result<bool>.Fail(validator.Error);

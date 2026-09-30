@@ -1,61 +1,38 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Mapping;
+using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Query;
 public class StatusTranslationQueryService
-    : IStatusTranslationQueryService
+    : BaseTranslationQueryService<
+        StatusTranslationDto,
+        Status,
+        StatusTranslation,
+        StatusTranslationSearchFilter
+        >,
+    IStatusTranslationQueryService
 {
-    private readonly IStatusTranslationQueryRepository _statusRepository;
-
-
     public StatusTranslationQueryService(
-        IStatusTranslationQueryRepository statusRepository)
+        IStatusTranslationQueryRepository statusRepository,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
+    )
+        : base(statusRepository, cacheService, settings)
     {
-        _statusRepository = statusRepository;
     }
 
 
-    public async Task<Result<StatusTranslationDto>> GetByIdAsync(
-        int id)
+    public override async Task<StatusTranslationDto> ApplyMapperAsync(
+        StatusTranslation entity)
     {
-        var status = await _statusRepository
-            .GetByIdAsync(id);
-
-        return status.ToResult(StatusTranslationMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<StatusTranslationDto>>> GetPagedAsync(
-        PaginationParams pagination,
-        string language)
-    {
-        var statuses = await _statusRepository
-            .GetPagedAsync(pagination, language);
-
-        return statuses.ToResultPaged(StatusTranslationMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<StatusTranslationDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var statuses = await _statusRepository
-            .GetPagedAsync(pagination);
-
-        return statuses.ToResultPaged(StatusTranslationMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<StatusTranslationDto>>> Search(
-        StatusTranslationSearchFilter filter,
-        PaginationParams pagination)
-    {
-        var statuses = await _statusRepository
-            .Search(filter, pagination);
-
-        return statuses.ToResultPaged(StatusTranslationMapper.ToDto);
+        return StatusTranslationMapper.ToDto(entity);
     }
 }

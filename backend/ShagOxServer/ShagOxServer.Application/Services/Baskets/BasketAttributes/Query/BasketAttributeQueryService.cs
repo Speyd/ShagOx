@@ -1,7 +1,14 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -9,62 +16,56 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Query;
 public class BasketAttributeQueryService
-    : IBasketAttributeQueryService
+    : BaseQueryService<
+        BasketAttributeDto,
+        BasketAttribute,
+        BasketAttributeSearchFilter
+        >,
+    IBasketAttributeQueryService
 {
     private readonly IBasketAttributeQueryRepository _attributeQueryRepository;
 
+    private readonly IAttributeDefinitionQueryService _attributeService;
+
 
     public BasketAttributeQueryService(
-        IBasketAttributeQueryRepository attributeQueryRepository)
+        IBasketAttributeQueryRepository attributeQueryRepository,
+        IAttributeDefinitionQueryService attributeService,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
+    )
+        : base(attributeQueryRepository, cacheService, settings)
     {
         _attributeQueryRepository = attributeQueryRepository;
+        _attributeService = attributeService;
     }
 
 
-    public async Task<Result<BasketAttributeDto>> GetByIdAsync(
-        int id)
+    public override async Task<BasketAttributeDto> ApplyMapperAsync(
+        BasketAttribute entity)
     {
-        var attribute = await _attributeQueryRepository
-            .GetByIdAsync(id);
+        var attributerDto = await _attributeService
+            .ApplyMapperAsync(entity.AttributeDefinition);
 
-        return attribute.ToResult(BasketAttributeMapper.ToDto);
+        return BasketAttributeMapper.ToDto(entity, attributerDto);
     }
 
     public async Task<Result<BasketAttributeDto>> GetByAttributeDefenitionAsync(
-        int attributeDefenitionId)
+        long attributeDefenitionId)
     {
         var attribute = await _attributeQueryRepository
             .GetByAttributeDefenitionAsync(attributeDefenitionId);
 
-        return attribute.ToResult(BasketAttributeMapper.ToDto);
+        return await attribute.ToResultAsync(ApplyMapperAsync);
     }
 
     public async Task<Result<PagedResult<BasketAttributeDto>>> GetByCategoryAsync(
-        int categoryId,
+        long categoryId,
         PaginationParams pagination)
     {
         var attributes = await _attributeQueryRepository
             .GetByCategoryAsync(categoryId, pagination);
 
-        return attributes.ToResultPaged(BasketAttributeMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<BasketAttributeDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var attributes = await _attributeQueryRepository
-            .GetPagedAsync(pagination);
-
-        return attributes.ToResultPaged(BasketAttributeMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<BasketAttributeDto>>> Search(
-       BasketAttributeSearchFilter filter,
-       PaginationParams pagination)
-    {
-        var attributes = await _attributeQueryRepository
-            .Search(filter, pagination);
-
-        return attributes.ToResultPaged(BasketAttributeMapper.ToDto);
+        return await attributes.ToResultPagedAsync(ApplyMapperAsync);
     }
 }

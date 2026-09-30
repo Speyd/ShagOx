@@ -1,11 +1,12 @@
 ﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using System.Runtime.CompilerServices;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Update.Validator;
 public class CategoryUpdateValidator
 {
-    public Result<(string name, int productTypeId)> HasChangesValidator(
+    public Result<(string name, long productTypeId)> HasChangesValidator(
        Category category,
        CategoryUpdateRequest request)
     {
@@ -15,9 +16,9 @@ public class CategoryUpdateValidator
         if (code == category.Code &&
             productTypeId == category.ProductTypeId)
         {
-            return Result<(string, int)>.Fail(null);
+            return Result<(string, long)>.Fail(null);
         }
 
-        return Result<(string, int)>.Success((code, productTypeId));
+        return Result<(string, long)>.Success((code, productTypeId));
     }
 }

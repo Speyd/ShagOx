@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Regions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Translations.Update;
 public class RegionTranslationUpdateService
-    : BaseTranslationUpdateSerivce<Region, RegionTranslation>,
+    : BaseTranslationUpdateService<Region, RegionTranslation>,
     IRegionTranslationUpdateService
 {
     private readonly IRepository<RegionTranslation> _regionRepository;
@@ -40,7 +40,7 @@ public class RegionTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusTranslationId,
+        long statusTranslationId,
         RegionTranslationUpdateRequest request)
     {
         var region = await _regionTranslationValidator

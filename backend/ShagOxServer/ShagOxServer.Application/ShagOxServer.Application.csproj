@@ -61,6 +61,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RegistrationAuthResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\EntityErrors\EntityErrorResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityErrorResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\EntityNames\EntityNamesResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -80,6 +85,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SmsTemplatesResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Validations\ValidationResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ValidationResources.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Verifications\Codes\VerificationCodeResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -127,8 +137,12 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>RegistrationAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.resx">
+		<EmbeddedResource Update="Resources\EntityErrors\EntityErrorResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>EntityErrorResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>EntityNamesResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Messaging\Email\EmailTemplatesResources.resx">
@@ -142,6 +156,10 @@
 		<EmbeddedResource Update="Resources\Messaging\Sms\SmsTemplatesResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>SmsTemplatesResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Validations\ValidationResources.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ValidationResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Verifications\Codes\VerificationCodeResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>

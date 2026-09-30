@@ -126,6 +126,15 @@
   <data name="AdvertisementUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить объявление.</value>
   </data>
+  <data name="AdvertisementVariantCreateFailed" xml:space="preserve">
+    <value>Не удалось создать вариант объявления.</value>
+  </data>
+  <data name="AdvertisementVariantDeleteFailed" xml:space="preserve">
+    <value>Не удалось обновить вариант объявления.</value>
+  </data>
+  <data name="AdvertisementVariantUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить вариант объявления.</value>
+  </data>
   <data name="AdvertStatusCreateFailed" xml:space="preserve">
     <value>Не удалось создать статус.</value>
   </data>
@@ -162,6 +171,33 @@
   <data name="AttributeDefinitionUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить определение атрибута.</value>
   </data>
+  <data name="AttributeDictionaryCreateFailed" xml:space="preserve">
+    <value>Не удалось создать словарь атрибутов.</value>
+  </data>
+  <data name="AttributeDictionaryDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить словарь атрибутов.</value>
+  </data>
+  <data name="AttributeDictionaryUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить словарь атрибутов.</value>
+  </data>
+  <data name="AttributeDictionaryValueCreateFailed" xml:space="preserve">
+    <value>Не удалось создать словарь значений атрибута.</value>
+  </data>
+  <data name="AttributeDictionaryValueDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить словарь значений атрибута.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationCreateFailed" xml:space="preserve">
+    <value>Не удалось создать перевод значения словаря атрибутов.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить перевод значения словаря атрибутов.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить перевод значения словаря атрибутов.</value>
+  </data>
+  <data name="AttributeDictionaryValueUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить словарь значений атрибута.</value>
+  </data>
   <data name="AvatarCreateFailed" xml:space="preserve">
     <value>Не удалось создать аватар.</value>
   </data>
@@ -175,10 +211,10 @@
     <value>Не удалось создать атрибут корзины.</value>
   </data>
   <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Не удалось создать атрибут удаления.</value>
+    <value>Не удалось удалить атрибут корзины.</value>
   </data>
   <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Не удалось создать атрибут обновления.</value>
+    <value>Не удалось обновить атрибут корзины.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Не удалось создать корзину.</value>
@@ -328,9 +364,9 @@
     <value>Не удалось обновить роль.</value>
   </data>
   <data name="UserDeleteFailed" xml:space="preserve">
-    <value>Не удалось удалить роль.</value>
+    <value>Не удалось удалить пользователя.</value>
   </data>
   <data name="UserUpdateFailed" xml:space="preserve">
-    <value>Не удалось обновить роль.</value>
+    <value>Не удалось обновить пользователя.</value>
   </data>
 </root>

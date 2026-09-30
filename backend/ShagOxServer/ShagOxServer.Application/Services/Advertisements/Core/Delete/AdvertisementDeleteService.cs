@@ -4,7 +4,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -38,7 +38,7 @@ public class AdvertisementDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var advert = await _advertValidator
             .GetByIdAsync(id);

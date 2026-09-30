@@ -1,7 +1,15 @@
-﻿using ShagOxServer.Application.DTOs.Location.Cities;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Location.Cities;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
+using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
+using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -9,62 +17,56 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Query;
 public class CityQueryService 
-    : ICityQueryService
+    : BaseTranslatableQueryService<
+        CityDto,
+        City,
+        CitySearchFilter
+        >,
+    ICityQueryService
 {
     private readonly ICityQueryRepository _repositoryQueryCity;
 
+    private readonly ICityTranslationQueryRepository _translationCityRepository;
+    private readonly IRegionQueryService _regionService;
+
 
     public CityQueryService(
-        ICityQueryRepository repositoryQueryCity)
+        ICityQueryRepository repositoryQueryCity,
+        ICityTranslationQueryRepository translationCityRepository,
+        IRegionQueryService regionService,
+        ILanguageProvider language,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
+    )
+        : base(repositoryQueryCity, language, cacheService, settings)
     {
         _repositoryQueryCity = repositoryQueryCity;
+        _translationCityRepository = translationCityRepository;
+        _regionService = regionService;
     }
 
 
-    public async Task<Result<CityDto>> GetByIdAsync(
-        int id)
+    public override async Task<CityDto> ApplyMapperAsync(
+        City entity)
     {
-        var city = await _repositoryQueryCity
-            .GetByIdAsync(id);
+        var translationCity = await _translationCityRepository
+           .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        return city.ToResult(CityMapper.ToDto);
-    }
+        var region = await _regionService
+           .ApplyMapperAsync(entity.Region);
 
-    public async Task<Result<PagedResult<CityDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var cities = await _repositoryQueryCity
-            .GetPagedAsync(pagination);
-
-        return cities.ToResultPaged(CityMapper.ToDto);
-    }
-
-    public async Task<Result<CityDto>> GetByCodeAsync(
-        string code)
-    {
-        var city = await _repositoryQueryCity
-            .GetByCodeAsync(code);
-
-        return city.ToResult(CityMapper.ToDto);
+        return CityMapper.ToDto(entity,
+            region,
+            translationCity?.Name);
     }
 
     public async Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
-        int regionId,
+        long regionId,
         PaginationParams pagination)
     {
         var cities = await _repositoryQueryCity
             .GetByRegionAsync(regionId, pagination);
 
-        return cities.ToResultPaged(CityMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<CityDto>>> Search(
-       CitySearchFilter filter,
-       PaginationParams pagination)
-    {
-        var cities = await _repositoryQueryCity
-            .Search(filter, pagination);
-
-        return cities.ToResultPaged(CityMapper.ToDto);
+        return await cities.ToResultPagedAsync(ApplyMapperAsync);
     }
 }

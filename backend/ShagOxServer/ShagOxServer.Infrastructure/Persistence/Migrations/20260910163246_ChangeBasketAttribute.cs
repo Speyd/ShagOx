@@ -11,37 +11,9 @@ namespace ShagOxServer.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_BasketAttributes_Categories_CategoryId",
-                table: "BasketAttributes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_BasketAttributes_AttributeDefinitionId",
-                table: "BasketAttributes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_BasketAttributes_CategoryId_AttributeDefinitionId",
-                table: "BasketAttributes");
-
             migrationBuilder.DropColumn(
                 name: "SortOrder",
                 table: "BasketAttributes");
-
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Categories");
-
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "ProductTypes");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "CategoryId",
-                table: "BasketAttributes",
-                type: "integer",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "integer");
 
             migrationBuilder.AddColumn<int>(
                 name: "Order",
@@ -49,24 +21,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                 type: "integer",
                 nullable: false,
                 defaultValue: 0);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BasketAttributes_AttributeDefinitionId",
-                table: "BasketAttributes",
-                column: "AttributeDefinitionId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BasketAttributes_CategoryId",
-                table: "BasketAttributes",
-                column: "CategoryId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_BasketAttributes_Categories_CategoryId",
-                table: "BasketAttributes",
-                column: "CategoryId",
-                principalTable: "Categories",
-                principalColumn: "Id");
         }
 
         /// <inheritdoc />

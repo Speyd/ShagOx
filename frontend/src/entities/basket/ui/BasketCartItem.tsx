@@ -6,42 +6,51 @@ import {
   ActionIcon,
   UnstyledButton,
 } from "@mantine/core";
-import { Plus, Minus, Trash2, Bookmark } from "lucide-react";
+import { Plus, Minus, Trash2, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 import styles from "./BasketCartItem.module.css";
 import type { BasketItem } from "@/features/basket/model/types";
 import { useUpdateBasketItem } from "@/features/basket/model/hooks/useUpdateBasketItem";
 import { useDeleteBasketItem } from "@/features/basket/model/hooks/useDeleteBacketItem";
-import { useGetImage } from "@/shared/api/images/useGetImage";
+import { useAddToFavorites } from "@/features/favorites/model/hooks/useAddToFavorites";
+import { useDeleteFavorite } from "@/features/favorites/model/hooks/useDeleteFavorite";
+import { useGetFavorites } from "@/features/favorites/model/hooks/useGetFavorites";
+import { useAuthStore } from "@/features/auth";
 import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
 
 type BasketCartItemProps = {
   item: BasketItem;
   imageUrl?: string;
-  isSelected: boolean;
-  onToggle: () => void;
+  isSelected?: boolean;
+  onToggle?: () => void;
+  showCheckbox?: boolean;
 };
 
 export default function BasketCartItem({
   item,
   imageUrl,
-  isSelected,
+  isSelected = false,
   onToggle,
+  showCheckbox = true,
 }: BasketCartItemProps) {
   const { mutate: updateItem, isPending: isUpdating } = useUpdateBasketItem();
   const { mutate: deleteItem, isPending: isDeleting } = useDeleteBasketItem();
+  const user = useAuthStore((state) => state.user);
+  const { data: favorites } = useGetFavorites();
+  const addFavorite = useAddToFavorites();
+  const deleteFavorite = useDeleteFavorite();
 
   const advertisement = item.advertisement;
+  const favorite = favorites?.items?.find(
+    (favoriteItem) => favoriteItem.advertisement?.id === advertisement?.id,
+  );
+  const isFavoritePending =
+    addFavorite.isPending || deleteFavorite.isPending;
+
   const price = advertisement ? getAdvertisementPrice(advertisement) : 0;
   const currencySymbol = "грн";
-
-  const firstImageId = advertisement?.imageIds?.[0];
-
-  const { data: imageData } = useGetImage(firstImageId);
-
-  const displayImage =
-    imageUrl || imageData?.url || imageData || "/placeholder-image.png";
 
   const handleQuantityChange = (delta: number) => {
     const newQuantity = item.quantity + delta;
@@ -50,23 +59,45 @@ export default function BasketCartItem({
     }
   };
 
+  const handleFavoriteToggle = () => {
+    if (!user) {
+      toast.error(
+        "Ви повинні бути зареєстровані, щоб додавати оголошення в обране.",
+      );
+      return;
+    }
+
+    if (!advertisement) return;
+
+    if (favorite) {
+      deleteFavorite.mutate(favorite.id);
+    } else {
+      addFavorite.mutate({
+        advertisementId: advertisement.id,
+        userId: user.id,
+      });
+    }
+  };
+
   return (
     <div className={styles.card}>
-      <Checkbox
-        checked={isSelected}
-        onChange={onToggle}
-        size="sm"
-        vars={() => ({
-          root: {
-            "--checkbox-color": "var(--color-primary)",
-          },
-        })}
-        className={styles.checkbox}
-      />
+      {showCheckbox && (
+        <Checkbox
+          checked={isSelected}
+          onChange={onToggle}
+          size="sm"
+          vars={() => ({
+            root: {
+              "--checkbox-color": "var(--color-primary)",
+            },
+          })}
+          className={styles.checkbox}
+        />
+      )}
 
       <div className={styles.imageWrapper}>
         <Image
-          src={displayImage}
+          src={imageUrl}
           alt={advertisement?.title || "Товар"}
           fit="contain"
           className={styles.image}
@@ -103,23 +134,40 @@ export default function BasketCartItem({
         </div>
 
         <div className={styles.footerRow}>
-          <Group gap="xl">
-            <UnstyledButton className={styles.actionLink}>
-              <Bookmark size={15} />
-              <span>Зберегти на потім</span>
-            </UnstyledButton>
-
-            <Text size="xs" c="gray.4">
-              |
-            </Text>
+          <Group gap="sm">
+            {showCheckbox && (
+              <>
+                <UnstyledButton
+                  className={styles.actionLink}
+                  onClick={handleFavoriteToggle}
+                  disabled={isFavoritePending}
+                >
+                  <Heart
+                    size={20}
+                    fill={favorite ? "#000000" : "none"}
+                    className={`${styles.favoriteIcon} ${
+                      favorite ? styles.favoriteIconActive : ""
+                    }`}
+                  />
+                  <Text fz={12} fw={500} className={styles.actionText}>
+                    {favorite ? "В обраному" : "Зберегти"}
+                  </Text>
+                </UnstyledButton>
+                <Text size="xs" c={"var(--text-secondary)"}>
+                  |
+                </Text>
+              </>
+            )}
 
             <UnstyledButton
               className={`${styles.actionLink} ${styles.deleteLink}`}
               onClick={() => deleteItem(item.id)}
               disabled={isDeleting || isUpdating}
             >
-              <Trash2 size={15} />
-              <span>Видалити</span>
+              <Trash2 size={20} />
+              <Text fz={12} fw={500} className={styles.actionText}>
+                Видалити
+              </Text>
             </UnstyledButton>
           </Group>
 

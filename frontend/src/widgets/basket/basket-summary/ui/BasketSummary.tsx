@@ -7,7 +7,6 @@ import {
   Badge,
   Stack,
 } from "@mantine/core";
-import { Link } from "react-router-dom";
 import { ShieldCheck, ArrowRight } from "lucide-react";
 import styles from "./BasketSummary.module.css";
 import Price from "@/shared/ui/price";
@@ -17,6 +16,7 @@ type BasketSummaryProps = {
   subtotalPrice: number;
   discountPrice?: number;
   freeShippingThreshold?: number;
+  onCheckout?: () => void;
 };
 
 export default function BasketSummary({
@@ -24,6 +24,7 @@ export default function BasketSummary({
   subtotalPrice,
   discountPrice = 0,
   freeShippingThreshold = 5000,
+  onCheckout,
 }: BasketSummaryProps) {
   const isFreeShipping = subtotalPrice >= freeShippingThreshold;
   const finalPrice = Math.max(0, subtotalPrice - discountPrice);
@@ -82,8 +83,7 @@ export default function BasketSummary({
       </Group>
 
       <Button
-        component={Link}
-        to="/checkout"
+        onClick={onCheckout}
         fullWidth
         size="md"
         radius="md"

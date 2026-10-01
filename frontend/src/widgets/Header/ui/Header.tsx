@@ -8,7 +8,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { Link } from "react-router-dom";
 import CitySelector from "@/shared/ui/city-selector";
 import NavigationDrawer from "./NavigationDrawer";
-import CartDrawer from "./CartDrawer";
+import CartDrawer from "./BasketDrawer";
 
 export default function Header() {
   const [menuOpened, { open, close }] = useDisclosure(false);

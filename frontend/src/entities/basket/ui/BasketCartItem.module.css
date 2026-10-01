@@ -91,16 +91,37 @@
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: #64748b;
-  transition: color 0.15s ease;
+  color: var(--color-base);
+  border-radius: 6px;
+  padding: 4px 6px;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
 }
 
-.actionLink:hover {
-  color: #0f172a;
+.actionLink:hover:not(:disabled) {
+  color: var(--color-base-hover);
 }
 
-.deleteLink:hover {
-  color: #ef4444;
+.actionLink:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.actionText {
+  color: inherit;
+}
+
+.favoriteIcon {
+  color: currentColor;
+}
+
+.favoriteIconActive {
+  color: var(--color-base);
+}
+
+.actionLink:hover:not(:disabled) .favoriteIconActive {
+  color: var(--color-base);
 }
 
 .quantityControls {

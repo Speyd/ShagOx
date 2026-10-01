@@ -12,5 +12,6 @@ export function useGetBasket(options?: { enabled?: boolean }) {
     queryFn: getBasket,
     enabled: !!user && (options?.enabled ?? true),
     retry: false,
+    staleTime: 1000 * 60 * 5,
   });
 }

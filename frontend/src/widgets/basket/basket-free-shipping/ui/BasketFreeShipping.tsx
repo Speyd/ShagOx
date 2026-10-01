@@ -26,7 +26,7 @@ export default function BasketFreeShipping({
           <Stack gap={2}>
             <Text fw={700} size="sm" className={styles.title}>
               {isUnlocked ? (
-                "Ви отримали безкоштовну доставку! 🎉"
+                "Ви отримали безкоштовну доставку!"
               ) : (
                 <>Додайте товарів на ще {remaining.toLocaleString()} грн</>
               )}
@@ -45,6 +45,7 @@ export default function BasketFreeShipping({
             value={percentage}
             radius="xl"
             size="sm"
+            color="var(--color-base)"
             className={styles.progressBar}
           />
           {!isUnlocked && (

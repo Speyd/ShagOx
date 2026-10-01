@@ -1,6 +1,8 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { Title, Checkbox, Group, UnstyledButton, Text } from "@mantine/core";
 import { Trash2 } from "lucide-react";
+import { useDisclosure } from "@mantine/hooks";
 import { useGetBasket } from "@/features/basket/model/hooks/useGetBasket";
 import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
 import BasketItemsList from "@/widgets/basket/basket-items-list";
@@ -11,20 +13,30 @@ import TrustGuarantees from "@/widgets/basket/basket-trust-guarantees";
 import BasketFreeShipping from "@/widgets/basket/basket-free-shipping";
 import { useDeleteBasketItem } from "@/features/basket/model/hooks/useDeleteBacketItem";
 import Container from "@/shared/ui/container";
+import BasketEmpty from "@/widgets/basket/basket-empty";
+import ConfirmModal from "@/shared/ui/confirm-modal";
 
 export default function BasketPage() {
-  const { data: basket, isLoading, isError } = useGetBasket();
-  const { mutate: deleteItem } = useDeleteBasketItem();
+  const navigate = useNavigate();
+  const { data: basket, isLoading } = useGetBasket();
+  const { mutateAsync: deleteItem, isPending: isDeleting } =
+    useDeleteBasketItem();
+  const [clearModalOpened, { open: openClearModal, close: closeClearModal }] =
+    useDisclosure(false);
 
   const items = useMemo(() => basket?.basketItems || [], [basket]);
 
-  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [unselectedIds, setUnselectedIds] = useState<Set<number>>(new Set());
 
-  useEffect(() => {
-    if (items.length > 0) {
-      setSelectedIds(new Set(items.map((item) => item.id)));
-    }
-  }, [items]);
+  const selectedIds = useMemo(() => {
+    const active = new Set<number>();
+    items.forEach((item) => {
+      if (!unselectedIds.has(item.id)) {
+        active.add(item.id);
+      }
+    });
+    return active;
+  }, [items, unselectedIds]);
 
   const selectedItems = useMemo(
     () => items.filter((item) => selectedIds.has(item.id)),
@@ -45,14 +57,14 @@ export default function BasketPage() {
 
   const handleToggleAll = () => {
     if (isAllSelected) {
-      setSelectedIds(new Set());
+      setUnselectedIds(new Set(items.map((item) => item.id)));
     } else {
-      setSelectedIds(new Set(items.map((item) => item.id)));
+      setUnselectedIds(new Set());
     }
   };
 
   const handleToggleItem = (id: number) => {
-    setSelectedIds((prev) => {
+    setUnselectedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
@@ -63,79 +75,102 @@ export default function BasketPage() {
     });
   };
 
-  const handleClearCart = () => {
-    items.forEach((item) => deleteItem(item.id));
+  const handleClearCart = async () => {
+    await Promise.all(items.map((item) => deleteItem(item.id)));
+    closeClearModal();
+  };
+
+  const handleCheckout = () => {
+    if (selectedIds.size === 0) return;
+
+    sessionStorage.setItem(
+      "checkoutItemIds",
+      JSON.stringify(Array.from(selectedIds)),
+    );
+    navigate("/checkout");
   };
 
   if (isLoading) {
     return <div className={styles.loading}>Завантаження кошика...</div>;
   }
 
-  if (isError || !basket) {
-    return (
-      <div className={styles.emptyState}>Увійдіть, щоб переглянути кошик.</div>
-    );
-  }
-
   return (
     <div className={styles.pageWrapper}>
       <Container>
-        <Title order={1} className={styles.title}>
-          Кошик
-        </Title>
+        <div className={styles.content}>
+          {items.length === 0 ? (
+            <BasketEmpty />
+          ) : (
+            <>
+              <div className={styles.header}>
+                <Title fz={28} fw={700}>
+                  Кошик
+                </Title>
+                <div className={styles.headerControls}>
+                  <Checkbox
+                    label={`Вибрати все (${items.length})`}
+                    checked={isAllSelected}
+                    onChange={handleToggleAll}
+                    size="sm"
+                    vars={() => ({
+                      root: {
+                        "--checkbox-color": "var(--color-primary)",
+                      },
+                    })}
+                  />
 
-        {items.length === 0 ? (
-          <Text c="dimmed">Кошик порожній.</Text>
-        ) : (
-          <>
-            <div className={styles.headerControls}>
-              <Checkbox
-                label={`Вибрати все (${items.length})`}
-                checked={isAllSelected}
-                onChange={handleToggleAll}
-                size="sm"
-                vars={() => ({
-                  root: {
-                    "--checkbox-color": "var(--color-primary)",
-                  },
-                })}
+                  <UnstyledButton
+                    onClick={openClearModal}
+                    className={styles.clearBtn}
+                  >
+                    <Group gap={6}>
+                      <Trash2 size={16} />
+                      <Text size="sm" className={styles.clearText}>
+                        Очистити кошик
+                      </Text>
+                    </Group>
+                  </UnstyledButton>
+                </div>
+              </div>
+
+              <ConfirmModal
+                opened={clearModalOpened}
+                onClose={closeClearModal}
+                onConfirm={handleClearCart}
+                title="Очистити кошик"
+                message="Ви впевнені, що хочете видалити всі товари з кошика?"
+                confirmLabel="Очистити"
+                confirmColor="red"
+                isLoading={isDeleting}
               />
 
-              <UnstyledButton
-                onClick={handleClearCart}
-                className={styles.clearBtn}
-              >
-                <Group gap={6}>
-                  <Trash2 size={16} color="#64748b" />
-                  <Text size="sm" c="dimmed">
-                    Очистити кошик
-                  </Text>
-                </Group>
-              </UnstyledButton>
-            </div>
+              <div className={styles.layout}>
+                <div className={styles.leftSection}>
+                  <BasketItemsList
+                    items={items}
+                    selectedIds={selectedIds}
+                    onToggleItem={handleToggleItem}
+                    isLoading={isLoading}
+                    className={styles.itemsList}
+                  />
+                  <div className={styles.freeShippingWrapper}>
+                    <BasketFreeShipping currentTotal={selectedTotal} />
+                  </div>
+                </div>
 
-            <div className={styles.layout}>
-              <div className={styles.leftSection}>
-                <BasketItemsList
-                  items={items}
-                  selectedIds={selectedIds}
-                  onToggleItem={handleToggleItem}
-                  isLoading={isLoading}
-                />
-                <BasketFreeShipping currentTotal={selectedTotal} />
+                <div className={styles.rightSection}>
+                  <BasketSummary
+                    totalCount={selectedItems.length}
+                    subtotalPrice={selectedTotal}
+                    discountPrice={0}
+                    onCheckout={handleCheckout}
+                  />
+                  <TrustGuarantees />
+                </div>
               </div>
-
-              <div className={styles.rightSection}>
-                <BasketSummary
-                  totalCount={selectedItems.length}
-                  subtotalPrice={selectedTotal}
-                  discountPrice={0}
-                />
-                <TrustGuarantees />
-              </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </Container>
     </div>
   );

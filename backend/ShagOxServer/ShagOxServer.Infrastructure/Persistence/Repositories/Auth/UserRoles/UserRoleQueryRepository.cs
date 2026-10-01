@@ -24,7 +24,7 @@ public class UserRoleQueryRepository
         return query.Filter(filter);
     }
 
-    public async Task<PagedResult<Role>> GetRolesByUserIdAsync(
+    public async Task<PagedResult<Role>> GetRolesByUserAsync(
        long userId,
        PaginationParams pagination)
     {
@@ -34,7 +34,7 @@ public class UserRoleQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<PagedResult<User>> GetUsersByRoleIdAsync(
+    public async Task<PagedResult<User>> GetUsersByRoleAsync(
         long roleId,
         PaginationParams pagination)
     {
@@ -42,5 +42,25 @@ public class UserRoleQueryRepository
             .WithRoleIncludes()
             .Where(u => u.UserRoles.Any(ur => ur.RoleId == roleId))
             .ToPagedResultAsync(pagination);
+    }
+
+    public async Task<List<long>> GetRoleIdsByUserAsync(
+        long userId)
+    {
+        return await _db.Roles
+            .Where(u => u.UserRoles
+                .Any(ur => ur.UserId == userId))
+            .Select(u => u.Id)
+            .ToListAsync();
+    }
+
+    public async Task<List<long>> GetUserIdsByRoleAsync(
+        long roleId)
+    {
+        return await _db.Users
+            .Where(u => u.UserRoles
+                .Any(ur => ur.RoleId == roleId))
+            .Select(u => u.Id)
+            .ToListAsync();
     }
 }

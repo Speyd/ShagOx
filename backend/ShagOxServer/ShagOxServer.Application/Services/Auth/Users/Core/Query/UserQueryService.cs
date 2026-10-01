@@ -12,6 +12,7 @@ using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Caches.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -68,26 +69,56 @@ public class UserQueryService
     public async Task<Result<UserShortDto>> GetByContactAsync(
         string value)
     {
-        var user = await _userQueryRepository
-            .GetByContactAsync(value);
+        var cacheKey = UserCache.ByContact(value);
 
-        return user.ToResult(UserShortMapper.ToDto);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var user = await _userQueryRepository
+                    .GetByContactAsync(value);
+
+                return user.ToResult(UserShortMapper.ToDto);
+            },
+            _settings.KeyExpiration
+        );
     }
 
     public async Task<Result<UserDto>> GetMyProfileAsync()
     {
-        var user = await _userQueryRepository
-            .GetByIdAsync(_context.UserId);
+        var cacheKey = GetCacheKey(_context.UserId);
 
-        return await user.ToResultAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var user = await _userQueryRepository
+                    .GetByIdAsync(_context.UserId);
+
+                return await user.ToResultAsync(ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 
     public async Task<Result<PagedResult<RoleDto>>> GetMyRoleAsync(
         PaginationParams pagination)
     {
-        var roles = await _roleQueryRepository
-            .GetByUserAsync(_context.UserId, pagination);
+        var cacheKey = UserRoleCache.RolesByUser(
+            _context.UserId,
+            pagination.Page,
+            pagination.PageSize);
 
-        return roles.ToResultPaged(RoleMapper.ToDto);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var roles = await _roleQueryRepository
+                    .GetByUserAsync(_context.UserId, pagination);
+
+                return roles.ToResultPaged(RoleMapper.ToDto);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

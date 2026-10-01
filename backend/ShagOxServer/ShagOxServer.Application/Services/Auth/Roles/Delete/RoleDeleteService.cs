@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
+using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
@@ -18,7 +20,8 @@ public class RoleDeleteService
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;
 
-    private readonly IUserRoleQueryRepository _userRoleRepository;
+    private readonly IUserRoleQueryService _userRoleService;
+    private readonly IAdvertisementQueryRepository _advertRepository;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RoleDeleteService> _logger;
@@ -28,14 +31,16 @@ public class RoleDeleteService
     public RoleDeleteService(
         IRepository<Role> roleRepository,
         RoleValidator roleValidator,
-        IUserRoleQueryRepository userRoleRepository,
+        IUserRoleQueryService userRoleService,
+        IAdvertisementQueryRepository advertRepository,
         IUnitOfWork unitOfWork,
         ILogger<RoleDeleteService> logger,
         ICacheService cache)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
-        _userRoleRepository = userRoleRepository;
+        _userRoleService = userRoleService;
+        _advertRepository = advertRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
         _cache = cache;
@@ -60,7 +65,14 @@ public class RoleDeleteService
             await _unitOfWork.CommitAsync();
 
             await RoleCache.InvalidateDeleteAsync(
-                _cache, _userRoleRepository, role.Value!);
+                _cache, _userRoleService, role.Value!);
+
+            await UserCache.InvalidateByRoleAsync(
+                _cache,
+                _userRoleService,
+                _advertRepository,
+                role.Value!.Id
+                );
         }
         catch(Exception ex)
         {

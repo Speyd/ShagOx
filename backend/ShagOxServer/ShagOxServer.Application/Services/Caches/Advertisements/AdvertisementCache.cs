@@ -121,9 +121,23 @@ public class AdvertisementCache
         IAdvertisementQueryRepository repository,
         StatusTranslation statusTranslation)
     {
-        await repository.GetCacheInfoByStatusAsync(
-                statusTranslation.TranslatableId);
+        await InvalidateByStatusAsync(
+            cache,
+            repository,
+            statusTranslation.TranslatableId);
     }
+
+    public static async Task InvalidateByUserAsync(
+        ICacheService cache,
+        IAdvertisementQueryRepository repository,
+        long userId)
+    {
+        var advertisements = await repository
+            .GetCacheInfoByUserAsync(userId);
+
+        await InvalidateAsync(cache, advertisements);
+    }
+
     private static async Task InvalidateAsync(
         ICacheService cache,
         IEnumerable<AdvertisementCacheInfo> advertisements)

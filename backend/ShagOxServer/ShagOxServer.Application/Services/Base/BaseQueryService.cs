@@ -46,6 +46,12 @@ public abstract class BaseQueryService<TDto, TEntity, TFilter>
         return cache;
     }
 
+    public virtual string GetCacheKey(
+        long id)
+    {
+        return CacheKeys.Entity<TEntity>(id);
+    }
+
     public virtual async Task CreateCache(
         TDto dto)
     {

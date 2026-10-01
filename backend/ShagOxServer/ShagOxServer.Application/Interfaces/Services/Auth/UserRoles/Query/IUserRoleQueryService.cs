@@ -11,11 +11,17 @@ namespace ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
 public interface IUserRoleQueryService
      : IQueryService<UserRoleDto, UserRole, UserRoleSearchFilter>
 {
-    Task<Result<PagedResult<RoleDto>>> GetRolesByUserIdAsync(
+    Task<Result<PagedResult<RoleDto>>> GetRolesByUserAsync(
         long userId,
 		PaginationParams pagination);
 
-    Task<Result<PagedResult<UserDto>>> GetUsersByRoleIdAsync(
+    Task<Result<List<long>>> GetUserIdsByRoleAsync(
+       long roleId);
+
+    Task<Result<PagedResult<UserDto>>> GetUsersByRoleAsync(
         long roleId,
 		PaginationParams pagination);
+
+    Task<Result<List<long>>> GetRolesIdsByUserAsync(
+       long userId);
 }

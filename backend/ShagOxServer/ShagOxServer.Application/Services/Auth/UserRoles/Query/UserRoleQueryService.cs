@@ -3,13 +3,16 @@ using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Auth.Roles;
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
 using ShagOxServer.Application.DTOs.Auth.Users.Core;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
+using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.UserRoles.Mapping;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Caches.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -27,12 +30,14 @@ public class UserRoleQueryService
 {
     private readonly IUserRoleQueryRepository _userRoleQueryRepository;
     private readonly IUserQueryService _userService;
+    private readonly IRoleQueryService _roleService;
 
 
 
     public UserRoleQueryService(
         IUserRoleQueryRepository userRoleQueryRepository,
         IUserQueryService userService,
+        IRoleQueryService roleService,
         ICacheService cache,
         IOptions<CacheSettings> settings
     )
@@ -40,6 +45,7 @@ public class UserRoleQueryService
     {
         _userRoleQueryRepository = userRoleQueryRepository;
         _userService = userService;
+        _roleService = roleService;
     }
 
 
@@ -49,24 +55,85 @@ public class UserRoleQueryService
         return UserRoleMapper.ToDto(entity);
     }
 
-    public async Task<Result<PagedResult<RoleDto>>> GetRolesByUserIdAsync(
+    public async Task<Result<PagedResult<RoleDto>>> GetRolesByUserAsync(
         long userId,
 		PaginationParams pagination)
     {
-        var roles = await _userRoleQueryRepository
-            .GetRolesByUserIdAsync(userId, pagination);
+        var cacheKey = UserRoleCache.RolesByUser(
+           userId,
+           pagination.Page,
+           pagination.PageSize);
 
-        return roles.ToResultPaged(RoleMapper.ToDto);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var roles = await _userRoleQueryRepository
+                    .GetRolesByUserAsync(userId, pagination);
+
+                return await roles.ToResultPagedAsync(
+                    _roleService.ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 
-    public async Task<Result<PagedResult<UserDto>>> GetUsersByRoleIdAsync(
+    public async Task<Result<List<long>>> GetRolesIdsByUserAsync(
+       long userId)
+    {
+        var cacheKey = UserRoleCache.RoleIdsByUser(userId);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var roles = await _userRoleQueryRepository
+                    .GetRoleIdsByUserAsync(userId);
+
+                return Result<List<long>>.Success(roles);
+            },
+            _settings.KeyExpiration
+        );
+    }
+
+    public async Task<Result<PagedResult<UserDto>>> GetUsersByRoleAsync(
         long roleId,
 		PaginationParams pagination)
     {
-        var users = await _userRoleQueryRepository
-            .GetUsersByRoleIdAsync(roleId, pagination);
+        var cacheKey = UserRoleCache.UsersByRole(
+           roleId,
+           pagination.Page,
+           pagination.PageSize);
 
-        return await users.ToResultPagedAsync(
-            _userService.ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var users = await _userRoleQueryRepository
+                    .GetUsersByRoleAsync(roleId, pagination);
+
+                return await users.ToResultPagedAsync(
+                    _userService.ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
+    }
+
+    public async Task<Result<List<long>>> GetUserIdsByRoleAsync(
+       long roleId)
+    {
+        var cacheKey = UserRoleCache.UserIdsByRole(roleId);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var users = await _userRoleQueryRepository
+                    .GetUserIdsByRoleAsync(roleId);
+
+                return Result<List<long>>.Success(users);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

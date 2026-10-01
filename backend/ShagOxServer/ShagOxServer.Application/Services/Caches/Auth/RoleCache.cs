@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
+﻿using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Entities.Account;
@@ -15,7 +15,8 @@ public class RoleCache
             int pageSize)
             => $"{Prefix}:user:{userId}:page:{page}:size:{pageSize}";
 
-    public static string ByUserPattern(long userId)
+    public static string ByUserPattern(
+        long userId)
         => $"{Prefix}:user:{userId}:page:*";
 
     public static string ByName(
@@ -24,40 +25,60 @@ public class RoleCache
 
     public static async Task InvalidateDeleteAsync(
         ICacheService cache,
-        IUserRoleQueryRepository userRoleRepository,
+        IUserRoleQueryService userRoleService,
         Role cachedEntity)
     {
         await cache.RemoveAsync(
             CacheKeys.Entity<Role>(cachedEntity.Id));
 
-        await cache.RemoveByPatternAsync(
+        await cache.RemoveAsync(
             ByName(cachedEntity.Name));
 
-        var users = await userRoleRepository
-            .GetUsersByRoleIdAsync(cachedEntity.Id);
-
-        foreach (var userId in users)
-        {
-            await cache.RemoveByPatternAsync(
-                ByUserPattern(userId));
-        }
+        await InvalidateByUserAsync(cache,
+            userRoleService,
+            cachedEntity);
     }
 
     public static async Task InvalidateUpdateAsync(
         ICacheService cache,
-        IUserRoleQueryRepository userRoleRepository,
+        IUserRoleQueryService userRoleService,
         Role cachedEntity)
     {
         await cache.RemoveAsync(
-            CacheKeys.Entity<Role>(cachedEntity.Id));
+             CacheKeys.Entity<Role>(cachedEntity.Id));
 
-        var users = await userRoleRepository
-            .GetUsersByRoleIdAsync(cachedEntity.Id);
+        await cache.RemoveAsync(
+            ByName(cachedEntity.Name));
 
-        foreach (var userId in users)
+        await InvalidateByUserAsync(cache, 
+            userRoleService, 
+            cachedEntity);
+    }
+
+    private static async Task InvalidateByUserAsync(
+        ICacheService cache,
+        IUserRoleQueryService userRoleService,
+        Role cachedEntity)
+    {
+        var roleId  = cachedEntity.Id;
+
+        var users = await userRoleService
+            .GetUserIdsByRoleAsync(roleId);
+
+        if (!users.IsSuccess)
+            return;
+
+        foreach (var userId in users.Value!)
         {
             await cache.RemoveByPatternAsync(
                 ByUserPattern(userId));
+
+            await cache.RemoveByPatternAsync(
+                UserRoleCache.UsersByRolePattern(roleId));
+
+            await cache.RemoveAsync(
+                UserRoleCache.UserIdsByRole(roleId));
         }
     }
+
 }

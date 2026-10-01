@@ -83,7 +83,7 @@ public class StatusUpdateService
 
             await _unitOfWork.CommitAsync();
 
-            await CacheInvalidate(status.Value);
+            await CacheInvalidate(status.Value!);
         }
         catch(Exception ex)
         {

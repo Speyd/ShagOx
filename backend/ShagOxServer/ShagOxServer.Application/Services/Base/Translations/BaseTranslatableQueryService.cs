@@ -6,7 +6,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -44,24 +43,4 @@ public abstract class BaseTranslatableQueryService<TDto, TEntity, TFilter>
 
         return await entity.ToResultAsync(ApplyMapperAsync);
     }
-
-    //public override async Task<TDto?> GetByCache(
-    //    long id)
-    //{
-    //    var cache = await _cache.GetAsync<TDto>(
-    //        CacheKeys.Translation<TEntity>(
-    //            id, _language.Language));
-
-    //    return cache;
-    //}
-
-    //public override async Task CreateCache(
-    //    TDto dto)
-    //{
-    //    await _cache.SetAsync(
-    //        CacheKeys.Translation<TEntity>(
-    //            dto.Id, _language.Language),
-    //        dto,
-    //        _settings.KeyExpiration);
-    //}
 }

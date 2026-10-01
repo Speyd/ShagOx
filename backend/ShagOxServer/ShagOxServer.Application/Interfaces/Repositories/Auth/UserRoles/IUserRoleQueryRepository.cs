@@ -11,7 +11,13 @@ public interface IUserRoleQueryRepository
         long userId,
         PaginationParams pagination);
 
+    Task<List<long>> GetRolesByUserIdAsync(
+        long userId);
+
     Task<PagedResult<User>> GetUsersByRoleIdAsync(
         long roleId,
         PaginationParams pagination);
+
+    Task<List<long>> GetUsersByRoleIdAsync(
+        long roleId);
 }

@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Caches.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -45,18 +46,41 @@ public class RoleQueryService
        long userId,
        PaginationParams pagination)
     {
-        var roles = await _roleQueryRepository
-            .GetByUserAsync(userId, pagination);
+        var cacheKey = RoleCache.ByUser(
+           userId,
+           pagination.Page,
+           pagination.PageSize);
 
-        return await roles.ToResultPagedAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var roles = await _roleQueryRepository
+                    .GetByUserAsync(userId, pagination);
+
+                return await roles.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 
     public async Task<Result<RoleDto>> GetByNameAsync(
         string name)
     {
-        var role = await _roleQueryRepository
-            .GetByNameAsync(name);
+        var cacheKey = RoleCache.ByName(name);
 
-        return await role.ToResultAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var role = await _roleQueryRepository
+                    .GetByNameAsync(name);
+
+                return await role.ToResultAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

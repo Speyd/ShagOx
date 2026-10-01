@@ -1,10 +1,8 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
-using System.Globalization;
 
 namespace ShagOxServer.Application.Services.Caches.Advertisements;
 public class StatusCache
@@ -18,7 +16,7 @@ public class StatusCache
         IStatusTranslationQueryRepository repository,
         Status cachedEntity)
     {
-        await cache.RemoveByPatternAsync(
+        await cache.RemoveAsync(
             CacheKeys.Entity<Status>(cachedEntity.Id));
 
         var translationIds = await repository
@@ -35,7 +33,7 @@ public class StatusCache
         ICacheService cache,
         Status cachedEntity)
     {
-        await cache.RemoveByPatternAsync(
+        await cache.RemoveAsync(
              CacheKeys.Entity<Status>(cachedEntity.Id));
     }
 

@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
+using ShagOxServer.Application.Services.Caches.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,20 +18,27 @@ public class RoleDeleteService
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;
 
+    private readonly IUserRoleQueryRepository _userRoleRepository;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RoleDeleteService> _logger;
+    private readonly ICacheService _cache;
 
 
     public RoleDeleteService(
         IRepository<Role> roleRepository,
         RoleValidator roleValidator,
+        IUserRoleQueryRepository userRoleRepository,
         IUnitOfWork unitOfWork,
-        ILogger<RoleDeleteService> logger)
+        ILogger<RoleDeleteService> logger,
+        ICacheService cache)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
+        _userRoleRepository = userRoleRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -48,6 +58,9 @@ public class RoleDeleteService
             _roleRepository.Delete(role.Value!);
 
             await _unitOfWork.CommitAsync();
+
+            await RoleCache.InvalidateDeleteAsync(
+                _cache, _userRoleRepository, role.Value!);
         }
         catch(Exception ex)
         {

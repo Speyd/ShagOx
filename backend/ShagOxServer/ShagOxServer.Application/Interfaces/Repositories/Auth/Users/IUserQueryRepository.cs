@@ -24,6 +24,10 @@ public interface IUserQueryRepository
         string? phone,
         string? userName = null);
 
+    Task<PagedResult<User>> GetByRoleAsync(
+        long roleId,
+        PaginationParams pagination);
+
     Task<PagedResult<User>> AdminSearch(
         UserAdminSearchFilter filter,
         PaginationParams pagination);

@@ -3,8 +3,10 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -20,6 +22,7 @@ public class AttributeDefinitionUpdateService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionUpdateService> _logger;
+    private readonly ICacheService _cache;
 
 
     public AttributeDefinitionUpdateService(
@@ -27,13 +30,15 @@ public class AttributeDefinitionUpdateService
         AttributeDefinitionValidator attributeValidator,
         AttributeDefinitionUpdateValidator attributeUpdateValidator,
         IUnitOfWork unitOfWork,
-        ILogger<AttributeDefinitionUpdateService> logger)
+        ILogger<AttributeDefinitionUpdateService> logger,
+        ICacheService cache)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _attributeUpdateValidator = attributeUpdateValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -82,6 +87,9 @@ public class AttributeDefinitionUpdateService
             _attributeRepository.Update(attribute.Value!);
 
             await _unitOfWork.CommitAsync();
+
+            await AttributeDefinitionCache
+                .InvalidateDeleteAsync(_cache, attribute.Value!);
         }
         catch(Exception ex)
         {

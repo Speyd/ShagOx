@@ -2,8 +2,10 @@
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -17,18 +19,22 @@ public class AttributeDefinitionDeleteService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionDeleteService> _logger;
+    private readonly ICacheService _cache;
+
 
 
     public AttributeDefinitionDeleteService(
         IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
         IUnitOfWork unitOfWork,
-        ILogger<AttributeDefinitionDeleteService> logger)
+        ILogger<AttributeDefinitionDeleteService> logger,
+        ICacheService cache)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -48,6 +54,9 @@ public class AttributeDefinitionDeleteService
             _attributeRepository.Delete(attribute.Value!);
 
             await _unitOfWork.CommitAsync();
+
+            await AttributeDefinitionCache
+                .InvalidateDeleteAsync(_cache, attribute.Value!);
         }
         catch(Exception ex)
         {

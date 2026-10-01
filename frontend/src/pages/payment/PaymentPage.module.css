@@ -50,7 +50,7 @@
 .paymentSection {
   display: flex;
   flex-direction: column;
-  min-width: 0;
+  gap: 24px;
   padding-top: 18px;
 }
 
@@ -147,6 +147,11 @@
   gap: 12px;
 }
 
+.paymentOptions :global(.mantine-Radio-radio:checked) {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
 .actions {
   margin-top: 32px;
 }
@@ -156,12 +161,12 @@
 }
 
 .continueButton:hover {
-  background-color: var(--color-primary-hover);
+  background-color: var(--color-base-hover);
 }
 
 .backButton {
-  color: var(--color-base);
-  border-color: var(--color-base);
+  color: var(--color-base) !important;
+  border-color: var(--color-base) !important;
 }
 
 .backButton:hover {

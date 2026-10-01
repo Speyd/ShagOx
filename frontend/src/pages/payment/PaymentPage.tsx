@@ -1,6 +1,12 @@
 import { useMemo, useState } from "react";
-import { Button, Group, Radio, Text, TextInput } from "@mantine/core";
-import { ArrowLeft, Check, Lock, WalletCards } from "lucide-react";
+import {
+  Button as ButtonMantine,
+  Group,
+  Radio,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { ArrowLeft, Lock, WalletCards } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -9,6 +15,7 @@ import OrderSummary from "@/widgets/checkout/checkout-order-summary";
 import CheckoutStepper from "@/widgets/checkout/checkout-stepper";
 import { useGetBasket } from "@/features/basket/model/hooks/useGetBasket";
 import styles from "./PaymentPage.module.css";
+import Button from "@/shared/ui/button";
 
 type PaymentMethod = "cash" | "online" | "iban" | "installment";
 
@@ -30,7 +37,7 @@ export default function PaymentPage() {
     } catch {
       return new Set<number>();
     }
-  }, []);
+  });
 
   const items = useMemo(
     () =>
@@ -57,7 +64,6 @@ export default function PaymentPage() {
             </Text>
             <Button
               onClick={() => navigate("/basket")}
-              radius="md"
               className={styles.primaryButton}
             >
               Повернутися до кошика
@@ -157,7 +163,7 @@ export default function PaymentPage() {
                     paymentMethod === "iban" ? styles.selected : ""
                   }`}
                 >
-                  <Radio value="iban" />
+                  <Radio value="iban" className={styles.ibanOption} />
                   <span className={styles.optionContent}>
                     <span className={styles.optionTitle}>
                       Безготівковий розрахунок (IBAN)
@@ -175,9 +181,7 @@ export default function PaymentPage() {
                 >
                   <Radio value="installment" />
                   <span className={styles.optionContent}>
-                    <span className={styles.optionTitle}>
-                      Оплата частинами
-                    </span>
+                    <span className={styles.optionTitle}>Оплата частинами</span>
                     <span className={styles.optionDescription}>
                       Monobank, ПриватБанк, Розстрочка
                     </span>
@@ -188,20 +192,16 @@ export default function PaymentPage() {
             </Radio.Group>
 
             <Group className={styles.actions} justify="space-between">
-              <Button
+              <ButtonMantine
                 variant="outline"
                 leftSection={<ArrowLeft size={18} />}
                 onClick={() => navigate("/checkout")}
                 className={styles.backButton}
               >
                 Назад
-              </Button>
+              </ButtonMantine>
 
-              <Button
-                onClick={handlePayment}
-                rightSection={<Check size={18} />}
-                className={styles.continueButton}
-              >
+              <Button onClick={handlePayment} className={styles.continueButton}>
                 Продовжити
               </Button>
             </Group>

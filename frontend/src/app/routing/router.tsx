@@ -50,15 +50,6 @@ export default function Router() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         <Route
-          path="/payment"
-          element={
-            <ProtectedRoute>
-              <PaymentPage />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
           path="/admin"
           element={
             <AdminRoute>
@@ -97,6 +88,15 @@ export default function Router() {
             <Route path="orders" element={<OrdersTab />} />
             <Route path="statistics" element={<StatisticsTab />} />
           </Route>
+
+          <Route
+            path="/payment"
+            element={
+              <ProtectedRoute>
+                <PaymentPage />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/favorite"

@@ -18,8 +18,6 @@ public class LoginService : ILoginService
 {
     private readonly IRepository<User> _userRepository;
     private readonly IUserQueryRepository _userQueryRepository;
-    private readonly UserCreater _userCreater;
-    private readonly UserRoleService _roleService;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
     private readonly IJwtService _jwtService;
@@ -30,8 +28,6 @@ public class LoginService : ILoginService
     public LoginService(
         IRepository<User> userRepository,
         IUserQueryRepository userQueryRepository,
-        UserCreater userCreater,
-        UserRoleService roleService,
         IPasswordHasher<User> passwordHasher,
         IContactValidator contactValidator,
         IJwtService jwtService,
@@ -40,8 +36,6 @@ public class LoginService : ILoginService
     {
         _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
-        _userCreater = userCreater;
-        _roleService = roleService;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
         _jwtService = jwtService;

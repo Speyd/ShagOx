@@ -21,7 +21,7 @@ export type AdvertisementShort = {
   categoryId: number;
   sellerId: number;
   buyerId: number | null;
-  imageIds: number[];
+  images: AdvertisementImage[];
   attributes: Record<string, unknown>;
   variants: AdvertisementVariantShort[];
   createdAt: string;
@@ -84,13 +84,17 @@ export type AdvertisementImage = {
 };
 
 export function getAdvertisementPrice(
-  advertisement: Pick<Advertisement, "variants"> | Pick<AdvertisementShort, "variants">,
+  advertisement:
+    | Pick<Advertisement, "variants">
+    | Pick<AdvertisementShort, "variants">,
 ): number {
   return advertisement.variants[0]?.price ?? 0;
 }
 
 export function getAdvertisementStock(
-  advertisement: Pick<Advertisement, "variants"> | Pick<AdvertisementShort, "variants">,
+  advertisement:
+    | Pick<Advertisement, "variants">
+    | Pick<AdvertisementShort, "variants">,
 ): number {
   return advertisement.variants[0]?.stock ?? 0;
 }

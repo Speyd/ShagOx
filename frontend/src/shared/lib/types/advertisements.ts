@@ -17,7 +17,7 @@ export type Advertisement = {
   condition: Condition;
   createdAt: string;
   soldAt: string | null;
-  inStock: number;
+  stock: number;
 };
 
 export type Currency = {

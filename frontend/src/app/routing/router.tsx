@@ -27,6 +27,7 @@ import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage";
 import CategorySelectionPage from "@/pages/category-selection/CategorySelectionPage";
 import VerifyPage from "@/pages/verify-page";
 import CheckoutPage from "@/pages/checkout";
+import PaymentPage from "@/pages/payment";
 import BasketPage from "@/pages/basket";
 
 export default function Router() {
@@ -47,6 +48,15 @@ export default function Router() {
         <Route path="/authentication/verify" element={<VerifyPage />} />
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
+        <Route
+          path="/payment"
+          element={
+            <ProtectedRoute>
+              <PaymentPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/admin"

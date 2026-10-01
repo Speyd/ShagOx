@@ -1,0 +1,210 @@
+.paymentPage {
+  min-height: 100vh;
+  padding: 40px 0 80px;
+  background-color: var(--bg-base);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: var(--text-secondary);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 64px 24px;
+  text-align: center;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.primaryButton {
+  background-color: var(--color-base);
+}
+
+.primaryButton:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.contentWrapper {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 72px;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.paymentSection {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-top: 18px;
+}
+
+.title {
+  margin-bottom: 22px;
+  color: var(--text-base);
+}
+
+.paymentOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.paymentOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.paymentOption:hover,
+.selected {
+  background-color: #f8fafc;
+  border-color: #dbeafe;
+}
+
+.optionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.optionTitle {
+  color: var(--text-base);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.optionDescription {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.paymentIcons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.visa,
+.mastercard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 22px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.visa {
+  background-color: #1a4ba0;
+}
+
+.mastercard {
+  background-color: #eb5757;
+}
+
+.walletIcon {
+  color: var(--color-primary);
+}
+
+.cardDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 12px 8px 44px;
+}
+
+.cardRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.actions {
+  margin-top: 32px;
+}
+
+.continueButton {
+  background-color: var(--color-base);
+}
+
+.continueButton:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.backButton {
+  color: var(--color-base);
+  border-color: var(--color-base);
+}
+
+.backButton:hover {
+  color: #ffffff;
+  background-color: var(--color-base);
+}
+
+.security {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 42px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 991px) {
+  .contentWrapper {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .paymentPage {
+    padding: 24px 0 48px;
+  }
+
+  .contentWrapper {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .paymentOption {
+    padding: 10px 6px;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}

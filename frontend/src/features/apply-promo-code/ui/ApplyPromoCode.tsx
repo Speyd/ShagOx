@@ -38,6 +38,7 @@ export default function ApplyPromoCode() {
           placeholder="Введіть код"
           value={promoCode}
           onChange={(e) => setPromoCode(e.target.value)}
+          className={styles.input}
         />
 
         <Button

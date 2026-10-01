@@ -6,6 +6,10 @@
 
 .input {
   flex: 1;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: 4px;
 }
 
 .button {

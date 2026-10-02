@@ -10,8 +10,7 @@
 
 namespace ShagOxServer.Application.Resources.Auth.Registrations {
     using System;
-    
-    
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +22,15 @@ namespace ShagOxServer.Application.Resources.Auth.Registrations {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class RegistrationAuthResources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal RegistrationAuthResources() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +44,7 @@ namespace ShagOxServer.Application.Resources.Auth.Registrations {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +58,7 @@ namespace ShagOxServer.Application.Resources.Auth.Registrations {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Default role not found..
         /// </summary>
@@ -68,16 +67,25 @@ namespace ShagOxServer.Application.Resources.Auth.Registrations {
                 return ResourceManager.GetString("DefaultRoleNotFound", resourceCulture);
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized string similar to Registration failed..
+        ///   Ищет локализованную строку, похожую на Email or phone is required for verification..
+        /// </summary>
+        internal static string EmailOrPhoneRequired {
+            get {
+                return ResourceManager.GetString("EmailOrPhoneRequired", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Registration failed..
         /// </summary>
         internal static string RegistrationFailed {
             get {
                 return ResourceManager.GetString("RegistrationFailed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Unsupported contact type..
         /// </summary>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Filters.Users;
+using ShagOxServer.Domain.Filters.Auth.Users;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 public static class UserFilterExtensions
@@ -71,27 +71,30 @@ public static class UserFilterExtensions
                 EF.Functions.ILike(u.Phone, $"%{filter.Phone}%"));
         }
 
-        if (filter.CityId is not null)
+        if (filter.CityId.HasValue)
         {
-            query = query.Where(u => u.CityId == filter.CityId.Value!);
+            query = query.Where(u => 
+                u.CityId == filter.CityId.Value);
         }
 
-        if (filter.RegisteredAfter is not null)
+        if (filter.RegisteredAfter.HasValue)
         {
             var dayStart = filter.RegisteredAfter.Value.Date;
             var dayEnd = dayStart.AddDays(1);
 
             return query.Where(x =>
-                x.RegisteredAt >= dayStart && x.RegisteredAt < dayEnd);
+                x.RegisteredAt >= dayStart &&
+                x.RegisteredAt < dayEnd);
         }
 
-        if (filter.ActiveAfter is not null)
+        if (filter.ActiveAfter.HasValue)
         {
             var dayStart = filter.ActiveAfter.Value.Date;
             var dayEnd = dayStart.AddDays(1);
 
             return query.Where(x =>
-                x.LastSeenAt >= dayStart && x.LastSeenAt < dayEnd);
+                x.LastSeenAt >= dayStart &&
+                x.LastSeenAt < dayEnd);
         }
 
         return query;

@@ -1,14 +1,18 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Translations.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes.Translations.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes.Translations;
 public class ProductTypeTranslationQueryRepository
-    : QueryTranslationRepository<ProductTypeTranslation>,
+    : QueryTranslationRepository<ProductType,
+        ProductTypeTranslation, 
+        ProductTypeTranslationSearchFilter>,
       IProductTypeTranslationQueryRepository
 {
     public ProductTypeTranslationQueryRepository(AppDbContext db)
@@ -16,12 +20,23 @@ public class ProductTypeTranslationQueryRepository
     { }
 
 
-    public async Task<PagedResult<ProductTypeTranslation>> Search(
-        ProductTypeTranslationSearchFilter filter,
-        PaginationParams pagination)
+    protected override IQueryable<ProductTypeTranslation> ApplyIncludes(
+         IQueryable<ProductTypeTranslation> query)
     {
-        return await _db.ProductTypeTranslations
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
+        return query.WithIncludes();
+    }
+
+    protected override IQueryable<ProductTypeTranslation> ApplyFilter(
+       IQueryable<ProductTypeTranslation> query,
+       ProductTypeTranslationSearchFilter filter)
+    {
+        return query.Filter(filter);
+    }
+
+    protected override IQueryable<ProductTypeTranslation> ApplyIdentificatorFilter(
+        IQueryable<ProductTypeTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
     }
 }

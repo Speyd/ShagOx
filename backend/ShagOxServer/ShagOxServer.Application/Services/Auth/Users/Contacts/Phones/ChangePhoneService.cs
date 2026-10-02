@@ -34,7 +34,7 @@ public class ChangePhoneService
     }
 
     public async Task<Result<bool>> ChangePhone(
-        int userId,
+        long userId,
         ChangePhoneRequest request)
     {
         var user = await _userValidator

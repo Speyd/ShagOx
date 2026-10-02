@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -26,8 +27,8 @@ public class StatusValidator
         if (!await _statusExistsRepository
             .ExistsByCodeAsync(code))
         {
-            return Result<bool>
-                .NotFound(typeof(Status));
+            return Result<bool>.NotFound(
+                EntityNamesResources.AdverStatus);
         }
 
         return Result<bool>.Success(true);
@@ -39,8 +40,8 @@ public class StatusValidator
         if (await _statusExistsRepository
             .ExistsByCodeAsync(code))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(Status));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.AdverStatus);
         }
 
         return Result<bool>.Success(true);

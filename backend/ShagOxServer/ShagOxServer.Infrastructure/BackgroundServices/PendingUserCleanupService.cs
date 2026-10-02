@@ -56,6 +56,12 @@ public class PendingUserCleanupService
                     await db.SaveChangesAsync(stoppingToken);
                 }
             }
+            catch (OperationCanceledException)
+                when (stoppingToken.IsCancellationRequested)
+            {
+                _logger.LogInformation(
+                    "Pending user cleanup service stopped.");
+            }
             catch (Exception ex)
             {
                 _logger.LogError(

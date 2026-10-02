@@ -1,17 +1,13 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 public interface ICategoryQueryRepository
-    : IQueryRepository<Category>
+    : ITranslatableQueryRepository<Category, CategorySearchFilter>
 {
     Task<PagedResult<Category>> GetByProductTypeAsync(
-        int productTypeId,
+        long productTypeId,
         PaginationParams pagination);
-
-    Task<PagedResult<Category>> Search(
-       CategorySearchFilter filter,
-       PaginationParams pagination);
 }

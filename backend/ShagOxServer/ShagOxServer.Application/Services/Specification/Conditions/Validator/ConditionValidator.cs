@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -26,8 +27,8 @@ public class ConditionValidator
         if (!await _conditionExistsRepository
             .ExistsByCodeAsync(code))
         {
-            return Result<bool>
-                .NotFound(typeof(Condition));
+            return Result<bool>.NotFound(
+                EntityNamesResources.Condition);
         }
 
         return Result<bool>.Success(false);
@@ -36,11 +37,11 @@ public class ConditionValidator
     public async Task<Result<bool>> NotExistsByCodeAsync(
         string code)
     {
-        if (!await _conditionExistsRepository
+        if (await _conditionExistsRepository
             .ExistsByCodeAsync(code))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(Condition));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.Condition);
         }
 
         return Result<bool>.Success(false);

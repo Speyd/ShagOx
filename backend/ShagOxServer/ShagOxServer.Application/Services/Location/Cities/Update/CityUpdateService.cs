@@ -4,8 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Cities.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
-using ShagOxServer.Application.Services.Location.Cities.Delete;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Location;
@@ -39,7 +38,7 @@ public class CityUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int cityId, 
+        long cityId, 
         CityUpdateRequest request)
     {
         var city = await _cityValidator.GetByIdAsync(cityId);
@@ -101,7 +100,7 @@ public class CityUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        (int regionId, string name) changeValidator,
+        (long regionId, string name) changeValidator,
         CityUpdateRequest request)
     {
         var existsValidator = await _cityValidator.NotExistsAsync(
@@ -109,9 +108,6 @@ public class CityUpdateService
             changeValidator.name
         );
 
-        if (!existsValidator.IsSuccess)
-            return Result<bool>.Fail(existsValidator.Error);
-
-        return Result<bool>.Success(true);
+        return existsValidator;
     }
 }

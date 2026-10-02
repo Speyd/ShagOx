@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -38,7 +38,7 @@ public class CategoryUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int categoryId,
+        long categoryId,
         CategoryUpdateRequest request)
     {
         var category = await _categoryValidator.GetByIdAsync(categoryId);
@@ -100,7 +100,7 @@ public class CategoryUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        (string name, int productTypeId) changeValidator,
+        (string name, long productTypeId) changeValidator,
         CategoryUpdateRequest request)
     {
         var existsValidator = await _categoryValidator.NotExistsAsync(
@@ -108,9 +108,6 @@ public class CategoryUpdateService
           changeValidator.productTypeId
        );
 
-        if (!existsValidator.IsSuccess)
-            return Result<bool>.Fail(existsValidator.Error);
-
-        return Result<bool>.Success(true);
+        return existsValidator;
     }
 }

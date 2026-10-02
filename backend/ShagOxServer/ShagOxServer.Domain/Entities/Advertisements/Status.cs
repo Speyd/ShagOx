@@ -2,13 +2,21 @@
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 
 namespace ShagOxServer.Domain.Entities.Advertisements;
-public class Status : BaseEntity
+public class Status
+    : BaseTranslatable
 {
     public string Code { get; set; } = null!;
 
-    public List<Advertisement> Advertisements { get; set; } = new();
+    public ICollection<Advertisement> Advertisements { get; set; } 
+        = [];
 
-    public List<StatusTranslation> Translations { get; set; } = new();
+    public ICollection<StatusTranslation> Translations { get; set; }
+        = [];
+
+    public override string GetIdentificator()
+    {
+        return Code;
+    }
 
     public override string ToString()
     {

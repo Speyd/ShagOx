@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -26,8 +27,8 @@ public class RoleValidator
         if (!await _roleExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .NotFound(typeof(Role));
+            return Result<bool>.NotFound(
+                EntityNamesResources.Role);
         }
 
         return Result<bool>.Success(true);
@@ -39,8 +40,8 @@ public class RoleValidator
         if (await _roleExistsRepository
             .ExistsByNameAsync(name))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(Role));
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.Role);
         }
 
         return Result<bool>.Success(true);

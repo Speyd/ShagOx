@@ -4,7 +4,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -37,7 +37,7 @@ public class ImageDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var image = await _imageValidator.GetByIdAsync(id);
         if (!image.IsSuccess)
@@ -79,7 +79,7 @@ public class ImageDeleteService
     }
 
     public async Task<Result<DeleteResponse>> DeleteRecordAsync(
-        int id)
+        long id)
     {
         var image = await _imageValidator.GetByIdAsync(id);
         if (!image.IsSuccess)

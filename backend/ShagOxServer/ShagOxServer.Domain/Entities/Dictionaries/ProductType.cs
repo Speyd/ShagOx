@@ -2,16 +2,23 @@
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;
-public class ProductType : BaseEntity
+public class ProductType 
+    : BaseTranslatable
 {
     public string Code { get; set; } = null!;
     public string Description { get; set; } = "";
 
-    public List<Category> Categories { get; set; }
-        = new List<Category>();
+    public ICollection<Category> Categories { get; set; }
+        = [];
 
-    public List<ProductTypeTranslation> Translations { get; set; }
-        = new List<ProductTypeTranslation>();
+    public ICollection<ProductTypeTranslation> Translations { get; set; }
+        = [];
+
+
+    public override string GetIdentificator()
+    {
+        return Code;
+    }
 
     public override string ToString()
     {

@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
@@ -15,7 +15,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Update;
 public class StatusTranslationUpdateService
-    : BaseTranslationUpdateSerivce<Status, StatusTranslation>,
+    : BaseTranslationUpdateService<Status, StatusTranslation>,
     IStatusTranslationUpdateService
 {
     private readonly IRepository<StatusTranslation> _statusRepository;
@@ -41,7 +41,7 @@ public class StatusTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusTranslationId,
+        long statusTranslationId,
         StatusTranslationUpdateRequest request)
     {
         var status = await _statusTranslationValidator
@@ -85,8 +85,8 @@ public class StatusTranslationUpdateService
                 "Failed to update status translation. Id: {Id}",
                 statusTranslationId);
 
-            return Result<UpdateResponse>
-                .Fail(EntityErrorResources.AdvertStatusTranslationUpdateFailed);
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.AdvertStatusTranslationUpdateFailed);
 
         }
 

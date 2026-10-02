@@ -1,59 +1,61 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Resources.EntityNames.Extensions;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base;
-public abstract class BaseValidator<TObject>
-    where TObject : class
+public abstract class BaseValidator<TEntity>
+    where TEntity : BaseEntity
 {
-    private readonly IRepository<TObject> _objectRepository;
-    private readonly IExistsRepository<TObject> _objectExistsRepository;
+    private readonly IRepository<TEntity> _objectRepository;
+    private readonly IExistsRepository<TEntity> _objectExistsRepository;
 
 
     public BaseValidator(
-        IRepository<TObject> objectRepository,
-        IExistsRepository<TObject> objectExistsRepository)
+        IRepository<TEntity> objectRepository,
+        IExistsRepository<TEntity> objectExistsRepository)
     {
         _objectRepository = objectRepository;
         _objectExistsRepository = objectExistsRepository;
     }
 
 
-    public async Task<Result<TObject>> GetByIdAsync(
-        int objcetId)
+    public async Task<Result<TEntity>> GetByIdAsync(
+        long entityId)
     {
-        var objcet = await _objectRepository
-            .GetByIdAsync(objcetId);
+        var entity = await _objectRepository
+            .GetByIdAsync(entityId);
 
-        if (objcet is null)
+        if (entity is null)
         {
-            return Result<TObject>
-                .NotFound(typeof(TObject).Name);
+            return Result<TEntity>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
-        return Result<TObject>.Success(objcet);
+        return Result<TEntity>.Success(entity);
     }
 
     public async Task<Result<bool>> ExistsByIdAsync(
-        int objcetId)
+        long entityId)
     {
         if (!await _objectExistsRepository
-            .ExistsByIdAsync(objcetId))
+            .ExistsByIdAsync(entityId))
         {
-            return Result<bool>
-                .NotFound(typeof(TObject).Name);
+            return Result<bool>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
         return Result<bool>.Success(true);
     }
 
     public async Task<Result<bool>> NotExistsByIdAsync(
-        int objcetId)
+        long entityId)
     {
         if (await _objectExistsRepository
-            .ExistsByIdAsync(objcetId))
+            .ExistsByIdAsync(entityId))
         {
-            return Result<bool>
-                .AlreadyExists(typeof(TObject).Name);
+            return Result<bool>.AlreadyExists(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
         return Result<bool>.Success(true);

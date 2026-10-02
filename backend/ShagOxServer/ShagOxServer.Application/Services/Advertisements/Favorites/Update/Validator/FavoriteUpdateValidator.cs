@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -28,7 +29,8 @@ public class FavoriteUpdateValidator
                 .GetByIdAsync(request.UserId.Value);
 
             if (!user.IsSuccess)
-                return Result<bool>.NotFound("User");
+                return Result<bool>.NotFound(
+                    EntityNamesResources.User);
         }
 
 
@@ -38,7 +40,8 @@ public class FavoriteUpdateValidator
                 .GetByIdAsync(request.AdvertisementId.Value);
 
             if (!advert.IsSuccess)
-                return Result<bool>.NotFound("Advertisement");
+                return Result<bool>.NotFound(
+                    EntityNamesResources.Advertisement);
         }
 
         return Result<bool>.Success(true);

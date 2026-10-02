@@ -1,38 +1,40 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
+﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations;
 public class StatusTranslationQueryRepository
-    : QueryTranslationRepository<StatusTranslation>,
+    : QueryTranslationRepository<Status,
+        StatusTranslation,
+        StatusTranslationSearchFilter>,
       IStatusTranslationQueryRepository
 {
     public StatusTranslationQueryRepository(AppDbContext db)
         : base(db)
     { }
 
-
-    public override async Task<PagedResult<StatusTranslation>> GetPagedAsync(
-        PaginationParams pagination,
-        string language)
+    protected override IQueryable<StatusTranslation> ApplyIncludes(
+         IQueryable<StatusTranslation> query)
     {
-        return await _db.StatusTranslations
-           .WithIncludes()
-           .Where(x => x.Language == language)
-           .ToPagedResultAsync(pagination);
+        return query.WithIncludes();
     }
 
-    public async Task<PagedResult<StatusTranslation>> Search(
-        StatusTranslationSearchFilter filter,
-        PaginationParams pagination)
+    protected override IQueryable<StatusTranslation> ApplyFilter(
+       IQueryable<StatusTranslation> query,
+       StatusTranslationSearchFilter filter)
     {
-        return await _db.StatusTranslations
-            .WithIncludes()
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
+        return query.Filter(filter);
+    }
+
+    protected override IQueryable<StatusTranslation> ApplyIdentificatorFilter(
+        IQueryable<StatusTranslation> query,
+        string identificator)
+    {
+        return query.Where(x => x.Translatable.Code == identificator);
     }
 }

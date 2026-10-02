@@ -34,7 +34,7 @@ public class ChangeEmailService
     }
 
     public async Task<Result<bool>> ChangeEmail(
-        int userId,
+        long userId,
         ChangeEmailRequest request)
     {
         var user = await _userValidator

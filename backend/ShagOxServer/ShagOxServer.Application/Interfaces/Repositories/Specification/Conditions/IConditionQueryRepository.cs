@@ -1,15 +1,10 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 public interface IConditionQueryRepository
-    : IQueryRepository<Condition>
+    : ITranslatableQueryRepository<Condition,
+        ConditionSearchFilter>
 {
-    Task<Condition?> GetByCodeAsync(string code);
-
-    Task<PagedResult<Condition>> Search(
-        ConditionSearchFilter filter,
-        PaginationParams pagination);
 }

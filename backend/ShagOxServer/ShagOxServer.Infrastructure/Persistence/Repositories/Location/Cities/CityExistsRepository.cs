@@ -15,7 +15,7 @@ public class CityExistsRepository
 
 
     public async Task<bool> ExistsAsync(
-        int regionId,
+        long regionId,
         string cityCode)
     {
         return await _db.Cities.AnyAsync(

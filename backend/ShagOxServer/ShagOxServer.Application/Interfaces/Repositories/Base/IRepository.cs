@@ -1,8 +1,11 @@
-﻿namespace ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Domain.Base;
+
+namespace ShagOxServer.Application.Interfaces.Repositories.Base;
 public interface IRepository<T>
-     where T : class
+     where T : BaseEntity
 {
-    Task<T?> GetByIdAsync(int id);
+    Task<T?> GetByIdAsync(
+        long id);
 
     void Add(T entity);
 

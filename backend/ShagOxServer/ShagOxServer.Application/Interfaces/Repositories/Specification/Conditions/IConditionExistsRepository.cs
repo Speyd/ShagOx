@@ -5,5 +5,6 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Conditi
 public interface IConditionExistsRepository
     : IExistsRepository<Condition>
 {
-    Task<bool> ExistsByCodeAsync(string code);
+    Task<bool> ExistsByCodeAsync(
+        string code);
 }

@@ -14,13 +14,15 @@ public class VerificationCodeExistsRepository
     { }
 
 
-    public async Task<bool> ExistsByUserIdAsync(int userId)
+    public async Task<bool> ExistsByUserIdAsync(
+        long userId)
     {
         return await _db.VerificationCodes
             .AnyAsync(x => x.UserId == userId);
     }
 
-    public async Task<bool> ExistsActiveByUserIdAsync(int userId)
+    public async Task<bool> ExistsActiveByUserIdAsync(
+        long userId)
     {
         return await _db.VerificationCodes
             .AnyAsync(x =>

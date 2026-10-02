@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
 using ShagOxServer.Application.Resources.Auth.Contacts.Passwords;
 using ShagOxServer.Application.Resources.Auth.Logins;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -51,7 +52,8 @@ public class LoginService : ILoginService
 
             var user = await GetUserAsync(request.EmailOrPhoneOrUserName, type);
             if (user is null)
-                return Result<LoginResponse>.NotFound(typeof(User));
+                return Result<LoginResponse>
+                    .NotFound(EntityNamesResources.User);
 
             var result = _passwordHasher.VerifyHashedPassword(
                 user,

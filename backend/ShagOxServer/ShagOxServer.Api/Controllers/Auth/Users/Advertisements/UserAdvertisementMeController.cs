@@ -1,0 +1,61 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+
+namespace ShagOxServer.Api.Controllers.Auth.Users.Advertisements;
+
+[ApiController]
+[Route("api/users/me/advertisements")]
+[Authorize]
+public class UserAdvertisementMeController 
+    : ApiController
+{
+    private readonly IAdvertisementQueryService _queryService;
+    private readonly IUserQueryService _queryUserService;
+
+
+    public UserAdvertisementMeController(
+        IAdvertisementQueryService queryService,
+        IUserQueryService queryUserService)
+    {
+        _queryService = queryService;
+        _queryUserService = queryUserService;
+    }
+
+
+    [HttpGet("sales")]
+    public async Task<IActionResult> GetMySales(
+        [FromQuery] PaginationParams pagination)
+    {
+        var user = await _queryUserService
+            .GetMyProfileAsync();
+
+        if (!user.IsSuccess || user.Value is null)
+            return user.ToActionResult();
+
+        var result = await _queryService
+            .GetBySellerAsync(user.Value.Id, pagination);
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet("purchases")]
+    public async Task<IActionResult> GetMyPurchases(
+        [FromQuery] PaginationParams pagination)
+    {
+        var user = await _queryUserService
+            .GetMyProfileAsync();
+
+        if (!user.IsSuccess || user.Value is null)
+            return user.ToActionResult();
+
+        var result = await _queryService
+            .GetPurchasedByUserAsync(user.Value.Id, pagination);
+
+        return result.ToActionResult();
+    }
+}

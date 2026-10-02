@@ -6,7 +6,8 @@ using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Domain.Entities.Account;
-public class User : BaseEntity
+public class User 
+    : BaseEntity
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
@@ -26,10 +27,10 @@ public class User : BaseEntity
     public bool EmailConfirmed { get; set; } = false;
     public bool PhoneConfirmed { get; set; } = false;
 
-    public int? AvatarId { get; set; }
+    public long? AvatarId { get; set; }
     public Avatar? Avatar { get; set; } = null;
 
-    public int? CityId { get; set; }
+    public long? CityId { get; set; }
     public City? City { get; set; } = null;
 
     public DateTime? LastSeenAt { get; set; }
@@ -37,13 +38,17 @@ public class User : BaseEntity
 
     public Basket Basket { get; set; } = null!;
 
-    public List<UserRole> UserRoles { get; set; } = new();
+    public ICollection<UserRole> UserRoles { get; set; }
+        = [];
 
-    public List<Advertisement> SoldAdvertisements { get; set; } = new();
+    public ICollection<Advertisement> SoldAdvertisements { get; set; }
+        = [];
 
-    public List<Advertisement> BoughtAdvertisements { get; set; } = new();
+    public ICollection<Advertisement> BoughtAdvertisements { get; set; }
+        = [];
 
-    public List<Favorite> Favorites { get; set; } = new();
+    public ICollection<Favorite> Favorites { get; set; } 
+        = [];
 
 
     public User()
@@ -73,6 +78,7 @@ public class User : BaseEntity
         LastSeenAt = user.LastSeenAt;
         RegisteredAt = user.RegisteredAt;
     }
+
 
     public override string ToString()
     {

@@ -18,10 +18,10 @@ public static class CityFilterExtensions
                 EF.Functions.ILike(u.Code, $"%{filter.Code}%"));
         }
 
-        if (filter.RegionId is not null)
+        if (filter.RegionId.HasValue)
         {
             query = query.Where(u =>
-                u.RegionId == filter.RegionId.Value!);
+                u.RegionId == filter.RegionId.Value);
         }
 
         return query;

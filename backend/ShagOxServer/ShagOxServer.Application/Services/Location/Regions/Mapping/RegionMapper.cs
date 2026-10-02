@@ -5,17 +5,20 @@ namespace ShagOxServer.Application.Services.Location.Regions.Mapping;
 public static class RegionMapper
 {
     public static RegionDto ToDto(
-        Region? region)
+        Region? region,
+        string? lable)
     {
         if(region is null)
             return new RegionDto(
                 -1,
-                "Unknown code"
+                "Unknown code",
+                null
             );
 
         return new RegionDto(
             region.Id,
-            region.Code
+            region.Code,
+            lable
         );
     }
 }

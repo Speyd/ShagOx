@@ -1,8 +1,8 @@
 ﻿namespace ShagOxServer.Application.DTOs.Specification.Pictures.Images;
 public sealed record ImageDto(
-    int Id,
+    long Id,
     string Url,
     string PublicId,
     int Order,
-    int AdvertisementId
+    long AdvertisementId
 ) : BaseImageDto(Id, Url, PublicId);

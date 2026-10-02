@@ -126,6 +126,15 @@
   <data name="AdvertisementUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити оголошення.</value>
   </data>
+  <data name="AdvertisementVariantCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити варіант оголошення.</value>
+  </data>
+  <data name="AdvertisementVariantDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити варіант оголошення.</value>
+  </data>
+  <data name="AdvertisementVariantUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити варіант оголошення.</value>
+  </data>
   <data name="AdvertStatusCreateFailed" xml:space="preserve">
     <value>Не вдалося створити статус.</value>
   </data>
@@ -162,6 +171,33 @@
   <data name="AttributeDefinitionUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити визначення атрибута.</value>
   </data>
+  <data name="AttributeDictionaryCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити словник атрибутів.</value>
+  </data>
+  <data name="AttributeDictionaryDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити словник атрибутів.</value>
+  </data>
+  <data name="AttributeDictionaryUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити словник атрибутів.</value>
+  </data>
+  <data name="AttributeDictionaryValueCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити словник значень атрибута.</value>
+  </data>
+  <data name="AttributeDictionaryValueDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити словник значень атрибута.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити переклад значення словника атрибутів.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити переклад значення словника атрибутів.</value>
+  </data>
+  <data name="AttributeDictionaryValueTranslationUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити переклад значення словника атрибутів.</value>
+  </data>
+  <data name="AttributeDictionaryValueUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити словник значень атрибута.</value>
+  </data>
   <data name="AvatarCreateFailed" xml:space="preserve">
     <value>Не вдалося створити аватар.</value>
   </data>
@@ -175,10 +211,10 @@
     <value>Не вдалося створити атрибут кошика.</value>
   </data>
   <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Не вдалося створити атрибут видалення.</value>
+    <value>Не вдалося видалити атрибут кошика.</value>
   </data>
   <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Не вдалося створити атрибут оновлення.</value>
+    <value>Не вдалося оновити атрибут кошика.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Не вдалося створити кошик.</value>
@@ -279,6 +315,9 @@
   <data name="ImageUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити зображення.</value>
   </data>
+  <data name="ImageUploadFailed" xml:space="preserve">
+    <value>Не вдалося завантажити зображення.</value>
+  </data>
   <data name="ProductTypeCreateFailed" xml:space="preserve">
     <value>Не вдалося створити тип товару.</value>
   </data>
@@ -325,9 +364,9 @@
     <value>Не вдалося оновити роль.</value>
   </data>
   <data name="UserDeleteFailed" xml:space="preserve">
-    <value>Не вдалося видалити роль.</value>
+    <value>Не вдалося видалити користувача.</value>
   </data>
   <data name="UserUpdateFailed" xml:space="preserve">
-    <value>Не вдалося оновити роль.</value>
+    <value>Не вдалося оновити користувача.</value>
   </data>
 </root>

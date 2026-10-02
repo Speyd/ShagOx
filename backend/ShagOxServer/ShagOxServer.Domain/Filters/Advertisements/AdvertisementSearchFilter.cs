@@ -2,7 +2,7 @@
 public sealed record AdvertisementSearchFilter
 (
     string? Title,
-    int? Stock,
     string? Description,
-    int? CategoryId
-);
+    long? CategoryId,
+    List<string> Attributes
+) : BaseFilter();

@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Delete;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -33,7 +33,7 @@ public class ProductTypeTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        int id)
+        long id)
     {
         var attributeType = await _typeValidator
             .GetByIdAsync(id);
@@ -58,8 +58,8 @@ public class ProductTypeTranslationDeleteService
                 "Failed to delete product type translation. Id: {Id}",
                 id);
 
-            return Result<DeleteResponse>
-                .Fail(EntityErrorResources.ProductTypeTranslationDeleteFailed);
+            return Result<DeleteResponse>.Fail(
+                EntityErrorResources.ProductTypeTranslationDeleteFailed);
         }
 
         return Result<DeleteResponse>.Success(

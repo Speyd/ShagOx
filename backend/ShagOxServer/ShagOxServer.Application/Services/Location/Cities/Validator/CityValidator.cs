@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -20,21 +21,23 @@ public class CityValidator
     }
 
     public async Task<Result<bool>> ExistsAsync(
-       int regionId,
+       long regionId,
        string cityName)
     {
         if (!await _cityExistsRepository.ExistsAsync(regionId, cityName))
-            return Result<bool>.NotFound("City");
+            return Result<bool>.NotFound(
+                EntityNamesResources.City);
 
         return Result<bool>.Success(true);
     }
 
     public async Task<Result<bool>> NotExistsAsync(
-       int regionId,
+       long regionId,
        string cityName)
     {
         if (await _cityExistsRepository.ExistsAsync(regionId, cityName))
-            return Result<bool>.AlreadyExists("City");
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.City);
 
         return Result<bool>.Success(true);
     }

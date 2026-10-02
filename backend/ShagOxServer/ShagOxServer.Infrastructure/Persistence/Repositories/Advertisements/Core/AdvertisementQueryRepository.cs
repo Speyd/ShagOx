@@ -9,24 +9,28 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core;
 public class AdvertisementQueryRepository 
-    : QueryRepository<Advertisement>, 
+    : QueryRepository<Advertisement, AdvertisementSearchFilter>, 
       IAdvertisementQueryRepository
 {
     public AdvertisementQueryRepository(AppDbContext db)
         : base(db)
     { }
 
-
-    public override async Task<Advertisement?> GetByIdAsync(
-        int id)
+    protected override IQueryable<Advertisement> ApplyIncludes(
+        IQueryable<Advertisement> query)
     {
-        return await _db.Advertisements
-            .WithIncludes()
-            .FirstOrDefaultAsync(x => x.Id == id);
+        return query.WithIncludes();
+    }
+
+    protected override IQueryable<Advertisement> ApplyFilter(
+        IQueryable<Advertisement> query,
+        AdvertisementSearchFilter filter)
+    {
+        return query.Filter(filter);
     }
 
     public async Task<List<Advertisement>> GetByIdsAsync(
-        List<int> ids)
+        List<long> ids)
     {
         return await _db.Advertisements
             .WithIncludes()
@@ -35,7 +39,7 @@ public class AdvertisementQueryRepository
     }
 
     public async Task<PagedResult<Advertisement>> GetBySellerAsync(
-        int userId,
+        long userId,
         PaginationParams pagination)
     {
         return await _db.Advertisements
@@ -45,7 +49,7 @@ public class AdvertisementQueryRepository
             .ToPagedResultAsync(pagination);
     }
     public async Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
-        int userId,
+        long userId,
         PaginationParams pagination)
     {
         return await _db.Advertisements
@@ -55,16 +59,7 @@ public class AdvertisementQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public override async Task<PagedResult<Advertisement>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        return await _db.Advertisements
-            .WithIncludes()
-            .OrderByDescending(x => x.Popularity)
-            .ToPagedResultAsync(pagination);
-    }
-
-    public async Task<PagedResult<Advertisement>> Search(
+    public override async Task<PagedResult<Advertisement>> SearchAsync(
         AdvertisementSearchFilter filter,
         PaginationParams pagination)
     {

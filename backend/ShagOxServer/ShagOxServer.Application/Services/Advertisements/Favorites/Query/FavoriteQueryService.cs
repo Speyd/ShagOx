@@ -1,45 +1,51 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
+using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Query;
 public class FavoriteQueryService 
-    : IFavoriteQueryService
+    : BaseQueryService<
+        FavoriteDto,
+        Favorite,
+        FavoriteSearchFilter
+        >,
+    IFavoriteQueryService
 {
     private readonly IFavoriteQueryRepository _favoriteRepository;
+    private readonly IUserQueryService _userService;
+
 
 
     public FavoriteQueryService(
-        IFavoriteQueryRepository favoriteRepository)
+        IFavoriteQueryRepository favoriteRepository,
+        IUserQueryService userService
+    )
+        : base(favoriteRepository)
     {
         _favoriteRepository = favoriteRepository;
+        _userService = userService;
     }
 
 
-    public async Task<Result<FavoriteDto>> GetByIdAsync(
-        int id)
+    public override async Task<FavoriteDto> ApplyMapperAsync(
+        Favorite entity)
     {
-        var favorite = await _favoriteRepository
-            .GetByIdAsync(id);
+        var userDto = await _userService
+            .ApplyMapperAsync(entity.User);
 
-        return favorite.ToResult(FavoriteMapper.ToDto);
-    }
-
-    public async Task<Result<PagedResult<FavoriteDto>>> GetPagedAsync(
-        PaginationParams pagination)
-    {
-        var favorits = await _favoriteRepository
-            .GetPagedAsync(pagination);
-
-        return favorits.ToResultPaged(FavoriteMapper.ToDto);
+        return FavoriteMapper.ToDto(entity, userDto);
     }
 
     public async Task<Result<int>> CountByAdvertisementAsync(
-        int advertisementId)
+        long advertisementId)
     {
         var count = await _favoriteRepository
             .CountByAdvertisementAsync(advertisementId);
@@ -48,12 +54,13 @@ public class FavoriteQueryService
     }
 
     public async Task<Result<PagedResult<FavoriteDto>>> GetByUserAsync(
-        int usderId,
+        long usderId,
         PaginationParams pagination)
     {
         var favorites = await _favoriteRepository
             .GetByUserAsync(usderId, pagination);
 
-        return favorites.ToResultPaged(FavoriteMapper.ToDto);
+        return await favorites.ToResultPagedAsync(
+            ApplyMapperAsync);
     }
 }

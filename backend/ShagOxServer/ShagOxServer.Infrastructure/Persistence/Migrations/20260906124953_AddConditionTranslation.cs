@@ -129,14 +129,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                 principalTable: "Statuses",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Statuses");
-
-            migrationBuilder.DropColumn(
-                name: "Description",
-                table: "Statuses");
         }
 
         /// <inheritdoc />

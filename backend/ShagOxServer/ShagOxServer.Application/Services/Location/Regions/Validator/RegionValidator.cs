@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -24,7 +25,8 @@ public class RegionValidator
        string name)
     {
         if (!await _regionExistsRepository.ExistsByCodeAsync(name))
-            return Result<bool>.NotFound("Region");
+            return Result<bool>.NotFound(
+                EntityNamesResources.Region);
 
         return Result<bool>.Success(true);
     }
@@ -33,7 +35,8 @@ public class RegionValidator
        string name)
     {
         if (await _regionExistsRepository.ExistsByCodeAsync(name))
-            return Result<bool>.AlreadyExists("Region");
+            return Result<bool>.AlreadyExists(
+                EntityNamesResources.Region);
 
         return Result<bool>.Success(true);
     }

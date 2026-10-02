@@ -5,5 +5,6 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Status
 public interface IStatusExistsRepository
     : IExistsRepository<Status>
 {
-    Task<bool> ExistsByCodeAsync(string code);
+    Task<bool> ExistsByCodeAsync(
+        string code);
 }

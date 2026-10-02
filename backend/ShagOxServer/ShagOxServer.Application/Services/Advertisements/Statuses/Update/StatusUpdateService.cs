@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -34,20 +34,25 @@ public class StatusUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int statusId,
+        long statusId,
         StatusUpdateRequest request)
     {
-        var status = await _statusValidator.GetByIdAsync(statusId);
+        var status = await _statusValidator.
+            GetByIdAsync(statusId);
         if (!status.IsSuccess)
-            return Result<UpdateResponse>.Fail(status.Error);
-
+        {
+            return Result<UpdateResponse>
+                .Fail(status.Error);
+        }
 
         var validation = await
              ValidateUpdatesAsync(status.Value!, request);
 
         if (!validation.IsSuccess)
-            return Result<UpdateResponse>.Fail(validation.Error);
-
+        {
+            return Result<UpdateResponse>
+                .Fail(validation.Error);
+        }
 
         var updatedCount = StatusUpdater
             .ApplyUpdates(status.Value!, request);

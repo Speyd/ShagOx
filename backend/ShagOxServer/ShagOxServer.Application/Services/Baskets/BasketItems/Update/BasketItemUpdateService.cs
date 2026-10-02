@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Baskets.BasketItems.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -34,11 +34,12 @@ public class BasketItemUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int itemId,
+        long itemId,
         BasketItemUpdateRequest request)
     {
         var item = await _itemValidator
-            .GetByIdAsync(itemId);
+            .GetByIdWithIncludesAsync(itemId);
+
         if (!item.IsSuccess)
             return Result<UpdateResponse>.Fail(item.Error);
 

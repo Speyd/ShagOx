@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Filters.Roles;
+using ShagOxServer.Domain.Filters.Auth.Roles;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
@@ -9,7 +9,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
 public class RoleQueryRepository 
-    : QueryRepository<Role>,
+    : QueryRepository<Role, RoleSearchFilter>,
       IRoleQueryRepository
 {
     public RoleQueryRepository(AppDbContext db)
@@ -17,8 +17,15 @@ public class RoleQueryRepository
     { }
 
 
+    protected override IQueryable<Role> ApplyFilter(
+      IQueryable<Role> query,
+      RoleSearchFilter filter)
+    {
+        return query.Filter(filter);
+    }
+
     public async Task<PagedResult<Role>> GetByUserAsync(
-       int userId,
+       long userId,
        PaginationParams pagination)
     {
         return await _db.UserRoles
@@ -32,14 +39,5 @@ public class RoleQueryRepository
     {
         return await _db.Roles
             .FirstOrDefaultAsync(x => x.Name == name);
-    }
-
-    public async Task<PagedResult<Role>> Search(
-        RoleSearchFilter filter,
-        PaginationParams pagination)
-    {
-        return await _db.Roles
-            .Filter(filter)
-            .ToPagedResultAsync(pagination);
     }
 }

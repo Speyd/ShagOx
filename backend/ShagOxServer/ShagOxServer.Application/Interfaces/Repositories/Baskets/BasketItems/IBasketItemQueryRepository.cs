@@ -5,21 +5,17 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 public interface IBasketItemQueryRepository
-    : IQueryRepository<BasketItem>
+    : IQueryRepository<BasketItem, BasketItemSearchFilter>
 {
     Task<PagedResult<BasketItem>> GetPagedAsync(
-        int userId,
+        long userId,
         PaginationParams pagination);
 
     Task<PagedResult<BasketItem>> GetByBasketAsync(
-        int basketId,
+        long basketId,
         PaginationParams pagination);
 
-    Task<PagedResult<BasketItem>> GetByAdvertisementAsync(
-        int advertisementId,
-        PaginationParams pagination);
-
-    Task<PagedResult<BasketItem>> Search(
-        BasketItemSearchFilter filter,
+    Task<PagedResult<BasketItem>> GetByAdvertisementVariantAsync(
+        long advertisementVariantId,
         PaginationParams pagination);
 }

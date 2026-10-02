@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
+using System.Text.Json;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
 public static class AdvertisementFilterExtensions
@@ -24,18 +25,23 @@ public static class AdvertisementFilterExtensions
                  EF.Functions.ILike(u.Description, $"%{filter.Description}%"));
         }
 
-        if (filter.Stock.HasValue)
-        {
-            query = query.Where(x => x.Stock == filter.Stock);
-        }
-
-        if (filter.CategoryId is not null)
+        if (filter.CategoryId.HasValue)
         {
             query = query
                 .Where(x => 
-                    x.CategoryId == filter.CategoryId.Value!)
+                    x.CategoryId == filter.CategoryId.Value)
                 .OrderByDescending(x => x.Popularity);
         }
+
+        if (filter.Attributes is not null)
+        {
+            JsonElement v;
+
+            query = query.Where(x =>
+                filter.Attributes.All(a =>
+                    x.Attributes.RootElement.TryGetProperty(a, out v)));
+        }
+
         return query;
     }
 }

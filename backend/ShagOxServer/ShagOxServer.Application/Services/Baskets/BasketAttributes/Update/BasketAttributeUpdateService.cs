@@ -4,11 +4,11 @@ using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Update;
-using ShagOxServer.Application.Resources.EntityErrorResourcess;
+using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
-using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Update;
@@ -19,7 +19,7 @@ public class BasketAttributeUpdateService
     private readonly BasketAttributeValidator _attributeValidator;
     private readonly BasketAttributeUpdateValidator _attributeUpdateValidator;
 
-    private readonly IRepository<AttributeDefinition> _attributeDefinitionValidator;
+    private readonly AttributeDefinitionValidator _attributeDefinitionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketAttributeUpdateService> _logger;
@@ -29,7 +29,7 @@ public class BasketAttributeUpdateService
         IRepository<BasketAttribute> attributeRepository,
         BasketAttributeValidator attributeValidator,
         BasketAttributeUpdateValidator attributeUpdateValidator,
-        IRepository<AttributeDefinition> attributeDefinitionValidator,
+        AttributeDefinitionValidator attributeDefinitionValidator,
         IUnitOfWork unitOfWork,
         ILogger<BasketAttributeUpdateService> logger)
     {
@@ -43,7 +43,7 @@ public class BasketAttributeUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        int attributeId,
+        long attributeId,
         BasketAttributeUpdateRequest request)
     {
         var attribute = await _attributeValidator
@@ -110,17 +110,17 @@ public class BasketAttributeUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        (int order, int attributeDefinitionId) changeValidator,
+        (int order, long attributeDefinitionId) changeValidator,
         BasketAttributeUpdateRequest request)
     {
         var attributeDef = await _attributeDefinitionValidator
             .GetByIdAsync(changeValidator.attributeDefinitionId);
 
-        if (attributeDef is null)
-            return Result<bool>.NotFound(typeof(AttributeDefinition));
+        if (!attributeDef.IsSuccess)
+            return Result<bool>.Fail(attributeDef.Error);
 
         var existsValidator = await _attributeValidator
-            .NotExistsAsync(attributeDef, changeValidator.order);
+            .NotExistsAsync(attributeDef.Value!, changeValidator.order);
 
         return existsValidator;
     }

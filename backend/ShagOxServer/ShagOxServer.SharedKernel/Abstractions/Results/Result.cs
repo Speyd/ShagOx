@@ -1,4 +1,5 @@
-﻿using ShagOxServer.SharedKernel.Abstractions.Results.Enum;
+﻿using ShagOxServer.SharedKernel.Abstractions.Resources.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Enum;
 
 namespace ShagOxServer.SharedKernel.Abstractions.Results;
 public class Result<T>
@@ -24,7 +25,7 @@ public class Result<T>
          => new()
          {
              IsSuccess = false,
-             Error = error ?? "Unknown error",
+             Error = error ?? ResultResources.UnknownError,
              ErrorType = errorType
          };
 
@@ -32,32 +33,17 @@ public class Result<T>
         => new()
         {
             IsSuccess = false,
-            Error = $"{objectName} not found",
+            Error = string.Format(ResultResources.NotFound, objectName),
             ErrorType = ResultErrorType.NotFound
         };
 
-    public static Result<T> NotFound(Type type)
-         => new()
-         {
-             IsSuccess = false,
-             Error = $"{type.Name} not found",
-             ErrorType = ResultErrorType.NotFound
-         };
-
-    public static Result<T> NotFound()
-         => new()
-         {
-             IsSuccess = false,
-             Error = $"{typeof(T).Name} not found",
-             ErrorType = ResultErrorType.NotFound
-         };
 
     public static Result<T> Unauthorized(
          string? error = null)
         => new ()
         {
             IsSuccess = false,
-            Error = error ?? "Unauthorized",
+            Error = error ?? ResultResources.Unauthorized,
             ErrorType = ResultErrorType.Unauthorized
         };
 
@@ -66,7 +52,7 @@ public class Result<T>
        => new()
        {
            IsSuccess = false,
-           Error = error ?? "Internal server error",
+           Error = error ?? ResultResources.InternalServerError,
            ErrorType = ResultErrorType.InternalServer
        };
 
@@ -74,7 +60,7 @@ public class Result<T>
          => new()
          {
              IsSuccess = false,
-             Error = "Access denied",
+             Error = ResultResources.AccessDenied,
              ErrorType = ResultErrorType.Forbidden
          };
 
@@ -82,23 +68,7 @@ public class Result<T>
        => new()
        {
            IsSuccess = false,
-           Error = $"{objectName} already exists",
+           Error = string.Format(ResultResources.AlreadyExists, objectName),
            ErrorType = ResultErrorType.Conflict
        };
-
-    public static Result<T> AlreadyExists(Type type)
-        => new()
-        {
-            IsSuccess = false,
-            Error = $"{type.Name} already exists",
-            ErrorType = ResultErrorType.Conflict
-        };
-
-    public static Result<T> AlreadyExists()
-        => new()
-        {
-            IsSuccess = false,
-            Error = $"{typeof(T).Name} already exists",
-            ErrorType = ResultErrorType.Conflict
-        };
 }

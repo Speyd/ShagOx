@@ -3,4 +3,4 @@ public sealed record ProductTypeSearchFilter
 (
     string? Code,
     string? Description
-);
+) : BaseFilter();

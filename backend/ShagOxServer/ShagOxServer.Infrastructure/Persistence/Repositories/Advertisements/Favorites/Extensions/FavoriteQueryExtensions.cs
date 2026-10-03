@@ -10,6 +10,7 @@ public static class FavoriteQueryExtensions
         return query
             .Include(x => x.User)
                 .ThenInclude(a => a.City)
+                    .ThenInclude(c => c.Region)
             .Include(x => x.User)
                 .ThenInclude(a => a.UserRoles)
             .Include(x => x.Advertisement)

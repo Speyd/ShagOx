@@ -1,8 +1,8 @@
 ﻿using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Dictionaries.Attributes;
-public class AttributeDefinitionCache
+public class AttributeDictionaryCache
 {
     public static readonly string Prefix =
-       CacheKeys.LanguagePrefix<AttributeDefinition>();
+       CacheKeys.Prefix<AttributeDictionary>();
 }

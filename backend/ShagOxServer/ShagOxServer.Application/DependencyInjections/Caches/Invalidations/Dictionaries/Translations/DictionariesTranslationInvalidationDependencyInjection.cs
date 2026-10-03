@@ -10,6 +10,8 @@ public static class DictionariesTranslationInvalidationDependencyInjection
     {
         services.AddScoped<CategoryTranslationInvalidationService>();
 
+        services.AddScoped<ProductTypeTranslationInvalidationService>();
+
         services.AddAttributesTranslationInvalidationApplication();
 
 

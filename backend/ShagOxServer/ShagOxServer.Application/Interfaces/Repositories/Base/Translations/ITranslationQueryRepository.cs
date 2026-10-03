@@ -19,6 +19,6 @@ public interface ITranslationQueryRepository<TEntity, TTranslation, TFilter>
         string identificator,
         string language);
 
-    Task<List<BaseTranslationCacheInfo>> GetCacheInfoByTranslatableAsync(
+    Task<List<BaseTranslationCacheInfo>> GetCacheInfosByTranslatableAsync(
         long translatableId);
 }

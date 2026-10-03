@@ -1,7 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
+﻿using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
@@ -12,8 +15,8 @@ public class ProductTypeInvalidationService
     private readonly ICategoryQueryRepository _categoryRepository;
     private readonly CategoryInvalidationService _categoryInvalid;
 
-   // private readonly ICategoryTranslationQueryRepository _transRepository;
-    //private readonly CategoryTranslationInvalidationService _transInvalid;
+    private readonly IProductTypeTranslationQueryRepository _transRepository;
+    private readonly ProductTypeTranslationInvalidationService _transInvalid;
 
     private readonly ICacheService _cache;
 
@@ -22,12 +25,14 @@ public class ProductTypeInvalidationService
     public ProductTypeInvalidationService(
         ICategoryQueryRepository categoryRepository,
         CategoryInvalidationService categoryInvalid,
-        //ICategoryTranslationQueryRepository transRepository,
-        //CategoryTranslationInvalidationService transInvalid,
+        IProductTypeTranslationQueryRepository transRepository,
+        ProductTypeTranslationInvalidationService transInvalid,
         ICacheService cache)
     {
         _categoryRepository = categoryRepository;
         _categoryInvalid = categoryInvalid;
+        _transRepository = transRepository;
+        _transInvalid = transInvalid;
         _cache = cache;
     }
 
@@ -48,14 +53,14 @@ public class ProductTypeInvalidationService
         }
 
 
-        //var transInfos =
-        //   await GetTranslationInfos(entityInfo.Id);
+        var transInfos =
+           await GetTranslationInfos(entityId);
 
-        //foreach (var transInfo in transInfos)
-        //{
-        //    await _transInvalid
-        //        .InvalidateDeleteAsync(transInfo);
-        //}
+        foreach (var transInfo in transInfos)
+        {
+            await _transInvalid
+                .InvalidateDeleteAsync(transInfo);
+        }
     }
 
     public async Task InvalidateUpdateAsync(
@@ -86,5 +91,12 @@ public class ProductTypeInvalidationService
     {
         return await _categoryRepository
             .GetCacheInfosByProductTypeAsync(entityId);
+    }
+
+    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+        long entityId)
+    {
+        return await _transRepository
+            .GetCacheInfosByTranslatableAsync(entityId);
     }
 }

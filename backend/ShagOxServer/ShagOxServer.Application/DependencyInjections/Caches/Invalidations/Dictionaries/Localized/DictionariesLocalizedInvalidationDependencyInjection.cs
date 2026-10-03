@@ -10,6 +10,8 @@ public static class DictionariesLocalizedInvalidationDependencyInjection
     {
         services.AddScoped<CategoryLocalizedInvalidationService>();
 
+        services.AddScoped<ProductTypeLocalizedInvalidationService>();
+
         services.AddAttributesLocalizedInvalidationApplication();
 
 

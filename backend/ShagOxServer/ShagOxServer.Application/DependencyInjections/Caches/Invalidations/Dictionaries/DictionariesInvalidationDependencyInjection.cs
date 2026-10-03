@@ -12,6 +12,8 @@ public static class DictionariesInvalidationDependencyInjection
     {
         services.AddScoped<CategoryInvalidationService>();
 
+        services.AddScoped<ProductTypeInvalidationService>();
+
         services.AddAttributesInvalidationApplication();
 
 

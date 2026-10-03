@@ -57,7 +57,7 @@ public class QueryTranslationRepository<TEntity, TTranslator, TFilter>
         return query;
     }
 
-    public virtual async Task<List<BaseTranslationCacheInfo>> GetCacheInfoByTranslatableAsync(
+    public virtual async Task<List<BaseTranslationCacheInfo>> GetCacheInfosByTranslatableAsync(
         long translatableId)
     {
         IQueryable<TTranslator> query = _db.Set<TTranslator>();

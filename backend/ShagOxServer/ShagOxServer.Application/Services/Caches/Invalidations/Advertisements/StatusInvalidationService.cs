@@ -89,7 +89,7 @@ public class StatusInvalidationService
         long entityId)
     {
         return await _transRepository
-            .GetCacheInfoByTranslatableAsync(entityId);
+            .GetCacheInfosByTranslatableAsync(entityId);
     }
 
     private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(

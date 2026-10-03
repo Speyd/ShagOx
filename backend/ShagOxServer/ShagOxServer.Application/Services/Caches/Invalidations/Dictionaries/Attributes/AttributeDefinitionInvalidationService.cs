@@ -100,6 +100,6 @@ public class AttributeDefinitionInvalidationService
         long entityId)
     {
         return await _transRepository
-            .GetCacheInfoByTranslatableAsync(entityId);
+            .GetCacheInfosByTranslatableAsync(entityId);
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Advertisements.Localized;
+using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Advertisements.Translations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 
 namespace ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Advertisement;
@@ -16,6 +18,8 @@ public static class AdvertisementsInvalidationDependencyInjection
         services.AddScoped<StatusInvalidationService>();
 
         services.AddAdvertisementsTranslationInvalidationApplication();
+
+        services.AddAdvertisementsLocalizedInvalidationApplication();
 
 
         return services;

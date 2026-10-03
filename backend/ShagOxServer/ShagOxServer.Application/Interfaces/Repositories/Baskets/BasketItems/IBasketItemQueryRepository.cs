@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -15,10 +16,13 @@ public interface IBasketItemQueryRepository
         long basketId,
         PaginationParams pagination);
 
+    Task<List<BasketItemCacheInfo>> GetInfosByBasketAsync(
+        long basketId);
+
     Task<PagedResult<BasketItem>> GetByAdvertisementVariantAsync(
         long advertisementVariantId,
         PaginationParams pagination);
 
-    Task<List<long>> GetIdsByAdvertisementVariantAsync(
+    Task<List<BasketItemCacheInfo>> GetInfosByAdvertisementVariantAsync(
         long advertisementVariantId);
 }

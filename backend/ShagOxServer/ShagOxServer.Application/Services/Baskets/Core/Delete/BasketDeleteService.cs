@@ -4,7 +4,9 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Baskets.Core.Mapping;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,6 +17,9 @@ public class BasketDeleteService
     private readonly IRepository<Basket> _basketRepository;
     private readonly BasketValidator _basketValidator;
 
+    private readonly BasketInvalidationService _basketInvalid;
+
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketDeleteService> _logger;
 
@@ -22,11 +27,13 @@ public class BasketDeleteService
     public BasketDeleteService(
         IRepository<Basket> basketRepository,
         BasketValidator basketValidator,
+        BasketInvalidationService basketInvalid,
         IUnitOfWork unitOfWork,
         ILogger<BasketDeleteService> logger)
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;
+        _basketInvalid = basketInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -61,6 +68,9 @@ public class BasketDeleteService
             return Result<DeleteResponse>
                 .Fail(EntityErrorResources.BasketDeleteFailed);
         }
+
+        await _basketInvalid.InvalidateDeleteAsync(
+            BasketCacheMapper.ToInfo(basket.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

@@ -14,6 +14,7 @@ public sealed record UserShortDto
     long? AvatarId,
 
     long? CityId,
+    string CityCode,
 
     DateTime? LastSeenAt
 ) : BaseDto(Id);

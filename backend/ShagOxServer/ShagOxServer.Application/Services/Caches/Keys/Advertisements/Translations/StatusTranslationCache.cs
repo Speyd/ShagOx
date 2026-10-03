@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Caches;
+﻿using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 
 namespace ShagOxServer.Application.Services.Caches.Advertisements.Translations;

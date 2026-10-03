@@ -12,7 +12,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Advertisements;
-using ShagOxServer.Domain.Caches;
+using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;

@@ -3,11 +3,10 @@ using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
-using ShagOxServer.Application.Services.Caches.Auth;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
-using ShagOxServer.Domain.Caches;
+using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 public class UserInvalidationService
@@ -33,20 +32,10 @@ public class UserInvalidationService
     public async Task InvalidateDeleteAsync(
         UserCacheInfo entityInfo)
     {
-        var id = entityInfo.Id;
-
-        await _cache.RemoveAsync(CacheKeys.
-             Entity<User>(id));
-
-        await InvalidateContactAsync(entityInfo);
-
-        await _cache.RemoveByPatternAsync(
-            UserCache.ByContactPattern(id));
-
-        await InvalidateUserRoleAsync(id);
+        await InvalidateAsync(entityInfo);
 
         var advertInfos = await 
-            GetAdvertisementInfos(id);
+            GetAdvertisementInfos(entityInfo.Id);
 
         foreach (var advertInfo in advertInfos)
         {
@@ -58,20 +47,10 @@ public class UserInvalidationService
     public async Task InvalidateUpdateAsync(
         UserCacheInfo entityInfo)
     {
-        var id = entityInfo.Id;
-
-        await _cache.RemoveAsync(CacheKeys.
-             Entity<User>(id));
-
-        await InvalidateContactAsync(entityInfo);
-
-        await _cache.RemoveByPatternAsync(
-            UserCache.ByContactPattern(id));
-
-        await InvalidateUserRoleAsync(id);
+        await InvalidateAsync(entityInfo);
 
         var advertInfos = await 
-            GetAdvertisementInfos(id);
+            GetAdvertisementInfos(entityInfo.Id);
 
         foreach (var advertInfo in advertInfos)
         {
@@ -79,6 +58,18 @@ public class UserInvalidationService
                 .InvalidateUpdateAsync(advertInfo);
         }
     }
+
+    private async Task InvalidateAsync(
+        UserCacheInfo entityInfo)
+    {
+        await _cache.RemoveAsync(CacheKeys.
+             Entity<User>(entityInfo.Id));
+
+        await InvalidateContactAsync(entityInfo);
+
+        await InvalidateUserRoleAsync(entityInfo.Id);
+    }
+
 
     private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(
         long entityId)

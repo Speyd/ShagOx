@@ -1,10 +1,12 @@
-﻿using ShagOxServer.Domain.Entities.Advertisements;
+﻿using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Entities.Account;
 
-namespace ShagOxServer.Domain.Caches.Advertisements;
-public class FavoriteCache
+namespace ShagOxServer.Application.Services.Caches.Keys.Auth;
+public class RoleCache
 {
     public static readonly string Prefix =
-       CacheKeys.Prefix<Favorite>();
+       CacheKeys.Prefix<Role>();
+
 
     public static string ByUser(
         long userId,
@@ -15,4 +17,8 @@ public class FavoriteCache
     public static string ByUserPattern(
         long userId)
             => $"{Prefix}:user:{userId}:page:*";
+
+    public static string ByName(
+        string name)
+            => $"{Prefix}:name:{name}";
 }

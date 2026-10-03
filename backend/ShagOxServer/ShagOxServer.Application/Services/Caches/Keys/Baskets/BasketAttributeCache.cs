@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Domain.Caches;
+﻿using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Baskets;
 
-namespace ShagOxServer.Application.Services.Caches.Baskets;
+namespace ShagOxServer.Application.Services.Caches.Keys.Baskets;
 public class BasketAttributeCache
 {
     private static readonly string Prefix =

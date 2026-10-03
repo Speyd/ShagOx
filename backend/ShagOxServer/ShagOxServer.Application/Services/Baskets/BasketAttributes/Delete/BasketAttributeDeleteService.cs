@@ -6,7 +6,6 @@ using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Dele
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
-using ShagOxServer.Application.Services.Caches.Baskets;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;

@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Caches;
 
 namespace ShagOxServer.Application.Services.Base.Localized;
 public abstract class BaseLocalizedCacheInvalidationService<TEntity>

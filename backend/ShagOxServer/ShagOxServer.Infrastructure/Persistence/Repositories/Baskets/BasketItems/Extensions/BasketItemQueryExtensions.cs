@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
@@ -31,5 +32,14 @@ public static class BasketItemQueryExtensions
                 .ThenInclude(x => x.Advertisement)
                     .ThenInclude(x => x.Buyer)
             .Include(x => x.Basket);
+    }
+
+    public static IQueryable<BasketItemCacheInfo> SelectCacheInfo(
+        this IQueryable<BasketItem> query)
+    {
+        return query.Select(x => new BasketItemCacheInfo(
+            x.Id,
+            x.BasketId,
+            x.AdvertisementVariantId));
     }
 }

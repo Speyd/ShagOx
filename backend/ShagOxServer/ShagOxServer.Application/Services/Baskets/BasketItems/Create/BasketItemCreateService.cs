@@ -6,8 +6,10 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
+using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -21,6 +23,8 @@ public class BasketItemCreateService
     private readonly BasketValidator _basketValidator;
     private readonly AdvertisementVariantValidator _advertValidator;
 
+    private readonly BasketItemBasketInvalidationService _basketInvalidation;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketItemCreateService> _logger;
 
@@ -30,6 +34,7 @@ public class BasketItemCreateService
         BasketItemValidator itemValidator,
         BasketValidator basketValidator,
         AdvertisementVariantValidator advertValidator,
+        BasketItemBasketInvalidationService basketInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<BasketItemCreateService> logger)
     {
@@ -37,6 +42,7 @@ public class BasketItemCreateService
         _itemValidator = itemValidator;
         _basketValidator = basketValidator;
         _advertValidator = advertValidator;
+        _basketInvalidation = basketInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -92,6 +98,9 @@ public class BasketItemCreateService
             item.Id,
             request.BasketId,
             request.AdvertisementVariantId);
+
+        await _basketInvalidation.InvalidateCreateAsync(
+            BasketItemCacheMapper.ToInfo(item));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

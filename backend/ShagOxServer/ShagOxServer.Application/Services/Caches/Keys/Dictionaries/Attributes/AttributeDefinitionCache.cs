@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Domain.Caches;
+﻿using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
-namespace ShagOxServer.Application.Services.Caches.Dictionaries.Attributes;
+namespace ShagOxServer.Application.Services.Caches.Keys.Dictionaries.Attributes;
 public class AttributeDefinitionCache
 {
     public static readonly string Prefix =

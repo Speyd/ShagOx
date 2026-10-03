@@ -5,7 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.T
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
-using ShagOxServer.Domain.Caches;
+using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
@@ -42,8 +42,7 @@ public class StatusInvalidationService
     public async Task InvalidateDeleteAsync(
         long entityId)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             EntityLanguagePattern<Status>(entityId));
+        await InvalidateAsync(entityId);
 
         var translationInfos = 
             await GetTranslationInfos(entityId);
@@ -70,8 +69,7 @@ public class StatusInvalidationService
     public async Task InvalidateUpdateAsync(
         long entityId)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             EntityLanguagePattern<Status>(entityId));
+        await InvalidateAsync(entityId);
 
         var translationInfos =
             await GetTranslationInfos(entityId);
@@ -93,6 +91,13 @@ public class StatusInvalidationService
                     .InvalidateUpdateAsync(advertInfo);
             }
         }
+    }
+
+    private async Task InvalidateAsync(
+        long entityId)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             EntityLanguagePattern<Status>(entityId));
     }
 
     private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(

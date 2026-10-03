@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -62,5 +62,24 @@ public class BasketItemQueryRepository
             .WithIncludes()
             .Where(x => x.Basket.UserId == userId)
             .ToPagedResultAsync(pagination);
+    }
+
+    public async Task<List<BasketItemCacheInfo>> GetInfosByBasketAsync(
+        long basketId)
+    {
+        return await _db.BasketItems
+            .Where(x => x.BasketId == basketId)
+            .SelectCacheInfo()
+            .ToListAsync();
+    }
+
+    public async Task<List<BasketItemCacheInfo>> GetInfosByAdvertisementVariantAsync(
+        long advertisementVariantId)
+    {
+        return await _db.BasketItems
+           .Where(x => 
+                x.AdvertisementVariantId == advertisementVariantId)
+           .SelectCacheInfo()
+           .ToListAsync();
     }
 }

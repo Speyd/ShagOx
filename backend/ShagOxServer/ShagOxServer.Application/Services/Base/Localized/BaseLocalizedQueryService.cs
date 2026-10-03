@@ -4,8 +4,8 @@ using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Filters;
 
 namespace ShagOxServer.Application.Services.Base.Localized;

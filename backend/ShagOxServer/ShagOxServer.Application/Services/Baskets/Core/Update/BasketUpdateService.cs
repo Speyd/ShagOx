@@ -6,7 +6,9 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Baskets.Core.Mapping;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -17,6 +19,8 @@ public class BasketUpdateService
     private readonly IRepository<Basket> _basketRepository;
     private readonly BasketValidator _basketValidator;
 
+    private readonly BasketInvalidationService _basketInvalid;
+
     private readonly UserValidator _userValidator;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -26,12 +30,14 @@ public class BasketUpdateService
     public BasketUpdateService(
         IRepository<Basket> basketRepository,
         BasketValidator basketValidator,
+        BasketInvalidationService basketInvalid,
         UserValidator userValidator,
         IUnitOfWork unitOfWork,
         ILogger<BasketUpdateService> logger)
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;
+        _basketInvalid = basketInvalid;
         _userValidator = userValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -83,6 +89,9 @@ public class BasketUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.BasketUpdateFailed);
         }
+
+        await _basketInvalid.InvalidateUpdateAsync(
+            BasketCacheMapper.ToInfo(basket.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

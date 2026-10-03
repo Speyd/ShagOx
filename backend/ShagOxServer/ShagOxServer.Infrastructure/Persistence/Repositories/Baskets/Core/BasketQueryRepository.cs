@@ -39,4 +39,23 @@ public class BasketQueryRepository
             .FirstOrDefaultAsync(c =>
                 c.UserId == userId);
     }
+
+    public async Task<long?> GetIdByUserAsync(
+        long userId)
+    {
+        var basketId =  await _db.Baskets
+            .FirstOrDefaultAsync(c =>
+                c.UserId == userId);
+
+        return basketId?.Id;
+    }
+
+    public async Task<long?> GetUserIdByBasketAsync(
+        long basketId)
+    {
+        var basket = await _db.Baskets
+            .FirstOrDefaultAsync(c => c.Id == basketId);
+
+        return basket?.UserId;
+    }
 }

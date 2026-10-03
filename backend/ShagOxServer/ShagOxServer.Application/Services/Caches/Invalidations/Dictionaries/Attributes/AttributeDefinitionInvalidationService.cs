@@ -6,7 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
-using ShagOxServer.Domain.Caches;
+using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
@@ -43,8 +43,7 @@ public class AttributeDefinitionInvalidationService
     public async Task InvalidateDeleteAsync(
         long entityId)
     {
-        await _cache.RemoveAsync(CacheKeys.
-                EntityLanguagePattern<AttributeDefinition>(entityId));
+        await InvalidateAsync(entityId);
 
         var translationInfos =
             await GetTranslationInfos(entityId);
@@ -54,6 +53,34 @@ public class AttributeDefinitionInvalidationService
             await _transInvalid
                 .InvalidateDeleteAsync(translationInfo);
         }
+
+        if (translationInfos.Count == 0)
+        {
+            var basketAttributeInfo =
+                await GetBasketAttributeInfos(entityId);
+
+            if (basketAttributeInfo is not null)
+            {
+                await _basketInvalid
+                    .InvalidateDeleteAsync(basketAttributeInfo);
+            }
+        }
+    }
+
+    public async Task InvalidateUpdateAsync(
+        long entityId)
+    {
+        await InvalidateAsync(entityId);
+
+        var translationInfos =
+            await GetTranslationInfos(entityId);
+
+        foreach (var translationInfo in translationInfos)
+        {
+            await _transInvalid
+                .InvalidateUpdateAsync(translationInfo);
+        }
+
 
         if (translationInfos.Count == 0)
         {
@@ -68,33 +95,11 @@ public class AttributeDefinitionInvalidationService
         }
     }
 
-    public async Task InvalidateUpdateAsync(
+    private async Task InvalidateAsync(
         long entityId)
     {
         await _cache.RemoveAsync(CacheKeys.
-                EntityLanguagePattern<AttributeDefinition>(entityId));
-
-        var translationInfos =
-            await GetTranslationInfos(entityId);
-
-        foreach (var translationInfo in translationInfos)
-        {
-            await _transInvalid
-                .InvalidateDeleteAsync(translationInfo);
-        }
-
-
-        if (translationInfos.Count == 0)
-        {
-            var basketAttributeInfo =
-                await GetBasketAttributeInfos(entityId);
-
-            if (basketAttributeInfo is not null)
-            {
-                await _basketInvalid
-                    .InvalidateUpdateAsync(basketAttributeInfo);
-            }
-        }
+            EntityLanguagePattern<AttributeDefinition>(entityId));
     }
 
     private async Task<BasketAttributeCacheInfo?> GetBasketAttributeInfos(

@@ -3,17 +3,20 @@ using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
-using ShagOxServer.Application.Services.Caches.Baskets;
+using ShagOxServer.Application.Services.Caches.Keys.Baskets;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using Twilio.Rest.Verify.V2.Service;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketItems.Query;
 public class BasketItemQueryService
@@ -25,12 +28,14 @@ public class BasketItemQueryService
     IBasketItemQueryService
 {
     private readonly IBasketItemQueryRepository _itemQueryRepository;
+    private readonly IBasketQueryRepository _basketQueryRepository;
     private readonly IAdvertisementQueryService _advertisementService;
 
 
 
     public BasketItemQueryService(
         IBasketItemQueryRepository itemQueryRepository,
+        IBasketQueryRepository basketQueryRepository,
         IAdvertisementQueryService advertisementService,
         ICacheService cacheService,
         IOptions<CacheSettings> settings,
@@ -39,6 +44,7 @@ public class BasketItemQueryService
         : base(itemQueryRepository, language, cacheService, settings)
     {
         _itemQueryRepository = itemQueryRepository;
+        _basketQueryRepository = basketQueryRepository;
         _advertisementService = advertisementService;
     }
 
@@ -102,8 +108,16 @@ public class BasketItemQueryService
         long userId,
         PaginationParams pagination)
     {
-        var cacheKey = BasketItemCache.ByUser(
-           userId,
+        var basketId = await _basketQueryRepository
+            .GetIdByUserAsync(userId);
+        if (!basketId.HasValue)
+        {
+            return Result<PagedResult<BasketItemDto>>
+                .NotFound(EntityNamesResources.Basket);
+        }
+
+        var cacheKey = BasketItemCache.ByBasket(
+           basketId.Value,
            _language.Language,
            pagination.Page,
            pagination.PageSize);

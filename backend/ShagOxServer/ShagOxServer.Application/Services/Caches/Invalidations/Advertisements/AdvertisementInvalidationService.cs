@@ -1,13 +1,14 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
+using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Advertisements;
-using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
-using ShagOxServer.Domain.Caches;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
+using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
@@ -22,6 +23,8 @@ public class AdvertisementInvalidationService
 
     private readonly IBasketItemQueryRepository _basketItemRepository;
     private readonly BasketItemInvalidationService _basketItemInvalid;
+    private readonly BasketItemBasketInvalidationService _basketInvalid;
+
 
     private readonly ICacheService _cache;
 
@@ -33,6 +36,7 @@ public class AdvertisementInvalidationService
         AdvertisementVariantInvalidationService variantInvalid,
         IBasketItemQueryRepository basketItemRepository,
         BasketItemInvalidationService basketItemInvalid,
+        BasketItemBasketInvalidationService basketInvalid,
         ICacheService cache)
     {
         _favoriteRepository = favoriteRepository;
@@ -40,6 +44,7 @@ public class AdvertisementInvalidationService
         _variantInvalid = variantInvalid;
         _basketItemRepository = basketItemRepository;
         _basketItemInvalid = basketItemInvalid;
+        _basketInvalid = basketInvalid;
         _cache = cache;
     }
 
@@ -47,18 +52,13 @@ public class AdvertisementInvalidationService
     public async Task InvalidateDeleteAsync(
         AdvertisementCacheInfo entityInfo)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys
-            .EntityLanguagePattern<Advertisement>(entityInfo.Id));
+        await InvalidateAsync(entityInfo);
 
-        await _cache.RemoveByPatternAsync(AdvertisementCache
-            .BySellerPattern(entityInfo.SellerId));
-
-        if (entityInfo.BuyerId.HasValue)
+        foreach (var variantId in entityInfo.Variants)
         {
-            await _cache.RemoveByPatternAsync(AdvertisementCache
-                .ByBuyerPattern(entityInfo.BuyerId.Value));
+            await _variantInvalid
+                .InvalidateDeleteAsync(variantId);
         }
-
 
         var favoriteInfos = await GetFavoriteInfos(entityInfo.Id);
 
@@ -69,23 +69,53 @@ public class AdvertisementInvalidationService
         }
 
 
-        foreach (var variantId in entityInfo.Variants)
-        {
-            await _variantInvalid
-                .InvalidateDeleteAsync(variantId);
-        }
+        var basletItemInfos = await GetBasketItemInfos(entityInfo.Id);
 
-
-        var basletItemIds = await GetBasketItemIds(entityInfo.Id);
-
-        foreach (var basletItemId in basletItemIds)
+        foreach (var basletItemInfo in basletItemInfos)
         {
             await _basketItemInvalid
-                .InvalidateDeleteAsync(basletItemId);
+                .InvalidateDeleteAsync(basletItemInfo);
+        }
+
+        var basketInfo = basletItemInfos.FirstOrDefault();
+        if (basketInfo is not null)
+        {
+            await _basketInvalid
+               .InvalidateDeleteAsync(basketInfo);
         }
     }
 
     public async Task InvalidateUpdateAsync(
+        AdvertisementCacheInfo entityInfo)
+    {
+        await InvalidateAsync(entityInfo);
+
+        var favoriteInfos = await GetFavoriteInfos(entityInfo.Id);
+
+        foreach (var favoriteInfo in favoriteInfos)
+        {
+            await _favoriteInvalid
+                .InvalidateUpdateAsync(favoriteInfo);
+        }
+
+
+        var basletItemInfos = await GetBasketItemInfos(entityInfo.Id);
+
+        foreach (var basletItemInfo in basletItemInfos)
+        {
+            await _basketItemInvalid
+                .InvalidateUpdateAsync(basletItemInfo);
+        }
+
+        var basketInfo = basletItemInfos.FirstOrDefault();
+        if(basketInfo is not null)
+        {
+            await _basketInvalid
+               .InvalidateUpdateAsync(basketInfo);
+        }
+    }
+
+    private async Task InvalidateAsync(
         AdvertisementCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
@@ -98,25 +128,7 @@ public class AdvertisementInvalidationService
         {
             await _cache.RemoveByPatternAsync(AdvertisementCache
                 .ByBuyerPattern(entityInfo.BuyerId.Value));
-        }
-
-
-        var favoriteInfos = await GetFavoriteInfos(entityInfo.Id);
-
-        foreach (var favoriteInfo in favoriteInfos)
-        {
-            await _favoriteInvalid
-                .InvalidateUpdateAsync(favoriteInfo);
-        }
-
-
-        var basletItemIds = await GetBasketItemIds(entityInfo.Id);
-
-        foreach (var basletItemId in basletItemIds)
-        {
-            await _basketItemInvalid
-                .InvalidateUpdateAsync(basletItemId);
-        }
+        }   
     }
 
     private async Task<List<FavoriteCacheInfo>> GetFavoriteInfos(
@@ -126,10 +138,10 @@ public class AdvertisementInvalidationService
             .GetCacheInfoByAdvertisementAsync(entityId);
     }
 
-    private async Task<List<long>> GetBasketItemIds(
+    private async Task<List<BasketItemCacheInfo>> GetBasketItemInfos(
        long entityId)
     {
         return await _basketItemRepository
-            .GetIdsByAdvertisementVariantAsync(entityId);
+            .GetInfosByAdvertisementVariantAsync(entityId);
     }
 }

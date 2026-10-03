@@ -3,8 +3,8 @@ using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
-using ShagOxServer.Application.Services.Caches.Auth;
-using ShagOxServer.Domain.Caches;
+using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
@@ -31,27 +31,41 @@ public class RoleInvalidationService
     public async Task InvalidateDeleteAsync(
         RoleCacheInfo entityInfo)
     {
-        var id = entityInfo.Id;
-
-        await _cache.RemoveAsync(CacheKeys.
-             Entity<Role>(id));
-
-        await _cache.RemoveAsync(RoleCache.
-            ByName(entityInfo.Name));
-
-        var userInfos = await GetUserInfos(id);
+        var userInfos = await GetUserInfos(
+            entityInfo.Id);
 
         foreach (var userInfo in userInfos)
         {
+            await _cache.RemoveByPatternAsync(RoleCache
+                .ByUserPattern(userInfo.Id));
+
             await _userInvalid
                 .InvalidateDeleteAsync(userInfo);
         }
 
-        await InvalidateUserRoleAsync(id);
+        await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateUpdateAsync(
         RoleCacheInfo entityInfo)
+    {
+        var userInfos = await GetUserInfos(
+            entityInfo.Id);
+
+        foreach (var userInfo in userInfos)
+        {
+            await _cache.RemoveByPatternAsync(RoleCache
+                .ByUserPattern(userInfo.Id));
+
+            await _userInvalid
+                .InvalidateUpdateAsync(userInfo);
+        }
+
+        await InvalidateAsync(entityInfo);
+    }
+
+    private async Task InvalidateAsync(
+       RoleCacheInfo entityInfo)
     {
         var id = entityInfo.Id;
 
@@ -60,14 +74,6 @@ public class RoleInvalidationService
 
         await _cache.RemoveAsync(RoleCache.
            ByName(entityInfo.Name));
-
-        var userInfos = await GetUserInfos(id);
-
-        foreach (var userInfo in userInfos)
-        {
-            await _userInvalid
-                .InvalidateUpdateAsync(userInfo);
-        }
 
         await InvalidateUserRoleAsync(id);
     }

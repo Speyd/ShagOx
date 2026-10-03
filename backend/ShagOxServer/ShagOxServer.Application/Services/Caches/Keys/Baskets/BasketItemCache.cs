@@ -1,7 +1,6 @@
-﻿using ShagOxServer.Domain.Caches;
-using ShagOxServer.Domain.Entities.Baskets;
+﻿using ShagOxServer.Domain.Entities.Baskets;
 
-namespace ShagOxServer.Application.Services.Caches.Baskets;
+namespace ShagOxServer.Application.Services.Caches.Keys.Baskets;
 public class BasketItemCache
 {
     private static readonly string Prefix =
@@ -29,16 +28,4 @@ public class BasketItemCache
     public static string ByBasketPattern(
         long basketId)
            => $"{Prefix}:*basket:{basketId}:page:*";
-
-
-    public static string ByUser(
-        long userId,
-        string language,
-        int page,
-        int pageSize)
-             => $"{Prefix}:{language}:user:{userId}:page:{page}:size:{pageSize}";
-
-    public static string ByUserPattern(
-        long userId)
-           => $"{Prefix}:*user:{userId}:page:*";
 }

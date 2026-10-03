@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Domain.Caches;
+﻿namespace ShagOxServer.Application.Services.Caches.Keys;
 public static class CacheKeys
 {
     public static string Prefix<T>()

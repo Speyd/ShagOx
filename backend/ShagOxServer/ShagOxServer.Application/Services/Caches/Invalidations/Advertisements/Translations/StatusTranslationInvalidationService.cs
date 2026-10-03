@@ -2,8 +2,7 @@
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Localized;
-using ShagOxServer.Domain.Caches;
-using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
@@ -25,15 +24,17 @@ public class StatusTranslationInvalidationService
     public async Task InvalidateDeleteAsync(
         BaseTranslationCacheInfo cacheDto)
     {
-        await _cache.RemoveAsync(CacheKeys
-            .Entity<StatusTranslation>(cacheDto.Id));
-
-        await _status.InvalidateLanguageAsync(
-            cacheDto.Language);
+        await InvalidateAsync(cacheDto);
     }
 
     public async Task InvalidateUpdateAsync(
         BaseTranslationCacheInfo cacheDto)
+    {
+        await InvalidateAsync(cacheDto);
+    }
+
+    private async Task InvalidateAsync(
+       BaseTranslationCacheInfo cacheDto)
     {
         await _cache.RemoveAsync(CacheKeys
             .Entity<StatusTranslation>(cacheDto.Id));

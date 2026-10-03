@@ -17,4 +17,8 @@ public class AttributeDictionaryValueCache
         long dictionaryId,
         string language)
             => $"{Prefix}:{language}:dictionary:{dictionaryId}:page:*";
+
+    public static string ByDictionaryPattern(
+       long dictionaryId)
+           => $"{Prefix}:*dictionary:{dictionaryId}:page:*";
 }

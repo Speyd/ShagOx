@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -11,6 +12,9 @@ public interface IAttributeDictionaryValueQueryRepository
     Task<PagedResult<AttributeDictionaryValue>> GetByDictionaryAsync(
         long dictionaryId,
         PaginationParams pagination);
+
+    Task<List<AttributeDictionaryValueCacheInfo>> GetInfosByDictionaryAsync(
+        long dictionaryId);
 
     Task<List<AttributeDictionaryValue>> GetByIdsAsync(
         IEnumerable<long> ids);

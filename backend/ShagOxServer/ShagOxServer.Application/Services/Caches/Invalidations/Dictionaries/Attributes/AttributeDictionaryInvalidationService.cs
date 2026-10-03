@@ -1,4 +1,6 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
@@ -10,8 +12,10 @@ public class AttributeDictionaryInvalidationService
 {
 
     private readonly IAttributeDefinitionQueryRepository _attributeRepository;
-
     private readonly AttributeDefinitionInvalidationService _attributeInvalid;
+
+    private readonly IAttributeDictionaryValueQueryRepository _valueRepository;
+    private readonly AttributeDictionaryValueInvalidationService _valueInvalid;
 
     private readonly ICacheService _cache;
 
@@ -20,10 +24,14 @@ public class AttributeDictionaryInvalidationService
     public AttributeDictionaryInvalidationService(
         IAttributeDefinitionQueryRepository attributeRepository,
         AttributeDefinitionInvalidationService attributeInvalid,
+        IAttributeDictionaryValueQueryRepository valueRepository,
+        AttributeDictionaryValueInvalidationService valueInvalid,
         ICacheService cache)
     {
         _attributeRepository = attributeRepository;
         _attributeInvalid = attributeInvalid;
+        _valueRepository = valueRepository;
+        _valueInvalid = valueInvalid;
         _cache = cache;
     }
 
@@ -40,6 +48,15 @@ public class AttributeDictionaryInvalidationService
         {
             await _attributeInvalid
                 .InvalidateDeleteAsync(attributeId);
+        }
+
+        var valueInfos =
+            await GetValueInfos(entityId);
+
+        foreach (var valueInfo in valueInfos)
+        {
+            await _valueInvalid
+                .InvalidateDeleteAsync(valueInfo);
         }
     }
 
@@ -61,5 +78,12 @@ public class AttributeDictionaryInvalidationService
     {
         return await _attributeRepository
             .GetIdsByAttributeDictionaryAsync(entityId);
+    }
+
+    private async Task<List<AttributeDictionaryValueCacheInfo>> GetValueInfos(
+        long entityId)
+    {
+        return await _valueRepository
+            .GetInfosByDictionaryAsync(entityId);
     }
 }

@@ -3,9 +3,6 @@ using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Localized;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Localized;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Localized;
 public class CategoryLocalizedInvalidationService

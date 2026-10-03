@@ -1,10 +1,11 @@
 ﻿using ShagOxServer.Domain.Caches;
+using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Baskets;
 public class BasketAttributeCache
 {
     private static readonly string Prefix =
-        CacheKeys.LanguagePrefix<BasketAttributeCache>();
+        CacheKeys.LanguagePrefix<BasketAttribute>();
 
 
     public static string ByAttributeDefenition(

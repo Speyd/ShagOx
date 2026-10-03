@@ -7,9 +7,9 @@ using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Quer
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
 using ShagOxServer.Application.Services.Caches.Baskets;
-using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -18,7 +18,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Query;
 public class BasketAttributeQueryService
-    : BaseQueryService<
+    : BaseLocalizedQueryService<
         BasketAttributeDto,
         BasketAttribute,
         BasketAttributeSearchFilter
@@ -29,8 +29,6 @@ public class BasketAttributeQueryService
 
     private readonly IAttributeDefinitionQueryService _attributeService;
 
-    private readonly ILanguageProvider _language;
-
 
     public BasketAttributeQueryService(
         IBasketAttributeQueryRepository attributeQueryRepository,
@@ -39,11 +37,10 @@ public class BasketAttributeQueryService
         IOptions<CacheSettings> settings,
         ILanguageProvider language
     )
-        : base(attributeQueryRepository, cacheService, settings)
+        : base(attributeQueryRepository, language, cacheService, settings)
     {
         _attributeQueryRepository = attributeQueryRepository;
         _attributeService = attributeService;
-        _language = language;
     }
 
 
@@ -54,24 +51,6 @@ public class BasketAttributeQueryService
             .ApplyMapperAsync(entity.AttributeDefinition);
 
         return BasketAttributeMapper.ToDto(entity, attributerDto);
-    }
-
-    public override string GetCacheKey(
-        long id)
-    {
-        return CacheKeys.EntityLanguage<BasketAttribute>(
-            id,
-            _language.Language);
-    }
-
-    public override async Task CreateCache(
-        BasketAttributeDto dto)
-    {
-        await _cache.SetAsync(
-            CacheKeys.EntityLanguage<BasketAttribute>(
-                dto.Id, _language.Language),
-            dto,
-            _settings.KeyExpiration);
     }
 
     public async Task<Result<BasketAttributeDto>> GetByAttributeDefinitionAsync(

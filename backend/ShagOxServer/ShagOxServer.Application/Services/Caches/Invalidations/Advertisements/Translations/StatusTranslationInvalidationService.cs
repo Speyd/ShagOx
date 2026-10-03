@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Base.Cache;
-using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Localized;
 using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
@@ -10,12 +11,14 @@ public class StatusTranslationInvalidationService
     : ITranslationCacheInvalidationService<StatusTranslation>
 {
     private readonly ICacheService _cache;
-
+    private readonly StatusLocalizedInvalidationService _status;
 
     public StatusTranslationInvalidationService(
+        StatusLocalizedInvalidationService status,
         ICacheService cache)
     {
         _cache = cache;
+        _status = status;
     }
 
 
@@ -25,11 +28,8 @@ public class StatusTranslationInvalidationService
         await _cache.RemoveAsync(CacheKeys
             .Entity<StatusTranslation>(cacheDto.Id));
 
-        await _cache.RemoveByPatternAsync(CacheKeys.
-            LanguagePattern<Advertisement>(cacheDto.Language));
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityLanguagePattern<Advertisement>(cacheDto.Language));
+        await _status.InvalidateLanguageAsync(
+            cacheDto.Language);
     }
 
     public async Task InvalidateUpdateAsync(
@@ -38,10 +38,7 @@ public class StatusTranslationInvalidationService
         await _cache.RemoveAsync(CacheKeys
             .Entity<StatusTranslation>(cacheDto.Id));
 
-        await _cache.RemoveByPatternAsync(CacheKeys.
-            LanguagePattern<Advertisement>(cacheDto.Language));
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityLanguagePattern<Advertisement>(cacheDto.Language));
+        await _status.InvalidateLanguageAsync(
+            cacheDto.Language);
     }
 }

@@ -11,10 +11,9 @@ public sealed record UserShortDto
     string? Phone,
     string? Email,
 
-    long? Avatar,
+    long? AvatarId,
 
     long? CityId,
-    string? CityName,
 
     DateTime? LastSeenAt
 ) : BaseDto(Id);

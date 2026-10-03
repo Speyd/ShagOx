@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Advertisements;
 namespace ShagOxServer.Application.Services.Caches.Advertisements;
 public class AdvertisementCache
 {
-    private static readonly string Prefix =
+    public static readonly string Prefix =
         CacheKeys.LanguagePrefix<Advertisement>();
 
 

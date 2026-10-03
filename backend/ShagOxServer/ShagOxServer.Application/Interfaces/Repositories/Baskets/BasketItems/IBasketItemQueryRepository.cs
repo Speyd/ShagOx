@@ -18,4 +18,7 @@ public interface IBasketItemQueryRepository
     Task<PagedResult<BasketItem>> GetByAdvertisementVariantAsync(
         long advertisementVariantId,
         PaginationParams pagination);
+
+    Task<List<long>> GetIdsByAdvertisementVariantAsync(
+        long advertisementVariantId);
 }

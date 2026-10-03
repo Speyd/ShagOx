@@ -5,5 +5,5 @@ namespace ShagOxServer.Application.Services.Caches;
 public class AdvertisementVariantCache
 {
     public static readonly string Prefix =
-        CacheKeys.Prefix<AdvertisementVariant>();
+        CacheKeys.LanguagePrefix<AdvertisementVariant>();
 }

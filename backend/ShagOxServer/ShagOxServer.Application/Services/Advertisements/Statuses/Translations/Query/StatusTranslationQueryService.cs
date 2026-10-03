@@ -5,7 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.T
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Mapping;
-using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Base.Translations.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;

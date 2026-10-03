@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
 using ShagOxServer.Domain.Caches;
@@ -43,8 +44,7 @@ public class AttributeDefinitionInvalidationService
         long entityId)
     {
         await _cache.RemoveAsync(CacheKeys.
-            EntityLanguagePattern<AttributeDefinition>(entityId));
-
+                EntityLanguagePattern<AttributeDefinition>(entityId));
 
         var translationInfos =
             await GetTranslationInfos(entityId);
@@ -72,8 +72,7 @@ public class AttributeDefinitionInvalidationService
         long entityId)
     {
         await _cache.RemoveAsync(CacheKeys.
-             EntityLanguagePattern<AttributeDefinition>(entityId));
-
+                EntityLanguagePattern<AttributeDefinition>(entityId));
 
         var translationInfos =
             await GetTranslationInfos(entityId);

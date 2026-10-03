@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Domain.Base;
 
-namespace ShagOxServer.Application.Services.Base.Translations.Mapping;
+namespace ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 public static class BaseTranslationCacheMapper
 {
     public static BaseTranslationCacheInfo ToInfo<TTranslatable>(

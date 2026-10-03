@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -12,14 +13,13 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
 public abstract class BaseTranslatableQueryService<TDto, TEntity, TFilter>
-    : BaseQueryService<TDto, TEntity, TFilter>,
+    : BaseLocalizedQueryService<TDto, TEntity, TFilter>,
     ITranslatableQueryService<TDto, TEntity, TFilter>
     where TDto : BaseDto
     where TEntity : BaseEntity
     where TFilter : BaseFilter
 {
     protected readonly ITranslatableQueryRepository<TEntity, TFilter> _translatableRepository;
-    protected readonly ILanguageProvider _language;
 
 
     public BaseTranslatableQueryService(
@@ -28,10 +28,9 @@ public abstract class BaseTranslatableQueryService<TDto, TEntity, TFilter>
         ICacheService cacheRepository,
         IOptions<CacheSettings> settings
     )
-        : base(translatableRepository, cacheRepository, settings)
+        : base(translatableRepository, language, cacheRepository, settings)
     {
         _translatableRepository = translatableRepository;
-        _language = language;
     }
 
     public async Task<Result<TDto>> GetByIdentificatorAsync(

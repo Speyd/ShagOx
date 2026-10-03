@@ -5,5 +5,5 @@ namespace ShagOxServer.Application.Services.Caches.Advertisements;
 public class StatusCache
 {
     public static readonly string Prefix =
-       CacheKeys.Prefix<Status>();
+        CacheKeys.LanguagePrefix<Status>();
 }

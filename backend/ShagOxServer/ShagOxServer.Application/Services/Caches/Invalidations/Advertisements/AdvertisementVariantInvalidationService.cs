@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Entities.Advertisements;
 

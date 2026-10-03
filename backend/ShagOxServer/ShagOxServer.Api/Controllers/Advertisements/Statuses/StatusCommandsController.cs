@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Statuses;
 
 [ApiController]
 [Route("api/admin/statuses")]
-
+[Authorize(Roles = "Admin")]
 public class StatusCommandsController 
     : ApiController
 {

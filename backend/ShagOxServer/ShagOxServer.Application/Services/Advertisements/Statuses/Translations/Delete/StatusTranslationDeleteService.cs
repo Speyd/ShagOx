@@ -5,7 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
-using ShagOxServer.Application.Services.Base.Translations.Mapping;
+using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements;

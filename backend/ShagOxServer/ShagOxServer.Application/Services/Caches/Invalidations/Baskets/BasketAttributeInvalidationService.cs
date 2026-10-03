@@ -1,5 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Baskets;
 using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Entities.Advertisements;

@@ -10,7 +10,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Application.Services.Base.Translations;
+namespace ShagOxServer.Application.Services.Base.Translations.Query;
 public abstract class BaseTranslationQueryService<TDto, TEntity, TTranslation, TFilter>
     : BaseQueryService<TDto, TTranslation, TFilter>,
       ITranslationQueryService<TDto, TTranslation, TFilter>

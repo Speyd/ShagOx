@@ -8,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Mapping;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
@@ -43,5 +44,23 @@ public class StatusQueryService
             .GetByIdentificatorAsync(entity.Code, _language.Language);
 
         return StatusMapper.ToDto(entity, translation?.Name);
+    }
+
+    public override string GetCacheKey(
+        long id)
+    {
+        return CacheKeys.EntityLanguage<Status>(
+            id,
+            _language.Language);
+    }
+
+    public override async Task CreateCache(
+        StatusDto dto)
+    {
+        await _cache.SetAsync(
+            CacheKeys.EntityLanguage<Status>(
+                dto.Id, _language.Language),
+            dto,
+            _settings.KeyExpiration);
     }
 }

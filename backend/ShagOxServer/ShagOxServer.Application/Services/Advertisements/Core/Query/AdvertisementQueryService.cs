@@ -10,7 +10,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Advertisements;
 using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -21,7 +21,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Query;
 public class AdvertisementQueryService 
-    : BaseQueryService<
+    : BaseLocalizedQueryService<
         AdvertisementDto, 
         Advertisement, 
         AdvertisementSearchFilter>,
@@ -33,8 +33,6 @@ public class AdvertisementQueryService
     private readonly ICategoryQueryService _categoryService;
     private readonly IStatusQueryService _statusService;
 
-    private readonly ILanguageProvider _language;
-
 
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository,
@@ -45,13 +43,12 @@ public class AdvertisementQueryService
         IOptions<CacheSettings> settings,
         ILanguageProvider language
     )
-        : base(advertisementRepository, cacheService, settings)
+        : base(advertisementRepository, language, cacheService, settings)
     {
         _advertisementRepository = advertisementRepository;
         _variantService = variantService;
         _categoryService = categoryService;
         _statusService = statusService;
-        _language = language;
     }
 
 

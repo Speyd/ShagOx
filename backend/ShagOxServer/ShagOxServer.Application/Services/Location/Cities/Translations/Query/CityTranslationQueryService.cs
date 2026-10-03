@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Location.Cities.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Query;
-using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Base.Translations.Query;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Mapping;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;

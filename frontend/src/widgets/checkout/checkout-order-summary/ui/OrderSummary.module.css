@@ -1,0 +1,21 @@
+.promoCodeContainer {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px;
+  gap: 10px;
+}
+
+.orderSummary {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.scrollArea {
+  height: 100%;
+  overflow-y: auto;
+  max-height: 350px;
+  padding-right: 10px;
+}

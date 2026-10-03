@@ -8,6 +8,7 @@ import AdvertisementForm from "@/features/advertisement/advertisement-form/ui/Ad
 import type { UpdateAdvertisementRequestDto } from "@/features/advertisement/update-advertisement/model/types";
 import styles from "./UpdateAdvertisementPage.module.css";
 import { useAuthStore } from "@/features/auth";
+import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
 
 
 export default function UpdateAdvertisementPage() {
@@ -50,8 +51,16 @@ export default function UpdateAdvertisementPage() {
     const dto: UpdateAdvertisementRequestDto = {
       title: data.title,
       description: data.description,
-      price: data.price,
-      properties: advertisement.properties,
+      attributes: advertisement.attributes,
+      variants: advertisement.variants[0]
+        ? {
+            [advertisement.variants[0].id]: {
+              price: data.price,
+              stock: advertisement.variants[0].stock,
+              attributes: {},
+            },
+          }
+        : undefined,
 
       images: imagesChanged
         ? [
@@ -96,7 +105,7 @@ export default function UpdateAdvertisementPage() {
         defaultValues={{
           title: advertisement.title,
           description: advertisement.description,
-          price: advertisement.price,
+          price: getAdvertisementPrice(advertisement),
         }}
         defaultImages={advertisement.images.map((image) => ({
           id: image.id.toString(),

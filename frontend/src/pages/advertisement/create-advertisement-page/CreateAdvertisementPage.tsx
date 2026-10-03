@@ -5,12 +5,10 @@ import { useCreateAdvertisement } from "@/features/advertisement/create-advertis
 import type { ImageItem } from "@/shared/lib/types/image";
 import { useNavigate } from "react-router-dom";
 import styles from "./CreateAdvertisementPage.module.css";
-import { useAuthStore } from "@/features/auth";
 
 
 export default function CreateAdvertisementPage() {
   const navigate = useNavigate();
-  const user = useAuthStore((state) => state.user);
   const mutation = useCreateAdvertisement();
 
   async function handleCreate(
@@ -22,17 +20,22 @@ export default function CreateAdvertisementPage() {
       .filter((file): file is File => file instanceof File);
 
     const dto: AdvertisementDto = {
-      ...data,
-      previousPrice: data.price,
-      sellerId: user?.id ?? 0,
+      title: data.title,
+      description: data.description,
+      popularity: 0,
       currencyId: 0,
       categoryId: 1,
       conditionId: 0,
-      stock: 1,
       images: validFiles,
-      properties: {
-        Brand: "Apple",
-      },
+      attributes: {},
+      variants: [
+        {
+          price: data.price,
+          previousPrice: data.price,
+          stock: 1,
+          attributes: {},
+        },
+      ],
     };
 
     const advertisement = await mutation.mutateAsync(dto);

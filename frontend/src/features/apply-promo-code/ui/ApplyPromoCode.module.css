@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.input {
+  flex: 1;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: 4px;
+}
+
+.button {
+  height: 42px;
+  padding: 0 20px;
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.button:not(:disabled):hover {
+  background-color: var(--mantine-color-blue-0);
+}

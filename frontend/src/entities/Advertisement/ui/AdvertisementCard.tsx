@@ -1,13 +1,23 @@
 import styles from "./AdvertisementCard.module.css";
 import Price from "@/shared/ui/price";
-import type { Advertisement } from "@/shared/lib/types/advertisements";
+import {
+  getAdvertisementPrice,
+  getAdvertisementStock,
+  type Advertisement,
+  type AdvertisementShort,
+} from "@/shared/lib/types/advertisements";
 import FavoriteButton from "@/features/favorites";
 import { Button, Image, Text } from "@mantine/core";
 import { Plus, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export default function AdvertisementCard(props: Advertisement) {
-  const imageUrl = props.images?.[0]?.url || "/placeholder-image.png";
+export default function AdvertisementCard(
+  props: Advertisement | AdvertisementShort,
+) {
+  const imageUrl =
+    "images" in props
+      ? props.images?.[0]?.url || "/placeholder-image.png"
+      : "/placeholder-image.png";
 
   return (
     <div className={styles.card}>
@@ -44,7 +54,8 @@ export default function AdvertisementCard(props: Advertisement) {
               (12 відгуків)
             </Text>
           </div>
-          {props.stock > 0 ? (
+
+          {getAdvertisementStock(props) > 0 ? (
             <Text c="green" fw={600} size="xs">
               В наявності
             </Text>
@@ -55,7 +66,10 @@ export default function AdvertisementCard(props: Advertisement) {
           )}
         </div>
 
-        <Price price={props.price} currency={props.currency?.symbol} />
+        <Price
+          price={getAdvertisementPrice(props)}
+          currency={"currency" in props ? props.currency?.symbol : undefined}
+        />
 
         <div className={styles.actionButtons}>
           <Button

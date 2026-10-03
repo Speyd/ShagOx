@@ -16,12 +16,11 @@ export default function useUpdateProfile() {
 
   return useMutation({
     mutationFn: async ({ id, data }: UpdateProfileRequest) => {
-      await updateUser(id, {
+      await updateUser({
         firstName: data.firstName,
         lastName: data.lastName,
         userName: data.userName,
         bio: data.bio,
-        email: data.email,
         cityId: data.cityId ?? undefined,
         avatar: data.avatar ?? undefined,
       });

@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -15,6 +16,8 @@ public class AttributeDictionaryDeleteService
     private readonly IRepository<AttributeDictionary> _dictionaryRepository;
     private readonly AttributeDictionaryValidator _dictionaryValidator;
 
+    private readonly AttributeDictionaryInvalidationService _dictInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDictionaryDeleteService> _logger;
 
@@ -22,11 +25,13 @@ public class AttributeDictionaryDeleteService
     public AttributeDictionaryDeleteService(
         IRepository<AttributeDictionary> dictionaryRepository,
         AttributeDictionaryValidator dictionaryValidator,
+        AttributeDictionaryInvalidationService dictInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryDeleteService> logger)
     {
         _dictionaryRepository = dictionaryRepository;
         _dictionaryValidator = dictionaryValidator;
+        _dictInvalid = dictInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -61,6 +66,8 @@ public class AttributeDictionaryDeleteService
             return Result<DeleteResponse>.Fail(
                 EntityErrorResources.AttributeDictionaryDeleteFailed);
         }
+
+        await _dictInvalid.InvalidateDeleteAsync(id);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

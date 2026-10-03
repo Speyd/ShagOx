@@ -11,9 +11,12 @@ public static class AttributesInvalidationDependencyInjection
     {
         services.AddScoped<AttributeDefinitionInvalidationService>();
 
+        services.AddScoped<AttributeDictionaryInvalidationService>();
+
         services.AddAttributesTranslationInvalidationApplication();
 
         services.AddDictionariesLocalizedInvalidationApplication();
+
 
         return services;
     }

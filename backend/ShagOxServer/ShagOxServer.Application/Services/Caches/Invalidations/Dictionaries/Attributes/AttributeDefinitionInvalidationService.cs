@@ -98,7 +98,7 @@ public class AttributeDefinitionInvalidationService
     private async Task InvalidateAsync(
         long entityId)
     {
-        await _cache.RemoveAsync(CacheKeys.
+        await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePattern<AttributeDefinition>(entityId));
     }
 

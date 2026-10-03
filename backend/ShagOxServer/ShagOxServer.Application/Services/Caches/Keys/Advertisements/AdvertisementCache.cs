@@ -15,22 +15,12 @@ public class AdvertisementCache
         int pageSize)
             => $"{Prefix}:{language}:seller:{sellerId}:page:{page}:size:{pageSize}";
 
-    public static string BySellerPattern(
-        long sellerId,
-        string language)
-            => $"{Prefix}:{language}:seller:{sellerId}:page:*";
-
     public static string ByBuyer(
         long buyerId,
         string language,
         int page,
         int pageSize)
             => $"{Prefix}:{language}:buyer:{buyerId}:page:{page}:size:{pageSize}";
-
-    public static string ByBuyerPattern(
-        long buyerId,
-        string language)
-            => $"{Prefix}:{language}:buyer:{buyerId}:page:*";
 
     public static string BySellerPattern(
         long sellerId)

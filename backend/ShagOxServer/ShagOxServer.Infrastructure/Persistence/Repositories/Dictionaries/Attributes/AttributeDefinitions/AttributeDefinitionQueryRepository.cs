@@ -40,6 +40,15 @@ public class AttributeDefinitionQueryRepository
             .ToListAsync();
     }
 
+    public async Task<List<long>> GetIdsByAttributeDictionaryAsync(
+        long dictionaryId)
+    {
+        return await _db.AttributeDefinitions
+            .Where(x => x.DictionaryId == dictionaryId)
+            .Select(x => x.Id)
+            .ToListAsync();
+    }
+
     public async Task<List<AttributeDefinition>> GetByKeysAsync(
         long categoryId,
         IEnumerable<string> keys)

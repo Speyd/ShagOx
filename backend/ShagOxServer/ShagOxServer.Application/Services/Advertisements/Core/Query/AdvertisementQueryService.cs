@@ -71,24 +71,6 @@ public class AdvertisementQueryService
             statusDto);
     }
 
-    public override string GetCacheKey(
-        long id)
-    {
-        return CacheKeys.EntityLanguage<Advertisement>(
-            id,
-            _language.Language);
-    }
-
-    public override async Task CreateCache(
-        AdvertisementDto dto)
-    {
-        await _cache.SetAsync(
-            CacheKeys.EntityLanguage<Advertisement>(
-                dto.Id, _language.Language),
-            dto,
-            _settings.KeyExpiration);
-    }
-
     private async Task<Dictionary<long, List<VariantAttributeDto>>>
     GetAttributesByVariantIdAsync(
         IEnumerable<AdvertisementVariant> variants)

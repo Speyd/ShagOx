@@ -26,16 +26,11 @@ export type UserUpdatePayload = {
   lastName?: string;
   userName?: string;
   bio?: string;
-  phone?: string;
-  email?: string;
   cityId?: number;
   avatar?: File;
 };
 
-export async function updateUser(
-  id: number,
-  payload: UserUpdatePayload,
-): Promise<void> {
+export async function updateUser(payload: UserUpdatePayload): Promise<void> {
   const formData = new FormData();
 
   if (payload.firstName !== undefined)
@@ -45,13 +40,11 @@ export async function updateUser(
   if (payload.userName !== undefined)
     formData.append("UserName", payload.userName);
   if (payload.bio !== undefined) formData.append("Bio", payload.bio);
-  if (payload.phone !== undefined) formData.append("Phone", payload.phone);
-  if (payload.email !== undefined) formData.append("Email", payload.email);
   if (payload.cityId !== undefined)
     formData.append("CityId", String(payload.cityId));
   if (payload.avatar !== undefined) formData.append("Avatar", payload.avatar);
 
-  await api.put(`/users/${id}`, formData, {
+  await api.put(`/users/me`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 }

@@ -26,6 +26,9 @@ import { AuthPage } from "@/pages/auth";
 import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage";
 import CategorySelectionPage from "@/pages/category-selection/CategorySelectionPage";
 import VerifyPage from "@/pages/verify-page";
+import CheckoutPage from "@/pages/checkout";
+import PaymentPage from "@/pages/payment";
+import BasketPage from "@/pages/basket";
 
 export default function Router() {
   return (
@@ -42,10 +45,7 @@ export default function Router() {
 
         <Route path="/category-selection" element={<CategorySelectionPage />} />
 
-        <Route
-          path="/authentication/verify"
-          element={<VerifyPage />}
-        />
+        <Route path="/authentication/verify" element={<VerifyPage />} />
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
@@ -90,10 +90,37 @@ export default function Router() {
           </Route>
 
           <Route
+            path="/payment"
+            element={
+              <ProtectedRoute>
+                <PaymentPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
             path="/favorite"
             element={
               <ProtectedRoute>
                 <FavoritesPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <CheckoutPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/basket"
+            element={
+              <ProtectedRoute>
+                <BasketPage />
               </ProtectedRoute>
             }
           />

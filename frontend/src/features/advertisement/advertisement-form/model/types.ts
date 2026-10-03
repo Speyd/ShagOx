@@ -1,14 +1,18 @@
 export type AdvertisementDto = {
   title: string;
   description: string;
-  price: number;
-  previousPrice: number;
+  popularity: number;
   currencyId: number;
-  sellerId: number;
-  categoryId: number;
   conditionId: number;
-  stock?: number;
-  properties: Record<string, string>;
+  categoryId: number;
+  attributes?: Record<string, unknown>;
+  variants?: AdvertisementVariantCreate[];
   images: File[];
 };
 
+export type AdvertisementVariantCreate = {
+  price: number;
+  previousPrice: number;
+  stock: number;
+  attributes: Record<string, unknown>;
+};

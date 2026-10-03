@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { modals } from "@mantine/modals";
 import { useAdminDeleteAdvertisement } from "@/features/admin/advertisement/delete-advertisement/model/hooks/useAdminDeleteAdvertisement";
 import { useGetAdminAdvertisements } from "@/entities/advertisement/model/hooks/useGetAdminAdvertisements";
+import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
 
 export default function AdvertisementsPage() {
   const [page, setPage] = useState(1);
@@ -92,12 +93,12 @@ export default function AdvertisementsPage() {
     },
 
     {
-      accessorKey: "price",
+      id: "price",
       header: "Price",
       cell: ({ row }) => (
         <Text fw={700} c="blue">
           {row.original.currency?.symbol ?? ""}
-          {row.original.price}
+          {getAdvertisementPrice(row.original)}
         </Text>
       ),
     },

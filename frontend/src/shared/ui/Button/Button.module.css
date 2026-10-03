@@ -14,3 +14,33 @@
 .button:hover {
   background-color: #1e293b;
 }
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.outline {
+  background-color: transparent;
+  color: var(--color-base);
+  border: 1px solid var(--color-base);
+}
+
+.outline:hover {
+  background-color: color-mix(in srgb, var(--color-base) 8%, transparent);
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: button-spin 0.7s linear infinite;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

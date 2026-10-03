@@ -42,6 +42,7 @@ export default function FavoriteButton({
   }
   return (
     <IconButton
+      type="button"
       onClick={handleClick}
       disabled={isPending}
       className={styles.icon}

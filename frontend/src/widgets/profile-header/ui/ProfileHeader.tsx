@@ -15,6 +15,7 @@ export default function ProfileHeader({
 }: ProfileHeaderProps) {
   const user = useAuthStore((state) => state.user);
 
+  console.log(user);
   const [
     userProfileOpened,
     { open: openUserProfile, close: closeUserProfile },
@@ -39,8 +40,8 @@ export default function ProfileHeader({
 
       <div className={styles.content}>
         <div className={styles.leftBlock}>
-          <div>
-            <Text fw={700} fz={24}>
+          <div className={styles.nameBlock}>
+            <Text fw={800} fz={24}>
               {user?.firstName && user?.lastName
                 ? `${user.firstName} ${user.lastName}`
                 : user?.firstName ||
@@ -48,7 +49,7 @@ export default function ProfileHeader({
                   user?.userName ||
                   "Користувач"}
             </Text>
-            <Text fw={500} fz={12} c="dimmed">
+            <Text fw={400} fz={15}>
               @{user?.userName}
             </Text>
           </div>
@@ -57,7 +58,13 @@ export default function ProfileHeader({
             {user?.bio || ""}
           </Text>
 
-          <div className={styles.statsBlock}>
+          <div
+            className={
+              orientation === "horizontal"
+                ? styles.statsBlockHorizontal
+                : styles.statsBlockVertical
+            }
+          >
             <div className={styles.statItem}>
               <Text fw={700} fz={15}>
                 47
@@ -82,18 +89,45 @@ export default function ProfileHeader({
                 Переглядів
               </Text>
             </div>
-            <div className={styles.statItem}>
-              <Text fw={500} fz={12} c="dimmed">
-                На платформі
-              </Text>
-              <Text fw={700} fz={15}>
-                з 12.10.24
-              </Text>
-            </div>
+            {orientation === "horizontal" && (
+              <div className={styles.statItem}>
+                <Text fw={500} fz={12} c="dimmed">
+                  На платформі
+                </Text>
+                <Text fw={700} fz={15}>
+                  з 12.10.24
+                </Text>
+              </div>
+            )}
           </div>
         </div>
 
         <div className={styles.rightBlock}>
+          <div className={styles.infoBlock}>
+            {user?.city?.region?.lable && (
+              <div className={styles.infoItem}>
+                <MapPin size={14} strokeWidth={2.5} />
+                <Text fw={500} fz={12}>
+                  {user.city.region.lable}
+                </Text>
+              </div>
+            )}
+            <div className={styles.infoItem}>
+              <Link size={14} strokeWidth={2.5} />
+              <Text fw={500} fz={12}>
+                Посилання
+              </Text>
+            </div>
+            {user?.email && (
+              <div className={styles.infoItem}>
+                <Mail size={14} strokeWidth={2.5} />
+                <Text fw={500} fz={12}>
+                  {user.email}
+                </Text>
+              </div>
+            )}
+          </div>
+
           <div className={styles.buttonsBlock}>
             <Button
               bg="var(--color-base)"
@@ -112,31 +146,6 @@ export default function ProfileHeader({
             >
               Налаштувати канал
             </Button>
-          </div>
-
-          <div className={styles.infoBlock}>
-            {user?.city?.name && (
-              <div className={styles.infoItem}>
-                <MapPin size={14} strokeWidth={2.5} />
-                <Text fw={500} fz={12}>
-                  {user.city.name}
-                </Text>
-              </div>
-            )}
-            <div className={styles.infoItem}>
-              <Link size={14} strokeWidth={2.5} />
-              <Text fw={500} fz={12}>
-                Посилання
-              </Text>
-            </div>
-            {user?.email && (
-              <div className={styles.infoItem}>
-                <Mail size={14} strokeWidth={2.5} />
-                <Text fw={500} fz={12}>
-                  {user.email}
-                </Text>
-              </div>
-            )}
           </div>
         </div>
       </div>

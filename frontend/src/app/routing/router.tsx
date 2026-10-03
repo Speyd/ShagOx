@@ -5,7 +5,6 @@ import AdvertisementPage from "@/pages/advertisement/advertisement-page";
 import { PublicRoute } from "./PublicRoute";
 import UserUpdateAdvertisementPage from "@/pages/advertisement/update-advertisement-page";
 import AdminAdvertisementPage from "@/pages/admin/advertisements/update-advertisement-page";
-import FavoritesPage from "@/pages/favorites-page";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { AdminRoute } from "./AdminRoute";
 import { AdminLayout, MainLayout } from "../layouts";
@@ -94,15 +93,6 @@ export default function Router() {
             element={
               <ProtectedRoute>
                 <PaymentPage />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/favorite"
-            element={
-              <ProtectedRoute>
-                <FavoritesPage />
               </ProtectedRoute>
             }
           />

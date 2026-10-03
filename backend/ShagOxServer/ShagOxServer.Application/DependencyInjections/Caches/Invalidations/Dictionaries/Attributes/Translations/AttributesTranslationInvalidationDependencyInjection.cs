@@ -9,6 +9,8 @@ public static class AttributesTranslationInvalidationDependencyInjection
     {
         services.AddScoped<AttributeDefinitionTranslationInvalidationService>();
 
+        services.AddScoped<AttributeDictionaryValueTranslationInvalidationService>();
+
 
         return services;
     }

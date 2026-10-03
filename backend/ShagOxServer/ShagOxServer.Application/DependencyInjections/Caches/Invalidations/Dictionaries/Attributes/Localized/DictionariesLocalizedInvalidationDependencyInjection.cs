@@ -9,6 +9,8 @@ public static class DictionariesLocalizedInvalidationDependencyInjection
     {
         services.AddScoped<AttributeDefinitionLocalizedInvalidationService>();
 
+        services.AddScoped<AttributeDictionaryValueLocalizedInvalidationService>();
+
 
         return services;
     }

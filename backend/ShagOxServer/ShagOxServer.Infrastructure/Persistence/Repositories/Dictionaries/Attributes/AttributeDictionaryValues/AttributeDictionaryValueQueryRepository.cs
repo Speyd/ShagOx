@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues;
@@ -82,5 +83,14 @@ public class AttributeDictionaryValueQueryRepository
             .WithIncludes()
             .Where(x => x.DictionaryId == dictionaryId)
             .ToPagedResultAsync(pagination);
+    }
+
+    public async Task<List<AttributeDictionaryValueCacheInfo>> GetInfosByDictionaryAsync(
+        long dictionaryId)
+    {
+        return await _db.AttributeDictionaryValues
+            .Where(x => x.DictionaryId == dictionaryId)
+            .SelectCacheInfo()
+            .ToListAsync();
     }
 }

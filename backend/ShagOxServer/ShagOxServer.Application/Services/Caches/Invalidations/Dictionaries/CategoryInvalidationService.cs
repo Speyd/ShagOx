@@ -1,11 +1,14 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -21,6 +24,9 @@ public class CategoryInvalidationService
     private readonly IAdvertisementQueryRepository _advertRepository;
     private readonly AdvertisementInvalidationService _advertInvalid;
 
+    private readonly ICategoryTranslationQueryRepository _transRepository;
+    private readonly CategoryTranslationInvalidationService _transInvalid;
+
     private readonly ICacheService _cache;
 
 
@@ -30,12 +36,16 @@ public class CategoryInvalidationService
         AttributeDefinitionInvalidationService attributeInvalid,
         IAdvertisementQueryRepository advertRepository,
         AdvertisementInvalidationService advertInvalid,
+        ICategoryTranslationQueryRepository transRepository,
+        CategoryTranslationInvalidationService transInvalid,
         ICacheService cache)
     {
         _attributeRepository = attributeRepository;
         _attributeInvalid = attributeInvalid;
         _advertRepository = advertRepository;
         _advertInvalid = advertInvalid;
+        _transRepository = transRepository;
+        _transInvalid = transInvalid;
         _cache = cache;
     }
 
@@ -63,6 +73,16 @@ public class CategoryInvalidationService
         {
             await _advertInvalid
                 .InvalidateDeleteAsync(advertInfo);
+        }
+
+
+        var transInfos =
+           await GetTranslationInfos(entityInfo.Id);
+
+        foreach (var transInfo in transInfos)
+        {
+            await _transInvalid
+                .InvalidateDeleteAsync(transInfo);
         }
     }
 
@@ -114,5 +134,12 @@ public class CategoryInvalidationService
     {
         return await _advertRepository
             .GetCacheInfoByCategoryAsync(entityId);
+    }
+
+    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+        long entityId)
+    {
+        return await _transRepository
+            .GetCacheInfoByTranslatableAsync(entityId);
     }
 }

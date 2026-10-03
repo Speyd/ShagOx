@@ -2,9 +2,9 @@
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Localized;
 
 namespace ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Dictionaries.Attributes.Localized;
-public static class DictionariesLocalizedInvalidationDependencyInjection
+public static class AttributesLocalizedInvalidationDependencyInjection
 {
-    public static IServiceCollection AddDictionariesLocalizedInvalidationApplication(
+    public static IServiceCollection AddAttributesLocalizedInvalidationApplication(
         this IServiceCollection services)
     {
         services.AddScoped<AttributeDefinitionLocalizedInvalidationService>();

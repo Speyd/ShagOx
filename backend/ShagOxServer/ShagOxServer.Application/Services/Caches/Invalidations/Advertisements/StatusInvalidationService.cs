@@ -53,16 +53,13 @@ public class StatusInvalidationService
                 .InvalidateDeleteAsync(translationInfo);
         }
 
-        if (translationInfos.Count == 0)
-        {
-            var advertInfos =
-                await GetAdvertisementInfos(entityId);
+        var advertInfos =
+             await GetAdvertisementInfos(entityId);
 
-            foreach (var advertInfo in advertInfos)
-            {
-                await _advertInvalid
-                    .InvalidateDeleteAsync(advertInfo);
-            }
+        foreach (var advertInfo in advertInfos)
+        {
+            await _advertInvalid
+                .InvalidateDeleteAsync(advertInfo);
         }
     }
 
@@ -71,25 +68,13 @@ public class StatusInvalidationService
     {
         await InvalidateAsync(entityId);
 
-        var translationInfos =
-            await GetTranslationInfos(entityId);
+        var advertInfos =
+            await GetAdvertisementInfos(entityId);
 
-        foreach (var translationInfo in translationInfos)
+        foreach (var advertInfo in advertInfos)
         {
-            await _transInvalid
-                .InvalidateUpdateAsync(translationInfo);
-        }
-
-        if (translationInfos.Count == 0)
-        {
-            var advertInfos =
-                await GetAdvertisementInfos(entityId);
-
-            foreach (var advertInfo in advertInfos)
-            {
-                await _advertInvalid
-                    .InvalidateUpdateAsync(advertInfo);
-            }
+            await _advertInvalid
+                .InvalidateUpdateAsync(advertInfo);
         }
     }
 

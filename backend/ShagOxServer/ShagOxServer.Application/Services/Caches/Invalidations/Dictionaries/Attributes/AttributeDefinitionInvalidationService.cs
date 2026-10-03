@@ -72,26 +72,13 @@ public class AttributeDefinitionInvalidationService
     {
         await InvalidateAsync(entityId);
 
-        var translationInfos =
-            await GetTranslationInfos(entityId);
+        var basketAttributeInfo =
+            await GetBasketAttributeInfos(entityId);
 
-        foreach (var translationInfo in translationInfos)
+        if (basketAttributeInfo is not null)
         {
-            await _transInvalid
-                .InvalidateUpdateAsync(translationInfo);
-        }
-
-
-        if (translationInfos.Count == 0)
-        {
-            var basketAttributeInfo =
-                await GetBasketAttributeInfos(entityId);
-
-            if (basketAttributeInfo is not null)
-            {
-                await _basketInvalid
+            await _basketInvalid
                     .InvalidateUpdateAsync(basketAttributeInfo);
-            }
         }
     }
 

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   Drawer,
   Avatar,
-  Button,
   TextInput,
   Textarea,
   Text,
@@ -25,6 +25,7 @@ import {
 } from "@/features/profile/update-profile/model/schemas/schema";
 import useUpdateProfile from "@/features/profile/update-profile/model/hooks/useUpdateProfile";
 import { useAuthStore } from "@/features/auth";
+import Button from "@/shared/ui/button";
 
 type ProfileDrawerProps = {
   opened: boolean;
@@ -49,7 +50,11 @@ export default function ProfileDrawer({ opened, close }: ProfileDrawerProps) {
     reset,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<UpdateProfileDto>({
+  } = useForm<
+    z.input<typeof updateProfileSchema>,
+    unknown,
+    z.output<typeof updateProfileSchema>
+  >({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
       firstName: user?.firstName ?? "",
@@ -182,9 +187,6 @@ export default function ProfileDrawer({ opened, close }: ProfileDrawerProps) {
 
             <Button
               variant="outline"
-              color="gray"
-              radius="md"
-              fullWidth
               type="button"
               onClick={() => fileInputRef.current?.click()}
             >
@@ -252,6 +254,7 @@ export default function ProfileDrawer({ opened, close }: ProfileDrawerProps) {
             <TextInput
               label="Email"
               placeholder="example@gmail.com"
+              readOnly
               radius="md"
               classNames={{ label: styles.label, input: styles.input }}
               error={errors.email?.message}
@@ -302,19 +305,16 @@ export default function ProfileDrawer({ opened, close }: ProfileDrawerProps) {
         <Group justify="flex-end" className={styles.actions} mt="xl">
           <Button
             variant="outline"
-            color="gray"
-            radius="md"
             type="button"
             onClick={close}
-            disabled={isSubmitting}
+            disabled={isSubmitting || mutation.isPending}
           >
             Скасувати
           </Button>
           <Button
             className={styles.saveButton}
-            radius="md"
             type="submit"
-            loading={isSubmitting}
+            loading={isSubmitting || mutation.isPending}
           >
             Зберегти зміни
           </Button>
@@ -325,6 +325,7 @@ export default function ProfileDrawer({ opened, close }: ProfileDrawerProps) {
 }
 
 function getCityLabel(city: City): string {
-  const cityWithCode = city as City & { code?: string };
-  return String(city.name ?? cityWithCode.code ?? `Місто ${city.id}`);
+  return String(
+    city.lable ?? city.name ?? city.code ?? `Місто ${city.id}`,
+  );
 }

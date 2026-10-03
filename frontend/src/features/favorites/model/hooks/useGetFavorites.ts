@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getFavorites } from "../../api/favoritesApi";
 import { useAuthStore } from "@/features/auth";
 
-
 export function useGetFavorites() {
   const user = useAuthStore((state) => state.user);
   return useQuery({

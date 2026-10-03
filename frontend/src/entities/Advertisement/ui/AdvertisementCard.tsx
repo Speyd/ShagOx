@@ -7,13 +7,16 @@ import {
   type AdvertisementShort,
 } from "@/shared/lib/types/advertisements";
 import FavoriteButton from "@/features/favorites";
+import { useBasketAction } from "@/features/basket/model/hooks/useBasketAction";
 import { Button, Image, Text } from "@mantine/core";
-import { Plus, Star } from "lucide-react";
+import { Check, Plus, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function AdvertisementCard(
   props: Advertisement | AdvertisementShort,
 ) {
+  const variantId = props.variants[0]?.id;
+  const { handleAdd, isInBasket, isLoading } = useBasketAction(variantId);
   const imageUrl =
     "images" in props
       ? props.images?.[0]?.url || "/placeholder-image.png"
@@ -73,14 +76,17 @@ export default function AdvertisementCard(
 
         <div className={styles.actionButtons}>
           <Button
-            leftSection={<Plus size={16} />}
+            onClick={handleAdd}
+            loading={isLoading}
+            disabled={!variantId}
+            leftSection={isInBasket ? <Check size={16} /> : <Plus size={16} />}
             bg="var(--color-base)"
             bdrs={4}
             h={44}
             px={16}
-            className={styles.addButton}
+            className={styles.addToBasketButton}
           >
-            Додати в кошик
+            {isInBasket ? "У кошику" : "Додати в кошик"}
           </Button>
           <FavoriteButton advertisementId={props.id} />
         </div>

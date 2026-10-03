@@ -5,7 +5,7 @@ import { Divider, Image, Text } from "@mantine/core";
 import logo from "@/shared/assets/icons/logo.png";
 import SearchInput from "@/shared/ui/search-input/SearchInput";
 import { useDisclosure } from "@mantine/hooks";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import CitySelector from "@/shared/ui/city-selector";
 import NavigationDrawer from "./NavigationDrawer";
 import CartDrawer from "./BasketDrawer";
@@ -14,6 +14,10 @@ export default function Header() {
   const [menuOpened, { open, close }] = useDisclosure(false);
   const [cartOpened, { open: openCart, close: closeCart }] =
     useDisclosure(false);
+
+  const location = useLocation();
+
+  const isFavoritesActive = location.pathname.startsWith("/profile/favorites");
 
   return (
     <header className={styles.header}>
@@ -57,8 +61,11 @@ export default function Header() {
                 <Text className={styles.iconContainerText}>Порівняння</Text>
               </Link>
 
-              <Link to="/favorite" className={styles.iconContainer}>
-                <Heart className="icon iconLarge" />
+              <Link to="/profile/favorites" className={styles.iconContainer}>
+                <Heart
+                  className="icon iconLarge"
+                  fill={isFavoritesActive ? "currentColor" : "none"}
+                />
                 <Text className={styles.iconContainerText}>Обране</Text>
               </Link>
 

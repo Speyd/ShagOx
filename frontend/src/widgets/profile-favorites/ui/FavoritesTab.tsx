@@ -7,17 +7,17 @@ import { ChevronDown, ArrowRight } from "lucide-react";
 import { useGetFavorites } from "@/features/favorites/model/hooks/useGetFavorites";
 import AdvertisementCard from "@/entities/advertisement/ui/AdvertisementCard";
 
+const SORT_OPTIONS = [
+  { value: "newest", label: "Найновіші" },
+  { value: "oldest", label: "Найстаріші" },
+  { value: "popular", label: "Популярні" },
+];
+
 export default function FavoritesTab() {
   const { setOrientation } = useOutletContext<ProfileContextType>();
   const [activeTab, setActiveTab] = useState<string | null>("all");
   const [sort, setSort] = useState<string | null>("newest");
   const { data: favorites, isLoading } = useGetFavorites();
-
-  const SORT_OPTIONS = [
-    { value: "newest", label: "Найновіші" },
-    { value: "oldest", label: "Найстаріші" },
-    { value: "popular", label: "Популярні" },
-  ];
 
   useEffect(() => {
     setOrientation("row");
@@ -64,6 +64,7 @@ export default function FavoritesTab() {
             classNames={{ input: styles.input }}
           />
         </div>
+
         <Tabs value={activeTab} onChange={setActiveTab}>
           <Tabs.List className={styles.list}>
             <Tabs.Tab value="all" className={styles.tab}>
@@ -86,6 +87,11 @@ export default function FavoritesTab() {
             linkLabel="Дивитися всі"
             isLoading={isLoading}
             emptyMessage="У вас поки що немає обраних товарів."
+            onTabChange={
+              activeTab === "all"
+                ? () => setActiveTab("advertisements")
+                : undefined
+            }
           >
             {advertisements.length > 0 ? (
               <div className={styles.productsGrid}>
@@ -105,6 +111,9 @@ export default function FavoritesTab() {
             title="Збережені відео"
             linkLabel="Всі відео"
             emptyMessage="У вас поки що немає збережених відео."
+            onTabChange={
+              activeTab === "all" ? () => setActiveTab("videos") : undefined
+            }
           />
         )}
       </div>
@@ -112,17 +121,12 @@ export default function FavoritesTab() {
   );
 }
 
-const SORT_OPTIONS = [
-  { value: "newest", label: "Найновіші" },
-  { value: "oldest", label: "Найстаріші" },
-  { value: "popular", label: "Популярні" },
-];
-
 type FavoriteSectionProps = {
   title: string;
   linkLabel: string;
   isLoading?: boolean;
   emptyMessage: string;
+  onTabChange?: () => void;
   children?: React.ReactNode;
 };
 
@@ -131,6 +135,7 @@ function FavoriteSection({
   linkLabel,
   isLoading = false,
   emptyMessage,
+  onTabChange,
   children,
 }: FavoriteSectionProps) {
   return (
@@ -139,11 +144,20 @@ function FavoriteSection({
         <Text fw={700} fz={20}>
           {title}
         </Text>
-        <button type="button" className={styles.viewAll}>
-          {linkLabel}
-          <ArrowRight size={16} />
-        </button>
+
+        {/* Відображаємо кнопку лише якщо передано callback для перемикання табу */}
+        {onTabChange && (
+          <button
+            type="button"
+            className={styles.viewAll}
+            onClick={onTabChange}
+          >
+            {linkLabel}
+            <ArrowRight size={16} />
+          </button>
+        )}
       </div>
+
       {isLoading ? (
         <Text c="dimmed">Завантаження...</Text>
       ) : children ? (

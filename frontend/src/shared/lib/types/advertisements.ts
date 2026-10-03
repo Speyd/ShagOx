@@ -9,6 +9,10 @@ export type Advertisement = {
   images: AdvertisementImage[];
   attributes: Record<string, unknown>;
   variants: AdvertisementVariant[];
+  price?: number;
+  previousPrice?: number;
+  stock?: number;
+  properties?: Record<string, string>;
   createdAt: string;
   soldAt: string | null;
 };

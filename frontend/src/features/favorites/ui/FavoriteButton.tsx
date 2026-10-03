@@ -7,10 +7,16 @@ import { useGetFavorites } from "../model/hooks/useGetFavorites";
 import { toast } from "sonner";
 import { useAuthStore } from "@/features/auth";
 
-type FavoriteButtonProps = { advertisementId: number };
+type FavoriteButtonProps = {
+  advertisementId: number;
+  variant?: "default" | "card";
+  className?: string;
+};
 
 export default function FavoriteButton({
   advertisementId,
+  variant = "default",
+  className,
 }: FavoriteButtonProps) {
   const user = useAuthStore((state) => state.user);
 
@@ -24,7 +30,9 @@ export default function FavoriteButton({
 
   const isPending = addMutation.isPending || deleteMutation.isPending;
 
-  function handleClick() {
+  function handleClick(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
     if (!user) {
       toast.error(
         "Ви повинні бути зареєстровані, щоб додавати оголошення в обране.",
@@ -40,12 +48,31 @@ export default function FavoriteButton({
       });
     }
   }
+
+  if (variant === "card") {
+    return (
+      <button
+        onClick={handleClick}
+        disabled={isPending}
+        className={`${styles.cardButton} ${className ?? ""}`}
+        aria-label="В обране"
+      >
+        <Heart
+          size={18}
+          strokeWidth={2}
+          fill={favorite ? "#ef4444" : "none"}
+          color={favorite ? "#ef4444" : "#475569"}
+        />
+      </button>
+    );
+  }
+
   return (
     <IconButton
       type="button"
       onClick={handleClick}
       disabled={isPending}
-      className={styles.icon}
+      className={className ?? styles.icon}
     >
       <Heart
         size={24}
@@ -56,3 +83,4 @@ export default function FavoriteButton({
     </IconButton>
   );
 }
+

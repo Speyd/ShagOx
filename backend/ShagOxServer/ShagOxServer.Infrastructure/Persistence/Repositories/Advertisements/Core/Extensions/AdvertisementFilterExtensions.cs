@@ -27,10 +27,31 @@ public static class AdvertisementFilterExtensions
 
         if (filter.CategoryId.HasValue)
         {
-            query = query
-                .Where(x => 
-                    x.CategoryId == filter.CategoryId.Value)
-                .OrderByDescending(x => x.Popularity);
+            query = query.Where(x => x.CategoryId == filter.CategoryId.Value);
+        }
+
+        if (filter.CategoryIds is { Count: > 0 })
+        {
+            query = query.Where(x => filter.CategoryIds.Contains(x.CategoryId));
+        }
+
+        if (filter.InStock.HasValue)
+        {
+            query = filter.InStock.Value
+                ? query.Where(x => x.Variants.Any(v => v.Stock > 0))
+                : query.Where(x => !x.Variants.Any(v => v.Stock > 0));
+        }
+
+        if (filter.MinPrice.HasValue)
+        {
+            query = query.Where(x =>
+                x.Variants.Any(v => v.Price >= filter.MinPrice.Value));
+        }
+
+        if (filter.MaxPrice.HasValue)
+        {
+            query = query.Where(x =>
+                x.Variants.Any(v => v.Price <= filter.MaxPrice.Value));
         }
 
         if (filter.Attributes is not null)

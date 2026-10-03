@@ -66,7 +66,7 @@ public class AdvertisementQueryRepository
         return await _db.Advertisements
             .WithIncludes()
             .Filter(filter)
-            .OrderByDescending(x => x.Popularity)
+            .ApplyCatalogOrdering(filter)
             .ToPagedResultAsync(pagination);
     }
 }

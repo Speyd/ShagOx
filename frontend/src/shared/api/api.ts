@@ -4,6 +4,9 @@ import { toast } from "sonner";
 export const api = axios.create({
   baseURL: "/api",
   withCredentials: true,
+  headers: {
+    "Accept-Language": navigator.language || "en",
+  },
 });
 
 api.interceptors.response.use(

@@ -28,6 +28,7 @@ import VerifyPage from "@/pages/verify-page";
 import CheckoutPage from "@/pages/checkout";
 import PaymentPage from "@/pages/payment";
 import BasketPage from "@/pages/basket";
+import CatalogPage from "@/pages/catalog";
 
 export default function Router() {
   return (
@@ -96,6 +97,8 @@ export default function Router() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="/catalog" element={<CatalogPage />} />
 
           <Route
             path="/checkout"

@@ -25,6 +25,7 @@ import logo from "@/shared/assets/icons/logo.png";
 import { useState } from "react";
 import { useLogout } from "@/features/auth/model/hooks/useLogout";
 import ConfirmModal from "@/shared/ui/confirm-modal";
+import { useNavigate } from "react-router-dom";
 
 type NavigationDrawerProps = {
   opened: boolean;
@@ -38,6 +39,7 @@ export default function NavigationDrawer({
   const [languageOpened, setLanguageOpened] = useState(false);
   const [logoutModalOpened, setLogoutModalOpened] = useState(false);
   const logoutMutation = useLogout();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logoutMutation.mutate();
@@ -82,7 +84,7 @@ export default function NavigationDrawer({
               <Text fz={14}>Головна</Text>
             </button>
 
-            <button className={styles.menuItem}>
+            <button className={styles.menuItem}  onClick={() => navigate("/catalog")}>
               <LayoutGrid />
 
               <Text fz={14}>Каталог</Text>

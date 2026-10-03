@@ -17,7 +17,7 @@ export default function AdvertisementInfo({
   description,
   price,
   currency,
-  stock,
+  stock = 0,
   properties,
 }: AdvertisementInfoProps) {
   return (

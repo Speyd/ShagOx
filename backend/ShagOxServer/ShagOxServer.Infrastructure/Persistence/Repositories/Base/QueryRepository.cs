@@ -46,7 +46,7 @@ public class QueryRepository<TEntity, TFilter>
         IQueryable<TEntity> query = _db.Set<TEntity>();
 
         query = ApplyIncludes(query);
-        query = ApplyFilter(_db.Set<TEntity>(), filter);
+        query = ApplyFilter(query, filter);
 
         return await query
             .ToPagedResultAsync(pagination);

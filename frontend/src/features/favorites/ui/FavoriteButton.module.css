@@ -1,0 +1,30 @@
+.cardButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-border);
+  background: #ffffff;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cardButton:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.cardButton:active {
+  transform: scale(0.95);
+}
+
+.cardButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

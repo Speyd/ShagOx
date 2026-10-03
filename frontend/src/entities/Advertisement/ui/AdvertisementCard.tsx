@@ -7,65 +7,60 @@ import {
   type AdvertisementShort,
 } from "@/shared/lib/types/advertisements";
 import FavoriteButton from "@/features/favorites";
-import { useBasketAction } from "@/features/basket/model/hooks/useBasketAction";
-import { Button, Image, Text } from "@mantine/core";
-import { Check, Plus, Star } from "lucide-react";
+
+import { Plus, Star } from "lucide-react";
+
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function AdvertisementCard(
   props: Advertisement | AdvertisementShort,
 ) {
-  const variantId = props.variants[0]?.id;
-  const { handleAdd, isInBasket, isLoading } = useBasketAction(variantId);
   const imageUrl =
     "images" in props
       ? props.images?.[0]?.url || "/placeholder-image.png"
       : "/placeholder-image.png";
 
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toast.success(`"${props.title}" додано до кошика!`);
+  };
+
+  const displayTitle = props.title;
+  const displaySubtitle = props.description || "Pro max";
+
   return (
     <div className={styles.card}>
       <Link to={`/advertisement/${props.id}`} className={styles.imageWrapper}>
-        <Image
+        <img
           src={imageUrl}
           alt={props.title}
-          fit="contain"
           className={styles.image}
+          loading="lazy"
         />
       </Link>
 
       <div className={styles.info}>
-        <Link
-          to={`/advertisement/${props.id}`}
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <Text fw={600} size="md" className={styles.title}>
-            {props.title}
-          </Text>
+        <Link to={`/advertisement/${props.id}`} className={styles.titleLink}>
+          <h3 className={styles.title} title={displayTitle}>
+            {displayTitle}
+          </h3>
+          <p className={styles.subtitle} title={displaySubtitle}>
+            {displaySubtitle}
+          </p>
         </Link>
-
-        <Text c="dimmed" size="sm" className={styles.description}>
-          {props.description}
-        </Text>
 
         <div className={styles.ratingContainer}>
           <div className={styles.rating}>
-            <Star size={16} fill="#fea945" color="#fea945" />
-            <Text size="sm" c="dimmed">
-              4.8
-            </Text>
-            <Text size="sm" c="dimmed">
-              (12 відгуків)
-            </Text>
+            <Star size={13} className={styles.ratingStar} />
+            <span>5.0 (10 Reviews)</span>
           </div>
 
           {getAdvertisementStock(props) > 0 ? (
-            <Text c="green" fw={600} size="xs">
-              В наявності
-            </Text>
+            <span className={styles.inStock}>В наявності</span>
           ) : (
-            <Text c="red" fw={600} size="xs">
-              Не в наявності
-            </Text>
+            <span className={styles.outOfStock}>Out of Stock</span>
           )}
         </div>
 
@@ -75,20 +70,16 @@ export default function AdvertisementCard(
         />
 
         <div className={styles.actionButtons}>
-          <Button
-            onClick={handleAdd}
-            loading={isLoading}
-            disabled={!variantId}
-            leftSection={isInBasket ? <Check size={16} /> : <Plus size={16} />}
-            bg="var(--color-base)"
-            bdrs={4}
-            h={44}
-            px={16}
-            className={styles.addToBasketButton}
+          <button
+            type="button"
+            className={styles.addButton}
+            onClick={handleAddToCart}
           >
-            {isInBasket ? "У кошику" : "Додати в кошик"}
-          </Button>
-          <FavoriteButton advertisementId={props.id} />
+            <Plus size={15} strokeWidth={2.5} />
+            <span>Add To Cart</span>
+          </button>
+
+          <FavoriteButton advertisementId={props.id} variant="card" />
         </div>
       </div>
     </div>

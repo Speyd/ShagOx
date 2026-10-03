@@ -1,0 +1,152 @@
+2026-09-28 00:00:04.888 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Advertisement created successfully. Id: 83
+2026-09-28 00:00:56.263 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Advertisement created successfully. Id: 84
+2026-09-28 00:04:13.181 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to System.Collections.Generic.List`1[ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest]. Path: $ | LineNumber: 0 | BytePositionInLine: 2.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 72
+2026-09-28 00:04:48.149 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to System.Collections.Generic.List`1[ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest]. Path: $ | LineNumber: 0 | BytePositionInLine: 2.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 72
+2026-09-28 00:05:27.050 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest. Path: $[0] | LineNumber: 1 | BytePositionInLine: 23.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 72
+2026-09-28 00:05:38.665 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest. Path: $[0] | LineNumber: 1 | BytePositionInLine: 23.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.Converters.ObjectWithParameterizedConstructorConverter`1.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 72
+2026-09-28 00:06:06.319 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to System.Collections.Generic.List`1[ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest]. Path: $ | LineNumber: 0 | BytePositionInLine: 1.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 72
+2026-09-28 00:07:14.772 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to System.Collections.Generic.List`1[ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest]. Path: $ | LineNumber: 0 | BytePositionInLine: 1.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 72
+2026-09-28 00:07:43.100 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to System.Collections.Generic.List`1[ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest]. Path: $ | LineNumber: 0 | BytePositionInLine: 1.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 77
+2026-09-28 00:09:29.831 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to System.Collections.Generic.List`1[ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest]. Path: $ | LineNumber: 0 | BytePositionInLine: 1.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 77
+2026-09-28 00:11:12.968 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to System.Collections.Generic.List`1[ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest]. Path: $ | LineNumber: 0 | BytePositionInLine: 1.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 77
+2026-09-28 00:12:37.530 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to System.Collections.Generic.List`1[ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest]. Path: $ | LineNumber: 0 | BytePositionInLine: 1.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 77
+2026-09-28 00:13:37.184 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.Text.Json.JsonException: The JSON value could not be converted to System.Collections.Generic.List`1[ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create.AdvertisementVariantCreateRequest]. Path: $ | LineNumber: 0 | BytePositionInLine: 1.
+   at System.Text.Json.ThrowHelper.ThrowJsonException_DeserializeUnableToConvertValue(Type propertyType)
+   at System.Text.Json.Serialization.JsonCollectionConverter`2.OnTryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, TCollection& value)
+   at System.Text.Json.Serialization.JsonConverter`1.TryRead(Utf8JsonReader& reader, Type typeToConvert, JsonSerializerOptions options, ReadStack& state, T& value, Boolean& isPopulatedValue)
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader& reader, T& value, JsonSerializerOptions options, ReadStack& state)
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.Deserialize(Utf8JsonReader& reader, ReadStack& state)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 utf8Json, JsonTypeInfo`1 jsonTypeInfo, Nullable`1 actualByteCount)
+   at System.Text.Json.JsonSerializer.ReadFromSpan[TValue](ReadOnlySpan`1 json, JsonTypeInfo`1 jsonTypeInfo)
+   at System.Text.Json.JsonSerializer.Deserialize[TValue](String json, JsonSerializerOptions options)
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 77
+2026-09-28 00:17:05.748 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Failed to create advertisement. UserId: 66, Title: Samsung A19
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService.CreateAsync(AdvertisementCreateRequest request, Int64 userId) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Create\AdvertisementCreateService.cs:line 86
+2026-09-28 00:21:23.300 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Create.AdvertisementCreateService | Advertisement created successfully. Id: 98
+2026-09-28 15:51:46.793 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 15:52:20.320 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 15:53:22.234 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 15:54:46.293 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 15:55:11.012 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:00:35.475 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:01:36.953 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:08:05.351 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:10:18.797 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:11:45.905 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:16:20.322 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:17:34.060 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:18:42.273 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:19:56.876 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:20:09.650 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:20:41.820 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:21:27.611 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:21:56.208 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:23:24.114 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:23:42.392 +02:00 [INF] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Advertisement updated successfully. Id: 98
+2026-09-28 16:28:01.803 +02:00 [ERR] ShagOxServer.Application.Services.Advertisements.Core.Update.AdvertisementUpdateService | Failed to update advertisement variant(variant update). VariantId: 1, Error: Das Attribut kann nur in einer Anzeigenvariante verwendet werden.

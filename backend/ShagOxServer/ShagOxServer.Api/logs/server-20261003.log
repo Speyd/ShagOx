@@ -1,0 +1,78 @@
+2026-10-03 02:20:34.896 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 02:20:34.914 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 02:20:34.952 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 02:20:34.953 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 02:20:34.954 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 02:25:07.119 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-10-03 02:25:39.249 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-10-03 02:27:06.799 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 02:27:06.818 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 02:27:06.850 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 02:27:06.851 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 02:27:06.852 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 02:27:45.576 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 02:27:45.596 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 02:27:45.629 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 02:27:45.630 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 02:27:45.630 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 02:31:15.288 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 02:31:15.308 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 02:31:15.347 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 02:31:15.348 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 02:31:15.349 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 02:31:41.661 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 02:31:41.680 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 02:31:41.714 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 02:31:41.715 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 02:31:41.715 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 02:32:13.335 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-03 02:32:13.339 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-03 02:32:31.002 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-10-03 02:32:36.944 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-10-03 02:41:39.305 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 02:41:39.327 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 02:41:39.367 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 02:41:39.368 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 02:41:39.369 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 02:42:16.823 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-10-03 02:42:19.257 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-10-03 02:44:50.075 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 02:44:50.093 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 02:44:50.126 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 02:44:50.128 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 02:44:50.129 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 12:52:00.715 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 12:52:00.735 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 12:52:00.774 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 12:52:00.775 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 12:52:00.776 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 13:16:19.540 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 13:16:19.560 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 13:16:19.596 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 13:16:19.597 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 13:16:19.598 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 13:44:35.783 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 13:44:35.803 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 13:44:35.840 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 13:44:35.841 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 13:44:35.842 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 14:03:56.443 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 14:03:56.462 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 14:03:56.498 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 14:03:56.499 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 14:03:56.500 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 14:21:26.871 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 14:21:26.890 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 14:21:26.928 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 14:21:26.930 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 14:21:26.931 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 14:35:07.946 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 14:35:07.968 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 14:35:08.005 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 14:35:08.006 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 14:35:08.007 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-03 14:49:45.969 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-03 14:49:45.989 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-03 14:49:46.024 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-03 14:49:46.027 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-03 14:49:46.028 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api

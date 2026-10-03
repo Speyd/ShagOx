@@ -1,0 +1,530 @@
+2026-09-28 00:04:04.203 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:04:04.225 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:04:04.272 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:04:04.273 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:04:04.274 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:04:46.262 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:04:46.282 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:04:46.324 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:04:46.325 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:04:46.326 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:05:36.689 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:05:36.708 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:05:36.754 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:05:36.755 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:05:36.756 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:07:12.332 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:07:12.352 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:07:12.394 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:07:12.395 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:07:12.396 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:07:41.001 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:07:41.020 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:07:41.063 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:07:41.064 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:07:41.065 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:12:33.479 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:12:33.501 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:12:33.550 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:12:33.551 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:12:33.552 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:17:40.187 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:17:40.206 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:17:40.251 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:17:40.253 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:17:40.253 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:19:23.164 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:19:23.186 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:19:23.234 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:19:23.235 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:19:23.236 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:21:19.630 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:21:19.650 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:21:19.695 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:21:19.696 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:21:19.696 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:22:15.535 +02:00 [ERR] Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ShagOxServer.Application.Services.Specification.Currencies.Mapping.CurrencyMapper.ToDto(Currency x) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Specification\Currencies\Mapping\CurrencyMapper.cs:line 10
+   at ShagOxServer.Application.Services.Advertisements.Core.Mapping.AdvertisementMapper.ToDto(Advertisement x) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Mapping\AdvertisementMapper.cs:line 15
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.ApplyMapper(Advertisement entity) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 35
+   at ShagOxServer.SharedKernel.Abstractions.Results.Extensions.ResultMappingExtensions.ToResult[T,TDto](T entity, Func`2 map, String errorMessage) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.SharedKernel\Abstractions\Results\Extensions\ResultMappingExtensions.cs:line 19
+   at ShagOxServer.Application.Services.Base.BaseQueryService`3.GetByIdAsync(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Base\BaseQueryService.cs:line 35
+   at ShagOxServer.Api.Controllers.Advertisements.Core.AdvertisementQueriesController.GetById(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Controllers\Advertisements\Core\AdvertisementQueriesController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at ShagOxServer.Api.Middleware.UpdateLastSeenMiddleware.InvokeAsync(HttpContext context, IRepository`1 repository, IUnitOfWork unitOfWork) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Middleware\UpdateLastSeenMiddleware.cs:line 45
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-28 00:27:01.887 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:27:01.908 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:27:01.953 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:27:01.954 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:27:01.955 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:27:47.914 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 00:27:47.933 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 00:27:47.975 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 00:27:47.977 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 00:27:47.978 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 00:27:49.110 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 12:09:09.513 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 12:09:09.534 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 12:09:09.576 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 12:09:09.577 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 12:09:09.578 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 12:09:42.036 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 12:09:42.314 +02:00 [ERR] Microsoft.EntityFrameworkCore.Query An exception occurred while iterating over the results of a query for context type 'ShagOxServer.Infrastructure.Persistence.DbContexts.AppDbContext'.
+System.InvalidOperationException: A second operation was started on this context instance before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext. For more information on how to avoid threading issues with DbContext, see https://go.microsoft.com/fwlink/?linkid=2097913.
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.ConcurrencyDetector.EnterCriticalSection()
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+System.InvalidOperationException: A second operation was started on this context instance before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext. For more information on how to avoid threading issues with DbContext, see https://go.microsoft.com/fwlink/?linkid=2097913.
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.ConcurrencyDetector.EnterCriticalSection()
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+2026-09-28 12:09:42.439 +02:00 [ERR] Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: A second operation was started on this context instance before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext. For more information on how to avoid threading issues with DbContext, see https://go.microsoft.com/fwlink/?linkid=2097913.
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.ConcurrencyDetector.EnterCriticalSection()
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.AttributeDefinitionQueryRepository.GetByKeysAsync(Int64 categoryId, IEnumerable`1 keys) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Infrastructure\Persistence\Repositories\Dictionaries\Attributes\AttributeDefinitions\AttributeDefinitionQueryRepository.cs:line 46
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetAttributeDefinitionsAsync(AdvertisementVariant variant, List`1 jsonAttributes) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Attributes.cs:line 69
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetVariantAttributeAsync(AdvertisementVariant variant) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Attributes.cs:line 26
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.<ApplyMapperAsync>b__3_2(AdvertisementVariant x) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 43
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.ApplyMapperAsync(Advertisement entity) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 41
+   at ShagOxServer.SharedKernel.Abstractions.Results.Extensions.ResultMappingExtensions.ToResultAsync[T,TDto](T entity, Func`2 map, String errorMessage) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.SharedKernel\Abstractions\Results\Extensions\ResultMappingExtensions.cs:line 34
+   at ShagOxServer.Application.Services.Base.BaseQueryService`3.GetByIdAsync(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Base\BaseQueryService.cs:line 33
+   at ShagOxServer.Api.Controllers.Advertisements.Core.AdvertisementQueriesController.GetById(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Controllers\Advertisements\Core\AdvertisementQueriesController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at ShagOxServer.Api.Middleware.UpdateLastSeenMiddleware.InvokeAsync(HttpContext context, IRepository`1 repository, IUnitOfWork unitOfWork) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Middleware\UpdateLastSeenMiddleware.cs:line 45
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-28 12:11:47.431 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 12:11:47.450 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 12:11:47.493 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 12:11:47.494 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 12:11:47.495 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 12:11:50.922 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 13:31:07.933 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 13:31:07.953 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 13:31:08.000 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 13:31:08.001 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 13:31:08.002 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 13:31:15.961 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 13:40:44.518 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 13:40:44.539 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 13:40:44.588 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 13:40:44.590 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 13:40:44.591 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 13:42:42.451 +02:00 [FTL]  Application terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Program.cs:line 34
+2026-09-28 13:42:54.843 +02:00 [FTL]  Application terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Program.cs:line 34
+2026-09-28 13:54:28.570 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 13:54:28.589 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 13:54:28.633 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 13:54:28.635 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 13:54:28.636 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 13:56:43.246 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 13:58:01.003 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 13:58:01.024 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 13:58:01.072 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 13:58:01.073 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 13:58:01.074 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 13:58:09.343 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 13:58:09.361 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 13:58:09.405 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 13:58:09.406 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 13:58:09.407 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 13:58:15.250 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 14:01:22.227 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 14:01:22.247 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 14:01:22.299 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 14:01:22.300 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 14:01:22.301 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 14:09:25.452 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 14:36:28.965 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 14:36:28.984 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 14:36:29.030 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 14:36:29.032 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 14:36:29.032 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 15:29:53.490 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 15:29:53.510 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 15:29:53.556 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 15:29:53.557 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 15:29:53.559 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 15:51:12.814 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 15:51:12.833 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 15:51:12.881 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 15:51:12.883 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 15:51:12.883 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 15:51:41.720 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 15:51:41.738 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 15:51:41.784 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 15:51:41.786 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 15:51:41.786 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 15:51:46.334 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 15:54:44.550 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 15:54:44.569 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 15:54:44.616 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 15:54:44.617 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 15:54:44.618 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 15:54:45.844 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 15:55:07.755 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 15:55:07.774 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 15:55:07.818 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 15:55:07.819 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 15:55:07.819 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 15:55:10.549 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:01:32.390 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:01:32.410 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:01:32.456 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:01:32.457 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:01:32.458 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:01:36.505 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:07:57.960 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:07:57.980 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:07:58.028 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:07:58.030 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:07:58.031 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:08:04.897 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:11:40.675 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:11:40.695 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:11:40.741 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:11:40.742 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:11:40.744 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:11:45.450 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:15:50.357 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:15:50.378 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:15:50.421 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:15:50.422 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:15:50.423 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:15:57.852 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:19:55.237 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:19:55.256 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:19:55.303 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:19:55.304 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:19:55.306 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:19:55.957 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:20:06.336 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:20:06.356 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:20:06.402 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:20:06.403 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:20:06.404 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:20:08.993 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:20:39.602 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:20:39.622 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:20:39.670 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:20:39.672 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:20:39.673 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:20:41.156 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:21:25.890 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:21:25.910 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:21:25.959 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:21:25.960 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:21:25.961 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:21:26.963 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:21:54.164 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:21:54.184 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:21:54.234 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:21:54.235 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:21:54.236 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:21:55.556 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:23:22.024 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:23:22.044 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:23:22.092 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:23:22.093 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:23:22.094 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:23:23.469 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:23:38.483 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:23:38.507 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:23:38.556 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:23:38.557 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:23:38.558 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:23:41.720 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:27:50.316 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:27:50.335 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:27:50.382 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:27:50.383 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:27:50.385 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:28:01.420 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 16:41:08.737 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:41:08.758 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:41:08.807 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:41:08.808 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:41:08.809 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 16:54:20.665 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 16:54:20.686 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 16:54:20.733 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 16:54:20.734 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 16:54:20.735 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 17:10:32.703 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 17:10:32.723 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 17:10:32.770 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 17:10:32.772 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 17:10:32.773 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 17:52:28.199 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 17:52:28.219 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 17:52:28.268 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 17:52:28.269 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 17:52:28.270 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 17:53:17.979 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 17:53:18.000 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 17:53:18.044 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 17:53:18.045 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 17:53:18.046 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 18:02:04.357 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 18:02:04.376 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 18:02:04.423 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 18:02:04.424 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 18:02:04.425 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 19:32:48.107 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 19:32:48.127 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 19:32:48.171 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 19:32:48.172 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 19:32:48.173 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 19:37:52.250 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 19:37:52.269 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 19:37:52.312 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 19:37:52.313 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 19:37:52.314 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 20:13:28.775 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 20:13:28.796 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 20:13:28.842 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 20:13:28.843 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 20:13:28.844 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 20:17:15.256 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 20:17:15.276 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 20:17:15.324 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 20:17:15.325 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 20:17:15.326 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 20:20:28.956 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 20:20:28.976 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 20:20:29.024 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 20:20:29.026 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 20:20:29.027 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 20:37:07.187 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 20:37:07.206 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 20:37:07.252 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 20:37:07.253 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 20:37:07.254 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 20:39:24.229 +02:00 [FTL]  Application terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Program.cs:line 34
+2026-09-28 20:39:33.039 +02:00 [FTL]  Application terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Program.cs:line 34
+2026-09-28 20:40:14.976 +02:00 [FTL]  Application terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Program.cs:line 34
+2026-09-28 23:00:14.156 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 23:00:14.177 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 23:00:14.230 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 23:00:14.231 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 23:00:14.232 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 23:00:21.190 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 23:00:21.738 +02:00 [ERR] Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Das Attribut „Color“ muss die ID eines Wörterbuchwerts enthalten.
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.GetAttributesByVariantIdAsync(IEnumerable`1 variants) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 70
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.ApplyMapperAsync(Advertisement entity) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 45
+   at ShagOxServer.SharedKernel.Abstractions.Results.Extensions.ResultMappingExtensions.ToResultAsync[T,TDto](T entity, Func`2 map, String errorMessage) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.SharedKernel\Abstractions\Results\Extensions\ResultMappingExtensions.cs:line 34
+   at ShagOxServer.Application.Services.Base.BaseQueryService`3.GetByIdAsync(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Base\BaseQueryService.cs:line 33
+   at ShagOxServer.Api.Controllers.Advertisements.Core.AdvertisementQueriesController.GetById(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Controllers\Advertisements\Core\AdvertisementQueriesController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at ShagOxServer.Api.Middleware.UpdateLastSeenMiddleware.InvokeAsync(HttpContext context, IRepository`1 repository, IUnitOfWork unitOfWork) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Middleware\UpdateLastSeenMiddleware.cs:line 45
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-28 23:02:10.348 +02:00 [ERR] Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query.AttributeDictionaryValueQueryService.ApplyMapperAsync(AttributeDictionaryValue entity) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Dictionaries\Attributes\AttributeDictionaryValues\Query\AttributeDictionaryValueQueryService.cs:line 50
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.VariantAttributeQueryService.ApplyMapperAsync(AttributeDefinition attributeDefinition, AttributeDictionaryValue value) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\VariantAttributeQueryService.cs:line 23
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetSelectAttributeDto(AttributeDefinition attribute, JsonElement element, Dictionary`2 valuesById) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Validation.cs:line 106
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetVariantAttributeDto(AttributeDefinition attribute, JsonElement element, Dictionary`2 valuesById) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Validation.cs:line 43
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.MapAttributes(List`1 jsonAttributes, Dictionary`2 definitionsByKey, Dictionary`2 valuesById) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Attributes.cs:line 136
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetVariantAttributeAsync(AdvertisementVariant variant) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Attributes.cs:line 53
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.GetAttributesByVariantIdAsync(IEnumerable`1 variants) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 65
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.ApplyMapperAsync(Advertisement entity) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 45
+   at ShagOxServer.SharedKernel.Abstractions.Results.Extensions.ResultMappingExtensions.ToResultAsync[T,TDto](T entity, Func`2 map, String errorMessage) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.SharedKernel\Abstractions\Results\Extensions\ResultMappingExtensions.cs:line 34
+   at ShagOxServer.Application.Services.Base.BaseQueryService`3.GetByIdAsync(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Base\BaseQueryService.cs:line 33
+   at ShagOxServer.Api.Controllers.Advertisements.Core.AdvertisementQueriesController.GetById(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Controllers\Advertisements\Core\AdvertisementQueriesController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at ShagOxServer.Api.Middleware.UpdateLastSeenMiddleware.InvokeAsync(HttpContext context, IRepository`1 repository, IUnitOfWork unitOfWork) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Middleware\UpdateLastSeenMiddleware.cs:line 45
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-28 23:05:33.082 +02:00 [ERR] Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query.AttributeDictionaryValueQueryService.ApplyMapperAsync(AttributeDictionaryValue entity) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Dictionaries\Attributes\AttributeDictionaryValues\Query\AttributeDictionaryValueQueryService.cs:line 50
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.VariantAttributeQueryService.ApplyMapperAsync(AttributeDefinition attributeDefinition, AttributeDictionaryValue value) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\VariantAttributeQueryService.cs:line 23
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetSelectAttributeDto(AttributeDefinition attribute, JsonElement element, Dictionary`2 valuesById) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Validation.cs:line 106
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetVariantAttributeDto(AttributeDefinition attribute, JsonElement element, Dictionary`2 valuesById) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Validation.cs:line 43
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.MapAttributes(List`1 jsonAttributes, Dictionary`2 definitionsByKey, Dictionary`2 valuesById) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Attributes.cs:line 136
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetVariantAttributeAsync(AdvertisementVariant variant) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Attributes.cs:line 53
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.GetAttributesByVariantIdAsync(IEnumerable`1 variants) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 65
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.ApplyMapperAsync(Advertisement entity) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 45
+   at ShagOxServer.SharedKernel.Abstractions.Results.Extensions.ResultMappingExtensions.ToResultAsync[T,TDto](T entity, Func`2 map, String errorMessage) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.SharedKernel\Abstractions\Results\Extensions\ResultMappingExtensions.cs:line 34
+   at ShagOxServer.Application.Services.Base.BaseQueryService`3.GetByIdAsync(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Base\BaseQueryService.cs:line 33
+   at ShagOxServer.Api.Controllers.Advertisements.Core.AdvertisementQueriesController.GetById(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Controllers\Advertisements\Core\AdvertisementQueriesController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at ShagOxServer.Api.Middleware.UpdateLastSeenMiddleware.InvokeAsync(HttpContext context, IRepository`1 repository, IUnitOfWork unitOfWork) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Middleware\UpdateLastSeenMiddleware.cs:line 45
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-28 23:06:58.644 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 23:06:58.665 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 23:06:58.714 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 23:06:58.715 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 23:06:58.716 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 23:07:01.965 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 23:07:23.787 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 23:07:23.806 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 23:07:23.854 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 23:07:23.855 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 23:07:23.856 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 23:07:26.203 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-28 23:07:26.587 +02:00 [ERR] Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: The LINQ expression 'DbSet<AttributeDictionaryValueTranslation>()
+    .Join(
+        inner: DbSet<AttributeDictionaryValue>(), 
+        outerKeySelector: a => EF.Property<long?>(a, "TranslatableId"), 
+        innerKeySelector: a0 => EF.Property<long?>(a0, "Id"), 
+        resultSelector: (o, i) => new TransparentIdentifier<AttributeDictionaryValueTranslation, AttributeDictionaryValue>(
+            Outer = o, 
+            Inner = i
+        ))
+    .Where(a => a.Inner.GetIdentificator() == @identificator && a.Outer.Language == @language)' could not be translated. Either rewrite the query in a form that can be translated, or switch to client evaluation explicitly by inserting a call to 'AsEnumerable', 'AsAsyncEnumerable', 'ToList', or 'ToListAsync'. See https://go.microsoft.com/fwlink/?linkid=2101038 for more information.
+   at Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.Translate(Expression expression)
+   at Microsoft.EntityFrameworkCore.Query.QueryCompilationContext.CreateQueryExecutorExpression[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.QueryCompilationContext.CreateQueryExecutor[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Storage.Database.CompileQuery[TResult](Expression query, Boolean async)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.CompileQueryCore[TResult](IDatabase database, Expression query, IModel model, Boolean async)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass11_0`1.<ExecuteCore>b__0()
+   at Microsoft.EntityFrameworkCore.Query.Internal.CompiledQueryCache.GetOrAddQuery[TResult](Object cacheKey, Func`1 compiler)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore[TResult](Expression query, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteAsync[TResult](Expression query, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.ExecuteAsync[TResult](Expression expression, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteAsync[TSource,TResult](MethodInfo operatorMethodInfo, IQueryable`1 source, Expression expression, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ExecuteAsync[TSource,TResult](MethodInfo operatorMethodInfo, IQueryable`1 source, LambdaExpression expression, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.FirstOrDefaultAsync[TSource](IQueryable`1 source, Expression`1 predicate, CancellationToken cancellationToken)
+   at ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations.QueryTranslationRepository`3.GetByIdentificatorAsync(String identificator, String language) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Infrastructure\Persistence\Repositories\Base\Translations\QueryTranslationRepository.cs:line 31
+   at ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query.AttributeDictionaryValueQueryService.ApplyMapperAsync(AttributeDictionaryValue entity) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Dictionaries\Attributes\AttributeDictionaryValues\Query\AttributeDictionaryValueQueryService.cs:line 47
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.VariantAttributeQueryService.ApplyMapperAsync(AttributeDefinition attributeDefinition, AttributeDictionaryValue value) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\VariantAttributeQueryService.cs:line 23
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetSelectAttributeDto(AttributeDefinition attribute, JsonElement element, Dictionary`2 valuesById) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Validation.cs:line 106
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetVariantAttributeDto(AttributeDefinition attribute, JsonElement element, Dictionary`2 valuesById) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Validation.cs:line 43
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.MapAttributes(List`1 jsonAttributes, Dictionary`2 definitionsByKey, Dictionary`2 valuesById) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Attributes.cs:line 136
+   at ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query.AdvertisementVariantQueryService.GetVariantAttributeAsync(AdvertisementVariant variant) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\AdvertisementVariants\Query\AdvertisementVariantQueryService.Attributes.cs:line 53
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.GetAttributesByVariantIdAsync(IEnumerable`1 variants) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 65
+   at ShagOxServer.Application.Services.Advertisements.Core.Query.AdvertisementQueryService.ApplyMapperAsync(Advertisement entity) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Advertisements\Core\Query\AdvertisementQueryService.cs:line 45
+   at ShagOxServer.SharedKernel.Abstractions.Results.Extensions.ResultMappingExtensions.ToResultAsync[T,TDto](T entity, Func`2 map, String errorMessage) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.SharedKernel\Abstractions\Results\Extensions\ResultMappingExtensions.cs:line 34
+   at ShagOxServer.Application.Services.Base.BaseQueryService`3.GetByIdAsync(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Application\Services\Base\BaseQueryService.cs:line 33
+   at ShagOxServer.Api.Controllers.Advertisements.Core.AdvertisementQueriesController.GetById(Int64 id) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Controllers\Advertisements\Core\AdvertisementQueriesController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at ShagOxServer.Api.Middleware.UpdateLastSeenMiddleware.InvokeAsync(HttpContext context, IRepository`1 repository, IUnitOfWork unitOfWork) in C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api\Middleware\UpdateLastSeenMiddleware.cs:line 45
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-28 23:12:29.439 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-09-28 23:12:29.463 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-09-28 23:12:29.513 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-09-28 23:12:29.514 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-09-28 23:12:29.515 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-09-28 23:12:36.168 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.

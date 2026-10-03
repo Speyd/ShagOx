@@ -1,8 +1,7 @@
-﻿using ShagOxServer.Application.Services.Caches.Keys;
-using ShagOxServer.Domain.Entities.Account;
+﻿using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Auth;
-public class RoleCache
+public static class RoleCache
 {
     public static readonly string Prefix =
        CacheKeys.Prefix<Role>();

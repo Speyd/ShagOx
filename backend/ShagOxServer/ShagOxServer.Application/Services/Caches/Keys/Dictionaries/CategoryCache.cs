@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
-public class CategoryCache
+public static class CategoryCache
 {
     public static readonly string Prefix =
        CacheKeys.LanguagePrefix<Category>();

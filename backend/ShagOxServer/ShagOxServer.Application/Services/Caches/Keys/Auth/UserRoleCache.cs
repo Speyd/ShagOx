@@ -1,5 +1,4 @@
-﻿using ShagOxServer.Application.Services.Caches.Keys;
-using ShagOxServer.Domain.Entities.Account;
+﻿using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Auth;
 public static class UserRoleCache

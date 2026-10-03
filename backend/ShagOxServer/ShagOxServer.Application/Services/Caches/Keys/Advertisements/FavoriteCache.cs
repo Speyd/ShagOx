@@ -2,7 +2,7 @@
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Domain.Caches.Advertisements;
-public class FavoriteCache
+public static class FavoriteCache
 {
     public static readonly string Prefix =
        CacheKeys.Prefix<Favorite>();

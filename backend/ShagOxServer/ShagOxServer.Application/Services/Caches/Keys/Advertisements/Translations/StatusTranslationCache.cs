@@ -2,7 +2,7 @@
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 
 namespace ShagOxServer.Application.Services.Caches.Advertisements.Translations;
-public class StatusTranslationCache
+public static class StatusTranslationCache
 {
     public static readonly string Prefix =
        CacheKeys.Prefix<StatusTranslation>();

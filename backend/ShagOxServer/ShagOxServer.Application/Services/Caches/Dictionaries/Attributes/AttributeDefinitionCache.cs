@@ -5,9 +5,8 @@ using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 namespace ShagOxServer.Application.Services.Caches.Dictionaries.Attributes;
 public class AttributeDefinitionCache
 {
-    private static readonly string Prefix =
-           typeof(AttributeDefinition).Name.ToLowerInvariant();
-
+    public static readonly string Prefix =
+       CacheKeys.Prefix<AttributeDefinition>();
 
     public static async Task InvalidateDeleteAsync(
         ICacheService cache,

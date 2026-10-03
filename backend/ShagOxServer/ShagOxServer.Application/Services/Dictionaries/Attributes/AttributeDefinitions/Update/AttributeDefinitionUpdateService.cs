@@ -3,12 +3,9 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
-using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Baskets;
-using ShagOxServer.Application.Services.Caches.Dictionaries.Attributes;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -22,29 +19,26 @@ public class AttributeDefinitionUpdateService
     private readonly AttributeDefinitionValidator _attributeValidator;
     private readonly AttributeDefinitionUpdateValidator _attributeUpdateValidator;
 
-    private readonly IBasketAttributeQueryRepository _basketrepository;
+    private readonly AttributeDefinitionInvalidationService _attribureInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionUpdateService> _logger;
-    private readonly ICacheService _cache;
 
 
     public AttributeDefinitionUpdateService(
         IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
         AttributeDefinitionUpdateValidator attributeUpdateValidator,
-        IBasketAttributeQueryRepository basketrepository,
+        AttributeDefinitionInvalidationService attribureInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<AttributeDefinitionUpdateService> logger,
-        ICacheService cache)
+        ILogger<AttributeDefinitionUpdateService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _attributeUpdateValidator = attributeUpdateValidator;
-        _basketrepository = basketrepository;
+        _attribureInvalid = attribureInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _cache = cache;
     }
 
 
@@ -93,15 +87,6 @@ public class AttributeDefinitionUpdateService
             _attributeRepository.Update(attribute.Value!);
 
             await _unitOfWork.CommitAsync();
-
-            await AttributeDefinitionCache
-                .InvalidateUpdateAsync(_cache, attribute.Value!);
-
-            await BasketAttributeCache
-                .InvalidateByAttributeDefinitionAsync(
-                _cache,
-                _basketrepository,
-                attributeId);
         }
         catch(Exception ex)
         {
@@ -115,6 +100,9 @@ public class AttributeDefinitionUpdateService
             return Result<UpdateResponse>.Fail(
                 EntityErrorResources.AttributeDefinitionUpdateFailed);
         }
+
+        await _attribureInvalid
+            .InvalidateUpdateAsync(attributeId);
 
         return Result<UpdateResponse>.Success(result);
     }

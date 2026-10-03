@@ -43,12 +43,12 @@ public class BasketAttributeQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("attribute-defenition/{id:long}")]
-    public async Task<IActionResult> GetByAttributeDefenition(
+    [HttpGet("attribute-definition/{id:long}")]
+    public async Task<IActionResult> GetByAttributeDefinition(
         [FromRoute] long id)
     {
         var result = await _queryService
-            .GetByAttributeDefenitionAsync(id);
+            .GetByAttributeDefinitionAsync(id);
 
         return result.ToActionResult();
     }

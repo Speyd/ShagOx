@@ -4,6 +4,9 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Translations.Mapping;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -15,6 +18,8 @@ public class AttributeDefinitionTranslationDeleteService
     private readonly IRepository<AttributeDefinitionTranslation> _attributeRepository;
     private readonly AttributeDefinitionTranslationValidator _attributeValidator;
 
+    private readonly AttributeDefinitionTranslationInvalidationService _transInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionTranslationDeleteService> _logger;
 
@@ -22,11 +27,13 @@ public class AttributeDefinitionTranslationDeleteService
     public AttributeDefinitionTranslationDeleteService(
         IRepository<AttributeDefinitionTranslation> attributeRepository,
         AttributeDefinitionTranslationValidator attributeValidator,
+         AttributeDefinitionTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionTranslationDeleteService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
+        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -35,17 +42,17 @@ public class AttributeDefinitionTranslationDeleteService
     public async Task<Result<DeleteResponse>> DeleteAsync(
         long id)
     {
-        var region = await _attributeValidator
+        var attributeTrans = await _attributeValidator
             .GetByIdAsync(id);
 
-        if (!region.IsSuccess)
-            return Result<DeleteResponse>.Fail(region.Error);
+        if (!attributeTrans.IsSuccess)
+            return Result<DeleteResponse>.Fail(attributeTrans.Error);
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _attributeRepository.Delete(region.Value!);
+            _attributeRepository.Delete(attributeTrans.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -62,9 +69,12 @@ public class AttributeDefinitionTranslationDeleteService
                 EntityErrorResources.AttributeDefinitionTranslationDeleteFailed);
         }
 
+        await _transInvalid.InvalidateDeleteAsync(
+            BaseTranslationCacheMapper.ToInfo(attributeTrans.Value!));
+
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
-               region.Value!.Id,
+               attributeTrans.Value!.Id,
                DateTime.UtcNow
            )
        );

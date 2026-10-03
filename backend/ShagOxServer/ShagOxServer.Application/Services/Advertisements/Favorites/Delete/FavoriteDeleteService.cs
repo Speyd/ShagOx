@@ -5,7 +5,9 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -17,23 +19,24 @@ public class FavoriteDeleteService
     private readonly IRepository<Favorite> _favoriteRepository;
     private readonly FavoriteValidator _favoriteValidator;
 
+    private readonly FavoriteInvalidationService _favoriteInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<FavoriteDeleteService> _logger;
-    private readonly ICacheService _cache;
 
 
     public FavoriteDeleteService(
         IRepository<Favorite> favoriteRepository,
         FavoriteValidator favoriteValidator,
+        FavoriteInvalidationService favoriteInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<FavoriteDeleteService> logger,
-        ICacheService cache)
+        ILogger<FavoriteDeleteService> logger)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;
+        _favoriteInvalid = favoriteInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _cache = cache;
     }
 
 
@@ -57,9 +60,6 @@ public class FavoriteDeleteService
             _favoriteRepository.Delete(favorite.Value!);
 
             await _unitOfWork.CommitAsync();
-
-            await FavoriteCache.InvalidateDeleteAsync(_cache, 
-                favorite.Value!);
         }
         catch(Exception ex)
         {
@@ -79,6 +79,9 @@ public class FavoriteDeleteService
         _logger.LogInformation(
             "Favorite delete successfully. Id: {Id}",
             favorite.Value!.Id);
+
+        await _favoriteInvalid.InvalidateDeleteAsync(
+            FavoriteCacheMapper.ToList(favorite.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

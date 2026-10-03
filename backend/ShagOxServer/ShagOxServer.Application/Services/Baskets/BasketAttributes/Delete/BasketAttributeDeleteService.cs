@@ -3,11 +3,11 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Delete;
-using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
 using ShagOxServer.Application.Services.Caches.Baskets;
-using ShagOxServer.Application.Services.Caches.Dictionaries.Attributes;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -18,23 +18,23 @@ public class BasketAttributeDeleteService
     private readonly IRepository<BasketAttribute> _attributeRepository;
     private readonly BasketAttributeValidator _attributeValidator;
 
+    private readonly BasketAttributeInvalidationService _attributeInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketAttributeDeleteService> _logger;
-    private readonly ICacheService _cache;
-
 
     public BasketAttributeDeleteService(
         IRepository<BasketAttribute> attributeRepository,
         BasketAttributeValidator attributeValidator,
+        BasketAttributeInvalidationService attributeInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<BasketAttributeDeleteService> logger,
-        ICacheService cache)
+        ILogger<BasketAttributeDeleteService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
+        _attributeInvalid = attributeInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _cache = cache;
     }
 
 
@@ -54,9 +54,6 @@ public class BasketAttributeDeleteService
             _attributeRepository.Delete(attribute.Value!);
 
             await _unitOfWork.CommitAsync();
-
-            await BasketAttributeCache
-                .InvalidateDeleteAsync(_cache, attribute.Value!);
         }
         catch(Exception ex)
         {
@@ -70,6 +67,9 @@ public class BasketAttributeDeleteService
             return Result<DeleteResponse>.Fail(
                 EntityErrorResources.BasketAttributeDeleteFailed);
         }
+
+        await _attributeInvalid.InvalidateDeleteAsync(
+            BasketAttributeCacheMapper.ToInfo(attribute.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

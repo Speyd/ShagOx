@@ -4,12 +4,9 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Create;
-using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Domain.Caches;
-using ShagOxServer.Domain.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -25,8 +22,6 @@ public class FavoriteCreateService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<FavoriteCreateService> _logger;
-    private readonly ICacheService _cache;
-
 
 
     public FavoriteCreateService(
@@ -34,15 +29,13 @@ public class FavoriteCreateService
         UserValidator userValidator,
         AdvertisementValidator advertValidator,
         IUnitOfWork unitOfWork,
-        ILogger<FavoriteCreateService> logger,
-        ICacheService cache)
+        ILogger<FavoriteCreateService> logger)
     {
         _favoriteRepository = favoriteRepository;
         _userValidator = userValidator;
         _advertValidator = advertValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _cache = cache;
     }
 
 
@@ -72,9 +65,6 @@ public class FavoriteCreateService
             _favoriteRepository.Add(favorite);
 
             await _unitOfWork.CommitAsync();
-
-            await FavoriteCache.InvalidateCreateAsync(_cache, 
-                favorite);
         }
         catch(Exception ex)
         {

@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.DTOs.Advertisements.Core;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
@@ -11,6 +12,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Caches.Advertisements;
+using ShagOxServer.Domain.Caches;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -31,6 +33,7 @@ public class AdvertisementQueryService
     private readonly ICategoryQueryService _categoryService;
     private readonly IStatusQueryService _statusService;
 
+    private readonly ILanguageProvider _language;
 
 
     public AdvertisementQueryService(
@@ -39,7 +42,8 @@ public class AdvertisementQueryService
         ICategoryQueryService categoryService,
         ICacheService cacheService,
         IStatusQueryService statusService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheSettings> settings,
+        ILanguageProvider language
     )
         : base(advertisementRepository, cacheService, settings)
     {
@@ -47,6 +51,7 @@ public class AdvertisementQueryService
         _variantService = variantService;
         _categoryService = categoryService;
         _statusService = statusService;
+        _language = language;
     }
 
 
@@ -67,6 +72,24 @@ public class AdvertisementQueryService
             attributes,
             categoryDto,
             statusDto);
+    }
+
+    public override string GetCacheKey(
+        long id)
+    {
+        return CacheKeys.EntityLanguage<Advertisement>(
+            id,
+            _language.Language);
+    }
+
+    public override async Task CreateCache(
+        AdvertisementDto dto)
+    {
+        await _cache.SetAsync(
+            CacheKeys.EntityLanguage<Advertisement>(
+                dto.Id, _language.Language),
+            dto,
+            _settings.KeyExpiration);
     }
 
     private async Task<Dictionary<long, List<VariantAttributeDto>>>
@@ -99,6 +122,7 @@ public class AdvertisementQueryService
     {
         var cacheKey = AdvertisementCache.BySeller(
            userId,
+           _language.Language,
            pagination.Page,
            pagination.PageSize);
 
@@ -122,6 +146,7 @@ public class AdvertisementQueryService
     {
         var cacheKey = AdvertisementCache.ByBuyer(
            userId,
+           _language.Language,
            pagination.Page,
            pagination.PageSize);
 

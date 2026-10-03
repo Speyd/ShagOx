@@ -1,14 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Delete;
-using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Application.Services.Caches.Advertisements;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -19,30 +17,24 @@ public class StatusDeleteService
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
 
-    private readonly IAdvertisementQueryRepository _advertRepository;
-    private readonly IStatusTranslationQueryRepository _repository;
+    private readonly StatusInvalidationService _statusInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusDeleteService> _logger;
-    private readonly ICacheService _cache;
 
 
     public StatusDeleteService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
-        IAdvertisementQueryRepository advertRepository,
-        IStatusTranslationQueryRepository repository,
+        StatusInvalidationService statusInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<StatusDeleteService> logger,
-        ICacheService cache)
+        ILogger<StatusDeleteService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
-        _advertRepository = advertRepository;
-        _repository = repository;
-        _unitOfWork = unitOfWork;
+        _statusInvalid = statusInvalid;
+         _unitOfWork = unitOfWork;
         _logger = logger;
-        _cache = cache;
     }
 
 
@@ -62,8 +54,6 @@ public class StatusDeleteService
             _statusRepository.Delete(status.Value!);
 
             await _unitOfWork.CommitAsync();
-
-            await CacheInvalidate(status.Value!);
         }
         catch(Exception ex)
         {
@@ -78,24 +68,14 @@ public class StatusDeleteService
                      .Fail(EntityErrorResources.AdvertStatusDeleteFailed);
         }
 
+        await _statusInvalid
+            .InvalidateDeleteAsync(id);
+
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                status.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    private async Task CacheInvalidate(
-        Status status)
-    {
-        await StatusCache.InvalidateDeleteAsync(
-                _cache,
-                _repository,
-                status);
-
-        await AdvertisementCache
-            .InvalidateByStatusAsync(
-                _cache, _advertRepository, status.Id);
     }
 }

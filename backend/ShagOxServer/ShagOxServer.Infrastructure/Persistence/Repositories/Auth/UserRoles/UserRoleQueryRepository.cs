@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
@@ -44,23 +46,23 @@ public class UserRoleQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<long>> GetRoleIdsByUserAsync(
+    public async Task<List<RoleCacheInfo>> GetRoleCacheInfoByUserAsync(
         long userId)
     {
         return await _db.Roles
             .Where(u => u.UserRoles
                 .Any(ur => ur.UserId == userId))
-            .Select(u => u.Id)
+            .SelectRoleCacheInfo()
             .ToListAsync();
     }
 
-    public async Task<List<long>> GetUserIdsByRoleAsync(
+    public async Task<List<UserCacheInfo>> GetUserCacheInfoByRoleAsync(
         long roleId)
     {
         return await _db.Users
             .Where(u => u.UserRoles
                 .Any(ur => ur.RoleId == roleId))
-            .Select(u => u.Id)
+            .SelectUserCacheInfo()
             .ToListAsync();
     }
 }

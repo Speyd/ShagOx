@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
@@ -43,12 +44,34 @@ public class BasketAttributeQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<BasketAttribute?> GetByAttributeDefenitionAsync(
-        long attributeDefenitionId)
+    public async Task<List<BasketAttributeCacheInfo>> GetCacheInfoByCategoryAsync(
+        long categoryId)
+    {
+        return await _db.BasketAttributes
+            .WithIncludes()
+            .Where(c =>
+                c.AttributeDefinition.CategoryId == categoryId)
+            .OrderBy(c => c.Order)
+            .SelectCacheInfo()
+            .ToListAsync();
+    }
+
+    public async Task<BasketAttribute?> GetByAttributeDefinitionAsync(
+        long attributeDefinitionId)
     {
         return await _db.BasketAttributes
             .WithIncludes()
             .FirstOrDefaultAsync(c =>
-                c.AttributeDefinitionId == attributeDefenitionId);
+                c.AttributeDefinitionId == attributeDefinitionId);
+    }
+
+    public async Task<BasketAttributeCacheInfo?> GetCacheInfoByAttributeDefinitionAsync(
+        long attributeDefinitionId)
+    {
+        return await _db.BasketAttributes
+            .WithIncludes()
+            .Where(x => x.AttributeDefinitionId == attributeDefinitionId)
+            .SelectCacheInfo()
+            .FirstOrDefaultAsync();
     }
 }

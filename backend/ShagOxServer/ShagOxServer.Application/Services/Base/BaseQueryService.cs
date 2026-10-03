@@ -41,7 +41,7 @@ public abstract class BaseQueryService<TDto, TEntity, TFilter>
         long id)
     {
         var cache = await _cache.GetAsync<TDto>(
-            CacheKeys.Entity<TEntity>(id));
+            GetCacheKey(id));
 
         return cache;
     }

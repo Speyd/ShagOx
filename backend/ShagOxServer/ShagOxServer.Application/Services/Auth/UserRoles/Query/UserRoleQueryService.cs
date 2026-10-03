@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Auth.Roles;
+using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
 using ShagOxServer.Application.DTOs.Auth.Users.Core;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
@@ -78,7 +80,7 @@ public class UserRoleQueryService
         );
     }
 
-    public async Task<Result<List<long>>> GetRolesIdsByUserAsync(
+    public async Task<Result<List<RoleCacheInfo>>> GetRolesCacheInfoByUserAsync(
        long userId)
     {
         var cacheKey = UserRoleCache.RoleIdsByUser(userId);
@@ -88,9 +90,9 @@ public class UserRoleQueryService
             async () =>
             {
                 var roles = await _userRoleQueryRepository
-                    .GetRoleIdsByUserAsync(userId);
+                    .GetRoleCacheInfoByUserAsync(userId);
 
-                return Result<List<long>>.Success(roles);
+                return Result<List<RoleCacheInfo>>.Success(roles);
             },
             _settings.KeyExpiration
         );
@@ -119,7 +121,7 @@ public class UserRoleQueryService
         );
     }
 
-    public async Task<Result<List<long>>> GetUserIdsByRoleAsync(
+    public async Task<Result<List<UserCacheInfo>>> GetUserCacheInfoByRoleAsync(
        long roleId)
     {
         var cacheKey = UserRoleCache.UserIdsByRole(roleId);
@@ -129,9 +131,9 @@ public class UserRoleQueryService
             async () =>
             {
                 var users = await _userRoleQueryRepository
-                    .GetUserIdsByRoleAsync(roleId);
+                    .GetUserCacheInfoByRoleAsync(roleId);
 
-                return Result<List<long>>.Success(users);
+                return Result<List<UserCacheInfo>>.Success(users);
             },
             _settings.KeyExpiration
         );

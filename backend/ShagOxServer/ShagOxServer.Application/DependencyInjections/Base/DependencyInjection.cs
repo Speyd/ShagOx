@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DependencyInjection;
-using ShagOxServer.Application.DependencyInjections.Advertisement;
+using ShagOxServer.Application.DependencyInjections.Advertisements;
 using ShagOxServer.Application.DependencyInjections.Auth;
 using ShagOxServer.Application.DependencyInjections.Baskets;
 using ShagOxServer.Application.DependencyInjections.Caches;
+using ShagOxServer.Application.DependencyInjections.Caches.Invalidations;
 using ShagOxServer.Application.DependencyInjections.Dictionary;
 using ShagOxServer.Application.DependencyInjections.Location;
 using ShagOxServer.Application.DependencyInjections.Specification;
@@ -18,11 +19,12 @@ public static class DependencyInjection
     {
         return services
             .AddCacheApplication()
+            .AddCacheInvalidationApplication()
             .AddVerificationApplication()
             .AddAuthApplication()
             .AddBasketApplication()
             .AddLocationApplication()
-            .AddAdvertisementApplication()
+            .AddAdvertisementsApplication()
             .AddDictionariesApplication()
             .AddSpecificationApplication()
             .AddCommonApplication()

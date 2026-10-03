@@ -4,11 +4,11 @@ using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Update;
-using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
-using ShagOxServer.Application.Services.Caches.Baskets;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -23,9 +23,10 @@ public class BasketAttributeUpdateService
 
     private readonly AttributeDefinitionValidator _attributeDefinitionValidator;
 
+    private readonly BasketAttributeInvalidationService _attributeInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketAttributeUpdateService> _logger;
-    private readonly ICacheService _cache;
 
 
     public BasketAttributeUpdateService(
@@ -33,17 +34,17 @@ public class BasketAttributeUpdateService
         BasketAttributeValidator attributeValidator,
         BasketAttributeUpdateValidator attributeUpdateValidator,
         AttributeDefinitionValidator attributeDefinitionValidator,
+        BasketAttributeInvalidationService attributeInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<BasketAttributeUpdateService> logger,
-        ICacheService cache)
+        ILogger<BasketAttributeUpdateService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _attributeUpdateValidator = attributeUpdateValidator;
         _attributeDefinitionValidator = attributeDefinitionValidator;
+        _attributeInvalid = attributeInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _cache = cache;
     }
 
 
@@ -95,9 +96,6 @@ public class BasketAttributeUpdateService
             _attributeRepository.Update(attribute.Value!);
 
             await _unitOfWork.CommitAsync();
-
-            await BasketAttributeCache
-                .InvalidateUpdateAsync(_cache, attribute.Value!);
         }
         catch(Exception ex)
         {
@@ -113,6 +111,9 @@ public class BasketAttributeUpdateService
             return Result<UpdateResponse>.Fail(
                 EntityErrorResources.BasketAttributeUpdateFailed);
         }
+
+        await _attributeInvalid.InvalidateUpdateAsync(
+            BasketAttributeCacheMapper.ToInfo(attribute.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

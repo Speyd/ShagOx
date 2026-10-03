@@ -2,12 +2,9 @@
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
-using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Baskets;
-using ShagOxServer.Application.Services.Caches.Dictionaries.Attributes;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -18,28 +15,25 @@ public class AttributeDefinitionDeleteService
 {
     private readonly IRepository<AttributeDefinition> _attributeRepository;
     private readonly AttributeDefinitionValidator _attributeValidator;
-    private readonly IBasketAttributeQueryRepository _basketrepository;
+
+    private readonly AttributeDefinitionInvalidationService _attribureInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionDeleteService> _logger;
-    private readonly ICacheService _cache;
-
 
 
     public AttributeDefinitionDeleteService(
         IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
-        IBasketAttributeQueryRepository basketrepository,
+        AttributeDefinitionInvalidationService attribureInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<AttributeDefinitionDeleteService> logger,
-        ICacheService cache)
+        ILogger<AttributeDefinitionDeleteService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
-        _basketrepository = basketrepository;
+        _attribureInvalid = attribureInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _cache = cache;
     }
 
 
@@ -59,15 +53,6 @@ public class AttributeDefinitionDeleteService
             _attributeRepository.Delete(attribute.Value!);
 
             await _unitOfWork.CommitAsync();
-
-            await AttributeDefinitionCache
-                .InvalidateDeleteAsync(_cache, attribute.Value!);
-
-            await BasketAttributeCache
-                .InvalidateByAttributeDefinitionAsync(
-                _cache,
-                _basketrepository,
-                id);
         }
         catch(Exception ex)
         {
@@ -81,6 +66,9 @@ public class AttributeDefinitionDeleteService
             return Result<DeleteResponse>.Fail(
                 EntityErrorResources.AttributeDefinitionDeleteFailed);
         }
+
+        await _attribureInvalid
+            .InvalidateDeleteAsync(id);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

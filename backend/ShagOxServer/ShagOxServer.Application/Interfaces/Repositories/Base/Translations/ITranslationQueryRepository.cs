@@ -1,4 +1,6 @@
-﻿using ShagOxServer.Domain.Base;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations;
+using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -17,6 +19,6 @@ public interface ITranslationQueryRepository<TEntity, TTranslation, TFilter>
         string identificator,
         string language);
 
-    Task<List<long>> GetTranslationIdsByTranslatableAsync(
+    Task<List<BaseTranslationCacheInfo>> GetCacheInfoByTranslatableAsync(
         long translatableId);
 }

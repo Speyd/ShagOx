@@ -15,6 +15,6 @@ public interface IBasketAttributeQueryService
         long categoryId,
         PaginationParams pagination);
 
-    Task<Result<BasketAttributeDto>> GetByAttributeDefenitionAsync(
-        long attributeDefenitionId);
+    Task<Result<BasketAttributeDto>> GetByAttributeDefinitionAsync(
+        long attributeDefinitionId);
 }

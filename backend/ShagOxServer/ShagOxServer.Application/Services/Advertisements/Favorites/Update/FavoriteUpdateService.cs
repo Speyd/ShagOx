@@ -4,11 +4,11 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
-using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
-using ShagOxServer.Domain.Caches.Advertisements;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,26 +20,26 @@ public class FavoriteUpdateService
     private readonly FavoriteValidator _favoriteValidator;
     private readonly FavoriteUpdateValidator _favoriteUpdateValidator;
 
+    private readonly FavoriteInvalidationService _favoriteInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<FavoriteUpdateService> _logger;
-    private readonly ICacheService _cache;
-
 
 
     public FavoriteUpdateService(
         IRepository<Favorite> favoriteRepository,
         FavoriteValidator favoriteValidator,
         FavoriteUpdateValidator favoriteUpdateValidator,
+        FavoriteInvalidationService favoriteInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<FavoriteUpdateService> logger,
-        ICacheService cache)
+        ILogger<FavoriteUpdateService> logger)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;
         _favoriteUpdateValidator = favoriteUpdateValidator;
+        _favoriteInvalid = favoriteInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _cache = cache;
     }
 
 
@@ -73,9 +73,6 @@ public class FavoriteUpdateService
             _favoriteRepository.Update(favorite.Value!);
 
             await _unitOfWork.CommitAsync();
-
-            await FavoriteCache.InvalidateUpdateAsync(_cache,
-                favorite.Value!);
         }
         catch(Exception ex)
         {
@@ -97,6 +94,9 @@ public class FavoriteUpdateService
         _logger.LogInformation(
             "Favorite update successfully. Id: {Id}",
             favorite.Value!.Id);
+
+        await _favoriteInvalid.InvalidateUpdateAsync(
+            FavoriteCacheMapper.ToList(favorite.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

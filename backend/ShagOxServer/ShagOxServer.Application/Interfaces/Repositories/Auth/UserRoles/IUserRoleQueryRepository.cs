@@ -1,4 +1,6 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -11,13 +13,13 @@ public interface IUserRoleQueryRepository
         long userId,
         PaginationParams pagination);
 
-    Task<List<long>> GetRoleIdsByUserAsync(
+    Task<List<RoleCacheInfo>> GetRoleCacheInfoByUserAsync(
         long userId);
 
     Task<PagedResult<User>> GetUsersByRoleAsync(
         long roleId,
         PaginationParams pagination);
 
-    Task<List<long>> GetUserIdsByRoleAsync(
+    Task<List<UserCacheInfo>> GetUserCacheInfoByRoleAsync(
         long roleId);
 }

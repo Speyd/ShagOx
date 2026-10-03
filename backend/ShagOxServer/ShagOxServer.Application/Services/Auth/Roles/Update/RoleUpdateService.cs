@@ -2,16 +2,12 @@
 using ShagOxServer.Application.DTOs.Auth.Roles.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Update;
-using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
-using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
-using ShagOxServer.Application.Services.Auth.Users.Roles;
-using ShagOxServer.Application.Services.Caches.Auth;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -22,30 +18,24 @@ public class RoleUpdateService
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;
 
-    private readonly IUserRoleQueryService _userRoleService;
-    private readonly IAdvertisementQueryRepository _advertRepository;
+    private readonly RoleInvalidationService _roleInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RoleUpdateService> _logger;
-    private readonly ICacheService _cache;
 
 
     public RoleUpdateService(
         IRepository<Role> roleRepository,
         RoleValidator roleValidator,
-        IUserRoleQueryService userRoleService,
-        IAdvertisementQueryRepository advertRepository,
+        RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<RoleUpdateService> logger,
-        ICacheService cache)
+        ILogger<RoleUpdateService> logger)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
-        _userRoleService = userRoleService;
-        _advertRepository = advertRepository;
+        _roleInvalid = roleInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _cache = cache;
     }
 
 
@@ -81,16 +71,6 @@ public class RoleUpdateService
             _roleRepository.Update(role.Value!);
 
             await _unitOfWork.CommitAsync();
-
-            await RoleCache.InvalidateUpdateAsync(
-                _cache, _userRoleService, role.Value!);
-
-            await UserCache.InvalidateByRoleAsync(
-                _cache,
-                _userRoleService,
-                _advertRepository,
-                role.Value!.Id
-                );
         }
         catch(Exception ex)
         {
@@ -104,6 +84,9 @@ public class RoleUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.RoleUpdateFailed);
         }
+
+        await _roleInvalid.InvalidateUpdateAsync(
+            RoleCacheMapper.ToInfo(role.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

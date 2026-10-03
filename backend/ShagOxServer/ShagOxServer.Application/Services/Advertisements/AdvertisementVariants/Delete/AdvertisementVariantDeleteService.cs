@@ -3,10 +3,10 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Delete;
-using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Caches;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -18,23 +18,24 @@ public class AdvertisementVariantDeleteService
     private readonly IRepository<AdvertisementVariant> _variantRepository;
     private readonly AdvertisementVariantValidator _variantValidator;
 
+    private readonly AdvertisementVariantInvalidationService _variantInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementVariantDeleteService> _logger;
-    private readonly ICacheService _cache;
 
 
     public AdvertisementVariantDeleteService(
         IRepository<AdvertisementVariant> variantRepository,
         AdvertisementVariantValidator variantValidator,
+        AdvertisementVariantInvalidationService variantInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<AdvertisementVariantDeleteService> logger,
-        ICacheService cache)
+        ILogger<AdvertisementVariantDeleteService> logger)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;
+        _variantInvalid = variantInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _cache = cache;
     }
 
 
@@ -65,8 +66,7 @@ public class AdvertisementVariantDeleteService
 
             await _unitOfWork.CommitAsync();
 
-            await AdvertisementVariantCache
-                .InvalidateDeleteAsync(_cache, variant.Value!);
+            await _variantInvalid.InvalidateDeleteAsync(id);
 
             return result;
         }

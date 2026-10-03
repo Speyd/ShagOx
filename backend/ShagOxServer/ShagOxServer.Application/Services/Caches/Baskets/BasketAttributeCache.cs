@@ -1,76 +1,29 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
-using ShagOxServer.Application.Interfaces.Services.Caches;
-using ShagOxServer.Domain.Caches;
-using ShagOxServer.Domain.Entities.Baskets;
+﻿using ShagOxServer.Domain.Caches;
 
 namespace ShagOxServer.Application.Services.Caches.Baskets;
 public class BasketAttributeCache
 {
     private static readonly string Prefix =
-           typeof(BasketAttributeCache).Name.ToLowerInvariant();
+        CacheKeys.LanguagePrefix<BasketAttributeCache>();
 
 
     public static string ByAttributeDefenition(
-           long attributeId)
-           => $"{Prefix}:attribute-defenition:{attributeId}";
+        long attributeId,
+        string language)
+           => $"{Prefix}:{language}:attribute-defenition:{attributeId}";
 
-    public static string ByCategoryId(
-           long categoryId)
-           => $"{Prefix}:category:{categoryId}";
-
-    public static async Task InvalidateDeleteAsync(
-        ICacheService cache,
-        BasketAttribute cachedEntity)
-    {
-        await cache.RemoveAsync(
-            CacheKeys.Entity<BasketAttribute>(cachedEntity.Id));
-
-        await cache.RemoveAsync(
-            ByAttributeDefenition(
-                cachedEntity.AttributeDefinitionId));
-
-        await cache.RemoveAsync(
-           ByAttributeDefenition(
-               cachedEntity.AttributeDefinition.CategoryId));
-    }
-
-    public static async Task InvalidateUpdateAsync(
-        ICacheService cache,
-        BasketAttribute cachedEntity)
-    {
-        await cache.RemoveAsync(
-             CacheKeys.Entity<BasketAttribute>(cachedEntity.Id));
-
-        await cache.RemoveAsync(
-            ByAttributeDefenition(
-                cachedEntity.AttributeDefinitionId));
-
-        await cache.RemoveAsync(
-           ByAttributeDefenition(
-               cachedEntity.AttributeDefinition.CategoryId));
-    }
-
-    public static async Task InvalidateByAttributeDefinitionAsync(
-        ICacheService cache,
-        IBasketAttributeQueryRepository repository,
+    public static string ByAttributeDefenitionPattern(
         long attributeId)
-    {
-        var attribute =
-            await repository.GetByAttributeDefenitionAsync(
-                attributeId);
+           => $"{Prefix}:*attribute-defenition:{attributeId}";
 
-        if (attribute is null)
-            return;
+    public static string ByCategory(
+        long categoryId,
+        string language,
+        int page,
+        int pageSize)
+           => $"{Prefix}:{language}:category:{categoryId}:page:{page}:size:{pageSize}";
 
-        await cache.RemoveAsync(
-             CacheKeys.Entity<BasketAttribute>(attribute.Id));
-
-        await cache.RemoveAsync(
-            ByAttributeDefenition(
-                attribute.AttributeDefinitionId));
-
-        await cache.RemoveAsync(
-           ByAttributeDefenition(
-               attribute.AttributeDefinition.CategoryId));
-    }
+    public static string ByCategoryPattern(
+        long categoryId)
+           => $"{Prefix}:*category:{categoryId}:page:*";
 }

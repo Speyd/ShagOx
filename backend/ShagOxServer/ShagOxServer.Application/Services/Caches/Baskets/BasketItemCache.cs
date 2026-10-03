@@ -40,5 +40,5 @@ public class BasketItemCache
 
     public static string ByUserPattern(
         long userId)
-           => $"{Prefix}:*category:{userId}:page:*";
+           => $"{Prefix}:*user:{userId}:page:*";
 }

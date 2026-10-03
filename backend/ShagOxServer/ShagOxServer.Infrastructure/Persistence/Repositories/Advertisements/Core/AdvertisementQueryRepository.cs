@@ -89,4 +89,13 @@ public class AdvertisementQueryRepository
             .SelectCacheInfo()
             .ToListAsync();
     }
+
+    public async Task<List<AdvertisementCacheInfo>> GetCacheInfoByCategoryAsync(
+        long categoryId)
+    {
+        return await _db.Advertisements
+            .Where(x => x.CategoryId == categoryId)
+            .SelectCacheInfo()
+            .ToListAsync();
+    }
 }

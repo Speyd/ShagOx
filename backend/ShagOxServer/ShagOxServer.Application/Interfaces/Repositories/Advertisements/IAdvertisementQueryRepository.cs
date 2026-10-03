@@ -24,4 +24,7 @@ public interface IAdvertisementQueryRepository
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfoByUserAsync(
         long userId);
+
+    Task<List<AdvertisementCacheInfo>> GetCacheInfoByCategoryAsync(
+        long categoryId);
 }

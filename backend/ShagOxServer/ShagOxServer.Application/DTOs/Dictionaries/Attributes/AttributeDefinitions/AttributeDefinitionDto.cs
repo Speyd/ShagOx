@@ -6,7 +6,7 @@ public sealed record AttributeDefinitionDto
 (
     long Id,
     long CategoryId,
-    string CategoryName,
+    string CategoryCode,
     string Key,
     AttributeType Type,
     bool Required,

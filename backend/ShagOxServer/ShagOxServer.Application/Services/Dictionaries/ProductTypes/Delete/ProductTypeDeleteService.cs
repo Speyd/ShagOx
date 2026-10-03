@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -15,6 +16,8 @@ public class ProductTypeDeleteService
     private readonly IRepository<ProductType> _productTypeRepository;
     private readonly ProductTypeValidator _productTypeValidator;
 
+    private readonly ProductTypeInvalidationService _productInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ProductTypeDeleteService> _logger;
 
@@ -22,11 +25,13 @@ public class ProductTypeDeleteService
     public ProductTypeDeleteService(
         IRepository<ProductType> productTypeRepository,
         ProductTypeValidator productTypeValidator,
+        ProductTypeInvalidationService productInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeDeleteService> logger)
     {
         _productTypeRepository = productTypeRepository;
         _productTypeValidator = productTypeValidator;
+        _productInvalid = productInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -61,6 +66,9 @@ public class ProductTypeDeleteService
             return Result<DeleteResponse>.Fail(
                 EntityErrorResources.ProductTypeDeleteFailed);
         }
+
+        await _productInvalid
+            .InvalidateDeleteAsync(id);
 
         return Result<DeleteResponse>.Success(
             new DeleteResponse(

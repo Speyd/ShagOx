@@ -16,13 +16,13 @@ public interface IBasketItemQueryRepository
         long basketId,
         PaginationParams pagination);
 
-    Task<List<BasketItemCacheInfo>> GetInfosByBasketAsync(
+    Task<List<BasketItemCacheInfo>> GetCacheInfosByBasketAsync(
         long basketId);
 
     Task<PagedResult<BasketItem>> GetByAdvertisementVariantAsync(
         long advertisementVariantId,
         PaginationParams pagination);
 
-    Task<List<BasketItemCacheInfo>> GetInfosByAdvertisementVariantAsync(
+    Task<List<BasketItemCacheInfo>> GetCacheInfosByAdvertisementVariantAsync(
         long advertisementVariantId);
 }

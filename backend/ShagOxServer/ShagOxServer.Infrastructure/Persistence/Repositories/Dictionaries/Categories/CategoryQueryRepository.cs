@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
@@ -50,5 +51,14 @@ public class CategoryQueryRepository
             .WithIncludes()
             .Where(c => c.ProductTypeId == productTypeId)
             .ToPagedResultAsync(pagination);
+    }
+
+    public async Task<List<CategoryCacheInfo>> GetCacheInfosByProductTypeAsync(
+        long productTypeId)
+    {
+        return await _db.Categories
+            .Where(c => c.ProductTypeId == productTypeId)
+            .SelectCacheInfo()
+            .ToListAsync();
     }
 }

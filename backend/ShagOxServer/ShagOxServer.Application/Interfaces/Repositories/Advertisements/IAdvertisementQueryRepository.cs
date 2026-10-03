@@ -19,12 +19,12 @@ public interface IAdvertisementQueryRepository
         long userId,
         PaginationParams pagination);
 
-    Task<List<AdvertisementCacheInfo>> GetCacheInfoByStatusAsync(
+    Task<List<AdvertisementCacheInfo>> GetCacheInfosByStatusAsync(
         long statusId);
 
-    Task<List<AdvertisementCacheInfo>> GetCacheInfoByUserAsync(
+    Task<List<AdvertisementCacheInfo>> GetCacheInfosByUserAsync(
         long userId);
 
-    Task<List<AdvertisementCacheInfo>> GetCacheInfoByCategoryAsync(
+    Task<List<AdvertisementCacheInfo>> GetCacheInfosByCategoryAsync(
         long categoryId);
 }

@@ -85,7 +85,7 @@ public class AttributeDictionaryValueQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<AttributeDictionaryValueCacheInfo>> GetInfosByDictionaryAsync(
+    public async Task<List<AttributeDictionaryValueCacheInfo>> GetCacheInfosByDictionaryAsync(
         long dictionaryId)
     {
         return await _db.AttributeDictionaryValues

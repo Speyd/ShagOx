@@ -13,7 +13,7 @@ public interface IAttributeDictionaryValueQueryRepository
         long dictionaryId,
         PaginationParams pagination);
 
-    Task<List<AttributeDictionaryValueCacheInfo>> GetInfosByDictionaryAsync(
+    Task<List<AttributeDictionaryValueCacheInfo>> GetCacheInfosByDictionaryAsync(
         long dictionaryId);
 
     Task<List<AttributeDictionaryValue>> GetByIdsAsync(

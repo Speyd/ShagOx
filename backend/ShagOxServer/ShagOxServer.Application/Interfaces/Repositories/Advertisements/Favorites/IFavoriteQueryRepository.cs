@@ -15,6 +15,6 @@ public interface IFavoriteQueryRepository
     Task<int> CountByAdvertisementAsync(
         long advertisementId);
 
-    Task<List<FavoriteCacheInfo>> GetCacheInfoByAdvertisementAsync(
+    Task<List<FavoriteCacheInfo>> GetCacheInfosByAdvertisementAsync(
         long advertId);
 }

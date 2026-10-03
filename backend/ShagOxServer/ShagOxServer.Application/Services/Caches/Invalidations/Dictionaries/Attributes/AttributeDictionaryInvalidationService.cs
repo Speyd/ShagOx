@@ -84,6 +84,6 @@ public class AttributeDictionaryInvalidationService
         long entityId)
     {
         return await _valueRepository
-            .GetInfosByDictionaryAsync(entityId);
+            .GetCacheInfosByDictionaryAsync(entityId);
     }
 }

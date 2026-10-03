@@ -40,7 +40,7 @@ public class AdvertisementVariantQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<long>> GetVariantIdsByAdvertisementAsync(
+    public async Task<List<long>> GetIdsByAdvertisementAsync(
     long advertId)
     {
         return await _db.AdvertisementVariants

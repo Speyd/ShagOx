@@ -135,13 +135,13 @@ public class AdvertisementInvalidationService
         long entityId)
     {
         return await _favoriteRepository
-            .GetCacheInfoByAdvertisementAsync(entityId);
+            .GetCacheInfosByAdvertisementAsync(entityId);
     }
 
     private async Task<List<BasketItemCacheInfo>> GetBasketItemInfos(
        long entityId)
     {
         return await _basketItemRepository
-            .GetInfosByAdvertisementVariantAsync(entityId);
+            .GetCacheInfosByAdvertisementVariantAsync(entityId);
     }
 }

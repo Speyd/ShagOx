@@ -133,7 +133,7 @@ public class CategoryInvalidationService
         long entityId)
     {
         return await _advertRepository
-            .GetCacheInfoByCategoryAsync(entityId);
+            .GetCacheInfosByCategoryAsync(entityId);
     }
 
     private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(

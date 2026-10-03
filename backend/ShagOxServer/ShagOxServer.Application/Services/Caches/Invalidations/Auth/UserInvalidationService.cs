@@ -75,7 +75,7 @@ public class UserInvalidationService
         long entityId)
     {
         return await _advertRepository
-            .GetCacheInfoByUserAsync(entityId);
+            .GetCacheInfosByUserAsync(entityId);
     }
 
     private async Task InvalidateUserRoleAsync(

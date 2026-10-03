@@ -13,7 +13,7 @@ public interface IBasketAttributeQueryRepository
         long categoryId,
         PaginationParams pagination);
 
-    Task<List<BasketAttributeCacheInfo>> GetCacheInfoByCategoryAsync(
+    Task<List<BasketAttributeCacheInfo>> GetCacheInfosByCategoryAsync(
         long categoryId);
 
     Task<BasketAttribute?> GetByAttributeDefinitionAsync(

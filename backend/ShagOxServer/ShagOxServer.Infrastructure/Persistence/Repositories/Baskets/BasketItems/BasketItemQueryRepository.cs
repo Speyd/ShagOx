@@ -64,7 +64,7 @@ public class BasketItemQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<BasketItemCacheInfo>> GetInfosByBasketAsync(
+    public async Task<List<BasketItemCacheInfo>> GetCacheInfosByBasketAsync(
         long basketId)
     {
         return await _db.BasketItems
@@ -73,7 +73,7 @@ public class BasketItemQueryRepository
             .ToListAsync();
     }
 
-    public async Task<List<BasketItemCacheInfo>> GetInfosByAdvertisementVariantAsync(
+    public async Task<List<BasketItemCacheInfo>> GetCacheInfosByAdvertisementVariantAsync(
         long advertisementVariantId)
     {
         return await _db.BasketItems

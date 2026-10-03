@@ -64,6 +64,6 @@ public class BasketInvalidationService
         long basketId)
     {
         return await _itemRepository
-            .GetInfosByBasketAsync(basketId);
+            .GetCacheInfosByBasketAsync(basketId);
     }
 }

@@ -9,7 +9,6 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.E
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using Twilio.TwiML.Voice;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites;
 public class FavoriteQueryRepository 
@@ -53,7 +52,7 @@ public class FavoriteQueryRepository
              .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<FavoriteCacheInfo>> GetCacheInfoByAdvertisementAsync(
+    public async Task<List<FavoriteCacheInfo>> GetCacheInfosByAdvertisementAsync(
         long advertId)
     {
         return await _db.Favorites

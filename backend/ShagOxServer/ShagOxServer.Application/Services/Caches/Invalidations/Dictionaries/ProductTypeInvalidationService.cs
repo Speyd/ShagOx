@@ -1,0 +1,90 @@
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Entities.Dictionaries;
+
+namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
+public class ProductTypeInvalidationService
+    : ICacheInvalidationService<ProductType, long>
+{
+    private readonly ICategoryQueryRepository _categoryRepository;
+    private readonly CategoryInvalidationService _categoryInvalid;
+
+   // private readonly ICategoryTranslationQueryRepository _transRepository;
+    //private readonly CategoryTranslationInvalidationService _transInvalid;
+
+    private readonly ICacheService _cache;
+
+
+
+    public ProductTypeInvalidationService(
+        ICategoryQueryRepository categoryRepository,
+        CategoryInvalidationService categoryInvalid,
+        //ICategoryTranslationQueryRepository transRepository,
+        //CategoryTranslationInvalidationService transInvalid,
+        ICacheService cache)
+    {
+        _categoryRepository = categoryRepository;
+        _categoryInvalid = categoryInvalid;
+        _cache = cache;
+    }
+
+
+    public async Task InvalidateDeleteAsync(
+        long entityId)
+    {
+        await InvalidateAsync(entityId);
+
+
+        var categoryInfos =
+            await GetCategoryInfos(entityId);
+
+        foreach (var categoryInfo in categoryInfos)
+        {
+            await _categoryInvalid
+                .InvalidateDeleteAsync(categoryInfo);
+        }
+
+
+        //var transInfos =
+        //   await GetTranslationInfos(entityInfo.Id);
+
+        //foreach (var transInfo in transInfos)
+        //{
+        //    await _transInvalid
+        //        .InvalidateDeleteAsync(transInfo);
+        //}
+    }
+
+    public async Task InvalidateUpdateAsync(
+        long entityId)
+    {
+        await InvalidateAsync(entityId);
+
+
+        var categoryInfos =
+             await GetCategoryInfos(entityId);
+
+        foreach (var categoryInfo in categoryInfos)
+        {
+            await _categoryInvalid
+                .InvalidateUpdateAsync(categoryInfo);
+        }
+    }
+
+    private async Task InvalidateAsync(
+        long entityId)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityLanguagePattern<ProductType>(entityId));
+    }
+
+    private async Task<List<CategoryCacheInfo>> GetCategoryInfos(
+        long entityId)
+    {
+        return await _categoryRepository
+            .GetCacheInfosByProductTypeAsync(entityId);
+    }
+}

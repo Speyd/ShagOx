@@ -71,7 +71,7 @@ public class AdvertisementQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<AdvertisementCacheInfo>> GetCacheInfoByStatusAsync(
+    public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByStatusAsync(
         long statusId)
     {
         return await _db.Advertisements
@@ -80,7 +80,7 @@ public class AdvertisementQueryRepository
             .ToListAsync();
     }
 
-    public async Task<List<AdvertisementCacheInfo>> GetCacheInfoByUserAsync(
+    public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByUserAsync(
         long userId)
     {
         return await _db.Advertisements
@@ -90,7 +90,7 @@ public class AdvertisementQueryRepository
             .ToListAsync();
     }
 
-    public async Task<List<AdvertisementCacheInfo>> GetCacheInfoByCategoryAsync(
+    public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByCategoryAsync(
         long categoryId)
     {
         return await _db.Advertisements

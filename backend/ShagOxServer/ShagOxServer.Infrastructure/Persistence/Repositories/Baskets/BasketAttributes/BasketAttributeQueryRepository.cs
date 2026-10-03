@@ -44,7 +44,7 @@ public class BasketAttributeQueryRepository
             .ToPagedResultAsync(pagination);
     }
 
-    public async Task<List<BasketAttributeCacheInfo>> GetCacheInfoByCategoryAsync(
+    public async Task<List<BasketAttributeCacheInfo>> GetCacheInfosByCategoryAsync(
         long categoryId)
     {
         return await _db.BasketAttributes

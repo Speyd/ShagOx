@@ -96,6 +96,6 @@ public class StatusInvalidationService
         long entityId)
     {
         return await _advertRepository
-            .GetCacheInfoByStatusAsync(entityId);
+            .GetCacheInfosByStatusAsync(entityId);
     }
 }

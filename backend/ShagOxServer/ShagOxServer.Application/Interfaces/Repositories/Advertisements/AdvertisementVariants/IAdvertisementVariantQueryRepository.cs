@@ -12,6 +12,6 @@ public interface IAdvertisementVariantQueryRepository
         long advertId,
         PaginationParams pagination);
 
-    Task<List<long>> GetVariantIdsByAdvertisementAsync(
+    Task<List<long>> GetIdsByAdvertisementAsync(
         long advertId);
 }

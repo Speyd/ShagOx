@@ -4,10 +4,11 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Location;
+using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Delete;
 public class CityDeleteService 
@@ -16,6 +17,8 @@ public class CityDeleteService
     private readonly IRepository<City> _cityRepository;
     private readonly CityValidator _cityValidator;
 
+    private readonly CityInvalidationService _cityInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CityDeleteService> _logger;
 
@@ -23,11 +26,13 @@ public class CityDeleteService
     public CityDeleteService(
         IRepository<City> cityRepository,
         CityValidator cityValidator,
+        CityInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityDeleteService> logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
+        _cityInvalid = cityInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -60,6 +65,9 @@ public class CityDeleteService
             return Result<DeleteResponse>
                  .Fail(EntityErrorResources.CityDeleteFailed);
         }
+
+        await _cityInvalid.InvalidateDeleteAsync(
+            CityCacheMapper.ToInfo(city.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

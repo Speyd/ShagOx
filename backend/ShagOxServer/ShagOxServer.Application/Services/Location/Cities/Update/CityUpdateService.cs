@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Location;
+using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Location;
@@ -18,6 +20,8 @@ public class CityUpdateService
     private readonly CityValidator _cityValidator;
     private readonly CityUpdateValidator _cityUpdateValidator;
 
+    private readonly CityInvalidationService _cityInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CityUpdateService> _logger;
 
@@ -26,12 +30,14 @@ public class CityUpdateService
         IRepository<City> cityRepository,
         CityValidator cityValidator,
         CityUpdateValidator cityUpdateValidator,
+        CityInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityUpdateService> logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
         _cityUpdateValidator = cityUpdateValidator;
+        _cityInvalid = cityInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -64,7 +70,9 @@ public class CityUpdateService
             return Result<UpdateResponse>.Fail(validation.Error);
 
 
-        var updatedCount = CityUpdater.ApplyUpdates(city.Value!, request);
+        var updatedCount = CityUpdater
+            .ApplyUpdates(city.Value!, request);
+
         var result = new UpdateResponse(
             updatedCount,
             DateTime.UtcNow
@@ -95,6 +103,8 @@ public class CityUpdateService
                  .Fail(EntityErrorResources.CityUpdateFailed);
         }
 
+        await _cityInvalid.InvalidateUpdateAsync(
+            CityCacheMapper.ToInfo(city.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -18,6 +19,9 @@ public interface IUserQueryRepository
 
     Task<User?> GetByContactAsync(
         string value);
+
+    Task<List<UserCacheInfo>> GetCacheInfosByCityAsync(
+        long cityId);
 
     Task<User?> GetByContactAsync(
         string? email,

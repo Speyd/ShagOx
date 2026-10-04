@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 
@@ -7,5 +8,8 @@ public interface IAvatarQueryRepository
     : IQueryRepository<Avatar, AvatarSearchFilter>
 {
     Task<Avatar?> GetByUserIdAsync(
+        long userId);
+
+    Task<AvatarCacheInfo?> GetCacheInfoByUserIdAsync(
         long userId);
 }

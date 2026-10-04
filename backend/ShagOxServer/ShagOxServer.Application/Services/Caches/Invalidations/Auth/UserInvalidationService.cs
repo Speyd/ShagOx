@@ -1,9 +1,12 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Entities.Account;
@@ -15,16 +18,23 @@ public class UserInvalidationService
     private readonly IAdvertisementQueryRepository _advertRepository;
     private readonly AdvertisementInvalidationService _advertInvalid;
 
+    private readonly IAvatarQueryRepository _avatarRepository;
+    private readonly AvatarInvalidationService _avatarInvalid;
+
     private readonly ICacheService _cache;
 
 
     public UserInvalidationService(
         IAdvertisementQueryRepository advertRepository,
         AdvertisementInvalidationService advertInvalid,
+        IAvatarQueryRepository avatarRepository,
+        AvatarInvalidationService avatarInvalid,
         ICacheService cache)
     {
         _advertRepository = advertRepository;
         _advertInvalid = advertInvalid;
+        _avatarRepository = avatarRepository;
+        _avatarInvalid = avatarInvalid;
         _cache = cache;
     }
 
@@ -34,6 +44,7 @@ public class UserInvalidationService
     {
         await InvalidateAsync(entityInfo);
 
+
         var advertInfos = await 
             GetAdvertisementInfos(entityInfo.Id);
 
@@ -41,6 +52,16 @@ public class UserInvalidationService
         {
             await _advertInvalid
                 .InvalidateDeleteAsync(advertInfo);
+        }
+
+
+        var avatarInfo = await GetAvatarInfo(
+            entityInfo.Id);
+
+        if(avatarInfo is not null)
+        {
+            await _avatarInvalid
+                .InvalidateDeleteAsync(avatarInfo);
         }
     }
 
@@ -70,14 +91,6 @@ public class UserInvalidationService
         await InvalidateUserRoleAsync(entityInfo.Id);
     }
 
-
-    private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(
-        long entityId)
-    {
-        return await _advertRepository
-            .GetCacheInfosByUserAsync(entityId);
-    }
-
     private async Task InvalidateUserRoleAsync(
         long entityId)
     {
@@ -105,5 +118,19 @@ public class UserInvalidationService
 
         await _cache.RemoveAsync(UserCache.
             ByContactPattern(entityInfo.UserName));
+    }
+
+    private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(
+        long entityId)
+    {
+        return await _advertRepository
+            .GetCacheInfosByUserAsync(entityId);
+    }
+
+    private async Task<AvatarCacheInfo?> GetAvatarInfo(
+        long entityId)
+    {
+        return await _avatarRepository
+            .GetCacheInfoByUserIdAsync(entityId);
     }
 }

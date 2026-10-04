@@ -64,7 +64,7 @@ public class CurrencyInvalidationService
     private async Task InvalidateAsync(
         CurrencyCacheInfo entityInfo)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys
+        await _cache.RemoveAsync(CacheKeys
             .Entity<Currency>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(CurrencyCache

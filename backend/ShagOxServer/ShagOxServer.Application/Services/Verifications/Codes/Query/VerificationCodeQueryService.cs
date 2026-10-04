@@ -1,18 +1,17 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Verifications;
-using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
-using ShagOxServer.Application.Services.Base.Localized;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Verifications.Codes.Mapping;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Filters.Verifications.VerificationCodes;
 
 namespace ShagOxServer.Application.Services.Verifications.Codes.Query;
 public class VerificationCodeQueryService
-    : BaseLocalizedQueryService<
+    : BaseQueryService<
         VerificationCodeDto,
         VerificationCode,
         VerificationCodeSearchFilter
@@ -22,10 +21,9 @@ public class VerificationCodeQueryService
     public VerificationCodeQueryService(
         IVerificationCodeQueryRepository categoryQueryRepository,
         ICacheService cacheService,
-        IOptions<CacheSettings> settings,
-        ILanguageProvider language
+        IOptions<CacheSettings> settings
     )
-        : base(categoryQueryRepository, language, cacheService, settings)
+        : base(categoryQueryRepository, cacheService, settings)
     {
     }
 

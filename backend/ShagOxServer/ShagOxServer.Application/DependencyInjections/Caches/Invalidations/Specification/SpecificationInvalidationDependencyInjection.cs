@@ -9,6 +9,8 @@ public static class SpecificationInvalidationDependencyInjection
     {
         services.AddScoped<ConditionInvalidationService>();
 
+        services.AddScoped<CurrencyInvalidationService>();
+
 
         return services;
     }

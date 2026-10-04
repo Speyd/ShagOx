@@ -174,10 +174,5 @@
 		  <LastGenOutput>VerificationMapperResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="DependencyInjections\Caches\Invalidations\Specification\Localized\" />
-	  <Folder Include="DependencyInjections\Caches\Invalidations\Specification\Translations\" />
-	</ItemGroup>
 	
 </Project>

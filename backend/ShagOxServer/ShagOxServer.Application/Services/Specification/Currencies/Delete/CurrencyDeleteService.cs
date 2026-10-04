@@ -4,6 +4,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
+using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -15,6 +17,8 @@ public class CurrencyDeleteService
     private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyValidator _currencyValidator;
 
+    private readonly CurrencyInvalidationService _currencyInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CurrencyDeleteService> _logger;
 
@@ -22,11 +26,13 @@ public class CurrencyDeleteService
     public CurrencyDeleteService(
         IRepository<Currency> currencyRepository,
         CurrencyValidator currencyValidator,
+        CurrencyInvalidationService currencyInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CurrencyDeleteService> logger)
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;
+        _currencyInvalid = currencyInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -60,6 +66,9 @@ public class CurrencyDeleteService
             return Result<DeleteResponse>
                  .Fail(EntityErrorResources.CurrencyDeleteFailed);
         }
+
+        await _currencyInvalid.InvalidateDeleteAsync(
+            CurrencyCacheMapper.ToInfo(currency.Value!));
 
         return Result<DeleteResponse>.Success(
           new DeleteResponse(

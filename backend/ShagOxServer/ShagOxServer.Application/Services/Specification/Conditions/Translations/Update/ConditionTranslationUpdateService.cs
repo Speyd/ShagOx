@@ -6,6 +6,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Translations;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Validator;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
@@ -20,6 +22,8 @@ public class ConditionTranslationUpdateService
     private readonly IRepository<ConditionTranslation> _conditionRepository;
     private readonly ConditionTranslationValidator _conditionTranslationValidator;
 
+    private readonly ConditionTranslationInvalidationService _transInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ConditionTranslationUpdateService> _logger;
 
@@ -28,12 +32,14 @@ public class ConditionTranslationUpdateService
         IRepository<ConditionTranslation> conditionRepository,
         ConditionTranslationValidator conditionTranslationValidator,
         ConditionValidator conditionValidator,
+        ConditionTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ConditionTranslationUpdateService> logger
     ) : base(conditionValidator, conditionTranslationValidator)
     {
         _conditionRepository = conditionRepository;
         _conditionTranslationValidator = conditionTranslationValidator;
+        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -87,6 +93,9 @@ public class ConditionTranslationUpdateService
             return Result<UpdateResponse>
                  .Fail(EntityErrorResources.ConditionTranslationUpdateFailed);
         }
+
+        await _transInvalid.InvalidateUpdateAsync(
+            BaseTranslationCacheMapper.ToInfo(condition.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

@@ -66,6 +66,8 @@ public class ConditionDeleteService
                  .Fail(EntityErrorResources.ConditionDeleteFailed);
         }
 
+        await _conditionInvalid
+            .InvalidateDeleteAsync(id);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

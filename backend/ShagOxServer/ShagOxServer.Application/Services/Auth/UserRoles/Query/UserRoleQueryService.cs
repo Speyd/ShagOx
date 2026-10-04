@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Auth.Roles;
 using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
+using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
-using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;

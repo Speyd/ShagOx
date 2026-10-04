@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Query;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Mapping;

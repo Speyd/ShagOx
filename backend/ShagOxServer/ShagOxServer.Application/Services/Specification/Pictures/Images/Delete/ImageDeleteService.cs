@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
+using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -17,6 +19,8 @@ public class ImageDeleteService
     private readonly ImageValidator _imageValidator;
     private readonly IPictureLoaderService _loaderService;
 
+    private readonly ImageInvalidationService _imageInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ImageDeleteService> _logger;
 
@@ -25,12 +29,14 @@ public class ImageDeleteService
         IRepository<Image> imageRepository,
         ImageValidator imageValidator,
         IPictureLoaderService loaderService,
+        ImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ImageDeleteService> logger)
     {
         _imageRepository = imageRepository;
         _imageValidator = imageValidator;
         _loaderService = loaderService;
+        _imageInvalid = imageInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -69,6 +75,9 @@ public class ImageDeleteService
             return Result<DeleteResponse>
                 .Fail(EntityErrorResources.ImageDeleteFailed);
         }
+
+        await _imageInvalid.InvalidateDeleteAsync(
+            ImageCacheMapper.ToInfo(image.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -109,6 +118,9 @@ public class ImageDeleteService
         _logger.LogInformation(
             "Image deleted successfully. Id: {Id}",
             image.Value!.Id);
+
+        await _imageInvalid.InvalidateDeleteAsync(
+            ImageCacheMapper.ToInfo(image.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

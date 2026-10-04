@@ -24,7 +24,6 @@ public static class InvalidationServiceDependencyInjection
 
         services.AddSpecificationInvalidationApplication();
 
-
         return services;
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;

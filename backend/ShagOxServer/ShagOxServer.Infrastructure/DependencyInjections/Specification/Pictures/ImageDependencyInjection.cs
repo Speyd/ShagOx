@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images.Query;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Specification.Pictures;
 public static class ImageDependencyInjection

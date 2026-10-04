@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Specification.Currencies;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Caches.Keys.Specification;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
@@ -43,18 +44,38 @@ public class CurrencyQueryService
     public async Task<Result<CurrencyDto>> GetByCodeAsync(
         string code)
     {
-        var currencies = await _currencyRepository
-            .GetByCodeAsync(code);
+        var cacheKey = CurrencyCache.ByCode(code);
 
-        return await currencies.ToResultAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var currencies = await _currencyRepository
+                    .GetByCodeAsync(code);
+
+                return await currencies.ToResultAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 
     public async Task<Result<CurrencyDto>> GetBySymbolAsync(
         string symbol)
     {
-        var currency = await _currencyRepository
-            .GetBySymbolAsync(symbol);
+        var cacheKey = CurrencyCache.BySymbol(symbol);
 
-        return await currency.ToResultAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var currency = await _currencyRepository
+                    .GetBySymbolAsync(symbol);
+
+                return await currency.ToResultAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

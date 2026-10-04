@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Baskets.BasketItems;
+using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;

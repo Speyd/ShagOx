@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Query;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Advertisements;
 public static class AdvertisementsDependencyInjection

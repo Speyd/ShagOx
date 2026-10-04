@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries.Translations.Attributes;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Dictionaries.Attributes;
 public static class AttributeDefinitionDependencyInjections

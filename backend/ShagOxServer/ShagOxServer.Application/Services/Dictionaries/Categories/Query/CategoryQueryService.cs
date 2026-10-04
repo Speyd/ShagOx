@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;

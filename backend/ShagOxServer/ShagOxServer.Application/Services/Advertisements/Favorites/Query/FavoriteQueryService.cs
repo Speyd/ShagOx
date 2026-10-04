@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Advertisements.Favorites;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;

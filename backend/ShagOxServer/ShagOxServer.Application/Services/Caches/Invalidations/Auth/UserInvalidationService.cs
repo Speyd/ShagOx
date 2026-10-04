@@ -1,8 +1,8 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;

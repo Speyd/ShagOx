@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Verifications.VerificationCodes;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Verifications.VerificationCodes.Query;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Verifications;
 public static class VerificationCodeDependencyInjection

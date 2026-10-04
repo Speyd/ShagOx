@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Specification.Localized;
 using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Specification.Pictures;
+using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Specification.Translations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 
 namespace ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Specification;
@@ -13,6 +15,10 @@ public static class SpecificationInvalidationDependencyInjection
         services.AddScoped<CurrencyInvalidationService>();
 
         services.AddPicturesInvalidationApplication();
+
+        services.AddSpecificationTransaltionInvalidationApplication();
+
+        services.AddSpecificationLocalizedInvalidationApplication();
 
 
         return services;

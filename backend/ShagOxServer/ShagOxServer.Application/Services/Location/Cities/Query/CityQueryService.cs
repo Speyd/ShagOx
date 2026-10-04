@@ -1,14 +1,18 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Location.Cities;
+using ShagOxServer.Application.DTOs.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
+using ShagOxServer.Application.Services.Caches.Keys.Location;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -64,9 +68,23 @@ public class CityQueryService
         long regionId,
         PaginationParams pagination)
     {
-        var cities = await _repositoryQueryCity
-            .GetByRegionAsync(regionId, pagination);
+        var cacheKey = CityCache.ByRegion(
+           regionId,
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
 
-        return await cities.ToResultPagedAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var cities = await _repositoryQueryCity
+                    .GetByRegionAsync(regionId, pagination);
+
+                return await cities.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

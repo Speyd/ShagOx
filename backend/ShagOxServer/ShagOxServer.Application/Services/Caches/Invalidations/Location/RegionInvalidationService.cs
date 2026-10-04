@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Location.Cities.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;

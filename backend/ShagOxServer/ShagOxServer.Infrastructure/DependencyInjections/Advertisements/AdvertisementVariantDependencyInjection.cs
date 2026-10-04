@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Query;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Advertisements;
 public static class AdvertisementVariantDependencyInjection

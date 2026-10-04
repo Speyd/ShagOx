@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Conditions;
+﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Query;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Mapping;

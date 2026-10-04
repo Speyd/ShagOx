@@ -6,6 +6,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
+using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -19,6 +21,8 @@ public class ImageUpdateService
 
     private readonly AdvertisementValidator _advertValidator;
 
+    private readonly ImageInvalidationService _imageInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ImageUpdateService> _logger;
 
@@ -27,12 +31,14 @@ public class ImageUpdateService
         IRepository<Image> imageRepository,
         ImageValidator imageValidator,
         AdvertisementValidator advertisementValidator,
+        ImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ImageUpdateService> logger)
     {
         _imageRepository = imageRepository;
         _imageValidator = imageValidator;
         _advertValidator = advertisementValidator;
+        _imageInvalid = imageInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -95,6 +101,9 @@ public class ImageUpdateService
         _logger.LogInformation(
            "Image updated successfully. Id: {Id}",
            image.Value!.Id);
+
+        await _imageInvalid.InvalidateUpdateAsync(
+            ImageCacheMapper.ToInfo(image.Value!));
 
         return Result<UpdateResponse>.Success(response);
     }

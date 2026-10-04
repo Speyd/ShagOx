@@ -1,4 +1,5 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;

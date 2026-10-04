@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;

@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;

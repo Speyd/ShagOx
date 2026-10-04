@@ -9,6 +9,8 @@ public static class PicturesInvalidationDependencyInjection
     {
         services.AddScoped<AvatarInvalidationService>();
 
+        services.AddScoped<ImageInvalidationService>();
+
 
         return services;
     }

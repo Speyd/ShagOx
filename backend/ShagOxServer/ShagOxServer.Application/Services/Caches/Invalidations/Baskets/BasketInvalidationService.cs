@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;

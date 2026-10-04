@@ -1,11 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
-public interface IFavoriteQueryRepository
+public partial interface IFavoriteQueryRepository
     : IQueryRepository<Favorite, FavoriteSearchFilter>
 {
     Task<PagedResult<Favorite>> GetByUserAsync(
@@ -14,7 +13,4 @@ public interface IFavoriteQueryRepository
 
     Task<int> CountByAdvertisementAsync(
         long advertisementId);
-
-    Task<List<FavoriteCacheInfo>> GetCacheInfosByAdvertisementAsync(
-        long advertId);
 }

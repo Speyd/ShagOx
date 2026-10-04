@@ -1,6 +1,6 @@
 ﻿using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;

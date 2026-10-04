@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;

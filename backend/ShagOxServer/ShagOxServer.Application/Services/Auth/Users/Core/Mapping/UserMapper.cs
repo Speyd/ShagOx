@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles;
-using ShagOxServer.Application.DTOs.Auth.Users.Core;
-using ShagOxServer.Application.DTOs.Location.Cities;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars;
+﻿using ShagOxServer.Application.DTOs.Auth.Roles.Query;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
+using ShagOxServer.Application.DTOs.Location.Cities.Query;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Specification.Pictures;

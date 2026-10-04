@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
+using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -91,7 +92,7 @@ public class CurrencyUpdateService
         }
 
         await _currencyInvalid.InvalidateUpdateAsync(
-            )
+            CurrencyCacheMapper.ToInfo(currency.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

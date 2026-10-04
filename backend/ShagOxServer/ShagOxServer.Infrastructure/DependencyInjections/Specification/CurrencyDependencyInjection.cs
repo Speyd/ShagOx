@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies.Query;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Specification;
 public static class CurrencyDependencyInjection

@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core;
-using ShagOxServer.Application.DTOs.Baskets.BasketItems;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;

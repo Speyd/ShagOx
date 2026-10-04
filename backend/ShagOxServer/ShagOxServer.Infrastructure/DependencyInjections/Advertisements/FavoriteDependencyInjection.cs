@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Query;
 
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Advertisements;

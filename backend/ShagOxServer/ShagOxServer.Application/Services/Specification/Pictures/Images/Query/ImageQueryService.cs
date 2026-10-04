@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Images;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Query;

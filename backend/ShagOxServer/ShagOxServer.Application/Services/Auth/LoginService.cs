@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Login;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;

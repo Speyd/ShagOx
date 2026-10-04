@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
+﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;

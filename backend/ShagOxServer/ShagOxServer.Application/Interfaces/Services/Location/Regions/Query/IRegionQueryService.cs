@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Location.Regions;
+﻿using ShagOxServer.Application.DTOs.Location.Regions.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Regions;

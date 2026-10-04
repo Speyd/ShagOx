@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Services.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;

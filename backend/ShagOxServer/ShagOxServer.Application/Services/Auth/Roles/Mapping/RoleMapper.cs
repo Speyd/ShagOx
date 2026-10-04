@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles;
+﻿using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Mapping;

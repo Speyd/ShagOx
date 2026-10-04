@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
-using ShagOxServer.Application.DTOs.Advertisements.Core;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;

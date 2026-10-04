@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Auth.Roles;
-using ShagOxServer.Application.DTOs.Auth.Users.Core;
-using ShagOxServer.Application.DTOs.Location.Cities;
+using ShagOxServer.Application.DTOs.Auth.Roles.Query;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
+using ShagOxServer.Application.DTOs.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
@@ -71,7 +71,9 @@ public class UserQueryService
     public async Task<Result<UserShortDto>> GetByContactAsync(
         string value)
     {
-        var cacheKey = UserCache.ByContact(value);
+        var cacheKey = UserCache.ByContact(
+            value,
+            _language.Language);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,

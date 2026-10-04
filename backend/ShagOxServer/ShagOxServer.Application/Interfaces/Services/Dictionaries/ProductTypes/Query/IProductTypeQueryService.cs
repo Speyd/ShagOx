@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Query;
 using ShagOxServer.Application.Interfaces.Services.Base;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries;

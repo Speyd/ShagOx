@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Location.Regions;
+using ShagOxServer.Application.DTOs.Location.Regions.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Mapping;

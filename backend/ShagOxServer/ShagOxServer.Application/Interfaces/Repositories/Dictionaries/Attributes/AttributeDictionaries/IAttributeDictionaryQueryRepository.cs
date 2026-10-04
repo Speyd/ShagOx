@@ -8,7 +8,7 @@ public interface IAttributeDictionaryQueryRepository
     : IQueryRepository<AttributeDictionary, 
         AttributeDictionarySearchFilter>
 {
-    Task<PagedResult<AttributeDefinition>> GetDefinitionsAsync(
+    Task<PagedResult<AttributeDefinition>> GetByDictionaryAsync(
         long attributeDictionaryId,
         PaginationParams pagination);
 }

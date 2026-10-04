@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Mapping;

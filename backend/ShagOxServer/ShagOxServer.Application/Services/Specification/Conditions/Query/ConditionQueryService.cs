@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Specification.Conditions;
+using ShagOxServer.Application.DTOs.Specification.Conditions.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;

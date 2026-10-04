@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;

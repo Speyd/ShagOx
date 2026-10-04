@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Currencies;
+﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Mapping;

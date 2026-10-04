@@ -62,8 +62,8 @@ public class UserInvalidationService
     private async Task InvalidateAsync(
         UserCacheInfo entityInfo)
     {
-        await _cache.RemoveAsync(CacheKeys.
-             Entity<User>(entityInfo.Id));
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             EntityLanguagePattern<User>(entityInfo.Id));
 
         await InvalidateContactAsync(entityInfo);
 
@@ -94,16 +94,16 @@ public class UserInvalidationService
         if (!string.IsNullOrEmpty(entityInfo.Phone))
         {
             await _cache.RemoveAsync(UserCache.
-                ByContact(entityInfo.Phone));
+                ByContactPattern(entityInfo.Phone));
         }
 
         if (!string.IsNullOrEmpty(entityInfo.Email))
         {
             await _cache.RemoveAsync(UserCache.
-                ByContact(entityInfo.Email));
+                ByContactPattern(entityInfo.Email));
         }
 
         await _cache.RemoveAsync(UserCache.
-            ByContact(entityInfo.UserName));
+            ByContactPattern(entityInfo.UserName));
     }
 }

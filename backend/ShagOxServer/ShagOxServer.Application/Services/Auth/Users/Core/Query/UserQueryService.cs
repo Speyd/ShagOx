@@ -3,6 +3,7 @@ using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Auth.Roles;
 using ShagOxServer.Application.DTOs.Auth.Users.Core;
 using ShagOxServer.Application.DTOs.Location.Cities;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
@@ -11,7 +12,7 @@ using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
@@ -21,7 +22,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Query;
 public class UserQueryService
-    : BaseQueryService<
+    : BaseLocalizedQueryService<
         UserDto,
         User,
         UserSearchFilter
@@ -42,9 +43,10 @@ public class UserQueryService
         ICityQueryService cityService,
         IUserContext userContext,
         ICacheService cache,
-        IOptions<CacheSettings> settings
+        IOptions<CacheSettings> settings,
+        ILanguageProvider language
     )
-        : base(userQueryRepository, cache, settings)
+        : base(userQueryRepository, language, cache, settings)
     {
         _userQueryRepository = userQueryRepository;
         _roleQueryRepository = roleQueryRepository;

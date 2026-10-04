@@ -6,6 +6,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
+using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Location;
@@ -19,6 +21,8 @@ public class CityTranslationUpdateService
 {
     private readonly IRepository<CityTranslation> _cityRepository;
 
+    private readonly CityTranslationInvalidationService _cityInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CityTranslationUpdateService> _logger;
 
@@ -27,11 +31,13 @@ public class CityTranslationUpdateService
         IRepository<CityTranslation> cityRepository,
         CityTranslationValidator cityTranslationValidator,
         CityValidator cityValidator,
+        CityTranslationInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityTranslationUpdateService> logger
         ) : base(cityValidator, cityTranslationValidator)
     {
         _cityRepository = cityRepository;
+        _cityInvalid = cityInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -85,6 +91,9 @@ public class CityTranslationUpdateService
             return Result<UpdateResponse>
                  .Fail(EntityErrorResources.CityTranslationUpdateFailed);
         }
+
+        await _cityInvalid.InvalidateUpdateAsync(
+            BaseTranslationCacheMapper.ToInfo(city.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

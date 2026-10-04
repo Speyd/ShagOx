@@ -65,6 +65,8 @@ public class RegionDeleteService
                  .Fail(EntityErrorResources.RegionDeleteFailed);
         }
 
+        await _regionInvalid.InvalidateDeleteAsync(id);
+
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                region.Value!.Id,

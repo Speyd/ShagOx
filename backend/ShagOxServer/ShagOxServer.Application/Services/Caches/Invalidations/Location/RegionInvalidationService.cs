@@ -1,7 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Location.Cities.Cache;
+﻿using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.DTOs.Location.Cities.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Location;
 
@@ -13,8 +16,8 @@ public class RegionInvalidationService
     private readonly ICityQueryRepository _cityRepository;
     private readonly CityInvalidationService _cityInvalid;
 
-    //private readonly ICityTranslationQueryRepository _transRepository;
-    //private readonly CityTranslationInvalidationService _transInvalid;
+    private readonly IRegionTranslationQueryRepository _transRepository;
+    private readonly RegionTranslationInvalidationService _transInvalid;
 
     private readonly ICacheService _cache;
 
@@ -23,14 +26,14 @@ public class RegionInvalidationService
     public RegionInvalidationService(
         ICityQueryRepository cityRepository,
         CityInvalidationService cityInvalid,
-        //ICityTranslationQueryRepository transRepository,
-        //CityTranslationInvalidationService transInvalid,
+        IRegionTranslationQueryRepository transRepository,
+        RegionTranslationInvalidationService transInvalid,
         ICacheService cache)
     {
         _cityRepository = cityRepository;
         _cityInvalid = cityInvalid;
-        //_transRepository = transRepository;
-        //_transInvalid = transInvalid;
+        _transRepository = transRepository;
+        _transInvalid = transInvalid;
         _cache = cache;
     }
 
@@ -50,14 +53,14 @@ public class RegionInvalidationService
                 .InvalidateDeleteAsync(cityInfo);
         }
 
-        //var transInfos =
-        //   await GetTranslationInfos(entityInfo.Id);
+        var transInfos =
+           await GetTranslationInfos(entityId);
 
-        //foreach (var transInfo in transInfos)
-        //{
-        //    await _transInvalid
-        //        .InvalidateDeleteAsync(transInfo);
-        //}
+        foreach (var transInfo in transInfos)
+        {
+            await _transInvalid
+                .InvalidateDeleteAsync(transInfo);
+        }
     }
 
     public async Task InvalidateUpdateAsync(
@@ -90,10 +93,10 @@ public class RegionInvalidationService
             .GetCacheInfoByRegionAsync(entityId);
     }
 
-    //private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
-    //    long entityId)
-    //{
-    //    return await _transRepository
-    //        .GetCacheInfosByTranslatableAsync(entityId);
-    //}
+    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+        long entityId)
+    {
+        return await _transRepository
+            .GetCacheInfosByTranslatableAsync(entityId);
+    }
 }

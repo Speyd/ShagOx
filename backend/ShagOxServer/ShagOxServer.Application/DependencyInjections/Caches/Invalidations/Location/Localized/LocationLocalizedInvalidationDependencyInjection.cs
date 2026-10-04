@@ -9,6 +9,8 @@ public static class LocationLocalizedInvalidationDependencyInjection
     {
         services.AddScoped<CityLocalizedInvalidationService>();
 
+        services.AddScoped<RegionLocalizedInvalidationService>();
+
 
         return services;
     }

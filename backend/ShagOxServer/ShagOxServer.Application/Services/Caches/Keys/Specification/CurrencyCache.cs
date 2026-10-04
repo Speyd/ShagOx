@@ -12,6 +12,6 @@ public static class CurrencyCache
            => $"{Prefix}:code:{code}";
 
     public static string BySymbol(
-       long symbol)
+       string symbol)
            => $"{Prefix}:symbol:{symbol}";
 }

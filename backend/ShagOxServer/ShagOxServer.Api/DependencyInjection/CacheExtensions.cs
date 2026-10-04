@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using ShagOxServer.Api.Common;
+﻿using ShagOxServer.Api.Common;
 using ShagOxServer.Application.Common.Settings.Caches;
 using StackExchange.Redis;
 
@@ -15,43 +14,42 @@ public static class CacheExtensions
 
         var serviceProvider = services.BuildServiceProvider();
 
-        var settings = serviceProvider
-            .GetRequiredService<IOptions<RedisSettings>>()
-            .Value;
-
-        if (settings is null)
-        {
-            throw new InvalidOperationException(
+        var settings = configuration
+            .GetSection("Redis")
+            .Get<RedisSettings>()
+            ?? throw new InvalidOperationException(
                 "Redis settings are not configured.");
-        }
 
         var options = ConfigurationOptions.Parse(
             settings.Endpoints);
+
+        
 
         options.Ssl = settings.Ssl;
         options.User = settings.User;
         options.Password = settings.Password;
 
-        var certRoot = Path.Combine(ProjectPath.Root,
-            settings.CertificatePath);
+        var clientCertRoot = Path.Combine(
+            ProjectPath.Root,
+            settings.ClientPath);
 
-        //options.SetUserPemCertificate(
-        //    userCertificatePath: Path.Combine(
-        //        certRoot,
-        //        settings.ClientCrtFileName),
-        //    userKeyPath: Path.Combine(
-        //        certRoot,
-        //        settings.ClientKeyFileName));
+        options.SetUserPemCertificate(
+            userCertificatePath: Path.Combine(
+                clientCertRoot,
+                settings.ClientCrtFileName),
+            userKeyPath: Path.Combine(
+                clientCertRoot,
+                settings.ClientKeyFileName));
 
-        //options.TrustIssuer(
-        //    Path.Combine(
-        //        certRoot,
-        //        settings.CaFileName));
+        var caCertRoot = Path.Combine(
+            ProjectPath.Root,
+            settings.CaPath);
 
         options.TrustIssuer(
             Path.Combine(
-                certRoot,
+                caCertRoot,
                 settings.CaFileName));
+    
 
         var muxer = await ConnectionMultiplexer
             .ConnectAsync(options);

@@ -8,3 +8,30 @@
 2026-10-04 21:17:53.726 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
 2026-10-04 21:17:53.727 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
 2026-10-04 21:17:53.728 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-04 21:25:08.054 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-04 21:25:08.075 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-04 21:25:08.112 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-04 21:25:08.113 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-04 21:25:08.114 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-04 22:40:20.045 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-04 22:40:20.065 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-04 22:40:20.098 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-04 22:40:20.100 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-04 22:40:20.101 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-04 22:40:31.467 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-04 22:40:31.485 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-04 22:40:31.519 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-04 22:40:31.520 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-04 22:40:31.521 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-04 22:40:57.633 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-10-04 22:49:51.057 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-04 22:49:51.076 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-04 22:49:51.116 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-04 22:49:51.117 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-04 22:49:51.118 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-04 23:07:40.104 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7263
+2026-10-04 23:07:40.123 +02:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5013
+2026-10-04 23:07:40.159 +02:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
+2026-10-04 23:07:40.160 +02:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
+2026-10-04 23:07:40.161 +02:00 [INF] Microsoft.Hosting.Lifetime Content root path: C:\Users\nikit\OneDrive\Desktop\ShagOx\backend\ShagOxServer\ShagOxServer.Api
+2026-10-04 23:08:05.287 +02:00 [WRN] Microsoft.EntityFrameworkCore.Query Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.

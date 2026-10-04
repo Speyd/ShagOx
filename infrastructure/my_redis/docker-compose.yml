@@ -1,0 +1,50 @@
+services:
+
+  redis-init:
+    image: redis:7-alpine
+    container_name: redis-init
+    restart: "no"
+
+    env_file:
+      - .env
+
+    volumes:
+      - redis-certs-data:/certs
+      - redis-acl-data:/redis
+      - ./init/generate-certs.sh:/generate-certs.sh:ro
+
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        apk add --no-cache openssl
+        exec /bin/sh /generate-certs.sh
+
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: unless-stopped
+
+    depends_on:
+      redis-init:
+        condition: service_completed_successfully
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - redis-certs-data:/certs:ro
+      - redis-acl-data:/redis:ro
+      - redis-data:/data
+
+    command:
+      - redis-server
+      - /usr/local/etc/redis/redis.conf
+
+
+volumes:
+  redis-data:
+  redis-certs-data:
+  redis-acl-data:

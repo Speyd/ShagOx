@@ -1,9 +1,12 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
+using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Location.Cities.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
+using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Location;
 using ShagOxServer.Domain.Entities.Location;
@@ -16,8 +19,8 @@ public class CityInvalidationService
     private readonly IUserQueryRepository _userRepository;
     private readonly UserInvalidationService _userInvalid;
 
-    //private readonly ICategoryTranslationQueryRepository _transRepository;
-    //private readonly CategoryTranslationInvalidationService _transInvalid;
+    private readonly ICityTranslationQueryRepository _transRepository;
+    private readonly CityTranslationInvalidationService _transInvalid;
 
     private readonly ICacheService _cache;
 
@@ -26,14 +29,14 @@ public class CityInvalidationService
     public CityInvalidationService(
         IUserQueryRepository userRepository,
         UserInvalidationService userInvalid,
-        //ICategoryTranslationQueryRepository transRepository,
-        //CategoryTranslationInvalidationService transInvalid,
+        ICityTranslationQueryRepository transRepository,
+        CityTranslationInvalidationService transInvalid,
         ICacheService cache)
     {
         _userRepository = userRepository;
         _userInvalid = userInvalid;
-        //_transRepository = transRepository;
-        //_transInvalid = transInvalid;
+        _transRepository = transRepository;
+        _transInvalid = transInvalid;
         _cache = cache;
     }
 
@@ -53,14 +56,14 @@ public class CityInvalidationService
                 .InvalidateDeleteAsync(userInfo);
         }
 
-        //var transInfos =
-        //   await GetTranslationInfos(entityInfo.Id);
+        var transInfos =
+           await GetTranslationInfos(entityInfo.Id);
 
-        //foreach (var transInfo in transInfos)
-        //{
-        //    await _transInvalid
-        //        .InvalidateDeleteAsync(transInfo);
-        //}
+        foreach (var transInfo in transInfos)
+        {
+            await _transInvalid
+                .InvalidateDeleteAsync(transInfo);
+        }
     }
 
     public async Task InvalidateUpdateAsync(
@@ -96,10 +99,10 @@ public class CityInvalidationService
             .GetCacheInfosByCityAsync(entityId);
     }
 
-    //private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
-    //    long entityId)
-    //{
-    //    return await _transRepository
-    //        .GetCacheInfosByTranslatableAsync(entityId);
-    //}
+    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+        long entityId)
+    {
+        return await _transRepository
+            .GetCacheInfosByTranslatableAsync(entityId);
+    }
 }

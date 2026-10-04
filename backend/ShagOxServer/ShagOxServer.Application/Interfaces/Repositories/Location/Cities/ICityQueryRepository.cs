@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
+﻿using ShagOxServer.Application.DTOs.Location.Cities.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -10,4 +11,7 @@ public interface ICityQueryRepository
     Task<PagedResult<City>> GetByRegionAsync(
         long regionId,
         PaginationParams pagination);
+
+    Task<List<CityCacheInfo>> GetCacheInfoByRegionAsync(
+        long regionId);
 }

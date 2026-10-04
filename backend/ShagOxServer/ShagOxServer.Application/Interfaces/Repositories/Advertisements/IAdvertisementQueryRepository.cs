@@ -27,4 +27,7 @@ public interface IAdvertisementQueryRepository
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByCategoryAsync(
         long categoryId);
+
+    Task<List<AdvertisementCacheInfo>> GetCacheInfosByConditionAsync(
+        long conditionId);
 }

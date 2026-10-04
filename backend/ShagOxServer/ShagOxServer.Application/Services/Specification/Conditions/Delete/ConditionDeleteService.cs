@@ -4,11 +4,11 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Specification.Conditions.Create;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Delete;
 public class ConditionDeleteService 
@@ -17,6 +17,7 @@ public class ConditionDeleteService
     private readonly IRepository<Condition> _conditionRepository;
     private readonly ConditionValidator _conditionValidator;
 
+    private readonly ConditionInvalidationService _conditionInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ConditionCreateService> _logger;
@@ -25,11 +26,13 @@ public class ConditionDeleteService
     public ConditionDeleteService(
         IRepository<Condition> conditionRepository,
         ConditionValidator conditionValidator,
+        ConditionInvalidationService conditionInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ConditionCreateService> logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
+        _conditionInvalid = conditionInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }

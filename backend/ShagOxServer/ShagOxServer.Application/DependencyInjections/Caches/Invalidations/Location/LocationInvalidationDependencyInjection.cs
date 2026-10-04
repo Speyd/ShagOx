@@ -6,7 +6,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Location;
 namespace ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Location;
 public static class LocationInvalidationDependencyInjection
 {
-    public static IServiceCollection AddDictionariesInvalidationApplication(
+    public static IServiceCollection AddLocationInvalidationApplication(
         this IServiceCollection services)
     {
         services.AddScoped<RegionInvalidationService>();

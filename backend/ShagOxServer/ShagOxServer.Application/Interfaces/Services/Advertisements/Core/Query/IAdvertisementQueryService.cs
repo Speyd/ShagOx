@@ -13,7 +13,14 @@ public interface IAdvertisementQueryService
         long userId,
         PaginationParams pagination);
 
+    Task<Result<PagedResult<AdvertisementShortDto>>> GetShortPagedAsync(
+        PaginationParams pagination);
+
     Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         long userId,
+        PaginationParams pagination);
+
+    Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
+        AdvertisementSearchFilter filter,
         PaginationParams pagination);
 }

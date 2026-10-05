@@ -16,7 +16,7 @@ public static class CacheKeys
     public static string EntityPattern<TEntity>()
         => $"{Prefix<TEntity>()}:*";
 
-    public static string EntityPage<TEntity>(
+    public static string EntityPaged<TEntity>(
         int page,
         int pageSize)
         => $"{Prefix<TEntity>()}:page:{page}:size:{pageSize}";
@@ -27,7 +27,7 @@ public static class CacheKeys
         string language)
         => $"{LanguagePrefix<TEntity>()}:{language}:entity:{id}";
 
-    public static string EntityLanguagePage<TEntity>(
+    public static string EntityLanguagePaged<TEntity>(
         string language,
         int page,
         int pageSize)

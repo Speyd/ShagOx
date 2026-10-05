@@ -57,7 +57,7 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     public virtual async Task<Result<PagedResult<TDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
-        var cache = await GetByPageCache(pagination);
+        var cache = await GetByPagedCache(pagination);
         if (cache is not null)
             return Result<PagedResult<TDto>>.Success(cache);
 
@@ -68,7 +68,7 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
             ApplyMapperAsync);
 
         if (dto.IsSuccess && dto.Value is not null)
-            await CreatePageCache(pagination, dto.Value);
+            await CreatePagedCache(pagination, dto.Value);
 
         return dto;
     }

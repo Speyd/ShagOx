@@ -46,11 +46,30 @@ public abstract class BaseQueryService<TDto, TEntity, TFilter>
         return cache;
     }
 
+    public virtual async Task<PagedResult<TDto>?> GetByPageCache(
+        PaginationParams pagination)
+    {
+        var cache = await _cache.GetAsync<PagedResult<TDto>>(
+            GetPageCacheKey(pagination));
+
+        return cache;
+    }
+
+
     public virtual string GetCacheKey(
         long id)
     {
         return CacheKeys.Entity<TEntity>(id);
     }
+
+    public virtual string GetPageCacheKey(
+        PaginationParams pagination)
+    {
+        return CacheKeys.EntityPage<TEntity>(
+            pagination.Page,
+            pagination.PageSize);
+    }
+
 
     public virtual async Task CreateCache(
         TDto dto)
@@ -58,6 +77,16 @@ public abstract class BaseQueryService<TDto, TEntity, TFilter>
         await _cache.SetAsync(
             CacheKeys.Entity<TEntity>(dto.Id),
             dto,
+            _settings.KeyExpiration);
+    }
+
+    public virtual async Task CreatePageCache(
+        PaginationParams pagination,
+        PagedResult<TDto> result)
+    {
+        await _cache.SetAsync(
+            GetPageCacheKey(pagination),
+            result,
             _settings.KeyExpiration);
     }
 
@@ -81,11 +110,20 @@ public abstract class BaseQueryService<TDto, TEntity, TFilter>
     public virtual async Task<Result<PagedResult<TDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
-        var entities = await _queryRepository
-           .GetPagedAsync(pagination);
+        var cache = await GetByPageCache(pagination);
+        if (cache is not null)
+            return Result<PagedResult<TDto>>.Success(cache);
 
-        return await entities.ToResultPagedAsync(
+        var entities = await _queryRepository
+          .GetPagedAsync(pagination);
+
+        var dto = await entities.ToResultPagedAsync(
             ApplyMapperAsync);
+
+        if (dto.IsSuccess && dto.Value is not null)
+            await CreatePageCache(pagination, dto.Value);
+
+        return dto;
     }
 
     public virtual async Task<Result<PagedResult<TDto>>> SearchAsync(

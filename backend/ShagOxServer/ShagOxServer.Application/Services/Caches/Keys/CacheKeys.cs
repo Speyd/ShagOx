@@ -8,10 +8,16 @@ public static class CacheKeys
         => $"{Prefix<T>()}:language";
 
 
-    public static string Entity<T>(long id)
+    public static string Entity<T>(
+        long id)
         => $"{Prefix<T>()}:{id}";
     public static string EntityPattern<T>()
         => $"{Prefix<T>()}:*";
+
+    public static string EntityPage<T>(
+        int page,
+        int pageSize)
+        => $"{Prefix<T>()}:page:{page}:size:{pageSize}";
 
 
     public static string EntityLanguage<T>(

@@ -1,4 +1,6 @@
-﻿namespace ShagOxServer.SharedKernel.Abstractions.Paginations;
+﻿using System.Text.Json.Serialization;
+
+namespace ShagOxServer.SharedKernel.Abstractions.Paginations;
 public sealed class PagedResult<T>
 {
     public IReadOnlyList<T> Items { get; init; } = [];
@@ -24,5 +26,20 @@ public sealed class PagedResult<T>
         TotalCount = totalCount;
         TotalPages = (int)Math.Ceiling(
             totalCount / (double)pagination.PageSize);
+    }
+
+    [JsonConstructor]
+    public PagedResult(
+        IReadOnlyList<T> items,
+        int page,
+        int pageSize,
+        int totalCount,
+        int totalPages)
+    {
+        Items = items;
+        Page = page;
+        PageSize = pageSize;
+        TotalCount = totalCount;
+        TotalPages = totalPages;
     }
 }

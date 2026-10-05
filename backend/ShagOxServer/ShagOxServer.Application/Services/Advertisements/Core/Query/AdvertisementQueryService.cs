@@ -141,4 +141,50 @@ public class AdvertisementQueryService
             _settings.KeyExpiration
         );
     }
+
+    public async Task<Result<PagedResult<AdvertisementShortDto>>> GetShortPagedAsync(
+        PaginationParams pagination)
+    {
+        var cacheKey = AdvertisementCache.ByShortPaged(
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var adverts = await _advertisementRepository
+                    .GetPagedAsync(pagination);
+
+                return adverts.ToResultPaged(
+                    AdvertisementShortMapper.ToDto);
+            },
+            _settings.KeyExpiration
+        );
+    }
+
+    public async Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination)
+    {
+        var cacheKey = AdvertisementCache.ByShortSearch(
+            filter,
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var adverts = await _advertisementRepository
+                    .SearchAsync(filter, pagination);
+
+                return adverts.ToResultPaged(
+                    AdvertisementShortMapper.ToDto);
+            },
+            _settings.KeyExpiration
+        );
+    }
 }

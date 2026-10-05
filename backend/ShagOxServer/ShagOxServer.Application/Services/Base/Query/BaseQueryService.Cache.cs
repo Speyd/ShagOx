@@ -21,11 +21,11 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         return cache;
     }
 
-    public virtual async Task<PagedResult<TDto>?> GetByPageCache(
+    public virtual async Task<PagedResult<TDto>?> GetByPagedCache(
         PaginationParams pagination)
     {
         var cache = await _cache.GetAsync<PagedResult<TDto>>(
-            GetPageCacheKey(pagination));
+            GetPagedCacheKey(pagination));
 
         return cache;
     }
@@ -48,10 +48,10 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         return CacheKeys.Entity<TEntity>(id);
     }
 
-    public virtual string GetPageCacheKey(
+    public virtual string GetPagedCacheKey(
         PaginationParams pagination)
     {
-        return CacheKeys.EntityPage<TEntity>(
+        return CacheKeys.EntityPaged<TEntity>(
             pagination.Page,
             pagination.PageSize);
     }
@@ -77,12 +77,12 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
             _settings.KeyExpiration);
     }
 
-    public virtual async Task CreatePageCache(
+    public virtual async Task CreatePagedCache(
         PaginationParams pagination,
         PagedResult<TDto> result)
     {
         await _cache.SetAsync(
-            GetPageCacheKey(pagination),
+            GetPagedCacheKey(pagination),
             result,
             _settings.KeyExpiration);
     }

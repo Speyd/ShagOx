@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionarie
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaries;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Query;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Mappers;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDictionaries;

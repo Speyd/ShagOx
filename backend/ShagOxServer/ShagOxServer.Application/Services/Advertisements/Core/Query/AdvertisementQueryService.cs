@@ -141,4 +141,28 @@ public class AdvertisementQueryService
             _settings.KeyExpiration
         );
     }
+
+    public override async Task<Result<PagedResult<AdvertisementDto>>> SearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination)
+    {
+        var cacheKey = AdvertisementCache.BySearch(
+           filter,
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var entities = await _queryRepository
+                    .SearchAsync(filter, pagination);
+
+                return await entities.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
+    }
 }

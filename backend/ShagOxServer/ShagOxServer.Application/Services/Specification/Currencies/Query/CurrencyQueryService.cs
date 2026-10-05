@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Specification;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Domain.Entities.Specification;

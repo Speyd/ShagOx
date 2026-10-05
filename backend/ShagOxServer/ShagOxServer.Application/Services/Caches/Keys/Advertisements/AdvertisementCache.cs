@@ -1,5 +1,9 @@
 ﻿using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Filters.Advertisements;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Caches.Advertisements;
 public static class AdvertisementCache
@@ -29,4 +33,37 @@ public static class AdvertisementCache
     public static string ByBuyerPattern(
         long buyerId)
             => $"{Prefix}:*buyer:{buyerId}:page:*";
+
+    public static string BySearch(
+        AdvertisementSearchFilter filter,
+        string language,
+        int page,
+        int pageSize)
+    {
+        var attributes = filter.Attributes
+            .Order(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        var data = new
+        {
+            filter.Title,
+            filter.Description,
+            filter.CategoryId,
+            Attributes = attributes,
+            language,
+            page,
+            pageSize
+        };
+
+        var json = JsonSerializer.Serialize(data);
+
+        var hash = Convert.ToHexString(
+            SHA256.HashData(
+                Encoding.UTF8.GetBytes(json)));
+
+        return $"{Prefix}:{language}:search:{hash}";
+    }
+
+    public static string SearchPattern()
+        => $"{Prefix}:*:search:*";
 }

@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Query;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Domain.Entities.Specification.Pictures;

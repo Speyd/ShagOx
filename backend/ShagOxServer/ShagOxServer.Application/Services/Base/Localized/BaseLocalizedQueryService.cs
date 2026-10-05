@@ -4,9 +4,11 @@ using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Services.Base.Localized;
 public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
@@ -37,13 +39,23 @@ public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
             _language.Language);
     }
 
-    public override async Task CreateCache(
-        TDto dto)
+    public override string GetPageCacheKey(
+        PaginationParams pagination)
     {
-        await _cache.SetAsync(
-            CacheKeys.EntityLanguage<TEntity>(
-                dto.Id, _language.Language),
-            dto,
-            _settings.KeyExpiration);
+        return CacheKeys.EntityLanguagePage<TEntity>(
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
+    }
+
+    public override string GetSearchCacheKey(
+        TFilter filter,
+        PaginationParams pagination)
+    {
+        return CacheKeys.ByLanguageSearch<TEntity, TFilter>(
+            filter,
+            _language.Language,
+            pagination.Page,
+            pagination.PageSize);
     }
 }

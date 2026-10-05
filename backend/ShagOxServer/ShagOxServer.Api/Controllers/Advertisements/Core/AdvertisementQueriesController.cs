@@ -58,6 +58,8 @@ public class AdvertisementQueriesController
         [FromQuery] AdvertisementSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
+        filter = AdvertisementSearchFilter.Create(filter);
+
         var result = await _queryService
             .SearchAsync(filter, pagination);
 

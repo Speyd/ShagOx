@@ -1,24 +1,35 @@
-﻿namespace ShagOxServer.Domain.Filters.Advertisements;
-public sealed record AdvertisementSearchFilter : BaseFilter
+﻿using System.Text.Json;
+
+namespace ShagOxServer.Domain.Filters.Advertisements;
+public sealed record AdvertisementSearchFilter(
+    string? Title,
+    string? Description,
+    long? CategoryId,
+    JsonDocument? Attributes
+) : BaseFilter
 {
-    public string? Title { get; init; }
-    public string? Description { get; init; }
-    public long? CategoryId { get; init; }
-    public IReadOnlyList<string> Attributes { get; init; }
-
-
-    public AdvertisementSearchFilter(
-        string? title,
-        string? description,
-        long? categoryId,
-        IEnumerable<string> attributes)
+    public static AdvertisementSearchFilter Create(
+        AdvertisementSearchFilter filter)
     {
-        Title = title;
-        Description = description;
-        CategoryId = categoryId;
+        return new AdvertisementSearchFilter(
+            filter.Title,
+            filter.Description,
+            filter.CategoryId,
+            NormalizeAttributes(filter.Attributes));
+    }
 
-        Attributes = attributes
-            .Order(StringComparer.OrdinalIgnoreCase)
-            .ToList();
+    private static JsonDocument? NormalizeAttributes(JsonDocument? attributes)
+    {
+        if (attributes is null)
+            return null;
+
+        var sorted = attributes.RootElement
+            .EnumerateObject()
+            .OrderBy(x => x.Name, StringComparer.Ordinal)
+            .ToDictionary(
+                x => x.Name,
+                x => x.Value.Clone());
+
+        return JsonSerializer.SerializeToDocument(sorted);
     }
 }

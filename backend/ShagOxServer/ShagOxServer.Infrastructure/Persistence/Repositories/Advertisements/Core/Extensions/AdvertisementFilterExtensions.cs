@@ -35,11 +35,10 @@ public static class AdvertisementFilterExtensions
 
         if (filter.Attributes is not null)
         {
-            JsonElement v;
-
             query = query.Where(x =>
-                filter.Attributes.All(a =>
-                    x.Attributes.RootElement.TryGetProperty(a, out v)));
+                EF.Functions.JsonContains(
+                    x.Attributes,
+                    filter.Attributes));
         }
 
         return query;

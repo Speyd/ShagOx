@@ -16,9 +16,7 @@ public class AttributeDictionaryUpdateService
 {
     private readonly IRepository<AttributeDictionary> _dictionaryRepository;
     private readonly AttributeDictionaryValidator _dictionaryValidator;
-
     private readonly AttributeDictionaryInvalidationService _dictInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDictionaryUpdateService> _logger;
 

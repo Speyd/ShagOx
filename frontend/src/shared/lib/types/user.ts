@@ -11,7 +11,7 @@ export type User = {
   phone: string;
   email: string | null;
   avatar: Avatar | null;
-  city: City;
+  city: City | null;
   roles: Role[];
   lastSeenAt: string;
   registeredAt: string;

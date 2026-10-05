@@ -77,6 +77,5 @@ public class BasketQueryService
             },
             _settings.KeyExpiration
         );
-       
     }
 }

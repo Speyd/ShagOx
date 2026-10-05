@@ -20,6 +20,7 @@ public class AdvertisementVariantUpdateService
     private readonly AdvertisementVariantValidator _variantValidator;
 
     private readonly AdvertisementValidator _advertValidator;
+
     private readonly AdvertisementVariantInvalidationService _variantInvalid;
 
     private readonly IUnitOfWork _unitOfWork;

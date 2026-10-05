@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Location.Cities.Query;
+
+using ShagOxServer.Application.DTOs.Location.Cities.Query;
 using ShagOxServer.Application.DTOs.Location.Regions.Query;
 using ShagOxServer.Domain.Entities.Location;
 

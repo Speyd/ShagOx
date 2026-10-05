@@ -17,7 +17,7 @@ public partial class BasketQueryRepository
         : base(db)
     { }
 
-    
+
     public async Task<Basket?> GetByUserAsync(
         long userId)
     {

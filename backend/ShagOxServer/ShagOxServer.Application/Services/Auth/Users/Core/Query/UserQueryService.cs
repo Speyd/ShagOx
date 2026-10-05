@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;

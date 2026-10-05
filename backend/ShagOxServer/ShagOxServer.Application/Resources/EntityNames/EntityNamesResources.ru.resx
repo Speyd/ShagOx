@@ -120,8 +120,8 @@
   <data name="Advertisement" xml:space="preserve">
     <value>Объявление</value>
   </data>
-  <data name="AdvertStatusTranslation" xml:space="preserve">
-    <value>Статус объявления</value>
+  <data name="StatusTranslation" xml:space="preserve">
+    <value>Перевод статуса объявления</value>
   </data>
   <data name="Basket" xml:space="preserve">
     <value>Корзина</value>

@@ -4,6 +4,7 @@ using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Filters.Verifications.VerificationCodes;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Verifications.VerificationCodes.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Verifications.VerificationCodes.Query;
 public partial class VerificationCodeQueryRepository

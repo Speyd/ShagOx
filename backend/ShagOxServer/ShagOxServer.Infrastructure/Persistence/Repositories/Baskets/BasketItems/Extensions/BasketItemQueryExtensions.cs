@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
+
 public static class BasketItemQueryExtensions
 {
     public static IQueryable<BasketItem> WithIncludes(

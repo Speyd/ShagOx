@@ -9,13 +9,12 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Query;
 public partial class AdvertisementQueryRepository 
-    : QueryRepository<Advertisement, AdvertisementSearchFilter>, 
+: QueryRepository<Advertisement, AdvertisementSearchFilter>, 
       IAdvertisementQueryRepository
 {
     public AdvertisementQueryRepository(AppDbContext db)
         : base(db)
     { }
-
 
     public async Task<List<Advertisement>> GetByIdsAsync(
         List<long> ids)

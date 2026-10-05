@@ -1,4 +1,3 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;

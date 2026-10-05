@@ -4,8 +4,6 @@ import {
   Text,
   Image,
   Collapse,
-  Modal,
-  Button,
 } from "@mantine/core";
 import {
   ChevronRight,
@@ -26,6 +24,7 @@ import styles from "./NavigationDrawer.module.css";
 import logo from "@/shared/assets/icons/logo.png";
 import { useState } from "react";
 import { useLogout } from "@/features/auth/model/hooks/useLogout";
+import ConfirmModal from "@/shared/ui/confirm-modal";
 
 type NavigationDrawerProps = {
   opened: boolean;
@@ -177,32 +176,16 @@ export default function NavigationDrawer({
           </button>
         </div>
       </div>
-      <Modal
+      <ConfirmModal
         opened={logoutModalOpened}
         onClose={() => setLogoutModalOpened(false)}
         title="Вихід з акаунту"
-        centered
-        zIndex={1002}
-        radius="md"
-      >
-        <Text mb="xl" c="var(--text-base)">
-          Ви впевнені, що хочете вийти з акаунту?
-        </Text>
-
-        <div className={styles.logoutActions}>
-          <Button variant="default" onClick={() => setLogoutModalOpened(false)}>
-            Скасувати
-          </Button>
-
-          <Button
-            color="red"
-            onClick={handleLogout}
-            loading={logoutMutation.isPending}
-          >
-            Вийти
-          </Button>
-        </div>
-      </Modal>
+        message="Ви впевнені, що хочете вийти з акаунту?"
+        confirmLabel="Вийти"
+        confirmColor="red"
+        onConfirm={handleLogout}
+        isLoading={logoutMutation.isPending}
+      />
     </Drawer>
   );
 }

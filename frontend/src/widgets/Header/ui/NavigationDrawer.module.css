@@ -148,14 +148,3 @@
 .languageItem:hover {
   background: #f5f5f5;
 }
-
-.logoutActions {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.logoutActions button {
-  min-width: 110px;
-}

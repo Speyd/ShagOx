@@ -4,7 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Advertisem
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Query;
 
-namespace ShagOxServer.Infrastructure.DependencyInjections.Advertisements;
+namespace ShagOxServer.Infrastructure.DependencyInjections.Advertisement;
 public static class AdvertisementVariantDependencyInjection
 {
     public static IServiceCollection AddAdvertisementVariantInfrastructure(

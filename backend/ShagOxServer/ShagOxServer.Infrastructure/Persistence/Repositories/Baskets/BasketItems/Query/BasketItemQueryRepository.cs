@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
+﻿using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -18,7 +16,6 @@ public partial class BasketItemQueryRepository
     public BasketItemQueryRepository(AppDbContext db)
         : base(db)
     { }
-
 
     public async Task<PagedResult<BasketItem>> GetByAdvertisementVariantAsync(
         long advertisementVariantId,

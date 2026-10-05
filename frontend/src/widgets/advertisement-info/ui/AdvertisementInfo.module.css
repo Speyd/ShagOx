@@ -1,0 +1,48 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.ratingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.properties {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.property {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.countContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttonsContainer {
+  display: flex;
+  gap: 150px;
+  width: 100%;
+}
+
+.actionButton {
+  flex: 1;
+  padding: 20px 24px;
+  font-size: 16px;
+  font-weight: 600;
+}

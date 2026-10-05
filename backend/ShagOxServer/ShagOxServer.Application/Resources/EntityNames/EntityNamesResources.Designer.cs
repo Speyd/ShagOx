@@ -79,15 +79,6 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Advertisement status translation.
-        /// </summary>
-        public static string AdvertStatusTranslation {
-            get {
-                return ResourceManager.GetString("AdvertStatusTranslation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Attribute definition.
         /// </summary>
         public static string AttributeDefinition {
@@ -309,6 +300,15 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Advertisement status translation.
+        /// </summary>
+        public static string StatusTranslation {
+            get {
+                return ResourceManager.GetString("StatusTranslation", resourceCulture);
             }
         }
         

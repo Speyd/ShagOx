@@ -14,6 +14,7 @@ public partial class CurrencyQueryRepository
         : base(db)
     { }
 
+
     public async Task<Currency?> GetByCodeAsync(
         string code)
     {

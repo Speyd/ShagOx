@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Location.Regions.Query;
 using ShagOxServer.Application.Interfaces.Providers;
@@ -21,6 +21,7 @@ public class RegionQueryService
     IRegionQueryService
 {
     private readonly IRegionTranslationQueryRepository _translationRepository;
+
 
     public RegionQueryService(
         IRegionQueryRepository regionQueryRepository,

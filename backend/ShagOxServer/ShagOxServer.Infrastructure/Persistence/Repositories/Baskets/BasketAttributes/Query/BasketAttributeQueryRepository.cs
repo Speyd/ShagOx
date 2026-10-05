@@ -37,5 +37,6 @@ public partial class BasketAttributeQueryRepository
             .WithIncludes()
             .FirstOrDefaultAsync(c =>
                 c.AttributeDefinitionId == attributeDefinitionId);
+
     }
 }

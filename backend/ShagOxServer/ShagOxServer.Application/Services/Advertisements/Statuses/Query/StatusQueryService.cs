@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Providers;

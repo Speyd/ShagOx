@@ -120,7 +120,7 @@
   <data name="Advertisement" xml:space="preserve">
     <value>Advertisement</value>
   </data>
-  <data name="AdvertStatusTranslation" xml:space="preserve">
+  <data name="StatusTranslation" xml:space="preserve">
     <value>Advertisement status translation</value>
   </data>
   <data name="Basket" xml:space="preserve">

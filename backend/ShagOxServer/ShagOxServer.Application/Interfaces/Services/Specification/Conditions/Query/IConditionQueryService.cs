@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Query;
+using ShagOxServer.Application.DTOs.Specification.Conditions.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Conditions;

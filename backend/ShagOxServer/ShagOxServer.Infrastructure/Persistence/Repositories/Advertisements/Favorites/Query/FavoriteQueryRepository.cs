@@ -7,7 +7,6 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.E
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
-
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Query;
 public partial class FavoriteQueryRepository 
     : QueryRepository<Favorite, FavoriteSearchFilter>, 

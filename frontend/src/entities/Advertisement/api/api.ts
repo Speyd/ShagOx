@@ -28,7 +28,9 @@ export async function getAdminAdvertisements(
   return data;
 }
 
-export async function getAdvertisement(id: number) {
-  const response = await api.get(`/advertisements/${id}`);
+export async function getAdvertisement(
+  id: number,
+): Promise<Advertisement> {
+  const response = await api.get<Advertisement>(`/advertisements/${id}`);
   return response.data;
 }

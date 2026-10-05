@@ -2,7 +2,6 @@
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;

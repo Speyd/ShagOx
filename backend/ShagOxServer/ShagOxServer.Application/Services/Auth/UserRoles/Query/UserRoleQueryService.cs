@@ -5,13 +5,11 @@ using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
-using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.UserRoles.Mapping;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
@@ -33,7 +31,6 @@ public class UserRoleQueryService
     private readonly IUserRoleQueryRepository _userRoleQueryRepository;
     private readonly IUserQueryService _userService;
     private readonly IRoleQueryService _roleService;
-
 
 
     public UserRoleQueryService(

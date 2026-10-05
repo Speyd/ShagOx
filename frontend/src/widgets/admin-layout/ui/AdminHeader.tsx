@@ -4,18 +4,23 @@ import { useNavigate } from "react-router-dom";
 import { useLogout } from "@/features/auth/model/hooks/useLogout";
 import { Button } from "@mantine/core";
 import { useAuthStore } from "@/features/auth";
+import { useDisclosure } from "@mantine/hooks";
+import ConfirmModal from "@/shared/ui/confirm-modal";
 
 export default function AdminHeader() {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const logoutStore = useAuthStore((state) => state.logout);
   const logoutMutation = useLogout();
+  const [logoutModalOpened, { open: openLogoutModal, close: closeLogoutModal }] =
+    useDisclosure(false);
 
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
       onSuccess: () => {
         logoutStore();
         navigate("/", { replace: true });
+        closeLogoutModal();
       },
     });
   };
@@ -37,11 +42,22 @@ export default function AdminHeader() {
           <span className={styles.role}>Administrator</span>
         </div>
 
-        <Button onClick={() => handleLogout()}>
+        <Button onClick={openLogoutModal}>
           <LogOut size={18} />
           Logout
         </Button>
       </div>
+
+      <ConfirmModal
+        opened={logoutModalOpened}
+        onClose={closeLogoutModal}
+        onConfirm={handleLogout}
+        title="Вихід з акаунту"
+        message="Ви впевнені, що хочете вийти з акаунту?"
+        confirmLabel="Вийти"
+        confirmColor="red"
+        isLoading={logoutMutation.isPending}
+      />
     </header>
   );
 }

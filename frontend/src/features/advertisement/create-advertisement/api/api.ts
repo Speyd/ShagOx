@@ -8,22 +8,16 @@ export async function createAdvertisement(data: AdvertisementDto) {
 
   formData.append("title", data.title);
   formData.append("description", data.description);
-  formData.append("price", data.price.toString());
+  formData.append("popularity", data.popularity.toString());
   formData.append("currencyId", data.currencyId.toString());
-  formData.append("sellerId", data.sellerId.toString());
   formData.append("categoryId", data.categoryId.toString());
   formData.append("conditionId", data.conditionId.toString());
-  formData.append("stock", (data.stock ?? 1).toString());
-
-  formData.append("popularity", "0");
+  formData.append("attributes", JSON.stringify(data.attributes ?? {}));
+  formData.append("variants", JSON.stringify(data.variants ?? []));
 
   data.images.forEach((file: File) => {
     formData.append("images", file);
   });
-
-  for (const [key, value] of Object.entries(data.properties ?? {})) {
-    formData.append(`properties[${key}]`, String(value));
-  }
 
   const response = await api.post("/advertisements", formData);
 

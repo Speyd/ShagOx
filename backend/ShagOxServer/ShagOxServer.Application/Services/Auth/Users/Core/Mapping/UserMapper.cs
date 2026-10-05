@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles.Query;
+using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.DTOs.Location.Cities.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;

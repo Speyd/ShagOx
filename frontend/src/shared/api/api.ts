@@ -10,10 +10,17 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     const url = error.config?.url ?? "";
-    const isAuthCheck = url.includes("/users/me") || url.includes("/authentication");
+    const isAuthRequest =
+      url.includes("/users/me") ||
+      url.includes("/auth/") ||
+      url.includes("/authentication");
 
-    if (error.response?.status === 401 && !isAuthCheck) {
+    if (error.response?.status === 401 && !isAuthRequest) {
       toast.error("Сесія закінчилась або ви не авторизовані.");
+
+      if (window.location.pathname !== "/authentication") {
+        window.location.replace("/authentication");
+      }
     }
 
     return Promise.reject(error);

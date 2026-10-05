@@ -17,7 +17,7 @@ public partial class ImageQueryRepository
     { }
 
 
-    public async Task<List<Image>> GetByIdsAsync(
+     public async Task<List<Image>> GetByIdsAsync(
         List<long> ids)
     {
         return await _db.Images
@@ -26,7 +26,7 @@ public partial class ImageQueryRepository
            .ToListAsync();
     }
 
-    public async Task<List<Image>> GetByAdvertisementAsync(
+     public async Task<List<Image>> GetByAdvertisementAsync(
         long advertId)
     {
         return await _db.Images

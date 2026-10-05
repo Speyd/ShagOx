@@ -5,7 +5,6 @@ import AdvertisementPage from "@/pages/advertisement/advertisement-page";
 import { PublicRoute } from "./PublicRoute";
 import UserUpdateAdvertisementPage from "@/pages/advertisement/update-advertisement-page";
 import AdminAdvertisementPage from "@/pages/admin/advertisements/update-advertisement-page";
-import FavoritesPage from "@/pages/favorites-page";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { AdminRoute } from "./AdminRoute";
 import { AdminLayout, MainLayout } from "../layouts";
@@ -26,6 +25,9 @@ import { AuthPage } from "@/pages/auth";
 import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage";
 import CategorySelectionPage from "@/pages/category-selection/CategorySelectionPage";
 import VerifyPage from "@/pages/verify-page";
+import CheckoutPage from "@/pages/checkout";
+import PaymentPage from "@/pages/payment";
+import BasketPage from "@/pages/basket";
 
 export default function Router() {
   return (
@@ -42,10 +44,7 @@ export default function Router() {
 
         <Route path="/category-selection" element={<CategorySelectionPage />} />
 
-        <Route
-          path="/authentication/verify"
-          element={<VerifyPage />}
-        />
+        <Route path="/authentication/verify" element={<VerifyPage />} />
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
@@ -90,10 +89,28 @@ export default function Router() {
           </Route>
 
           <Route
-            path="/favorite"
+            path="/payment"
             element={
               <ProtectedRoute>
-                <FavoritesPage />
+                <PaymentPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <CheckoutPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/basket"
+            element={
+              <ProtectedRoute>
+                <BasketPage />
               </ProtectedRoute>
             }
           />

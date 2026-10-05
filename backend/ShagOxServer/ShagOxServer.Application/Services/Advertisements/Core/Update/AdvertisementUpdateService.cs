@@ -29,6 +29,7 @@ public partial class AdvertisementUpdateService
     private readonly AdvertisementVariantValidator _variantValidator;
 
     private readonly IAdvertisementVariantUpdateService _variantUpdateService;
+
     private readonly AdvertisementInvalidationService _advertInvalid;
 
 
@@ -119,6 +120,8 @@ public partial class AdvertisementUpdateService
             _advertRepository.Update(advert.Value!);
 
             await _unitOfWork.CommitAsync();
+
+           
 
             _logger.LogInformation(
                 "Advertisement updated successfully. Id: {Id}",

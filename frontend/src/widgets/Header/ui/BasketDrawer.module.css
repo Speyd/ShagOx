@@ -1,0 +1,87 @@
+.drawerContent {
+
+  background-color: white;
+}
+
+.drawerBody {
+  height: 100%;
+}
+
+.scrollArea {
+  padding-right: 10px;
+}
+
+.basketDrawer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  height: 76px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.emptyBasket {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 30px 24px;
+  text-align: center;
+}
+
+.emptyBasketImage {
+  margin-bottom: 24px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+  padding: 24px;
+  flex-shrink: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-base);
+}
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  padding: 24px;
+}
+.link {
+  align-self: center;
+  text-decoration: underline;
+  color: var(--text-base);
+  cursor: pointer;
+}

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Providers;
@@ -16,7 +16,6 @@ using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using Twilio.Rest.Verify.V2.Service;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketItems.Query;
 public class BasketItemQueryService
@@ -28,7 +27,9 @@ public class BasketItemQueryService
     IBasketItemQueryService
 {
     private readonly IBasketItemQueryRepository _itemQueryRepository;
+
     private readonly IBasketQueryRepository _basketQueryRepository;
+
     private readonly IAdvertisementQueryService _advertisementService;
 
 
@@ -134,4 +135,5 @@ public class BasketItemQueryService
             _settings.KeyExpiration
         );
     }
+    
 }

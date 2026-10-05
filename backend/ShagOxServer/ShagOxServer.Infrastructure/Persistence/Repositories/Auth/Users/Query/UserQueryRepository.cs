@@ -7,6 +7,7 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
+
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Query;
 public partial class UserQueryRepository 
     : QueryRepository<User, UserSearchFilter>, 

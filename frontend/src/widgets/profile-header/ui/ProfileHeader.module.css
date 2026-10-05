@@ -1,11 +1,11 @@
 .profileHeader {
   box-sizing: border-box;
-  width: 100%; 
+  width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 32px;
+  gap: 42px;
   background-color: var(--color-bg-surface, white);
   border-radius: 20px;
   padding: 30px;
@@ -26,7 +26,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 24px;
+  gap: 32px;
 }
 
 .profileHeader[data-orientation="vertical"] .content {
@@ -34,11 +34,17 @@
   width: 100%;
 }
 
+.nameBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .leftBlock {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 12px;
+  gap: 24px;
   max-width: 500px;
 }
 
@@ -47,7 +53,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 16px;
+  gap: 24px;
 }
 
 .infoBlock {
@@ -77,9 +83,23 @@
 
 .channelButton {
   border: 1px solid var(--color-border) !important;
+  width: 100% !important;
 }
 
-.statsBlock {
+.editButton {
+  width: 100% !important;
+}
+
+.statsBlockVertical {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 16px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.statsBlockHorizontal {
   display: flex;
   flex-direction: row;
   align-items: center;

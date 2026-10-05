@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;

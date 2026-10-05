@@ -4,15 +4,14 @@ using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Base;
 using ShagOxServer.Application.Interfaces.Services.Caches;
-using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Application.Services.Base;
-public abstract class BaseQueryService<TDto, TEntity, TFilter>
+namespace ShagOxServer.Application.Services.Base.Query;
+public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     : IQueryService<TDto, TEntity, TFilter>
     where TDto : BaseDto
     where TEntity : BaseEntity
@@ -37,58 +36,6 @@ public abstract class BaseQueryService<TDto, TEntity, TFilter>
     public abstract Task<TDto> ApplyMapperAsync(
         TEntity entity);
 
-    public virtual async Task<TDto?> GetByCache(
-        long id)
-    {
-        var cache = await _cache.GetAsync<TDto>(
-            GetCacheKey(id));
-
-        return cache;
-    }
-
-    public virtual async Task<PagedResult<TDto>?> GetByPageCache(
-        PaginationParams pagination)
-    {
-        var cache = await _cache.GetAsync<PagedResult<TDto>>(
-            GetPageCacheKey(pagination));
-
-        return cache;
-    }
-
-
-    public virtual string GetCacheKey(
-        long id)
-    {
-        return CacheKeys.Entity<TEntity>(id);
-    }
-
-    public virtual string GetPageCacheKey(
-        PaginationParams pagination)
-    {
-        return CacheKeys.EntityPage<TEntity>(
-            pagination.Page,
-            pagination.PageSize);
-    }
-
-
-    public virtual async Task CreateCache(
-        TDto dto)
-    {
-        await _cache.SetAsync(
-            CacheKeys.Entity<TEntity>(dto.Id),
-            dto,
-            _settings.KeyExpiration);
-    }
-
-    public virtual async Task CreatePageCache(
-        PaginationParams pagination,
-        PagedResult<TDto> result)
-    {
-        await _cache.SetAsync(
-            GetPageCacheKey(pagination),
-            result,
-            _settings.KeyExpiration);
-    }
 
     public virtual async Task<Result<TDto>> GetByIdAsync(
         long id)
@@ -130,10 +77,19 @@ public abstract class BaseQueryService<TDto, TEntity, TFilter>
         TFilter filter,
         PaginationParams pagination)
     {
-        var entities = await _queryRepository
-            .SearchAsync(filter, pagination);
+        var cache = await GetBySearchCache(filter, pagination);
+        if (cache is not null)
+            return Result<PagedResult<TDto>>.Success(cache);
 
-        return await entities.ToResultPagedAsync(
+        var entities = await _queryRepository
+          .GetPagedAsync(pagination);
+
+        var dto = await entities.ToResultPagedAsync(
             ApplyMapperAsync);
+
+        if (dto.IsSuccess && dto.Value is not null)
+            await CreateSearchCache(filter, pagination, dto.Value);
+
+        return dto;
     }
 }

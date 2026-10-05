@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Filters\Dictionaries\AttributeDefinitions\Translations\" />
+    <Folder Include="Filters\Roles\" />
+    <Folder Include="Filters\Users\" />
+  </ItemGroup>
+
 </Project>

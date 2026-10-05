@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;

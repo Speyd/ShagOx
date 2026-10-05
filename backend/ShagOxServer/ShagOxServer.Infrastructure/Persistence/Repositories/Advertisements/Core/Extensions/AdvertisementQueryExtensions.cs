@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
@@ -20,27 +21,15 @@ public static class AdvertisementQueryExtensions
             .Include(x => x.Images);
     }
 
-    public static IQueryable<Advertisement> ApplyCatalogOrdering(
-        this IQueryable<Advertisement> query,
-        AdvertisementSearchFilter filter)
+    public static IQueryable<AdvertisementCacheInfo> SelectCacheInfo(
+        this IQueryable<Advertisement> query)
     {
-        var descending = !string.Equals(
-            filter.SortOrder,
-            "asc",
-            StringComparison.OrdinalIgnoreCase);
-
-        return filter.SortBy?.ToLowerInvariant() switch
-        {
-            "title" => descending
-                ? query.OrderByDescending(x => x.Title)
-                : query.OrderBy(x => x.Title),
-            "price" => descending
-                ? query.OrderByDescending(x => x.Variants.Min(v => v.Price))
-                : query.OrderBy(x => x.Variants.Min(v => v.Price)),
-            "createdat" => descending
-                ? query.OrderByDescending(x => x.CreatedAt)
-                : query.OrderBy(x => x.CreatedAt),
-            _ => query.OrderByDescending(x => x.Popularity),
-        };
+        return query.Select(x => new AdvertisementCacheInfo(
+            x.Id,
+            x.SellerId,
+            x.BuyerId,
+            x.Variants
+                .Select(v => v.Id)
+                .ToList()));
     }
 }

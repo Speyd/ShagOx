@@ -1,7 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Location.Cities.Translations;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Location.Cities.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Query;
-using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Base.Translations.Query;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Mapping;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
@@ -18,9 +21,11 @@ public class CityTranslationQueryService
     ICityTranslationQueryService
 {
     public CityTranslationQueryService(
-        ICityTranslationQueryRepository cityRepository
+        ICityTranslationQueryRepository cityRepository,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
     )
-        : base(cityRepository)
+        : base(cityRepository, cacheService, settings)
     {
     }
 

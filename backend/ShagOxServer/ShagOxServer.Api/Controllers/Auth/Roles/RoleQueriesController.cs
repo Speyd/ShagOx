@@ -54,7 +54,7 @@ public class RoleQueriesController
         [FromQuery] PaginationParams pagination)
     {
         var result = await _queryUserRoleService
-            .GetUsersByRoleIdAsync(roleId, pagination);
+            .GetUsersByRoleAsync(roleId, pagination);
 
         return result.ToActionResult();
     }

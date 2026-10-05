@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Images;
+﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Query;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;

@@ -4,6 +4,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -15,6 +17,8 @@ public class CategoryTranslationDeleteService
     private readonly IRepository<CategoryTranslation> _categoryRepository;
     private readonly CategoryTranslationValidator _categoryValidator;
 
+    private readonly CategoryTranslationInvalidationService _transInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CategoryTranslationDeleteService> _logger;
 
@@ -22,11 +26,13 @@ public class CategoryTranslationDeleteService
     public CategoryTranslationDeleteService(
         IRepository<CategoryTranslation> categoryRepository,
         CategoryTranslationValidator categoryValidator,
+        CategoryTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CategoryTranslationDeleteService> logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
+        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -61,6 +67,9 @@ public class CategoryTranslationDeleteService
             return Result<DeleteResponse>
                 .Fail(EntityErrorResources.CategoryTranslationDeleteFailed);
         }
+
+        await _transInvalid.InvalidateDeleteAsync(
+            BaseTranslationCacheMapper.ToInfo(category.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

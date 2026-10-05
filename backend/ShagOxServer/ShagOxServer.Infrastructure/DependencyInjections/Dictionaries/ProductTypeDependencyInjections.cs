@@ -2,6 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes.Query;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
 public static class ProductTypeDependencyInjections

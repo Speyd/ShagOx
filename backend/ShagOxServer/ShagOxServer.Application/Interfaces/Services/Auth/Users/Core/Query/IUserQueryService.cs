@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles;
-using ShagOxServer.Application.DTOs.Auth.Users.Core;
+﻿using ShagOxServer.Application.DTOs.Auth.Roles.Query;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;

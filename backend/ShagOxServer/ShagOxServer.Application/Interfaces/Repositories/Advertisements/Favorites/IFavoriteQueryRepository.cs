@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
-public interface IFavoriteQueryRepository
+public partial interface IFavoriteQueryRepository
     : IQueryRepository<Favorite, FavoriteSearchFilter>
 {
     Task<PagedResult<Favorite>> GetByUserAsync(

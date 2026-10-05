@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Auth;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames;

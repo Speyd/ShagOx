@@ -42,6 +42,17 @@ public class AdvertisementQueriesController
         return result.ToActionResult();
     }
 
+    [HttpGet("seller{userId:long}")]
+    public async Task<IActionResult> GetBySeller(
+        [FromRoute] long userId,
+        [FromQuery] PaginationParams pagination)
+    {
+        var result = await _queryService
+            .GetBySellerAsync(userId, pagination);
+
+        return result.ToActionResult();
+    }
+
     [HttpGet("search")]
     public async Task<IActionResult> SearchByTitle(
         [FromQuery] AdvertisementSearchFilter filter,

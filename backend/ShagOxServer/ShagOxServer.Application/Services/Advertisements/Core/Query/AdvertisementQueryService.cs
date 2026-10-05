@@ -1,11 +1,17 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
-using ShagOxServer.Application.DTOs.Advertisements.Core;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Localized;
+using ShagOxServer.Application.Services.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -14,7 +20,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Query;
 public class AdvertisementQueryService 
-    : BaseQueryService<
+    : BaseLocalizedQueryService<
         AdvertisementDto, 
         Advertisement, 
         AdvertisementSearchFilter>,
@@ -24,18 +30,24 @@ public class AdvertisementQueryService
     private readonly IAdvertisementVariantQueryService _variantService;
 
     private readonly ICategoryQueryService _categoryService;
+    private readonly IStatusQueryService _statusService;
 
 
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository,
         IAdvertisementVariantQueryService variantService,
-        ICategoryQueryService categoryService
+        ICategoryQueryService categoryService,
+        ICacheService cacheService,
+        IStatusQueryService statusService,
+        IOptions<CacheSettings> settings,
+        ILanguageProvider language
     )
-        : base(advertisementRepository)
+        : base(advertisementRepository, language, cacheService, settings)
     {
         _advertisementRepository = advertisementRepository;
         _variantService = variantService;
         _categoryService = categoryService;
+        _statusService = statusService;
     }
 
 
@@ -48,10 +60,14 @@ public class AdvertisementQueryService
         var categoryDto = await _categoryService
             .ApplyMapperAsync(entity.Category);
 
+        var statusDto = await _statusService
+            .ApplyMapperAsync(entity.Status);
+
         return AdvertisementMapper.ToDto(
             entity,
             attributes,
-            categoryDto);
+            categoryDto,
+            statusDto);
     }
 
     private async Task<Dictionary<long, List<VariantAttributeDto>>>
@@ -82,18 +98,47 @@ public class AdvertisementQueryService
         long userId,
         PaginationParams pagination)
     {
-        var advert = await _advertisementRepository
-            .GetBySellerAsync(userId, pagination);
+        var cacheKey = AdvertisementCache.BySeller(
+           userId,
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
 
-        return await advert.ToResultPagedAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var advert = await _advertisementRepository
+                    .GetBySellerAsync(userId, pagination);
+
+                return await advert.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
+
     public async Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         long userId,
         PaginationParams pagination)
     {
-        var advert = await _advertisementRepository
-            .GetPurchasedByUserAsync(userId, pagination);
+        var cacheKey = AdvertisementCache.ByBuyer(
+           userId,
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
 
-        return await advert.ToResultPagedAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var advert = await _advertisementRepository
+                    .GetPurchasedByUserAsync(userId, pagination);
+
+                return await advert.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

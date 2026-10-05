@@ -1,9 +1,9 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
-using ShagOxServer.Application.DTOs.Advertisements.Core;
-using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
-using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -14,13 +14,15 @@ public static class AdvertisementMapper
     public static AdvertisementDto ToDto(
         Advertisement x,
         Dictionary<long, List<VariantAttributeDto>> variants,
-        CategoryDto category)
+        CategoryDto category,
+        StatusDto status)
     {
         return new AdvertisementDto
         (
             x.Id,
             x.Title,
             x.Description,
+            status,
             CurrencyMapper.ToDto(x.Currency),
             category,
             UserShortMapper.ToDto(x.Seller),

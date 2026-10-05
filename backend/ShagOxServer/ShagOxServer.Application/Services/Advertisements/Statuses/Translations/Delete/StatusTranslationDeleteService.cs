@@ -5,8 +5,13 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
+using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
 public class StatusTranslationDeleteService
     : IStatusTranslationDeleteService
@@ -14,18 +19,21 @@ public class StatusTranslationDeleteService
     private readonly IRepository<StatusTranslation> _statusRepository;
     private readonly StatusTranslationValidator _statusValidator;
 
+    private readonly StatusTranslationInvalidationService _transInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusTranslationDeleteService> _logger;
-    
 
     public StatusTranslationDeleteService(
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusValidator,
+        StatusTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusTranslationDeleteService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
+        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -60,6 +68,9 @@ public class StatusTranslationDeleteService
             return Result<DeleteResponse>
                 .Fail(EntityErrorResources.AdvertStatusTranslationDeleteFailed);
         }
+
+        await _transInvalid.InvalidateDeleteAsync(
+            BaseTranslationCacheMapper.ToInfo(status.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

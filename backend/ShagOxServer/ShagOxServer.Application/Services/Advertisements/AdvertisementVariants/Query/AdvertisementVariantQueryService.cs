@@ -1,17 +1,21 @@
 ﻿using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query;
 public partial class AdvertisementVariantQueryService
-    : BaseQueryService<
+    : BaseLocalizedQueryService<
         AdvertisementVariantDto,
         AdvertisementVariant,
         AdvertisementVariantSearchFilter
@@ -31,9 +35,12 @@ public partial class AdvertisementVariantQueryService
         IAttributeDefinitionQueryRepository attributeRepository,
         IAttributeDictionaryValueQueryRepository valueRepository,
         VariantAttributeQueryService variantAttributeService,
-        ILogger<AdvertisementVariantQueryService> logger
+        ILogger<AdvertisementVariantQueryService> logger,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings,
+        ILanguageProvider language
     )
-        : base(variantRepository)
+        : base(variantRepository, language, cacheService, settings)
     {
         _variantRepository = variantRepository;
         _attributeRepository = attributeRepository;

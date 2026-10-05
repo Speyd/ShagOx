@@ -1,9 +1,16 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.BasketItems;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
+using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Resources.EntityNames;
+using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
+using ShagOxServer.Application.Services.Caches.Keys.Baskets;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -12,7 +19,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketItems.Query;
 public class BasketItemQueryService
-    : BaseQueryService<
+    : BaseLocalizedQueryService<
         BasketItemDto,
         BasketItem,
         BasketItemSearchFilter
@@ -20,17 +27,25 @@ public class BasketItemQueryService
     IBasketItemQueryService
 {
     private readonly IBasketItemQueryRepository _itemQueryRepository;
+
+    private readonly IBasketQueryRepository _basketQueryRepository;
+
     private readonly IAdvertisementQueryService _advertisementService;
 
 
 
     public BasketItemQueryService(
         IBasketItemQueryRepository itemQueryRepository,
-        IAdvertisementQueryService advertisementService
+        IBasketQueryRepository basketQueryRepository,
+        IAdvertisementQueryService advertisementService,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings,
+        ILanguageProvider language
     )
-        : base(itemQueryRepository)
+        : base(itemQueryRepository, language, cacheService, settings)
     {
         _itemQueryRepository = itemQueryRepository;
+        _basketQueryRepository = basketQueryRepository;
         _advertisementService = advertisementService;
     }
 
@@ -45,34 +60,80 @@ public class BasketItemQueryService
     }
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementVariantAsync(
-        long advertisementVariantId,
+        long variantId,
         PaginationParams pagination)
     {
-        var items = await _itemQueryRepository
-           .GetByAdvertisementVariantAsync(advertisementVariantId, pagination);
+        var cacheKey = BasketItemCache.ByAdvertisementVariant(
+            variantId,
+            _language.Language,
+            pagination.Page,
+            pagination.PageSize);
 
-        return await items.ToResultPagedAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var items = await _itemQueryRepository
+                    .GetByAdvertisementVariantAsync(variantId, pagination);
+
+                return await items.ToResultPagedAsync(ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetByBasketAsync(
         long basketId, 
         PaginationParams pagination)
     {
-        var items = await _itemQueryRepository
-           .GetByBasketAsync(basketId, pagination);
+        var cacheKey = BasketItemCache.ByBasket(
+           basketId,
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
 
-        return await items.ToResultPagedAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var items = await _itemQueryRepository
+                    .GetByBasketAsync(basketId, pagination);
+
+                return await items.ToResultPagedAsync(ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );    
     }
-
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetPagedAsync(
         long userId,
         PaginationParams pagination)
     {
-        var items = await _itemQueryRepository
-            .GetPagedAsync(userId, pagination);
+        var basketId = await _basketQueryRepository
+            .GetIdByUserAsync(userId);
+        if (!basketId.HasValue)
+        {
+            return Result<PagedResult<BasketItemDto>>
+                .NotFound(EntityNamesResources.Basket);
+        }
 
-        return await items.ToResultPagedAsync(ApplyMapperAsync);
+        var cacheKey = BasketItemCache.ByBasket(
+           basketId.Value,
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var items = await _itemQueryRepository
+                    .GetPagedAsync(userId, pagination);
+
+                return await items.ToResultPagedAsync(ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
     
 }

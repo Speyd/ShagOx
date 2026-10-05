@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Infrastructure.DependencyInjections.Advertisement;
+using ShagOxServer.Infrastructure.DependencyInjections.Advertisements;
 using ShagOxServer.Infrastructure.DependencyInjections.Auth;
 using ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
 using ShagOxServer.Infrastructure.DependencyInjections.Baskets;
@@ -21,7 +21,7 @@ public static class DependencyInjection
             .AddBasketInfrastructure()
             .AddAuthInfrastructure()
             .AddLocationInfrastructure()
-            .AddAdvertisementInfrastructure()
+            .AddAdvertisementsInfrastructure()
             .AddUnitOfWorkInfrastructure()
             .AddSpecificationInfrastructure()
             .AddDictionariesInfrastructure()

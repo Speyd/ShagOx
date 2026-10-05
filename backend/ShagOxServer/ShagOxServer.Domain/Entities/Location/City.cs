@@ -16,7 +16,6 @@ public class City
     public ICollection<CityTranslation> Translations { get; set; }
         = [];
 
-
     public override string GetIdentificator()
     {
         return Code;

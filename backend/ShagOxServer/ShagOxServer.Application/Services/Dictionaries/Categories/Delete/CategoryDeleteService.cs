@@ -4,6 +4,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -15,6 +17,8 @@ public class CategoryDeleteService
     private readonly IRepository<Category> _categoryRepository;
     private readonly CategoryValidator _categoryValidator;
 
+    private readonly CategoryInvalidationService _categoryInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CategoryDeleteService> _logger;
 
@@ -22,11 +26,13 @@ public class CategoryDeleteService
     public CategoryDeleteService(
         IRepository<Category> categoryRepository,
         CategoryValidator categoryValidator,
+        CategoryInvalidationService categoryInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CategoryDeleteService> logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
+        _categoryInvalid = categoryInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -61,6 +67,9 @@ public class CategoryDeleteService
             return Result<DeleteResponse>
                 .Fail(EntityErrorResources.CategoryDeleteFailed);
         }
+
+        await _categoryInvalid.InvalidateDeleteAsync(
+            CategoryCacheMapper.ToInfo(category.Value!));
 
         return Result<DeleteResponse>.Success(
             new DeleteResponse(

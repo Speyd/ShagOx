@@ -24,9 +24,7 @@ public class AdvertisementCreateService
     private readonly AdvertisementCreateValidator _advertCreateValidator;
     private readonly AdvertisementVariantValidator _variantValidator;
 
-
     private readonly IAdvertisementVariantCreateService _variantCreateService;
-
 
     private readonly IImageCreateService _imageCreateService;
 

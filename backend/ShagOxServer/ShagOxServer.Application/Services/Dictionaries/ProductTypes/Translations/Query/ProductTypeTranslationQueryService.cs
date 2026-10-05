@@ -1,7 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Query;
-using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Base.Translations.Query;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
@@ -18,9 +21,11 @@ public class ProductTypeTranslationQueryService
     IProductTypeTranslationQueryService
 {
     public ProductTypeTranslationQueryService(
-        IProductTypeTranslationQueryRepository typeRepository
+        IProductTypeTranslationQueryRepository typeRepository,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
     )
-        : base(typeRepository)
+        : base(typeRepository, cacheService, settings)
     {
     }
 

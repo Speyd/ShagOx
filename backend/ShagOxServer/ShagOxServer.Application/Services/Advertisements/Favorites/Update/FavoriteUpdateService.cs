@@ -5,8 +5,10 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -18,6 +20,8 @@ public class FavoriteUpdateService
     private readonly FavoriteValidator _favoriteValidator;
     private readonly FavoriteUpdateValidator _favoriteUpdateValidator;
 
+    private readonly FavoriteInvalidationService _favoriteInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<FavoriteUpdateService> _logger;
 
@@ -26,12 +30,14 @@ public class FavoriteUpdateService
         IRepository<Favorite> favoriteRepository,
         FavoriteValidator favoriteValidator,
         FavoriteUpdateValidator favoriteUpdateValidator,
+        FavoriteInvalidationService favoriteInvalid,
         IUnitOfWork unitOfWork,
         ILogger<FavoriteUpdateService> logger)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;
         _favoriteUpdateValidator = favoriteUpdateValidator;
+        _favoriteInvalid = favoriteInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -88,6 +94,9 @@ public class FavoriteUpdateService
         _logger.LogInformation(
             "Favorite update successfully. Id: {Id}",
             favorite.Value!.Id);
+
+        await _favoriteInvalid.InvalidateUpdateAsync(
+            FavoriteCacheMapper.ToList(favorite.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

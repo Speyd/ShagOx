@@ -29,7 +29,6 @@ public class StatusCreateService
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
         _logger = logger;
-
         _unitOfWork = unitOfWork;
     }
 

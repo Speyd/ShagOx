@@ -1,5 +1,8 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaries;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Query;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Mappers;
@@ -16,9 +19,11 @@ public class AttributeDictionaryQueryService
     IAttributeDictionaryQueryService
 {
     public AttributeDictionaryQueryService(
-        IAttributeDictionaryQueryRepository dictionaryDictQueryRepository
+        IAttributeDictionaryQueryRepository dictionaryDictQueryRepository,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
     )
-        : base(dictionaryDictQueryRepository)
+        : base(dictionaryDictQueryRepository, cacheService, settings)
     {
     }
 

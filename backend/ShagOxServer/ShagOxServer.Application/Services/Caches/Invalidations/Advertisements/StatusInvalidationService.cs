@@ -1,0 +1,101 @@
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
+using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Entities.Advertisements;
+
+namespace ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
+public class StatusInvalidationService
+    : ICacheInvalidationService<Status, long>
+{
+    private readonly IStatusTranslationQueryRepository _transRepository;
+
+    private readonly StatusTranslationInvalidationService _transInvalid;
+
+    private readonly IAdvertisementQueryRepository _advertRepository;
+
+    private readonly AdvertisementInvalidationService _advertInvalid;
+
+    private readonly ICacheService _cache;
+
+
+
+    public StatusInvalidationService(
+        IStatusTranslationQueryRepository transRepository,
+        StatusTranslationInvalidationService transInvalid,
+        IAdvertisementQueryRepository advertRepository,
+        AdvertisementInvalidationService advertInvalid,
+        ICacheService cache)
+    {
+        _transRepository = transRepository;
+        _transInvalid = transInvalid;
+        _advertRepository = advertRepository;
+        _advertInvalid = advertInvalid;
+        _cache = cache;
+    }
+
+
+    public async Task InvalidateDeleteAsync(
+        long entityId)
+    {
+        await InvalidateAsync(entityId);
+
+        var translationInfos = 
+            await GetTranslationInfos(entityId);
+   
+        foreach (var translationInfo in translationInfos)
+        {
+            await _transInvalid
+                .InvalidateDeleteAsync(translationInfo);
+        }
+
+        var advertInfos =
+             await GetAdvertisementInfos(entityId);
+
+        foreach (var advertInfo in advertInfos)
+        {
+            await _advertInvalid
+                .InvalidateDeleteAsync(advertInfo);
+        }
+    }
+
+    public async Task InvalidateUpdateAsync(
+        long entityId)
+    {
+        await InvalidateAsync(entityId);
+
+        var advertInfos =
+            await GetAdvertisementInfos(entityId);
+
+        foreach (var advertInfo in advertInfos)
+        {
+            await _advertInvalid
+                .InvalidateUpdateAsync(advertInfo);
+        }
+    }
+
+    private async Task InvalidateAsync(
+        long entityId)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             EntityLanguagePattern<Status>(entityId));
+    }
+
+    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+        long entityId)
+    {
+        return await _transRepository
+            .GetCacheInfosByTranslatableAsync(entityId);
+    }
+
+    private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(
+        long entityId)
+    {
+        return await _advertRepository
+            .GetCacheInfosByStatusAsync(entityId);
+    }
+}

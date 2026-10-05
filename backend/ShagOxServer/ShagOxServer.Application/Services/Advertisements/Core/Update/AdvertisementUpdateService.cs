@@ -3,21 +3,22 @@ using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
+using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Update;
-public class AdvertisementUpdateService 
+public partial class AdvertisementUpdateService 
     : IAdvertisementUpdateService
 {
     private readonly IRepository<Advertisement> _advertRepository;
@@ -28,6 +29,9 @@ public class AdvertisementUpdateService
     private readonly AdvertisementVariantValidator _variantValidator;
 
     private readonly IAdvertisementVariantUpdateService _variantUpdateService;
+
+    private readonly AdvertisementInvalidationService _advertInvalid;
+
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementUpdateService> _logger;
@@ -40,6 +44,8 @@ public class AdvertisementUpdateService
         AdvertisementUpdateValidator validatorUpdate,
         AdvertisementVariantValidator variantValidator,
         IAdvertisementVariantUpdateService variantUpdateService,
+        AdvertisementInvalidationService advertInvalid,
+        IFavoriteQueryRepository favoriteRepository,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementUpdateService> logger)
     {
@@ -49,6 +55,7 @@ public class AdvertisementUpdateService
         _variantValidator = variantValidator;
         _imageService = imageService;
         _variantUpdateService = variantUpdateService;
+        _advertInvalid = advertInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -120,6 +127,9 @@ public class AdvertisementUpdateService
                 "Advertisement updated successfully. Id: {Id}",
                 advert.Value!.Id);
 
+            await _advertInvalid.InvalidateUpdateAsync(
+                AdvertisementCacheMapper.ToInfo(advert.Value!));
+
             return Result<UpdateResponse>.Success(
                 new UpdateResponse(
                     updatedCount,
@@ -137,54 +147,6 @@ public class AdvertisementUpdateService
 
             return Result<UpdateResponse>
                     .Fail(EntityErrorResources.AdvertisementUpdateFailed);
-        }
-    }
-
-    private Result<Dictionary<long, AdvertisementVariantUpdateRequest>?>
-        ParseAndValidateVariants(string? variantsJson)
-    {
-        if (string.IsNullOrWhiteSpace(variantsJson))
-        {
-            return Result<Dictionary<long,
-                    AdvertisementVariantUpdateRequest>?>
-                .Success(null);
-        }
-
-        try
-        {
-            var variants = JsonSerializer.Deserialize<
-                Dictionary<long, AdvertisementVariantUpdateRequest>
-                    >(variantsJson);
-
-            if (variants is null)
-            {
-                return Result<Dictionary<long,
-                        AdvertisementVariantUpdateRequest>?>
-                    .Success(null);
-            }
-
-            var duplicateExists = _variantValidator
-                .ValidateUniqueAttributes(
-                    variants.Values
-                        .Select(x => x.Attributes)
-                        .ToList()
-                );
-
-            if (!duplicateExists.IsSuccess)
-            {
-                return Result<Dictionary<long, 
-                        AdvertisementVariantUpdateRequest>?>
-                    .Fail(duplicateExists.Error!);
-            }
-
-            return Result<Dictionary<long,
-                    AdvertisementVariantUpdateRequest>?>
-                .Success(variants);
-        }
-        catch (JsonException)
-        {
-            return Result<Dictionary<long, AdvertisementVariantUpdateRequest>?>
-                .Fail(ValidationResources.InvalidJson);
         }
     }
 

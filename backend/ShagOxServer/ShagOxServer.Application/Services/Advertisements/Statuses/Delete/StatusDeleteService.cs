@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
+using ShagOxServer.Application.Services.Caches.Advertisements;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,6 +17,8 @@ public class StatusDeleteService
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
 
+    private readonly StatusInvalidationService _statusInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusDeleteService> _logger;
 
@@ -22,12 +26,14 @@ public class StatusDeleteService
     public StatusDeleteService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
+        StatusInvalidationService statusInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusDeleteService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
-        _unitOfWork = unitOfWork;
+        _statusInvalid = statusInvalid;
+         _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -61,6 +67,9 @@ public class StatusDeleteService
             return Result<DeleteResponse>
                      .Fail(EntityErrorResources.AdvertStatusDeleteFailed);
         }
+
+        await _statusInvalid
+            .InvalidateDeleteAsync(id);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

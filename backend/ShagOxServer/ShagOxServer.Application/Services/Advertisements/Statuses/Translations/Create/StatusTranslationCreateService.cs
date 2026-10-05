@@ -19,6 +19,7 @@ public class StatusTranslationCreateService
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusTranslationCreateService> _logger;
 
+
     public StatusTranslationCreateService(
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusValidator,

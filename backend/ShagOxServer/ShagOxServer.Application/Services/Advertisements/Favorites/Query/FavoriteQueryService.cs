@@ -1,9 +1,13 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Domain.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -26,9 +30,11 @@ public class FavoriteQueryService
 
     public FavoriteQueryService(
         IFavoriteQueryRepository favoriteRepository,
-        IUserQueryService userService
+        IUserQueryService userService,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
     )
-        : base(favoriteRepository)
+        : base(favoriteRepository, cacheService, settings)
     {
         _favoriteRepository = favoriteRepository;
         _userService = userService;
@@ -54,13 +60,25 @@ public class FavoriteQueryService
     }
 
     public async Task<Result<PagedResult<FavoriteDto>>> GetByUserAsync(
-        long usderId,
+        long userId,
         PaginationParams pagination)
     {
-        var favorites = await _favoriteRepository
-            .GetByUserAsync(usderId, pagination);
+        var cacheKey = FavoriteCache.ByUser(
+            userId,
+            pagination.Page,
+            pagination.PageSize);
 
-        return await favorites.ToResultPagedAsync(
-            ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var favorites = await _favoriteRepository
+                    .GetByUserAsync(userId, pagination);
+
+                return await favorites.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

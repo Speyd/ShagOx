@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -16,6 +17,8 @@ public class StatusUpdateService
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
 
+    private readonly StatusInvalidationService _statusInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusUpdateService> _logger;
 
@@ -23,11 +26,13 @@ public class StatusUpdateService
     public StatusUpdateService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
+        StatusInvalidationService statusInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusUpdateService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
+        _statusInvalid = statusInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -85,6 +90,9 @@ public class StatusUpdateService
                      .Fail(EntityErrorResources.AdvertStatusUpdateFailed);
         }
 
+        await _statusInvalid
+            .InvalidateUpdateAsync(statusId);
+
         return Result<UpdateResponse>.Success(result);
     }
 
@@ -96,7 +104,7 @@ public class StatusUpdateService
            request.Code != status.Code)
         {
             var validator = await _statusValidator
-                .ExistsByCodeAsync(request.Code);
+                .NotExistsByCodeAsync(request.Code);
 
             if (!validator.IsSuccess)
                 return Result<bool>.Fail(validator.Error);

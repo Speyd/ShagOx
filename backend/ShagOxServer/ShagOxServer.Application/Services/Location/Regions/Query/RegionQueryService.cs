@@ -1,7 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Location.Regions;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Location.Regions.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Location.Regions.Mapping;
@@ -19,19 +22,17 @@ public class RegionQueryService
 {
     private readonly IRegionTranslationQueryRepository _translationRepository;
 
-    private readonly ILanguageProvider _language;
-
-
 
     public RegionQueryService(
         IRegionQueryRepository regionQueryRepository,
         IRegionTranslationQueryRepository translationRepository,
-        ILanguageProvider language
+        ILanguageProvider language,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
     )
-        : base(regionQueryRepository)
+        : base(regionQueryRepository, language, cacheService, settings)
     {
         _translationRepository = translationRepository;
-        _language = language;
     }
 
 

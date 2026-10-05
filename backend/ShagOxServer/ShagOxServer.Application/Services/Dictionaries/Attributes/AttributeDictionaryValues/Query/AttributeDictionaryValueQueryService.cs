@@ -1,9 +1,13 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Caches.Keys.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues;
@@ -25,19 +29,18 @@ public class AttributeDictionaryValueQueryService
 
     protected readonly IAttributeDictionaryValueTranslationQueryRepository _translation;
 
-    protected readonly ILanguageProvider _language;
-
 
     public AttributeDictionaryValueQueryService(
         IAttributeDictionaryValueQueryRepository dictionaryDictQueryRepository,
         IAttributeDictionaryValueTranslationQueryRepository translation,
-        ILanguageProvider language
+        ILanguageProvider language,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
     )
-        : base(dictionaryDictQueryRepository)
+        : base(dictionaryDictQueryRepository, language, cacheService, settings)
     {
         _dictionaryDictQueryRepository = dictionaryDictQueryRepository;
         _translation = translation;
-        _language = language;
     }
 
 
@@ -56,9 +59,23 @@ public class AttributeDictionaryValueQueryService
         long dictionaryId, 
         PaginationParams pagination)
     {
-        var values = await _dictionaryDictQueryRepository
-            .GetByDictionaryAsync(dictionaryId, pagination);
+        var cacheKey = AttributeDictionaryValueCache.ByDictionary(
+           dictionaryId,
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
 
-        return await values.ToResultPagedAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var values = await _dictionaryDictQueryRepository
+                    .GetByDictionaryAsync(dictionaryId, pagination);
+
+                return await values.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

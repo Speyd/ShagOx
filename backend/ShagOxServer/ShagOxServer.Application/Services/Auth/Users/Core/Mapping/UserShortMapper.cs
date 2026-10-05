@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users.Core;
+﻿using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Mapping;

@@ -1,10 +1,13 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
-using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
@@ -25,19 +28,18 @@ public class CategoryQueryService
 
     private readonly ICategoryTranslationQueryRepository _translationRepository;
 
-    private readonly ILanguageProvider _language;
-
 
     public CategoryQueryService(
         ICategoryQueryRepository categoryQueryRepository,
         ICategoryTranslationQueryRepository translationRepository,
-        ILanguageProvider language
+        ILanguageProvider language,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
     )
-        : base(categoryQueryRepository)
+        : base(categoryQueryRepository, language, cacheService, settings)
     {
         _categoryQueryRepository = categoryQueryRepository;
         _translationRepository = translationRepository;
-        _language = language;
     }
 
 
@@ -54,9 +56,23 @@ public class CategoryQueryService
         long productTypeId,
         PaginationParams pagination)
     {
-        var categories = await _categoryQueryRepository
-            .GetByProductTypeAsync(productTypeId, pagination);
+        var cacheKey = CategoryCache.ByProductType(
+           productTypeId,
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
 
-        return await categories.ToResultPagedAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var categories = await _categoryQueryRepository
+                    .GetByProductTypeAsync(productTypeId, pagination);
+
+                return await categories.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

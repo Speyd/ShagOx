@@ -4,7 +4,9 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,6 +17,8 @@ public class RoleDeleteService
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;
 
+    private readonly RoleInvalidationService _roleInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RoleDeleteService> _logger;
 
@@ -22,11 +26,13 @@ public class RoleDeleteService
     public RoleDeleteService(
         IRepository<Role> roleRepository,
         RoleValidator roleValidator,
+        RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
         ILogger<RoleDeleteService> logger)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
+        _roleInvalid = roleInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -61,6 +67,9 @@ public class RoleDeleteService
             return Result<DeleteResponse>
                 .Fail(EntityErrorResources.RoleDeleteFailed);
         }
+
+        await _roleInvalid.InvalidateDeleteAsync(
+            RoleCacheMapper.ToInfo(role.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

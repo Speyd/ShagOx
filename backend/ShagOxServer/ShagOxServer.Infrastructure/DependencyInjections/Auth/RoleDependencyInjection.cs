@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles.Query;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Auth;
 public static class RoleDependencyInjection

@@ -9,7 +9,9 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -26,6 +28,8 @@ public class UserUpdateService
     private readonly IAvatarDeleteService _avatarDeleteService;
     private readonly IAvatarCreateService _avatarCreateService;
 
+    private readonly UserInvalidationService _userInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UserUpdateService> _logger;
 
@@ -36,6 +40,7 @@ public class UserUpdateService
         CityValidator cityValidator,
         IAvatarDeleteService avatarDeleteService,
         IAvatarCreateService avatarCreateService,
+        UserInvalidationService userInvalid,
         IUnitOfWork unitOfWork,
         ILogger<UserUpdateService> logger)
     {
@@ -44,6 +49,7 @@ public class UserUpdateService
         _cityValidator = cityValidator;
         _avatarDeleteService = avatarDeleteService;
         _avatarCreateService = avatarCreateService;
+        _userInvalid = userInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -108,6 +114,9 @@ public class UserUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.UserUpdateFailed);
         }
+
+        await _userInvalid.InvalidateUpdateAsync(
+            UserCacheMapper.ToInfo(user.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

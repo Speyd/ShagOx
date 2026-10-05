@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Location.Regions;
+﻿using ShagOxServer.Application.DTOs.Location.Regions.Query;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Mapping;

@@ -1,7 +1,11 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
+﻿using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Query;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Caches.Keys.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
@@ -21,9 +25,11 @@ public class AvatarQueryService
 
 
     public AvatarQueryService(
-        IAvatarQueryRepository avatarQueryRepository
+        IAvatarQueryRepository avatarQueryRepository,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
     )
-        : base(avatarQueryRepository)
+        : base(avatarQueryRepository, cacheService, settings)
     {
         _avatarQueryRepository = avatarQueryRepository;
     }
@@ -36,11 +42,21 @@ public class AvatarQueryService
     }
 
     public async Task<Result<AvatarDto>> GetByUserIdAsync(
-        long advertId)
+        long userId)
     {
-        var image = await _avatarQueryRepository
-            .GetByUserIdAsync(advertId);
+        var cacheKey = AvatarCache.ByUser(userId);
 
-        return await image.ToResultAsync(ApplyMapperAsync);
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var image = await _avatarQueryRepository
+                    .GetByUserIdAsync(userId);
+
+                return await image.ToResultAsync(
+                    ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
     }
 }

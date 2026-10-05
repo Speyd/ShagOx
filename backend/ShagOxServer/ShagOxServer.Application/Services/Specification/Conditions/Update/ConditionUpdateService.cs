@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -16,6 +17,8 @@ public class ConditionUpdateService
     private readonly IRepository<Condition> _conditionRepository;
     private readonly ConditionValidator _conditionValidator;
 
+    private readonly ConditionInvalidationService _conditionInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ConditionUpdateService> _logger;
 
@@ -23,11 +26,13 @@ public class ConditionUpdateService
     public ConditionUpdateService(
         IRepository<Condition> conditionRepository,
         ConditionValidator conditionValidator,
+        ConditionInvalidationService conditionInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ConditionUpdateService> logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
+        _conditionInvalid = conditionInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -82,6 +87,9 @@ public class ConditionUpdateService
             return Result<UpdateResponse>
                  .Fail(EntityErrorResources.ConditionUpdateFailed);
         }
+
+        await _conditionInvalid
+            .InvalidateUpdateAsync(conditionId);
 
         return Result<UpdateResponse>.Success(result);
     }

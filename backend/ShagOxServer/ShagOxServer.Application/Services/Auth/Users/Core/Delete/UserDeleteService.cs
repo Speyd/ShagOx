@@ -1,13 +1,13 @@
-﻿using CloudinaryDotNet.Actions;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,20 +20,25 @@ public class UserDeleteService
 
     private readonly IAvatarDeleteService _avatarDeleteService;
 
+    private readonly UserInvalidationService _userInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UserDeleteService> _logger;
+
 
 
     public UserDeleteService(
         IRepository<User> userRepository,
         UserValidator userValidator,
         IAvatarDeleteService avatarDeleteService,
+        UserInvalidationService userInvalid,
         IUnitOfWork unitOfWork,
         ILogger<UserDeleteService> logger)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
         _avatarDeleteService = avatarDeleteService;
+        _userInvalid = userInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -72,6 +77,9 @@ public class UserDeleteService
             return Result<DeleteResponse>
                 .Fail(EntityErrorResources.UserDeleteFailed);
         }
+
+        await _userInvalid.InvalidateDeleteAsync(
+            UserCacheMapper.ToInfo(user.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

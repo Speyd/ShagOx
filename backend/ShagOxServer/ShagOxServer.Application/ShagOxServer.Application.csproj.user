@@ -2,7 +2,19 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.ru.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.uk.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

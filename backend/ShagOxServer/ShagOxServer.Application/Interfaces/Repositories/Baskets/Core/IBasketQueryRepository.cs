@@ -8,4 +8,10 @@ public interface IBasketQueryRepository
 {
     Task<Basket?> GetByUserAsync(
         long userId);
+
+    Task<long?> GetIdByUserAsync(
+        long userId);
+
+    Task<long?> GetUserIdByBasketAsync(
+        long basketId);
 }

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes;
+﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Query;
 using ShagOxServer.Application.Interfaces.Services.Base;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
@@ -15,6 +15,6 @@ public interface IBasketAttributeQueryService
         long categoryId,
         PaginationParams pagination);
 
-    Task<Result<BasketAttributeDto>> GetByAttributeDefenitionAsync(
-        long attributeDefenitionId);
+    Task<Result<BasketAttributeDto>> GetByAttributeDefinitionAsync(
+        long attributeDefinitionId);
 }

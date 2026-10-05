@@ -1,5 +1,8 @@
-﻿using ShagOxServer.Application.DTOs.Verifications;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Verifications;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Verifications.Codes.Mapping;
@@ -16,9 +19,11 @@ public class VerificationCodeQueryService
     IVerificationCodeQueryService
 {
     public VerificationCodeQueryService(
-        IVerificationCodeQueryRepository categoryQueryRepository
+        IVerificationCodeQueryRepository categoryQueryRepository,
+        ICacheService cacheService,
+        IOptions<CacheSettings> settings
     )
-        : base(categoryQueryRepository)
+        : base(categoryQueryRepository, cacheService, settings)
     {
     }
 

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars;
+﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;

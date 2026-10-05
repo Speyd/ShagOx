@@ -28,7 +28,7 @@ public class StatusValidator
             .ExistsByCodeAsync(code))
         {
             return Result<bool>.NotFound(
-                EntityNamesResources.AdverStatus);
+                EntityNamesResources.Status);
         }
 
         return Result<bool>.Success(true);
@@ -41,7 +41,7 @@ public class StatusValidator
             .ExistsByCodeAsync(code))
         {
             return Result<bool>.AlreadyExists(
-                EntityNamesResources.AdverStatus);
+                EntityNamesResources.Status);
         }
 
         return Result<bool>.Success(true);

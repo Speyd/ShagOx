@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories;
+﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;

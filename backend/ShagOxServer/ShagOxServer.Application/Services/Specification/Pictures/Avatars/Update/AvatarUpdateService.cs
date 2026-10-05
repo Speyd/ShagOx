@@ -6,6 +6,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
+using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -19,6 +21,8 @@ public class AvatarUpdateService
     private readonly AvatarValidator _avatarValidator;
     private readonly UserValidator _userValidator;
 
+    private readonly AvatarInvalidationService _avatarInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AvatarUpdateService> _logger;
 
@@ -27,12 +31,14 @@ public class AvatarUpdateService
         IRepository<Avatar> avatarRepository,
         AvatarValidator avatarValidator,
         UserValidator userValidator,
+        AvatarInvalidationService avatarInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AvatarUpdateService> logger)
     {
         _avatarRepository = avatarRepository;
         _avatarValidator = avatarValidator;
         _userValidator = userValidator;
+        _avatarInvalid = avatarInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -75,6 +81,9 @@ public class AvatarUpdateService
             }
 
             await _unitOfWork.CommitAsync();
+
+            await _avatarInvalid.InvalidateUpdateAsync(
+                AvatarCacheMapper.ToInfo(avatar.Value!));
 
             return result;
         }

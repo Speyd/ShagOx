@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Query;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Baskets;
 public static class BasketAttributeDependencyInjection

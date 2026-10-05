@@ -77,6 +77,7 @@ namespace ShagOxServer.Application.Resources.Auth.Registrations {
             }
         }
 
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Registration failed..
         /// </summary>

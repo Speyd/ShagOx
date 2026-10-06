@@ -23,6 +23,13 @@ public class CityTranslationInvalidationService
     }
 
 
+    public async Task InvalidateCreateAsync(
+      BaseTranslationCacheInfo cacheDto)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<CityTranslation>());
+    }
+
     public async Task InvalidateDeleteAsync(
         BaseTranslationCacheInfo cacheDto)
     {
@@ -40,6 +47,12 @@ public class CityTranslationInvalidationService
     {
         await _cache.RemoveAsync(CacheKeys
              .Entity<CityTranslation>(cacheDto.Id));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityPagedPattern<CityTranslation>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<CityTranslation>());
 
         await _city.InvalidateLanguageAsync(
             cacheDto.Language);

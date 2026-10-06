@@ -5,9 +5,10 @@ using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Query;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Baskets.Core;
+
 [ApiController]
 [Route("api/baskets")]
-//[Authorize]
+[Authorize]
 public class BasketQueriesController
     : ApiController
 {
@@ -25,7 +26,7 @@ public class BasketQueriesController
     public async Task<IActionResult> GetUserBasket()
     {
         var result = await _queryService
-            .GetByUserAsync(1);
+            .GetByUserAsync(UserId);
 
         return result.ToActionResult();
     }

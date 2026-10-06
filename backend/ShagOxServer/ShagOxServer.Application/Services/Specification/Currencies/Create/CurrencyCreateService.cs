@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
+using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -16,6 +18,8 @@ public class CurrencyCreateService
     private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyValidator _currencyValidator;
 
+    private readonly CurrencyInvalidationService _currencyInvalidation;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CurrencyCreateService> _logger;
 
@@ -23,6 +27,7 @@ public class CurrencyCreateService
     public CurrencyCreateService(
         IRepository<Currency> currencyRepository,
         CurrencyValidator currencyValidator,
+        CurrencyInvalidationService currencyInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<CurrencyCreateService> logger)
     {
@@ -71,6 +76,9 @@ public class CurrencyCreateService
             return Result<CreateResponse>
                  .Fail(EntityErrorResources.CurrencyCreateFailed);
         }
+
+        await _currencyInvalidation.InvalidateCreateAsync(
+            CurrencyCacheMapper.ToInfo(currency));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

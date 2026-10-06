@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Query;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
@@ -14,7 +14,8 @@ public partial class CityQueryRepository
     : QueryRepository<City, CitySearchFilter>, 
       ICityQueryRepository
 {
-    public CityQueryRepository(AppDbContext db)
+    public CityQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

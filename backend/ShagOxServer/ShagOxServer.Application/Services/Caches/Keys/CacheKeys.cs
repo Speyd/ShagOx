@@ -3,57 +3,95 @@
 namespace ShagOxServer.Application.Services.Caches.Keys;
 public static class CacheKeys
 {
+    #region Prefixes
+
     public static string Prefix<TEntity>()
         => $"{typeof(TEntity).Name.ToLowerInvariant()}";
 
     public static string LanguagePrefix<TEntity>()
         => $"{Prefix<TEntity>()}:language";
 
+    #endregion
+
+
+    #region Entity
 
     public static string Entity<TEntity>(
         long id)
         => $"{Prefix<TEntity>()}:{id}";
+
     public static string EntityPattern<TEntity>()
         => $"{Prefix<TEntity>()}:*";
+
+    #endregion
+
+
+    #region Paged
 
     public static string EntityPaged<TEntity>(
         int page,
         int pageSize)
-        => $"{Prefix<TEntity>()}:page:{page}:size:{pageSize}";
+        => $"{Prefix<TEntity>()}:paged:page:{page}:size:{pageSize}";
 
+    public static string EntityPagedPattern<TEntity>()
+        => $"{Prefix<TEntity>()}:paged:*";
+
+    #endregion
+
+
+    #region Language Entity
 
     public static string EntityLanguage<TEntity>(
         long id,
         string language)
         => $"{LanguagePrefix<TEntity>()}:{language}:entity:{id}";
 
+    public static string EntityLanguagePattern<TEntity>(
+        long id)
+        => $"{LanguagePrefix<TEntity>()}*:entity:{id}";
+
+    public static string EntityLanguagePattern<TEntity>(
+        string language)
+        => $"{LanguagePrefix<TEntity>()}:{language}:entity:*";
+
+    #endregion
+
+
+    #region Language
+
+    public static string Language<TEntity>(
+        string language)
+        => $"{LanguagePrefix<TEntity>()}:{language}";
+
+    public static string LanguagePattern<TEntity>()
+        => $"{LanguagePrefix<TEntity>()}:*";
+
+    public static string LanguagePattern<TEntity>(
+        string language)
+        => $"{LanguagePrefix<TEntity>()}:{language}*";
+
+    #endregion
+
+
+    #region Language Paged
+
     public static string EntityLanguagePaged<TEntity>(
         string language,
         int page,
         int pageSize)
-        => $"{LanguagePrefix<TEntity>()}:{language}:page:{page}:size:{pageSize}";
+        => $"{LanguagePrefix<TEntity>()}:{language}:paged:page:{page}:size:{pageSize}";
 
-    public static string EntityLanguagePattern<TEntity>(
-        long id)
-     => $"{LanguagePrefix<TEntity>()}:*:entity:{id}";
+    public static string EntityLanguagePagedPattern<TEntity>()
+        => $"{LanguagePrefix<TEntity>()}:*:paged:page:*";
 
-    public static string EntityLanguagePattern<TEntity>(
+    public static string EntityLanguagePagedPattern<TEntity>(
         string language)
-    => $"{LanguagePrefix<TEntity>()}:{language}:entity:*";
+        => $"{LanguagePrefix<TEntity>()}:{language}:paged:*";
+
+    #endregion
 
 
-
-    public static string Language<TEntity>(
-        string language)
-    => $"{LanguagePrefix<TEntity>()}:{language}";
-
-    public static string LanguagePattern<TEntity>()
-       => $"{LanguagePrefix<TEntity>()}:*";
-
-    public static string LanguagePattern<TEntity>(
-        string language)
-    => $"{LanguagePrefix<TEntity>()}:{language}*";
-
+    #region Search
 
     private static string BuildSearchKey<TEntity, TFilter>(
         TFilter filter,
@@ -84,7 +122,12 @@ public static class CacheKeys
 
     public static string SearchPattern<TEntity>()
         => $"{Prefix<TEntity>()}:search:*";
-    
+
+    #endregion
+
+
+    #region Language Search
+
     public static string ByLanguageSearch<TEntity, TFilter>(
         TFilter filter,
         string language,
@@ -99,5 +142,11 @@ public static class CacheKeys
     }
 
     public static string LanguageSearchPattern<TEntity>()
-       => $"{LanguagePrefix<TEntity>()}:*:search:*";
+        => $"{LanguagePrefix<TEntity>()}*:search:*";
+
+    public static string LanguageSearchPattern<TEntity>(
+        string language)
+        => $"{LanguagePrefix<TEntity>()}:{language}:search:*";
+
+    #endregion
 }

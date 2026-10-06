@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
-using System.Text.Json;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core;
 public class AdvertisementExistsRepository 
     : ExistsRepository<Advertisement>, 
       IAdvertisementExistsRepository
 {
-    public AdvertisementExistsRepository(AppDbContext db)
+    public AdvertisementExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

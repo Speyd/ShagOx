@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
@@ -12,7 +12,8 @@ public partial class AdvertisementVariantQueryRepository
     : QueryRepository<AdvertisementVariant, AdvertisementVariantSearchFilter>,
       IAdvertisementVariantQueryRepository
 {
-    public AdvertisementVariantQueryRepository(AppDbContext db)
+    public AdvertisementVariantQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

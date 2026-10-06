@@ -2,7 +2,8 @@
 using ShagOxServer.Domain.Entities.Verifications;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
-public partial class AppDbContext : DbContext
+public partial class BaseAppDbContext
+    : DbContext
 {
     public DbSet<VerificationCode> VerificationCodes { get; set; }
 }

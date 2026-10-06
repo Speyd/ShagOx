@@ -21,6 +21,12 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     protected readonly ICacheService _cache;
     protected readonly CacheSettings _settings;
 
+    protected virtual bool CacheById => true;
+
+    protected virtual bool CacheBySearch => true;
+
+    protected virtual bool CacheByPaged => true;
+
 
     public BaseQueryService(
         IQueryRepository<TEntity, TFilter> queryRepository,
@@ -40,13 +46,22 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     public virtual async Task<Result<TDto>> GetByIdAsync(
         long id)
     {
+        if (!CacheById)
+        {
+            var entity = await _queryRepository
+                .GetByIdAsync(id);
+
+            return await entity.ToResultAsync(
+                ApplyMapperAsync);
+        }
+
         var cache = await GetByCache(id);
         if (cache is not null)
             return Result<TDto>.Success(cache);
 
-        var entity = await _queryRepository.GetByIdAsync(id);
+        var entityCache = await _queryRepository.GetByIdAsync(id);
 
-        var dto = await entity.ToResultAsync(ApplyMapperAsync);
+        var dto = await entityCache.ToResultAsync(ApplyMapperAsync);
 
         if (dto.IsSuccess && dto.Value is not null)
             await CreateCache(dto.Value);
@@ -57,6 +72,15 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     public virtual async Task<Result<PagedResult<TDto>>> GetPagedAsync(
         PaginationParams pagination)
     {
+        if (!CacheByPaged)
+        {
+            var entity = await _queryRepository
+                .GetPagedAsync(pagination);
+
+            return await entity.ToResultPagedAsync(
+                ApplyMapperAsync);
+        }
+
         var cache = await GetByPagedCache(pagination);
         if (cache is not null)
             return Result<PagedResult<TDto>>.Success(cache);
@@ -77,12 +101,21 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         TFilter filter,
         PaginationParams pagination)
     {
+        if (!CacheBySearch)
+        {
+            var entity = await _queryRepository
+                .SearchAsync(filter, pagination);
+
+            return await entity.ToResultPagedAsync(
+                ApplyMapperAsync);
+        }
+
         var cache = await GetBySearchCache(filter, pagination);
         if (cache is not null)
             return Result<PagedResult<TDto>>.Success(cache);
 
         var entities = await _queryRepository
-          .GetPagedAsync(pagination);
+          .SearchAsync(filter, pagination);
 
         var dto = await entities.ToResultPagedAsync(
             ApplyMapperAsync);

@@ -25,6 +25,8 @@ public class BasketItemCreateService
 
     private readonly BasketItemBasketInvalidationService _basketInvalidation;
 
+    private readonly BasketItemInvalidationService _itemInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketItemCreateService> _logger;
 
@@ -35,6 +37,7 @@ public class BasketItemCreateService
         BasketValidator basketValidator,
         AdvertisementVariantValidator advertValidator,
         BasketItemBasketInvalidationService basketInvalidation,
+        BasketItemInvalidationService itemInvalid,
         IUnitOfWork unitOfWork,
         ILogger<BasketItemCreateService> logger)
     {
@@ -43,6 +46,7 @@ public class BasketItemCreateService
         _basketValidator = basketValidator;
         _advertValidator = advertValidator;
         _basketInvalidation = basketInvalidation;
+        _itemInvalid = itemInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -99,8 +103,13 @@ public class BasketItemCreateService
             request.BasketId,
             request.AdvertisementVariantId);
 
+        var caheInfo = BasketItemCacheMapper.ToInfo(item);
+
         await _basketInvalidation.InvalidateCreateAsync(
-            BasketItemCacheMapper.ToInfo(item));
+            caheInfo);
+
+        await _itemInvalid.InvalidateCreateAsync(
+            caheInfo);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

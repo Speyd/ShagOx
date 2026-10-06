@@ -18,6 +18,10 @@ public class ImageQueryService
         >,
     IImageQueryService
 {
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
+
     public ImageQueryService(
         IImageQueryRepository imageQueryRepository,
         ICacheService cacheService,

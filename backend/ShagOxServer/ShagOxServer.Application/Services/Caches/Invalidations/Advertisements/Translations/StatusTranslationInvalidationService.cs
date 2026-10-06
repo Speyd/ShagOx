@@ -21,6 +21,13 @@ public class StatusTranslationInvalidationService
     }
 
 
+    public async Task InvalidateCreateAsync(
+       BaseTranslationCacheInfo cacheDto)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<StatusTranslation>());
+    }
+
     public async Task InvalidateDeleteAsync(
         BaseTranslationCacheInfo cacheDto)
     {
@@ -38,6 +45,12 @@ public class StatusTranslationInvalidationService
     {
         await _cache.RemoveAsync(CacheKeys
             .Entity<StatusTranslation>(cacheDto.Id));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityPagedPattern<StatusTranslation>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<StatusTranslation>());
 
         await _status.InvalidateLanguageAsync(
             cacheDto.Language);

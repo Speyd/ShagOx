@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Translations;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Translations.Extensions;
 
@@ -12,7 +12,8 @@ public class ConditionTranslationExistsRepository
         ConditionTranslation>,
       IConditionTranslationExistsRepository
 {
-    public ConditionTranslationExistsRepository(AppDbContext db)
+    public ConditionTranslationExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

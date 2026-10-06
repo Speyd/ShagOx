@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translat
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Filters.Location.Regions.Translations;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Translations.Extensions;
@@ -16,7 +16,8 @@ public class RegionTranslationQueryRepository
         RegionTranslationSearchFilter>,
       IRegionTranslationQueryRepository
 {
-    public RegionTranslationQueryRepository(AppDbContext db)
+    public RegionTranslationQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

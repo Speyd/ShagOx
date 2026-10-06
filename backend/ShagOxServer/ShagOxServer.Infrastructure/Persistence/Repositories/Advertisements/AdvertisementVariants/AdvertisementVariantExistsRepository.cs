@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using System.Text.Json;
@@ -11,7 +11,8 @@ public class AdvertisementVariantExistsRepository
     : ExistsRepository<AdvertisementVariant>,
       IAdvertisementVariantExistsRepository
 {
-    public AdvertisementVariantExistsRepository(AppDbContext db)
+    public AdvertisementVariantExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

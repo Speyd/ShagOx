@@ -2,7 +2,8 @@
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
-public partial class AppDbContext : DbContext
+public partial class BaseAppDbContext
+    : DbContext
 {
     public DbSet<Advertisement> Advertisements { get; set; }
     public DbSet<AdvertisementVariant> AdvertisementVariants { get; set; }

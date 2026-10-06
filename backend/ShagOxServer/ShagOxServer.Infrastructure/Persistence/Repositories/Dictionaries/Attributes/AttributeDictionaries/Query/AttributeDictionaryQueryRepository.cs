@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDictionaries;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDictionaries.Extensions;
@@ -12,7 +12,8 @@ public partial class AttributeDictionaryQueryRepository
     : QueryRepository<AttributeDictionary, AttributeDictionarySearchFilter>,
       IAttributeDictionaryQueryRepository
 {
-    public AttributeDictionaryQueryRepository(AppDbContext db)
+    public AttributeDictionaryQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

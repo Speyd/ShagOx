@@ -1,0 +1,64 @@
+services:
+
+  postgres-primary:
+    image: postgres:17
+    container_name: postgres-primary
+
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      REPLICATOR_USER: ${REPLICATOR_USER}
+      REPLICATOR_PASSWORD: ${REPLICATOR_PASSWORD}
+
+    ports:
+      - "${POSTGRES_PRIMARY_PORT}:5432"
+
+    volumes:
+      - primary_data:/var/lib/postgresql/data
+      - ./primary/init:/docker-entrypoint-initdb.d
+      - ./primary/pg_hba.conf:/etc/postgresql/pg_hba.conf
+
+    command:
+      - postgres
+      - -c
+      - wal_level=replica
+      - -c
+      - max_wal_senders=10
+      - -c
+      - max_replication_slots=10
+      - -c
+      - hba_file=/etc/postgresql/pg_hba.conf
+
+    networks:
+      - postgres-network
+
+
+  postgres-replica:
+    image: postgres:17
+    container_name: postgres-replica
+
+    ports:
+      - "${POSTGRES_REPLICA_PORT}:5432"
+
+    volumes:
+      - replica_data:/var/lib/postgresql/data
+
+    depends_on:
+      - postgres-primary
+
+    networks:
+      - postgres-network
+
+
+volumes:
+  primary_data:
+  replica_data:
+
+
+networks:
+  postgres-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

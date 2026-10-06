@@ -12,8 +12,7 @@ public static class CacheExtensions
         services.Configure<RedisSettings>(
             configuration.GetSection("Redis"));
 
-        var serviceProvider = services.BuildServiceProvider();
-
+ 
         var settings = configuration
             .GetSection("Redis")
             .Get<RedisSettings>()

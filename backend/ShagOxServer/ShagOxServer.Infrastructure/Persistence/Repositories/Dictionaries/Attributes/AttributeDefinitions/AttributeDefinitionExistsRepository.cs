@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions;
@@ -9,7 +9,8 @@ public class AttributeDefinitionExistsRepository
     : ExistsRepository<AttributeDefinition>,
       IAttributeDefinitionExistsRepository
 {
-    public AttributeDefinitionExistsRepository(AppDbContext db)
+    public AttributeDefinitionExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

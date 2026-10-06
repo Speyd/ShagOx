@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Images;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images.Extensions;
@@ -12,7 +12,8 @@ public partial class ImageQueryRepository
     : QueryRepository<Image, ImageSearchFilter>, 
       IImageQueryRepository
 {
-    public ImageQueryRepository(AppDbContext db)
+    public ImageQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

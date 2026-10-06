@@ -11,7 +11,9 @@ using ShagOxServer.Application.Resources.Auth.Registrations;
 using ShagOxServer.Application.Services.Auth.Users.Contacts;
 using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
+using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Roles;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -25,6 +27,8 @@ public partial class RegisterService
     private readonly IBasketCreateService _basketService;
 
     private readonly IVerificationSender _senderVerification;
+
+    private readonly UserInvalidationService _userInvalid;
 
     private readonly UserCreater _userCreater;
     private readonly UserRoleService _roleService;
@@ -40,6 +44,7 @@ public partial class RegisterService
         IUserQueryRepository userQueryRepository,
         IBasketCreateService basketService,
         UserCreater userCreater,
+        UserInvalidationService userInvalid,
         UserRoleService roleService,
         UserPasswordService passwordService,
         UserContactApplier contactApplier,
@@ -117,6 +122,9 @@ public partial class RegisterService
                 "User registered successfully. UserId: {UserId}",
                 user.Id);
 
+            await _userInvalid.InvalidateCreateAsync(
+                UserCacheMapper.ToInfo(user));
+
             return Result<RegisterResponse>.Success(
                new RegisterResponse(user)
             );
@@ -138,7 +146,9 @@ public partial class RegisterService
     {
         _userRepository.Add(user);
 
-        var basketResult = await _basketService.CreateAsync(
+        await _unitOfWork.SaveChangesAsync();
+
+        var basketResult = await _basketService.CreateInternalAsync(
             new BasketCreateRequest(user.Id));
 
         if (!basketResult.IsSuccess)

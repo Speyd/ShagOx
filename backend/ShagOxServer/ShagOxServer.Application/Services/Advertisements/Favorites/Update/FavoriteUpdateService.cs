@@ -96,7 +96,7 @@ public class FavoriteUpdateService
             favorite.Value!.Id);
 
         await _favoriteInvalid.InvalidateUpdateAsync(
-            FavoriteCacheMapper.ToList(favorite.Value!));
+            FavoriteCacheMapper.ToInfo(favorite.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

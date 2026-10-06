@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.ProductTypes.Translations.Extensions;
 
@@ -11,7 +11,8 @@ public class ProductTypeTranslationExistsRepository
         ProductTypeTranslation>,
       IProductTypeTranslationExistsRepository
 {
-    public ProductTypeTranslationExistsRepository(AppDbContext db)
+    public ProductTypeTranslationExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

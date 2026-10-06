@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -6,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
@@ -28,6 +30,11 @@ public class BasketInvalidationService
         _cache = cache;
     }
 
+
+    public async Task InvalidateCreateAsync(
+        BasketCacheInfo entityInfo)
+    {
+    }
 
     public async Task InvalidateDeleteAsync(
        BasketCacheInfo entityInfo)

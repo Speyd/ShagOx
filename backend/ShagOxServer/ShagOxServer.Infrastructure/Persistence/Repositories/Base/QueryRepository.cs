@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base;
@@ -12,7 +12,7 @@ public class QueryRepository<TEntity, TFilter>
     where TEntity : BaseEntity
     where TFilter : BaseFilter
 {
-    public QueryRepository(AppDbContext db)
+    public QueryRepository(ReplicaDbContext db)
         : base(db)
     {
     }
@@ -32,7 +32,6 @@ public class QueryRepository<TEntity, TFilter>
         PaginationParams pagination)
     {
         IQueryable<TEntity> query = _db.Set<TEntity>();
-
         query = ApplyIncludes(query);
 
         return await query
@@ -46,7 +45,7 @@ public class QueryRepository<TEntity, TFilter>
         IQueryable<TEntity> query = _db.Set<TEntity>();
 
         query = ApplyIncludes(query);
-        query = ApplyFilter(_db.Set<TEntity>(), filter);
+        query = ApplyFilter(query, filter);
 
         return await query
             .ToPagedResultAsync(pagination);

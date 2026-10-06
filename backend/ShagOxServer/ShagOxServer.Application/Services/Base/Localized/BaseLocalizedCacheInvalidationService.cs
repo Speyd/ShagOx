@@ -26,5 +26,11 @@ public abstract class BaseLocalizedCacheInvalidationService<TEntity>
 
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePattern<TEntity>(language));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityLanguagePagedPattern<TEntity>(language));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            LanguageSearchPattern<TEntity>(language));
     }
 }

@@ -23,6 +23,10 @@ public class AvatarQueryService
 {
     private readonly IAvatarQueryRepository _avatarQueryRepository;
 
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
+
 
     public AvatarQueryService(
         IAvatarQueryRepository avatarQueryRepository,

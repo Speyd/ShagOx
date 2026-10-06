@@ -39,10 +39,10 @@ public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
             _language.Language);
     }
 
-    public override string GetPageCacheKey(
+    public override string GetPagedCacheKey(
         PaginationParams pagination)
     {
-        return CacheKeys.EntityLanguagePage<TEntity>(
+        return CacheKeys.EntityLanguagePaged<TEntity>(
            _language.Language,
            pagination.Page,
            pagination.PageSize);

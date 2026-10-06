@@ -5,6 +5,9 @@ namespace ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 public interface ITranslationCacheInvalidationService<TTranslation>
     where TTranslation : BaseEntity
 {
+    Task InvalidateCreateAsync(
+        BaseTranslationCacheInfo cacheDto);
+
     Task InvalidateDeleteAsync(
         BaseTranslationCacheInfo cacheDto);
 

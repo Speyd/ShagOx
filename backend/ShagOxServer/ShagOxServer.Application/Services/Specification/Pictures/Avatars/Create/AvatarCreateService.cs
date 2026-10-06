@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -7,6 +8,8 @@ using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
+using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -20,6 +23,8 @@ public class AvatarCreateService
     private readonly PictureValidator _pictureValidator;
     private readonly IPictureLoaderService _loaderService;
 
+    private readonly AvatarInvalidationService _avatarInvalidation;
+
     private readonly UserValidator _userValidator;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -31,6 +36,7 @@ public class AvatarCreateService
         PictureValidator pictureValidator,
         IPictureLoaderService loaderService,
         UserValidator userValidator,
+        AvatarInvalidationService avatarInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<AvatarCreateService> logger)
     {
@@ -38,6 +44,7 @@ public class AvatarCreateService
         _pictureValidator = pictureValidator;
         _loaderService = loaderService;
         _userValidator = userValidator;
+        _avatarInvalidation = avatarInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -113,6 +120,10 @@ public class AvatarCreateService
 
         _avatarRepository.Add(avatar);
 
+        await _unitOfWork.SaveChangesAsync();
+
+        await _avatarInvalidation.InvalidateCreateAsync(
+                AvatarCacheMapper.ToInfo(avatar));
 
         _logger.LogInformation(
             "Avatar created successfully. " +

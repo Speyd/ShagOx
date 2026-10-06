@@ -2,7 +2,8 @@
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
-public partial class AppDbContext : DbContext
+public partial class BaseAppDbContext
+    : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }

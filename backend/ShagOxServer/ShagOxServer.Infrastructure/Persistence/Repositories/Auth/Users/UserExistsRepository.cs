@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
@@ -9,7 +9,8 @@ public class UserExistsRepository
     : ExistsRepository<User>,
       IUserExistsRepository
 {
-    public UserExistsRepository(AppDbContext db)
+    public UserExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

@@ -3,9 +3,9 @@
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 public abstract class RepositoryContext<TEntity>
 {
-    protected readonly AppDbContext _db;
+    protected readonly BaseAppDbContext _db;
 
-    protected RepositoryContext(AppDbContext db)
+    protected RepositoryContext(BaseAppDbContext db)
     {
         _db = db;
     }

@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -12,7 +12,8 @@ public partial class AdvertisementQueryRepository
 : QueryRepository<Advertisement, AdvertisementSearchFilter>, 
       IAdvertisementQueryRepository
 {
-    public AdvertisementQueryRepository(AppDbContext db)
+    public AdvertisementQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

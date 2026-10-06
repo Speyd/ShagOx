@@ -46,22 +46,4 @@ public class StatusQueryService
 
         return StatusMapper.ToDto(entity, translation?.Name);
     }
-
-    public override string GetCacheKey(
-        long id)
-    {
-        return CacheKeys.EntityLanguage<Status>(
-            id,
-            _language.Language);
-    }
-
-    public override async Task CreateCache(
-        StatusDto dto)
-    {
-        await _cache.SetAsync(
-            CacheKeys.EntityLanguage<Status>(
-                dto.Id, _language.Language),
-            dto,
-            _settings.KeyExpiration);
-    }
 }

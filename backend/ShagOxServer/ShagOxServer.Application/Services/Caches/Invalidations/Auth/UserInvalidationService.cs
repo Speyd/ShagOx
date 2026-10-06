@@ -10,6 +10,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictu
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 public class UserInvalidationService
@@ -38,6 +39,10 @@ public class UserInvalidationService
         _cache = cache;
     }
 
+    public async Task InvalidateCreateAsync(
+        UserCacheInfo entityInfo)
+    {
+    }
 
     public async Task InvalidateDeleteAsync(
         UserCacheInfo entityInfo)

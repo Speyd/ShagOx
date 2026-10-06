@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -17,6 +18,8 @@ public class ProductTypeCreateService
     private readonly IRepository<ProductType> _productTypeRepository;
     private readonly ProductTypeValidator _validator;
 
+    private readonly ProductTypeInvalidationService _typeInvalidation;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ProductTypeCreateService> _logger;
 
@@ -24,11 +27,13 @@ public class ProductTypeCreateService
     public ProductTypeCreateService(
         IRepository<ProductType> productTypeRepository,
         ProductTypeValidator validator,
+        ProductTypeInvalidationService typeInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeCreateService> logger)
     {
         _productTypeRepository = productTypeRepository;
         _validator = validator;
+        _typeInvalidation = typeInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -66,6 +71,9 @@ public class ProductTypeCreateService
             return Result<CreateResponse>.Fail(
                 EntityErrorResources.ProductTypeCreateFailed);
         }
+
+        await _typeInvalidation.InvalidateCreateAsync(
+            productType.Id);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

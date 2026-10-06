@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.A
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions.Translations;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations.Extensions;
 
@@ -14,7 +14,8 @@ public class AttributeDefinitionTranslationQueryRepository
         AttributeDefinitionTranslationSearchFilter>,
       IAttributeDefinitionTranslationQueryRepository
 {
-    public AttributeDefinitionTranslationQueryRepository(AppDbContext db)
+    public AttributeDefinitionTranslationQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

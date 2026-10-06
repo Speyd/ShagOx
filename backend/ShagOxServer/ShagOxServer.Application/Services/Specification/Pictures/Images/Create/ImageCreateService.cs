@@ -9,6 +9,8 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
+using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -22,6 +24,7 @@ public class ImageCreateService
     private readonly IPictureLoaderService _loaderService;
 
     private readonly PictureValidator _pictureValidator;
+    private readonly ImageInvalidationService _imageInvalidation;
 
     private readonly AdvertisementValidator _advertValidator;
 
@@ -34,6 +37,7 @@ public class ImageCreateService
         IPictureLoaderService loaderService,
         PictureValidator pictureValidator,
         AdvertisementValidator advertValidator,
+        ImageInvalidationService imageInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<ImageCreateService> logger)
     {
@@ -41,6 +45,7 @@ public class ImageCreateService
         _loaderService = loaderService;
         _pictureValidator = pictureValidator;
         _advertValidator = advertValidator;
+        _imageInvalidation = imageInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -82,13 +87,7 @@ public class ImageCreateService
                 .Fail(EntityErrorResources.ImageCreateFailed);
         }
 
-        _logger.LogInformation(
-            "Image created successfully. " + 
-            "ImageId: {ImageId}, AdvertisementId: {AdvertisementId}",
-            image.Id,
-            request.AdvertisementId);
-
-        return Success(image);
+        return await Success(image);
     }
 
     public async Task<Result<PictureCreateResponse>> CreateFromFileAsync(
@@ -133,13 +132,7 @@ public class ImageCreateService
 
             await _unitOfWork.CommitAsync();
 
-            _logger.LogInformation(
-                "Image created successfully. " +
-                "ImageId: {ImageId}, AdvertisementId: {AdvertisementId}",
-                image.Id,
-                request.AdvertisementId);
-
-            return Success(image);
+            return await Success(image);
         }
         catch(Exception ex)
         {
@@ -263,18 +256,21 @@ public class ImageCreateService
                 .Fail(EntityErrorResources.ImageCreateFailed);
         }
 
+        return await Success(image);
+    }
+
+    private async Task<Result<PictureCreateResponse>> Success(
+        Image image)
+    {
         _logger.LogInformation(
             "Image created successfully. " +
             "ImageId: {ImageId}, AdvertisementId: {AdvertisementId}",
             image.Id,
-            request.AdvertisementId);
+            image.AdvertisementId);
 
-        return Success(image);
-    }
+        await _imageInvalidation.InvalidateCreateAsync(
+            ImageCacheMapper.ToInfo(image));
 
-    private static Result<PictureCreateResponse> Success(
-        Image image)
-    {
         return Result<PictureCreateResponse>.Success(
             new PictureCreateResponse(
                 image.Id,

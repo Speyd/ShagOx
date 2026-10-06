@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Cache;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -29,6 +30,13 @@ public class AttributeDictionaryValueInvalidationService
         _cache = cache;
     }
 
+
+    public async Task InvalidateCreateAsync(
+       AttributeDictionaryValueCacheInfo entityInfo)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<AttributeDictionaryValue>());
+    }
 
     public async Task InvalidateDeleteAsync(
         AttributeDictionaryValueCacheInfo entityInfo)
@@ -71,6 +79,12 @@ public class AttributeDictionaryValueInvalidationService
 
         await _cache.RemoveByPatternAsync(AttributeDictionaryValueCache
             .ByDictionaryPattern(entityInfo.DictionaryId));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityLanguagePagedPattern<AttributeDictionaryValue>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<AttributeDictionaryValue>());
     }
 
     private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(

@@ -32,6 +32,16 @@ public class AdvertisementQueriesController
         return result.ToActionResult();
     }
 
+    [HttpGet("short")]
+    public async Task<IActionResult> GetShortPaged(
+        [FromQuery] PaginationParams pagination)
+    {
+        var result = await _queryService
+            .GetShortPagedAsync(pagination);
+
+        return result.ToActionResult();
+    }
+
     [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(
         [FromRoute] long id)
@@ -54,7 +64,7 @@ public class AdvertisementQueriesController
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> SearchByTitle(
+    public async Task<IActionResult> Search(
         [FromQuery] AdvertisementSearchFilter filter,
         [FromQuery] PaginationParams pagination)
     {
@@ -62,6 +72,19 @@ public class AdvertisementQueriesController
 
         var result = await _queryService
             .SearchAsync(filter, pagination);
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet("short-search")]
+    public async Task<IActionResult> ShortSearch(
+        [FromQuery] AdvertisementSearchFilter filter,
+        [FromQuery] PaginationParams pagination)
+    {
+        filter = AdvertisementSearchFilter.Create(filter);
+
+        var result = await _queryService
+            .ShortSearchAsync(filter, pagination);
 
         return result.ToActionResult();
     }

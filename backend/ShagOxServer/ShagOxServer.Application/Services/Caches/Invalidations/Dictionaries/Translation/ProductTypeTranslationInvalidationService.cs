@@ -23,6 +23,13 @@ public class ProductTypeTranslationInvalidationService
     }
 
 
+    public async Task InvalidateCreateAsync(
+      BaseTranslationCacheInfo cacheDto)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<ProductTypeTranslation>());
+    }
+
     public async Task InvalidateDeleteAsync(
         BaseTranslationCacheInfo cacheDto)
     {
@@ -40,6 +47,12 @@ public class ProductTypeTranslationInvalidationService
     {
         await _cache.RemoveAsync(CacheKeys
              .Entity<ProductTypeTranslation>(cacheDto.Id));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityPagedPattern<ProductTypeTranslation>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<ProductTypeTranslation>());
 
         await _type.InvalidateLanguageAsync(
             cacheDto.Language);

@@ -6,7 +6,9 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -20,6 +22,8 @@ public class BasketAttributeCreateService
     private readonly BasketAttributeValidator _basketAttributeValidator;
     private readonly AttributeDefinitionValidator _attributeValidator;
 
+    private readonly BasketAttributeInvalidationService _attributeInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketAttributeCreateService> _logger;
 
@@ -29,12 +33,14 @@ public class BasketAttributeCreateService
         IBasketAttributeQueryRepository _attributeQueryRepository,
         BasketAttributeValidator basketAttributeValidator,
         AttributeDefinitionValidator attributeValidator,
+         BasketAttributeInvalidationService attributeInvalid,
         IUnitOfWork unitOfWork,
         ILogger<BasketAttributeCreateService> logger)
     {
         _attributeRepository = attributeRepository;
         _basketAttributeValidator = basketAttributeValidator;
         _attributeValidator = attributeValidator;
+        _attributeInvalid = attributeInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -85,6 +91,9 @@ public class BasketAttributeCreateService
             return Result<CreateResponse>.Fail(
                 EntityErrorResources.BasketAttributeCreateFailed);
         }
+
+        await _attributeInvalid.InvalidateCreateAsync(
+            BasketAttributeCacheMapper.ToInfo(attribute));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

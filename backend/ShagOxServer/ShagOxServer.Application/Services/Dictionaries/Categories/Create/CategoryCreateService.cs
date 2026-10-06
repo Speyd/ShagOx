@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -19,6 +21,8 @@ public class CategoryCreateService
     private readonly CategoryValidator _categoryValidator;
     private readonly ProductTypeValidator _productTypeValidator;
 
+    private readonly CategoryInvalidationService _categoryInvalidation;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CategoryCreateService> _logger;
 
@@ -27,12 +31,14 @@ public class CategoryCreateService
         IRepository<Category> categoryRepository,
         CategoryValidator categoryValidator,
         ProductTypeValidator productTypeValidator,
+        CategoryInvalidationService categoryInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<CategoryCreateService> logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
         _productTypeValidator = productTypeValidator;
+        _categoryInvalidation = categoryInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -78,11 +84,13 @@ public class CategoryCreateService
                 .Fail(EntityErrorResources.CategoryCreateFailed);
         }
 
-        var response = new CreateResponse(
-            category.Id,
-            DateTime.UtcNow
-        );
+        await _categoryInvalidation.InvalidateCreateAsync(
+            CategoryCacheMapper.ToInfo(category));
 
-        return Result<CreateResponse>.Success(response);
+        return Result<CreateResponse>.Success(
+            new CreateResponse(
+                category.Id,
+                DateTime.UtcNow
+        ));
     }
 }

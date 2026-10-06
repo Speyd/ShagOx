@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -16,6 +18,8 @@ public class CategoryTranslationCreateService
     private readonly IRepository<CategoryTranslation> _categoryRepository;
     private readonly CategoryTranslationValidator _categoryValidator;
 
+    private readonly CategoryTranslationInvalidationService _trnsInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CategoryTranslationCreateService> _logger;
 
@@ -23,11 +27,13 @@ public class CategoryTranslationCreateService
     public CategoryTranslationCreateService(
         IRepository<CategoryTranslation> categoryRepository,
         CategoryTranslationValidator categoryValidator,
+        CategoryTranslationInvalidationService trnsInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CategoryTranslationCreateService> logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
+        _trnsInvalid = trnsInvalid;
 
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -44,13 +50,13 @@ public class CategoryTranslationCreateService
             return Result<CreateResponse>.Fail(codeValidation.Error);
 
 
-        var productType = CategoryTranslationCreater
+        var category = CategoryTranslationCreater
             .Create(request);
 
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _categoryRepository.Add(productType);
+            _categoryRepository.Add(category);
 
             await _unitOfWork.CommitAsync();
         }
@@ -68,9 +74,12 @@ public class CategoryTranslationCreateService
                 EntityErrorResources.CategoryTranslationCreateFailed);
         }
 
+        await _trnsInvalid.InvalidateCreateAsync(
+            BaseTranslationCacheMapper.ToInfo(category));
+
         return Result<CreateResponse>.Success(
             new CreateResponse(
-                productType.Id,
+                category.Id,
                 DateTime.UtcNow
         ));
     }

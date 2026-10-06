@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses;
@@ -9,7 +9,8 @@ public class StatusExistsRepository
     : ExistsRepository<Status>,
       IStatusExistsRepository
 {
-    public StatusExistsRepository(AppDbContext db)
+    public StatusExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

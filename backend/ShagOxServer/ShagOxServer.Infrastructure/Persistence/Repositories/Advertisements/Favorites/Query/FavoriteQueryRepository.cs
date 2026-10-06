@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
@@ -12,7 +12,8 @@ public partial class FavoriteQueryRepository
     : QueryRepository<Favorite, FavoriteSearchFilter>, 
       IFavoriteQueryRepository
 {
-    public FavoriteQueryRepository(AppDbContext db)
+    public FavoriteQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

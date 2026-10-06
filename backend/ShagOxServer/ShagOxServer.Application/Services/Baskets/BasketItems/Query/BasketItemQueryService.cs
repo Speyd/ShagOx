@@ -32,6 +32,10 @@ public class BasketItemQueryService
 
     private readonly IAdvertisementQueryService _advertisementService;
 
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
+
 
 
     public BasketItemQueryService(

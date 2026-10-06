@@ -2,7 +2,7 @@
 using ShagOxServer.Domain.Entities.Location.Translations;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
-public partial class AppDbContext 
+public partial class BaseAppDbContext
     : DbContext
 {
     public DbSet<RegionTranslation> RegionTranslations { get; set; }

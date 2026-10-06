@@ -80,7 +80,7 @@ public class FavoriteDeleteService
             favorite.Value!.Id);
 
         await _favoriteInvalid.InvalidateDeleteAsync(
-            FavoriteCacheMapper.ToList(favorite.Value!));
+            FavoriteCacheMapper.ToInfo(favorite.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

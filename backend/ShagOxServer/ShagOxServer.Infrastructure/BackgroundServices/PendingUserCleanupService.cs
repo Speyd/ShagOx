@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Systems;
 using ShagOxServer.Domain.Entities.Account.Enum;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
 namespace ShagOxServer.Infrastructure.BackgroundServices;
 public class PendingUserCleanupService

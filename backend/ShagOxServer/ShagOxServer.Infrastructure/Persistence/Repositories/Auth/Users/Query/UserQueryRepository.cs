@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -13,7 +12,8 @@ public partial class UserQueryRepository
     : QueryRepository<User, UserSearchFilter>, 
       IUserQueryRepository
 {
-    public UserQueryRepository(AppDbContext db)
+    public UserQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

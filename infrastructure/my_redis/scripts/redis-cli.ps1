@@ -9,9 +9,8 @@ $ClientPath = Join-Path $CertsPath "client"
 
 $CertVolume = "my_redis_redis-certs-data"
 
-# ============================================================
-# ENV
-# ============================================================
+
+
 
 $EnvFile = Join-Path $ProjectRoot ".env"
 
@@ -51,16 +50,14 @@ if ([string]::IsNullOrWhiteSpace($RedisPassword)) {
     throw "REDIS_PASSWORD is missing in .env"
 }
 
-# ============================================================
-# DIRECTORIES
-# ============================================================
+
+
 
 New-Item -ItemType Directory -Force $CaPath | Out-Null
 New-Item -ItemType Directory -Force $ClientPath | Out-Null
 
-# ============================================================
-# DELETE OLD LOCAL CERTIFICATES
-# ============================================================
+
+
 
 Remove-Item `
     (Join-Path $CaPath "ca.crt") `
@@ -77,9 +74,8 @@ Remove-Item `
     -Force `
     -ErrorAction SilentlyContinue
 
-# ============================================================
-# COPY CA
-# ============================================================
+
+
 
 docker run --rm `
     -v "${CertVolume}:/certs:ro" `
@@ -91,9 +87,8 @@ if ($LASTEXITCODE -ne 0) {
     throw "Failed to copy ca.crt"
 }
 
-# ============================================================
-# COPY CLIENT CERTIFICATE + KEY
-# ============================================================
+
+
 
 docker run --rm `
     -v "${CertVolume}:/certs:ro" `
@@ -105,9 +100,8 @@ if ($LASTEXITCODE -ne 0) {
     throw "Failed to copy client.crt/client.key"
 }
 
-# ============================================================
-# SHOW FILES
-# ============================================================
+
+
 
 Write-Host ""
 Write-Host "Certificates updated:" -ForegroundColor Green
@@ -117,9 +111,8 @@ Write-Host "  $ClientPath\client.crt"
 Write-Host "  $ClientPath\client.key"
 Write-Host ""
 
-# ============================================================
-# CONNECT TO REDIS
-# ============================================================
+
+
 
 Write-Host "Connecting to Redis..." -ForegroundColor Cyan
 Write-Host ""

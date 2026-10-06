@@ -8,16 +8,18 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System.Text.Json;
-namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Create;
 
+namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Create;
 public class AdvertisementVariantCreateService
     : IAdvertisementVariantCreateService
 {
     private readonly IRepository<AdvertisementVariant> _variantRepository;
     private readonly AdvertisementVariantValidator _variantValidator;
+
+    private readonly AdvertisementVariantInvalidationService _variantInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementVariantCreateService> _logger;
@@ -27,12 +29,14 @@ public class AdvertisementVariantCreateService
         IRepository<AdvertisementVariant> variantRepository,
         AdvertisementVariantValidator variantValidator,
         AdvertisementValidator advertValidator,
+        AdvertisementVariantInvalidationService variantInvalid,
         IAttributeDefinitionQueryRepository attributeRepository,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantCreateService> logger)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;
+        _variantInvalid = variantInvalid;
         _logger = logger;
         _unitOfWork = unitOfWork;
     }
@@ -101,6 +105,10 @@ public class AdvertisementVariantCreateService
         var variant = AdvertisementVariantCreater.Create(request);
 
         _variantRepository.Add(variant);
+
+        await _unitOfWork.SaveChangesAsync();
+
+        await _variantInvalid.InvalidateCreateAsync(variant.Id);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

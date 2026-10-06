@@ -1,7 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Translations.Extensions;
 
@@ -11,7 +11,8 @@ public class RegionTranslationExistsRepository
         RegionTranslation>,
       IRegionTranslationExistsRepository
 {
-    public RegionTranslationExistsRepository(AppDbContext db)
+    public RegionTranslationExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

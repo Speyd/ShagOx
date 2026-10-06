@@ -1,4 +1,3 @@
-
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
@@ -34,8 +33,11 @@ public class UserQueryService
     private readonly IRoleQueryRepository _roleQueryRepository;
     private readonly ICityQueryService _cityService;
 
-
     private readonly IUserContext _context;
+
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
 
 
     public UserQueryService(

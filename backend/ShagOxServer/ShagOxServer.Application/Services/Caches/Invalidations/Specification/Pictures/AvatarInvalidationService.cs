@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Specification.Pictures;
 using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 public class AvatarInvalidationService
@@ -18,6 +19,12 @@ public class AvatarInvalidationService
         _cache = cache;
     }
 
+
+    public async Task InvalidateCreateAsync(
+        AvatarCacheInfo entityInfo)
+    {
+        await InvalidateAsync(entityInfo);
+    }
 
     public async Task InvalidateDeleteAsync(
         AvatarCacheInfo entityInfo)
@@ -35,9 +42,15 @@ public class AvatarInvalidationService
         AvatarCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
-            .Entity<Currency>(entityInfo.Id));
+            .Entity<Avatar>(entityInfo.Id));
 
         await _cache.RemoveAsync(AvatarCache
            .ByUser(entityInfo.UserId));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           EntityPagedPattern<Avatar>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<Avatar>());
     }
 }

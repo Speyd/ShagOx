@@ -12,6 +12,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Transl
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 public class CategoryInvalidationService
@@ -49,6 +50,13 @@ public class CategoryInvalidationService
         _cache = cache;
     }
 
+
+    public async Task InvalidateCreateAsync(
+       CategoryCacheInfo entityInfo)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<Category>());
+    }
 
     public async Task InvalidateDeleteAsync(
         CategoryCacheInfo entityInfo)
@@ -120,6 +128,12 @@ public class CategoryInvalidationService
 
         await _cache.RemoveByPatternAsync(CategoryCache.
             ByProductTypePattern(entityInfo.ProductTypeId));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityLanguagePagedPattern<Category>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<Category>());
     }
 
     private async Task<List<long>> GetAttributeDefinitionIds(

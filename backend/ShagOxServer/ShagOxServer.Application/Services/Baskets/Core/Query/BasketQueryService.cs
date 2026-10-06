@@ -27,6 +27,9 @@ public class BasketQueryService
     private readonly IBasketQueryRepository _basketQueryRepository;
     private readonly IBasketItemQueryService _basketItemService;
 
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
 
 
     public BasketQueryService(

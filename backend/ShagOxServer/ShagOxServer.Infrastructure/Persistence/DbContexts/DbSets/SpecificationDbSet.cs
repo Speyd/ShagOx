@@ -3,7 +3,8 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
-public partial class AppDbContext : DbContext
+public partial class BaseAppDbContext
+    : DbContext
 {
     public DbSet<Condition> Conditions { get; set; }
     public DbSet<Currency> Currencies { get; set; }

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Location.Cities.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
@@ -9,6 +10,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Location;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Location;
@@ -40,6 +42,13 @@ public class CityInvalidationService
         _cache = cache;
     }
 
+
+    public async Task InvalidateCreateAsync(
+       CityCacheInfo entityInfo)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<City>());
+    }
 
     public async Task InvalidateDeleteAsync(
         CityCacheInfo entityInfo)
@@ -90,6 +99,12 @@ public class CityInvalidationService
 
         await _cache.RemoveByPatternAsync(CityCache
             .ByRegionPattern(entityInfo.RegionId));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityLanguagePagedPattern<City>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<City>());
     }
 
     private async Task<List<UserCacheInfo>> GetUserInfos(

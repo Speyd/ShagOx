@@ -32,6 +32,10 @@ public class AdvertisementQueryService
     private readonly ICategoryQueryService _categoryService;
     private readonly IStatusQueryService _statusService;
 
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
+
 
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository,
@@ -137,6 +141,52 @@ public class AdvertisementQueryService
 
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
+            },
+            _settings.KeyExpiration
+        );
+    }
+
+    public async Task<Result<PagedResult<AdvertisementShortDto>>> GetShortPagedAsync(
+        PaginationParams pagination)
+    {
+        var cacheKey = AdvertisementCache.ByShortPaged(
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var adverts = await _advertisementRepository
+                    .GetPagedAsync(pagination);
+
+                return adverts.ToResultPaged(
+                    AdvertisementShortMapper.ToDto);
+            },
+            _settings.KeyExpiration
+        );
+    }
+
+    public async Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination)
+    {
+        var cacheKey = AdvertisementCache.ByShortSearch(
+            filter,
+           _language.Language,
+           pagination.Page,
+           pagination.PageSize);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var adverts = await _advertisementRepository
+                    .SearchAsync(filter, pagination);
+
+                return adverts.ToResultPaged(
+                    AdvertisementShortMapper.ToDto);
             },
             _settings.KeyExpiration
         );

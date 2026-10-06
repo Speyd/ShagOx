@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.T
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories.Translations;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Translations.Extensions;
 
@@ -14,7 +14,8 @@ public class CategoryTranslationQueryRepository
         CategoryTranslationSearchFilter>,
       ICategoryTranslationQueryRepository
 {
-    public CategoryTranslationQueryRepository(AppDbContext db)
+    public CategoryTranslationQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

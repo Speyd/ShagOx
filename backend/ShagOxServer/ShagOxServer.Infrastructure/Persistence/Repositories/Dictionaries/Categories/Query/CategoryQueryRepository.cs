@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Extensions;
@@ -13,7 +13,8 @@ public partial class CategoryQueryRepository
     : QueryRepository<Category, CategorySearchFilter>, 
       ICategoryQueryRepository
 {
-    public CategoryQueryRepository(AppDbContext db)
+    public CategoryQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

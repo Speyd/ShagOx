@@ -29,6 +29,13 @@ public class CurrencyInvalidationService
     }
 
 
+    public async Task InvalidateCreateAsync(
+       CurrencyCacheInfo entityInfo)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            SearchPattern<Currency>());
+    }
+
     public async Task InvalidateDeleteAsync(
         CurrencyCacheInfo entityInfo)
     {
@@ -72,6 +79,12 @@ public class CurrencyInvalidationService
 
         await _cache.RemoveByPatternAsync(CurrencyCache
           .BySymbol(entityInfo.Symbol));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           EntityPagedPattern<Currency>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<Currency>());
     }
 
     private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(

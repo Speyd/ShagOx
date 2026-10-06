@@ -1,5 +1,6 @@
 using Serilog;
 using ShagOxServer.Api.DependencyInjection;
+using ShagOxServer.Api.DependencyInjection.Environments;
 using ShagOxServer.Application.DependencyInjections.Base;
 using ShagOxServer.Infrastructure.DependencyInjections.Base;
 
@@ -12,6 +13,8 @@ Log.Logger = new LoggerConfiguration()
 try
 {
     #region Services
+
+    builder.LoadEnvironment();
 
     await builder.Services
         .AddCache(builder.Configuration);
@@ -29,6 +32,7 @@ try
         .AddApplication()
         .AddInfrastructure()
         .AddHttpContextAccessor();
+
 
     #endregion
 

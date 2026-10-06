@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Query;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Baskets.Core;
+
 [ApiController]
 [Route("api/baskets")]
 [Authorize]

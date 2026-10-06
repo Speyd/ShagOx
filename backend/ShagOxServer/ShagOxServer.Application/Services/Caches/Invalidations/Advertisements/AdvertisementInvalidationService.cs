@@ -58,6 +58,9 @@ public class AdvertisementInvalidationService
         _cache = cache;
     }
 
+    public async Task InvalidateCreateAsync(
+        AdvertisementCacheInfo entityInfo)
+    { }
 
     public async Task InvalidateDeleteAsync(
         AdvertisementCacheInfo entityInfo)
@@ -147,7 +150,7 @@ public class AdvertisementInvalidationService
         {
             await _cache.RemoveByPatternAsync(AdvertisementCache
                 .ByBuyerPattern(entityInfo.BuyerId.Value));
-        }   
+        }
     }
 
     private async Task<List<FavoriteCacheInfo>> GetFavoriteInfos(

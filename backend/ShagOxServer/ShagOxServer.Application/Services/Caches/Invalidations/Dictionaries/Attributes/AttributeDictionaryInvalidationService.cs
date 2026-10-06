@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -36,6 +37,13 @@ public class AttributeDictionaryInvalidationService
     }
 
 
+    public async Task InvalidateCreateAsync(
+        long entityId)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<AttributeDictionary>());
+    }
+
     public async Task InvalidateDeleteAsync(
         long entityId)
     {
@@ -71,6 +79,12 @@ public class AttributeDictionaryInvalidationService
     {
         await _cache.RemoveAsync(CacheKeys.
             Entity<AttributeDictionary>(entityId));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityLanguagePagedPattern<AttributeDictionary>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<AttributeDictionary>());
     }
 
     private async Task<List<long>> GetAttributeDefinitionIds(

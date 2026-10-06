@@ -6,7 +6,9 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Baskets.Core.Mapping;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -16,8 +18,9 @@ public class BasketCreateService
 {
     private readonly IRepository<Basket> _basketRepository;
     private readonly BasketValidator _basketValidator;
-
     private readonly UserValidator _userValidator;
+
+    private readonly BasketInvalidationService _basketInvalidation;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketCreateService> _logger;
@@ -27,12 +30,14 @@ public class BasketCreateService
         IRepository<Basket> basketRepository,
         BasketValidator basketValidator,
         UserValidator userValidator,
+        BasketInvalidationService basketInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<BasketCreateService> logger)
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;
         _userValidator = userValidator;
+        _basketInvalidation = basketInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -41,28 +46,23 @@ public class BasketCreateService
     public async Task<Result<CreateResponse>> CreateAsync(
         BasketCreateRequest request)
     {
-        var userExists = await _userValidator
-            .ExistsByIdAsync(request.UserId);
-        if (!userExists.IsSuccess)
-            return Result<CreateResponse>.Fail(userExists.Error);
-
-        var basketUserExists = await _basketValidator
-            .NotExistsByUserAsync(request.UserId);
-        if (!basketUserExists.IsSuccess)
-            return Result<CreateResponse>.Fail(basketUserExists.Error);
-
-
-        var basket = BasketCreater.Create(request);
-
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _basketRepository.Add(basket);
+            var result = await CreateInternalAsync(request);
+
+            if (!result.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+                return result;
+            }
 
             await _unitOfWork.CommitAsync();
+
+            return result;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
@@ -74,11 +74,42 @@ public class BasketCreateService
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.BasketCreateFailed);
         }
+    }
+
+
+    public async Task<Result<CreateResponse>> CreateInternalAsync(
+        BasketCreateRequest request)
+    {
+        var userExists = await _userValidator
+            .ExistsByIdAsync(request.UserId);
+
+        if (!userExists.IsSuccess)
+        {
+            return Result<CreateResponse>
+                .Fail(userExists.Error);
+        }
+
+        var basketUserExists = await _basketValidator
+            .NotExistsByUserAsync(request.UserId);
+
+        if (!basketUserExists.IsSuccess)
+        {
+            return Result<CreateResponse>
+                .Fail(basketUserExists.Error);
+        }
+
+        var basket = BasketCreater.Create(request);
+
+        _basketRepository.Add(basket);
+
+        await _unitOfWork.SaveChangesAsync();
+
+        await _basketInvalidation.InvalidateCreateAsync(
+            BasketCacheMapper.ToInfo(basket));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(
                 basket.Id,
-                DateTime.UtcNow
-        ));
+                DateTime.UtcNow));
     }
 }

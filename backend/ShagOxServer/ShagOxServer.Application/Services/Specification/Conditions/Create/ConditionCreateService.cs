@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -16,6 +17,8 @@ public class ConditionCreateService
     private readonly IRepository<Condition> _conditionRepository;
     private readonly ConditionValidator _conditionValidator;
 
+    private readonly ConditionInvalidationService _conditionInvalidation;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ConditionCreateService> _logger;
 
@@ -23,11 +26,13 @@ public class ConditionCreateService
     public ConditionCreateService(
         IRepository<Condition> conditionRepository,
         ConditionValidator conditionValidator,
+        ConditionInvalidationService conditionInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<ConditionCreateService> logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
+        _conditionInvalidation = conditionInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -64,6 +69,9 @@ public class ConditionCreateService
             return Result<CreateResponse>
                  .Fail(EntityErrorResources.ConditionCreateFailed);
         }
+
+        await _conditionInvalidation.InvalidateCreateAsync(
+            condition.Id);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

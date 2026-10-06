@@ -1,8 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
-using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations.Extensions;
 
@@ -12,7 +11,8 @@ public class AttributeDefinitionTranslationExistsRepository
         AttributeDefinitionTranslation>,
       IAttributeDefinitionTranslationExistsRepository
 {
-    public AttributeDefinitionTranslationExistsRepository(AppDbContext db)
+    public AttributeDefinitionTranslationExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

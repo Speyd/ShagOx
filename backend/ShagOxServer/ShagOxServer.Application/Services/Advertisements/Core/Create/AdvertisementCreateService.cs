@@ -12,6 +12,8 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Create.Validator;
+using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
@@ -23,6 +25,8 @@ public class AdvertisementCreateService
     private readonly IRepository<Advertisement> _advertRepository;
     private readonly AdvertisementCreateValidator _advertCreateValidator;
     private readonly AdvertisementVariantValidator _variantValidator;
+
+    private readonly AdvertisementInvalidationService _advertInvalid;
 
     private readonly IAdvertisementVariantCreateService _variantCreateService;
 
@@ -36,6 +40,7 @@ public class AdvertisementCreateService
         IRepository<Advertisement> advertRepository,
         AdvertisementCreateValidator advertCreateValidator,
         AdvertisementVariantValidator variantValidator,
+        AdvertisementInvalidationService advertInvalid,
         IAdvertisementVariantCreateService variantCreateService,
         IImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
@@ -45,6 +50,7 @@ public class AdvertisementCreateService
         _advertCreateValidator = advertCreateValidator;
         _variantValidator = variantValidator;
         _variantCreateService = variantCreateService;
+        _advertInvalid = advertInvalid;
 
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
@@ -132,6 +138,9 @@ public class AdvertisementCreateService
         _logger.LogInformation(
             "Advertisement created successfully. Id: {Id}",
             advert.Id);
+
+        await _advertInvalid.InvalidateCreateAsync(
+            AdvertisementCacheMapper.ToInfo(advert));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

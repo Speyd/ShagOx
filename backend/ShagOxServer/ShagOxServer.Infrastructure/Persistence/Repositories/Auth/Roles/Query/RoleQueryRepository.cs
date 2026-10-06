@@ -2,8 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Roles;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles.Extensions;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -12,7 +11,8 @@ public partial class RoleQueryRepository
     : QueryRepository<Role, RoleSearchFilter>,
       IRoleQueryRepository
 {
-    public RoleQueryRepository(AppDbContext db)
+    public RoleQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

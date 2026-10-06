@@ -22,9 +22,9 @@ mkdir -p \
     "$SERVER_DIR" \
     "$CLIENT_DIR"
 
-# ==================================================
-# CA
-# ==================================================
+
+
+
 
 echo ""
 echo "[1/3] Checking Certificate Authority..."
@@ -58,9 +58,8 @@ else
 fi
 
 
-# ==================================================
-# SERVER CERTIFICATE
-# ==================================================
+
+
 
 echo ""
 echo "[2/3] Checking Redis server certificate..."
@@ -112,9 +111,8 @@ else
 fi
 
 
-# ==================================================
-# CLIENT CERTIFICATE
-# ==================================================
+
+
 
 echo ""
 echo "[3/3] Checking Redis client certificate..."
@@ -165,9 +163,9 @@ else
 fi
 
 
-# ==================================================
-# ACL
-# ==================================================
+
+
+
 
 echo ""
 echo "Generating Redis ACL..."
@@ -188,9 +186,9 @@ chmod 644 /redis/users.acl
 echo "ACL generated for user: ${REDIS_USER}"
 
 
-# ==================================================
-# PERMISSIONS
-# ==================================================
+
+
+
 
 echo ""
 echo "Setting permissions..."
@@ -204,9 +202,9 @@ chmod 644 "$CLIENT_DIR/client.key"
 chmod 600 "$CA_DIR/ca.key"
 
 
-# ==================================================
-# VERIFY CERTIFICATES
-# ==================================================
+
+
+
 
 echo ""
 echo "Verifying CA..."
@@ -247,9 +245,8 @@ openssl verify \
     "$CLIENT_DIR/client.crt"
 
 
-# ==================================================
-# FILE CHECK
-# ==================================================
+
+
 
 echo ""
 echo "Checking generated files..."

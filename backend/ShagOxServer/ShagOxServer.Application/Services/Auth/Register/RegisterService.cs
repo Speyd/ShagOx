@@ -1,28 +1,28 @@
 ﻿using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Auth.Register;
+using ShagOxServer.Application.DTOs.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
+using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Auth.Registrations;
-using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Auth.Users.Contacts;
 using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 using ShagOxServer.Application.Services.Auth.Users.Roles;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Account.Enum;
-using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Auth;
-public class RegisterService 
+namespace ShagOxServer.Application.Services.Auth.Register;
+public partial class RegisterService 
     : IRegisterService
 {
     private readonly IRepository<User> _userRepository;
     private readonly IUserQueryRepository _userQueryRepository;
+
+    private readonly IBasketCreateService _basketService;
 
     private readonly IVerificationSender _senderVerification;
 
@@ -38,6 +38,7 @@ public class RegisterService
     public RegisterService(
         IRepository<User> userRepository,
         IUserQueryRepository userQueryRepository,
+        IBasketCreateService basketService,
         UserCreater userCreater,
         UserRoleService roleService,
         UserPasswordService passwordService,
@@ -48,6 +49,7 @@ public class RegisterService
     {
         _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
+        _basketService = basketService;
         _userCreater = userCreater;
         _roleService = roleService;
         _passwordService = passwordService;
@@ -65,11 +67,9 @@ public class RegisterService
         {
             var prepareResult =
                 await PrepareUserForRegistrationAsync(
-                    request
-            );
+                    request);
             
             if (!prepareResult.IsSuccess)
-
             {
                 return Result<RegisterResponse>
                     .Fail(prepareResult.Error);
@@ -81,23 +81,15 @@ public class RegisterService
             
             try
             {
-                if (prepareResult is not null &&
-                    !prepareResult.Value.IsExisting)
+                if (!prepareResult.Value.IsExisting)
                 {
-                    _userRepository.Add(user);
+                    var createResult = await CreateUserAggregateAsync(user);
 
-
-                    var roleResult = await _roleService
-                        .AddDefaultRoleAsync(user);
-
-                    if (!roleResult.IsSuccess)
+                    if (!createResult.IsSuccess)
                     {
                         return Result<RegisterResponse>
-                            .Fail(roleResult.Error);
-
+                            .Fail(createResult.Error);
                     }
-
-                    await _unitOfWork.SaveChangesAsync();
                 }
 
                 await _userCreater.SetDefaultName(user);
@@ -141,87 +133,31 @@ public class RegisterService
         }
     }
 
-    private async Task<Result<(User User, bool IsExisting)>> 
-        PrepareUserForRegistrationAsync(
-            RegisterRequest request)
-    {
-        bool isExisting = false;
-        User? user = null;
-
-        var userGet = await _userQueryRepository
-            .GetByContactAsync(request.EmailOrPhone);
-
-        if (userGet is not null)
-        {         
-            if (userGet.Status != UserStatus.PendingVerification)
-            {
-                return Result<(User, bool)>
-                    .AlreadyExists(EntityNamesResources.User);
-            }
-
-            user = userGet;
-
-            var result = await _contactApplier
-                .ApplyAsync(user, request);
-
-            if (!result.IsSuccess)
-
-            {
-                return Result<(User User, bool IsExisting)>
-                    .Fail(result.Error);
-            }
-
-            isExisting = true;
-        }
-        else
-        {
-            var userResult = await _userCreater
-                .CreateUser(request);
-
-            if (!userResult.IsSuccess)
-
-            {
-                return Result<(User User, bool IsExisting)>
-                    .Fail(userResult.Error);
-            }
-
-            user = userResult.Value;
-        }
-
-        var passResult = _passwordService
-            .Apply(user!, request);
-
-        if (!passResult.IsSuccess)
-
-        {
-            return Result<(User User, bool IsExisting)>
-                .Fail(passResult.Error);
-        }
-
-        return Result<(User, bool)>
-            .Success((user!, isExisting));
-    }
-
-    private async Task<Result<bool>> SendVerification(
+    private async Task<Result<bool>> CreateUserAggregateAsync(
         User user)
     {
-        user.Status = UserStatus.PendingVerification;
+        _userRepository.Add(user);
 
-        if (!string.IsNullOrWhiteSpace(user.Email))
+        var basketResult = await _basketService.CreateAsync(
+            new BasketCreateRequest(user.Id));
+
+        if (!basketResult.IsSuccess)
         {
-            return await _senderVerification
-                .SendAsync(user,
-                    VerificationCodePurpose.RegistrationEmail);
+            return Result<bool>
+                .Fail(basketResult.Error);
         }
 
-        if (!string.IsNullOrWhiteSpace(user.Phone))
+        var roleResult = await _roleService
+            .AddDefaultRoleAsync(user);
+
+        if (!roleResult.IsSuccess)
         {
-            return await _senderVerification
-                .SendAsync(user, 
-                    VerificationCodePurpose.RegistrationPhone);
+            return Result<bool>
+                .Fail(roleResult.Error);
         }
 
-        return Result<bool>.Fail(
-            RegistrationAuthResources.EmailOrPhoneRequired);
+        await _unitOfWork.SaveChangesAsync();
+
+        return Result<bool>.Success(true);
     }
 }

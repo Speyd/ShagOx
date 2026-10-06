@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 public class ExistsRepository<TEntity>
     : RepositoryContext<TEntity>, IExistsRepository<TEntity>
     where TEntity : BaseEntity
 {
-    public ExistsRepository(ReplicaDbContext db)
+    public ExistsRepository(AppDbContext db)
         : base(db)
     {
     }

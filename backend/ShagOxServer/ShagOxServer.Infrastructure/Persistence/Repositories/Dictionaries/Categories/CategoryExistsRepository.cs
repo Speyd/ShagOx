@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
@@ -10,7 +11,7 @@ public class CategoryExistsRepository
       ICategoryExistsRepository
 {
     public CategoryExistsRepository(
-        ReplicaDbContext db)
+        AppDbContext db)
         : base(db)
     { }
 

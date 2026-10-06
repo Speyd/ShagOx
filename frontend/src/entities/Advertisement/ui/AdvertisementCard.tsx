@@ -7,25 +7,23 @@ import {
   type AdvertisementShort,
 } from "@/shared/lib/types/advertisements";
 import FavoriteButton from "@/features/favorites";
+import { useBasketAction } from "@/features/basket/model/hooks/useBasketAction";
 
-import { Plus, Star } from "lucide-react";
-
+import { Check, Plus, Star } from "lucide-react";
 import { Link } from "react-router-dom";
-import { toast } from "sonner";
 
 export default function AdvertisementCard(
   props: Advertisement | AdvertisementShort,
 ) {
+  const targetVariantId = props.variants?.[0]?.id;
+  const stock = getAdvertisementStock(props);
+  const { handleAdd, isLoading, isInBasket } =
+    useBasketAction(targetVariantId, 1, stock);
+
   const imageUrl =
     "images" in props
       ? props.images?.[0]?.url || "/placeholder-image.png"
       : "/placeholder-image.png";
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toast.success(`"${props.title}" додано до кошика!`);
-  };
 
   const displayTitle = props.title;
   const displaySubtitle = props.description || "Pro max";
@@ -72,11 +70,21 @@ export default function AdvertisementCard(
         <div className={styles.actionButtons}>
           <button
             type="button"
-            className={styles.addButton}
-            onClick={handleAddToCart}
+            className={`${styles.addButton} ${isInBasket ? styles.inBasket : ""}`}
+            onClick={handleAdd}
+            disabled={isLoading || isInBasket || stock <= 0}
           >
-            <Plus size={15} strokeWidth={2.5} />
-            <span>Add To Cart</span>
+            {isInBasket ? (
+              <>
+                <Check size={15} strokeWidth={2.5} />
+                <span>У кошику</span>
+              </>
+            ) : (
+              <>
+                <Plus size={15} strokeWidth={2.5} />
+                <span>{isLoading ? "Додавання..." : "Додати в кошик"}</span>
+              </>
+            )}
           </button>
 
           <FavoriteButton advertisementId={props.id} variant="card" />

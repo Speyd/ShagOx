@@ -1,1 +1,1 @@
-export { default } from "./ui/BasketCartItem";
+export { default } from "./ui/BasketItem";

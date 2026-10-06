@@ -12,7 +12,7 @@ export type Advertisement = {
   price?: number;
   previousPrice?: number;
   stock?: number;
-  properties?: Record<string, string>;
+  properties?: Record<string, unknown>;
   createdAt: string;
   soldAt: string | null;
 };
@@ -51,11 +51,50 @@ export type AdvertisementVariantShort = Omit<
 export type VariantAttribute = {
   attributeId: number;
   attributeKey: string;
-  valueId: number;
-  valueCode: string;
-  value: string | null;
-  valueLabel: string;
+  value: {
+    id: number;
+    dictionaryId: number;
+    code: string;
+    value: string | null;
+    label: string | null;
+  };
 };
+
+export function getVariantAttributeText(attribute: VariantAttribute): string {
+  return (
+    attribute.value.label?.trim() ||
+    attribute.value.value?.trim() ||
+    attribute.value.code?.trim() ||
+    ""
+  );
+}
+
+export function formatAttributeValue(value: unknown): string {
+  if (value == null) return "";
+
+  if (
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  ) {
+    return String(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(formatAttributeValue).filter(Boolean).join(", ");
+  }
+
+  if (typeof value === "object") {
+    const record = value as Record<string, unknown>;
+    for (const key of ["label", "value", "code"]) {
+      if (record[key] != null) return formatAttributeValue(record[key]);
+    }
+
+    return JSON.stringify(value) ?? "";
+  }
+
+  return String(value);
+}
 
 export type Currency = {
   id: number;

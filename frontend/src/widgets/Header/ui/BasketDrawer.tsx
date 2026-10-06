@@ -16,11 +16,12 @@ import { useMemo } from "react";
 import emptyBasketImage from "@/shared/assets/images/empty-cart.svg";
 import { useGetBasket } from "@/features/basket/model/hooks/useGetBasket";
 import BasketItemsList from "@/widgets/basket/basket-items-list";
-import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
+import { getBasketItemPrice } from "@/features/basket/model/types";
 
 import styles from "./BasketDrawer.module.css";
 import Button from "@/shared/ui/button";
 import Price from "@/shared/ui/price";
+import { BasketDrawerProvider } from "@/features/basket/model/BasketDrawerProvider";
 
 type BasketDrawerProps = {
   opened: boolean;
@@ -35,9 +36,7 @@ export default function BasketDrawer({ opened, onClose }: BasketDrawerProps) {
 
   const totalPrice = useMemo(() => {
     return items.reduce((sum, item) => {
-      const price = item.advertisement
-        ? getAdvertisementPrice(item.advertisement)
-        : 0;
+      const price = getBasketItemPrice(item);
       return sum + price * item.quantity;
     }, 0);
   }, [items]);
@@ -65,7 +64,8 @@ export default function BasketDrawer({ opened, onClose }: BasketDrawerProps) {
         body: styles.drawerBody,
       }}
     >
-      <div className={styles.basketDrawer}>
+      <BasketDrawerProvider closeBasket={onClose}>
+        <div className={styles.basketDrawer}>
         <div className={styles.header}>
           <Group gap="xs">
             <Text fw={600} fz={24}>
@@ -109,11 +109,7 @@ export default function BasketDrawer({ opened, onClose }: BasketDrawerProps) {
                   Кошик порожній
                 </Text>
 
-                <Text
-                  c="dimmed"
-                  ta="center"
-                  fz={14}
-                >
+                <Text c="dimmed" ta="center" fz={14}>
                   Додайте товари до кошика,
                   <br />
                   щоб оформити замовлення
@@ -147,7 +143,8 @@ export default function BasketDrawer({ opened, onClose }: BasketDrawerProps) {
             </div>
           </div>
         )}
-      </div>
+        </div>
+      </BasketDrawerProvider>
     </Drawer>
   );
 }

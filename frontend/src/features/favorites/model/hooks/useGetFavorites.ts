@@ -5,7 +5,7 @@ import { useAuthStore } from "@/features/auth";
 export function useGetFavorites() {
   const user = useAuthStore((state) => state.user);
   return useQuery({
-    queryKey: ["favorites"],
+    queryKey: ["favorites", user?.id],
     queryFn: getFavorites,
     enabled: !!user,
     retry: false,

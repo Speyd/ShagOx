@@ -6,6 +6,9 @@ import { useAuthStore } from "@/features/auth";
 import styles from "./AddToBasket.module.css";
 import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
+import { useRef } from "react";
+import { useUpdateBasketItem } from "../model/hooks/useUpdateBasketItem";
+import { getBasketItemStock } from "../model/types";
 
 type AddToBasketProps = {
   advertisementVariantId: number;
@@ -17,27 +20,55 @@ export default function AddToBasket({
   quantity = 1,
 }: AddToBasketProps) {
   const addToBasket = useCreateBasketItem();
+  const updateBasketItem = useUpdateBasketItem();
   const { data: basket, refetch: refetchBasket } = useGetBasket({
     enabled: false,
   });
   const user = useAuthStore((state) => state.user);
+  const pendingRef = useRef(false);
 
   const handleClick = async () => {
+    if (pendingRef.current) return;
+
     if (!user) {
       toast.error("Увійдіть, щоб додати товар до кошика");
       return;
     }
 
+    pendingRef.current = true;
     try {
       const currentBasket = basket ?? (await refetchBasket()).data;
       const basketId = currentBasket?.id ?? (await createBasket()).id;
-      addToBasket.mutate({ basketId, quantity, advertisementVariantId });
+      const existingItem = currentBasket?.basketItems.find(
+        (item) => item.advertisementVariantId === advertisementVariantId,
+      );
+
+      if (existingItem) {
+        const stock = getBasketItemStock(existingItem);
+        const nextQuantity = Math.min(
+          existingItem.quantity + quantity,
+          stock || existingItem.quantity + quantity,
+        );
+
+        await updateBasketItem.mutateAsync({
+          id: existingItem.id,
+          data: { quantity: nextQuantity },
+        });
+      } else {
+        await addToBasket.mutateAsync({
+          basketId,
+          quantity,
+          advertisementVariantId,
+        });
+      }
     } catch {
-      toast.error("Не вдалося створити кошик");
+      toast.error("Не вдалося додати товар до кошика");
+    } finally {
+      pendingRef.current = false;
     }
   };
 
-  const isPending = addToBasket.isPending;
+  const isPending = addToBasket.isPending || updateBasketItem.isPending;
   if (isPending) {
     return (
       <IconButton disabled className={styles.icon}>

@@ -1,33 +1,52 @@
+import { useState } from "react";
 import { Text } from "@mantine/core";
 import styles from "./AdvertisementInfo.module.css";
 import { Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import Price from "@/shared/ui/price";
-import type { Advertisement } from "@/shared/lib/types/advertisements";
+import {
+  formatAttributeValue,
+  getVariantAttributeText,
+  type Advertisement,
+} from "@/shared/lib/types/advertisements";
 import CountBlock from "@/shared/ui/count-block";
 import Button from "@/shared/ui/button";
+import { useBasketAction } from "@/features/basket/model/hooks/useBasketAction";
 
-type AdvertisementInfoProps = Pick<
-  Advertisement,
-  "title" | "description" | "price" | "currency" | "stock" | "properties"
->;
+type AdvertisementInfoProps = { advertisement: Advertisement };
 
 export default function AdvertisementInfo({
-  title,
-  description,
-  price,
-  currency,
-  stock = 0,
-  properties,
+  advertisement,
 }: AdvertisementInfoProps) {
+  const [quantity, setQuantity] = useState(1);
+  const variant = advertisement.variants?.[0];
+  const attributes = new Map<string, string>();
+
+  Object.entries(advertisement.properties ?? {}).forEach(([key, value]) => {
+    const text = formatAttributeValue(value);
+    if (text) attributes.set(key, text);
+  });
+
+  variant?.attributes.forEach((attribute) => {
+    const text = getVariantAttributeText(attribute);
+    if (text) attributes.set(attribute.attributeKey, text);
+  });
+
+  const stock = variant?.stock ?? advertisement.stock ?? 0;
+  const { handleAdd, isLoading } = useBasketAction(
+    variant?.id,
+    quantity,
+    stock,
+  );
+
   return (
     <div className={styles.wrapper}>
       <Text fw={400} fz={40}>
-        {title}
+        {advertisement.title}
       </Text>
 
       <Text fw={400} fz={15}>
-        {description}
+        {advertisement.description}
       </Text>
 
       <div className={styles.ratingContainer}>
@@ -53,12 +72,15 @@ export default function AdvertisementInfo({
 
       <div className="divider" />
 
-      <Price price={price} currency={currency.symbol} />
+      <Price
+        price={advertisement.price}
+        currency={advertisement.currency.symbol}
+      />
 
       <div className="divider" />
 
       <div className={styles.properties}>
-        {Object.entries(properties ?? {}).map(([key, value]) => (
+        {[...attributes.entries()].map(([key, value]) => (
           <div className={styles.property} key={key}>
             <Text fw={400} fz={15} c="dimmed">
               {key}:
@@ -73,7 +95,11 @@ export default function AdvertisementInfo({
       <div className="divider" />
 
       <div className={styles.countContainer}>
-        <CountBlock max={stock} />
+        <CountBlock
+          value={quantity}
+          onChange={setQuantity}
+          max={stock}
+        />
         {stock <= 20 && stock > 0 && (
           <Text fz={14} fw={400}>
             Залишилось всього <b>{stock} штук!</b>
@@ -83,7 +109,13 @@ export default function AdvertisementInfo({
       </div>
 
       <div className={styles.buttonsContainer}>
-        <Button className={styles.actionButton}>Купити</Button>
+        <Button
+          className={styles.actionButton}
+          onClick={handleAdd}
+          disabled={isLoading || stock === 0 || !variant}
+        >
+          {isLoading ? "Додаємо..." : "Купити"}
+        </Button>
         <Button className={styles.actionButton}>Порівняти</Button>
       </div>
     </div>

@@ -5,7 +5,6 @@ import Container from "@/shared/ui/container";
 import Breadcrumbs from "@/widgets/breadcrumbs";
 import { ImageGallery } from "@/widgets/image-gallery";
 import AdvertisementInfo from "@/widgets/advertisement-info";
-import AdvertisementOptions from "@/widgets/advertisement-info/ui/AdvertisementOptions";
 import ReviewsBlock from "@/widgets/reviews-block";
 import ReviewsSection from "@/widgets/reviews-section";
 import AdvertisementSlider from "@/widgets/advertisement-slider/ui/AdvertisementSlider";
@@ -36,8 +35,7 @@ export default function AdvertisementPage() {
               images={advertisement.images?.map((image) => image.url) || []}
             />
             <div className={styles.infoColumn}>
-              <AdvertisementInfo {...advertisement} />
-              <AdvertisementOptions properties={advertisement.properties} />
+              <AdvertisementInfo advertisement={advertisement} />
             </div>
           </section>
 

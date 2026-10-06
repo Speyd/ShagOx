@@ -7,57 +7,80 @@
 }
 
 .mainImageContainer {
-  flex: 1;
+  width: 100%;
+  max-width: 655px;
+  aspect-ratio: 1 / 1;
+
   background-color: #ffffff;
   border-radius: 16px;
   padding: 16px;
+  box-sizing: border-box;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
 .mainImage {
+  display: block;
+  width: 655px;
   width: 100%;
   height: 100%;
-  max-height: 600px;
   object-fit: contain;
 }
 
 .thumbnailsContainer {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  max-height: 600px;
+  gap: 12px;
+
+  max-height: 520px;
   overflow-y: auto;
-  padding-right: 4px;
+
+  padding: 4px;
+  scrollbar-width: thin;
+
+  flex-shrink: 0;
 }
 
 .thumbnailButton {
+  width: 80px;
+  height: 80px;
+
   background: #ffffff;
-  border: 2px solid transparent;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 4px;
+  padding: 6px;
+
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  width: 110px;
-  height: 110px;
+
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .thumbnailButton:hover {
-  border-color: #cbd5e1;
-  transform: translateY(-1px);
+  border-color: #94a3b8;
 }
 
 .thumbnailButton.selected {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(34, 139, 230, 0.15);
+  box-shadow: 0 0 0 1px var(--color-primary);
 }
 
 .thumbnailImage {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -68,10 +91,20 @@
     flex-direction: column-reverse;
   }
 
+  .mainImageContainer {
+    width: 100%;
+    max-width: none;
+  }
+
   .thumbnailsContainer {
     flex-direction: row;
     width: 100%;
     max-height: none;
     overflow-x: auto;
+    overflow-y: hidden;
+
+    padding-bottom: 4px;
+    padding-right: 0;
   }
 }
+

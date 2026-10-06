@@ -5,8 +5,8 @@ import type {
 } from "@/shared/lib/types/advertisements";
 import type { PaginatedResponse } from "@/shared/lib/types/paginatedResponse";
 
-type ApiAdvertisement = Advertisement & {
-  attributes?: Record<string, string>;
+type ApiAdvertisement = Omit<Advertisement, "attributes" | "variants"> & {
+  attributes?: Record<string, unknown>;
   variants?: AdvertisementVariant[];
 };
 
@@ -18,6 +18,7 @@ function normalizeAdvertisement(
 
   return {
     ...advertisement,
+    attributes: advertisement.attributes ?? {},
     price: advertisement.price ?? firstVariant?.price ?? 0,
     previousPrice:
       advertisement.previousPrice ?? firstVariant?.previousPrice ?? 0,

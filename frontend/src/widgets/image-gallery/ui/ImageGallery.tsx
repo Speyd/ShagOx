@@ -18,16 +18,6 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
 
   return (
     <div className={styles.galleryWrapper}>
-      <div className={styles.mainImageContainer}>
-        <Image
-          src={activeImage}
-          alt="Main preview"
-          className={styles.mainImage}
-          radius="lg"
-          fit="contain"
-        />
-      </div>
-
       {galleryImages.length > 1 && (
         <div className={styles.thumbnailsContainer}>
           {galleryImages.map((image, index) => {
@@ -46,7 +36,6 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
                   src={image}
                   alt={`Thumbnail ${index + 1}`}
                   className={styles.thumbnailImage}
-                  radius="md"
                   fit="contain"
                 />
               </button>
@@ -54,6 +43,15 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
           })}
         </div>
       )}
+
+      <div className={styles.mainImageContainer}>
+        <Image
+          src={activeImage}
+          alt="Main preview"
+          className={styles.mainImage}
+          fit="contain"
+        />
+      </div>
     </div>
   );
 }

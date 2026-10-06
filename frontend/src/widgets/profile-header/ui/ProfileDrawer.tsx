@@ -112,6 +112,10 @@ export default function ProfileDrawer({ opened, close }: ProfileDrawerProps) {
 
   const watchedBio = watch("bio") ?? "";
   const watchedUserName = watch("userName") ?? "";
+  const displayName =
+    user?.firstName && user?.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user?.firstName || user?.userName || "Користувач";
 
   return (
     <Drawer
@@ -152,10 +156,17 @@ export default function ProfileDrawer({ opened, close }: ProfileDrawerProps) {
                 <>
                   <Box className={styles.avatarWrapper}>
                     <Avatar
-                      src={avatarPreview ?? user?.avatar?.url ?? undefined}
+                      src={avatarPreview ?? user?.avatar?.url ?? null}
+                      name={displayName}
+                      color="initials"
                       size={180}
                       radius={180}
-                      className={styles.avatar}
+                      styles={{
+                        placeholder: {
+                          fontSize: "48px",
+                          fontWeight: 700,
+                        },
+                      }}
                     />
                     <ActionIcon
                       className={styles.cameraButton}
@@ -325,7 +336,5 @@ export default function ProfileDrawer({ opened, close }: ProfileDrawerProps) {
 }
 
 function getCityLabel(city: City): string {
-  return String(
-    city.lable ?? city.name ?? city.code ?? `Місто ${city.id}`,
-  );
+  return String(city.lable ?? city.name ?? city.code ?? `Місто ${city.id}`);
 }

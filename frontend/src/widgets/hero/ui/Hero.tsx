@@ -2,8 +2,10 @@ import { Image, Text, Title } from "@mantine/core";
 import styles from "./Hero.module.css";
 import heroImage from "@/shared/assets/images/hero-headphones.png";
 import Container from "@/shared/ui/container";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+  const navigate = useNavigate();
   return (
     <section className={styles.hero}>
       <Image src={heroImage} alt="Навушники" className={styles.image} />
@@ -23,7 +25,12 @@ export default function Hero() {
               Відчуйте досконалість у кожній деталі
             </Text>
 
-            <button className={styles.heroButton}>Обрати техніку</button>
+            <button
+              className={styles.heroButton}
+              onClick={() => navigate("/catalog")}
+            >
+              Обрати техніку
+            </button>
           </div>
         </Container>
       </div>

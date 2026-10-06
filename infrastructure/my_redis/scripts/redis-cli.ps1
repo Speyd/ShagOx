@@ -1,6 +1,8 @@
 $ErrorActionPreference = "Stop"
 
 $ProjectRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
+$EnvRoot = Resolve-Path (Join-Path $PSScriptRoot "../../..")
+
 
 $CertsPath = Join-Path $ProjectRoot "certs"
 
@@ -12,7 +14,7 @@ $CertVolume = "my_redis_redis-certs-data"
 
 
 
-$EnvFile = Join-Path $ProjectRoot ".env"
+$EnvFile = Join-Path $EnvRoot ".env"
 
 function Get-EnvValue {
     param (

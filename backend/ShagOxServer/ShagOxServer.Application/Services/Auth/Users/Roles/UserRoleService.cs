@@ -20,7 +20,7 @@ public class UserRoleService
         var role =
             await _roleQueryRepository
                 .GetByNameAsync(RoleNames.User);
-
+        
         if (role is null)
         {
             return Result<bool>.Fail(
@@ -29,7 +29,7 @@ public class UserRoleService
 
         user.UserRoles.Add(new UserRole
         {
-            Role = role
+            RoleId = role.Id
         });
 
         return Result<bool>.Success(true);

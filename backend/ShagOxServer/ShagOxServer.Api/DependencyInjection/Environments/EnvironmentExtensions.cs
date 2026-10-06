@@ -1,9 +1,6 @@
-﻿namespace ShagOxServer.Api.DependencyInjection.Environments;
+namespace ShagOxServer.Api.DependencyInjection.Environments;
 public static partial class EnvironmentExtensions
 {
-    private const string RedisDataPath = "infrastructure/my_redis";
-    private const string DataBasePath = "postgres-replication";
-
     private const string EnvExtension = ".env";
 
     public static void LoadEnvironment(
@@ -11,5 +8,6 @@ public static partial class EnvironmentExtensions
     {
         LoadRedisEnvironment(builder);
         LoadPostgresEnvironment(builder);
+        LoadJwtEnvironment(builder);
     }
 }

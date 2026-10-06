@@ -28,6 +28,7 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
+    mode: "onChange",
   });
 
   const onSubmit = async (data: LoginFormData) => {
@@ -68,7 +69,7 @@ export default function LoginForm() {
           <Mail className={styles.icon} />
           <Input
             {...register("emailOrPhoneOrUserName")}
-            placeholder="Електронна пошта чи телефон"
+            placeholder="Електронна пошта, телефон або нікнейм"
           />
         </div>
         {errors.emailOrPhoneOrUserName && (

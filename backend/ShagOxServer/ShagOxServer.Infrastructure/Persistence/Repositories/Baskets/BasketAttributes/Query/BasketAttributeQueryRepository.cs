@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
@@ -13,7 +13,8 @@ public partial class BasketAttributeQueryRepository
     : QueryRepository<BasketAttribute, BasketAttributeSearchFilter>,
       IBasketAttributeQueryRepository
 {
-    public BasketAttributeQueryRepository(AppDbContext db)
+    public BasketAttributeQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

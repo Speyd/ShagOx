@@ -24,6 +24,13 @@ public class AttributeDictionaryValueTranslationInvalidationService
     }
 
 
+    public async Task InvalidateCreateAsync(
+       BaseTranslationCacheInfo cacheDto)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<AttributeDictionaryValueTranslation>());
+    }
+
     public async Task InvalidateDeleteAsync(
         BaseTranslationCacheInfo cacheDto)
     {
@@ -42,6 +49,12 @@ public class AttributeDictionaryValueTranslationInvalidationService
         await _cache.RemoveAsync(CacheKeys
              .Entity<AttributeDictionaryValueTranslation>
                 (cacheDto.Id));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityPagedPattern<AttributeDictionaryValueTranslation>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<AttributeDictionaryValueTranslation>());
 
         await _value.InvalidateLanguageAsync(
             cacheDto.Language);

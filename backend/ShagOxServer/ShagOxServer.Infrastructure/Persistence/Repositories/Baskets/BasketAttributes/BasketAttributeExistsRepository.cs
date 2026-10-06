@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Domain.Entities.Baskets;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
 
@@ -10,7 +10,8 @@ public class BasketAttributeExistsRepository
     : ExistsRepository<BasketAttribute>,
       IBasketAttributeExistsRepository
 {
-    public BasketAttributeExistsRepository(AppDbContext db)
+    public BasketAttributeExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -6,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 public class RoleInvalidationService
@@ -27,6 +29,12 @@ public class RoleInvalidationService
         _cache = cache;
     }
 
+    public async Task InvalidateCreateAsync(
+        RoleCacheInfo entityInfo)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<Role>());
+    }
 
     public async Task InvalidateDeleteAsync(
         RoleCacheInfo entityInfo)
@@ -93,5 +101,11 @@ public class RoleInvalidationService
 
         await _cache.RemoveAsync(
             UserRoleCache.UserIdsByRole(entityId));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityPagedPattern<Role>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<Role>());
     }
 }

@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Regions;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Query;
@@ -10,7 +10,8 @@ public partial class RegionQueryRepository
     : QueryRepository<Region, RegionSearchFilter>, 
       IRegionQueryRepository
 {
-    public RegionQueryRepository(AppDbContext db)
+    public RegionQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -16,6 +17,8 @@ public class StatusCreateService
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
 
+    private readonly StatusInvalidationService _statusInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusCreateService> _logger;
 
@@ -23,11 +26,13 @@ public class StatusCreateService
     public StatusCreateService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
+        StatusInvalidationService statusInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusCreateService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
+        _statusInvalid = statusInvalid;
         _logger = logger;
         _unitOfWork = unitOfWork;
     }
@@ -67,6 +72,9 @@ public class StatusCreateService
             return Result<CreateResponse>
                     .Fail(EntityErrorResources.AdvertStatusCreateFailed);
         }
+
+        await _statusInvalid
+            .InvalidateCreateAsync(status.Id);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

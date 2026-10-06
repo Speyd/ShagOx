@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
@@ -9,7 +9,8 @@ public class CurrencyExistsRepository
     : ExistsRepository<Currency>,
       ICurrencyExistsRepository
 {
-    public CurrencyExistsRepository(AppDbContext db)
+    public CurrencyExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

@@ -1,8 +1,5 @@
 ﻿using ShagOxServer.Application.DTOs.Auth.Register;
-using ShagOxServer.Application.DTOs.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
-using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
 using ShagOxServer.Application.Services.Auth.Users.Contacts;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;

@@ -2,7 +2,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Query;
@@ -10,7 +10,8 @@ public partial class ConditionQueryRepository
     : QueryRepository<Condition, ConditionSearchFilter>, 
       IConditionQueryRepository
 {
-    public ConditionQueryRepository(AppDbContext db)
+    public ConditionQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

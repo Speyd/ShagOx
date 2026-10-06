@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.T
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 
@@ -14,7 +14,8 @@ public class StatusTranslationQueryRepository
         StatusTranslationSearchFilter>,
       IStatusTranslationQueryRepository
 {
-    public StatusTranslationQueryRepository(AppDbContext db)
+    public StatusTranslationQueryRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

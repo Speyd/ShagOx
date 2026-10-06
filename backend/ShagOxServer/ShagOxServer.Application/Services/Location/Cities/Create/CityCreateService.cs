@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Location;
+using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
@@ -17,6 +19,8 @@ public class CityCreateService
     private readonly IRepository<City> _cityRepository;
     private readonly CityValidator _cityValidator;
 
+    private readonly CityInvalidationService _cityInvalidation;
+
     private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -27,12 +31,14 @@ public class CityCreateService
         IRepository<City> cityRepository,
         CityValidator cityValidator,
         RegionValidator regionValidator,
+        CityInvalidationService cityInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<CityCreateService> logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
         _regionValidator = regionValidator;
+        _cityInvalidation = cityInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -79,6 +85,9 @@ public class CityCreateService
             return Result<CreateResponse>
                  .Fail(EntityErrorResources.CityCreateFailed);
         }
+
+        await _cityInvalidation.InvalidateCreateAsync(
+            CityCacheMapper.ToInfo(city));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

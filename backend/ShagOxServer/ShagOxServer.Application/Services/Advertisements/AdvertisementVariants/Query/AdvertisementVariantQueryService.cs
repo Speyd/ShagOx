@@ -29,6 +29,10 @@ public partial class AdvertisementVariantQueryService
 
     protected readonly ILogger<AdvertisementVariantQueryService> _logger;
 
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
+
 
     public AdvertisementVariantQueryService(
         IAdvertisementVariantQueryRepository variantRepository,

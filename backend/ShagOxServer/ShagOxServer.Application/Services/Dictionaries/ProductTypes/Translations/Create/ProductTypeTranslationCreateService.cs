@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -16,6 +18,9 @@ public class ProductTypeTranslationCreateService
     private readonly IRepository<ProductTypeTranslation> _typeRepository;
     private readonly ProductTypeTranslationValidator _typeValidator;
 
+    private readonly ProductTypeTranslationInvalidationService _trnsInvalid;
+
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ProductTypeTranslationCreateService> _logger;
 
@@ -23,11 +28,13 @@ public class ProductTypeTranslationCreateService
     public ProductTypeTranslationCreateService(
         IRepository<ProductTypeTranslation> typeRepository,
         ProductTypeTranslationValidator typeValidator,
+        ProductTypeTranslationInvalidationService trnsInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeTranslationCreateService> logger)
     {
         _typeRepository = typeRepository;
         _typeValidator = typeValidator;
+        _trnsInvalid = trnsInvalid;
 
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -67,6 +74,9 @@ public class ProductTypeTranslationCreateService
             return Result<CreateResponse>.Fail(
                 EntityErrorResources.ProductTypeTranslationCreateFailed);
         }
+
+        await _trnsInvalid.InvalidateCreateAsync(
+            BaseTranslationCacheMapper.ToInfo(productType));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

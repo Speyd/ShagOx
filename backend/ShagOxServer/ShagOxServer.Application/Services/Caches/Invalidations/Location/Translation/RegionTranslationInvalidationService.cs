@@ -23,6 +23,13 @@ public class RegionTranslationInvalidationService
     }
 
 
+    public async Task InvalidateCreateAsync(
+      BaseTranslationCacheInfo cacheDto)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<RegionTranslation>());
+    }
+
     public async Task InvalidateDeleteAsync(
         BaseTranslationCacheInfo cacheDto)
     {
@@ -40,6 +47,12 @@ public class RegionTranslationInvalidationService
     {
         await _cache.RemoveAsync(CacheKeys
              .Entity<RegionTranslation>(cacheDto.Id));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityPagedPattern<RegionTranslation>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             SearchPattern<RegionTranslation>());
 
         await _region.InvalidateLanguageAsync(
             cacheDto.Language);

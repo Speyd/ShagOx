@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Domain.Entities.Location;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
@@ -9,7 +9,8 @@ public class RegionExistsRepository
     : ExistsRepository<Region>,
       IRegionExistsRepository
 {
-    public RegionExistsRepository(AppDbContext db)
+    public RegionExistsRepository(
+        ReplicaDbContext db)
         : base(db)
     { }
 

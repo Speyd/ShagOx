@@ -9,13 +9,16 @@ public static class StatusFilterExtensions
         this IQueryable<Status> query,
         StatusSearchFilter filter)
     {
-        if (filter is null)
-            return query;
+        Console.WriteLine($"FILTER CODE: '{filter?.Code}'");
 
-        if (!string.IsNullOrWhiteSpace(filter.Code))
+        if (!string.IsNullOrWhiteSpace(filter?.Code))
         {
+            var pattern = $"%{filter.Code}%";
+
+            Console.WriteLine($"FILTER PATTERN: '{pattern}'");
+
             query = query.Where(x =>
-                EF.Functions.ILike(x.Code, $"%{filter.Code}%"));
+                EF.Functions.ILike(x.Code, pattern));
         }
 
         return query;

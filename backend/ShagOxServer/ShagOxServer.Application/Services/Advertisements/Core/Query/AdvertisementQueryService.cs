@@ -32,6 +32,10 @@ public class AdvertisementQueryService
     private readonly ICategoryQueryService _categoryService;
     private readonly IStatusQueryService _statusService;
 
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
+
 
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository,

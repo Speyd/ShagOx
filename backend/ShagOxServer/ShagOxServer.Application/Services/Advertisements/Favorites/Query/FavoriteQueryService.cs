@@ -26,6 +26,9 @@ public class FavoriteQueryService
     private readonly IFavoriteQueryRepository _favoriteRepository;
     private readonly IUserQueryService _userService;
 
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
 
 
     public FavoriteQueryService(

@@ -37,6 +37,13 @@ public class ProductTypeInvalidationService
     }
 
 
+    public async Task InvalidateCreateAsync(
+       long entityId)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<ProductType>());
+    }
+
     public async Task InvalidateDeleteAsync(
         long entityId)
     {
@@ -84,6 +91,12 @@ public class ProductTypeInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePattern<ProductType>(entityId));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            EntityLanguagePagedPattern<ProductType>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<ProductType>());
     }
 
     private async Task<List<CategoryCacheInfo>> GetCategoryInfos(

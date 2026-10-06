@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
@@ -14,7 +14,8 @@ public class QueryTranslationRepository<TEntity, TTranslator, TFilter>
     where TTranslator : BaseTranslation<TEntity>
     where TFilter : BaseFilter
 {
-    public QueryTranslationRepository(AppDbContext db)
+    public QueryTranslationRepository(
+        ReplicaDbContext db)
         : base(db)
     {
     }

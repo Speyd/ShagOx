@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -19,6 +21,8 @@ public class AttributeDefinitionCreateService
 
     private readonly CategoryValidator _categoryValidator;
 
+    private readonly AttributeDefinitionInvalidationService _attributeInvalidation;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionCreateService> _logger;
 
@@ -27,12 +31,14 @@ public class AttributeDefinitionCreateService
         IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
         CategoryValidator categoryValidator,
+        AttributeDefinitionInvalidationService attributeInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionCreateService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _categoryValidator = categoryValidator;
+        _attributeInvalidation = attributeInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -79,6 +85,9 @@ public class AttributeDefinitionCreateService
             return Result<CreateResponse>.Fail(
                 EntityErrorResources.AttributeDefinitionCreateFailed);
         }
+
+        await _attributeInvalidation.InvalidateCreateAsync(
+            attribute.Id);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

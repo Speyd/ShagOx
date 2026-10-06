@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base.Cache;
+﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Location.Cities.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
@@ -6,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Location;
@@ -37,6 +39,13 @@ public class RegionInvalidationService
         _cache = cache;
     }
 
+
+    public async Task InvalidateCreateAsync(
+       long entityId)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<Region>());
+    }
 
     public async Task InvalidateDeleteAsync(
         long entityId)
@@ -83,7 +92,13 @@ public class RegionInvalidationService
         long entityId)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-            .EntityLanguagePattern<City>(entityId));
+            .EntityLanguagePattern<Region>(entityId));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           EntityLanguagePagedPattern<Region>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             LanguageSearchPattern<Region>());
     }
 
     private async Task<List<CityCacheInfo>> GetCityInfos(

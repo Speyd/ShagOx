@@ -1,4 +1,4 @@
-﻿using Google.Apis.Auth;
+using Google.Apis.Auth;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
@@ -41,18 +41,7 @@ public partial class GoogleLoginService
 
                 try
                 {
-                    _userRepository.Add(user);
-
-                    var roleResult = await _roleService
-                        .AddDefaultRoleAsync(user);
-
-                    if (!roleResult.IsSuccess)
-                    {
-                        await _unitOfWork.RollbackAsync();
-                        return Result<LoginResponse>.Fail(roleResult.Error);
-                    }
-
-                    await _unitOfWork.SaveChangesAsync();
+                    await _register.CreateUserAggregateAsync(user);
 
                     await _userCreater.SetDefaultName(user);
 

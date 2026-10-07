@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
@@ -16,14 +16,15 @@ public abstract class BaseTranslatableQueryService<TDto, TEntity, TFilter>
     : BaseLocalizedQueryService<TDto, TEntity, TFilter>,
     ITranslatableQueryService<TDto, TEntity, TFilter>
     where TDto : BaseDto
-    where TEntity : BaseEntity
+    where TEntity : BaseTranslatable
     where TFilter : BaseFilter
 {
-    protected readonly ITranslatableQueryRepository<TEntity, TFilter> _translatableRepository;
+    protected readonly ISearchTranslatableRepository<TEntity, TFilter> 
+        _translatableRepository;
 
 
     public BaseTranslatableQueryService(
-        ITranslatableQueryRepository<TEntity, TFilter> translatableRepository,
+        ISearchTranslatableRepository<TEntity, TFilter> translatableRepository,
         ILanguageProvider language,
         ICacheService cacheRepository,
         IOptions<CacheSettings> settings

@@ -1,15 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations.Extensions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations;
 public class StatusTranslationQueryRepository
-    : QueryTranslationRepository<Status,
+    : SearchTranslationRepository<Status,
         StatusTranslation,
         StatusTranslationSearchFilter>,
       IStatusTranslationQueryRepository

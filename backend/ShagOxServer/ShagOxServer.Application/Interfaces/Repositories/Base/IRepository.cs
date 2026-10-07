@@ -1,12 +1,9 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Base;
 public interface IRepository<T>
      where T : BaseEntity
 {
-    Task<T?> GetByIdAsync(
-        long id);
-
     void Add(T entity);
 
     void Delete(T entity);

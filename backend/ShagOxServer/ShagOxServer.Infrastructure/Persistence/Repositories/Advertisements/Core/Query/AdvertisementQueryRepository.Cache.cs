@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Query;
 public partial class AdvertisementQueryRepository
-    : QueryRepository<Advertisement, AdvertisementSearchFilter>,
+    : SearchRepository<Advertisement, AdvertisementSearchFilter>,
       IAdvertisementQueryRepository
 {
     public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByStatusAsync(

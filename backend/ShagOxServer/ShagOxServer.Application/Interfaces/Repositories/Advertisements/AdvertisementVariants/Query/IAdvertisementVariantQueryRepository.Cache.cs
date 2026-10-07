@@ -1,10 +1,10 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 public partial interface IAdvertisementVariantQueryRepository
-    : IQueryRepository<AdvertisementVariant,
+    : ISearchRepository<AdvertisementVariant,
         AdvertisementVariantSearchFilter>
 {
     Task<List<long>> GetIdsByAdvertisementAsync(

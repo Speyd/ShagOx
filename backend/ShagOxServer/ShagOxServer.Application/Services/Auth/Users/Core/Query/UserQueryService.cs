@@ -100,7 +100,7 @@ public class UserQueryService
             async () =>
             {
                 var user = await _userQueryRepository
-                    .GetByIdAsync(_context.UserId);
+                    .GetByIdIncludeAsync(_context.UserId);
 
                 return await user.ToResultAsync(ApplyMapperAsync);
             },

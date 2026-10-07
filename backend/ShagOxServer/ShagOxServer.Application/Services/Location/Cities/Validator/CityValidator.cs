@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
@@ -13,7 +14,7 @@ public class CityValidator
 
 
     public CityValidator(
-        IRepository<City> cityRepository,
+        IQueryRepository<City> cityRepository,
         ICityExistsRepository cityExistsRepository
         ) : base(cityRepository, cityExistsRepository)
     {

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -10,7 +11,7 @@ public class AttributeDefinitionTranslationValidator
         AttributeDefinitionTranslation>
 {
     public AttributeDefinitionTranslationValidator(
-        IRepository<AttributeDefinitionTranslation> attributeRepository,
+        IQueryRepository<AttributeDefinitionTranslation> attributeRepository,
         IAttributeDefinitionTranslationExistsRepository attributeExistsRepository
     ) : base(attributeRepository, attributeExistsRepository)
     {

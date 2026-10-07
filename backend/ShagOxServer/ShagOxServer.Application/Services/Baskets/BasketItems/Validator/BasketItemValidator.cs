@@ -1,10 +1,10 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
@@ -16,10 +16,9 @@ public class BasketItemValidator
 
 
     public BasketItemValidator(
-        IRepository<BasketItem> itemRepository,
         IBasketItemExistsRepository itemExistsRepository,
         IBasketItemQueryRepository itemQeuryRepository
-    ) : base(itemRepository, itemExistsRepository)
+    ) : base(itemQeuryRepository, itemExistsRepository)
     {
         _itemExistsRepository = itemExistsRepository;
         _itemQeuryRepository = itemQeuryRepository;
@@ -29,7 +28,7 @@ public class BasketItemValidator
         long id)
     {
         var item = await _itemQeuryRepository
-            .GetByIdAsync(id);
+            .GetByIdIncludeAsync(id);
 
         if (item is null)
         {

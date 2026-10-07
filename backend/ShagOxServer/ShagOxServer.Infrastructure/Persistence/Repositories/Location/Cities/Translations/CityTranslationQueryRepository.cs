@@ -1,15 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Filters.Location.Cities.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Translations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Translations;
 public class CityTranslationQueryRepository
-    : QueryTranslationRepository<City,
+    : SearchTranslationRepository<City,
         CityTranslation,
         CityTranslationSearchFilter>,
       ICityTranslationQueryRepository

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Services.Base;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Base;

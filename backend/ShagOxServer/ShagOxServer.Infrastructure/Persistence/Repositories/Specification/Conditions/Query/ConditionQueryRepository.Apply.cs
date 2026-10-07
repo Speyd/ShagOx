@@ -1,12 +1,12 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Query;
 public partial class ConditionQueryRepository
-    : QueryRepository<Condition, ConditionSearchFilter>,
+    : SearchRepository<Condition, ConditionSearchFilter>,
       IConditionQueryRepository
 {
     protected override IQueryable<Condition> ApplyFilter(

@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
@@ -13,7 +14,7 @@ public class CategoryValidator
 
 
     public CategoryValidator(
-        IRepository<Category> categoryRepository,
+        IQueryRepository<Category> categoryRepository,
         ICategoryExistsRepository categoryExistsRepository
     ) : base(categoryRepository, categoryExistsRepository)
     {

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Base.Requests.Translations;
+using ShagOxServer.Application.DTOs.Base.Requests.Translations;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

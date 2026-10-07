@@ -1,10 +1,13 @@
-﻿using ShagOxServer.Application.DTOs.Verifications.Create;
+using ShagOxServer.Application.DTOs.Verifications.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Verifications.Core;
+using ShagOxServer.Application.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Verifications.Mappers;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Verifications;
@@ -15,7 +18,7 @@ namespace ShagOxServer.Application.Services.Verifications.Confirmation;
 public class VerificationService
     : IVerificationService
 {
-    private readonly IRepository<User> _userRepository;
+    private readonly IUserQueryRepository _userRepository;
     private readonly IUserVerificationService _userVerifyService;
 
     private readonly IVerificationCodeService
@@ -24,7 +27,7 @@ public class VerificationService
     private readonly IUnitOfWork _unitOfWork;
 
     public VerificationService(
-        IRepository<User> userRepository,
+        IUserQueryRepository userRepository,
         IUserVerificationService userVerifyService,
         IVerificationCodeService verificationCodeService,
         IUnitOfWork unitOfWork)

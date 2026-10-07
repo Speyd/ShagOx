@@ -1,12 +1,12 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
 
 public partial interface IBasketAttributeQueryRepository
-    : IQueryRepository<BasketAttribute,
+    : ISearchRepository<BasketAttribute,
         BasketAttributeSearchFilter>
 {
     Task<List<BasketAttributeCacheInfo>> GetCacheInfosByCategoryAsync(

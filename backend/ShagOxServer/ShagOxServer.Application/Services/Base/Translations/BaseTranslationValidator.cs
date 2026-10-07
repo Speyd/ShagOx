@@ -1,7 +1,8 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
@@ -9,13 +10,14 @@ public abstract class BaseTranslationValidator<TEntity, TTranslation>
     : BaseValidator<TTranslation>
     where TEntity : BaseEntity
     where TTranslation : BaseTranslation<TEntity>
+
 {
     private readonly ITranslationExistsRepository<TEntity, TTranslation> 
         _translationExistsRepository;
 
 
     public BaseTranslationValidator(
-        IRepository<TTranslation> entityRepository,
+        IQueryRepository<TTranslation> entityRepository,
         ITranslationExistsRepository<TEntity, TTranslation> translationExistsRepository
         )
         : base(entityRepository, translationExistsRepository)

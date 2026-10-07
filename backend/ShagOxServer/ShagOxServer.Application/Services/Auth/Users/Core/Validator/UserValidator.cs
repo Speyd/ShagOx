@@ -1,6 +1,6 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Account;
@@ -15,7 +15,7 @@ public class UserValidator
 
 
     public UserValidator(
-        IRepository<User> userRepository,
+        IQueryRepository<User> userRepository,
         IUserQueryRepository userQueryRepository,
         IUserExistsRepository userExistsRepository
     ) : base(userRepository, userExistsRepository)
@@ -28,7 +28,9 @@ public class UserValidator
     public async Task<Result<User>> GetByIdWithIncludesAsync(
         long userId)
     {
-        var user = await _userQueryRepository.GetByIdAsync(userId);
+        var user = await _userQueryRepository
+            .GetByIdIncludeAsync(userId);
+
         if (user is null)
             return Result<User>.NotFound(
                 EntityNamesResources.User);

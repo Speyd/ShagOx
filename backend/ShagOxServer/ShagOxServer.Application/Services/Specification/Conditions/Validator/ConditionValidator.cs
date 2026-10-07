@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
@@ -13,7 +14,7 @@ public class ConditionValidator
 
 
     public ConditionValidator(
-        IRepository<Condition> conditionRepository,
+        IQueryRepository<Condition> conditionRepository,
         IConditionExistsRepository conditionExistsRepository
     ) : base(conditionRepository, conditionExistsRepository)
     {

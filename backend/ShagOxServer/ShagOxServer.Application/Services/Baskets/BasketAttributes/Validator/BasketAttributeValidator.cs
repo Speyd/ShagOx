@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Resources.EntityNames;
@@ -14,7 +15,7 @@ public class BasketAttributeValidator
     private readonly IBasketAttributeExistsRepository _attributeExistsRepository;
 
     public BasketAttributeValidator(
-        IRepository<BasketAttribute> attributeRepository,
+        IQueryRepository<BasketAttribute> attributeRepository,
         IBasketAttributeExistsRepository attributeExistsRepository,
         IAttributeDefinitionExistsRepository attributeDefenitionExistsRepository
     ) : base(attributeRepository, attributeExistsRepository)

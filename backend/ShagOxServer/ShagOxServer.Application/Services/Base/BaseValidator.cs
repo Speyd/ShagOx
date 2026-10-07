@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -7,12 +8,12 @@ namespace ShagOxServer.Application.Services.Base;
 public abstract class BaseValidator<TEntity>
     where TEntity : BaseEntity
 {
-    private readonly IRepository<TEntity> _objectRepository;
+    private readonly IQueryRepository<TEntity> _objectRepository;
     private readonly IExistsRepository<TEntity> _objectExistsRepository;
 
 
     public BaseValidator(
-        IRepository<TEntity> objectRepository,
+        IQueryRepository<TEntity> objectRepository,
         IExistsRepository<TEntity> objectExistsRepository)
     {
         _objectRepository = objectRepository;

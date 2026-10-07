@@ -5,11 +5,26 @@ Write-Host "=== PostgreSQL Replica Initialization ==="
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 $projectRoot = Resolve-Path (Join-Path $scriptDirectory "../..")
+$postgresRoot = Resolve-Path (Join-Path $scriptDirectory "..")
 $envFile = Join-Path $projectRoot ".env"
+$composeFile = Join-Path $postgresRoot "docker-compose.yml"
 
 if (-not (Test-Path $envFile)) {
     throw ".env not found: $envFile"
 }
+
+if (-not (Test-Path $composeFile)) {
+    throw "docker-compose.yml not found: $composeFile"
+}
+
+Write-Host "Project root: $projectRoot"
+Write-Host "Env file:     $envFile"
+Write-Host "Compose file: $composeFile"
+
+$composeArgs = @(
+    "--env-file", $envFile
+    "-f", $composeFile
+)
 
 function Get-EnvValue {
     param (
@@ -39,7 +54,7 @@ $replicaVolume = "postgres-replication_replica_data"
 Write-Host ""
 Write-Host "=== Starting primary ==="
 
-docker compose up -d postgres-primary
+docker compose @composeArgs up -d postgres-primary
 
 if ($LASTEXITCODE -ne 0) {
     throw "Failed to start postgres-primary"
@@ -124,7 +139,7 @@ Write-Host "=== Base backup completed ==="
 Write-Host ""
 Write-Host "=== Starting replica ==="
 
-docker compose up -d postgres-replica
+docker compose @composeArgs up -d postgres-replica
 
 if ($LASTEXITCODE -ne 0) {
     throw "Failed to start postgres-replica"

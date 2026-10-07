@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Auth;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
@@ -16,6 +17,8 @@ public partial class GoogleLoginService
     : IGoogleLoginService
 {
     private readonly GoogleSettings _googleSettings;
+
+    private readonly IRegisterService _register;
 
     private readonly IRepository<User> _userRepository;
     private readonly IUserQueryRepository _userQueryRepository;
@@ -31,6 +34,7 @@ public partial class GoogleLoginService
 
     public GoogleLoginService(
         IOptions<GoogleSettings> googleSettings,
+        IRegisterService register,
         IRepository<User> userRepository,
         IUserQueryRepository userQueryRepository,
         IUserNameService userNameService,
@@ -41,7 +45,7 @@ public partial class GoogleLoginService
         ILogger<GoogleLoginService> logger)
     {
         _googleSettings = googleSettings.Value;
-
+        _register = register;
         _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
         _userNameService = userNameService;

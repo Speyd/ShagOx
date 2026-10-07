@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Resources.Auth.Registrations;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -29,7 +29,7 @@ public class UserRoleService
 
         user.UserRoles.Add(new UserRole
         {
-            RoleId = role.Id
+            Role = role
         });
 
         return Result<bool>.Success(true);

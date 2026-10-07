@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Common.Settings.Systems;
@@ -28,7 +28,7 @@ public class ExternalAuthController
     [HttpPost("google")]
     public async Task<IActionResult> GoogleLogin(
         [FromBody] GoogleLoginRequest request)
-    {    
+    {
         var responce = await _googleLoginService
             .LoginAsync(request);
 

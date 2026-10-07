@@ -5,6 +5,8 @@ Write-Host "=== PostgreSQL Replica Initialization ==="
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 $projectRoot = Resolve-Path (Join-Path $scriptDirectory "../..")
+
+
 $envFile = Join-Path $projectRoot ".env"
 
 if (-not (Test-Path $envFile)) {

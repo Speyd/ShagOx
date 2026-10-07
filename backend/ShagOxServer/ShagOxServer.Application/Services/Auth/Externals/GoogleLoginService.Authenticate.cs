@@ -16,8 +16,18 @@ public partial class GoogleLoginService
     {
         try
         {
-            string email = payload.Email;
-            string name = payload.Name;
+            if (payload.EmailVerified != true)
+            {
+                return Result<LoginResponse>.Unauthorized(
+                    GoogleAuthResources.GoogleAuthenticationFailed);
+            }
+
+            var email = payload.Email?.Trim();
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return Result<LoginResponse>.Unauthorized(
+                    GoogleAuthResources.GoogleAuthenticationFailed);
+            }
 
 
             var user = await _userQueryRepository
@@ -25,6 +35,9 @@ public partial class GoogleLoginService
 
             if (user is null)
             {
+                var name = string.IsNullOrWhiteSpace(payload.Name)
+                    ? email.Split('@')[0]
+                    : payload.Name.Trim();
                 var userName = await _userNameService
                     .GenerateUniqueAsync(name);
                 if (!userName.IsSuccess)
@@ -33,6 +46,7 @@ public partial class GoogleLoginService
                 user = new User
                 {
                     Email = email,
+                    EmailConfirmed = true,
                     UserName = userName.Value!,
                     Status = UserStatus.Active
                 };
@@ -69,6 +83,17 @@ public partial class GoogleLoginService
 
                     return Result<LoginResponse>
                         .Fail(GoogleAuthResources.GoogleUserCreationFailed);
+                }
+            }
+            else if (!user.EmailConfirmed)
+            {
+                var writableUser = await _userRepository
+                    .GetByIdAsync(user.Id);
+
+                if (writableUser is not null)
+                {
+                    writableUser.EmailConfirmed = true;
+                    await _unitOfWork.SaveChangesAsync();
                 }
             }
 

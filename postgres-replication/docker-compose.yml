@@ -1,5 +1,4 @@
 services:
-
   postgres-primary:
     image: postgres:17
     container_name: postgres-primary
@@ -33,11 +32,7 @@ services:
       - hba_file=/etc/postgresql/pg_hba.conf
 
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"
-        ]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 12
@@ -45,7 +40,6 @@ services:
 
     networks:
       - postgres-network
-
 
   postgres-replica:
     image: postgres:17
@@ -70,11 +64,9 @@ services:
     networks:
       - postgres-network
 
-
 volumes:
   primary_data:
   replica_data:
-
 
 networks:
   postgres-network:

@@ -1,4 +1,4 @@
-﻿using Google.Apis.Auth;
+using Google.Apis.Auth;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
@@ -16,18 +16,8 @@ public partial class GoogleLoginService
     {
         try
         {
-            if (payload.EmailVerified != true)
-            {
-                return Result<LoginResponse>.Unauthorized(
-                    GoogleAuthResources.GoogleAuthenticationFailed);
-            }
-
-            var email = payload.Email?.Trim();
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return Result<LoginResponse>.Unauthorized(
-                    GoogleAuthResources.GoogleAuthenticationFailed);
-            }
+            string email = payload.Email;
+            string name = payload.Name;
 
 
             var user = await _userQueryRepository
@@ -35,9 +25,6 @@ public partial class GoogleLoginService
 
             if (user is null)
             {
-                var name = string.IsNullOrWhiteSpace(payload.Name)
-                    ? email.Split('@')[0]
-                    : payload.Name.Trim();
                 var userName = await _userNameService
                     .GenerateUniqueAsync(name);
                 if (!userName.IsSuccess)
@@ -46,7 +33,6 @@ public partial class GoogleLoginService
                 user = new User
                 {
                     Email = email,
-                    EmailConfirmed = true,
                     UserName = userName.Value!,
                     Status = UserStatus.Active
                 };
@@ -55,18 +41,7 @@ public partial class GoogleLoginService
 
                 try
                 {
-                    _userRepository.Add(user);
-
-                    var roleResult = await _roleService
-                        .AddDefaultRoleAsync(user);
-
-                    if (!roleResult.IsSuccess)
-                    {
-                        await _unitOfWork.RollbackAsync();
-                        return Result<LoginResponse>.Fail(roleResult.Error);
-                    }
-
-                    await _unitOfWork.SaveChangesAsync();
+                    await _register.CreateUserAggregateAsync(user);
 
                     await _userCreater.SetDefaultName(user);
 
@@ -83,17 +58,6 @@ public partial class GoogleLoginService
 
                     return Result<LoginResponse>
                         .Fail(GoogleAuthResources.GoogleUserCreationFailed);
-                }
-            }
-            else if (!user.EmailConfirmed)
-            {
-                var writableUser = await _userRepository
-                    .GetByIdAsync(user.Id);
-
-                if (writableUser is not null)
-                {
-                    writableUser.EmailConfirmed = true;
-                    await _unitOfWork.SaveChangesAsync();
                 }
             }
 

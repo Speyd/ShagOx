@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.DTOs.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -71,11 +71,10 @@ public partial class RegisterService
     {
         try
         {
-            Console.WriteLine(11111);
             var prepareResult =
                 await PrepareUserForRegistrationAsync(
                     request);
-            Console.WriteLine(2222);
+
             if (!prepareResult.IsSuccess)
             {
                 return Result<RegisterResponse>
@@ -85,21 +84,19 @@ public partial class RegisterService
             var user = prepareResult.Value!.User;
 
             await _unitOfWork.BeginTransactionAsync();
-            Console.WriteLine(3333);
+
             try
             {
                 if (prepareResult is not null && 
                     !prepareResult.Value.IsExisting)
                 {
-                    Console.WriteLine(4444);
                     var createResult = await CreateUserAggregateAsync(user);
-                    Console.WriteLine(5555);
+
                     if (!createResult.IsSuccess)
                     {
                         return Result<RegisterResponse>
                             .Fail(createResult.Error);
                     }
-                    Console.WriteLine(6666);
                 }
 
                 await _userCreater.SetDefaultName(user);
@@ -146,7 +143,7 @@ public partial class RegisterService
         }
     }
 
-    private async Task<Result<bool>> CreateUserAggregateAsync(
+    public async Task<Result<bool>> CreateUserAggregateAsync(
         User user)
     {
         _userRepository.Add(user);

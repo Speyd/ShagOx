@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Translations.Extensions;
@@ -12,7 +13,7 @@ public class CategoryTranslationExistsRepository
       ICategoryTranslationExistsRepository
 {
     public CategoryTranslationExistsRepository(
-        ReplicaDbContext db)
+        AppDbContext db)
         : base(db)
     { }
 

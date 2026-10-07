@@ -7,12 +7,8 @@ public partial class EnvironmentExtensions
     private static void LoadPostgresEnvironment(
         IHostApplicationBuilder builder)
     {
-        var databaseRoot = Path.Combine(
-            ProjectPath.Root,
-            DataBasePath);
-
         var databaseEnvPath = Path.Combine(
-            databaseRoot,
+            ProjectPath.Root,
             EnvExtension);
 
         Env.Load(databaseEnvPath);

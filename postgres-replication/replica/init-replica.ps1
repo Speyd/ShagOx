@@ -2,11 +2,13 @@ $ErrorActionPreference = "Stop"
 
 Write-Host "=== PostgreSQL Replica Initialization ==="
 
-$envFile = ".env"
+$scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+$projectRoot = Resolve-Path (Join-Path $scriptDirectory "../..")
+$envFile = Join-Path $projectRoot ".env"
 
 if (-not (Test-Path $envFile)) {
-    Write-Error ".env not found"
-    exit 1
+    throw ".env not found: $envFile"
 }
 
 function Get-EnvValue {
@@ -19,42 +21,84 @@ function Get-EnvValue {
         Select-Object -First 1
 
     if (-not $line) {
-        Write-Error "$Name not found in .env"
-        exit 1
+        throw "$Name not found in .env"
     }
 
     return ($line -replace "^$Name=", "").Trim()
 }
 
+$postgresPassword = Get-EnvValue "POSTGRES_PASSWORD"
 $postgresUser = Get-EnvValue "POSTGRES_USER"
 $postgresDb = Get-EnvValue "POSTGRES_DB"
 $replicatorUser = Get-EnvValue "REPLICATOR_USER"
 $replicatorPassword = Get-EnvValue "REPLICATOR_PASSWORD"
-$primaryPort = Get-EnvValue "POSTGRES_PRIMARY_PORT"
-$replicaPort = Get-EnvValue "POSTGRES_REPLICA_PORT"
 
-Write-Host "Starting primary..."
+$network = "postgres-replication_postgres-network"
+$replicaVolume = "postgres-replication_replica_data"
+
+Write-Host ""
+Write-Host "=== Starting primary ==="
 
 docker compose up -d postgres-primary
 
-Write-Host "Waiting for PostgreSQL..."
-
-Start-Sleep -Seconds 5
-
-Write-Host "Checking replicator role..."
-
-docker exec postgres-primary psql `
-    -U $postgresUser `
-    -d $postgresDb `
-    -c "SELECT rolname, rolreplication FROM pg_roles WHERE rolname = '$replicatorUser';"
+if ($LASTEXITCODE -ne 0) {
+    throw "Failed to start postgres-primary"
+}
 
 Write-Host ""
-Write-Host "Replica volume must be empty."
+Write-Host "=== Waiting for primary ==="
 
-$replicaVolume = "postgres-replication_replica_data"
-$network = "postgres-replication_postgres-network"
+do {
+    docker exec `
+        -e "PGPASSWORD=$postgresPassword" `
+        postgres-primary `
+        pg_isready `
+        -U $postgresUser `
+        -d $postgresDb `
+        2>$null
 
-Write-Host "Running pg_basebackup..."
+    if ($LASTEXITCODE -ne 0) {
+        Start-Sleep -Seconds 2
+        Write-Host "Waiting..."
+    }
+}
+while ($LASTEXITCODE -ne 0)
+
+Write-Host "Primary is ready."
+
+Write-Host ""
+Write-Host "=== Checking replication user ==="
+
+$roleExists = docker exec `
+    -e "PGPASSWORD=$postgresPassword" `
+    postgres-primary `
+    psql `
+    -U $postgresUser `
+    -d $postgresDb `
+    -tAc "SELECT 1 FROM pg_roles WHERE rolname = '$replicatorUser';"
+
+if ($roleExists.Trim() -ne "1") {
+    throw "Replication user '$replicatorUser' does not exist."
+}
+
+Write-Host "Replication user exists."
+
+Write-Host ""
+Write-Host "=== Checking replica volume ==="
+
+$volumeCheck = docker run --rm `
+    -v "${replicaVolume}:/var/lib/postgresql/data" `
+    postgres:17 `
+    bash -c "find /var/lib/postgresql/data -mindepth 1 -maxdepth 1 | head -n 1"
+
+if (-not [string]::IsNullOrWhiteSpace($volumeCheck)) {
+    throw "Replica volume is not empty. Remove it before running bootstrap."
+}
+
+Write-Host "Replica volume is empty."
+
+Write-Host ""
+Write-Host "=== Running pg_basebackup ==="
 
 docker run --rm `
     --network $network `
@@ -71,29 +115,32 @@ docker run --rm `
     -R
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Error "pg_basebackup failed"
-    exit 1
+    throw "pg_basebackup failed"
 }
 
 Write-Host ""
-Write-Host "Base backup completed."
+Write-Host "=== Base backup completed ==="
 
-Write-Host "Starting replica..."
+Write-Host ""
+Write-Host "=== Starting replica ==="
 
 docker compose up -d postgres-replica
 
+if ($LASTEXITCODE -ne 0) {
+    throw "Failed to start postgres-replica"
+}
+
+Start-Sleep -Seconds 3
+
 Write-Host ""
-Write-Host "Replica started."
+Write-Host "=== Checking replica ==="
 
-Start-Sleep -Seconds 5
-
-Write-Host "Checking recovery status..."
-
-docker exec postgres-replica `
+docker exec `
+    postgres-replica `
     psql `
     -U $postgresUser `
     -d $postgresDb `
     -c "SELECT pg_is_in_recovery();"
 
 Write-Host ""
-Write-Host "=== Done ==="
+Write-Host "=== Replica initialization completed ==="

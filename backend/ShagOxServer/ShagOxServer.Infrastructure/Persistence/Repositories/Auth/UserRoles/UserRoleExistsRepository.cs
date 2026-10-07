@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
@@ -10,7 +11,7 @@ public class UserRoleExistsRepository
       IUserRoleExistsRepository
 {
     public UserRoleExistsRepository(
-        ReplicaDbContext db)
+        AppDbContext db)
         : base(db)
     { }
 

@@ -3,11 +3,13 @@ services:
   postgres-primary:
     image: postgres:17
     container_name: postgres-primary
+    restart: unless-stopped
 
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+
       REPLICATOR_USER: ${REPLICATOR_USER}
       REPLICATOR_PASSWORD: ${REPLICATOR_PASSWORD}
 
@@ -16,19 +18,30 @@ services:
 
     volumes:
       - primary_data:/var/lib/postgresql/data
-      - ./primary/init:/docker-entrypoint-initdb.d
-      - ./primary/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - ./primary/init:/docker-entrypoint-initdb.d:ro
+      - ./primary/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
 
     command:
       - postgres
       - -c
       - wal_level=replica
       - -c
-      - max_wal_senders=10
+      - max_wal_senders=3
       - -c
-      - max_replication_slots=10
+      - max_replication_slots=3
       - -c
       - hba_file=/etc/postgresql/pg_hba.conf
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
 
     networks:
       - postgres-network
@@ -37,6 +50,12 @@ services:
   postgres-replica:
     image: postgres:17
     container_name: postgres-replica
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
 
     ports:
       - "${POSTGRES_REPLICA_PORT}:5432"
@@ -45,7 +64,8 @@ services:
       - replica_data:/var/lib/postgresql/data
 
     depends_on:
-      - postgres-primary
+      postgres-primary:
+        condition: service_healthy
 
     networks:
       - postgres-network

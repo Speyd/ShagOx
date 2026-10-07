@@ -1,6 +1,7 @@
 ﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Translations.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
@@ -12,7 +13,7 @@ public class StatusTranslationExistsRepository
       IStatusTranslationExistsRepository
 {
     public StatusTranslationExistsRepository(
-        ReplicaDbContext db)
+        AppDbContext db)
         : base(db)
     { }
 

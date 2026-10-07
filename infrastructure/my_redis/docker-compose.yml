@@ -6,7 +6,7 @@ services:
     restart: "no"
 
     env_file:
-      - .env
+      - ../../.env
 
     volumes:
       - redis-certs-data:/certs

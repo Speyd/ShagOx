@@ -7,12 +7,8 @@ public partial class EnvironmentExtensions
     private static void LoadRedisEnvironment(
         IHostApplicationBuilder builder)
     {
-        var redisRoot = Path.Combine(
-            ProjectPath.Root,
-            RedisDataPath);
-
         var redisEnvPath = Path.Combine(
-            redisRoot,
+            ProjectPath.Root,
             EnvExtension);
 
         Env.Load(redisEnvPath);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
@@ -10,7 +11,7 @@ public class ExistsTranslationRepository<TEntity, TTranslation>
     where TEntity : BaseTranslatable
     where TTranslation : BaseTranslation<TEntity>
 {
-    public ExistsTranslationRepository(ReplicaDbContext db)
+    public ExistsTranslationRepository(AppDbContext db)
         : base(db)
     {
     }

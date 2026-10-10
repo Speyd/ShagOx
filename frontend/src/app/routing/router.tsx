@@ -29,6 +29,7 @@ import CheckoutPage from "@/pages/checkout";
 import PaymentPage from "@/pages/payment";
 import BasketPage from "@/pages/basket";
 import ReferencePage from "@/pages/reference/ReferencePage";
+import OrderTrackingPage from "@/pages/order-tracking/OrderTrackingPage";
 
 export default function Router() {
   return (
@@ -124,6 +125,7 @@ export default function Router() {
               </ProtectedRoute>
             }
           />
+          <Route path="/order-tracking" element={<OrderTrackingPage />} />
           <Route path="/reference" element={<ReferencePage />} />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />
           <Route path="*" element={<NotFoundPage />} />

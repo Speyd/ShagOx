@@ -1,0 +1,62 @@
+.paymentMethodsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+
+  padding: 40px 0 120px 0;
+}
+
+.paymentMethodsContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.spanTwo {
+  grid-column: span 2;
+}
+
+.paymentMethodsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.paymentMethodsDescription {
+  color: var(--text-secondary);
+}
+
+.paymentMethodCard {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  gap: 16px;
+
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: white;
+
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    border-color 0.3s;
+}
+
+.paymentMethodHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.paymentMethodButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.paymentMethodButton {
+  padding: 4px 8px;
+  background-color: #eeeeee;
+}

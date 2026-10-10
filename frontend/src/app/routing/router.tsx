@@ -30,6 +30,7 @@ import PaymentPage from "@/pages/payment";
 import BasketPage from "@/pages/basket";
 import ReferencePage from "@/pages/reference/ReferencePage";
 import OrderTrackingPage from "@/pages/order-tracking/OrderTrackingPage";
+import PaymentMethodsPage from "@/pages/payment-methods";
 
 export default function Router() {
   return (
@@ -125,6 +126,7 @@ export default function Router() {
               </ProtectedRoute>
             }
           />
+          <Route path="/payment-methods" element={<PaymentMethodsPage />} />
           <Route path="/order-tracking" element={<OrderTrackingPage />} />
           <Route path="/reference" element={<ReferencePage />} />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />

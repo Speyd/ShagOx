@@ -37,11 +37,6 @@
   border-radius: 8px;
   border: 1px solid var(--color-border);
   background-color: white;
-
-  transition:
-    background-color 0.3s,
-    color 0.3s,
-    border-color 0.3s;
 }
 
 .paymentMethodHeader {

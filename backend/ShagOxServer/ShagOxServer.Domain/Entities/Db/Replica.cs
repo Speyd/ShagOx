@@ -1,7 +1,9 @@
-namespace ShagOxServer.Application.Common.Db;
+namespace ShagOxServer.Domain.Entities.Db;
 public sealed class Replica
 {
     public string ConnectionString { get; }
+
+    public string ContainerId { get; }
 
     public bool IsHealthy { get; set; } = true;
 
@@ -12,8 +14,11 @@ public sealed class Replica
     public DateTime LastHealthCheck { get; set; }
 
 
-    public Replica(string connectionString)
+    public Replica(
+        string connectionString,
+        int containerId)
     {
         ConnectionString = connectionString;
+        ContainerId = containerId;
     }
 }

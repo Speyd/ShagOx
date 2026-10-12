@@ -2,8 +2,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Npgsql;
-using ShagOxServer.Application.Common.Db;
 using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Domain.Entities.Db;
+using ShagOxServer.Infrastructure.Monitoring;
 
 namespace ShagOxServer.Infrastructure.BackgroundServices;
 public class ReplicaHealthCheckeService
@@ -15,6 +16,8 @@ public class ReplicaHealthCheckeService
 
     private readonly IReadOnlyList<Replica> _replicas;
 
+    private readonly DockerCpuReader _dockerCpuReader;
+
     private static readonly TimeSpan CheckTimeout =
         TimeSpan.FromSeconds(3);
 
@@ -22,11 +25,13 @@ public class ReplicaHealthCheckeService
     public ReplicaHealthCheckeService(
         IOptions<BackgroundServiceSettings> setting,
         ILogger<ReplicaHealthCheckeService> logger,
-        IReadOnlyList<Replica> replicas)
+        IReadOnlyList<Replica> replicas,
+        DockerCpuReader dockerCpuReader)
     {
         _setting = setting.Value;
         _logger = logger;
         _replicas = replicas;
+        _dockerCpuReader = dockerCpuReader;
     }
 
     protected override async Task ExecuteAsync(
@@ -89,6 +94,9 @@ public class ReplicaHealthCheckeService
             command.CommandTimeout = 3;
 
             await command.ExecuteScalarAsync(timeoutCts.Token);
+
+            await _dockerCpuReader.GetCpuAsync(
+                replica.ContainerId, stoppingToken);
 
             replica.IsHealthy = true;
         }

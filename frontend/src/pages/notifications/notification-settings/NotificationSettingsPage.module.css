@@ -1,0 +1,28 @@
+.notificationSettingsPage {
+  flex: 1;
+  background-color: var(--bg-base);
+  height: 100%;
+}
+
+.notificationSettingsContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0 80px;
+  gap: 50px;
+}
+
+.notificationSettingsContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.notificationSettingsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.description {
+  color: var(--text-secondary);
+}

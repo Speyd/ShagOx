@@ -28,6 +28,7 @@ import VerifyPage from "@/pages/verify-page";
 import CheckoutPage from "@/pages/checkout";
 import PaymentPage from "@/pages/payment";
 import BasketPage from "@/pages/basket";
+import NotificationSettingsPage from "@/pages/notifications/notification-settings/NotificationSettingsPage";
 
 export default function Router() {
   return (
@@ -122,6 +123,10 @@ export default function Router() {
                 <UserUpdateAdvertisementPage />
               </ProtectedRoute>
             }
+          />
+          <Route
+            path="/notification-settings"
+            element={<NotificationSettingsPage />}
           />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />
           <Route path="*" element={<NotFoundPage />} />

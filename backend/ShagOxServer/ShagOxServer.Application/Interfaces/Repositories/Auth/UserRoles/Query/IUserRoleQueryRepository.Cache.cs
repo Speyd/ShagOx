@@ -1,12 +1,12 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
+using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
 public partial interface IUserRoleQueryRepository
-    : IQueryRepository<UserRole, UserRoleSearchFilter>
+    : ISearchRepository<UserRole, UserRoleSearchFilter>
 {
     Task<List<RoleCacheInfo>> GetRoleCacheInfoByUserAsync(
         long userId);

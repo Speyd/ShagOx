@@ -26,9 +26,11 @@ services:
       - -c
       - wal_level=replica
       - -c
-      - max_wal_senders=3
+      - max_wal_senders=5
       - -c
       - max_replication_slots=3
+      - -c
+      - wal_keep_size=512MB
       - -c
       - hba_file=/etc/postgresql/pg_hba.conf
 
@@ -47,9 +49,9 @@ services:
       - postgres-network
 
 
-  postgres-replica:
+  postgres-replica-1:
     image: postgres:17
-    container_name: postgres-replica
+    container_name: postgres-replica-1
     restart: unless-stopped
 
     environment:
@@ -58,10 +60,58 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
 
     ports:
-      - "${POSTGRES_REPLICA_PORT}:5432"
+      - "${POSTGRES_REPLICA_1_PORT}:5432"
 
     volumes:
-      - replica_data:/var/lib/postgresql/data
+      - replica_1_data:/var/lib/postgresql/data
+
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+
+    networks:
+      - postgres-network
+
+
+  postgres-replica-2:
+    image: postgres:17
+    container_name: postgres-replica-2
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+    ports:
+      - "${POSTGRES_REPLICA_2_PORT}:5432"
+
+    volumes:
+      - replica_2_data:/var/lib/postgresql/data
+
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+
+    networks:
+      - postgres-network
+
+
+  postgres-replica-3:
+    image: postgres:17
+    container_name: postgres-replica-3
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+    ports:
+      - "${POSTGRES_REPLICA_3_PORT}:5432"
+
+    volumes:
+      - replica_3_data:/var/lib/postgresql/data
 
     depends_on:
       postgres-primary:
@@ -73,7 +123,9 @@ services:
 
 volumes:
   primary_data:
-  replica_data:
+  replica_1_data:
+  replica_2_data:
+  replica_3_data:
 
 
 networks:

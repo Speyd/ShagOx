@@ -1,5 +1,6 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Account;
@@ -13,7 +14,7 @@ public class RoleValidator
 
 
     public RoleValidator(
-        IRepository<Role> roleRepository,
+        IQueryRepository<Role> roleRepository,
         IRoleExistsRepository roleExistsRepository
     ) : base(roleRepository, roleExistsRepository)
     {

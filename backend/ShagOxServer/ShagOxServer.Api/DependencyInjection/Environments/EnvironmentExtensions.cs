@@ -10,4 +10,19 @@ public static partial class EnvironmentExtensions
         LoadPostgresEnvironment(builder);
         LoadJwtEnvironment(builder);
     }
+
+    private static string GetRequiredEnvironmentVariable(
+        string name)
+    {
+        var value =
+            Environment.GetEnvironmentVariable(name);
+
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new InvalidOperationException(
+                $"Environment variable '{name}' is not configured.");
+        }
+
+        return value;
+    }
 }

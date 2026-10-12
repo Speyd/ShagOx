@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Query;
 public partial class ConditionQueryRepository 
-    : QueryRepository<Condition, ConditionSearchFilter>, 
+    : SearchRepository<Condition, ConditionSearchFilter>, 
       IConditionQueryRepository
 {
     public ConditionQueryRepository(

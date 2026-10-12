@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Api.Common;
+using ShagOxServer.Api.Common;
 using ShagOxServer.Application.Common.Settings.Caches;
 using StackExchange.Redis;
 
@@ -12,7 +12,10 @@ public static class CacheExtensions
         services.Configure<RedisSettings>(
             configuration.GetSection("Redis"));
 
- 
+        services.Configure<CacheSettings>(
+           configuration.GetSection("Cache"));
+
+
         var settings = configuration
             .GetSection("Redis")
             .Get<RedisSettings>()

@@ -1,15 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.Domain.Filters.Specification.Conditions.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Translations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions.Translations;
 public class ConditionTranslationQueryRepository
-    : QueryTranslationRepository<Condition,
+    : SearchTranslationRepository<Condition,
         ConditionTranslation, 
         ConditionTranslationSearchFilter>,
       IConditionTranslationQueryRepository

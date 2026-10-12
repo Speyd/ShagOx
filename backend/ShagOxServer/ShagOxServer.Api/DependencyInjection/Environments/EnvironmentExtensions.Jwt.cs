@@ -1,5 +1,6 @@
 using DotNetEnv;
 using ShagOxServer.Api.Common;
+using ShagOxServer.SharedKernel.Configuration;
 
 namespace ShagOxServer.Api.DependencyInjection.Environments;
 public partial class EnvironmentExtensions
@@ -7,11 +8,9 @@ public partial class EnvironmentExtensions
     private static void LoadJwtEnvironment(
         IHostApplicationBuilder builder)
     {
-        var redisEnvPath = Path.Combine(
-            ProjectPath.Root,
-            EnvExtension);
+        var envPath = EnvironmentFileLocator.Find(EnvExtension);
 
-        Env.Load(redisEnvPath);
+        Env.Load(envPath);
 
         builder.Configuration["Jwt:Key"] =
             GetRequiredEnvironmentVariable("JWT_SECRET");

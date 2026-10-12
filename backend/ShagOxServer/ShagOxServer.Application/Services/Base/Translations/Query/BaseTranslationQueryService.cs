@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Base;
-using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Query;
@@ -20,12 +20,12 @@ public abstract class BaseTranslationQueryService<TDto, TEntity, TTranslation, T
     where TTranslation : BaseTranslation<TEntity>
     where TFilter : BaseFilter
 {
-    protected readonly ITranslationQueryRepository<TEntity, TTranslation, TFilter>
+    protected readonly ISearchTranslationRepository<TEntity, TTranslation, TFilter>
         _queryTranslationRepository;
 
 
     public BaseTranslationQueryService(
-        ITranslationQueryRepository<TEntity, TTranslation, TFilter> queryRepository,
+        ISearchTranslationRepository<TEntity, TTranslation, TFilter> queryRepository,
         ICacheService cache,
         IOptions<CacheSettings> settings
      )

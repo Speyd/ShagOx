@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,12 +14,12 @@ public class VerificationCodeCleanupService
 
     private readonly ILogger<VerificationCodeCleanupService> _logger;
 
-    private readonly BackgroundServiceSettings _setting;
+    private readonly VerificationCodeCleanupSettings _setting;
 
 
     public VerificationCodeCleanupService(
         IServiceScopeFactory scopeFactory,
-        IOptions<BackgroundServiceSettings> setting,
+        IOptions<VerificationCodeCleanupSettings> setting,
         ILogger<VerificationCodeCleanupService> logger)
     {
         _scopeFactory = scopeFactory;
@@ -67,7 +67,7 @@ public class VerificationCodeCleanupService
             }
 
             await Task.Delay(
-                _setting.VerificationCodeCleanupInterval,
+                _setting.CleanupInterval,
                 stoppingToken
             );
         }

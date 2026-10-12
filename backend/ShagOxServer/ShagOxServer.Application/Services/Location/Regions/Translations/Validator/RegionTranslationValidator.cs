@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Location;
@@ -10,7 +11,7 @@ public class RegionTranslationValidator
         RegionTranslation>
 {
     public RegionTranslationValidator(
-        IRepository<RegionTranslation> regionRepository,
+        IQueryRepository<RegionTranslation> regionRepository,
         IRegionTranslationExistsRepository regionExistsRepository
     ) : base(regionRepository, regionExistsRepository)
     {

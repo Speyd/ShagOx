@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Filters.Verifications.VerificationCodes;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Verifications.VerificationCodes.Query;
 public partial class VerificationCodeQueryRepository
-    : QueryRepository<VerificationCode, VerificationCodeSearchFilter>,
+    : SearchRepository<VerificationCode, VerificationCodeSearchFilter>,
       IVerificationCodeQueryRepository
 {
     public VerificationCodeQueryRepository(

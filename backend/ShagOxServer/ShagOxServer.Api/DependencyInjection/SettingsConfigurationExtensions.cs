@@ -1,17 +1,23 @@
-﻿using ShagOxServer.Application.Common.Settings.Auth;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Settings.Auth;
 using ShagOxServer.Application.Common.Settings.Systems;
 using ShagOxServer.Application.Common.Settings.Verifivations;
 
 namespace ShagOxServer.Api.DependencyInjection;
+
 public static class SettingsConfigurationExtensions
 {
     public static IServiceCollection AddSettingsConfiguration(
         this IServiceCollection services,
         IConfiguration config)
     {
+        #region Verification Settings
+
         services.Configure<VerificationCodeSettings>(
             config.GetSection("VerificationCode"));
+
+        #endregion
+
+        #region Notification Settings
 
         services.Configure<EmailSettings>(
             config.GetSection("Email"));
@@ -19,17 +25,31 @@ public static class SettingsConfigurationExtensions
         services.Configure<SmsSettings>(
             config.GetSection("Twilio"));
 
-        services.Configure<BackgroundServiceSettings>(
-           config.GetSection("BackgroundServices"));
+        #endregion
+
+        #region Cleanup Settings
+
+        services.Configure<UserCleanupSettings>(
+            config.GetSection("UserCleanup"));
+
+        services.Configure<VerificationCodeCleanupSettings>(
+            config.GetSection("VerificationCodeCleanup"));
+
+        #endregion
+
+        #region Authentication Settings
 
         services.Configure<GoogleSettings>(
-           config.GetSection("Google"));
+            config.GetSection("Google"));
+
+        #endregion
+
+        #region User Settings
 
         services.Configure<UserNameSettings>(
-           config.GetSection("UserNameGenerate"));
+            config.GetSection("UserNameGenerate"));
 
-        services.Configure<CacheSettings>(
-           config.GetSection("Cache"));
+        #endregion
 
         return services;
     }

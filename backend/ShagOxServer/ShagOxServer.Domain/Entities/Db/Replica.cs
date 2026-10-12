@@ -3,7 +3,7 @@ public sealed class Replica
 {
     public string ConnectionString { get; }
 
-    public string ContainerId { get; }
+    public string ContainerName { get; }
 
     public bool IsHealthy { get; set; } = true;
 
@@ -16,9 +16,9 @@ public sealed class Replica
 
     public Replica(
         string connectionString,
-        int containerId)
+        string сontainerName)
     {
         ConnectionString = connectionString;
-        ContainerId = containerId;
+        ContainerName = сontainerName;
     }
 }

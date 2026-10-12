@@ -26,9 +26,11 @@ services:
       - -c
       - wal_level=replica
       - -c
-      - max_wal_senders=3
+      - max_wal_senders=5
       - -c
       - max_replication_slots=3
+      - -c
+      - wal_keep_size=512MB
       - -c
       - hba_file=/etc/postgresql/pg_hba.conf
 

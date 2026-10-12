@@ -52,11 +52,13 @@ function Get-EnvValue {
 }
 
 $postgresPassword = Get-EnvValue "POSTGRES_PASSWORD"
+
 $postgresUser = Get-EnvValue "POSTGRES_USER"
 $postgresDb = Get-EnvValue "POSTGRES_DB"
 
 $replicatorUser = Get-EnvValue "REPLICATOR_USER"
 $replicatorPassword = Get-EnvValue "REPLICATOR_PASSWORD"
+
 
 # ============================================================
 # Replicas
@@ -174,6 +176,10 @@ function Initialize-Replica {
     Write-Host ""
     Write-Host "=== Initializing $Name ==="
 
+    $slotName = ($Name -replace '^postgres-', '' -replace '-', '_') + "_slot"
+
+    Write-Host "Replication slot: $slotName"
+
     docker run --rm `
         --network $network `
         -e "PGPASSWORD=$replicatorPassword" `
@@ -186,7 +192,9 @@ function Initialize-Replica {
         -Fp `
         -Xs `
         -P `
-        -R
+        -R `
+        -C `
+        -S $slotName
 
     if ($LASTEXITCODE -ne 0) {
         throw "pg_basebackup failed for $Name"

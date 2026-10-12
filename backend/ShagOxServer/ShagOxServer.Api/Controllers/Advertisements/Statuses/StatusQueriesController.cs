@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Domain.Filters.Advertisements;
@@ -36,7 +36,6 @@ public class StatusQueriesController
     public async Task<IActionResult> GetPaged(
         [FromQuery] PaginationParams pagination)
     {
-        Console.WriteLine(111111111111);
         var result = await _queryService
             .GetPagedAsync(pagination);
 

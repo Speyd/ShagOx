@@ -2,7 +2,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Npgsql;
-using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Application.Common.Settings.Db;
 using ShagOxServer.Domain.Entities.Db;
 using ShagOxServer.Infrastructure.Monitoring;
 
@@ -12,18 +12,15 @@ public class ReplicaHealthCheckeService
 {
     private readonly ILogger<ReplicaHealthCheckeService> _logger;
 
-    private readonly BackgroundServiceSettings _setting;
+    private readonly DatabaseHealthCheckSettings _setting;
 
     private readonly IReadOnlyList<Replica> _replicas;
 
     private readonly DockerCpuReader _dockerCpuReader;
 
-    private static readonly TimeSpan CheckTimeout =
-        TimeSpan.FromSeconds(3);
-
 
     public ReplicaHealthCheckeService(
-        IOptions<BackgroundServiceSettings> setting,
+        IOptions<DatabaseHealthCheckSettings> setting,
         ILogger<ReplicaHealthCheckeService> logger,
         IReadOnlyList<Replica> replicas,
         DockerCpuReader dockerCpuReader)
@@ -62,7 +59,7 @@ public class ReplicaHealthCheckeService
             }
 
             await Task.Delay(
-                _setting.VerificationCodeCleanupInterval,
+                _setting.CheckInterval,
                 stoppingToken
             );
         }
@@ -72,33 +69,51 @@ public class ReplicaHealthCheckeService
         Replica replica,
         CancellationToken stoppingToken)
     {
-        int port = -1;
-
         try
         {
+            LogReplicaInfo(replica);
+
             using var timeoutCts = CancellationTokenSource
                 .CreateLinkedTokenSource(stoppingToken);
 
-            timeoutCts.CancelAfter(CheckTimeout);
+            timeoutCts.CancelAfter(_setting.CheckTimeout);
 
             await using var connection =
                 new NpgsqlConnection(replica.ConnectionString);
-
-            port = connection.Port;
 
             await connection.OpenAsync(timeoutCts.Token);
 
             await using var command = connection.CreateCommand();
 
             command.CommandText = "SELECT 1";
-            command.CommandTimeout = 3;
+            command.CommandTimeout = _setting.CommandTimeoutSeconds;
 
             await command.ExecuteScalarAsync(timeoutCts.Token);
 
-            await _dockerCpuReader.GetCpuAsync(
-                replica.ContainerId, stoppingToken);
-
             replica.IsHealthy = true;
+            replica.LastHealthCheck = DateTime.UtcNow;
+
+            try
+            {
+                var cpu = await _dockerCpuReader.GetCpuAsync(
+                    replica.ContainerName,
+                    timeoutCts.Token);
+
+                if (cpu.HasValue)
+                    replica.Cpu = cpu.Value;
+            }
+            catch (OperationCanceledException)
+                when (stoppingToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(
+                    ex,
+                    "Failed to read CPU stats for replica on port {Port}",
+                    GetPort(replica.ConnectionString));
+            }
         }
         catch (OperationCanceledException)
             when (stoppingToken.IsCancellationRequested)
@@ -111,7 +126,42 @@ public class ReplicaHealthCheckeService
 
             _logger.LogWarning(
                 ex,
-                $"Replica(port:{port}) health check failed");
+                "Replica(Port:{Port}) health check failed",
+                GetPort(replica.ConnectionString));
+        }
+    }
+
+    private void LogReplicaInfo(
+        Replica replica)
+    {
+        _logger.LogInformation(
+            """
+        Replica status:
+          Container: {ContainerName}
+          Port: {Port}
+          Healthy: {IsHealthy}
+          CPU: {Cpu:F2}
+          Active connections: {ActiveConnections}
+          Last health check: {LastHealthCheck:O}
+        """,
+            replica.ContainerName,
+            GetPort(replica.ConnectionString),
+            replica.IsHealthy,
+            replica.Cpu,
+            replica.ActiveConnections,
+            replica.LastHealthCheck);
+    }
+    private static int GetPort(
+        string connectionString)
+    {
+        try
+        {
+            return new NpgsqlConnectionStringBuilder(
+                connectionString).Port;
+        }
+        catch
+        {
+            return -1;
         }
     }
 }

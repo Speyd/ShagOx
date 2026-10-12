@@ -1,37 +1,47 @@
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Settings.Db;
 using ShagOxServer.Application.Interfaces.Db;
 using ShagOxServer.Domain.Entities.Db;
 
 namespace ShagOxServer.Infrastructure.Persistence.Db;
-
 public class PostgresLoadBalancer
     : IPostgresLoadBalancer
 {
     private readonly IReadOnlyList<Replica> _replicas;
+    private readonly LoadBalancerSettings _setting;
 
 
     public PostgresLoadBalancer(
-        IReadOnlyList<Replica> replicas)
+        IReadOnlyList<Replica> replicas,
+        IOptions<LoadBalancerSettings> setting)
     {
         _replicas = replicas;
+        _setting = setting.Value;
     }
 
 
     public Replica? SelectReplica()
     {
-        PriorityQueue<Replica, float> replicas = new();
+        var queue = new PriorityQueue<Replica, float>();
+        var now = DateTime.UtcNow;
 
-        foreach(Replica replica in _replicas)
+        foreach (Replica replica in _replicas)
         {
-            if (replica.IsHealthy)
+            if (!replica.IsHealthy)
                 continue;
 
-            var lastCheck = DateTime.UtcNow - replica.LastHealthCheck;
-            if (lastCheck < TimeSpan.FromMinutes(1))
+            if (replica.LastHealthCheck == default)
                 continue;
 
-            replicas.Enqueue(replica, replica.Cpu);
+            if (now - replica.LastHealthCheck > _setting.MaxHealthAge)
+                continue;
+
+            queue.Enqueue(replica, replica.Cpu);
         }
 
-        return replicas.Dequeue();
+        if (queue.TryDequeue(out var selected, out _))
+            return selected;
+
+        return null;
     }
 }

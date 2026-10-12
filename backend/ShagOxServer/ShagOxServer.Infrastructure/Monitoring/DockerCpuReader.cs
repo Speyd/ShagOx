@@ -6,13 +6,14 @@ public sealed class DockerCpuReader
 {
     private readonly DockerClient _docker;
 
-    public DockerCpuReader(DockerClient docker)
+    public DockerCpuReader(
+        DockerClient docker)
     {
         _docker = docker;
     }
 
     public async Task<float?> GetCpuAsync(
-        string containerId,
+        string containerName,
         CancellationToken cancellationToken = default)
     {
         ContainerStatsResponse? stats = null;
@@ -22,7 +23,7 @@ public sealed class DockerCpuReader
         );
 
         await _docker.Containers.GetContainerStatsAsync(
-            containerId,
+            containerName,
             new ContainerStatsParameters
             {
                 Stream = false,

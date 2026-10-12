@@ -12,7 +12,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: var(--font-base);
+  font-family: var(--font-secondary);
 }
 
 html,
@@ -47,7 +47,7 @@ body {
   --color-primary-hover: #28527f;
   --color-border: #d2dfef;
   --text-base: #334155;
-  --text-secondary: #44474D;
+  --text-secondary: #44474d;
   --font-xs: 12px;
   --font-sm: 14px;
   --font-md: 16px;

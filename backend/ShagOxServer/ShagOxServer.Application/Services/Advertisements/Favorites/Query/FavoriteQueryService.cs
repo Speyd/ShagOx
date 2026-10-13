@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
@@ -34,7 +34,7 @@ public class FavoriteQueryService
     public FavoriteQueryService(
         IFavoriteQueryRepository favoriteRepository,
         IUserQueryService userService,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(favoriteRepository, cacheService, settings)

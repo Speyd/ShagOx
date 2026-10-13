@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Domain.Entities.Location;
 
@@ -11,7 +11,7 @@ public class RegionLocalizedInvalidationService
 
     public RegionLocalizedInvalidationService(
         CityLocalizedInvalidationService city,
-        ICacheService cache
+        IDataCacheService cache
     )
         : base(cache)
     {

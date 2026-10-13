@@ -33,7 +33,7 @@ public class CategoryQueryService
         ICategoryQueryRepository categoryQueryRepository,
         ICategoryTranslationQueryRepository translationRepository,
         ILanguageProvider language,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(categoryQueryRepository, language, cacheService, settings)

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
@@ -22,7 +22,7 @@ public class ProductTypeTranslationQueryService
 {
     public ProductTypeTranslationQueryService(
         IProductTypeTranslationQueryRepository typeRepository,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(typeRepository, cacheService, settings)

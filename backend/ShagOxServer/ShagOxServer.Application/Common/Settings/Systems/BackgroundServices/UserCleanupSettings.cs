@@ -1,4 +1,4 @@
-namespace ShagOxServer.Application.Common.Settings.Systems;
+namespace ShagOxServer.Application.Common.Settings.Systems.BackgroundServices;
 public sealed class UserCleanupSettings
 {
     public TimeSpan CleanupInterval { get; init; }

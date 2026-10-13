@@ -36,7 +36,7 @@ public class CityQueryService
         ICityTranslationQueryRepository translationCityRepository,
         IRegionQueryService regionService,
         ILanguageProvider language,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(repositoryQueryCity, language, cacheService, settings)

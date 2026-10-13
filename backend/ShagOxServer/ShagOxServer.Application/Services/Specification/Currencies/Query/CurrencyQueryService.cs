@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
@@ -26,7 +26,7 @@ public class CurrencyQueryService
 
     public CurrencyQueryService(
         ICurrencyQueryRepository currencyRepository,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(currencyRepository, cacheService, settings)

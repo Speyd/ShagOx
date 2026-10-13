@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -15,13 +15,13 @@ public class CurrencyInvalidationService
     private readonly IAdvertisementQueryRepository _advertRepository;
     private readonly AdvertisementInvalidationService _advertInvalid;
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
     public CurrencyInvalidationService(
         IAdvertisementQueryRepository advertRepository,
         AdvertisementInvalidationService advertInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _advertRepository = advertRepository;
         _advertInvalid = advertInvalid;

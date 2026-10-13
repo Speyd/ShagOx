@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
@@ -40,7 +40,7 @@ public partial class AdvertisementVariantQueryService
         IAttributeDictionaryValueQueryRepository valueRepository,
         VariantAttributeQueryService variantAttributeService,
         ILogger<AdvertisementVariantQueryService> logger,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings,
         ILanguageProvider language
     )

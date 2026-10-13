@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Localized;
@@ -9,14 +9,14 @@ namespace ShagOxServer.Application.Services.Caches.Invalidations.Location.Transl
 public class RegionTranslationInvalidationService
     : ITranslationCacheInvalidationService<RegionTranslation>
 {
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
     private readonly RegionLocalizedInvalidationService _region;
 
 
     public RegionTranslationInvalidationService(
         RegionLocalizedInvalidationService region,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cache = cache;
         _region = region;

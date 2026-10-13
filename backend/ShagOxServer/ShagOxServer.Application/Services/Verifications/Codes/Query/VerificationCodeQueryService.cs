@@ -20,7 +20,7 @@ public class VerificationCodeQueryService
 {
     public VerificationCodeQueryService(
         IVerificationCodeQueryRepository categoryQueryRepository,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(categoryQueryRepository, cacheService, settings)

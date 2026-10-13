@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
@@ -22,7 +22,7 @@ public class ConditionInvalidationService
     private readonly IConditionTranslationQueryRepository _transRepository;
     private readonly ConditionTranslationInvalidationService _transInvalid;
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
 
@@ -31,7 +31,7 @@ public class ConditionInvalidationService
         AdvertisementInvalidationService advertInvalid,
         IConditionTranslationQueryRepository transRepository,
         ConditionTranslationInvalidationService transInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _advertRepository = advertRepository;
         _advertInvalid = advertInvalid;

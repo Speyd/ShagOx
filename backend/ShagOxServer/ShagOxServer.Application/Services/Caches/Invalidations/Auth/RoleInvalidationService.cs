@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
@@ -16,13 +16,13 @@ public class RoleInvalidationService
     private readonly IUserRoleQueryRepository _userRoleRepository;
     private readonly UserInvalidationService _userInvalid;
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
     public RoleInvalidationService(
         IUserRoleQueryRepository userRoleRepository,
         UserInvalidationService userInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _userRoleRepository = userRoleRepository;
         _userInvalid = userInvalid;

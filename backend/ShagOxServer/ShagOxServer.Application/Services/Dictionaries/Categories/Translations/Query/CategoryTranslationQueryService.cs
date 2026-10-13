@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
@@ -22,7 +22,7 @@ public class CategoryTranslationQueryService
 {
     public CategoryTranslationQueryService(
         ICategoryTranslationQueryRepository categoryRepository,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(categoryRepository, cacheService, settings)

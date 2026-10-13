@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Application.Common.Settings.Caches;
+namespace ShagOxServer.Application.Common.Settings.Caches;
 public sealed class RedisSettings
 {
     public string Endpoints { get; set; } = null!;

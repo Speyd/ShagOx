@@ -9,7 +9,8 @@ namespace ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 public sealed class AppDbContextFactory
     : IDesignTimeDbContextFactory<AppDbContext>
 {
-    public AppDbContext CreateDbContext(string[] args)
+    public AppDbContext CreateDbContext(
+        string[] args)
     {
         var envPath = EnvironmentFileLocator.Find();
         Env.Load(envPath);

@@ -34,7 +34,7 @@ public class AttributeDictionaryValueQueryService
         IAttributeDictionaryValueQueryRepository dictionaryDictQueryRepository,
         IAttributeDictionaryValueTranslationQueryRepository translation,
         ILanguageProvider language,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(dictionaryDictQueryRepository, language, cacheService, settings)

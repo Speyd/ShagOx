@@ -26,7 +26,7 @@ public abstract class BaseTranslatableQueryService<TDto, TEntity, TFilter>
     public BaseTranslatableQueryService(
         ISearchTranslatableRepository<TEntity, TFilter> translatableRepository,
         ILanguageProvider language,
-        ICacheService cacheRepository,
+        IDataCacheService cacheRepository,
         IOptions<CacheSettings> settings
     )
         : base(translatableRepository, language, cacheRepository, settings)

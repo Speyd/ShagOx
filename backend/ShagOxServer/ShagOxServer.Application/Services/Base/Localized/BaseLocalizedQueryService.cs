@@ -23,7 +23,7 @@ public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
     public BaseLocalizedQueryService(
         ISearchRepository<TEntity, TFilter> localizedRepository,
         ILanguageProvider language,
-        ICacheService cacheRepository,
+        IDataCacheService cacheRepository,
         IOptions<CacheSettings> settings
     )
         : base(localizedRepository, cacheRepository, settings)

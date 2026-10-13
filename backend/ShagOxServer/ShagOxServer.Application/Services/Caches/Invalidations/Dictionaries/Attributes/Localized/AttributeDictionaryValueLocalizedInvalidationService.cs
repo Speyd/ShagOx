@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
@@ -8,7 +8,7 @@ public class AttributeDictionaryValueLocalizedInvalidationService
         <AttributeDictionaryValue>
 {
     public AttributeDictionaryValueLocalizedInvalidationService(
-        ICacheService cache
+        IDataCacheService cache
     )
         : base(cache)
     {

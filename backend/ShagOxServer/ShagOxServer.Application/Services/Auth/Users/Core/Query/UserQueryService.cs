@@ -45,7 +45,7 @@ public class UserQueryService
         IRoleQueryRepository roleQueryRepository,
         ICityQueryService cityService,
         IUserContext userContext,
-        ICacheService cache,
+        IDataCacheService cache,
         IOptions<CacheSettings> settings,
         ILanguageProvider language
     )

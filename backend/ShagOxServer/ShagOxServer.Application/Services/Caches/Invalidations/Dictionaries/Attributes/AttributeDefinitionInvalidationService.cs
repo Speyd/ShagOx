@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
@@ -24,7 +24,7 @@ public class AttributeDefinitionInvalidationService
 
     private readonly AttributeDefinitionTranslationInvalidationService _transInvalid;
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
 
@@ -33,7 +33,7 @@ public class AttributeDefinitionInvalidationService
         BasketAttributeInvalidationService basketInvalid,
         IAttributeDefinitionTranslationQueryRepository transRepository,
         AttributeDefinitionTranslationInvalidationService transInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _basketRepository = basketRepository;
         _basketInvalid = basketInvalid;

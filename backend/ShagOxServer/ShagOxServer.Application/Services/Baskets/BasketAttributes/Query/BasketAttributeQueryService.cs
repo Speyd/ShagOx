@@ -32,7 +32,7 @@ public class BasketAttributeQueryService
     public BasketAttributeQueryService(
         IBasketAttributeQueryRepository attributeQueryRepository,
         IAttributeDefinitionQueryService attributeService,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings,
         ILanguageProvider language
     )

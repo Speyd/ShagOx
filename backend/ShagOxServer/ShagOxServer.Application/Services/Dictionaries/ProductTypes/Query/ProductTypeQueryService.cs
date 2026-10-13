@@ -27,7 +27,7 @@ public class ProductTypeQueryService
         IProductTypeQueryRepository productTypeQueryRepository,
         IProductTypeTranslationQueryRepository translationRepository,
         ILanguageProvider language,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(productTypeQueryRepository, language, cacheService, settings)

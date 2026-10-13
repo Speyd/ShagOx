@@ -128,3 +128,13 @@ docker exec `
     --cert /certs/client/client.crt `
     --key /certs/client/client.key `
     --user $RedisUser
+
+docker exec `
+    -e "REDISCLI_AUTH=$RedisPassword" `
+    -it user-redis `
+    redis-cli `
+    --tls `
+    --cacert /certs/ca/ca.crt `
+    --cert /certs/client/client.crt `
+    --key /certs/client/client.key `
+    --user $RedisUser

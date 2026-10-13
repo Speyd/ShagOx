@@ -5,71 +5,69 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$PSNativeCommandUseErrorActionPreference = $false
-
 if ($RemoveVolumes -and $ReplicaVolumesOnly) {
     throw "Use either -RemoveVolumes or -ReplicaVolumesOnly, not both."
 }
 
 # ============================================================
-# Containers
+# Explicit allowlists
 # ============================================================
 
-$allContainerNames = @(
-    "postgres-primary",
-    "postgres-replica-1",
-    "postgres-replica-2",
-    "postgres-replica-3",
-    "postgres-replication",
-    "redis-init",
-    "redis",
+$allContainers = @(
+    "postgres-primary"
+    "postgres-replica-1"
+    "postgres-replica-2"
+    "postgres-replica-3"
+    "postgres-replication"
+    "redis-init"
+    "redis"
     "my_redis"
 )
 
-$replicaContainerNames = @(
-    "postgres-replica-1",
-    "postgres-replica-2",
+$replicaContainers = @(
+    "postgres-replica-1"
+    "postgres-replica-2"
     "postgres-replica-3"
 )
 
-if ($ReplicaVolumesOnly) {
-    $containerNames = $replicaContainerNames
-}
-else {
-    $containerNames = $allContainerNames
-}
-
-# ============================================================
-# Explicit volume allowlist
-# ============================================================
-
-
-$replicaVolumeNames = @(
-    "postgres-replication_replica_1_data",
-    "postgres-replication_replica_2_data",
+$replicaVolumes = @(
+    "postgres-replication_replica_1_data"
+    "postgres-replication_replica_2_data"
     "postgres-replication_replica_3_data"
 )
 
-$allVolumeNames = @(
+$allVolumes = @(
     "postgres-replication_primary_data"
-
-    "postgres-replication_replica_1_data",
-    "postgres-replication_replica_2_data",
+    "postgres-replication_replica_1_data"
+    "postgres-replication_replica_2_data"
     "postgres-replication_replica_3_data"
-
-    "my_redis_redis-data",
-    "my_redis_redis-certs-data",
-    "my_redis_redis-acl-data"
+    "my_redis_redis-data"
+    "my_redis_user-redis-data"
 )
 
-# ============================================================
-# Networks
-# ============================================================
-
-$knownNetworkNames = @(
-    "postgres-replication_postgres-network",
+$knownNetworks = @(
+    "postgres-replication_postgres-network"
     "my_redis_default"
 )
+
+# ============================================================
+# Select cleanup scope
+# ============================================================
+
+if ($ReplicaVolumesOnly) {
+    $containersToRemove = $replicaContainers
+    $volumesToRemove = $replicaVolumes
+}
+else {
+    $containersToRemove = $allContainers
+
+    if ($RemoveVolumes) {
+        $volumesToRemove = $allVolumes
+    }
+    else {
+        $volumesToRemove = @()
+    }
+}
 
 # ============================================================
 # Check Docker
@@ -84,81 +82,38 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # ============================================================
-# Get existing containers
+# Preview and confirmation
 # ============================================================
 
-$existingContainerNames = @(
-    & docker container ls -a --format "{{.Names}}"
-)
+Write-Host ""
+Write-Host "Containers to remove:" -ForegroundColor Yellow
+$containersToRemove | ForEach-Object { Write-Host "  $_" }
 
-if ($LASTEXITCODE -ne 0) {
-    throw "Failed to list Docker containers."
+if ($volumesToRemove.Count -gt 0) {
+    Write-Host ""
+    Write-Host "Volumes to remove:" -ForegroundColor Yellow
+    $volumesToRemove | ForEach-Object { Write-Host "  $_" }
 }
 
-# ============================================================
-# Select volumes
-# ============================================================
-
-$volumesToRemove = @()
-
-if ($RemoveVolumes -or $ReplicaVolumesOnly) {
-
+if ($ReplicaVolumesOnly) {
     Write-Host ""
-    Write-Host "=== Checking volumes ===" -ForegroundColor Cyan
-
-    $existingVolumeNames = @(
-        & docker volume ls --quiet
-    )
-
-    if ($LASTEXITCODE -ne 0) {
-        throw "Failed to list Docker volumes."
-    }
-
-    if ($ReplicaVolumesOnly) {
-        $allowedVolumes = $replicaVolumeNames
-    }
-    else {
-        $allowedVolumes = $allVolumeNames
-    }
-
-    $volumesToRemove = @(
-        $allowedVolumes |
-            Where-Object {
-                $_ -in $existingVolumeNames
-            } |
-            Sort-Object -Unique
-    )
-
-    if ($volumesToRemove.Count -eq 0) {
-        Write-Host "No matching volumes found." -ForegroundColor DarkGray
-    }
-    else {
-        Write-Host "Volumes selected for deletion:" -ForegroundColor Yellow
-
-        foreach ($volumeName in $volumesToRemove) {
-            Write-Host "  $volumeName"
-        }
-    }
-
+    Write-Host "Only PostgreSQL replicas will be removed." -ForegroundColor Yellow
+}
+elseif ($RemoveVolumes) {
     Write-Host ""
+    Write-Host "WARNING: All listed PostgreSQL and Redis data volumes will be deleted!" `
+        -ForegroundColor Red
+}
+else {
+    Write-Host ""
+    Write-Host "Volumes will be preserved." -ForegroundColor Green
+}
 
-    if ($ReplicaVolumesOnly) {
-        Write-Host `
-            "WARNING: Only replica data will be deleted. Primary and Redis volumes are preserved." `
-            -ForegroundColor Yellow
-    }
-    else {
-        Write-Host `
-            "WARNING: PostgreSQL Primary, replica and Redis data may be permanently deleted." `
-            -ForegroundColor Red
-    }
+$confirmation = Read-Host "Type YES to continue"
 
-    $confirmation = Read-Host "Type YES to continue"
-
-    if ($confirmation -cne "YES") {
-        Write-Host "Cancelled." -ForegroundColor Yellow
-        return
-    }
+if ($confirmation -cne "YES") {
+    Write-Host "Cancelled." -ForegroundColor Yellow
+    return
 }
 
 # ============================================================
@@ -168,87 +123,76 @@ if ($RemoveVolumes -or $ReplicaVolumesOnly) {
 Write-Host ""
 Write-Host "=== Removing containers ===" -ForegroundColor Cyan
 
-foreach ($name in $containerNames) {
+foreach ($name in $containersToRemove) {
+    & docker container rm --force $name 2>$null
 
-    if ($name -notin $existingContainerNames) {
-        Write-Host "Container not found, skipping: $name" `
-            -ForegroundColor DarkGray
-
-        continue
-    }
-
-    Write-Host "Removing container: $name" -ForegroundColor Cyan
-
-    $null = & docker container rm --force $name 2>$null
-
-    if ($LASTEXITCODE -ne 0) {
-        Write-Warning "Could not remove container: $name"
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Removed container: $name" -ForegroundColor Green
     }
     else {
-        Write-Host "Removed: $name" -ForegroundColor Green
+        Write-Host "Skipped missing or unavailable container: $name" `
+            -ForegroundColor DarkGray
     }
 }
 
 # ============================================================
-# Remove selected volumes
+# Remove volumes from explicit allowlist
 # ============================================================
 
-if ($RemoveVolumes -or $ReplicaVolumesOnly) {
-
+if ($volumesToRemove.Count -gt 0) {
     Write-Host ""
     Write-Host "=== Removing volumes ===" -ForegroundColor Cyan
 
-    foreach ($volumeName in $volumesToRemove) {
+    $existingVolumes = @(& docker volume ls --quiet)
 
-        Write-Host "Removing volume: $volumeName" -ForegroundColor Yellow
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to list Docker volumes."
+    }
 
-        $null = & docker volume rm $volumeName 2>$null
+    foreach ($name in $volumesToRemove) {
+        if ($name -notin $existingVolumes) {
+            Write-Host "Volume not found: $name" -ForegroundColor DarkGray
+            continue
+        }
 
-        if ($LASTEXITCODE -ne 0) {
-            Write-Warning `
-                "Could not remove volume '$volumeName'. It may still be in use."
+        & docker volume rm $name
+
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "Removed volume: $name" -ForegroundColor Green
         }
         else {
-            Write-Host "Removed volume: $volumeName" -ForegroundColor Green
+            Write-Warning "Could not remove volume '$name'. It may still be in use."
         }
     }
 }
 
 # ============================================================
-# Remove known networks
+# Remove known networks, except in replica-only mode
 # ============================================================
 
 if (-not $ReplicaVolumesOnly) {
-
     Write-Host ""
-    Write-Host "=== Removing networks ===" -ForegroundColor Cyan
+    Write-Host "=== Removing known networks ===" -ForegroundColor Cyan
 
-    $existingNetworkNames = @(
-        & docker network ls --format "{{.Name}}"
-    )
+    $existingNetworks = @(& docker network ls --format "{{.Name}}")
 
     if ($LASTEXITCODE -ne 0) {
         Write-Warning "Could not list Docker networks."
     }
     else {
-        foreach ($networkName in $knownNetworkNames) {
-
-            if ($networkName -notin $existingNetworkNames) {
+        foreach ($name in $knownNetworks) {
+            if ($name -notin $existingNetworks) {
                 continue
             }
 
-            Write-Host "Removing network: $networkName" -ForegroundColor Cyan
+            & docker network rm $name 2>$null
 
-            $null = & docker network rm $networkName 2>$null
-
-            if ($LASTEXITCODE -ne 0) {
-                Write-Host `
-                    "Network kept, possibly still in use: $networkName" `
-                    -ForegroundColor DarkGray
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "Removed network: $name" -ForegroundColor Green
             }
             else {
-                Write-Host "Removed network: $networkName" `
-                    -ForegroundColor Green
+                Write-Host "Network kept (possibly in use): $name" `
+                    -ForegroundColor DarkGray
             }
         }
     }

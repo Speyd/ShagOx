@@ -1,26 +1,4 @@
 services:
-
-  redis-init:
-    image: redis:7-alpine
-    container_name: redis-init
-    restart: "no"
-
-    env_file:
-      - ../../.env
-
-    volumes:
-      - redis-certs-data:/certs
-      - redis-acl-data:/redis
-      - ./init/generate-certs.sh:/generate-certs.sh:ro
-
-    entrypoint:
-      - /bin/sh
-      - -c
-      - |
-        apk add --no-cache openssl
-        exec /bin/sh /generate-certs.sh
-
-
   redis:
     image: redis:7
     container_name: redis
@@ -29,17 +7,13 @@ services:
     environment:
       REDIS_DATA_PORT: ${REDIS_DATA_PORT}
 
-    depends_on:
-      redis-init:
-        condition: service_completed_successfully
-
     ports:
       - "${REDIS_DATA_PORT}:6379"
 
     volumes:
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
-      - redis-certs-data:/certs:ro
-      - redis-acl-data:/redis:ro
+      - ./certs:/certs:ro
+      - ./acl/redis:/redis:ro
       - redis-data:/data
 
     command:
@@ -54,17 +28,13 @@ services:
     environment:
       REDIS_USER_PORT: ${REDIS_USER_PORT}
 
-    depends_on:
-      redis-init:
-        condition: service_completed_successfully
-
     ports:
       - "${REDIS_USER_PORT}:6379"
 
     volumes:
-      - ./redis/user-redis.conf:/usr/local/etc/redis/redis.conf:ro
-      - redis-certs-data:/certs:ro
-      - redis-acl-data:/redis:ro
+      - ./user-redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./certs:/certs:ro
+      - ./acl/user-redis:/redis:ro
       - user-redis-data:/data
 
     command:
@@ -75,5 +45,3 @@ services:
 volumes:
   redis-data:
   user-redis-data:
-  redis-certs-data:
-  redis-acl-data:

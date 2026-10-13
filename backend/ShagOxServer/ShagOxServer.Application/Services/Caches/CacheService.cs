@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Services.Caches;
+using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using StackExchange.Redis;
 using System.Text.Json;
@@ -12,6 +13,7 @@ public class CacheService
 
 
     public CacheService(
+        [FromKeyedServices("DataRedis")]
         IConnectionMultiplexer multiplexer)
     {
         _db = multiplexer.GetDatabase();

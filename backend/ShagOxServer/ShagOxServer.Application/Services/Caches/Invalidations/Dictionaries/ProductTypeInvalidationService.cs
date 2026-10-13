@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
@@ -18,7 +18,7 @@ public class ProductTypeInvalidationService
     private readonly IProductTypeTranslationQueryRepository _transRepository;
     private readonly ProductTypeTranslationInvalidationService _transInvalid;
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
 
@@ -27,7 +27,7 @@ public class ProductTypeInvalidationService
         CategoryInvalidationService categoryInvalid,
         IProductTypeTranslationQueryRepository transRepository,
         ProductTypeTranslationInvalidationService transInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _categoryRepository = categoryRepository;
         _categoryInvalid = categoryInvalid;

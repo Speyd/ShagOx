@@ -18,7 +18,7 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     where TFilter : BaseFilter
 {
     protected readonly ISearchRepository<TEntity, TFilter> _queryRepository;
-    protected readonly ICacheService _cache;
+    protected readonly IDataCacheService _cache;
     protected readonly CacheSettings _settings;
 
     protected virtual bool CacheById => true;
@@ -30,7 +30,7 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
 
     public BaseQueryService(
         ISearchRepository<TEntity, TFilter> queryRepository,
-        ICacheService cache,
+        IDataCacheService cache,
         IOptions<CacheSettings> settings
         )
     {

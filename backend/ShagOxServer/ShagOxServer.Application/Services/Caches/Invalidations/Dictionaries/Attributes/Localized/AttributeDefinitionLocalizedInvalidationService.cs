@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.Localized;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -11,7 +11,7 @@ public class AttributeDefinitionLocalizedInvalidationService
 
     public AttributeDefinitionLocalizedInvalidationService(
         BasketAttributeLocalizedInvalidationService attribute,
-        ICacheService cache
+        IDataCacheService cache
     )
         : base(cache)
     {

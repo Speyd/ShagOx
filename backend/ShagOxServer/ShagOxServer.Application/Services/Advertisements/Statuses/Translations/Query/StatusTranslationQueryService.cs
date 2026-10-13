@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
@@ -22,7 +22,7 @@ public class StatusTranslationQueryService
 {
     public StatusTranslationQueryService(
         IStatusTranslationQueryRepository statusRepository,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(statusRepository, cacheService, settings)

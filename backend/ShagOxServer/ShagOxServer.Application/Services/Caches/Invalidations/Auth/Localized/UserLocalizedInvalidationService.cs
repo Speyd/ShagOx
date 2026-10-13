@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Localized;
 using ShagOxServer.Domain.Entities.Account;
@@ -12,7 +12,7 @@ public class UserLocalizedInvalidationService
 
     public UserLocalizedInvalidationService(
         AdvertisementLocalizedInvalidationService advert,
-        ICacheService cache
+        IDataCacheService cache
     )
         : base(cache)
     {

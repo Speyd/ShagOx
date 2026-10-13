@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Localized;
@@ -9,14 +9,14 @@ namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Tr
 public class ProductTypeTranslationInvalidationService
     : ITranslationCacheInvalidationService<ProductTypeTranslation>
 {
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
     private readonly ProductTypeLocalizedInvalidationService _type;
 
 
     public ProductTypeTranslationInvalidationService(
         ProductTypeLocalizedInvalidationService type,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cache = cache;
         _type = type;

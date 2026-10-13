@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
@@ -24,7 +24,7 @@ public class ImageQueryService
 
     public ImageQueryService(
         IImageQueryRepository imageQueryRepository,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(imageQueryRepository, cacheService, settings)

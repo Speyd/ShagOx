@@ -5,7 +5,6 @@ using ShagOxServer.Domain.Entities.Account;
 using System.Security.Claims;
 
 namespace ShagOxServer.Api.Middleware;
-
 public class UpdateLastSeenMiddleware
 {
     private static readonly TimeSpan LastSeenUpdateInterval = TimeSpan.FromMinutes(10);

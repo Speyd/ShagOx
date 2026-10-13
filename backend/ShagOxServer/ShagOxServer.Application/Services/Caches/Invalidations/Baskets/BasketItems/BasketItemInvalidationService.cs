@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
@@ -10,11 +10,11 @@ namespace ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketI
 public class BasketItemInvalidationService
     : ICacheInvalidationService<BasketItem, BasketItemCacheInfo>
 { 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
     public BasketItemInvalidationService(
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cache = cache;
     }

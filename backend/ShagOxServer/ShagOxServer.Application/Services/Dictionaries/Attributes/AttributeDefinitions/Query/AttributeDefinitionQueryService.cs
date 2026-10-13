@@ -29,7 +29,7 @@ public class AttributeDefinitionQueryService
         IAttributeDefinitionQueryRepository attributeQueryRepository,
         IAttributeDefinitionTranslationQueryRepository translationRepository,
         ILanguageProvider language,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(attributeQueryRepository, language, cacheService, settings)

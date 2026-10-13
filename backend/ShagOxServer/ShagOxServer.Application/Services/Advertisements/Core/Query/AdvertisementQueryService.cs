@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
@@ -41,7 +41,7 @@ public class AdvertisementQueryService
         IAdvertisementQueryRepository advertisementRepository,
         IAdvertisementVariantQueryService variantService,
         ICategoryQueryService categoryService,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IStatusQueryService statusService,
         IOptions<CacheSettings> settings,
         ILanguageProvider language

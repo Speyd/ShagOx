@@ -29,7 +29,7 @@ public class StatusQueryService
         IStatusQueryRepository statusRepository,
         IStatusTranslationQueryRepository translationRepository,
         ILanguageProvider language,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(statusRepository, language, cacheService, settings)

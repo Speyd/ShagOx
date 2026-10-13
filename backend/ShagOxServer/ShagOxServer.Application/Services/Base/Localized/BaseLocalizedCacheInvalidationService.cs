@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Base;
@@ -8,11 +8,11 @@ public abstract class BaseLocalizedCacheInvalidationService<TEntity>
     : ILocalizedCacheInvalidationService<TEntity>
     where TEntity : BaseEntity
 {
-    protected readonly ICacheService _cache;
+    protected readonly IDataCacheService _cache;
 
 
     protected BaseLocalizedCacheInvalidationService(
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cache = cache;
     }

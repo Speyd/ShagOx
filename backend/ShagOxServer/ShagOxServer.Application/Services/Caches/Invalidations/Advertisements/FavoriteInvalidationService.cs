@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
@@ -10,11 +10,11 @@ namespace ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 public class FavoriteInvalidationService
     : ICacheInvalidationService<Favorite, FavoriteCacheInfo>
 {
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
     public FavoriteInvalidationService(
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cache = cache;
     }

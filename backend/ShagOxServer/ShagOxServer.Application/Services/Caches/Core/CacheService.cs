@@ -5,7 +5,7 @@ using StackExchange.Redis;
 using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Caches;
-public class CacheService
+public abstract class CacheService
     : ICacheService
 {
     protected readonly IDatabase _db;
@@ -22,7 +22,7 @@ public class CacheService
     }
 
 
-    public async Task<T?> GetAsync<T>(
+    public virtual async Task<T?> GetAsync<T>(
         string key)
     {
         var value = await _db.StringGetAsync(key);
@@ -33,7 +33,7 @@ public class CacheService
         return JsonSerializer.Deserialize<T>(value.ToString());
     }
 
-    public async Task<Result<T>> GetOrCreateAsync<T>(
+    public virtual async Task<Result<T>> GetOrCreateAsync<T>(
         string key,
         Func<Task<Result<T>>> factory,
         TimeSpan expiration)
@@ -54,7 +54,7 @@ public class CacheService
         return Result<T>.Success(entity);
     }
 
-    public async Task SetAsync<T>(
+    public virtual async Task SetAsync<T>(
         string key,
         T value, 
         TimeSpan expiration)
@@ -64,13 +64,13 @@ public class CacheService
         await _db.StringSetAsync(key, json, expiration);
     }
 
-    public async Task RemoveAsync(
+    public virtual async Task RemoveAsync(
         string key)
     {
         await _db.KeyDeleteAsync(key);
     }
 
-    public async Task RemoveByPatternAsync(
+    public virtual async Task RemoveByPatternAsync(
         string pattern)
     {
         foreach (var endpoint in _server.GetEndPoints())

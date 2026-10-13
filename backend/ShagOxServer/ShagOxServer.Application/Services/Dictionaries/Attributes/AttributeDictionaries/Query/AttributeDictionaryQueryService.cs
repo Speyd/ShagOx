@@ -20,7 +20,7 @@ public class AttributeDictionaryQueryService
 {
     public AttributeDictionaryQueryService(
         IAttributeDictionaryQueryRepository dictionaryDictQueryRepository,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(dictionaryDictQueryRepository, cacheService, settings)

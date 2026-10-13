@@ -72,10 +72,9 @@
   min-width: 180px;
 }
 
-/* Кастомізація Чекбокса в синій колір */
 :global(.mantine-Checkbox-input:checked) {
-  background-color: #001736;
-  border-color: #001736;
+  background-color: #001736 !important;
+  border-color: #001736 !important;
 }
 
 @media (max-width: 600px) {

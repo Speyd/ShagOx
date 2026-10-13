@@ -1,0 +1,14 @@
+import { Text } from "@mantine/core";
+import styles from "./NotificationsOrders.module.css";
+
+export default function NotificationsOrders() {
+  return (
+    <section className={styles.notificationsOrders}>
+      <div className={styles.notificationsEmpty}>
+        <Text fz={24} fw={500} c="var(--color-primary)">
+          Немає нових сповіщень
+        </Text>
+      </div>
+    </section>
+  );
+}

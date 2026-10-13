@@ -1,9 +1,9 @@
+import styles from "./NotificationSettingsPage.module.css";
+import Container from "@/shared/ui/container";
 import {
   CommunicationChannels,
   NotificationTypes,
-} from "@/widgets/notifications";
-import styles from "./NotificationSettingsPage.module.css";
-import Container from "@/shared/ui/container";
+} from "@/widgets/notifications/notification-settings";
 import { Text } from "@mantine/core";
 
 export default function NotificationSettingsPage() {

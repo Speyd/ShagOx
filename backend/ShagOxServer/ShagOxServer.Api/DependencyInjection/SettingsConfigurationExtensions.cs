@@ -1,9 +1,9 @@
 using ShagOxServer.Application.Common.Settings.Auth;
-using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Application.Common.Settings.Systems.BackgroundServices;
+using ShagOxServer.Application.Common.Settings.Systems.Middleware;
 using ShagOxServer.Application.Common.Settings.Verifivations;
 
 namespace ShagOxServer.Api.DependencyInjection;
-
 public static class SettingsConfigurationExtensions
 {
     public static IServiceCollection AddSettingsConfiguration(
@@ -48,6 +48,16 @@ public static class SettingsConfigurationExtensions
 
         services.Configure<UserNameSettings>(
             config.GetSection("UserNameGenerate"));
+
+        #endregion
+
+        #region Middleware
+
+        services.Configure<RequestTrackingSettings>(
+            config.GetSection("RequestTracking"));
+
+        services.Configure<UpdateLastSeenSettings>(
+            config.GetSection("UpdateLastSeen"));
 
         #endregion
 

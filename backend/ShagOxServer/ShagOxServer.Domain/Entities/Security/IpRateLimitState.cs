@@ -3,7 +3,10 @@ public sealed class IpRateLimitState
 {
     public string Ip { get; }
 
-    public int RemainingTokens { get; set; }
+    public int RemainingTokens { get; set; } = 0;
+
+    public int HttpRequest { get; set; } = 0;
+
 
     public DateTime LastRequestAt { get; set; }
 
@@ -14,5 +17,6 @@ public sealed class IpRateLimitState
         string ip)
     {
         Ip = ip;
+        LastRequestAt = DateTime.UtcNow;
     }
 }

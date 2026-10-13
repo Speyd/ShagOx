@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Application.Common.Settings.Systems.BackgroundServices;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
 namespace ShagOxServer.Api.BackgroundServices;

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
@@ -9,16 +9,12 @@ public static class StatusFilterExtensions
         this IQueryable<Status> query,
         StatusSearchFilter filter)
     {
-        Console.WriteLine($"FILTER CODE: '{filter?.Code}'");
 
         if (!string.IsNullOrWhiteSpace(filter?.Code))
         {
-            var pattern = $"%{filter.Code}%";
-
-            Console.WriteLine($"FILTER PATTERN: '{pattern}'");
 
             query = query.Where(x =>
-                EF.Functions.ILike(x.Code, pattern));
+                EF.Functions.ILike(x.Code, $"%{filter.Code}%"));
         }
 
         return query;

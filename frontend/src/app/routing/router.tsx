@@ -28,7 +28,13 @@ import VerifyPage from "@/pages/verify-page";
 import CheckoutPage from "@/pages/checkout";
 import PaymentPage from "@/pages/payment";
 import BasketPage from "@/pages/basket";
-import NotificationSettingsPage from "@/pages/notifications/notification-settings/NotificationSettingsPage";
+import NotificationSettingsPage from "@/pages/notification-settings/NotificationSettingsPage";
+import NotificationsLayout from "../layouts/NotificationsLayout";
+import NotificationsGeneral from "@/widgets/notifications/notifications-generel/ui/NotificationsGeneral";
+import NotificationsVideos from "@/widgets/notifications/notifications-videos";
+import NotificationsOrders from "@/widgets/notifications/notifications-orders";
+import NotificationsComments from "@/widgets/notifications/notifications-comments";
+import NotificationsDiscounts from "@/widgets/notifications/notifications-discounts";
 
 export default function Router() {
   return (
@@ -89,6 +95,14 @@ export default function Router() {
             <Route path="statistics" element={<StatisticsTab />} />
           </Route>
 
+          <Route path="/notifications" element={<NotificationsLayout />}>
+            <Route index element={<NotificationsGeneral />} />
+            <Route path="videos" element={<NotificationsVideos />} />
+            <Route path="orders" element={<NotificationsOrders />} />
+            <Route path="comments" element={<NotificationsComments />} />
+            <Route path="discounts" element={<NotificationsDiscounts />} />
+          </Route>
+
           <Route
             path="/payment"
             element={
@@ -125,7 +139,7 @@ export default function Router() {
             }
           />
           <Route
-            path="/notification-settings"
+            path="/notifications/settings"
             element={<NotificationSettingsPage />}
           />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />

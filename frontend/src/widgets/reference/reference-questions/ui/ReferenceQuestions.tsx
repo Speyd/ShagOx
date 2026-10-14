@@ -7,8 +7,8 @@ import { ArrowRight } from "lucide-react";
 const questions = [
   {
     question: "Як відстежити замовлення?",
-    buttonLabel: "Зв'язок з підтримкою",
-    to: "/support",
+    buttonLabel: "Відстежити",
+    to: "/order-tracking",
   },
   {
     question: "Методи оплати",
@@ -18,7 +18,7 @@ const questions = [
   {
     question: "Терміни доставки",
     buttonLabel: "Терміни доставки",
-    to: "/delivery",
+    to: "/delivery-terms",
   },
 ];
 

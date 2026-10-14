@@ -263,4 +263,4 @@ foreach ($replica in $replicas) {
 }
 
 Write-Host ""
-Write-Host "=== Replica initialization completed ==="
+

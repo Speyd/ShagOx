@@ -3,27 +3,49 @@ import axios from "axios";
 import type {
   Basket,
   BasketCreateResponse,
+  BasketItem,
   BasketItemCreateRequest,
   BasketItemUpdateRequest,
 } from "../model/types";
+import type { PaginatedResponse } from "@/shared/lib/types/paginatedResponse";
 
 export async function getBasket(): Promise<Basket | null> {
-  const response = await api.get("/basket-items", {
-    params: { page: 1, pageSize: 100 },
-  });
-  const items = response.data.items ?? [];
-
-  if (items.length > 0) {
-    return {
-      id: items[0].basketId,
-      userId: 0,
-      basketItems: items,
-    };
-  }
-
   try {
-    const emptyBasketResponse = await api.get("/baskets");
-    return emptyBasketResponse.data;
+    const basketResponse = await api.get<Basket>("/baskets");
+    const basket = basketResponse.data;
+
+    if (
+      basket.basketItems.every((item) => item.advertisement != null)
+    ) {
+      return basket;
+    }
+
+    try {
+      const firstPage = await api.get<PaginatedResponse<BasketItem>>(
+        "/basket-items",
+        { params: { page: 1, pageSize: 100 } },
+      );
+      const pages = [firstPage.data];
+
+      for (let page = 2; page <= firstPage.data.totalPages; page += 1) {
+        const response = await api.get<PaginatedResponse<BasketItem>>(
+          "/basket-items",
+          { params: { page, pageSize: 100 } },
+        );
+        pages.push(response.data);
+      }
+
+      return {
+        ...basket,
+        basketItems: pages.flatMap((page) => page.items),
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        return { ...basket, basketItems: [] };
+      }
+
+      throw error;
+    }
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
       return null;
@@ -34,8 +56,19 @@ export async function getBasket(): Promise<Basket | null> {
 }
 
 export async function createBasket(): Promise<BasketCreateResponse> {
-  const response = await api.post("/baskets");
-  return response.data;
+  try {
+    const response = await api.post("/baskets");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 409) {
+      const basket = await getBasket();
+      if (basket) {
+        return { id: basket.id, createdAt: new Date().toISOString() };
+      }
+    }
+
+    throw error;
+  }
 }
 
 export async function createItem(data: BasketItemCreateRequest) {

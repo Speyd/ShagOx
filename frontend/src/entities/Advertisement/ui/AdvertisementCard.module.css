@@ -1,20 +1,24 @@
 .card {
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: 14px;
   background-color: #ffffff;
-  gap: 16px;
+  border: 1px solid #eef2f6;
+  gap: 12px;
   height: 100%;
   box-sizing: border-box;
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.25s ease;
+  position: relative;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 28px -4px rgba(12, 35, 63, 0.09);
 }
 
 .imageWrapper {
@@ -22,76 +26,149 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  aspect-ratio: 1 / 1;
-
-  border-radius: 8px;
+  height: 190px;
+  border-radius: 10px;
   overflow: hidden;
   text-decoration: none;
+  background: #ffffff;
   position: relative;
 }
 
 .image {
-  width: 100%;
-  height: 100%;
-  padding: 12px;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  padding: 8px;
   box-sizing: border-box;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover .image {
-  transform: scale(1.04);
+  transform: scale(1.05);
 }
 
 .info {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
   flex: 1;
 }
 
-.title {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 44px;
+.titleLink {
+  text-decoration: none;
+  color: inherit;
 }
 
-.description {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+.title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-base);
+  line-height: 1.3;
+  margin: 0;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtitle {
+  font-size: 13px;
+  font-weight: 400;
+  color: #64748b;
+  line-height: 1.3;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ratingContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 4px;
 }
 
 .rating {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.ratingStar {
+  color: #fea945;
+  fill: #fea945;
+  flex-shrink: 0;
+}
+
+.inStock {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #0284c7;
+}
+
+.outOfStock {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #f97316;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.currentPrice {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-base);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.previousPrice {
+  font-size: 13px;
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-weight: 500;
 }
 
 .actionButtons {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
   margin-top: auto;
   padding-top: 8px;
 }
 
-.addToBasketButton {
-  transition:
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+.addButton {
+  flex: 1;
+  height: 38px;
+  background-color: var(--color-base);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  font-family: var(--font-base);
 }
 
-.addToBasketButton:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.addButton:hover {
+  background-color: #193863;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(12, 35, 63, 0.22);
 }
 
-
+.addButton:active {
+  transform: scale(0.98);
+}

@@ -1,24 +1,23 @@
 import { z } from "zod";
+import { passwordSchema } from "./passwordSchema";
 
 export const resetPasswordSchema = z
   .object({
     contact: z
       .string()
-      .min(1, "Поле обов’язкове для заповнення")
+      .min(1, "Поле обов’язкове для заповнення.")
       .refine(
-        (val) =>
-          z.string().email().safeParse(val).success ||
-          /^\+?[0-9]{10,14}$/.test(val),
-        {
-          message: "Введіть коректну електронну пошту або номер телефону",
-        },
+        (value) =>
+          z.string().email().safeParse(value).success ||
+          /^\+?[0-9]{10,14}$/.test(value),
+        "Введіть коректну електронну пошту або номер телефону.",
       ),
-    newPassword: z.string().min(6, "Пароль має містити щонайменше 6 символів"),
-    confirmPassword: z.string().min(1, "Підтвердіть новий пароль"),
-    code: z.string().min(1, "Введіть код підтвердження"),
+    newPassword: passwordSchema,
+    confirmPassword: z.string().min(1, "Підтвердіть новий пароль."),
+    code: z.string().min(1, "Введіть код підтвердження."),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Паролі не збігаються",
+    message: "Паролі не збігаються.",
     path: ["confirmPassword"],
   });
 

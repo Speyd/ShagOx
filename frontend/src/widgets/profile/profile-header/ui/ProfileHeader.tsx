@@ -1,5 +1,6 @@
 import styles from "./ProfileHeader.module.css";
-import { Button, Image, Text } from "@mantine/core";
+// 1. Додаємо Avatar в імпорт з Mantine
+import { Avatar, Button, Text } from "@mantine/core";
 import { Link, Mail, MapPin } from "lucide-react";
 import { useDisclosure } from "@mantine/hooks";
 import ProfileDrawer from "./ProfileDrawer";
@@ -15,7 +16,6 @@ export default function ProfileHeader({
 }: ProfileHeaderProps) {
   const user = useAuthStore((state) => state.user);
 
-  console.log(user);
   const [
     userProfileOpened,
     { open: openUserProfile, close: closeUserProfile },
@@ -25,16 +25,28 @@ export default function ProfileHeader({
     { open: openUserChannel, close: closeUserChannel },
   ] = useDisclosure(false);
 
+  const displayName =
+    user?.firstName && user?.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user?.firstName || user?.userName || "Користувач";
+
   return (
     <section className={styles.profileHeader} data-orientation={orientation}>
       <div className={styles.avatarBlock}>
-        <Image
+        <Avatar
           src={user?.avatar?.url}
-          alt={user?.firstName || user?.userName || "Аватар користувача"}
+          name={displayName}
+          color="initials"
           w={170}
           h={170}
           radius={100}
-          fallbackSrc="https://placehold.co/170x170?text=Avatar"
+          className={styles.avatar}
+          styles={{
+            placeholder: {
+              fontSize: "48px",
+              fontWeight: 700,
+            },
+          }}
         />
       </div>
 
@@ -42,12 +54,7 @@ export default function ProfileHeader({
         <div className={styles.leftBlock}>
           <div className={styles.nameBlock}>
             <Text fw={800} fz={24}>
-              {user?.firstName && user?.lastName
-                ? `${user.firstName} ${user.lastName}`
-                : user?.firstName ||
-                  user?.lastName ||
-                  user?.userName ||
-                  "Користувач"}
+              {displayName}
             </Text>
             <Text fw={400} fz={15}>
               @{user?.userName}
@@ -151,7 +158,6 @@ export default function ProfileHeader({
       </div>
 
       <ProfileDrawer opened={userProfileOpened} close={closeUserProfile} />
-
       <ChannelDrawer opened={userChannelOpened} close={closeUserChannel} />
     </section>
   );

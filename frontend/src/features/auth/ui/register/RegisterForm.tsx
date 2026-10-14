@@ -21,12 +21,14 @@ import {
 } from "lucide-react";
 import { Text } from "@mantine/core";
 
+const isEmail = (value: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+
 export default function RegisterForm() {
   const [serverError, setServerError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
-
   const registerMutation = useRegister();
 
   const {
@@ -35,6 +37,7 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
+    mode: "onChange",
   });
 
   const onSubmit = async (data: RegisterFormData) => {
@@ -47,11 +50,19 @@ export default function RegisterForm() {
         response.phoneVerificationRequired ||
         response.emailVerificationRequired
       ) {
+        // Визначаємо, що саме ввів користувач
+        const isInputEmail = isEmail(data.emailOrPhone);
+
         navigate("/authentication/verify", {
           state: {
             userId: response.id,
-            phone: response.emailOrPhone,
-            email: response.emailOrPhone,
+            // Якщо це email — передаємо його в email, phone залишаємо undefined (і навпаки)
+            email: isInputEmail
+              ? response.emailOrPhone || data.emailOrPhone
+              : undefined,
+            phone: !isInputEmail
+              ? response.emailOrPhone || data.emailOrPhone
+              : undefined,
             password: data.password,
           },
         });
@@ -65,13 +76,7 @@ export default function RegisterForm() {
           setServerError(responseData);
         } else if (responseData && typeof responseData === "object") {
           const msg =
-            (
-              responseData as {
-                message?: string;
-                detail?: string;
-                error?: string;
-              }
-            ).message ||
+            (responseData as { message?: string }).message ||
             (responseData as { detail?: string }).detail ||
             (responseData as { error?: string }).error ||
             "Помилка при реєстрації.";

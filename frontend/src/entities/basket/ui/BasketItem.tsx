@@ -8,74 +8,74 @@ import {
 } from "@mantine/core";
 import { Plus, Minus, Trash2, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import { toast } from "sonner";
 
-import styles from "./BasketCartItem.module.css";
+import styles from "./BasketItem.module.css";
 import type { BasketItem } from "@/features/basket/model/types";
 import { useUpdateBasketItem } from "@/features/basket/model/hooks/useUpdateBasketItem";
 import { useDeleteBasketItem } from "@/features/basket/model/hooks/useDeleteBacketItem";
-import { useAddToFavorites } from "@/features/favorites/model/hooks/useAddToFavorites";
-import { useDeleteFavorite } from "@/features/favorites/model/hooks/useDeleteFavorite";
-import { useGetFavorites } from "@/features/favorites/model/hooks/useGetFavorites";
-import { useAuthStore } from "@/features/auth";
-import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
+import { useToggleBasketFavorite } from "@/features/basket/model/hooks/useToggleBasketFavorite";
+import { useBasketDrawer } from "@/features/basket/model/useBasketDrawer";
+import {
+  getBasketItemPrice,
+  getBasketItemStock,
+  getBasketItemVariant,
+} from "@/features/basket/model/types";
+import {
+  formatAttributeValue,
+  getVariantAttributeText,
+} from "@/shared/lib/types/advertisements";
 
-type BasketCartItemProps = {
+type BasketItemProps = {
   item: BasketItem;
   imageUrl?: string;
   isSelected?: boolean;
   onToggle?: () => void;
   showCheckbox?: boolean;
+  onClose?: () => void;
 };
 
-export default function BasketCartItem({
+export default function BasketItem({
   item,
   imageUrl,
   isSelected = false,
   onToggle,
   showCheckbox = true,
-}: BasketCartItemProps) {
+}: BasketItemProps) {
   const { mutate: updateItem, isPending: isUpdating } = useUpdateBasketItem();
   const { mutate: deleteItem, isPending: isDeleting } = useDeleteBasketItem();
-  const user = useAuthStore((state) => state.user);
-  const { data: favorites } = useGetFavorites();
-  const addFavorite = useAddToFavorites();
-  const deleteFavorite = useDeleteFavorite();
-
   const advertisement = item.advertisement;
-  const favorite = favorites?.items?.find(
-    (favoriteItem) => favoriteItem.advertisement?.id === advertisement?.id,
-  );
-  const isFavoritePending =
-    addFavorite.isPending || deleteFavorite.isPending;
+  const { closeBasket } = useBasketDrawer();
+  const {
+    favorite,
+    isPending: isFavoritePending,
+    toggleFavorite,
+  } = useToggleBasketFavorite(advertisement?.id);
 
-  const price = advertisement ? getAdvertisementPrice(advertisement) : 0;
-  const currencySymbol = "грн";
+  const price = getBasketItemPrice(item);
+  const variant = getBasketItemVariant(item);
+  const stock = getBasketItemStock(item);
+  const attributes = new Map<string, string>();
+
+  Object.entries(advertisement?.attributes ?? {}).forEach(([key, value]) => {
+    const text = formatAttributeValue(value);
+    if (text) attributes.set(key, text);
+  });
+
+  variant?.attributes.forEach((attribute) => {
+    const text = getVariantAttributeText(attribute);
+    if (text) attributes.set(attribute.attributeKey, text);
+  });
+
+  const currencySymbol = item.advertisement?.currency?.symbol ?? "";
+
+  const handleAdvertisementClick = () => {
+    closeBasket();
+  };
 
   const handleQuantityChange = (delta: number) => {
     const newQuantity = item.quantity + delta;
-    if (newQuantity > 0) {
+    if (newQuantity > 0 && newQuantity <= stock) {
       updateItem({ id: item.id, data: { quantity: newQuantity } });
-    }
-  };
-
-  const handleFavoriteToggle = () => {
-    if (!user) {
-      toast.error(
-        "Ви повинні бути зареєстровані, щоб додавати оголошення в обране.",
-      );
-      return;
-    }
-
-    if (!advertisement) return;
-
-    if (favorite) {
-      deleteFavorite.mutate(favorite.id);
-    } else {
-      addFavorite.mutate({
-        advertisementId: advertisement.id,
-        userId: user.id,
-      });
     }
   };
 
@@ -110,15 +110,29 @@ export default function BasketCartItem({
             <Link
               to={`/advertisement/${advertisement?.id}`}
               className={styles.titleLink}
+              onClick={handleAdvertisementClick}
             >
               <Text fw={600} size="md" lineClamp={2}>
                 {advertisement?.title}
               </Text>
             </Link>
 
-            <Text size="xs" c="green" fw={500} mt={4}>
-              • В наявності
+            <Text size="xs" c={stock > 0 ? "green" : "red"} fw={500} mt={4}>
+              • {stock > 0 ? `В наявності (${stock})` : "Немає в наявності"}
             </Text>
+            <div className={styles.attributes}>
+              {[...attributes.entries()].map(([key, value]) => (
+                <Text
+                  key={key}
+                  size="xs"
+                  c="dimmed"
+                  fw={500}
+                  className={styles.attribute}
+                >
+                  {key}: {value}
+                </Text>
+              ))}
+            </div>
           </div>
 
           <div className={styles.priceGroup}>
@@ -139,7 +153,7 @@ export default function BasketCartItem({
               <>
                 <UnstyledButton
                   className={styles.actionLink}
-                  onClick={handleFavoriteToggle}
+                  onClick={toggleFavorite}
                   disabled={isFavoritePending}
                 >
                   <Heart
@@ -190,7 +204,7 @@ export default function BasketCartItem({
               variant="default"
               size="sm"
               onClick={() => handleQuantityChange(1)}
-              disabled={isUpdating || isDeleting}
+              disabled={isUpdating || isDeleting || item.quantity >= stock}
               radius="md"
             >
               <Plus size={14} />

@@ -4,7 +4,7 @@ import { Title, Checkbox, Group, UnstyledButton, Text } from "@mantine/core";
 import { Trash2 } from "lucide-react";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetBasket } from "@/features/basket/model/hooks/useGetBasket";
-import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
+import { getBasketItemPrice } from "@/features/basket/model/types";
 import BasketItemsList from "@/widgets/basket/basket-items-list";
 import BasketSummary from "@/widgets/basket/basket-summary";
 import styles from "./BasketPage.module.css";
@@ -47,7 +47,7 @@ export default function BasketPage() {
     () =>
       selectedItems.reduce(
         (acc, item) =>
-          acc + getAdvertisementPrice(item.advertisement) * item.quantity,
+          acc + getBasketItemPrice(item) * item.quantity,
         0,
       ),
     [selectedItems],
@@ -76,8 +76,12 @@ export default function BasketPage() {
   };
 
   const handleClearCart = async () => {
-    await Promise.all(items.map((item) => deleteItem(item.id)));
-    closeClearModal();
+    try {
+      await Promise.all(items.map((item) => deleteItem(item.id)));
+      closeClearModal();
+    } catch {
+      // Individual mutation hooks report the server error.
+    }
   };
 
   const handleCheckout = () => {

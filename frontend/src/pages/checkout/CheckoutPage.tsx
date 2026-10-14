@@ -20,7 +20,7 @@ export default function CheckoutPage() {
     } catch {
       return new Set<number>();
     }
-  }, []);
+  });
   const items = useMemo(
     () =>
       (basket?.basketItems || []).filter((item) => selectedIds.has(item.id)),

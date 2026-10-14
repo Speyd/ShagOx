@@ -145,7 +145,6 @@ function FavoriteSection({
           {title}
         </Text>
 
-        {/* Відображаємо кнопку лише якщо передано callback для перемикання табу */}
         {onTabChange && (
           <button
             type="button"

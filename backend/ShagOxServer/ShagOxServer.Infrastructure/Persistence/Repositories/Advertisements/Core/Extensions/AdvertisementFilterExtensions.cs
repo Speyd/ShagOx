@@ -27,10 +27,7 @@ public static class AdvertisementFilterExtensions
 
         if (filter.CategoryId.HasValue)
         {
-            query = query
-                .Where(x => 
-                    x.CategoryId == filter.CategoryId.Value)
-                .OrderByDescending(x => x.Popularity);
+            query = query.Where(x => x.CategoryId == filter.CategoryId.Value);
         }
 
         if (filter.Attributes is not null)

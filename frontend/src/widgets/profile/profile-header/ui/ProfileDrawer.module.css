@@ -30,10 +30,6 @@
   flex-shrink: 0;
 }
 
-.avatar {
-  border: 1px solid var(--color-primary);
-}
-
 .avatarWrapper {
   position: relative !important;
   display: inline-block;

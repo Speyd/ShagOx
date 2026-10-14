@@ -42,6 +42,7 @@ export default function CitySelector() {
     <Menu
       shadow="md"
       width={250}
+      zIndex={1001}
       position="bottom-start"
       withinPortal
     >

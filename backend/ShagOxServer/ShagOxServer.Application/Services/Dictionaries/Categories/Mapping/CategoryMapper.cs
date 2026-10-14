@@ -11,10 +11,12 @@ public static class CategoryMapper
         return new CategoryDto(
             category.Id,
             category.Code,
-            new CategoryProductTypeDto(
-                category.ProductType.Id,
-                category.ProductType.Code
-            ),
+            category.ProductType is null
+                ? null
+                : new CategoryProductTypeDto(
+                    category.ProductType.Id,
+                    category.ProductType.Code
+                ),
             lable
         );
     }

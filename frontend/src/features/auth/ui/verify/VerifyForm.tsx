@@ -31,7 +31,7 @@ export default function VerifyForm({
 
   const navigate = useNavigate();
 
-  const { mutateAsync: verifyEmail, isPending } = useVerify();
+  const { mutateAsync: verify, isPending } = useVerify();
 
   useEffect(() => {
     if (resendTimer <= 0) return;
@@ -85,7 +85,7 @@ export default function VerifyForm({
 
     try {
       if (userId != null) {
-        await verifyEmail({ userId, code: fullCode });
+        await verify({ userId, code: fullCode });
       } else if (email) {
         // Потік відновлення пароля: викликаємо відповідний хук/ендпоінт
         // await confirmResetPassword({ email, code: fullCode });
@@ -177,9 +177,7 @@ export default function VerifyForm({
         <Button
           type="submit"
           disabled={
-            code.join("").length !== 6 ||
-            isPending ||
-            loginMutation.isPending
+            code.join("").length !== 6 || isPending || loginMutation.isPending
           }
           className={styles.submitBtn}
         >

@@ -34,7 +34,9 @@ export default function AdvertisementPage() {
             <ImageGallery
               images={advertisement.images?.map((image) => image.url) || []}
             />
-            <AdvertisementInfo {...advertisement} />
+            <div className={styles.infoColumn}>
+              <AdvertisementInfo advertisement={advertisement} />
+            </div>
           </section>
 
           <section className={styles.bottomSection}>

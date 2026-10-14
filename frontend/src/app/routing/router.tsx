@@ -28,6 +28,7 @@ import VerifyPage from "@/pages/verify-page";
 import CheckoutPage from "@/pages/checkout";
 import PaymentPage from "@/pages/payment";
 import BasketPage from "@/pages/basket";
+import CatalogPage from "@/pages/catalog";
 import NotificationSettingsPage from "@/pages/notification-settings/NotificationSettingsPage";
 import NotificationsLayout from "../layouts/NotificationsLayout";
 import NotificationsGeneral from "@/widgets/notifications/notifications-generel/ui/NotificationsGeneral";
@@ -117,6 +118,8 @@ export default function Router() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="/catalog" element={<CatalogPage />} />
 
           <Route
             path="/checkout"

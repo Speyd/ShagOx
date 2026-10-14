@@ -4,7 +4,7 @@ import ApplyPromoCode from "@/features/apply-promo-code/ui/ApplyPromoCode";
 import styles from "./OrderSummary.module.css";
 import BasketItemsList from "@/widgets/basket/basket-items-list";
 import type { BasketItem } from "@/features/basket/model/types";
-import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
+import { getBasketItemPrice } from "@/features/basket/model/types";
 
 type OrderSummaryProps = {
   items: BasketItem[];
@@ -13,7 +13,7 @@ type OrderSummaryProps = {
 export default function OrderSummary({ items }: OrderSummaryProps) {
   const subtotalPrice = items.reduce(
     (sum, item) =>
-      sum + getAdvertisementPrice(item.advertisement) * item.quantity,
+      sum + getBasketItemPrice(item) * item.quantity,
     0,
   );
   return (

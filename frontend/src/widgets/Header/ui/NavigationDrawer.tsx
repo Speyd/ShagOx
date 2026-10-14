@@ -1,10 +1,4 @@
-import {
-  Drawer,
-  Divider,
-  Text,
-  Image,
-  Collapse,
-} from "@mantine/core";
+import { Drawer, Divider, Text, Image, Collapse } from "@mantine/core";
 import {
   ChevronRight,
   LogOut,
@@ -25,11 +19,25 @@ import logo from "@/shared/assets/icons/logo.png";
 import { useState } from "react";
 import { useLogout } from "@/features/auth/model/hooks/useLogout";
 import ConfirmModal from "@/shared/ui/confirm-modal";
+import { NavLink } from "react-router-dom"; // 1. Імпортуємо NavLink
+import clsx from "clsx"; // 2. Імпортуємо clsx для підключення активних класів
 
 type NavigationDrawerProps = {
   opened: boolean;
   onClose: () => void;
 };
+
+const NAV_ITEMS = [
+  { to: "/", label: "Головна", icon: Home, end: true },
+  { to: "/catalog", label: "Каталог", icon: LayoutGrid },
+  { to: "/profile/orders", label: "Мої замовлення", icon: Package },
+  { to: "/devices", label: "Мої пристрої", icon: Smartphone },
+  { to: "/delivery", label: "Доставка та оплата", icon: Truck },
+  { to: "/reviews", label: "Відео та огляди", icon: Shield },
+  { to: "/contacts", label: "Контакти", icon: Phone },
+  { to: "/support", label: "Підтримка", icon: Headphones },
+  { to: "/settings", label: "Налаштування", icon: Settings },
+];
 
 export default function NavigationDrawer({
   opened,
@@ -76,68 +84,31 @@ export default function NavigationDrawer({
           <Divider />
 
           <nav className={styles.navigation}>
-            <button className={styles.menuItemActive}>
-              <Home />
-
-              <Text fz={14}>Головна</Text>
-            </button>
-
-            <button className={styles.menuItem}>
-              <LayoutGrid />
-
-              <Text fz={14}>Каталог</Text>
-
-              <ChevronRight className={styles.arrow} />
-            </button>
-
-            <button className={styles.menuItem}>
-              <Package />
-
-              <Text fz={14}>Мої замовлення</Text>
-            </button>
-
-            <button className={styles.menuItem}>
-              <Smartphone />
-
-              <Text fz={14}>Мої пристрої</Text>
-            </button>
-
-            <button className={styles.menuItem}>
-              <Truck />
-
-              <Text fz={14}>Доставка та оплата</Text>
-            </button>
-
-            <button className={styles.menuItem}>
-              <Shield />
-
-              <Text fz={14}>Відео та огляди</Text>
-            </button>
-
-            <button className={styles.menuItem}>
-              <Phone />
-
-              <Text fz={14}>Контакти</Text>
-            </button>
-
-            <button className={styles.menuItem}>
-              <Headphones />
-
-              <Text fz={14}>Підтримка</Text>
-            </button>
-
-            <button className={styles.menuItem}>
-              <Settings />
-
-              <Text fz={14}>Налаштування</Text>
-            </button>
+            {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={end} 
+                onClick={onClose}
+                className={({ isActive }) =>
+                  clsx(styles.menuItem, {
+                    [styles.menuItemActive]: isActive,
+                  })
+                }
+              >
+                <Icon />
+                <Text fz={14}>{label}</Text>
+              </NavLink>
+            ))}
           </nav>
         </div>
+
         <div className={styles.menuBottom}>
           <div className={styles.languageSection}>
             <Divider />
 
             <button
+              type="button"
               className={styles.menuItem}
               onClick={() => setLanguageOpened((prev) => !prev)}
             >
@@ -154,11 +125,11 @@ export default function NavigationDrawer({
 
             <Collapse expanded={languageOpened}>
               <div className={styles.languageList}>
-                <button className={styles.languageItem}>
+                <button type="button" className={styles.languageItem}>
                   <Text fz={14}>Українська</Text>
                 </button>
 
-                <button className={styles.languageItem}>
+                <button type="button" className={styles.languageItem}>
                   <Text fz={14}>English</Text>
                 </button>
               </div>
@@ -166,7 +137,9 @@ export default function NavigationDrawer({
 
             <Divider />
           </div>
+
           <button
+            type="button"
             className={styles.menuItem}
             onClick={() => setLogoutModalOpened(true)}
           >
@@ -176,6 +149,7 @@ export default function NavigationDrawer({
           </button>
         </div>
       </div>
+
       <ConfirmModal
         opened={logoutModalOpened}
         onClose={() => setLogoutModalOpened(false)}

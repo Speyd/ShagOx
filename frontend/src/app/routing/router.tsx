@@ -15,12 +15,12 @@ import CategoriesPage from "@/pages/admin/categories/categories-page/CategoriesP
 import UpdateUserPage from "@/pages/admin/users/update-user-page/UpdateUserPage";
 import UpdateCategoriesPage from "@/pages/admin/categories/update-categories-page/UpdateCategoriesPage";
 
-import { GeneralTab } from "@/widgets/profile-general";
-import { VideosTab } from "@/widgets/profile-videos";
-import { FavoritesTab } from "@/widgets/profile-favorites";
-import { OrdersTab } from "@/widgets/profile-orders";
+import { GeneralTab } from "@/widgets/profile/profile-general";
+import { VideosTab } from "@/widgets/profile/profile-videos";
+import { FavoritesTab } from "@/widgets/profile/profile-favorites";
+import { OrdersTab } from "@/widgets/profile/profile-orders";
 import ProfileLayout from "../layouts/ProfileLayout";
-import { StatisticsTab } from "@/widgets/profile-statistics";
+import { StatisticsTab } from "@/widgets/profile/profile-statistics";
 import { AuthPage } from "@/pages/auth";
 import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage";
 import CategorySelectionPage from "@/pages/category-selection/CategorySelectionPage";
@@ -28,6 +28,7 @@ import VerifyPage from "@/pages/verify-page";
 import CheckoutPage from "@/pages/checkout";
 import PaymentPage from "@/pages/payment";
 import BasketPage from "@/pages/basket";
+import ReferencePage from "@/pages/reference/ReferencePage";
 
 export default function Router() {
   return (
@@ -123,6 +124,7 @@ export default function Router() {
               </ProtectedRoute>
             }
           />
+          <Route path="/reference" element={<ReferencePage />} />
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

@@ -1,0 +1,55 @@
+.referenceNeedHelp {
+  height: fit-content;
+  background-color: var(--color-base);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  padding: 32px;
+  gap: 32px;
+}
+
+.contactBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contactBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.contactText {
+  display: flex;
+  flex-direction: column;
+}
+
+.contactDescription {
+  color: var(--text-secondary);
+}
+
+.contactLabel {
+  color: var(--text-secondary);
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  border-radius: 10px;
+  gap: 8px;
+  background-color: white;
+  color: var(--text-base);
+
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.button:hover {
+  background-color: var(--color-border);
+}

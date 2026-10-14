@@ -1,10 +1,10 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 public interface ICurrencyQueryRepository
-    : IQueryRepository<Currency, CurrencySearchFilter>
+    : ISearchRepository<Currency, CurrencySearchFilter>
 {
     Task<Currency?> GetByCodeAsync(
         string code);

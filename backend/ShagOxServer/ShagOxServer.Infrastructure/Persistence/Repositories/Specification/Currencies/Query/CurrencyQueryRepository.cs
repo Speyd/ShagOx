@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies.Query;
 public partial class CurrencyQueryRepository 
-    : QueryRepository<Currency, CurrencySearchFilter>, 
+    : SearchRepository<Currency, CurrencySearchFilter>, 
     ICurrencyQueryRepository
 {
     public CurrencyQueryRepository(

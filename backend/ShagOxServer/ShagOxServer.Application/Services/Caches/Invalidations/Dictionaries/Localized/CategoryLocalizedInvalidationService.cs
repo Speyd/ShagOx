@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Localized;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Localized;
@@ -15,7 +15,7 @@ public class CategoryLocalizedInvalidationService
     public CategoryLocalizedInvalidationService(
         AttributeDefinitionLocalizedInvalidationService attribute,
         AdvertisementLocalizedInvalidationService advert,
-        ICacheService cache
+        IDataCacheService cache
     )
         : base(cache)
     {

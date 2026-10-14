@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Application.Common.Settings.Systems.BackgroundServices;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
 namespace ShagOxServer.Api.BackgroundServices;
@@ -14,12 +14,12 @@ public class VerificationCodeCleanupService
 
     private readonly ILogger<VerificationCodeCleanupService> _logger;
 
-    private readonly BackgroundServiceSettings _setting;
+    private readonly VerificationCodeCleanupSettings _setting;
 
 
     public VerificationCodeCleanupService(
         IServiceScopeFactory scopeFactory,
-        IOptions<BackgroundServiceSettings> setting,
+        IOptions<VerificationCodeCleanupSettings> setting,
         ILogger<VerificationCodeCleanupService> logger)
     {
         _scopeFactory = scopeFactory;
@@ -67,7 +67,7 @@ public class VerificationCodeCleanupService
             }
 
             await Task.Delay(
-                _setting.VerificationCodeCleanupInterval,
+                _setting.CleanupInterval,
                 stoppingToken
             );
         }

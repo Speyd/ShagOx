@@ -22,7 +22,7 @@ public class AttributeDictionaryValueTranslationQueryService
 {
     public AttributeDictionaryValueTranslationQueryService(
         IAttributeDictionaryValueTranslationQueryRepository attributeRepository,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(attributeRepository, cacheService, settings)

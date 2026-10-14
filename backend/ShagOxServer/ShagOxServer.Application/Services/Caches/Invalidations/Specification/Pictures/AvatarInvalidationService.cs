@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Cache;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
@@ -10,11 +10,11 @@ namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification.P
 public class AvatarInvalidationService
     : ICacheInvalidationService<Condition, AvatarCacheInfo>
 {
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
     public AvatarInvalidationService(
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cache = cache;
     }

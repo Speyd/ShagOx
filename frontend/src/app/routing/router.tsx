@@ -15,12 +15,12 @@ import CategoriesPage from "@/pages/admin/categories/categories-page/CategoriesP
 import UpdateUserPage from "@/pages/admin/users/update-user-page/UpdateUserPage";
 import UpdateCategoriesPage from "@/pages/admin/categories/update-categories-page/UpdateCategoriesPage";
 
-import { GeneralTab } from "@/widgets/profile-general";
-import { VideosTab } from "@/widgets/profile-videos";
-import { FavoritesTab } from "@/widgets/profile-favorites";
-import { OrdersTab } from "@/widgets/profile-orders";
+import { GeneralTab } from "@/widgets/profile/profile-general";
+import { VideosTab } from "@/widgets/profile/profile-videos";
+import { FavoritesTab } from "@/widgets/profile/profile-favorites";
+import { OrdersTab } from "@/widgets/profile/profile-orders";
 import ProfileLayout from "../layouts/ProfileLayout";
-import { StatisticsTab } from "@/widgets/profile-statistics";
+import { StatisticsTab } from "@/widgets/profile/profile-statistics";
 import { AuthPage } from "@/pages/auth";
 import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage";
 import CategorySelectionPage from "@/pages/category-selection/CategorySelectionPage";
@@ -35,6 +35,12 @@ import NotificationsVideos from "@/widgets/notifications/notifications-videos";
 import NotificationsOrders from "@/widgets/notifications/notifications-orders";
 import NotificationsComments from "@/widgets/notifications/notifications-comments";
 import NotificationsDiscounts from "@/widgets/notifications/notifications-discounts";
+import ReferencePage from "@/pages/reference/ReferencePage";
+
+import PaymentMethodsPage from "@/pages/payment-methods";
+import DeliveryTermsPage from "@/pages/delivery-terms";
+import OrderTrackingPage from "@/pages/order-tracking";
+import SupportPage from "@/pages/support/SupportPage";
 
 export default function Router() {
   return (
@@ -142,6 +148,12 @@ export default function Router() {
             path="/notifications/settings"
             element={<NotificationSettingsPage />}
           />
+          <Route path="/support" element={<SupportPage />} />
+          <Route path="/delivery-terms" element={<DeliveryTermsPage />} />
+          <Route path="/payment-methods" element={<PaymentMethodsPage />} />
+          <Route path="/order-tracking" element={<OrderTrackingPage />} />
+          <Route path="/reference" element={<ReferencePage />} />
+
           <Route path="/advertisement/:id" element={<AdvertisementPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Translations;
@@ -17,13 +17,13 @@ public class AttributeDictionaryValueInvalidationService
     private readonly IAttributeDictionaryValueTranslationQueryRepository _transRepository;
     private readonly AttributeDictionaryValueTranslationInvalidationService _transInvalid;
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
     public AttributeDictionaryValueInvalidationService(
         IAttributeDictionaryValueTranslationQueryRepository transRepository,
         AttributeDictionaryValueTranslationInvalidationService transInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _transRepository = transRepository;
         _transInvalid = transInvalid;

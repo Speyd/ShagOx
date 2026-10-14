@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -34,7 +34,7 @@ public class AdvertisementVariantUpdateService
         AdvertisementVariantInvalidationService variantInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantUpdateService> logger,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;

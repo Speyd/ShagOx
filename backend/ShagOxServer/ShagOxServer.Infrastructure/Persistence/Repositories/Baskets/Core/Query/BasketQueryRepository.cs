@@ -1,16 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.Core;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core.Query;
 public partial class BasketQueryRepository
-    : QueryRepository<Basket, BasketSearchFilter>,
+    : SearchRepository<Basket, BasketSearchFilter>,
       IBasketQueryRepository
 {
     public BasketQueryRepository(

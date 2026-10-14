@@ -45,7 +45,7 @@ public class UserQueryService
         IRoleQueryRepository roleQueryRepository,
         ICityQueryService cityService,
         IUserContext userContext,
-        ICacheService cache,
+        IDataCacheService cache,
         IOptions<CacheSettings> settings,
         ILanguageProvider language
     )
@@ -100,7 +100,7 @@ public class UserQueryService
             async () =>
             {
                 var user = await _userQueryRepository
-                    .GetByIdAsync(_context.UserId);
+                    .GetByIdIncludeAsync(_context.UserId);
 
                 return await user.ToResultAsync(ApplyMapperAsync);
             },

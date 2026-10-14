@@ -1,14 +1,14 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.UserRoles.Extensions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.UserRoles.Query;
 public partial class UserRoleQueryRepository 
-    : QueryRepository<UserRole, UserRoleSearchFilter>, 
+    : SearchRepository<UserRole, UserRoleSearchFilter>, 
       IUserRoleQueryRepository
 {
     public UserRoleQueryRepository(

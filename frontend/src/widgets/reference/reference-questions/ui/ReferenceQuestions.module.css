@@ -1,0 +1,46 @@
+.referenceQuestions {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  gap: 32px;
+  border-radius: 20px;
+  background-color: white;
+}
+
+.questionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.questionItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f9f9f9;
+  padding: 20px;
+
+  border: 1px solid var(--color-border);
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  border-radius: 10px;
+  max-width: 250px;
+  width: 100%;
+  gap: 8px;
+  background-color: white;
+  color: var(--text-base);
+
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.button:hover {
+  background-color: var(--color-border);
+}

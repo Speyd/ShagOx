@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Base;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Base;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Domain.Base;
@@ -17,8 +17,8 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     where TEntity : BaseEntity
     where TFilter : BaseFilter
 {
-    protected readonly IQueryRepository<TEntity, TFilter> _queryRepository;
-    protected readonly ICacheService _cache;
+    protected readonly ISearchRepository<TEntity, TFilter> _queryRepository;
+    protected readonly IDataCacheService _cache;
     protected readonly CacheSettings _settings;
 
     protected virtual bool CacheById => true;
@@ -29,8 +29,8 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
 
 
     public BaseQueryService(
-        IQueryRepository<TEntity, TFilter> queryRepository,
-        ICacheService cache,
+        ISearchRepository<TEntity, TFilter> queryRepository,
+        IDataCacheService cache,
         IOptions<CacheSettings> settings
         )
     {
@@ -49,7 +49,7 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         if (!CacheById)
         {
             var entity = await _queryRepository
-                .GetByIdAsync(id);
+                .GetByIdIncludeAsync(id);
 
             return await entity.ToResultAsync(
                 ApplyMapperAsync);
@@ -59,7 +59,7 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         if (cache is not null)
             return Result<TDto>.Success(cache);
 
-        var entityCache = await _queryRepository.GetByIdAsync(id);
+        var entityCache = await _queryRepository.GetByIdIncludeAsync(id);
 
         var dto = await entityCache.ToResultAsync(ApplyMapperAsync);
 

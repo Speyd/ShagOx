@@ -1,5 +1,6 @@
-﻿using DotNetEnv;
-using ShagOxServer.Api.Common;
+using DotNetEnv;
+using ShagOxServer.Application.Common.Settings.Db.Postgres;
+using ShagOxServer.SharedKernel.Configuration;
 
 namespace ShagOxServer.Api.DependencyInjection.Environments;
 public partial class EnvironmentExtensions
@@ -7,69 +8,54 @@ public partial class EnvironmentExtensions
     private static void LoadPostgresEnvironment(
         IHostApplicationBuilder builder)
     {
-        var databaseEnvPath = Path.Combine(
-            ProjectPath.Root,
-            EnvExtension);
+        var envPath = EnvironmentFileLocator.Find(EnvExtension);
 
-        Env.Load(databaseEnvPath);
+        Env.Load(envPath);
 
-        var user =
-            GetRequiredEnvironmentVariable("POSTGRES_USER");
-
-        var password =
-            GetRequiredEnvironmentVariable("POSTGRES_PASSWORD");
-
-        var database =
-            GetRequiredEnvironmentVariable("POSTGRES_DB");
-
-        var primaryPort =
-            GetRequiredEnvironmentVariable("POSTGRES_PRIMARY_PORT");
-
-        var replicaPort =
-            GetRequiredEnvironmentVariable("POSTGRES_REPLICA_PORT");
+        var settings = PostgresSettingsLoader.Load();
 
         builder.Configuration["ConnectionStrings:PrimaryConnection"] =
             BuildPostgresConnectionString(
-                user,
-                password,
-                database,
-                primaryPort);
+                settings.User,
+                settings.Password,
+                settings.Database,
+                settings.PrimaryHost,
+                settings.PrimaryPort.ToString());
 
-        builder.Configuration["ConnectionStrings:ReplicaConnection"] =
-            BuildPostgresConnectionString(
-                user,
-                password,
-                database,
-                replicaPort);
+        for (var i = 0; i < settings.Replicas.Count; i++)
+        {
+            var replica = settings.Replicas[i];
+
+            var connectionString = BuildPostgresConnectionString(
+                settings.User,
+                settings.Password,
+                settings.Database,
+                settings.ReplicaHost,
+                replica.Port.ToString());
+
+            builder.Configuration[
+                $"ConnectionStrings:ReplicaConnections:{i}"] =
+                connectionString;
+
+            builder.Configuration[
+                $"Postgres:ReplicaContainers:{i}"] =
+                replica.ContainerName;
+        }
     }
 
     private static string BuildPostgresConnectionString(
         string user,
         string password,
         string database,
+        string host,
         string port)
     {
         return
-            $"Host=localhost;" +
+            $"Host={host};" +
             $"Port={port};" +
             $"Database={database};" +
             $"Username={user};" +
             $"Password={password};" +
             $"SSL Mode=Disable";
-    }
-
-    private static string GetRequiredEnvironmentVariable(
-        string name)
-    {
-        var value =
-            Environment.GetEnvironmentVariable(name);
-
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new InvalidOperationException(
-                $"Environment variable '{name}' is not configured.");
-        }
-
-        return value;
     }
 }

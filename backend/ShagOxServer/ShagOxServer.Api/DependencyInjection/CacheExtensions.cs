@@ -1,5 +1,6 @@
-﻿using ShagOxServer.Api.Common;
+using ShagOxServer.Api.Common;
 using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using StackExchange.Redis;
 
 namespace ShagOxServer.Api.DependencyInjection;
@@ -12,47 +13,70 @@ public static class CacheExtensions
         services.Configure<RedisSettings>(
             configuration.GetSection("Redis"));
 
- 
-        var settings = configuration
+        services.Configure<RedisSettings>(
+            configuration.GetSection("UserRedis"));
+
+        services.Configure<CacheSettings>(
+            configuration.GetSection("Cache"));
+
+        var dataSettings = configuration
             .GetSection("Redis")
             .Get<RedisSettings>()
             ?? throw new InvalidOperationException(
                 "Redis settings are not configured.");
 
+        var userSettings = configuration
+            .GetSection("UserRedis")
+            .Get<RedisSettings>()
+            ?? throw new InvalidOperationException(
+                "UserRedis settings are not configured.");
+
+        var dataMuxer = await CreateConnectionAsync(dataSettings);
+        var userMuxer = await CreateConnectionAsync(userSettings);
+
+        services.AddKeyedSingleton<IConnectionMultiplexer>(
+            "DataRedis", dataMuxer);
+
+        services.AddKeyedSingleton<IConnectionMultiplexer>(
+            "UserRedis", userMuxer);
+
+        return services;
+    }
+
+    private static async Task<IConnectionMultiplexer>
+        CreateConnectionAsync(RedisSettings settings)
+    {
         var options = ConfigurationOptions.Parse(
             settings.Endpoints);
-
-        
 
         options.Ssl = settings.Ssl;
         options.User = settings.User;
         options.Password = settings.Password;
 
-        var clientCertRoot = Path.Combine(
-            ProjectPath.Root,
-            settings.ClientPath);
+        if (settings.Ssl)
+        {
+            var clientCertRoot = Path.Combine(
+                ProjectPath.Root,
+                settings.ClientPath);
 
-        options.SetUserPemCertificate(
-            userCertificatePath: Path.Combine(
-                clientCertRoot,
-                settings.ClientCrtFileName),
-            userKeyPath: Path.Combine(
-                clientCertRoot,
-                settings.ClientKeyFileName));
+            options.SetUserPemCertificate(
+                userCertificatePath: Path.Combine(
+                    clientCertRoot,
+                    settings.ClientCrtFileName),
+                userKeyPath: Path.Combine(
+                    clientCertRoot,
+                    settings.ClientKeyFileName));
 
-        var caCertRoot = Path.Combine(
-            ProjectPath.Root,
-            settings.CaPath);
+            var caCertRoot = Path.Combine(
+                ProjectPath.Root,
+                settings.CaPath);
 
-        options.TrustIssuer(
-            Path.Combine(
-                caCertRoot,
-                settings.CaFileName));
-    
+            options.TrustIssuer(
+                Path.Combine(
+                    caCertRoot,
+                    settings.CaFileName));
+        }
 
-        var muxer = await ConnectionMultiplexer
-            .ConnectAsync(options);
-
-        return services.AddSingleton<IConnectionMultiplexer>(muxer);
+        return await ConnectionMultiplexer.ConnectAsync(options);
     }
 }

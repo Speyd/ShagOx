@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
@@ -8,12 +8,12 @@ namespace ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 public class AdvertisementVariantInvalidationService
     : ICacheInvalidationService<AdvertisementVariant, long>
 {
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
 
     public AdvertisementVariantInvalidationService(
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cache = cache;
     }

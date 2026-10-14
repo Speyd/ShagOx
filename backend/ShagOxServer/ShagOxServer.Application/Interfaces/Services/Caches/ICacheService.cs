@@ -1,4 +1,4 @@
-﻿using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Caches;
 public interface ICacheService

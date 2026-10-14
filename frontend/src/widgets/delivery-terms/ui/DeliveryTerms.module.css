@@ -1,0 +1,160 @@
+.deliveryTermsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+  padding: 40px 0 120px 0;
+}
+
+.deliveryTermsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.deliveryTermsDescription {
+  color: var(--text-secondary, #6c757d);
+}
+
+.deliveryTermsContainer {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tableCard {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border, #e9ecef);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tableTitle {
+  color: #1a2536;
+}
+
+.termsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.termsTable th {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2b3a4a;
+  letter-spacing: 0.04em;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #1e293b;
+}
+
+.termsTable td {
+  padding: 20px 0;
+  font-size: 15px;
+  color: #1e293b;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.termsTable tr:last-child td {
+  border-bottom: none;
+}
+
+.termsTable th:nth-child(1),
+.termsTable td:nth-child(1) {
+  width: 35%;
+}
+
+.termsTable th:nth-child(2),
+.termsTable td:nth-child(2) {
+  width: 35%;
+}
+
+.termsTable th:nth-child(3),
+.termsTable td:nth-child(3) {
+  width: 30%;
+}
+
+.freeShipping {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  gap: 24px;
+
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: white;
+}
+
+.freeShippingInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.questionsInfo {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  gap: 16px;
+
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: white;
+}
+
+.phoneInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.deliveryMethodCard {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  gap: 16px;
+
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: white;
+}
+
+.spanTwo {
+  grid-column: span 2;
+}
+
+.deliveryMethodHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.deliveryMethods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 992px) {
+  .deliveryTermsContainer {
+    grid-template-columns: 1fr;
+  }
+}

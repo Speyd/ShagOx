@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Location.Cities.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Query;
@@ -21,7 +21,7 @@ public class RegionInvalidationService
     private readonly IRegionTranslationQueryRepository _transRepository;
     private readonly RegionTranslationInvalidationService _transInvalid;
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
 
@@ -30,7 +30,7 @@ public class RegionInvalidationService
         CityInvalidationService cityInvalid,
         IRegionTranslationQueryRepository transRepository,
         RegionTranslationInvalidationService transInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cityRepository = cityRepository;
         _cityInvalid = cityInvalid;

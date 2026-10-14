@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Query;
 using ShagOxServer.Application.Interfaces.Providers;
@@ -27,7 +27,7 @@ public class ProductTypeQueryService
         IProductTypeQueryRepository productTypeQueryRepository,
         IProductTypeTranslationQueryRepository translationRepository,
         ILanguageProvider language,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(productTypeQueryRepository, language, cacheService, settings)

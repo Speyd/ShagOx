@@ -5,6 +5,7 @@ import "./styles/index.css";
 import { Toaster } from "sonner";
 import { useMe } from "@/features/auth/model/hooks/useMe";
 import { useAuthStore } from "@/features/auth";
+import ScrollToTop from "@/shared/lib/ScrollToTop";
 
 export default function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -34,6 +35,7 @@ export default function App() {
 
   return (
     <>
+      <ScrollToTop />
       <Router /> <Toaster />
     </>
   );

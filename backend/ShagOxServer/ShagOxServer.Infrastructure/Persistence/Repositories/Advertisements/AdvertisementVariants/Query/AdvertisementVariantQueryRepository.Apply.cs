@@ -1,13 +1,13 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Extensions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Query;
 
 public partial class AdvertisementVariantQueryRepository
-    : QueryRepository<AdvertisementVariant, AdvertisementVariantSearchFilter>,
+    : SearchRepository<AdvertisementVariant, AdvertisementVariantSearchFilter>,
       IAdvertisementVariantQueryRepository
 {
 

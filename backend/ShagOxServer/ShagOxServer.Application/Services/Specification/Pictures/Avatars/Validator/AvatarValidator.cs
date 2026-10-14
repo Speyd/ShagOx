@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
@@ -7,7 +8,7 @@ public class AvatarValidator
     : BaseValidator<Avatar>
 {
     public AvatarValidator(
-        IRepository<Avatar> avatarRepository,
+        IQueryRepository<Avatar> avatarRepository,
         IExistsRepository<Avatar> avatarExistsRepository
     ) : base(avatarRepository, avatarExistsRepository)
     {

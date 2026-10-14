@@ -1,0 +1,24 @@
+.referencePage {
+  flex: 1;
+  height: 100%;
+  background-color: var(--bg-base);
+}
+
+.referenceContent {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  padding: 40px 0 120px 0;
+}
+
+.referenceBody {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.referenceMain {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}

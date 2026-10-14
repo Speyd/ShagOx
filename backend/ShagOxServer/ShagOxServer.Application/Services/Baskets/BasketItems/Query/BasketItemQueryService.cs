@@ -42,7 +42,7 @@ public class BasketItemQueryService
         IBasketItemQueryRepository itemQueryRepository,
         IBasketQueryRepository basketQueryRepository,
         IAdvertisementQueryService advertisementService,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings,
         ILanguageProvider language
     )

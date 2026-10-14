@@ -7,11 +7,14 @@ public interface IBasketQueryRepository
     : ISearchRepository<Basket, BasketSearchFilter>
 {
     Task<Basket?> GetByUserAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 
     Task<long?> GetIdByUserAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 
     Task<long?> GetUserIdByBasketAsync(
-        long basketId);
+        long basketId,
+        CancellationToken cancellationToken = default);
 }

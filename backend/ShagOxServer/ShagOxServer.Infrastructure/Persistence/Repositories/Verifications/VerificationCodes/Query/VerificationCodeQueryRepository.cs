@@ -17,22 +17,25 @@ public partial class VerificationCodeQueryRepository
 
 
     public async Task<VerificationCode?> GetActiveByUserIdAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.VerificationCodes
             .FirstOrDefaultAsync(x =>
                 x.UserId == userId &&
                 x.UsedAt == null &&
                 x.ExpiresAt > DateTime.UtcNow &&
-                x.InvalidatedAt == null);
+                x.InvalidatedAt == null,
+                cancellationToken);
     }
 
     public async Task<VerificationCode?> GetLatestByUserIdAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.VerificationCodes
             .Where(x => x.UserId == userId)
             .OrderByDescending(x => x.CreatedAt)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

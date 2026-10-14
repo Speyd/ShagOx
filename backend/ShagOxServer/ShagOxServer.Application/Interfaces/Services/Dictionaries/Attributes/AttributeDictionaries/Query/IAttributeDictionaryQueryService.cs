@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries;
+using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDictionaries;
 

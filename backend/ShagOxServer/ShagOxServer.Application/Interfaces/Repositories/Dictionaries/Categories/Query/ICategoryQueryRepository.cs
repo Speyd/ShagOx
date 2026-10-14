@@ -1,4 +1,3 @@
-using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
@@ -10,5 +9,6 @@ public partial interface ICategoryQueryRepository
 {
     Task<PagedResult<Category>> GetByProductTypeAsync(
         long productTypeId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

@@ -9,13 +9,16 @@ public partial interface IBasketItemQueryRepository
 {
     Task<PagedResult<BasketItem>> GetPagedAsync(
         long userId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     Task<PagedResult<BasketItem>> GetByBasketAsync(
         long basketId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     Task<PagedResult<BasketItem>> GetByAdvertisementVariantAsync(
         long advertisementVariantId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

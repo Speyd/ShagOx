@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Conditions.Translations;
-using ShagOxServer.Application.Interfaces.Services.Base.Translations;
+using ShagOxServer.Application.DTOs.Specification.Conditions.Translations;
+using ShagOxServer.Application.Interfaces.Services.Base.Translations.Translation;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.Domain.Filters.Specification.Conditions.Translations;
 

@@ -63,7 +63,8 @@ public class BasketQueryService
     }
 
     public async Task<Result<BasketDto>> GetByUserAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = BasketCache.ByUser(
             userId,
@@ -74,7 +75,7 @@ public class BasketQueryService
             async () =>
             {
                 var basket = await _basketQueryRepository
-                    .GetByUserAsync(userId);
+                    .GetByUserAsync(userId, cancellationToken);
 
                 return await basket.ToResultAsync(ApplyMapperAsync);
             },

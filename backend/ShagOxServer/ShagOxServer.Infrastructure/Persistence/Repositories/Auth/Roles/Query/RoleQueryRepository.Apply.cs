@@ -9,7 +9,7 @@ public partial class RoleQueryRepository
     : SearchRepository<Role, RoleSearchFilter>,
       IRoleQueryRepository
 {
-    protected override IQueryable<Role> ApplyFilter(
+    public override IQueryable<Role> ApplyFilter(
       IQueryable<Role> query,
       RoleSearchFilter filter)
     {

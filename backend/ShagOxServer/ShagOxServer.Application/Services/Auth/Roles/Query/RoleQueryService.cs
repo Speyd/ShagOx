@@ -44,7 +44,8 @@ public class RoleQueryService
 
     public async Task<Result<PagedResult<RoleDto>>> GetByUserAsync(
        long userId,
-       PaginationParams pagination)
+       PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = RoleCache.ByUser(
            userId,
@@ -56,7 +57,8 @@ public class RoleQueryService
             async () =>
             {
                 var roles = await _roleQueryRepository
-                    .GetByUserAsync(userId, pagination);
+                    .GetByUserAsync(userId, pagination,
+                        cancellationToken);
 
                 return await roles.ToResultPagedAsync(
                     ApplyMapperAsync);
@@ -66,7 +68,8 @@ public class RoleQueryService
     }
 
     public async Task<Result<RoleDto>> GetByNameAsync(
-        string name)
+        string name,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = RoleCache.ByName(name);
 
@@ -75,7 +78,7 @@ public class RoleQueryService
             async () =>
             {
                 var role = await _roleQueryRepository
-                    .GetByNameAsync(name);
+                    .GetByNameAsync(name, cancellationToken);
 
                 return await role.ToResultAsync(
                     ApplyMapperAsync);

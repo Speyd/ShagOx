@@ -26,7 +26,7 @@ public class CityTranslationQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<CityTranslation> ApplyFilter(
+    public override IQueryable<CityTranslation> ApplyFilter(
        IQueryable<CityTranslation> query,
        CityTranslationSearchFilter filter)
     {

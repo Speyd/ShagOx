@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -18,10 +18,11 @@ public class UserRoleExistsRepository
 
     public async Task<bool> ExistsAsync(
         long roleId,
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.UserRoles
             .AnyAsync(x => x.UserId == userId &&
-                x.RoleId == roleId);
+                x.RoleId == roleId, cancellationToken);
     }
 }

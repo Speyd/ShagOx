@@ -10,5 +10,6 @@ public interface IAttributeDictionaryQueryRepository
 {
     Task<PagedResult<AttributeDefinition>> GetByDictionaryAsync(
         long attributeDictionaryId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

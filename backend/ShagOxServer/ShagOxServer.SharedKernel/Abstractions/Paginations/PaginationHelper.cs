@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShagOxServer.SharedKernel.Abstractions.Paginations;
 public static class PaginationHelper
@@ -14,13 +14,14 @@ public static class PaginationHelper
 
     public static async Task<PagedResult<T>> ToPagedResultAsync<T>(
        this IQueryable<T> query,
-       PaginationParams pagination)
+       PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var totalCount = await query.CountAsync();
 
         var items = await query
             .WithPagination(pagination)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return new PagedResult<T>(
             items,

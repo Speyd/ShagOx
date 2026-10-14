@@ -25,7 +25,7 @@ public class StatusTranslationQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<StatusTranslation> ApplyFilter(
+    public override IQueryable<StatusTranslation> ApplyFilter(
        IQueryable<StatusTranslation> query,
        StatusTranslationSearchFilter filter)
     {
@@ -36,6 +36,7 @@ public class StatusTranslationQueryRepository
         IQueryable<StatusTranslation> query,
         string identificator)
     {
-        return query.Where(x => x.Translatable.Code == identificator);
+        return query.Where(x => 
+            x.Translatable.Code == identificator);
     }
 }

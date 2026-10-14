@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
@@ -7,5 +7,6 @@ public interface ICityExistsRepository
 {
     Task<bool> ExistsAsync(
         long regionId,
-        string cityCode);
+        string cityCode,
+        CancellationToken cancellationToken = default);
 }

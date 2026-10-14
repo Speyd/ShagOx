@@ -16,7 +16,7 @@ public partial class AvatarQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<Avatar> ApplyFilter(
+    public override IQueryable<Avatar> ApplyFilter(
         IQueryable<Avatar> query,
         AvatarSearchFilter filter)
     {

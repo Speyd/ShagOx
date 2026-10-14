@@ -118,7 +118,8 @@ public class ReplicaHealthCheckeService
         catch (OperationCanceledException)
             when (stoppingToken.IsCancellationRequested)
         {
-            throw;
+            _logger.LogInformation(
+                   "Replica health checke service stopped.");
         }
         catch (Exception ex)
         {

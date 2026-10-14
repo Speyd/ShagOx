@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -15,9 +15,11 @@ public class ExistsRepository<TEntity>
 
 
     public virtual async Task<bool> ExistsByIdAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Set<TEntity>()
-            .AnyAsync(x => EF.Property<int>(x, "Id") == id);
+            .AnyAsync(x => EF.Property<int>(x, "Id") == id,
+                cancellationToken);
     }
 }

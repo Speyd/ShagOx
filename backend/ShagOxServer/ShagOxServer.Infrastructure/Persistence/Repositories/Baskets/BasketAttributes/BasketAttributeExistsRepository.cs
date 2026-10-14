@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
-using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
 
@@ -20,31 +19,37 @@ public class BasketAttributeExistsRepository
     public async Task<bool> ExistsAsync(
         long categoryId,
         long attributeId,
-        int order)
+        int order,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketAttributes
             .WithIncludes()
             .AnyAsync(c =>
                 (c.AttributeDefinitionId == attributeId && c.Order == order) ||
                 (c.AttributeDefinition.CategoryId == categoryId &&
-                c.Order == order));       
+                c.Order == order),
+                cancellationToken);       
     }
 
     public async Task<bool> ExistsByAttributeDefenitionAsync(
-        long attributeDefenitionId)
+        long attributeDefenitionId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketAttributes
             .WithIncludes()
             .AnyAsync(c =>
-                c.AttributeDefinitionId == attributeDefenitionId);
+                c.AttributeDefinitionId == attributeDefenitionId,
+                cancellationToken);
     }
 
     public async Task<bool> ExistsByCategoryAsync(
-        long categoryId)
+        long categoryId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketAttributes
             .WithIncludes()
             .AnyAsync(c =>
-                 c.AttributeDefinition.CategoryId == categoryId);
+                 c.AttributeDefinition.CategoryId == categoryId,
+                 cancellationToken);
     }
 }

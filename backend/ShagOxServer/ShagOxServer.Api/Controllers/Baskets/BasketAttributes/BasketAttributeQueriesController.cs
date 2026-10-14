@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Query;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -10,67 +12,44 @@ namespace ShagOxServer.Api.Controllers.Baskets.BasketAttributes;
 [ApiController]
 [Route("api/basket-attributes")]
 public class BasketAttributeQueriesController
-    : ApiController
+    : BaseQueryController<BasketAttributeDto,
+        BasketAttributeSearchFilter>
 {
-    private readonly IBasketAttributeQueryService _queryService;
+    private readonly IBasketAttributeQueryService _basketQueryService;
 
 
     public BasketAttributeQueriesController(
-        IBasketAttributeQueryService queryService)
+        IBasketAttributeQueryService queryService
+    )
+        : base(queryService)
     {
-        _queryService = queryService;
+        _basketQueryService = queryService;
     }
 
 
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] long id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
 
-        return result.ToActionResult();
-    }
 
     [HttpGet("category/{id:long}")]
     public async Task<IActionResult> GetByCategory(
         [FromRoute] long id,
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
-        var result = await _queryService
-            .GetByCategoryAsync(id, pagination);
+        var result = await _basketQueryService
+            .GetByCategoryAsync(id, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }
 
     [HttpGet("attribute-definition/{id:long}")]
     public async Task<IActionResult> GetByAttributeDefinition(
-        [FromRoute] long id)
+        [FromRoute] long id,
+        CancellationToken cancellationToken)
     {
-        var result = await _queryService
-            .GetByAttributeDefinitionAsync(id);
-
-        return result.ToActionResult();
-    }
-
-
-    [HttpGet]
-    public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .GetPagedAsync(pagination);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet("search")]
-    public async Task<IActionResult> Search(
-       [FromQuery] BasketAttributeSearchFilter filter,
-       [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .SearchAsync(filter, pagination);
+        var result = await _basketQueryService
+            .GetByAttributeDefinitionAsync(id,
+                cancellationToken);
 
         return result.ToActionResult();
     }

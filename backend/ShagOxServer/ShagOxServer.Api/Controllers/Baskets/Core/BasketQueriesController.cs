@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Query;
@@ -23,10 +23,11 @@ public class BasketQueriesController
 
 
     [HttpGet]
-    public async Task<IActionResult> GetUserBasket()
+    public async Task<IActionResult> GetMeBasket(
+        CancellationToken cancellationToken)
     {
         var result = await _queryService
-            .GetByUserAsync(UserId);
+            .GetByUserAsync(UserId, cancellationToken);
 
         return result.ToActionResult();
     }

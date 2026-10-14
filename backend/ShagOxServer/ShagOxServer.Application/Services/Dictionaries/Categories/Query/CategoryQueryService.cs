@@ -54,7 +54,8 @@ public class CategoryQueryService
 
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
         long productTypeId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = CategoryCache.ByProductType(
            productTypeId,
@@ -67,7 +68,8 @@ public class CategoryQueryService
             async () =>
             {
                 var categories = await _categoryQueryRepository
-                    .GetByProductTypeAsync(productTypeId, pagination);
+                    .GetByProductTypeAsync(productTypeId, pagination,
+                        cancellationToken);
 
                 return await categories.ToResultPagedAsync(
                     ApplyMapperAsync);

@@ -9,9 +9,11 @@ public partial interface IUserRoleQueryRepository
 {
     Task<PagedResult<Role>> GetRolesByUserAsync(
         long userId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     Task<PagedResult<User>> GetUsersByRoleAsync(
         long roleId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

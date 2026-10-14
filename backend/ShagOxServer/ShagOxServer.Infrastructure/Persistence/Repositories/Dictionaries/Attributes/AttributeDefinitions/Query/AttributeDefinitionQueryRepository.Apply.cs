@@ -16,7 +16,7 @@ public partial class AttributeDefinitionQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<AttributeDefinition> ApplyFilter(
+    public override IQueryable<AttributeDefinition> ApplyFilter(
         IQueryable<AttributeDefinition> query,
         AttributeDefinitionSearchFilter filter)
     {

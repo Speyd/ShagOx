@@ -20,7 +20,8 @@ public class SearchTranslationRepository<TEntity, TTranslator, TFilter>
 
     public virtual async Task<PagedResult<TTranslator>> SearchAsync(
         TFilter filter,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         IQueryable<TTranslator> query = _db.Set<TTranslator>();
 
@@ -28,10 +29,11 @@ public class SearchTranslationRepository<TEntity, TTranslator, TFilter>
         query = ApplyFilter(query, filter);
 
         return await query
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination, 
+                cancellationToken);
     }
 
-    protected virtual IQueryable<TTranslator> ApplyFilter(
+    public virtual IQueryable<TTranslator> ApplyFilter(
         IQueryable<TTranslator> query,
         TFilter filter)
     {

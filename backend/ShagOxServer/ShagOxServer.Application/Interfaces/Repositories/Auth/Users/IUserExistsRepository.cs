@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
@@ -8,17 +8,22 @@ public interface IUserExistsRepository
     Task<bool> ExistsAsync(
         string? email,
         string? phone,
-        string userName);
+        string userName,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsAsync(
-        string value);
+        string value,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByUserNameAsync(
-        string userName);
+        string userName,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByEmailAsync(
-        string? email);
+        string? email,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByPhoneAsync(
-        string? phone);
+        string? phone,
+        CancellationToken cancellationToken = default);
 }

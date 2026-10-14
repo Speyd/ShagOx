@@ -26,7 +26,7 @@ public class CategoryTranslationQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<CategoryTranslation> ApplyFilter(
+    public override IQueryable<CategoryTranslation> ApplyFilter(
        IQueryable<CategoryTranslation> query,
        CategoryTranslationSearchFilter filter)
     {

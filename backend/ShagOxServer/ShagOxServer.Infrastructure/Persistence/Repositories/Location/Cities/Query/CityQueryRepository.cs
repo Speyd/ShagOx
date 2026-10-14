@@ -22,22 +22,26 @@ public partial class CityQueryRepository
 
     public async Task<City?> GetByIdentificatorAsync(
         string identificator,
-        long? parentId = null)
+        long? parentId = null,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Cities
             .WithIncludes()
             .FirstOrDefaultAsync(x =>
                 x.Code == identificator &&
-                (parentId.HasValue && x.RegionId == parentId));
+                (parentId.HasValue && x.RegionId == parentId),
+                cancellationToken);
     }
 
     public async Task<PagedResult<City>> GetByRegionAsync(
         long regionId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Cities
             .WithIncludes()
             .Where(x => x.RegionId == regionId)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
 }

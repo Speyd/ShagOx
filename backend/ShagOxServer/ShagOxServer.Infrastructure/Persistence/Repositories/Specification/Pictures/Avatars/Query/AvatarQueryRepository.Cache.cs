@@ -12,10 +12,12 @@ public partial class AvatarQueryRepository
       IAvatarQueryRepository
 {
     public async Task<AvatarCacheInfo?> GetCacheInfoByUserIdAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         var avatar = await _db.Avatars
-           .FirstOrDefaultAsync(x => x.UserId == userId);
+           .FirstOrDefaultAsync(x => x.UserId == userId,
+                cancellationToken);
 
         return avatar == null ?
             null :

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Special;
 using ShagOxServer.Domain.Entities.Baskets;
 
@@ -7,5 +7,6 @@ public interface IBasketExistsRepository
     : IExistsRepository<Basket>, IExistsOwnerRepository
 {
     Task<bool> ExistsByUserAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 }

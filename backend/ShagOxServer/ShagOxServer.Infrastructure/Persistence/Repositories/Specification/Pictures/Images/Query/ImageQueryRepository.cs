@@ -19,31 +19,34 @@ public partial class ImageQueryRepository
 
 
      public async Task<List<Image>> GetByIdsAsync(
-        List<long> ids)
+        List<long> ids,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Images
            .WithIncludes()
            .Where(x => ids.Contains(x.Id))
-           .ToListAsync();
+           .ToListAsync(cancellationToken);
     }
 
      public async Task<List<Image>> GetByAdvertisementAsync(
-        long advertId)
+        long advertId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Images
           .WithIncludes()
           .Where(x => x.AdvertisementId == advertId)
-          .ToListAsync();
+          .ToListAsync(cancellationToken);
     }
 
     public async Task<int> GetNextOrder(
         long advertId,
-        int? requestedOrder = null)
+        int? requestedOrder = null,
+        CancellationToken cancellationToken = default)
     {
         var orders = await _db.Images
              .Where(x => x.AdvertisementId == advertId)
              .Select(x => x.Order)
-             .ToListAsync();
+             .ToListAsync(cancellationToken);
 
 
         if (!orders.Contains(requestedOrder ?? 0))

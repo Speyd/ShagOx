@@ -8,5 +8,6 @@ public partial interface IImageQueryRepository
     : ISearchRepository<Image, ImageSearchFilter>
 {
     Task<List<ImageCacheInfo>> GetCacheInfoByAdvertisementAsync(
-        long advertId);
+        long advertId,
+        CancellationToken cancellationToken = default);
 }

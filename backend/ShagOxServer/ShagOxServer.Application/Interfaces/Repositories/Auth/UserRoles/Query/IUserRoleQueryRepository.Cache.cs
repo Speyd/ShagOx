@@ -9,8 +9,10 @@ public partial interface IUserRoleQueryRepository
     : ISearchRepository<UserRole, UserRoleSearchFilter>
 {
     Task<List<RoleCacheInfo>> GetRoleCacheInfoByUserAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 
     Task<List<UserCacheInfo>> GetUserCacheInfoByRoleAsync(
-        long roleId);
+        long roleId,
+        CancellationToken cancellationToken = default);
 }

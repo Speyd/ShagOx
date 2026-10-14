@@ -21,7 +21,8 @@ public partial class UserQueryRepository
     public async Task<User?> GetByContactAsync(
         string? email,
         string? phone,
-        string? userName = null)
+        string? userName = null,
+        CancellationToken cancellationToken = default)
     {
         var query = _db.Users
             .WithIncludes();
@@ -36,52 +37,66 @@ public partial class UserQueryRepository
             query = query.Where(x => x.UserName == userName);
 
 
-        return await query.FirstOrDefaultAsync();
+        return await query
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<User?> GetByContactAsync(
-       string value)
+       string value,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users
             .WithIncludes()
             .FirstOrDefaultAsync(x =>
                 x.Email == value ||
                 x.Phone == value ||
-                x.UserName == value
+                x.UserName == value,
+                cancellationToken
             );
     }
 
     public async Task<User?> GetByEmailAsync(
-        string email)
+        string email,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users
             .WithIncludes()
-            .FirstOrDefaultAsync(x => x.Email == email);
+            .FirstOrDefaultAsync(x => 
+                x.Email == email,
+                cancellationToken);
     }
 
     public async Task<User?> GetByPhoneAsync(
-        string phone)
+        string phone,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users
             .WithIncludes()
-            .FirstOrDefaultAsync(x => x.Phone == phone);
+            .FirstOrDefaultAsync(x => 
+                x.Phone == phone,
+                cancellationToken);
     }
 
     public async Task<User?> GetByUserNameAsync(
-       string userName)
+       string userName,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users
             .WithIncludes()
-            .FirstOrDefaultAsync(x => x.UserName == userName);
+            .FirstOrDefaultAsync(x => 
+                x.UserName == userName,
+                cancellationToken);
     }
 
     public async Task<PagedResult<User>> AdminSearch(
         UserAdminSearchFilter filter,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users
             .WithIncludes()
             .Filter(filter)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
 }

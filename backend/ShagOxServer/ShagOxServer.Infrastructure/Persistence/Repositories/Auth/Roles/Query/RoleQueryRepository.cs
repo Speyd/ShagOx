@@ -19,18 +19,22 @@ public partial class RoleQueryRepository
 
     public async Task<PagedResult<Role>> GetByUserAsync(
        long userId,
-       PaginationParams pagination)
+       PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.UserRoles
             .Where(x => x.UserId == userId)
             .Select(x => x.Role)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination, 
+                cancellationToken);
     }
 
     public async Task<Role?> GetByNameAsync(
-        string name)
+        string name,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Roles
-            .FirstOrDefaultAsync(x => x.Name == name);
+            .FirstOrDefaultAsync(x => x.Name == name,
+                cancellationToken);
     }
 }

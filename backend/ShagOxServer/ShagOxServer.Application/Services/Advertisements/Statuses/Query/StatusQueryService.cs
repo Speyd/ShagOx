@@ -9,7 +9,6 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Mapping;
 using ShagOxServer.Application.Services.Base.Translations;
-using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 

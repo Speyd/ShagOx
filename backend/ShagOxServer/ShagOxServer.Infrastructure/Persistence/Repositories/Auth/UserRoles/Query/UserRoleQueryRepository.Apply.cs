@@ -10,7 +10,7 @@ public partial class UserRoleQueryRepository
     : SearchRepository<UserRole, UserRoleSearchFilter>,
       IUserRoleQueryRepository
 {
-    protected override IQueryable<UserRole> ApplyFilter(
+    public override IQueryable<UserRole> ApplyFilter(
       IQueryable<UserRole> query,
       UserRoleSearchFilter filter)
     {

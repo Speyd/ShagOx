@@ -11,7 +11,8 @@ namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants
 public partial class AdvertisementVariantQueryService
 {
     public async Task<Result<List<VariantAttributeDto>>> GetVariantAttributeAsync(
-        AdvertisementVariant variant)
+        AdvertisementVariant variant,
+        CancellationToken cancellationToken = default)
     {
         var jsonAttributes = variant.Attributes
             .RootElement
@@ -46,7 +47,8 @@ public partial class AdvertisementVariantQueryService
         }
 
         var values = await _valueRepository.GetByIdsAsync(
-            valueIdsResult.Value!.Distinct());
+            valueIdsResult.Value!.Distinct(),
+            cancellationToken);
 
         var valuesById = values.ToDictionary(x => x.Id);
 

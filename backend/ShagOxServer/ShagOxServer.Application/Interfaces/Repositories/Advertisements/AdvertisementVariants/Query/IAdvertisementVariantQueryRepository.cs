@@ -10,5 +10,6 @@ public partial interface IAdvertisementVariantQueryRepository
 {
     Task<PagedResult<AdvertisementVariant>> GetByAdvertisementAsync(
         long advertId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

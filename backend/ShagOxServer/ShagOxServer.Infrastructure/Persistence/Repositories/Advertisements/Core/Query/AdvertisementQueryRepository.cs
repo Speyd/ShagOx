@@ -18,43 +18,50 @@ public partial class AdvertisementQueryRepository
     { }
 
     public async Task<List<Advertisement>> GetByIdsAsync(
-        List<long> ids)
+        List<long> ids,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Advertisements
             .WithIncludes()
             .Where(x => ids.Contains(x.Id))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<PagedResult<Advertisement>> GetBySellerAsync(
         long userId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Advertisements
             .WithIncludes()
             .Where(x => x.SellerId == userId)
             .OrderByDescending(x => x.Popularity)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
     public async Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
         long userId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Advertisements
             .WithIncludes()
             .Where(x => x.BuyerId == userId)
             .OrderByDescending(x => x.Popularity)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
 
     public override async Task<PagedResult<Advertisement>> SearchAsync(
         AdvertisementSearchFilter filter,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Advertisements
             .WithIncludes()
             .Filter(filter)
             .OrderByDescending(x => x.Popularity)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination, 
+                cancellationToken);
     }
 }

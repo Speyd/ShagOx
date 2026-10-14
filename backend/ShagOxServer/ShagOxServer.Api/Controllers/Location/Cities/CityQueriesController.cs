@@ -1,46 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Application.DTOs.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Domain.Filters.Location.Cities;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Location.Cities;
 
 [ApiController]
 [Route("api/cities")]
 public class CityQueriesController 
-    : ApiController
+    : BaseQueryController<CityDto,
+        CitySearchFilter>
 {
-    private readonly ICityQueryService _queryService;
-
-
     public CityQueriesController(
-        ICityQueryService queryService)
+        ICityQueryService queryService
+    )
+        : base(queryService)
     {
-        _queryService = queryService;
-    }
-
-
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] long id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
-
-
-    [HttpGet("search")]
-    public async Task<IActionResult> Search(
-       [FromQuery] CitySearchFilter filter,
-       [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .SearchAsync(filter, pagination);
-
-        return result.ToActionResult();
     }
 }

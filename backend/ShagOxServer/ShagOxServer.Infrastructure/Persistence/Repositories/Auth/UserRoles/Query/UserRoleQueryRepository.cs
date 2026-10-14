@@ -19,21 +19,25 @@ public partial class UserRoleQueryRepository
 
     public async Task<PagedResult<Role>> GetRolesByUserAsync(
        long userId,
-       PaginationParams pagination)
+       PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Roles
             .WithUserIncludes()
             .Where(u => u.UserRoles.Any(ur => ur.UserId == userId))
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
 
     public async Task<PagedResult<User>> GetUsersByRoleAsync(
         long roleId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users
             .WithRoleIncludes()
             .Where(u => u.UserRoles.Any(ur => ur.RoleId == roleId))
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
 }

@@ -10,8 +10,10 @@ public partial interface IBasketAttributeQueryRepository
         BasketAttributeSearchFilter>
 {
     Task<List<BasketAttributeCacheInfo>> GetCacheInfosByCategoryAsync(
-        long categoryId);
+        long categoryId,
+        CancellationToken cancellationToken = default);
 
     Task<BasketAttributeCacheInfo?> GetCacheInfoByAttributeDefinitionAsync(
-       long attributeDefinitionId);
+       long attributeDefinitionId,
+        CancellationToken cancellationToken = default);
 }

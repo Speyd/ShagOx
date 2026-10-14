@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
-using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
@@ -17,10 +16,12 @@ public class RegionExistsRepository
 
 
     public async Task<bool> ExistsByCodeAsync(
-        string? code)
+        string? code,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Regions
           .AnyAsync(x =>
-            (code != null && x.Code == code));
+            (code != null && x.Code == code),
+            cancellationToken);
     }
 }

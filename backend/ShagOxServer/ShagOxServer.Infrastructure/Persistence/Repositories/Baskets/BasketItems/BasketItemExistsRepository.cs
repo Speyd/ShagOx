@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -18,7 +18,8 @@ public class BasketItemExistsRepository
 
     public async Task<bool> ExistsAsync(
         long advertisementVariantId,
-        long basketId)
+        long basketId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketItems
             .AnyAsync(c => 
@@ -29,7 +30,8 @@ public class BasketItemExistsRepository
 
     public async Task<bool> ExistsByAdvertisementVariantAsync(
         long itemId,
-        long advertisementVariantId)
+        long advertisementVariantId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketItems
             .AnyAsync(c =>
@@ -40,7 +42,8 @@ public class BasketItemExistsRepository
 
     public async Task<bool> ExistsByBasketAsync(
         long itemId,
-        long basketId)
+        long basketId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketItems
             .AnyAsync(c =>
@@ -51,7 +54,8 @@ public class BasketItemExistsRepository
 
     public async Task<bool> IsOwnerAsync(
         long enityId,
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         var result = await _db.BasketItems
             .WithIncludes()

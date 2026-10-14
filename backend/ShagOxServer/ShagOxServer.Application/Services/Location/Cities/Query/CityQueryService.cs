@@ -63,7 +63,8 @@ public class CityQueryService
 
     public async Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
         long regionId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = CityCache.ByRegion(
            regionId,
@@ -76,7 +77,8 @@ public class CityQueryService
             async () =>
             {
                 var cities = await _repositoryQueryCity
-                    .GetByRegionAsync(regionId, pagination);
+                    .GetByRegionAsync(regionId, pagination,
+                        cancellationToken);
 
                 return await cities.ToResultPagedAsync(
                     ApplyMapperAsync);

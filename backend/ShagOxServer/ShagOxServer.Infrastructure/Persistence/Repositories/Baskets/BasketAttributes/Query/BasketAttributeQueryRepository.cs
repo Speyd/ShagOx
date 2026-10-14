@@ -21,23 +21,27 @@ public partial class BasketAttributeQueryRepository
 
     public async Task<PagedResult<BasketAttribute>> GetByCategoryAsync(
         long categoryId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketAttributes
             .WithIncludes()
             .Where(c =>
                 c.AttributeDefinition.CategoryId == categoryId)
             .OrderBy(c => c.Order)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
 
     public async Task<BasketAttribute?> GetByAttributeDefinitionAsync(
-        long attributeDefinitionId)
+        long attributeDefinitionId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketAttributes
             .WithIncludes()
             .FirstOrDefaultAsync(c =>
-                c.AttributeDefinitionId == attributeDefinitionId);
+                c.AttributeDefinitionId == attributeDefinitionId,
+                cancellationToken);
 
     }
 }

@@ -12,39 +12,43 @@ public partial class AdvertisementQueryRepository
       IAdvertisementQueryRepository
 {
     public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByStatusAsync(
-        long statusId)
+        long statusId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Advertisements
             .Where(x => x.StatusId == statusId)
             .SelectCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByUserAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Advertisements
             .Where(x => x.SellerId == userId ||
                 x.BuyerId == userId)
             .SelectCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByCategoryAsync(
-        long categoryId)
+        long categoryId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Advertisements
             .Where(x => x.CategoryId == categoryId)
             .SelectCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByConditionAsync(
-        long conditionId)
+        long conditionId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Advertisements
             .Where(x => x.ConditionId == conditionId)
             .SelectCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

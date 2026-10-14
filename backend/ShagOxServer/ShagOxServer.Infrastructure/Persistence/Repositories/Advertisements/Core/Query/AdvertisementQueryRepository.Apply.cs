@@ -16,7 +16,7 @@ public partial class AdvertisementQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<Advertisement> ApplyFilter(
+    public override IQueryable<Advertisement> ApplyFilter(
         IQueryable<Advertisement> query,
         AdvertisementSearchFilter filter)
     {

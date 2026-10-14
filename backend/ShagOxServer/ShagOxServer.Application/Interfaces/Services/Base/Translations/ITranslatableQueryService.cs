@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -13,5 +14,6 @@ public interface ITranslatableQueryService<TDto, TEntity, TFilter>
 {
     Task<Result<TDto>> GetByIdentificatorAsync(
         string identificator,
-        long? parentId = null);
+        long? parentId = null,
+        CancellationToken cancellationToken = default);
 }

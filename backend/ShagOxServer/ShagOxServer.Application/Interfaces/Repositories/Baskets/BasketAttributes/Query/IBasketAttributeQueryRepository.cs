@@ -10,8 +10,10 @@ public partial interface IBasketAttributeQueryRepository
 {
     Task<PagedResult<BasketAttribute>> GetByCategoryAsync(
         long categoryId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     Task<BasketAttribute?> GetByAttributeDefinitionAsync(
-        long attributeDefinitionId);
+        long attributeDefinitionId,
+        CancellationToken cancellationToken = default);
 }

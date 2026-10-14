@@ -8,14 +8,18 @@ public partial interface IAdvertisementQueryRepository
     : ISearchRepository<Advertisement, AdvertisementSearchFilter>
 {
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByStatusAsync(
-        long statusId);
+        long statusId,
+        CancellationToken cancellationToken = default);
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByUserAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByCategoryAsync(
-        long categoryId);
+        long categoryId,
+        CancellationToken cancellationToken = default);
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByConditionAsync(
-        long conditionId);
+        long conditionId,
+        CancellationToken cancellationToken = default);
 }

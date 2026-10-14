@@ -65,7 +65,8 @@ public class BasketItemQueryService
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementVariantAsync(
         long variantId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = BasketItemCache.ByAdvertisementVariant(
             variantId,
@@ -78,7 +79,8 @@ public class BasketItemQueryService
             async () =>
             {
                 var items = await _itemQueryRepository
-                    .GetByAdvertisementVariantAsync(variantId, pagination);
+                    .GetByAdvertisementVariantAsync(variantId, pagination,
+                        cancellationToken);
 
                 return await items.ToResultPagedAsync(ApplyMapperAsync);
             },
@@ -88,7 +90,8 @@ public class BasketItemQueryService
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetByBasketAsync(
         long basketId, 
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = BasketItemCache.ByBasket(
            basketId,
@@ -101,7 +104,8 @@ public class BasketItemQueryService
             async () =>
             {
                 var items = await _itemQueryRepository
-                    .GetByBasketAsync(basketId, pagination);
+                    .GetByBasketAsync(basketId, pagination,
+                        cancellationToken);
 
                 return await items.ToResultPagedAsync(ApplyMapperAsync);
             },
@@ -111,7 +115,8 @@ public class BasketItemQueryService
 
     public async Task<Result<PagedResult<BasketItemDto>>> GetPagedAsync(
         long userId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var basketId = await _basketQueryRepository
             .GetIdByUserAsync(userId);
@@ -132,7 +137,8 @@ public class BasketItemQueryService
             async () =>
             {
                 var items = await _itemQueryRepository
-                    .GetPagedAsync(userId, pagination);
+                    .GetPagedAsync(userId, pagination,
+                        cancellationToken);
 
                 return await items.ToResultPagedAsync(ApplyMapperAsync);
             },

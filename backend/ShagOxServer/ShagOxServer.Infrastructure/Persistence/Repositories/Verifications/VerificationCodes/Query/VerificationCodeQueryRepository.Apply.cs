@@ -9,7 +9,7 @@ public partial class VerificationCodeQueryRepository
     : SearchRepository<VerificationCode, VerificationCodeSearchFilter>,
       IVerificationCodeQueryRepository
 {
-    protected override IQueryable<VerificationCode> ApplyFilter(
+    public override IQueryable<VerificationCode> ApplyFilter(
        IQueryable<VerificationCode> query,
        VerificationCodeSearchFilter filter)
     {

@@ -20,11 +20,13 @@ public partial class AttributeDictionaryQueryRepository
 
     public async Task<PagedResult<AttributeDefinition>> GetByDictionaryAsync(
         long attributeDictionaryId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDefinitions
             .WithIncludes()
             .Where(x => x.DictionaryId == attributeDictionaryId)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
 }

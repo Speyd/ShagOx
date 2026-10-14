@@ -9,12 +9,15 @@ public interface IAttributeDefinitionQueryRepository
         AttributeDefinitionSearchFilter>
 {
     Task<List<long>> GetIdsByAttributeDictionaryAsync(
-        long dictionaryId);
+        long dictionaryId,
+        CancellationToken cancellationToken = default);
 
     Task<List<AttributeDefinition>> GetByIdsAsync(
-        List<long> ids);
+        List<long> ids,
+        CancellationToken cancellationToken = default);
 
     Task<List<AttributeDefinition>> GetByKeysAsync(
         long categoryId,
-        IEnumerable<string> keys);
+        IEnumerable<string> keys,
+        CancellationToken cancellationToken = default);
 }

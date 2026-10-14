@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
@@ -31,10 +31,12 @@ public class AdvertisementAdminQueriesController
     [HttpGet("purchases/{userId:long}")]
     public async Task<IActionResult> GetPurchasedAdvertisements(
         [FromRoute] long userId,
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         var advertisements = await _queryAdvertService
-            .GetPurchasedByUserAsync(userId, pagination);
+            .GetPurchasedByUserAsync(userId, pagination,
+                cancellationToken);
 
         return advertisements.ToActionResult();
     }

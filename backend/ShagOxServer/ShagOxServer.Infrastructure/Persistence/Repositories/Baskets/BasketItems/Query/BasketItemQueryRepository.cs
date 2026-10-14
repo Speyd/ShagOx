@@ -20,32 +20,38 @@ public partial class BasketItemQueryRepository
 
     public async Task<PagedResult<BasketItem>> GetByAdvertisementVariantAsync(
         long advertisementVariantId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketItems
             .WithIncludes()
             .Where(x =>
                 x.AdvertisementVariantId == advertisementVariantId)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
 
     public async Task<PagedResult<BasketItem>> GetByBasketAsync(
         long basketId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketItems
             .WithIncludes()
             .Where(x => x.BasketId == basketId)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
 
     public async Task<PagedResult<BasketItem>> GetPagedAsync(
         long userId, 
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketItems
             .WithIncludes()
             .Where(x => x.Basket.UserId == userId)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                cancellationToken);
     }
 }

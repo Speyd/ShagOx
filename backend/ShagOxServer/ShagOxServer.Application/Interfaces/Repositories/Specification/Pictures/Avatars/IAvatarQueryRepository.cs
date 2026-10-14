@@ -7,5 +7,6 @@ public partial interface IAvatarQueryRepository
     : ISearchRepository<Avatar, AvatarSearchFilter>
 {
     Task<Avatar?> GetByUserIdAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 }

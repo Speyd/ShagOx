@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
@@ -29,10 +29,12 @@ public class UserRolesController
     [Authorize]
     [HttpGet("me/role")]
     public async Task<IActionResult> GetMyRole(
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         var result = await _userService
-            .GetMyRoleAsync(pagination);
+            .GetMyRoleAsync(pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }
@@ -41,10 +43,12 @@ public class UserRolesController
     [HttpGet("{userId:long}/roles")]
     public async Task<IActionResult> GetUserRoles(
         [FromRoute] long userId,
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         var result = await _roleService
-            .GetByUserAsync(userId, pagination);
+            .GetByUserAsync(userId, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }

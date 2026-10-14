@@ -8,13 +8,16 @@ public partial interface IAdvertisementQueryRepository
     : ISearchRepository<Advertisement, AdvertisementSearchFilter>
 {
     Task<List<Advertisement>> GetByIdsAsync(
-        List<long> ids);
+        List<long> ids,
+        CancellationToken cancellationToken = default);
 
     Task<PagedResult<Advertisement>> GetBySellerAsync(
         long userId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
         long userId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

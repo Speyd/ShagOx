@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Verifications;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.DTOs.Verifications;
+using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Filters.Verifications.VerificationCodes;
 

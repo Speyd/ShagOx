@@ -1,5 +1,4 @@
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
@@ -9,5 +8,6 @@ public partial interface ICategoryQueryRepository
     : ISearchTranslatableRepository<Category, CategorySearchFilter>
 {
     Task<List<CategoryCacheInfo>> GetCacheInfosByProductTypeAsync(
-        long productTypeId);
+        long productTypeId,
+        CancellationToken cancellationToken = default);
 }

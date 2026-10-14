@@ -17,10 +17,12 @@ public partial class ProductTypeQueryRepository
 
     public async Task<ProductType?> GetByIdentificatorAsync(
         string identificator,
-        long? parentId = null)
+        long? parentId = null,
+        CancellationToken cancellationToken = default)
     {
         return await _db.ProductTypes
             .FirstOrDefaultAsync(x =>
-                x.Code == identificator);
+                x.Code == identificator,
+                cancellationToken);
     }
 }

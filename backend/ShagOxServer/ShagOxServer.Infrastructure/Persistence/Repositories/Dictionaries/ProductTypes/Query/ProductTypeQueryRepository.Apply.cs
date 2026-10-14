@@ -9,7 +9,7 @@ public partial class ProductTypeQueryRepository
     : SearchRepository<ProductType, ProductTypeSearchFilter>,
       IProductTypeQueryRepository
 {
-    protected override IQueryable<ProductType> ApplyFilter(
+    public override IQueryable<ProductType> ApplyFilter(
         IQueryable<ProductType> query,
         ProductTypeSearchFilter filter)
     {

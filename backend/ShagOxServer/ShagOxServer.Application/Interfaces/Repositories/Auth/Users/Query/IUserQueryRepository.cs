@@ -8,23 +8,29 @@ public partial interface IUserQueryRepository
     : ISearchRepository<User, UserSearchFilter>
 {
     Task<User?> GetByEmailAsync(
-        string email);
+        string email,
+        CancellationToken cancellationToken = default);
 
     Task<User?> GetByPhoneAsync(
-        string phone);
+        string phone,
+        CancellationToken cancellationToken = default);
 
     Task<User?> GetByUserNameAsync(
-        string userName);
+        string userName,
+        CancellationToken cancellationToken = default);
 
     Task<User?> GetByContactAsync(
-        string value);
+        string value,
+        CancellationToken cancellationToken = default);
 
     Task<User?> GetByContactAsync(
         string? email,
         string? phone,
-        string? userName = null);
+        string? userName = null,
+        CancellationToken cancellationToken = default);
 
     Task<PagedResult<User>> AdminSearch(
         UserAdminSearchFilter filter,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

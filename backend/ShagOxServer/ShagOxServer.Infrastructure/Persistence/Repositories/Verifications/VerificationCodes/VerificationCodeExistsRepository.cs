@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -17,19 +17,23 @@ public class VerificationCodeExistsRepository
 
 
     public async Task<bool> ExistsByUserIdAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.VerificationCodes
-            .AnyAsync(x => x.UserId == userId);
+            .AnyAsync(x => x.UserId == userId,
+                cancellationToken);
     }
 
     public async Task<bool> ExistsActiveByUserIdAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.VerificationCodes
             .AnyAsync(x =>
                 x.UserId == userId &&
                 x.UsedAt == null &&
-                x.ExpiresAt > DateTime.UtcNow);
+                x.ExpiresAt > DateTime.UtcNow,
+                cancellationToken);
     }
 }

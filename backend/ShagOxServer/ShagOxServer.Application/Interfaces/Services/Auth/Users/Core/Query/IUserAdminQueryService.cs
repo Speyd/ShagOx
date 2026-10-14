@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -7,12 +7,15 @@ namespace ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 public interface IUserAdminQueryService
 {
     Task<Result<PagedResult<UserDto>>> GetPagedAsync(
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     Task<Result<PagedResult<UserDto>>> Search(
         UserAdminSearchFilter filter,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByIdAsync(
-        long id);
+        long id,
+        CancellationToken cancellationToken = default);
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -15,9 +15,12 @@ public class StatusExistsRepository
         : base(db)
     { }
 
-    public async Task<bool> ExistsByCodeAsync(string code)
+    public async Task<bool> ExistsByCodeAsync(
+        string code,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Statuses
-            .AnyAsync(x => x.Code == code);
+            .AnyAsync(x => x.Code == code,
+                cancellationToken);
     }
 }

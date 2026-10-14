@@ -10,8 +10,10 @@ public partial interface IAttributeDictionaryValueQueryRepository
         AttributeDictionaryValueSearchFilter>
 {
     Task<List<AttributeDictionaryValueCacheInfo>> GetCacheInfosByDictionaryAsync(
-        long dictionaryId);
+        long dictionaryId,
+        CancellationToken cancellationToken = default);
 
     Task<List<AttributeDictionaryValue>> GetByIdsAsync(
-        IEnumerable<long> ids);
+        IEnumerable<long> ids,
+        CancellationToken cancellationToken = default);
 }

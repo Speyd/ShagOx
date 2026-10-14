@@ -1,6 +1,6 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Translations;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Translations;
 using ShagOxServer.Application.Interfaces.Services.Base;
-using ShagOxServer.Application.Interfaces.Services.Base.Translations;
+using ShagOxServer.Application.Interfaces.Services.Base.Translations.Translation;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues.Translations;
 

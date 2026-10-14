@@ -72,7 +72,8 @@ public class UserQueryService
     }
 
     public async Task<Result<UserShortDto>> GetByContactAsync(
-        string value)
+        string value,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = UserCache.ByContact(
             value,
@@ -83,7 +84,7 @@ public class UserQueryService
             async () =>
             {
                 var user = await _userQueryRepository
-                    .GetByContactAsync(value);
+                    .GetByContactAsync(value, cancellationToken);
 
                 return user.ToResult(UserShortMapper.ToDto);
             },
@@ -91,7 +92,8 @@ public class UserQueryService
         );
     }
 
-    public async Task<Result<UserDto>> GetMyProfileAsync()
+    public async Task<Result<UserDto>> GetMyProfileAsync(
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = GetCacheKey(_context.UserId);
 
@@ -100,7 +102,8 @@ public class UserQueryService
             async () =>
             {
                 var user = await _userQueryRepository
-                    .GetByIdIncludeAsync(_context.UserId);
+                    .GetByIdIncludeAsync(_context.UserId,
+                        cancellationToken);
 
                 return await user.ToResultAsync(ApplyMapperAsync);
             },
@@ -109,7 +112,8 @@ public class UserQueryService
     }
 
     public async Task<Result<PagedResult<RoleDto>>> GetMyRoleAsync(
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = UserRoleCache.RolesByUser(
             _context.UserId,
@@ -121,7 +125,8 @@ public class UserQueryService
             async () =>
             {
                 var roles = await _roleQueryRepository
-                    .GetByUserAsync(_context.UserId, pagination);
+                    .GetByUserAsync(_context.UserId, pagination,
+                        cancellationToken);
 
                 return roles.ToResultPaged(RoleMapper.ToDto);
             },

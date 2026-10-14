@@ -13,5 +13,6 @@ public interface ICityQueryService
 {
     Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
         long regionId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

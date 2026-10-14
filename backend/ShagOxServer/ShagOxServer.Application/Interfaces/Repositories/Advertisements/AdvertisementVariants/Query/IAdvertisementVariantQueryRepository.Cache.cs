@@ -8,5 +8,6 @@ public partial interface IAdvertisementVariantQueryRepository
         AdvertisementVariantSearchFilter>
 {
     Task<List<long>> GetIdsByAdvertisementAsync(
-        long advertId);
+        long advertId,
+        CancellationToken cancellationToken = default);
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -18,25 +18,31 @@ public class CategoryExistsRepository
 
     public async Task<bool> ExistsAsync(
         string name,
-        long productTypeId)
+        long productTypeId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Categories
             .AnyAsync(c =>
                 c.Code == name &&
-                c.ProductTypeId == productTypeId);
+                c.ProductTypeId == productTypeId,
+                cancellationToken);
     }
 
     public async Task<bool> ExistsByCodeAsync(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Categories
-            .AnyAsync(c => c.Code == code);
+            .AnyAsync(c => c.Code == code,
+                cancellationToken);
     }
 
     public async Task<bool> ExistsByProductTypeAsync(
-        long productTypeId)
+        long productTypeId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Categories
-            .AnyAsync(c => c.ProductTypeId == productTypeId);
+            .AnyAsync(c => c.ProductTypeId == productTypeId,
+                cancellationToken);
     }
 }

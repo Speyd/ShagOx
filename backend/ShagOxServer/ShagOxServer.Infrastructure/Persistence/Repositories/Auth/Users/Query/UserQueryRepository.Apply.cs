@@ -15,7 +15,7 @@ public partial class UserQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<User> ApplyFilter(
+    public override IQueryable<User> ApplyFilter(
       IQueryable<User> query,
       UserSearchFilter filter)
     {

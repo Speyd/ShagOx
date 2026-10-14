@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Auth.Users;
@@ -11,55 +13,40 @@ namespace ShagOxServer.Api.Controllers.Auth.Users;
 [ApiController]
 [Route("api/users")]
 public class UserQueriesController 
-    : ApiController
+    : BaseQueryController<UserDto,
+        UserSearchFilter>
 {
-    private readonly IUserQueryService _queryService;
+    private readonly IUserQueryService _userQueryService;
 
 
     public UserQueriesController(
-        IUserQueryService queryService)
+        IUserQueryService queryService
+    )
+        : base(queryService)
     {
-        _queryService = queryService;
+        _userQueryService = queryService;
     }
 
-
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] long id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
 
     [Authorize]
     [HttpGet("me")]
-    public async Task<IActionResult> GetMyProfile()
+    public async Task<IActionResult> GetMyProfile(
+        CancellationToken cancellationToken)
     {
-        var result = await _queryService
-            .GetMyProfileAsync();
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet("search")]
-    public async Task<IActionResult> Search(
-        [FromQuery] UserSearchFilter filter,
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .SearchAsync(filter, pagination);
+        var result = await _userQueryService
+            .GetMyProfileAsync(cancellationToken);
 
         return result.ToActionResult();
     }
 
     [HttpGet("contact/{contact}")]
     public async Task<IActionResult> GetByContactAsync(
-       [FromRoute] string contact)
+       [FromRoute] string contact,
+        CancellationToken cancellationToken)
     {
-        var result = await _queryService
-            .GetByContactAsync(contact);
+        var result = await _userQueryService
+            .GetByContactAsync(contact,
+                cancellationToken);
 
         return result.ToActionResult();
     }

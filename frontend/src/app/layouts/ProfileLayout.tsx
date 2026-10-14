@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Container from "@/shared/ui/container";
-import { ProfileTabs } from "@/widgets/profile/profile-tabs";
-import { ProfileHeader } from "@/widgets/profile/profile-header";
+
+import { ProfileTabs } from "@/widgets/profile-tabs";
+import { ProfileHeader } from "@/widgets/profile-header";
+        
 import styles from "./ProfileLayout.module.css";
 import { Text } from "@mantine/core";
 
@@ -14,7 +16,7 @@ export default function ProfileLayout() {
   const [orientation, setOrientation] = useState<"row" | "column">("column");
 
   return (
-    <div className={styles.profileLayout}>
+    <section className={styles.profileLayout}>
       <Container>
         <div className={styles.content}>
           <Text fw={700} fz={40} c={"var(--color-base)"}>
@@ -29,6 +31,6 @@ export default function ProfileLayout() {
           </div>
         </div>
       </Container>
-    </div>
+    </section>
   );
 }

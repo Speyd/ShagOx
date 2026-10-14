@@ -28,6 +28,13 @@ import VerifyPage from "@/pages/verify-page";
 import CheckoutPage from "@/pages/checkout";
 import PaymentPage from "@/pages/payment";
 import BasketPage from "@/pages/basket";
+import NotificationSettingsPage from "@/pages/notification-settings/NotificationSettingsPage";
+import NotificationsLayout from "../layouts/NotificationsLayout";
+import NotificationsGeneral from "@/widgets/notifications/notifications-generel/ui/NotificationsGeneral";
+import NotificationsVideos from "@/widgets/notifications/notifications-videos";
+import NotificationsOrders from "@/widgets/notifications/notifications-orders";
+import NotificationsComments from "@/widgets/notifications/notifications-comments";
+import NotificationsDiscounts from "@/widgets/notifications/notifications-discounts";
 import ReferencePage from "@/pages/reference/ReferencePage";
 
 import PaymentMethodsPage from "@/pages/payment-methods";
@@ -94,6 +101,14 @@ export default function Router() {
             <Route path="statistics" element={<StatisticsTab />} />
           </Route>
 
+          <Route path="/notifications" element={<NotificationsLayout />}>
+            <Route index element={<NotificationsGeneral />} />
+            <Route path="videos" element={<NotificationsVideos />} />
+            <Route path="orders" element={<NotificationsOrders />} />
+            <Route path="comments" element={<NotificationsComments />} />
+            <Route path="discounts" element={<NotificationsDiscounts />} />
+          </Route>
+
           <Route
             path="/payment"
             element={
@@ -128,6 +143,10 @@ export default function Router() {
                 <UserUpdateAdvertisementPage />
               </ProtectedRoute>
             }
+          />
+          <Route
+            path="/notifications/settings"
+            element={<NotificationSettingsPage />}
           />
           <Route path="/support" element={<SupportPage />} />
           <Route path="/delivery-terms" element={<DeliveryTermsPage />} />

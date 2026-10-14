@@ -159,4 +159,3 @@ docker exec `
 
 Write-Host ""
 
-Write-Host "=== Replica initialization completed ==="

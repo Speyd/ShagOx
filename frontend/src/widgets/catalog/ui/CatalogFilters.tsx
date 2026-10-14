@@ -95,6 +95,7 @@ export default function CatalogFilters({
   mobile = false,
 }: CatalogFiltersProps) {
   const { data: categories = [] } = useGetCategories();
+
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [showAllColors, setShowAllColors] = useState(false);
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
@@ -27,7 +27,7 @@ public class RoleQueryService
 
     public RoleQueryService(
         IRoleQueryRepository roleQueryRepository,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(roleQueryRepository, cacheService, settings)

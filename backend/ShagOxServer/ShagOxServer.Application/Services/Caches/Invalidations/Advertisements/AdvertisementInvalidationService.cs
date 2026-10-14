@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Cache;
@@ -32,7 +32,7 @@ public class AdvertisementInvalidationService
     private readonly ImageInvalidationService _imageInvalid;
 
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
     public AdvertisementInvalidationService(
@@ -45,7 +45,7 @@ public class AdvertisementInvalidationService
         BasketItemBasketInvalidationService basketInvalid,
         IImageQueryRepository imageRepository,
         ImageInvalidationService imageInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteInvalid = favoriteInvalid;

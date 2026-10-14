@@ -27,7 +27,7 @@ public class ConditionQueryService
         IConditionQueryRepository conditionQueryRepository,
         IConditionTranslationQueryRepository translationRepository,
         ILanguageProvider language,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(conditionQueryRepository, language, cacheService, settings)

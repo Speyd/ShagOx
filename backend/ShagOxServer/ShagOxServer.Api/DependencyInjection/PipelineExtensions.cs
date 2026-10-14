@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Api.Middleware;
+using ShagOxServer.Api.Middleware;
 
 namespace ShagOxServer.Api.DependencyInjection;
 
@@ -21,7 +21,7 @@ public static class PipelineExtensions
 
         app.UseAuthentication();
 
-        app.UseMiddleware<UpdateLastSeenMiddleware>();
+        app.UseMiddleware();
 
         app.UseAuthorization();
 

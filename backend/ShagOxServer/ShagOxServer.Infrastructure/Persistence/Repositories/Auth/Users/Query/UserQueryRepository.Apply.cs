@@ -1,13 +1,12 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Query;
-
 public partial class UserQueryRepository
-    : QueryRepository<User, UserSearchFilter>,
+    : SearchRepository<User, UserSearchFilter>,
       IUserQueryRepository
 {
     protected override IQueryable<User> ApplyIncludes(

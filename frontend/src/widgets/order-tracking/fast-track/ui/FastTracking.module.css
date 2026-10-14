@@ -1,0 +1,22 @@
+.fastTracking {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+
+.input {
+  max-width: 620px;
+  width: 100%;
+  padding: 0 16px;
+}

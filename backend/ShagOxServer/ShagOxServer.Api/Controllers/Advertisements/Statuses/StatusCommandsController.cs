@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Create;
@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Statuses;
 
 [ApiController]
 [Route("api/admin/statuses")]
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class StatusCommandsController 
     : ApiController
 {

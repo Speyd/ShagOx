@@ -27,7 +27,7 @@ public class RegionQueryService
         IRegionQueryRepository regionQueryRepository,
         IRegionTranslationQueryRepository translationRepository,
         ILanguageProvider language,
-        ICacheService cacheService,
+        IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
         : base(regionQueryRepository, language, cacheService, settings)

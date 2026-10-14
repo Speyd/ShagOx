@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
@@ -18,7 +18,7 @@ public class AttributeDictionaryInvalidationService
     private readonly IAttributeDictionaryValueQueryRepository _valueRepository;
     private readonly AttributeDictionaryValueInvalidationService _valueInvalid;
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
 
@@ -27,7 +27,7 @@ public class AttributeDictionaryInvalidationService
         AttributeDefinitionInvalidationService attributeInvalid,
         IAttributeDictionaryValueQueryRepository valueRepository,
         AttributeDictionaryValueInvalidationService valueInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _attributeRepository = attributeRepository;
         _attributeInvalid = attributeInvalid;

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 public class ReplicaDbContext 

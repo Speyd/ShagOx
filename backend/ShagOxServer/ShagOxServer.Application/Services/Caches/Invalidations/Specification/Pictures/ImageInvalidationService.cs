@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Cache;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
@@ -9,11 +9,11 @@ namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification.P
 public class ImageInvalidationService
     : ICacheInvalidationService<Image, ImageCacheInfo>
 {
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
     public ImageInvalidationService(
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cache = cache;
     }

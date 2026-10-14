@@ -1,0 +1,35 @@
+.notificationsLayout {
+  flex: 1;
+  background-color: var(--bg-base);
+  min-height: 100vh;
+}
+
+.notificationsContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0 120px;
+  gap: 16px;
+}
+
+.notificationsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.description {
+  color: var(--text-secondary);
+}
+
+.notificationsContent {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .notificationsContent {
+    grid-template-columns: 1fr;
+  }
+}

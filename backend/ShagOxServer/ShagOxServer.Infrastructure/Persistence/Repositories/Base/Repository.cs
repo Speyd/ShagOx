@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
@@ -13,13 +13,6 @@ public  class Repository<TEntity>
     {
     }
 
-
-    public virtual async Task<TEntity?> GetByIdAsync(
-        long id)
-    {
-        return await _db.Set<TEntity>()
-            .FindAsync(id);
-    }
 
     public virtual void Add(
         TEntity entity)

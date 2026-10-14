@@ -2,10 +2,15 @@ $ErrorActionPreference = "Stop"
 
 Write-Host "=== PostgreSQL Replica Initialization ==="
 
+# ============================================================
+# Paths
+# ============================================================
+
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 $projectRoot = Resolve-Path (Join-Path $scriptDirectory "../..")
 $postgresRoot = Resolve-Path (Join-Path $scriptDirectory "..")
+
 $envFile = Join-Path $projectRoot ".env"
 $composeFile = Join-Path $postgresRoot "docker-compose.yml"
 
@@ -26,6 +31,10 @@ $composeArgs = @(
     "-f", $composeFile
 )
 
+# ============================================================
+# Environment
+# ============================================================
+
 function Get-EnvValue {
     param (
         [string]$Name
@@ -43,13 +52,38 @@ function Get-EnvValue {
 }
 
 $postgresPassword = Get-EnvValue "POSTGRES_PASSWORD"
+
 $postgresUser = Get-EnvValue "POSTGRES_USER"
 $postgresDb = Get-EnvValue "POSTGRES_DB"
+
 $replicatorUser = Get-EnvValue "REPLICATOR_USER"
 $replicatorPassword = Get-EnvValue "REPLICATOR_PASSWORD"
 
+
+# ============================================================
+# Replicas
+# ============================================================
+
 $network = "postgres-replication_postgres-network"
-$replicaVolume = "postgres-replication_replica_data"
+
+$replicas = @(
+    @{
+        Name = "postgres-replica-1"
+        Volume = "postgres-replication_replica_1_data"
+    },
+    @{
+        Name = "postgres-replica-2"
+        Volume = "postgres-replication_replica_2_data"
+    },
+    @{
+        Name = "postgres-replica-3"
+        Volume = "postgres-replication_replica_3_data"
+    }
+)
+
+# ============================================================
+# Start primary
+# ============================================================
 
 Write-Host ""
 Write-Host "=== Starting primary ==="
@@ -59,6 +93,10 @@ docker compose @composeArgs up -d postgres-primary
 if ($LASTEXITCODE -ne 0) {
     throw "Failed to start postgres-primary"
 }
+
+# ============================================================
+# Wait for primary
+# ============================================================
 
 Write-Host ""
 Write-Host "=== Waiting for primary ==="
@@ -81,6 +119,10 @@ while ($LASTEXITCODE -ne 0)
 
 Write-Host "Primary is ready."
 
+# ============================================================
+# Check replication user
+# ============================================================
+
 Write-Host ""
 Write-Host "=== Checking replication user ==="
 
@@ -98,64 +140,127 @@ if ($roleExists.Trim() -ne "1") {
 
 Write-Host "Replication user exists."
 
+# ============================================================
+# Check replica volumes
+# ============================================================
+
 Write-Host ""
-Write-Host "=== Checking replica volume ==="
+Write-Host "=== Checking replica volumes ==="
 
-$volumeCheck = docker run --rm `
-    -v "${replicaVolume}:/var/lib/postgresql/data" `
-    postgres:17 `
-    bash -c "find /var/lib/postgresql/data -mindepth 1 -maxdepth 1 | head -n 1"
+foreach ($replica in $replicas) {
 
-if (-not [string]::IsNullOrWhiteSpace($volumeCheck)) {
-    throw "Replica volume is not empty. Remove it before running bootstrap."
+    Write-Host "Checking $($replica.Name)..."
+
+    $volumeCheck = docker run --rm `
+        -v "$($replica.Volume):/var/lib/postgresql/data" `
+        postgres:17 `
+        bash -c "find /var/lib/postgresql/data -mindepth 1 -maxdepth 1 | head -n 1"
+
+    if (-not [string]::IsNullOrWhiteSpace($volumeCheck)) {
+        throw "Volume '$($replica.Volume)' is not empty. Remove it before running bootstrap."
+    }
 }
 
-Write-Host "Replica volume is empty."
+Write-Host "All replica volumes are empty."
 
-Write-Host ""
-Write-Host "=== Running pg_basebackup ==="
+# ============================================================
+# Run pg_basebackup
+# ============================================================
 
-docker run --rm `
-    --network $network `
-    -e "PGPASSWORD=$replicatorPassword" `
-    -v "${replicaVolume}:/var/lib/postgresql/data" `
-    postgres:17 `
-    pg_basebackup `
-    -h postgres-primary `
-    -U $replicatorUser `
-    -D /var/lib/postgresql/data `
-    -Fp `
-    -Xs `
-    -P `
-    -R
+function Initialize-Replica {
+    param (
+        [string]$Name,
+        [string]$Volume
+    )
 
-if ($LASTEXITCODE -ne 0) {
-    throw "pg_basebackup failed"
+    Write-Host ""
+    Write-Host "=== Initializing $Name ==="
+
+    $slotName = ($Name -replace '^postgres-', '' -replace '-', '_') + "_slot"
+
+    Write-Host "Replication slot: $slotName"
+
+    docker run --rm `
+        --network $network `
+        -e "PGPASSWORD=$replicatorPassword" `
+        -v "${Volume}:/var/lib/postgresql/data" `
+        postgres:17 `
+        pg_basebackup `
+        -h postgres-primary `
+        -U $replicatorUser `
+        -D /var/lib/postgresql/data `
+        -Fp `
+        -Xs `
+        -P `
+        -R `
+        -C `
+        -S $slotName
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "pg_basebackup failed for $Name"
+    }
+
+    Write-Host "$Name base backup completed."
+}
+
+foreach ($replica in $replicas) {
+
+    Initialize-Replica `
+        -Name $replica.Name `
+        -Volume $replica.Volume
 }
 
 Write-Host ""
-Write-Host "=== Base backup completed ==="
+Write-Host "=== All base backups completed ==="
+
+# ============================================================
+# Start replicas
+# ============================================================
 
 Write-Host ""
-Write-Host "=== Starting replica ==="
+Write-Host "=== Starting replicas ==="
 
-docker compose @composeArgs up -d postgres-replica
+foreach ($replica in $replicas) {
 
-if ($LASTEXITCODE -ne 0) {
-    throw "Failed to start postgres-replica"
+    Write-Host "Starting $($replica.Name)..."
+
+    docker compose @composeArgs up -d $replica.Name
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to start $($replica.Name)"
+    }
 }
+
+# ============================================================
+# Check replicas
+# ============================================================
+
+Write-Host ""
+Write-Host "=== Checking replicas ==="
 
 Start-Sleep -Seconds 3
 
-Write-Host ""
-Write-Host "=== Checking replica ==="
+foreach ($replica in $replicas) {
 
-docker exec `
-    postgres-replica `
-    psql `
-    -U $postgresUser `
-    -d $postgresDb `
-    -c "SELECT pg_is_in_recovery();"
+    Write-Host "Checking $($replica.Name)..."
+
+    $recovery = docker exec `
+        $replica.Name `
+        psql `
+        -U $postgresUser `
+        -d $postgresDb `
+        -tAc "SELECT pg_is_in_recovery();"
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to check $($replica.Name)"
+    }
+
+    if ($recovery.Trim() -ne "t") {
+        throw "$($replica.Name) is not in recovery mode."
+    }
+
+    Write-Host "$($replica.Name) is running as replica."
+}
 
 Write-Host ""
 

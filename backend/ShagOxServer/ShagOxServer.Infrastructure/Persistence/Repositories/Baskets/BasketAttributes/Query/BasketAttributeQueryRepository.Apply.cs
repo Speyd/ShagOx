@@ -1,13 +1,13 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
+using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Query;
 public partial class BasketAttributeQueryRepository
-    : QueryRepository<BasketAttribute, BasketAttributeSearchFilter>,
+    : SearchRepository<BasketAttribute, BasketAttributeSearchFilter>,
       IBasketAttributeQueryRepository
 {
     protected override IQueryable<BasketAttribute> ApplyIncludes(

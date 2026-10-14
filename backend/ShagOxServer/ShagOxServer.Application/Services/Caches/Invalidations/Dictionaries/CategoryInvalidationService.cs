@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
@@ -28,7 +28,7 @@ public class CategoryInvalidationService
     private readonly ICategoryTranslationQueryRepository _transRepository;
     private readonly CategoryTranslationInvalidationService _transInvalid;
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
 
@@ -39,7 +39,7 @@ public class CategoryInvalidationService
         AdvertisementInvalidationService advertInvalid,
         ICategoryTranslationQueryRepository transRepository,
         CategoryTranslationInvalidationService transInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _attributeRepository = attributeRepository;
         _attributeInvalid = attributeInvalid;

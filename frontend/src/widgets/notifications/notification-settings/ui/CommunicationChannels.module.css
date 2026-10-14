@@ -1,0 +1,84 @@
+.card {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border, #e9ecef);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.headerIcon {
+  color: #001736;
+}
+
+.title {
+  color: #001736;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.channelCard {
+  background-color: #f8f9fa;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.channelCard:hover {
+  background-color: #f1f3f5;
+}
+
+.channelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.channelTitle {
+  color: #001736;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.saveButton {
+  min-width: 180px;
+}
+
+:global(.mantine-Checkbox-input:checked) {
+  background-color: #001736 !important;
+  border-color: #001736 !important;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

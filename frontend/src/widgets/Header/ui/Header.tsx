@@ -10,13 +10,32 @@ import CitySelector from "@/shared/ui/city-selector";
 import NavigationDrawer from "./NavigationDrawer";
 import CartDrawer from "./BasketDrawer";
 
+interface ActionItem {
+  id: string;
+  label: string;
+  to?: string;
+  icon: React.ComponentType<{ className?: string; fill?: string }>;
+  isCart?: boolean;
+}
+
+const ACTION_ITEMS: ActionItem[] = [
+  { id: "compare", label: "Порівняння", to: "/compare", icon: Scale },
+  { id: "favorites", label: "Обране", to: "/profile/favorites", icon: Heart },
+  {
+    id: "notifications",
+    label: "Сповіщення",
+    to: "/notifications",
+    icon: Bell,
+  },
+  { id: "cart", label: "Кошик", icon: ShoppingBag, isCart: true },
+];
+
 export default function Header() {
   const [menuOpened, { open, close }] = useDisclosure(false);
   const [cartOpened, { open: openCart, close: closeCart }] =
     useDisclosure(false);
 
   const location = useLocation();
-
   const isFavoritesActive = location.pathname.startsWith("/profile/favorites");
 
   return (
@@ -38,6 +57,7 @@ export default function Header() {
           </div>
         </Container>
       </div>
+
       <div className={styles.headerBottom}>
         <Container>
           <div className={styles.headerBottomContent}>
@@ -48,37 +68,53 @@ export default function Header() {
               onClick={open}
             />
             <NavigationDrawer opened={menuOpened} onClose={close} />
+
             <Link to="/" className={styles.headerLogo}>
               <Image src={logo} alt="ShagOx" w={55} />
               <Text c="black" fw={600} fz={30}>
                 Marketly
               </Text>
             </Link>
+
             <SearchInput />
+
             <div className={styles.headerActions}>
-              <Link to="/compare" className={styles.iconContainer}>
-                <Scale className="icon iconLarge" />
-                <Text className={styles.iconContainerText}>Порівняння</Text>
-              </Link>
+              {ACTION_ITEMS.map((item) => {
+                const Icon = item.icon;
+                const isFavorite = item.id === "favorites";
+                const iconFill =
+                  isFavorite && isFavoritesActive ? "currentColor" : "none";
 
-              <Link to="/profile/favorites" className={styles.iconContainer}>
-                <Heart
-                  className="icon iconLarge"
-                  fill={isFavoritesActive ? "currentColor" : "none"}
-                />
-                <Text className={styles.iconContainerText}>Обране</Text>
-              </Link>
+                if (item.isCart) {
+                  return (
+                    <div
+                      key={item.id}
+                      className={styles.iconContainer}
+                      onClick={openCart}
+                    >
+                      <Icon className="icon iconLarge" />
+                      <Text className={styles.iconContainerText}>
+                        {item.label}
+                      </Text>
+                    </div>
+                  );
+                }
 
-              <Link to="/notifications" className={styles.iconContainer}>
-                <Bell className="icon iconLarge" />
-                <Text className={styles.iconContainerText}>Сповіщення</Text>
-              </Link>
-
-              <div className={styles.iconContainer} onClick={openCart}>
-                <ShoppingBag className="icon iconLarge" />
-                <Text className={styles.iconContainerText}>Кошик</Text>
-              </div>
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.to!}
+                    className={styles.iconContainer}
+                  >
+                    <Icon className="icon iconLarge" fill={iconFill} />
+                    <Text className={styles.iconContainerText}>
+                      {item.label}
+                    </Text>
+                  </Link>
+                );
+              })}
             </div>
+
             <Link to="/profile" className={styles.iconContainer}>
               <User className="icon iconLarge" />
               <Text className={styles.iconContainerText}>Профіль</Text>

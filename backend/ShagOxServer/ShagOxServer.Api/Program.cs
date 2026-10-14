@@ -20,9 +20,9 @@ try
         .AddCache(builder.Configuration);
 
     builder.Services
-        .AddLanguageProvider()
-        .AddSerilogConfiguration(builder.Configuration)
         .AddDatabase(builder.Configuration)
+        .AddLanguageProvider()
+        .AddSerilogConfiguration(builder.Configuration)  
         .AddJWT(builder.Configuration)
         .AddCloudinary(builder.Configuration)
         .AddSettingsConfiguration(builder.Configuration)

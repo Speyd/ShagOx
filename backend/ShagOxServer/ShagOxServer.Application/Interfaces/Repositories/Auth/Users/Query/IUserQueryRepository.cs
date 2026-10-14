@@ -1,11 +1,11 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 public partial interface IUserQueryRepository
-    : IQueryRepository<User, UserSearchFilter>
+    : ISearchRepository<User, UserSearchFilter>
 {
     Task<User?> GetByEmailAsync(
         string email);

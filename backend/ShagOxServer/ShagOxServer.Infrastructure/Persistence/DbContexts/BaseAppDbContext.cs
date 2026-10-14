@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
 public abstract partial class BaseAppDbContext : DbContext
 {
-    protected BaseAppDbContext(DbContextOptions options)
+    protected BaseAppDbContext(
+        DbContextOptions options)
         : base(options)
     {
     }

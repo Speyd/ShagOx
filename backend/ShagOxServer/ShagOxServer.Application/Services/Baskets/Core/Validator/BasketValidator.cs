@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
@@ -12,7 +13,7 @@ public class BasketValidator
     private readonly IBasketExistsRepository _basketExistsRepository;
 
     public BasketValidator(
-        IRepository<Basket> basketRepository,
+        IQueryRepository<Basket> basketRepository,
         IBasketExistsRepository basketExistsRepository
     ) : base(basketRepository, basketExistsRepository)
     {

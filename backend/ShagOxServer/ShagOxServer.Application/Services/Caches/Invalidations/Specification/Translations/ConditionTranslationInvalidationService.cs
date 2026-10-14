@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Localized;
@@ -9,14 +9,14 @@ namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification.T
 public class ConditionTranslationInvalidationService
     : ITranslationCacheInvalidationService<CityTranslation>
 {
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
     private readonly ConditionLocalizedInvalidationService _condition;
 
 
     public ConditionTranslationInvalidationService(
         ConditionLocalizedInvalidationService condition,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cache = cache;
         _condition = condition;

@@ -1,14 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Infrastructure.DependencyInjections.Advertisements;
 using ShagOxServer.Infrastructure.DependencyInjections.Auth;
 using ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
 using ShagOxServer.Infrastructure.DependencyInjections.Baskets;
+using ShagOxServer.Infrastructure.DependencyInjections.Db;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
 using ShagOxServer.Infrastructure.DependencyInjections.Location;
+using ShagOxServer.Infrastructure.DependencyInjections.Monitoring;
 using ShagOxServer.Infrastructure.DependencyInjections.Specification;
 using ShagOxServer.Infrastructure.DependencyInjections.Verifications;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
-using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Base;
@@ -21,6 +22,8 @@ public static class DependencyInjection
     provider =>
         provider.GetRequiredService<ReplicaDbContext>());
         return services
+            .AddMonitoring()
+            .AddDbInfrastructure()
             .AddVerificationInfrastructure()
             .AddBackgroundServiceInfrastructure()
             .AddBaseRepositoryInfrastructure()

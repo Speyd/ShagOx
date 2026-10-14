@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
@@ -13,7 +14,7 @@ public class ProductTypeValidator
 
 
     public ProductTypeValidator(
-        IRepository<ProductType> productTypeRepository,
+        IQueryRepository<ProductType> productTypeRepository,
         IProductTypeExistsRepository productTypeExistsRepository
     ) : base(productTypeRepository, productTypeExistsRepository)
     {

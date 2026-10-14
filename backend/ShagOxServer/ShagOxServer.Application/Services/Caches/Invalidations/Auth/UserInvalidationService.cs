@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
@@ -22,7 +22,7 @@ public class UserInvalidationService
     private readonly IAvatarQueryRepository _avatarRepository;
     private readonly AvatarInvalidationService _avatarInvalid;
 
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
 
     public UserInvalidationService(
@@ -30,7 +30,7 @@ public class UserInvalidationService
         AdvertisementInvalidationService advertInvalid,
         IAvatarQueryRepository avatarRepository,
         AvatarInvalidationService avatarInvalid,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _advertRepository = advertRepository;
         _advertInvalid = advertInvalid;

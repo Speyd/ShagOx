@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Localized;
@@ -10,14 +10,14 @@ public class AttributeDictionaryValueTranslationInvalidationService
     : ITranslationCacheInvalidationService
         <AttributeDictionaryValueTranslation>
 {
-    private readonly ICacheService _cache;
+    private readonly IDataCacheService _cache;
 
     private readonly AttributeDictionaryValueLocalizedInvalidationService _value;
 
 
     public AttributeDictionaryValueTranslationInvalidationService(
         AttributeDictionaryValueLocalizedInvalidationService value,
-        ICacheService cache)
+        IDataCacheService cache)
     {
         _cache = cache;
         _value = value;

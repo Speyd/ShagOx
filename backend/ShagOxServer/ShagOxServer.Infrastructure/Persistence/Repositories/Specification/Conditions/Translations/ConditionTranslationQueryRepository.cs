@@ -26,7 +26,7 @@ public class ConditionTranslationQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<ConditionTranslation> ApplyFilter(
+    public override IQueryable<ConditionTranslation> ApplyFilter(
        IQueryable<ConditionTranslation> query,
        ConditionTranslationSearchFilter filter)
     {

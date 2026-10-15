@@ -11,12 +11,15 @@ public interface IQueryTranslationRepository<TEntity, TTranslation>
 {
     Task<PagedResult<TTranslation>> GetPagedAsync(
        PaginationParams pagination,
-       string language);
+       string language,
+        CancellationToken cancellationToken = default);
 
     Task<TTranslation?> GetByIdentificatorAsync(
         string identificator,
-        string language);
+        string language,
+        CancellationToken cancellationToken = default);
 
     Task<List<BaseTranslationCacheInfo>> GetCacheInfosByTranslatableAsync(
-        long translatableId);
+        long translatableId,
+        CancellationToken cancellationToken = default);
 }

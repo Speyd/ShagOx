@@ -22,53 +22,63 @@ public partial class AttributeDictionaryValueQueryRepository
 
     public async Task<AttributeDictionaryValue?> GetByIdentificatorAsync(
         string identificator,
-        long? parentId = null)
+        long? parentId = null,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDictionaryValues
             .WithIncludes()
             .FirstOrDefaultAsync(x =>
                 x.Code == identificator &&
-                (parentId.HasValue && x.DictionaryId == parentId));
+                (parentId.HasValue && x.DictionaryId == parentId),
+                cancellationToken);
     }
 
     public async Task<List<AttributeDictionaryValue>> GetByIdsAsync(
-        IEnumerable<long> ids)
+        IEnumerable<long> ids,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDictionaryValues
             .WithIncludes()
             .Where(x => ids.Contains(x.Id))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<AttributeDictionaryValue?> GetAsync(
         string dictionaryCode,
-        long valueId)
+        long valueId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDictionaryValues
             .WithIncludes()
             .FirstOrDefaultAsync(x =>
                 x.Dictionary.Code == dictionaryCode &&
-                x.Id == valueId);
+                x.Id == valueId,
+                cancellationToken);
     }
 
     public async Task<AttributeDictionaryValue?> GetAsync(
         long dictionaryId,
-        long valueId)
+        long valueId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDictionaryValues
             .WithIncludes()
             .FirstOrDefaultAsync(x =>
                 x.DictionaryId == dictionaryId &&
-                x.Id == valueId);
+                x.Id == valueId,
+                cancellationToken);
     }
 
     public async Task<PagedResult<AttributeDictionaryValue>> GetByDictionaryAsync(
         long dictionaryId, 
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDictionaryValues
             .WithIncludes()
             .Where(x => x.DictionaryId == dictionaryId)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
+                cancellationToken);
     }
 }

@@ -76,14 +76,15 @@ public class AdvertisementQueryService
 
     private async Task<Dictionary<long, List<VariantAttributeDto>>>
     GetAttributesByVariantIdAsync(
-        IEnumerable<AdvertisementVariant> variants)
+        IEnumerable<AdvertisementVariant> variants,
+        CancellationToken cancellationToken = default)
     {
         var result = new Dictionary<long, List<VariantAttributeDto>>();
 
         foreach (var variant in variants)
         {
             var attributesResult = await _variantService
-                .GetVariantAttributeAsync(variant);
+                .GetVariantAttributeAsync(variant, cancellationToken);
 
             if (!attributesResult.IsSuccess)
             {
@@ -100,7 +101,8 @@ public class AdvertisementQueryService
 
     public async Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
         long userId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = AdvertisementCache.BySeller(
            userId,
@@ -113,7 +115,8 @@ public class AdvertisementQueryService
             async () =>
             {
                 var advert = await _advertisementRepository
-                    .GetBySellerAsync(userId, pagination);
+                    .GetBySellerAsync(userId, pagination, 
+                        cancellationToken);
 
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
@@ -124,7 +127,8 @@ public class AdvertisementQueryService
 
     public async Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         long userId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = AdvertisementCache.ByBuyer(
            userId,
@@ -137,7 +141,8 @@ public class AdvertisementQueryService
             async () =>
             {
                 var advert = await _advertisementRepository
-                    .GetPurchasedByUserAsync(userId, pagination);
+                    .GetPurchasedByUserAsync(userId, pagination, 
+                        cancellationToken);
 
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
@@ -147,7 +152,8 @@ public class AdvertisementQueryService
     }
 
     public async Task<Result<PagedResult<AdvertisementShortDto>>> GetShortPagedAsync(
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = AdvertisementCache.ByShortPaged(
            _language.Language,
@@ -159,7 +165,7 @@ public class AdvertisementQueryService
             async () =>
             {
                 var adverts = await _advertisementRepository
-                    .GetPagedAsync(pagination);
+                    .GetPagedAsync(pagination, cancellationToken);
 
                 return adverts.ToResultPaged(
                     AdvertisementShortMapper.ToDto);
@@ -170,7 +176,8 @@ public class AdvertisementQueryService
 
     public async Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
         AdvertisementSearchFilter filter,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = AdvertisementCache.ByShortSearch(
             filter,
@@ -183,7 +190,8 @@ public class AdvertisementQueryService
             async () =>
             {
                 var adverts = await _advertisementRepository
-                    .SearchAsync(filter, pagination);
+                    .SearchAsync(filter, pagination, 
+                        cancellationToken);
 
                 return adverts.ToResultPaged(
                     AdvertisementShortMapper.ToDto);

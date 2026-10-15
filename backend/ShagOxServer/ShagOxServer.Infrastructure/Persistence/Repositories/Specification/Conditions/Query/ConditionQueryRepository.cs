@@ -18,10 +18,12 @@ public partial class ConditionQueryRepository
 
     public async Task<Condition?> GetByIdentificatorAsync(
         string identificator,
-        long? parentId = null)
+        long? parentId = null,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Conditions
             .FirstOrDefaultAsync(x =>
-                x.Code == identificator);
+                x.Code == identificator,
+                cancellationToken);
     }
 }

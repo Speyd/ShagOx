@@ -12,21 +12,23 @@ public partial class BasketItemQueryRepository
       IBasketItemQueryRepository
 {
     public async Task<List<BasketItemCacheInfo>> GetCacheInfosByBasketAsync(
-        long basketId)
+        long basketId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketItems
             .Where(x => x.BasketId == basketId)
             .SelectCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<List<BasketItemCacheInfo>> GetCacheInfosByAdvertisementVariantAsync(
-        long advertisementVariantId)
+        long advertisementVariantId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketItems
            .Where(x =>
                 x.AdvertisementVariantId == advertisementVariantId)
            .SelectCacheInfo()
-           .ToListAsync();
+           .ToListAsync(cancellationToken);
     }
 }

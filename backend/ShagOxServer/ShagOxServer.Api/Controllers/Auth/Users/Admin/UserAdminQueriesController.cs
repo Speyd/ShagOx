@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
@@ -26,10 +26,12 @@ public class UserAdminQueriesController
 
     [HttpGet]
     public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         var result = await _queryService
-            .GetPagedAsync(pagination);
+            .GetPagedAsync(pagination, 
+                cancellationToken);
 
         return result.ToActionResult();
     }
@@ -37,10 +39,12 @@ public class UserAdminQueriesController
     [HttpGet("search")]
     public async Task<IActionResult> Search(
         [FromQuery] UserAdminSearchFilter filter,
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         var result = await _queryService
-            .Search(filter, pagination);
+            .Search(filter, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }

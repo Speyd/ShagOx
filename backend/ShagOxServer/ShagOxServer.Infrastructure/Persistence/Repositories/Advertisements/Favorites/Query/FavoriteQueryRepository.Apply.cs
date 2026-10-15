@@ -15,7 +15,7 @@ public partial class FavoriteQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<Favorite> ApplyFilter(
+    public override IQueryable<Favorite> ApplyFilter(
        IQueryable<Favorite> query,
        FavoriteSearchFilter filter)
     {

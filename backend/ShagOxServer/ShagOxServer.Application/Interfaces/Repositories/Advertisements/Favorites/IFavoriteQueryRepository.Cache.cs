@@ -8,5 +8,6 @@ public partial interface IFavoriteQueryRepository
     : ISearchRepository<Favorite, FavoriteSearchFilter>
 {
     Task<List<FavoriteCacheInfo>> GetCacheInfosByAdvertisementAsync(
-        long advertId);
+        long advertId,
+        CancellationToken cancellationToken = default);
 }

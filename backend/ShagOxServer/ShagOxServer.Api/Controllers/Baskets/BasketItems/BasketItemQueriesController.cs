@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
@@ -27,12 +27,28 @@ public class BasketItemQueriesController
     }
 
 
+    [HttpGet("{id:long}")]
+    public virtual async Task<IActionResult> GetById(
+      [FromRoute] long id,
+       CancellationToken cancellationToken)
+    {
+        if (CheckOwnershipAsync(id) is not null)
+            return Forbid();
+
+        var result = await _queryService
+            .GetByIdAsync(id, cancellationToken);
+
+        return result.ToActionResult();
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         var result = await _queryService
-            .GetPagedAsync(UserId, pagination);
+            .GetPagedAsync(UserId, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }

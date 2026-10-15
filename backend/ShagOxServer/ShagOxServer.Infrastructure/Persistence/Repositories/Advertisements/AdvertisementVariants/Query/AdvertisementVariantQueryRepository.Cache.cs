@@ -10,11 +10,12 @@ public partial class AdvertisementVariantQueryRepository
       IAdvertisementVariantQueryRepository
 {
     public async Task<List<long>> GetIdsByAdvertisementAsync(
-        long advertId)
+        long advertId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AdvertisementVariants
             .Where(x => x.AdvertisementId == advertId)
             .Select(x => x.Id)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

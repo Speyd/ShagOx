@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -17,9 +17,11 @@ public class ConditionExistsRepository
 
 
     public async Task<bool> ExistsByCodeAsync(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Conditions
-            .AnyAsync(x => x.Code == code);
+            .AnyAsync(x => x.Code == code,
+                cancellationToken);
     }
 }

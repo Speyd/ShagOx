@@ -16,30 +16,36 @@ public class QueryRepository<TEntity>
     }
 
     public virtual async Task<TEntity?> GetByIdAsync(
-       long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Set<TEntity>()
-            .FindAsync(id);
+            .FindAsync(id, cancellationToken);
     }
 
     public virtual async Task<TEntity?> GetByIdIncludeAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         IQueryable<TEntity> query = _db.Set<TEntity>();
 
         query = ApplyIncludes(query);
 
         return await query.FirstOrDefaultAsync(
-            x => x.Id == id);
+            x => x.Id == id,
+            cancellationToken);
     }
 
     public virtual async Task<PagedResult<TEntity>> GetPagedAsync(
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         IQueryable<TEntity> query = _db.Set<TEntity>();
         query = ApplyIncludes(query);
 
         return await query
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
+                cancellationToken);
     }
 }

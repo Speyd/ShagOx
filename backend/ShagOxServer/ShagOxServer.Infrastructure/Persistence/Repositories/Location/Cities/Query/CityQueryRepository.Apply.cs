@@ -15,7 +15,7 @@ public partial class CityQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<City> ApplyFilter(
+    public override IQueryable<City> ApplyFilter(
         IQueryable<City> query,
         CitySearchFilter filter)
     {

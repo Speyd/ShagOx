@@ -8,5 +8,6 @@ public partial interface ICityQueryRepository
     : ISearchTranslatableRepository<City, CitySearchFilter>
 {
     Task<List<CityCacheInfo>> GetCacheInfoByRegionAsync(
-        long regionId);
+        long regionId,
+        CancellationToken cancellationToken = default);
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.SharedKernel.Abstractions.Results.Enum;
 
@@ -6,7 +6,7 @@ namespace ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 public static class ActionResultExtensions
 {
     public static IActionResult ToActionResult<T>(
-    this Result<T> result)
+        this Result<T> result)
     {
         if (result.IsSuccess)
             return new OkObjectResult(result.Value);

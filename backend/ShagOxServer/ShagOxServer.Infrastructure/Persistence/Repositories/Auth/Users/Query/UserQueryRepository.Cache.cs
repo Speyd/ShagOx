@@ -12,11 +12,12 @@ public partial class UserQueryRepository
       IUserQueryRepository
 {
     public async Task<List<UserCacheInfo>> GetCacheInfosByCityAsync(
-        long cityId)
+        long cityId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users
             .Where(x => x.CityId == cityId)
             .SelectCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

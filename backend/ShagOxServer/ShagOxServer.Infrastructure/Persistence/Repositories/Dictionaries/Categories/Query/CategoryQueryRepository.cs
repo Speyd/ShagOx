@@ -21,22 +21,27 @@ public partial class CategoryQueryRepository
 
     public async Task<Category?> GetByIdentificatorAsync(
         string identificator,
-        long? parentId = null)
+        long? parentId = null,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Categories
             .WithIncludes()
             .FirstOrDefaultAsync(x =>
                 x.Code == identificator &&
-                (parentId.HasValue && x.ProductTypeId == parentId));
+                (parentId.HasValue && x.ProductTypeId == parentId),
+                cancellationToken);
     }
 
     public async Task<PagedResult<Category>> GetByProductTypeAsync(
         long productTypeId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Categories
             .WithIncludes()
             .Where(c => c.ProductTypeId == productTypeId)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
+                cancellationToken);
     }
 }

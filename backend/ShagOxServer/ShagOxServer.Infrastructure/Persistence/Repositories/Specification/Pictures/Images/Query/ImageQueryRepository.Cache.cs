@@ -12,11 +12,12 @@ public partial class ImageQueryRepository
       IImageQueryRepository
 {
     public async Task<List<ImageCacheInfo>> GetCacheInfoByAdvertisementAsync(
-        long advertId)
+        long advertId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Images
           .Where(x => x.AdvertisementId == advertId)
           .SelectCacheInfo()
-          .ToListAsync();
+          .ToListAsync(cancellationToken);
     }
 }

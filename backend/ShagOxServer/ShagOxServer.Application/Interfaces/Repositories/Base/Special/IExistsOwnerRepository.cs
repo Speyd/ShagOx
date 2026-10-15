@@ -1,7 +1,8 @@
-﻿namespace ShagOxServer.Application.Interfaces.Repositories.Base.Special;
+namespace ShagOxServer.Application.Interfaces.Repositories.Base.Special;
 public interface IExistsOwnerRepository
 {
     Task<bool> IsOwnerAsync(
         long entityId,
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 }

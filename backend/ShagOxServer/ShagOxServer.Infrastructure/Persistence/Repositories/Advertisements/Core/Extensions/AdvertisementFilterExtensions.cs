@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using System.Text.Json;
@@ -27,7 +27,10 @@ public static class AdvertisementFilterExtensions
 
         if (filter.CategoryId.HasValue)
         {
-            query = query.Where(x => x.CategoryId == filter.CategoryId.Value);
+            query = query
+                .Where(x => 
+                    x.CategoryId == filter.CategoryId.Value)
+                .OrderByDescending(x => x.Popularity);
         }
 
         if (filter.Attributes is not null)

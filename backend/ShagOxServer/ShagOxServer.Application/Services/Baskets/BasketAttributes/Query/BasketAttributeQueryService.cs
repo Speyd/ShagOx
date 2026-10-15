@@ -53,7 +53,8 @@ public class BasketAttributeQueryService
     }
 
     public async Task<Result<BasketAttributeDto>> GetByAttributeDefinitionAsync(
-        long attributeDefenitionId)
+        long attributeDefenitionId,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = BasketAttributeCache.ByAttributeDefenition(
             attributeDefenitionId, 
@@ -64,7 +65,8 @@ public class BasketAttributeQueryService
             async () =>
             {
                 var attribute = await _attributeQueryRepository
-                    .GetByAttributeDefinitionAsync(attributeDefenitionId);
+                    .GetByAttributeDefinitionAsync(attributeDefenitionId,
+                        cancellationToken);
 
                 return await attribute.ToResultAsync(
                     ApplyMapperAsync);
@@ -75,7 +77,8 @@ public class BasketAttributeQueryService
 
     public async Task<Result<PagedResult<BasketAttributeDto>>> GetByCategoryAsync(
         long categoryId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = BasketAttributeCache.ByCategory(
             categoryId,
@@ -88,7 +91,8 @@ public class BasketAttributeQueryService
             async () =>
             {
                 var attributes = await _attributeQueryRepository
-                    .GetByCategoryAsync(categoryId, pagination);
+                    .GetByCategoryAsync(categoryId, pagination,
+                        cancellationToken);
 
                 return await attributes.ToResultPagedAsync(
                     ApplyMapperAsync);

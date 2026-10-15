@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
 using ShagOxServer.Domain.Filters.Auth.Roles;
@@ -13,59 +15,30 @@ namespace ShagOxServer.Api.Controllers.Auth.Roles;
 [Route("api/admin/roles")]
 [Authorize(Roles = "Admin")]
 public class RoleQueriesController 
-    : ApiController
+    : BaseQueryController<RoleDto,
+        RoleSearchFilter>
 {
-    private readonly IRoleQueryService _queryService;
     private readonly IUserRoleQueryService _queryUserRoleService;
 
 
     public RoleQueriesController(
         IRoleQueryService queryService,
-        IUserRoleQueryService queryUserRoleService)
+        IUserRoleQueryService queryUserRoleService
+    )
+        : base(queryService)
     {
-        _queryService = queryService;
         _queryUserRoleService = queryUserRoleService;
     }
 
 
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] long id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .GetPagedAsync(pagination);
-
-        return result.ToActionResult();
-    }
-
     [HttpGet("{roleId:long}/users")]
     public async Task<IActionResult> GetByRole(
         [FromRoute] long roleId,
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         var result = await _queryUserRoleService
             .GetUsersByRoleAsync(roleId, pagination);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet("search")]
-    public async Task<IActionResult> Search(
-        [FromQuery] RoleSearchFilter filter,
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .SearchAsync(filter, pagination);
 
         return result.ToActionResult();
     }

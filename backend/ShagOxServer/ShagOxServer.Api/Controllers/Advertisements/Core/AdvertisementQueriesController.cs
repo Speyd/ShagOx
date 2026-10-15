@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -10,44 +12,29 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Core;
 [ApiController]
 [Route("api/advertisements")]
 public class AdvertisementQueriesController 
-    : ApiController
+    : BaseQueryController<AdvertisementDto,
+        AdvertisementSearchFilter>
 {
-    private readonly IAdvertisementQueryService _queryService;
+    private readonly IAdvertisementQueryService _advertQueryService;
 
 
     public AdvertisementQueriesController(
-        IAdvertisementQueryService queryService)
+        IAdvertisementQueryService queryService
+    )
+        : base(queryService)
     {
-        _queryService = queryService;
+        _advertQueryService = queryService;
     }
 
-
-    [HttpGet]
-    public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .GetPagedAsync(pagination);
-
-        return result.ToActionResult();
-    }
 
     [HttpGet("short")]
     public async Task<IActionResult> GetShortPaged(
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
-        var result = await _queryService
-            .GetShortPagedAsync(pagination);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] long id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
+        var result = await _advertQueryService
+            .GetShortPagedAsync(pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }
@@ -55,23 +42,27 @@ public class AdvertisementQueriesController
     [HttpGet("seller{userId:long}")]
     public async Task<IActionResult> GetBySeller(
         [FromRoute] long userId,
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
-        var result = await _queryService
-            .GetBySellerAsync(userId, pagination);
+        var result = await _advertQueryService
+            .GetBySellerAsync(userId, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> Search(
+    public override async Task<IActionResult> Search(
         [FromQuery] AdvertisementSearchFilter filter,
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         filter = AdvertisementSearchFilter.Create(filter);
 
-        var result = await _queryService
-            .SearchAsync(filter, pagination);
+        var result = await _advertQueryService
+            .SearchAsync(filter, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }
@@ -79,12 +70,14 @@ public class AdvertisementQueriesController
     [HttpGet("short-search")]
     public async Task<IActionResult> ShortSearch(
         [FromQuery] AdvertisementSearchFilter filter,
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         filter = AdvertisementSearchFilter.Create(filter);
 
-        var result = await _queryService
-            .ShortSearchAsync(filter, pagination);
+        var result = await _advertQueryService
+            .ShortSearchAsync(filter, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }

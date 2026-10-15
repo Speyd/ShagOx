@@ -5,12 +5,11 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions.Query;
-
 public partial class RegionQueryRepository
     : SearchRepository<Region, RegionSearchFilter>,
       IRegionQueryRepository
 {
-    protected override IQueryable<Region> ApplyFilter(
+    public override IQueryable<Region> ApplyFilter(
         IQueryable<Region> query,
         RegionSearchFilter filter)
     {

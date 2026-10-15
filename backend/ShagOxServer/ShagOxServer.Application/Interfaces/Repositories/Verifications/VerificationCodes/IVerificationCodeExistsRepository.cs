@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Verifications;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
@@ -6,8 +6,10 @@ public interface IVerificationCodeExistsRepository
     : IExistsRepository<VerificationCode>
 {
     Task<bool> ExistsByUserIdAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsActiveByUserIdAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 }

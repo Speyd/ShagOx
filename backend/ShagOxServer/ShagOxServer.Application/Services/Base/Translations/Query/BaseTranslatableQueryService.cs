@@ -36,10 +36,12 @@ public abstract class BaseTranslatableQueryService<TDto, TEntity, TFilter>
 
     public async Task<Result<TDto>> GetByIdentificatorAsync(
         string identificator, 
-        long? parentId)
+        long? parentId,
+        CancellationToken cancellationToken = default)
     {
         var entity = await _translatableRepository
-            .GetByIdentificatorAsync(identificator, parentId);
+            .GetByIdentificatorAsync(identificator, parentId,
+                cancellationToken);
 
         return await entity.ToResultAsync(ApplyMapperAsync);
     }

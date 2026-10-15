@@ -27,7 +27,7 @@ public class ProductTypeTranslationQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<ProductTypeTranslation> ApplyFilter(
+    public override IQueryable<ProductTypeTranslation> ApplyFilter(
        IQueryable<ProductTypeTranslation> query,
        ProductTypeTranslationSearchFilter filter)
     {

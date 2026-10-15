@@ -26,7 +26,7 @@ public class AttributeDictionaryValueTranslationQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<AttributeDictionaryValueTranslation> ApplyFilter(
+    public override IQueryable<AttributeDictionaryValueTranslation> ApplyFilter(
        IQueryable<AttributeDictionaryValueTranslation> query,
        AttributeDictionaryValueTranslationSearchFilter filter)
     {

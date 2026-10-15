@@ -2,7 +2,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
-using ShagOxServer.Application.Interfaces.Services.Base.Translations;
+using ShagOxServer.Application.Interfaces.Services.Base.Translations.Translation;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Domain.Base;
@@ -37,20 +37,24 @@ public abstract class BaseTranslationQueryService<TDto, TEntity, TTranslation, T
 
     public async Task<Result<PagedResult<TDto>>> GetPagedAsync(
         PaginationParams pagination,
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         var entities = await _queryTranslationRepository
-            .GetPagedAsync(pagination, language);
+            .GetPagedAsync(pagination, language,
+                cancellationToken);
 
         return await entities.ToResultPagedAsync(ApplyMapperAsync);
     }
 
     public async Task<Result<TDto>> GetByIdentificatorAsync(
         string identificator,
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         var entity = await _queryTranslationRepository
-            .GetByIdentificatorAsync(identificator, language);
+            .GetByIdentificatorAsync(identificator, language,
+                cancellationToken);
 
         return await entity.ToResultAsync(ApplyMapperAsync);
     }

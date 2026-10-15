@@ -12,11 +12,12 @@ public partial class CityQueryRepository
       ICityQueryRepository
 {
     public async Task<List<CityCacheInfo>> GetCacheInfoByRegionAsync(
-        long regionId)
+        long regionId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Cities
             .Where(x => x.RegionId == regionId)
             .SelectCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

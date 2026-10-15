@@ -13,11 +13,12 @@ public partial class CategoryQueryRepository
       ICategoryQueryRepository
 {
     public async Task<List<CategoryCacheInfo>> GetCacheInfosByProductTypeAsync(
-        long productTypeId)
+        long productTypeId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Categories
             .Where(c => c.ProductTypeId == productTypeId)
             .SelectCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

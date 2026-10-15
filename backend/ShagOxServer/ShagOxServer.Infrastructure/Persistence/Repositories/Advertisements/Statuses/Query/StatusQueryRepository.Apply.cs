@@ -10,7 +10,7 @@ public partial class StatusQueryRepository
     : SearchRepository<Status, StatusSearchFilter>,
       IStatusQueryRepository
 {
-    protected override IQueryable<Status> ApplyFilter(
+    public override IQueryable<Status> ApplyFilter(
        IQueryable<Status> query,
        StatusSearchFilter filter)
     {

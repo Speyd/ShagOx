@@ -3,6 +3,7 @@ using ShagOxServer.Application.Common.Settings.Systems.Middleware;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Caches.Keys.Security;
 using ShagOxServer.Domain.Entities.Security;
+using System.Net;
 
 namespace ShagOxServer.Api.Middleware;
 public sealed class RequestTrackingMiddleware
@@ -26,20 +27,33 @@ public sealed class RequestTrackingMiddleware
     public async Task InvokeAsync(
         HttpContext context)
     {
-        var userIp = context.Connection.RemoteIpAddress?.ToString();
+        var cfIp = context.Request.Headers["CF-Connecting-IP"]
+                .ToString();
 
-        if (string.IsNullOrWhiteSpace(userIp))
+        IPAddress? userIp = null;
+
+        if (IPAddress.TryParse(cfIp, out var parsedIp))
+        {
+            userIp = parsedIp;
+        }
+        else
+        {
+            userIp = context.Connection.RemoteIpAddress;
+        }
+
+        var ipAddress = userIp?.ToString();
+
+        if (string.IsNullOrWhiteSpace(ipAddress))
         {
             await _next(context);
             return;
         }
-
-        var cacheKey = IpRateLimitStateKeys.ByIp(userIp);
+        var cacheKey = IpRateLimitStateKeys.ByIp(ipAddress);
 
         var state = await _userCache
             .GetAsync<IpRateLimitState>(cacheKey);
 
-        state ??= new IpRateLimitState(userIp);
+        state ??= new IpRateLimitState(ipAddress);
 
         var now = DateTime.UtcNow;
 

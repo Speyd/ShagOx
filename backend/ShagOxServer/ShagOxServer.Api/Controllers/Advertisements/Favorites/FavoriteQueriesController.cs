@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
@@ -24,10 +24,12 @@ public class FavoriteQueriesController
 
     [HttpGet("count/{advertId:long}")]
     public async Task<IActionResult> CountByAdvertisementIdAsync(
-         [FromRoute] long advertId)
+         [FromRoute] long advertId,
+        CancellationToken cancellationToken)
     {
         var result = await _queryService
-            .CountByAdvertisementAsync(advertId);
+            .CountByAdvertisementAsync(advertId,
+                cancellationToken);
 
         return result.ToActionResult();
     }
@@ -35,10 +37,12 @@ public class FavoriteQueriesController
     [Authorize]
     [HttpGet("me")]
     public async Task<IActionResult> GetMyfavorite(
-       [FromQuery] PaginationParams pagination)
+       [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         var result = await _queryService
-            .GetByUserAsync(UserId, pagination);
+            .GetByUserAsync(UserId, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }

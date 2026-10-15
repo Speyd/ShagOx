@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Location.Cities.Translations;
-using ShagOxServer.Application.Interfaces.Services.Base.Translations;
+using ShagOxServer.Application.DTOs.Location.Cities.Translations;
+using ShagOxServer.Application.Interfaces.Services.Base.Translations.Translation;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Filters.Location.Cities.Translations;
 

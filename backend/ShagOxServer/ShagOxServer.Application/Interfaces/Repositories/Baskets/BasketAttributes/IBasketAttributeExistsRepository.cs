@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
@@ -8,11 +8,14 @@ public interface IBasketAttributeExistsRepository
     Task<bool> ExistsAsync(
         long categoryId,
         long attributeId,
-        int order);
+        int order,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByCategoryAsync(
-        long categoryId);
+        long categoryId,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByAttributeDefenitionAsync(
-        long attributeDefenitionId);
+        long attributeDefenitionId,
+        CancellationToken cancellationToken = default);
 }

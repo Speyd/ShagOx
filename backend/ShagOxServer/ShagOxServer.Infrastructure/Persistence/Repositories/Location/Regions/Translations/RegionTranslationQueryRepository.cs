@@ -28,7 +28,7 @@ public class RegionTranslationQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<RegionTranslation> ApplyFilter(
+    public override IQueryable<RegionTranslation> ApplyFilter(
        IQueryable<RegionTranslation> query,
        RegionTranslationSearchFilter filter)
     {

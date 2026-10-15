@@ -9,8 +9,10 @@ public partial interface IFavoriteQueryRepository
 {
     Task<PagedResult<Favorite>> GetByUserAsync(
         long usderId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     Task<int> CountByAdvertisementAsync(
-        long advertisementId);
+        long advertisementId,
+        CancellationToken cancellationToken = default);
 }

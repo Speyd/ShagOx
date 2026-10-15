@@ -9,7 +9,7 @@ public partial class CurrencyQueryRepository
     : SearchRepository<Currency, CurrencySearchFilter>,
     ICurrencyQueryRepository
 {
-    protected override IQueryable<Currency> ApplyFilter(
+    public override IQueryable<Currency> ApplyFilter(
         IQueryable<Currency> query,
         CurrencySearchFilter filter)
     {

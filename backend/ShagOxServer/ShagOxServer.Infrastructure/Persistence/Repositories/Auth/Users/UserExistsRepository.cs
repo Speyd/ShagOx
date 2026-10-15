@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -19,34 +19,42 @@ public class UserExistsRepository
     public async Task<bool> ExistsAsync(
         string? email,
         string? phone,
-        string userName)
+        string userName,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users.AnyAsync(x =>
             (email != null && x.Email == email) ||
             (phone != null && x.Phone == phone) ||
-            x.UserName == userName
+            x.UserName == userName,
+            cancellationToken
         );
     }
 
     public async Task<bool> ExistsAsync(
-        string value)
+        string value,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users.AnyAsync(x =>
             x.Email == value ||
             x.Phone == value ||
-            x.UserName == value
+            x.UserName == value,
+            cancellationToken
         );
     }
 
     public async Task<bool> ExistsByUserNameAsync(
-        string userName)
+        string userName,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users
-            .AnyAsync(x => x.UserName == userName);
+            .AnyAsync(x => 
+                x.UserName == userName,
+                cancellationToken);
     }
 
     public async Task<bool> ExistsByEmailAsync(
-        string? email)
+        string? email,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users.AnyAsync(x =>
             email != null && x.Email != null &&
@@ -55,10 +63,12 @@ public class UserExistsRepository
     }
 
     public async Task<bool> ExistsByPhoneAsync(
-        string? phone)
+        string? phone,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users.AnyAsync(x =>
-            (phone != null && x.Phone == phone)
+            (phone != null && x.Phone == phone),
+            cancellationToken
         );
     }
 }

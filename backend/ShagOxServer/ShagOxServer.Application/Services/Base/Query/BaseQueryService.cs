@@ -2,7 +2,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
@@ -44,7 +44,8 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
 
 
     public virtual async Task<Result<TDto>> GetByIdAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         if (!CacheById)
         {
@@ -59,7 +60,8 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         if (cache is not null)
             return Result<TDto>.Success(cache);
 
-        var entityCache = await _queryRepository.GetByIdIncludeAsync(id);
+        var entityCache = await _queryRepository
+            .GetByIdIncludeAsync(id, cancellationToken);
 
         var dto = await entityCache.ToResultAsync(ApplyMapperAsync);
 
@@ -70,7 +72,8 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     }
 
     public virtual async Task<Result<PagedResult<TDto>>> GetPagedAsync(
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         if (!CacheByPaged)
         {
@@ -82,11 +85,12 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         }
 
         var cache = await GetByPagedCache(pagination);
+
         if (cache is not null)
             return Result<PagedResult<TDto>>.Success(cache);
 
         var entities = await _queryRepository
-          .GetPagedAsync(pagination);
+          .GetPagedAsync(pagination, cancellationToken);
 
         var dto = await entities.ToResultPagedAsync(
             ApplyMapperAsync);
@@ -99,7 +103,8 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
 
     public virtual async Task<Result<PagedResult<TDto>>> SearchAsync(
         TFilter filter,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         if (!CacheBySearch)
         {
@@ -115,7 +120,7 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
             return Result<PagedResult<TDto>>.Success(cache);
 
         var entities = await _queryRepository
-          .SearchAsync(filter, pagination);
+          .SearchAsync(filter, pagination, cancellationToken);
 
         var dto = await entities.ToResultPagedAsync(
             ApplyMapperAsync);

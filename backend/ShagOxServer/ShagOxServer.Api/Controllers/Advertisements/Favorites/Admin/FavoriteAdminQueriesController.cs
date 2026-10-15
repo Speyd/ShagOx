@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
+using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -11,46 +14,30 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Favorites.Admin;
 [Route("api/admin/favorites")]
 [Authorize(Roles = "Admin")]
 public class FavoriteAdminQueriesController 
-    : ApiController
+    : BaseQueryController<FavoriteDto,
+        FavoriteSearchFilter>
 {
-    private readonly IFavoriteQueryService _queryService;
+    private readonly IFavoriteQueryService _favoriteQueryService;
 
 
     public FavoriteAdminQueriesController(
-        IFavoriteQueryService queryService)
+        IFavoriteQueryService queryService
+    )
+        : base(queryService)
     {
-        _queryService = queryService;
+        _favoriteQueryService = queryService;
     }
 
-
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] long id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .GetPagedAsync(pagination);
-
-        return result.ToActionResult();
-    }
 
     [HttpGet("by-user/{userId:long}")]
     public async Task<IActionResult> GetByUserIdAsync(
         [FromRoute] long userId,
-        [FromQuery] PaginationParams pagination
-        )
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
-        var result = await _queryService
-            .GetByUserAsync(userId, pagination);
+        var result = await _favoriteQueryService
+            .GetByUserAsync(userId, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }

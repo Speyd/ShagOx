@@ -6,11 +6,14 @@ public interface IQueryRepository<TEntity>
     where TEntity : BaseEntity
 {
     Task<TEntity?> GetByIdAsync(
-        long id);
+        long id,
+        CancellationToken cancellationToken = default);
 
     Task<TEntity?> GetByIdIncludeAsync(
-        long id);
+        long id,
+        CancellationToken cancellationToken = default);
 
     Task<PagedResult<TEntity>> GetPagedAsync(
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

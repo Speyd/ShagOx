@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Baskets.Core.Query;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -9,5 +9,6 @@ public interface IBasketQueryService
     : IQueryService<BasketDto, Basket, BasketSearchFilter>
 {
     Task<Result<BasketDto>> GetByUserAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 }

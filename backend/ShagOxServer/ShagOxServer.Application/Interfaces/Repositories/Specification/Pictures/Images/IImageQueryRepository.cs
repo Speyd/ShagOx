@@ -7,12 +7,15 @@ public partial interface IImageQueryRepository
     : ISearchRepository<Image, ImageSearchFilter>
 {
     Task<List<Image>> GetByIdsAsync(
-        List<long> ids);
+        List<long> ids,
+        CancellationToken cancellationToken = default);
 
     Task<List<Image>> GetByAdvertisementAsync(
-        long advertId);
+        long advertId,
+        CancellationToken cancellationToken = default);
 
     Task<int> GetNextOrder(
         long advertId,
-        int? requestedOrder = null);
+        int? requestedOrder = null,
+        CancellationToken cancellationToken = default);
 }

@@ -9,8 +9,10 @@ public interface IRoleQueryRepository
 {
     Task<PagedResult<Role>> GetByUserAsync(
         long userId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     Task<Role?> GetByNameAsync(
-        string name);
+        string name,
+        CancellationToken cancellationToken = default);
 }

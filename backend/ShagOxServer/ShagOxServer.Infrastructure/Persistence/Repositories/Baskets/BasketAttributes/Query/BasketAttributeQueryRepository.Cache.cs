@@ -12,7 +12,8 @@ public partial class BasketAttributeQueryRepository
       IBasketAttributeQueryRepository
 {
     public async Task<List<BasketAttributeCacheInfo>> GetCacheInfosByCategoryAsync(
-        long categoryId)
+        long categoryId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketAttributes
             .WithIncludes()
@@ -20,15 +21,16 @@ public partial class BasketAttributeQueryRepository
                 c.AttributeDefinition.CategoryId == categoryId)
             .OrderBy(c => c.Order)
             .SelectCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
     public async Task<BasketAttributeCacheInfo?> GetCacheInfoByAttributeDefinitionAsync(
-        long attributeDefinitionId)
+        long attributeDefinitionId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.BasketAttributes
             .WithIncludes()
             .Where(x => x.AttributeDefinitionId == attributeDefinitionId)
             .SelectCacheInfo()
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

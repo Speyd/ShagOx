@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -17,9 +17,11 @@ public class ProductTypeExistsRepository
 
 
     public async Task<bool> ExistsByCodeAsync(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         return await _db.ProductTypes
-            .AnyAsync(c => c.Code == code);
+            .AnyAsync(c => c.Code == code,
+                cancellationToken);
     }
 }

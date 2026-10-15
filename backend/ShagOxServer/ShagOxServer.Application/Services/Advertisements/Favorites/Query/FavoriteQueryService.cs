@@ -54,17 +54,20 @@ public class FavoriteQueryService
     }
 
     public async Task<Result<int>> CountByAdvertisementAsync(
-        long advertisementId)
+        long advertisementId,
+        CancellationToken cancellationToken = default)
     {
         var count = await _favoriteRepository
-            .CountByAdvertisementAsync(advertisementId);
+            .CountByAdvertisementAsync(advertisementId,
+                cancellationToken);
 
         return Result<int>.Success(count);
     }
 
     public async Task<Result<PagedResult<FavoriteDto>>> GetByUserAsync(
         long userId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = FavoriteCache.ByUser(
             userId,
@@ -76,7 +79,8 @@ public class FavoriteQueryService
             async () =>
             {
                 var favorites = await _favoriteRepository
-                    .GetByUserAsync(userId, pagination);
+                    .GetByUserAsync(userId, pagination, 
+                        cancellationToken);
 
                 return await favorites.ToResultPagedAsync(
                     ApplyMapperAsync);

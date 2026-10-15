@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Base;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;

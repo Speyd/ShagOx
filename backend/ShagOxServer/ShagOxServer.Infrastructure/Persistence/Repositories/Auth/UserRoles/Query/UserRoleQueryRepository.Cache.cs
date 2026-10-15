@@ -13,22 +13,24 @@ public partial class UserRoleQueryRepository
       IUserRoleQueryRepository
 {
     public async Task<List<RoleCacheInfo>> GetRoleCacheInfoByUserAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Roles
             .Where(u => u.UserRoles
                 .Any(ur => ur.UserId == userId))
             .SelectRoleCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<List<UserCacheInfo>> GetUserCacheInfoByRoleAsync(
-        long roleId)
+        long roleId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Users
             .Where(u => u.UserRoles
                 .Any(ur => ur.RoleId == roleId))
             .SelectUserCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

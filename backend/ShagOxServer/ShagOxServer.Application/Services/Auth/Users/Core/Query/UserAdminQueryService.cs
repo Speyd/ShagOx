@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
@@ -28,10 +28,11 @@ public class UserAdminQueryService
 
 
     public async Task<Result<PagedResult<UserDto>>> GetPagedAsync(
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var users = await _userQueryRepository
-            .GetPagedAsync(pagination);
+            .GetPagedAsync(pagination, cancellationToken);
 
         return await users.ToResultPagedAsync(
             _userQueryService.ApplyMapperAsync);
@@ -39,20 +40,23 @@ public class UserAdminQueryService
 
     public async Task<Result<PagedResult<UserDto>>> Search(
        UserAdminSearchFilter filter,
-       PaginationParams pagination)
+       PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var users = await _userQueryRepository
-            .AdminSearch(filter, pagination);
+            .AdminSearch(filter, pagination,
+                cancellationToken);
 
         return await users.ToResultPagedAsync(
             _userQueryService.ApplyMapperAsync);
     }
 
     public async Task<bool> ExistsByIdAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var result = await _userExistsRepository
-            .ExistsByIdAsync(id);
+            .ExistsByIdAsync(id, cancellationToken);
 
         return result;
     }

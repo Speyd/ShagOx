@@ -1,43 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Query;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 
 namespace ShagOxServer.Api.Controllers.Specification.Pictures.Avatars;
 
 [ApiController]
 [Route("api/avatars")]
 public class AvatarQueriesController 
-    : ApiController
+    : BaseQueryController<AvatarDto,
+        AvatarSearchFilter>
 {
-    private readonly IAvatarQueryService _queryService;
-
-
     public AvatarQueriesController(
-        IAvatarQueryService queryService)
+        IAvatarQueryService queryService
+    )
+        : base(queryService)
     {
-        _queryService = queryService;
-    }
-
-
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] long id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .GetPagedAsync(pagination);
-
-        return result.ToActionResult();
     }
 }

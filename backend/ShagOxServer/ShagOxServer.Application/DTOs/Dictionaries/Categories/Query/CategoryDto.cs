@@ -1,10 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Base;
 
 namespace ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
 public sealed record CategoryDto
 (
     long Id,
     string Code,
-    CategoryProductTypeDto? ProductType,
+    CategoryProductTypeDto ProductType,
     string? Lable
 ) : BaseDto(Id);

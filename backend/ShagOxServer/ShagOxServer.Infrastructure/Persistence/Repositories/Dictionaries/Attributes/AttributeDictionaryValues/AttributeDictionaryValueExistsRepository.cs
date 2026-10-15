@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -17,18 +17,21 @@ public class AttributeDictionaryValueExistsRepository
 
     public async Task<bool> ExistsAsync(
         long dictionaryId,
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDictionaryValues
             .AnyAsync(x => 
                 x.DictionaryId == dictionaryId && 
-                x.Code == code);
+                x.Code == code, cancellationToken);
     }
 
     public async Task<bool> ExistsByCodeAsync(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDictionaryValues
-            .AnyAsync(x => x.Code == code);
+            .AnyAsync(x => x.Code == code,
+                cancellationToken);
     }
 }

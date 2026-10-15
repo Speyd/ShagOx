@@ -1,58 +1,23 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Application.DTOs.Baskets.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Query;
 using ShagOxServer.Domain.Filters.Baskets.Core;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Baskets.Core.Admin;
 [ApiController]
 [Route("api/admin/baskets")]
 [Authorize(Roles = "Admin")]
 public class BasketAdminQueriesController
-    : ApiController
+    : BaseQueryController<BasketDto,
+        BasketSearchFilter>
 {
-    private readonly IBasketQueryService _queryService;
-
-
     public BasketAdminQueriesController(
-        IBasketQueryService queryService)
+        IBasketQueryService queryService
+    )
+        : base(queryService)
     {
-        _queryService = queryService;
     }
-
-
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] long id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
-
-
-    [HttpGet]
-    public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .GetPagedAsync(pagination);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet("search")]
-    public async Task<IActionResult> Search(
-       [FromQuery] BasketSearchFilter filter,
-       [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .SearchAsync(filter, pagination);
-
-        return result.ToActionResult();
-    }
-
 }

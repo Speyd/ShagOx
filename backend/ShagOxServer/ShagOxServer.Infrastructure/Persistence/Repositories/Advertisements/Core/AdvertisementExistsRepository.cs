@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -16,11 +16,13 @@ public class AdvertisementExistsRepository
 
     public async Task<bool> IsOwnerAsync(
         long adId,
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         var result = await _db.Advertisements
            .AnyAsync(x =>
-              (x.Id == adId && x.SellerId == userId));
+              (x.Id == adId && x.SellerId == userId),
+              cancellationToken);
 
         return result;
     }

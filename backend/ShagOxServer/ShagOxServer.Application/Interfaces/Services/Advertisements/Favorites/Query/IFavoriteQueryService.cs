@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
+using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -10,9 +10,11 @@ public interface IFavoriteQueryService
     : IQueryService<FavoriteDto, Favorite, FavoriteSearchFilter>
 {
     Task<Result<int>> CountByAdvertisementAsync(
-        long advertisementId);
+        long advertisementId,
+        CancellationToken cancellationToken = default);
 
     Task<Result<PagedResult<FavoriteDto>>> GetByUserAsync(
         long usderId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

@@ -26,7 +26,7 @@ public class AttributeDefinitionTranslationQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<AttributeDefinitionTranslation> ApplyFilter(
+    public override IQueryable<AttributeDefinitionTranslation> ApplyFilter(
        IQueryable<AttributeDefinitionTranslation> query,
        AttributeDefinitionTranslationSearchFilter filter)
     {

@@ -8,8 +8,10 @@ public interface IVerificationCodeQueryRepository
         VerificationCodeSearchFilter>
 {
     Task<VerificationCode?> GetActiveByUserIdAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 
     Task<VerificationCode?> GetLatestByUserIdAsync(
-        long userId);
+        long userId,
+        CancellationToken cancellationToken = default);
 }

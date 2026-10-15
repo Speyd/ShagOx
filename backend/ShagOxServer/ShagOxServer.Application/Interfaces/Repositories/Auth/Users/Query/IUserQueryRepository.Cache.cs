@@ -8,5 +8,6 @@ public partial interface IUserQueryRepository
     : ISearchRepository<User, UserSearchFilter>
 {
     Task<List<UserCacheInfo>> GetCacheInfosByCityAsync(
-        long cityId);
+        long cityId,
+        CancellationToken cancellationToken = default);
 }

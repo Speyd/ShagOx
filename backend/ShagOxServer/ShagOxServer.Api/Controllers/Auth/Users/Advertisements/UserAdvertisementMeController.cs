@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
@@ -29,7 +29,8 @@ public class UserAdvertisementMeController
 
     [HttpGet("sales")]
     public async Task<IActionResult> GetMySales(
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         var user = await _queryUserService
             .GetMyProfileAsync();
@@ -38,14 +39,16 @@ public class UserAdvertisementMeController
             return user.ToActionResult();
 
         var result = await _queryService
-            .GetBySellerAsync(user.Value.Id, pagination);
+            .GetBySellerAsync(user.Value.Id, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }
 
     [HttpGet("purchases")]
     public async Task<IActionResult> GetMyPurchases(
-        [FromQuery] PaginationParams pagination)
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
     {
         var user = await _queryUserService
             .GetMyProfileAsync();
@@ -54,7 +57,8 @@ public class UserAdvertisementMeController
             return user.ToActionResult();
 
         var result = await _queryService
-            .GetPurchasedByUserAsync(user.Value.Id, pagination);
+            .GetPurchasedByUserAsync(user.Value.Id, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }

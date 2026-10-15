@@ -7,6 +7,7 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.E
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
+
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Query;
 public partial class FavoriteQueryRepository 
     : SearchRepository<Favorite, FavoriteSearchFilter>, 
@@ -19,21 +20,25 @@ public partial class FavoriteQueryRepository
 
 
     public async Task<int> CountByAdvertisementAsync(
-        long advertisementId)
+        long advertisementId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Favorites
              .WithIncludes()
              .Where(x => x.AdvertisementId == advertisementId)
-             .CountAsync();
+             .CountAsync(cancellationToken);
     }
 
     public async Task<PagedResult<Favorite>> GetByUserAsync(
         long usderId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Favorites
              .WithIncludes()
              .Where(x => x.UserId == usderId)
-             .ToPagedResultAsync(pagination);
+             .ToPagedResultAsync(pagination,
+                (x => x.Id),
+                cancellationToken);
     }
 }

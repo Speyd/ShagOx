@@ -42,7 +42,8 @@ public class CurrencyQueryService
     }
 
     public async Task<Result<CurrencyDto>> GetByCodeAsync(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = CurrencyCache.ByCode(code);
 
@@ -51,7 +52,7 @@ public class CurrencyQueryService
             async () =>
             {
                 var currencies = await _currencyRepository
-                    .GetByCodeAsync(code);
+                    .GetByCodeAsync(code, cancellationToken);
 
                 return await currencies.ToResultAsync(
                     ApplyMapperAsync);
@@ -61,7 +62,8 @@ public class CurrencyQueryService
     }
 
     public async Task<Result<CurrencyDto>> GetBySymbolAsync(
-        string symbol)
+        string symbol,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = CurrencyCache.BySymbol(symbol);
 
@@ -70,7 +72,7 @@ public class CurrencyQueryService
             async () =>
             {
                 var currency = await _currencyRepository
-                    .GetBySymbolAsync(symbol);
+                    .GetBySymbolAsync(symbol, cancellationToken);
 
                 return await currency.ToResultAsync(
                     ApplyMapperAsync);

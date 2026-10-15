@@ -16,7 +16,7 @@ public partial class BasketItemQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<BasketItem> ApplyFilter(
+    public override IQueryable<BasketItem> ApplyFilter(
       IQueryable<BasketItem> query,
       BasketItemSearchFilter filter)
     {

@@ -13,11 +13,12 @@ public partial class FavoriteQueryRepository
       IFavoriteQueryRepository
 {
     public async Task<List<FavoriteCacheInfo>> GetCacheInfosByAdvertisementAsync(
-        long advertId)
+        long advertId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Favorites
             .Where(x => x.AdvertisementId == advertId)
             .SelectCacheInfo()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

@@ -20,43 +20,48 @@ public partial class AttributeDefinitionQueryRepository
 
 
     public async Task<List<AttributeDefinition>> GetByIdsAsync(
-        List<long> ids)
+        List<long> ids,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDefinitions
             .WithIncludes()
             .Where(x => ids.Contains(x.Id))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<List<long>> GetIdsByAttributeDictionaryAsync(
-        long dictionaryId)
+        long dictionaryId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDefinitions
             .Where(x => x.DictionaryId == dictionaryId)
             .Select(x => x.Id)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<List<AttributeDefinition>> GetByKeysAsync(
         long categoryId,
-        IEnumerable<string> keys)
+        IEnumerable<string> keys,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDefinitions
             .WithIncludes()
             .Where(x =>
                 x.CategoryId == categoryId &&
                 keys.Contains(x.Key))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<AttributeDefinition?> GetByIdentificatorAsync(
         string identificator,
-        long? parentId = null)
+        long? parentId = null,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDefinitions
             .WithIncludes()
             .FirstOrDefaultAsync(x =>
                 x.Key == identificator &&
-                (parentId.HasValue && x.CategoryId == parentId));
+                (parentId.HasValue && x.CategoryId == parentId),
+                cancellationToken);
     }
 }

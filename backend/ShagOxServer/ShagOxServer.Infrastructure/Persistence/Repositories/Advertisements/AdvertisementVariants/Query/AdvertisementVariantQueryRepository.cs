@@ -19,11 +19,14 @@ public partial class AdvertisementVariantQueryRepository
 
     public async Task<PagedResult<AdvertisementVariant>> GetByAdvertisementAsync(
         long advertId,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AdvertisementVariants
             .WithIncludes()
             .Where(x => x.AdvertisementId == advertId)
-            .ToPagedResultAsync(pagination);
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
+                cancellationToken);
     }
 }

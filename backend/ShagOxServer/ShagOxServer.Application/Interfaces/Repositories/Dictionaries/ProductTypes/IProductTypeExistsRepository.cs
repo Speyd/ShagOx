@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
@@ -6,5 +6,6 @@ public interface IProductTypeExistsRepository
     : IExistsRepository<ProductType>
 {
     Task<bool> ExistsByCodeAsync(
-        string code);
+        string code,
+        CancellationToken cancellationToken = default);
 }

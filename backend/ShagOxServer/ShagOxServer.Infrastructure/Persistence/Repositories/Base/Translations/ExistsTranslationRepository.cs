@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
-using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 public class ExistsTranslationRepository<TEntity, TTranslation> 
     : ExistsRepository<TTranslation>, 
@@ -18,7 +16,8 @@ public class ExistsTranslationRepository<TEntity, TTranslation>
 
     public virtual async Task<bool> ExistsAsync(
         long translatableId,
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Set<TEntity>()
             .AnyAsync(x =>
@@ -27,31 +26,37 @@ public class ExistsTranslationRepository<TEntity, TTranslation>
                     nameof(BaseTranslation<TTranslation>.TranslatableId)) == translatableId &&
                 EF.Property<string>(
                     x,
-                    nameof(BaseTranslation<TTranslation>.Language)) == language);
+                    nameof(BaseTranslation<TTranslation>.Language)) == language,
+                cancellationToken);
     }
 
     public virtual async Task<bool> ExistsByLanguageAsync(
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Set<TEntity>()
             .AnyAsync(x =>
                 EF.Property<string>(
                     x,
-                    nameof(BaseTranslation<TTranslation>.Language)) == language);
+                    nameof(BaseTranslation<TTranslation>.Language)) == language,
+                cancellationToken);
     }
 
     public virtual async Task<bool> ExistsByIdentificatorAsync(
         string identificator,
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         IQueryable<TTranslation> query = _db.Set<TTranslation>();
 
         query = ApplyIncludes(query);
 
-        query = ApplyIdentificatorFilter(query, identificator);
+        query = ApplyIdentificatorFilter(query, 
+            identificator);
 
         return await query.AnyAsync(
-            x => x.Language == language);
+            x => x.Language == language,
+            cancellationToken);
     }
 
     protected virtual IQueryable<TTranslation> ApplyIdentificatorFilter(

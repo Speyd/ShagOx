@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
@@ -13,5 +13,6 @@ public interface ICategoryQueryService
 {
     Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
         long productTypeId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 }

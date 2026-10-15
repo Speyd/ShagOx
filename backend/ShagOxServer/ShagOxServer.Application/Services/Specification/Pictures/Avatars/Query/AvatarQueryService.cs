@@ -46,7 +46,8 @@ public class AvatarQueryService
     }
 
     public async Task<Result<AvatarDto>> GetByUserIdAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = AvatarCache.ByUser(userId);
 
@@ -55,7 +56,7 @@ public class AvatarQueryService
             async () =>
             {
                 var image = await _avatarQueryRepository
-                    .GetByUserIdAsync(userId);
+                    .GetByUserIdAsync(userId, cancellationToken);
 
                 return await image.ToResultAsync(
                     ApplyMapperAsync);

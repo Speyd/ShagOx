@@ -1,43 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Query;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Query;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.Domain.Filters.Specification.Pictures.Images;
 
 namespace ShagOxServer.Api.Controllers.Specification.Pictures.Images;
 
 [ApiController]
 [Route("api/images")]
 public class ImageQueriesController 
-    : ApiController
+    : BaseQueryController<ImageDto,
+        ImageSearchFilter>
 {
-    private readonly IImageQueryService _queryService;
-
-
     public ImageQueriesController(
-        IImageQueryService queryService)
+        IImageQueryService queryService
+    )
+        : base(queryService)
     {
-        _queryService = queryService;
-    }
-
-
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetById(
-        [FromRoute] long id)
-    {
-        var result = await _queryService
-            .GetByIdAsync(id);
-
-        return result.ToActionResult();
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetPaged(
-        [FromQuery] PaginationParams pagination)
-    {
-        var result = await _queryService
-            .GetPagedAsync(pagination);
-
-        return result.ToActionResult();
     }
 }

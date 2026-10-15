@@ -1,6 +1,6 @@
-﻿namespace ShagOxServer.Domain.Filters.Dictionaries.Categories;
+namespace ShagOxServer.Domain.Filters.Dictionaries.Categories;
 public sealed record CategorySearchFilter
 (
-    string? Code = null,
-    long? ProductTypeId = null
+    string? Code,
+    long? ProductTypeId
 ) : BaseFilter();

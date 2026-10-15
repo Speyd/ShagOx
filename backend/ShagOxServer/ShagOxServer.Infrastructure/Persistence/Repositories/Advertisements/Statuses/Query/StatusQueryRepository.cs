@@ -18,10 +18,12 @@ public partial class StatusQueryRepository
 
     public async Task<Status?> GetByIdentificatorAsync(
         string identificator,
-        long? parentId = null)
+        long? parentId = null,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Statuses
             .FirstOrDefaultAsync(x =>
-                x.Code == identificator);
+                x.Code == identificator,
+                cancellationToken);
     }
 }

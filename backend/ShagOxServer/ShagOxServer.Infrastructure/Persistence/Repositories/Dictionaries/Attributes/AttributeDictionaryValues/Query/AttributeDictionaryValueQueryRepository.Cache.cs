@@ -14,7 +14,8 @@ public partial class AttributeDictionaryValueQueryRepository
       IAttributeDictionaryValueQueryRepository
 {
     public async Task<List<AttributeDictionaryValueCacheInfo>> GetCacheInfosByDictionaryAsync(
-        long dictionaryId)
+        long dictionaryId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AttributeDictionaryValues
             .Where(x => x.DictionaryId == dictionaryId)

@@ -17,16 +17,20 @@ public partial class CurrencyQueryRepository
 
 
     public async Task<Currency?> GetByCodeAsync(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Currencies
-            .FirstOrDefaultAsync(c => c.Code == code);
+            .FirstOrDefaultAsync(c => c.Code == code,
+                cancellationToken);
     }
 
     public async Task<Currency?> GetBySymbolAsync(
-        string symbol)
+        string symbol,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Currencies
-            .FirstOrDefaultAsync(c => c.Symbol == symbol);
+            .FirstOrDefaultAsync(c => c.Symbol == symbol,
+                cancellationToken);
     }
 }

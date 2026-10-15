@@ -10,5 +10,10 @@ public interface ISearchRepository<TEntity, TFilter>
 {
     Task<PagedResult<TEntity>> SearchAsync(
         TFilter filter,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
+
+    IQueryable<TEntity> ApplyFilter(
+        IQueryable<TEntity> query,
+        TFilter filter);
 }

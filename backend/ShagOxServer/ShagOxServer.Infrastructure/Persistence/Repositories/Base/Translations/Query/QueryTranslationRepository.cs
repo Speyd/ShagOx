@@ -21,22 +21,25 @@ public class QueryTranslationRepository<TEntity, TTranslator>
 
     public virtual async Task<TTranslator?> GetByIdentificatorAsync(
         string identificator,
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         IQueryable<TTranslator> query = _db.Set<TTranslator>();
 
         query = ApplyIncludes(query);
 
-        query = ApplyIdentificatorFilter(query, identificator);
+        query = ApplyIdentificatorFilter(query, 
+            identificator);
 
         return await query
           .FirstOrDefaultAsync(x =>
-            x.Language == language);
+            x.Language == language, cancellationToken);
     }
 
     public virtual async Task<PagedResult<TTranslator>> GetPagedAsync(
         PaginationParams pagination,
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         IQueryable<TTranslator> query = _db.Set<TTranslator>();
 
@@ -46,7 +49,10 @@ public class QueryTranslationRepository<TEntity, TTranslator>
            .Where(x => EF.Property<string>(
                     x,
                     nameof(BaseTranslation<TTranslator>.Language)) == language)
-           .ToPagedResultAsync(pagination);
+           .ToPagedResultAsync(
+                pagination,
+                (x => x.Id),
+                cancellationToken);
     }
 
     protected virtual IQueryable<TTranslator> ApplyIdentificatorFilter(
@@ -57,7 +63,8 @@ public class QueryTranslationRepository<TEntity, TTranslator>
     }
 
     public virtual async Task<List<BaseTranslationCacheInfo>> GetCacheInfosByTranslatableAsync(
-        long translatableId)
+        long translatableId,
+        CancellationToken cancellationToken = default)
     {
         IQueryable<TTranslator> query = _db.Set<TTranslator>();
 
@@ -66,6 +73,6 @@ public class QueryTranslationRepository<TEntity, TTranslator>
             .Select(x => new BaseTranslationCacheInfo(
                 x.Id,
                 x.Language))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }

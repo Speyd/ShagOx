@@ -9,7 +9,7 @@ public partial class ConditionQueryRepository
     : SearchRepository<Condition, ConditionSearchFilter>,
       IConditionQueryRepository
 {
-    protected override IQueryable<Condition> ApplyFilter(
+    public override IQueryable<Condition> ApplyFilter(
         IQueryable<Condition> query,
         ConditionSearchFilter filter)
     {

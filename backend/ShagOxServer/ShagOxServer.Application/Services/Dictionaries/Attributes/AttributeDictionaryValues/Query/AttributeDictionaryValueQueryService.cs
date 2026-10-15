@@ -57,7 +57,8 @@ public class AttributeDictionaryValueQueryService
     public async Task<Result<PagedResult<AttributeDictionaryValueDto>>> 
         GetByDictionaryAsync(
         long dictionaryId, 
-        PaginationParams pagination)
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = AttributeDictionaryValueCache.ByDictionary(
            dictionaryId,
@@ -70,7 +71,8 @@ public class AttributeDictionaryValueQueryService
             async () =>
             {
                 var values = await _dictionaryDictQueryRepository
-                    .GetByDictionaryAsync(dictionaryId, pagination);
+                    .GetByDictionaryAsync(dictionaryId, pagination,
+                        cancellationToken);
 
                 return await values.ToResultPagedAsync(
                     ApplyMapperAsync);

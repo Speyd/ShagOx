@@ -18,22 +18,26 @@ public class AdvertisementVariantExistsRepository
 
     public async Task<bool> ExistsAsync(
         long advertisementId, 
-        JsonDocument attributes)
+        JsonDocument attributes,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AdvertisementVariants
             .AnyAsync(x => 
                 x.AdvertisementId == advertisementId &&
-                x.Attributes == attributes);
+                x.Attributes == attributes,
+                cancellationToken);
     }
 
     public async Task<bool> IsOwnerAsync(
         long entityId, 
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         return await _db.AdvertisementVariants
             .WithIncludes()
             .AnyAsync(x =>
                 x.Id == entityId &&
-                x.Advertisement.SellerId == userId);
+                x.Advertisement.SellerId == userId,
+                cancellationToken);
     }
 }

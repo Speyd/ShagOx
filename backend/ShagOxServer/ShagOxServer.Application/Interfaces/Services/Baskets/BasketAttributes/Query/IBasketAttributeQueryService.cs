@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Query;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Query;
+using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -13,8 +13,10 @@ public interface IBasketAttributeQueryService
 {
     Task<Result<PagedResult<BasketAttributeDto>>> GetByCategoryAsync(
         long categoryId,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
 
     Task<Result<BasketAttributeDto>> GetByAttributeDefinitionAsync(
-        long attributeDefinitionId);
+        long attributeDefinitionId,
+        CancellationToken cancellationToken = default);
 }

@@ -15,7 +15,7 @@ public partial class ImageQueryRepository
         return query.WithIncludes();
     }
 
-    protected override IQueryable<Image> ApplyFilter(
+    public override IQueryable<Image> ApplyFilter(
         IQueryable<Image> query,
         ImageSearchFilter filter)
     {

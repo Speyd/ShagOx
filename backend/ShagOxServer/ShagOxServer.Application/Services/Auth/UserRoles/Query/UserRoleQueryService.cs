@@ -56,7 +56,8 @@ public class UserRoleQueryService
 
     public async Task<Result<PagedResult<RoleDto>>> GetRolesByUserAsync(
         long userId,
-		PaginationParams pagination)
+		PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = UserRoleCache.RolesByUser(
            userId,
@@ -68,7 +69,8 @@ public class UserRoleQueryService
             async () =>
             {
                 var roles = await _userRoleQueryRepository
-                    .GetRolesByUserAsync(userId, pagination);
+                    .GetRolesByUserAsync(userId, pagination,
+                        cancellationToken);
 
                 return await roles.ToResultPagedAsync(
                     _roleService.ApplyMapperAsync);
@@ -78,7 +80,8 @@ public class UserRoleQueryService
     }
 
     public async Task<Result<List<RoleCacheInfo>>> GetRolesCacheInfoByUserAsync(
-       long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = UserRoleCache.RoleIdsByUser(userId);
 
@@ -87,7 +90,8 @@ public class UserRoleQueryService
             async () =>
             {
                 var roles = await _userRoleQueryRepository
-                    .GetRoleCacheInfoByUserAsync(userId);
+                    .GetRoleCacheInfoByUserAsync(userId,
+                        cancellationToken);
 
                 return Result<List<RoleCacheInfo>>.Success(roles);
             },
@@ -97,7 +101,8 @@ public class UserRoleQueryService
 
     public async Task<Result<PagedResult<UserDto>>> GetUsersByRoleAsync(
         long roleId,
-		PaginationParams pagination)
+		PaginationParams pagination,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = UserRoleCache.UsersByRole(
            roleId,
@@ -109,7 +114,8 @@ public class UserRoleQueryService
             async () =>
             {
                 var users = await _userRoleQueryRepository
-                    .GetUsersByRoleAsync(roleId, pagination);
+                    .GetUsersByRoleAsync(roleId, pagination,
+                        cancellationToken);
 
                 return await users.ToResultPagedAsync(
                     _userService.ApplyMapperAsync);
@@ -119,7 +125,8 @@ public class UserRoleQueryService
     }
 
     public async Task<Result<List<UserCacheInfo>>> GetUserCacheInfoByRoleAsync(
-       long roleId)
+        long roleId,
+        CancellationToken cancellationToken = default)
     {
         var cacheKey = UserRoleCache.UserIdsByRole(roleId);
 
@@ -128,7 +135,8 @@ public class UserRoleQueryService
             async () =>
             {
                 var users = await _userRoleQueryRepository
-                    .GetUserCacheInfoByRoleAsync(roleId);
+                    .GetUserCacheInfoByRoleAsync(roleId,
+                        cancellationToken);
 
                 return Result<List<UserCacheInfo>>.Success(users);
             },

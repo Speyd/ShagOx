@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 public interface ITranslationExistsRepository<TEntity, TTranslation>
@@ -8,12 +8,15 @@ public interface ITranslationExistsRepository<TEntity, TTranslation>
 {
     Task<bool> ExistsAsync(
        long objectId,
-       string language);
+       string language,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByLanguageAsync(
-        string language);
+        string language,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByIdentificatorAsync(
         string identificator,
-        string language);
+        string language,
+        CancellationToken cancellationToken = default);
 }

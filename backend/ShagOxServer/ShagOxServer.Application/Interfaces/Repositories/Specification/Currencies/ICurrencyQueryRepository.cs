@@ -7,8 +7,10 @@ public interface ICurrencyQueryRepository
     : ISearchRepository<Currency, CurrencySearchFilter>
 {
     Task<Currency?> GetByCodeAsync(
-        string code);
+        string code,
+        CancellationToken cancellationToken = default);
 
     Task<Currency?> GetBySymbolAsync(
-        string symbol);
+        string symbol,
+        CancellationToken cancellationToken = default);
 }

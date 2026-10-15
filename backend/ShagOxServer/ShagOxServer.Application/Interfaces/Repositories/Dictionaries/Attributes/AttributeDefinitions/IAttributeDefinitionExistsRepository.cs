@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
@@ -7,9 +7,11 @@ public interface IAttributeDefinitionExistsRepository
 {
     Task<bool> ExistsByCategoryAsync(
         long attributeId,
-        long categoryId);
+        long categoryId,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByCategoryAsync(
         string attributeKey,
-        long categoryId);
+        long categoryId,
+        CancellationToken cancellationToken = default);
 }

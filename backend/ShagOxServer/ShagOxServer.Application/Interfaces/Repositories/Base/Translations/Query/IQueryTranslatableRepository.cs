@@ -8,5 +8,6 @@ public interface IQueryTranslatableRepository<TEntity>
 {
     Task<TEntity?> GetByIdentificatorAsync(
         string identificator,
-        long? parentId = null);
+        long? parentId = null,
+        CancellationToken cancellationToken = default);
 }

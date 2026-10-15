@@ -8,8 +8,10 @@ public partial interface IBasketItemQueryRepository
     : ISearchRepository<BasketItem, BasketItemSearchFilter>
 {
     Task<List<BasketItemCacheInfo>> GetCacheInfosByBasketAsync(
-        long basketId);
+        long basketId,
+        CancellationToken cancellationToken = default);
 
     Task<List<BasketItemCacheInfo>> GetCacheInfosByAdvertisementVariantAsync(
-        long advertisementVariantId);
+        long advertisementVariantId,
+        CancellationToken cancellationToken = default);
 }

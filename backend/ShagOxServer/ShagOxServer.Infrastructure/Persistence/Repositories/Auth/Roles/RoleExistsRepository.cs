@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -17,9 +17,11 @@ public class RoleExistsRepository
 
 
     public async Task<bool> ExistsByNameAsync(
-        string name)
+        string name,
+        CancellationToken cancellationToken = default)
     {
         return await _db.Roles
-            .AnyAsync(r => r.Name == name);
+            .AnyAsync(r => r.Name == name,
+                cancellationToken);
     }
 }

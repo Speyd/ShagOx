@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Filters.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
 public static class AdvertisementQueryExtensions

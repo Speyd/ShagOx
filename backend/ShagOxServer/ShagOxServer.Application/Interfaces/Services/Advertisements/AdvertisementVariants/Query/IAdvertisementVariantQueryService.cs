@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -11,5 +11,6 @@ public interface IAdvertisementVariantQueryService
         AdvertisementVariantSearchFilter>
 {
     Task<Result<List<VariantAttributeDto>>> GetVariantAttributeAsync(
-        AdvertisementVariant variant);
+        AdvertisementVariant variant,
+        CancellationToken cancellationToken = default);
 }

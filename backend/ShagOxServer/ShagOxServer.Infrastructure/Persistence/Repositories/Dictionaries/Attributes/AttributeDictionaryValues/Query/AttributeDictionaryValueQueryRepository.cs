@@ -78,6 +78,7 @@ public partial class AttributeDictionaryValueQueryRepository
             .WithIncludes()
             .Where(x => x.DictionaryId == dictionaryId)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 }

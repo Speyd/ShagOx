@@ -28,6 +28,7 @@ public class SearchRepository<TEntity, TFilter>
 
         return await query
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 

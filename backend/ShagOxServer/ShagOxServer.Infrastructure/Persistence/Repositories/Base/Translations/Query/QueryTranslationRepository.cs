@@ -49,7 +49,10 @@ public class QueryTranslationRepository<TEntity, TTranslator>
            .Where(x => EF.Property<string>(
                     x,
                     nameof(BaseTranslation<TTranslator>.Language)) == language)
-           .ToPagedResultAsync(pagination, cancellationToken);
+           .ToPagedResultAsync(
+                pagination,
+                (x => x.Id),
+                cancellationToken);
     }
 
     protected virtual IQueryable<TTranslator> ApplyIdentificatorFilter(

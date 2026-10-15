@@ -24,8 +24,10 @@ public partial class UserRoleQueryRepository
     {
         return await _db.Roles
             .WithUserIncludes()
-            .Where(u => u.UserRoles.Any(ur => ur.UserId == userId))
+            .Where(u => u.UserRoles
+                .Any(ur => ur.UserId == userId))
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 
@@ -38,6 +40,7 @@ public partial class UserRoleQueryRepository
             .WithRoleIncludes()
             .Where(u => u.UserRoles.Any(ur => ur.RoleId == roleId))
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 }

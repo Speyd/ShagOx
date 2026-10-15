@@ -97,6 +97,7 @@ public partial class UserQueryRepository
             .WithIncludes()
             .Filter(filter)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 }

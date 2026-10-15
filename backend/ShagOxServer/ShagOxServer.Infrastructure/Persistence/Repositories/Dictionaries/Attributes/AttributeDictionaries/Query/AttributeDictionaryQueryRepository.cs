@@ -27,6 +27,7 @@ public partial class AttributeDictionaryQueryRepository
             .WithIncludes()
             .Where(x => x.DictionaryId == attributeDictionaryId)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 }

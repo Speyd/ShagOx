@@ -41,6 +41,7 @@ public partial class CategoryQueryRepository
             .WithIncludes()
             .Where(c => c.ProductTypeId == productTypeId)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 }

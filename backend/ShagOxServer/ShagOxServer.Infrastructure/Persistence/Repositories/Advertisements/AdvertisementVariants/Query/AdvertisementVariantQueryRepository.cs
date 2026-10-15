@@ -25,6 +25,8 @@ public partial class AdvertisementVariantQueryRepository
         return await _db.AdvertisementVariants
             .WithIncludes()
             .Where(x => x.AdvertisementId == advertId)
-            .ToPagedResultAsync(pagination, cancellationToken);
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
+                cancellationToken);
     }
 }

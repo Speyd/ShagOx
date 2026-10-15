@@ -38,6 +38,7 @@ public partial class FavoriteQueryRepository
              .WithIncludes()
              .Where(x => x.UserId == usderId)
              .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 }

@@ -28,6 +28,7 @@ public partial class BasketItemQueryRepository
             .Where(x =>
                 x.AdvertisementVariantId == advertisementVariantId)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 
@@ -40,6 +41,7 @@ public partial class BasketItemQueryRepository
             .WithIncludes()
             .Where(x => x.BasketId == basketId)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 
@@ -52,6 +54,7 @@ public partial class BasketItemQueryRepository
             .WithIncludes()
             .Where(x => x.Basket.UserId == userId)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 }

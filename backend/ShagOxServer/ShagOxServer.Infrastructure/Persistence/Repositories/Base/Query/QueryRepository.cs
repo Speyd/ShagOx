@@ -45,6 +45,7 @@ public class QueryRepository<TEntity>
 
         return await query
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 }

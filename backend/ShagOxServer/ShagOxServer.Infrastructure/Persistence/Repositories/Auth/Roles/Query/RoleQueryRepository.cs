@@ -25,7 +25,8 @@ public partial class RoleQueryRepository
         return await _db.UserRoles
             .Where(x => x.UserId == userId)
             .Select(x => x.Role)
-            .ToPagedResultAsync(pagination, 
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 

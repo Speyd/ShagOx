@@ -42,6 +42,7 @@ public partial class CityQueryRepository
             .WithIncludes()
             .Where(x => x.RegionId == regionId)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 }

@@ -30,6 +30,7 @@ public partial class BasketAttributeQueryRepository
                 c.AttributeDefinition.CategoryId == categoryId)
             .OrderBy(c => c.Order)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 

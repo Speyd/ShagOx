@@ -29,7 +29,9 @@ public class SearchTranslationRepository<TEntity, TTranslator, TFilter>
         query = ApplyFilter(query, filter);
 
         return await query
-            .ToPagedResultAsync(pagination, 
+            .ToPagedResultAsync(
+                pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 

@@ -37,6 +37,7 @@ public partial class AdvertisementQueryRepository
             .Where(x => x.SellerId == userId)
             .OrderByDescending(x => x.Popularity)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
     public async Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
@@ -49,6 +50,7 @@ public partial class AdvertisementQueryRepository
             .Where(x => x.BuyerId == userId)
             .OrderByDescending(x => x.Popularity)
             .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 
@@ -61,7 +63,8 @@ public partial class AdvertisementQueryRepository
             .WithIncludes()
             .Filter(filter)
             .OrderByDescending(x => x.Popularity)
-            .ToPagedResultAsync(pagination, 
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
                 cancellationToken);
     }
 }

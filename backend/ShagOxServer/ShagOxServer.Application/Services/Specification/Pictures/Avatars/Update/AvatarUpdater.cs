@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Update;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Update;
@@ -6,19 +6,13 @@ public static class AvatarUpdater
 {
     public static int ApplyUpdates(
        Avatar avatar,
-       AvatarUpdateRequest request)
+       PictureUpdateRequest request)
     {
         var updated = 0;
 
-        if (request.Url is not null )
+        if (request.OwnerId is not null)
         {
-            avatar.Url = request.Url;
-            updated++;
-        }
-
-        if (request.UserId is not null)
-        {
-            avatar.UserId = request.UserId.Value;
+            avatar.OwnerId = request.OwnerId.Value;
             updated++;
         }
 

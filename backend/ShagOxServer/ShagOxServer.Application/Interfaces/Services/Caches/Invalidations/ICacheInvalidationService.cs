@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
 
 namespace ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 public interface ICacheInvalidationService<TEntity, TContext>

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Advertisements.Core;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -27,7 +27,7 @@ public static class FavoriteQueryExtensions
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Condition)
             .Include(x => x.Advertisement)
-                .ThenInclude(a => a.Images);
+                .ThenInclude(a => a.Pictures);
     }
 
     public static IQueryable<FavoriteCacheInfo> SelectCacheInfo(

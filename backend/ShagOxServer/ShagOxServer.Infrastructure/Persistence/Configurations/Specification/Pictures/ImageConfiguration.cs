@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification.Pictures;
 public class ImageConfiguration 
-    : IEntityTypeConfiguration<Image>
+    : IEntityTypeConfiguration<AdvertisementImage>
 {
     public void Configure(
-        EntityTypeBuilder<Image> builder)
+        EntityTypeBuilder<AdvertisementImage> builder)
     {
         builder.Property(x => x.Url)
                .IsRequired()
@@ -17,12 +17,12 @@ public class ImageConfiguration
                .IsRequired()
                .HasMaxLength(255);
 
-        builder.HasOne(x => x.Advertisement)
-           .WithMany(x => x.Images)
-           .HasForeignKey(x => x.AdvertisementId)
+        builder.HasOne(x => x.Owner)
+           .WithMany(x => x.Pictures)
+           .HasForeignKey(x => x.OwnerId)
            .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => new { x.AdvertisementId, x.Order })
+        builder.HasIndex(x => new { x.OwnerId, x.Order })
                .IsUnique();
     }
 }

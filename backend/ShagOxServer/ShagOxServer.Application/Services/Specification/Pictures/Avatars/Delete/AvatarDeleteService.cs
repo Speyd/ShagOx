@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -64,7 +64,6 @@ public class AvatarDeleteService
             if (!result.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
-
                 return result;
             }
 
@@ -112,5 +111,48 @@ public class AvatarDeleteService
             new DeleteResponse(
                 avatar.Id,
                 DateTime.UtcNow));
+    }
+
+    public async Task<Result<DeleteResponse>> DeleteRecordAsync(
+        long id)
+    {
+        var avatar = await _avatarValidator
+            .GetByIdAsync(id);
+
+        if (!avatar.IsSuccess)
+        {
+            return Result<DeleteResponse>
+                .Fail(avatar.Error);
+        }
+
+        try
+        {
+            _avatarRepository.Delete(avatar.Value!);
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+               ex,
+               "Failed to delete avatar. Id: {Id}",
+               id);
+
+            return Result<DeleteResponse>
+                .Fail(EntityErrorResources.AvatarDeleteFailed);
+        }
+
+        _logger.LogInformation(
+            "Avatar deleted successfully. Id: {Id}",
+            avatar.Value!.Id);
+
+        await _avatarInvalid.InvalidateDeleteAsync(
+            AvatarCacheMapper.ToInfo(avatar.Value!));
+
+        return Result<DeleteResponse>.Success(
+           new DeleteResponse(
+               avatar.Value!.Id,
+               DateTime.UtcNow
+           )
+       );
     }
 }

@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Create;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -15,7 +14,6 @@ using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Create;
-
 public class AvatarCreateService
     : IAvatarCreateService
 {
@@ -51,7 +49,7 @@ public class AvatarCreateService
 
 
     public async Task<Result<PictureCreateResponse>> CreateAsync(
-        AvatarCreateRequest request)
+        PictureCreateRequest request)
     {
         await _unitOfWork.BeginTransactionAsync();
 
@@ -77,19 +75,18 @@ public class AvatarCreateService
             _logger.LogError(
                 ex,
                 "Failed to create avatar. UserId: {UserId}",
-                request.UserId);
+                request.OwnerId);
 
             return Result<PictureCreateResponse>
                 .Fail(EntityErrorResources.AvatarCreateFailed);
         }
     }
 
-
     public async Task<Result<PictureCreateResponse>> CreateInternalAsync(
-        AvatarCreateRequest request)
+        PictureCreateRequest request)
     {
         var resultAdvertValid = await _userValidator
-            .ExistsByIdAsync(request.UserId);
+            .ExistsByIdAsync(request.OwnerId);
 
         if (!resultAdvertValid.IsSuccess)
             return Result<PictureCreateResponse>
@@ -129,7 +126,7 @@ public class AvatarCreateService
             "Avatar created successfully. " +
             "AvatarId: {AvatarId}, UserId: {UserId}",
             avatar.Id,
-            request.UserId);
+            request.OwnerId);
 
 
         return Result<PictureCreateResponse>.Success(

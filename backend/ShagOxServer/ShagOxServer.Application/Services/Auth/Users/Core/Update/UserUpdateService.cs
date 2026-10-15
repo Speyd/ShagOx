@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Create;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
@@ -155,9 +155,9 @@ public class UserUpdateService
         var oldAvatar = user.Avatar;
 
         var result = await _avatarCreateService.CreateInternalAsync(
-            new AvatarCreateRequest(
-                avatarFile,
-                user.Id));
+            new PictureCreateRequest(
+                user.Id,
+                avatarFile));
 
         if (!result.IsSuccess)
             throw new Exception(result.Error?.ToString());

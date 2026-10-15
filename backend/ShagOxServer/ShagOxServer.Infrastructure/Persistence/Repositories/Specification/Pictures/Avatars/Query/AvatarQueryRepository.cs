@@ -24,7 +24,7 @@ public partial class AvatarQueryRepository
     {
         return await _db.Avatars
           .WithIncludes()
-          .FirstOrDefaultAsync(x => x.UserId == userId,
+          .FirstOrDefaultAsync(x => x.OwnerId == userId,
             cancellationToken);
     }
 }

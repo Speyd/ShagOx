@@ -1,7 +1,7 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Cache;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
@@ -28,7 +28,7 @@ public class AdvertisementInvalidationService
     private readonly BasketItemInvalidationService _basketItemInvalid;
     private readonly BasketItemBasketInvalidationService _basketInvalid;
 
-    private readonly IImageQueryRepository _imageRepository;
+    private readonly IAdvertisementImageQueryRepository _imageRepository;
     private readonly ImageInvalidationService _imageInvalid;
 
 
@@ -43,7 +43,7 @@ public class AdvertisementInvalidationService
         IBasketItemQueryRepository basketItemRepository,
         BasketItemInvalidationService basketItemInvalid,
         BasketItemBasketInvalidationService basketInvalid,
-        IImageQueryRepository imageRepository,
+        IAdvertisementImageQueryRepository imageRepository,
         ImageInvalidationService imageInvalid,
         IDataCacheService cache)
     {
@@ -167,7 +167,7 @@ public class AdvertisementInvalidationService
             .GetCacheInfosByAdvertisementVariantAsync(entityId);
     }
 
-    private async Task<List<ImageCacheInfo>> GetImageInfos(
+    private async Task<List<PictureCacheInfo>> GetImageInfos(
       long entityId)
     {
         return await _imageRepository

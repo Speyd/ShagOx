@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Update;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
@@ -9,17 +9,20 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Validator;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Update;
-
 public class AvatarUpdateService
-    : IAvatarUpdateService
+     : PictureUpdateService<User,
+        Avatar,
+        PictureUpdateRequest>, 
+    IAvatarUpdateService
 {
     private readonly IRepository<Avatar> _avatarRepository;
     private readonly AvatarValidator _avatarValidator;
-    private readonly UserValidator _userValidator;
 
     private readonly AvatarInvalidationService _avatarInvalid;
 
@@ -33,20 +36,21 @@ public class AvatarUpdateService
         UserValidator userValidator,
         AvatarInvalidationService avatarInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<AvatarUpdateService> logger)
+        ILogger<AvatarUpdateService> logger
+    )
+        : base(userValidator, avatarValidator)
     {
         _avatarRepository = avatarRepository;
         _avatarValidator = avatarValidator;
-        _userValidator = userValidator;
         _avatarInvalid = avatarInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
 
-    public async Task<Result<UpdateResponse>> UpdateAsync(
+    public override async Task<Result<UpdateResponse>> UpdateAsync(
         long avatarId,
-        AvatarUpdateRequest request)
+        PictureUpdateRequest request)
     {
         var avatar = await _avatarValidator
             .GetByIdAsync(avatarId);
@@ -56,7 +60,7 @@ public class AvatarUpdateService
                 .Fail(avatar.Error);
 
 
-        var validation = await ValidateUpdatesAsync(
+        var validation = await ValidateOwnerAsync(
             avatar.Value!,
             request);
 
@@ -102,9 +106,9 @@ public class AvatarUpdateService
     }
 
 
-    public Task<Result<UpdateResponse>> UpdateInternalAsync(
+    public override Task<Result<UpdateResponse>> UpdateInternalAsync(
         Avatar avatar,
-        AvatarUpdateRequest request)
+        PictureUpdateRequest request)
     {
         var updatedCount = AvatarUpdater
             .ApplyUpdates(
@@ -129,22 +133,5 @@ public class AvatarUpdateService
 
         return Task.FromResult(
             Result<UpdateResponse>.Success(result));
-    }
-
-
-    private async Task<Result<bool>> ValidateUpdatesAsync(
-        Avatar avatar,
-        AvatarUpdateRequest request)
-    {
-        if (request.UserId is null ||
-            avatar.UserId == request.UserId)
-        {
-            return Result<bool>.Success(true);
-        }
-
-        var existsValidator = await _userValidator
-            .ExistsByIdAsync(request.UserId.Value);
-
-        return existsValidator;
     }
 }

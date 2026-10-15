@@ -1,0 +1,16 @@
+using ShagOxServer.Application.DTOs.Base.Responses;
+using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Domain.Base;
+using ShagOxServer.SharedKernel.Abstractions.Results;
+
+namespace ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
+public interface IPictureDeleteService<TEntity>
+    : IDeleteService<DeleteResponse>
+    where TEntity : BaseEntity
+{
+    Task<Result<DeleteResponse>> DeleteInternalAsync(
+        TEntity entity);
+
+    Task<Result<DeleteResponse>> DeleteRecordAsync(
+        long id);
+}

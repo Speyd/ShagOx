@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
@@ -7,7 +7,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
-using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
@@ -15,6 +16,7 @@ using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Update;
@@ -22,7 +24,10 @@ public partial class AdvertisementUpdateService
     : IAdvertisementUpdateService
 {
     private readonly IRepository<Advertisement> _advertRepository;
-    private readonly IAdvertisementImageService _imageService;
+
+    private readonly IPictureOrderingService<Advertisement, AdvertisementImage>
+        _pictureOrder;
+
     private readonly AdvertisementValidator _validator;
     private readonly AdvertisementUpdateValidator _validatorUpdate;
 
@@ -39,7 +44,7 @@ public partial class AdvertisementUpdateService
 
     public AdvertisementUpdateService(
         IRepository<Advertisement> advertRepository,
-        IAdvertisementImageService imageService,
+        IPictureOrderingService<Advertisement, AdvertisementImage> pictureOrder,
         AdvertisementValidator validator,
         AdvertisementUpdateValidator validatorUpdate,
         AdvertisementVariantValidator variantValidator,
@@ -53,7 +58,7 @@ public partial class AdvertisementUpdateService
         _advertRepository = advertRepository;
         _validatorUpdate = validatorUpdate;
         _variantValidator = variantValidator;
-        _imageService = imageService;
+        _pictureOrder = pictureOrder;
         _variantUpdateService = variantUpdateService;
         _advertInvalid = advertInvalid;
         _unitOfWork = unitOfWork;
@@ -90,38 +95,41 @@ public partial class AdvertisementUpdateService
             var updatedCount = AdvertisementUpdater
                 .ApplyUpdates(advert.Value!, request);
 
-            var imagesResult = await _imageService
-                .SyncImagesAsync(
-                    advert.Value!,
-                    request
+            var imagesResult = await _pictureOrder.
+                SyncPicturesAsync(
+                    advert.Value!.Id,
+                    request.Images
                 );
 
             if (!imagesResult.IsSuccess)
             {
+                await _pictureOrder.Rollback(
+                    advert.Value!, 
+                    imagesResult.Value!);
+
                 await _unitOfWork.RollbackAsync();
 
                 return Result<UpdateResponse>
                     .Fail(imagesResult.Error!);
             }
 
-            if (variantsResult.Value is not null)
-            {
-                var updateResult = await UpdateVariantsAsync(variantsResult.Value);
+            var updateResult = await UpdateVariantsAsync(
+                variantsResult.Value);
 
-                if (!updateResult.IsSuccess)
-                {
-                    await _unitOfWork.RollbackAsync();
+             if (!updateResult.IsSuccess)
+             {
+                await _unitOfWork.RollbackAsync();
 
-                    return Result<UpdateResponse>
-                        .Fail(updateResult.Error!);
-                }
+                return Result<UpdateResponse>
+                    .Fail(updateResult.Error!);
             }
 
             _advertRepository.Update(advert.Value!);
 
             await _unitOfWork.CommitAsync();
 
-           
+            await _pictureOrder.DeletePicturesByPublicIdAsync(
+                imagesResult.Value!.DeletePublicIds);
 
             _logger.LogInformation(
                 "Advertisement updated successfully. Id: {Id}",
@@ -151,8 +159,11 @@ public partial class AdvertisementUpdateService
     }
 
     private async Task<Result<bool>> UpdateVariantsAsync(
-        Dictionary<long, AdvertisementVariantUpdateRequest> variants)
+        Dictionary<long, AdvertisementVariantUpdateRequest>? variants)
     {
+        if (variants is null)
+            return Result<bool>.Success(true);
+
         foreach (var variant in variants)
         {
             var updateResult = await _variantUpdateService

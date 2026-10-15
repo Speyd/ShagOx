@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Create.File;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Create;
@@ -30,7 +30,7 @@ public class AdvertisementCreateService
 
     private readonly IAdvertisementVariantCreateService _variantCreateService;
 
-    private readonly IImageCreateService _imageCreateService;
+    private readonly IAdvertisementImageCreateService _imageCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementCreateService> _logger;
@@ -42,7 +42,7 @@ public class AdvertisementCreateService
         AdvertisementVariantValidator variantValidator,
         AdvertisementInvalidationService advertInvalid,
         IAdvertisementVariantCreateService variantCreateService,
-        IImageCreateService imageCreateService,
+        IAdvertisementImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementCreateService> logger)
     {
@@ -102,8 +102,8 @@ public class AdvertisementCreateService
             }
 
             var imagesResult = await _imageCreateService
-                .CreateFromFilesAsync(
-                    new ImageFilesCreateRequest(
+                .CreateAsync(
+                    new PicturesCreateRequest(
                         advert.Id,
                         request.Images
                     )

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .searchContainer {
   position: relative;
   flex: 1;
@@ -65,15 +64,3 @@
 .suggestionMessage {
   color: #64748b;
 }
-=======
-.searchInput {
-  flex: 1;
-  min-width: 250px;
-  max-width: auto;
-}
-
-.searchInput input::placeholder {
-  font-size: var(--font-md);
-  color: var(--text-base);
-}
->>>>>>> feature/db-caching-backend

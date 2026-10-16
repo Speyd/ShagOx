@@ -57,6 +57,20 @@ type ApiCategoryItem = {
   lable?: string;
 };
 
+export type ProductTypeItem = {
+  id: number;
+  name: string;
+  description: string;
+  lable: string;
+};
+
+type ApiProductTypeItem = {
+  id: number;
+  name?: string;
+  description?: string;
+  lable?: string;
+};
+
 export async function getCatalogAdvertisements(
   params: CatalogParams = {},
 ): Promise<PaginatedResponse<Advertisement>> {
@@ -133,7 +147,7 @@ export async function getAdvertisement(id: number) {
 
 export async function getCategories(): Promise<CategoryItem[]> {
   const response = await api.get<PaginatedResponse<CategoryItem>>(
-    "/categories/search",
+    "/categories",
     {
       params: { page: 1, pageSize: 100 },
     },
@@ -141,11 +155,22 @@ export async function getCategories(): Promise<CategoryItem[]> {
 
   return response.data.items.map((category: ApiCategoryItem) => ({
     id: category.id,
-    name:
-      category.lable ??
-      category.label ??
-      category.name ??
-      category.code ??
-      "Без назви",
+    name: category.lable ?? "",
+  }));
+}
+
+export async function getProductTypes(): Promise<ProductTypeItem[]> {
+  const response = await api.get<PaginatedResponse<ProductTypeItem>>(
+    "/product-types",
+    {
+      params: { page: 1, pageSize: 100 },
+    },
+  );
+
+  return response.data.items.map((productType: ApiProductTypeItem) => ({
+    id: productType.id,
+    name: productType.lable ?? "",
+    description: productType.description ?? "",
+    lable: productType.lable ?? "",
   }));
 }

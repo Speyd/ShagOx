@@ -1,11 +1,19 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import styles from "./CatalogFilters.module.css";
 import { SlidersHorizontal, ChevronDown, Check, RotateCcw } from "lucide-react";
 import { useGetCategories } from "@/entities/advertisement/model/hooks/useGetCategories";
+import { useGetProductTypes } from "@/entities/advertisement/model/hooks/useGetProductTypes";
+import CategoryNavItem from "@/shared/ui/category-nav-item/CategoryNavItem";
 
 type CatalogFiltersProps = {
+  // 1. Обираємо ТІЛЬКИ ОДИН ProductType
+  selectedProductType: number | undefined;
+  onProductTypeChange: (productTypeId: number | undefined) => void;
+
+  // 2. Вже залежні Категорії (може бути масив для чекбоксів)
   selectedCategories: number[];
   onCategoriesChange: (categories: number[]) => void;
+
   inStock: boolean | undefined;
   onInStockChange: (inStock: boolean | undefined) => void;
   selectedMemory?: string[];
@@ -79,6 +87,8 @@ function CheckboxItem({
 }
 
 export default function CatalogFilters({
+  selectedProductType,
+  onProductTypeChange,
   selectedCategories,
   onCategoriesChange,
   inStock,
@@ -94,28 +104,44 @@ export default function CatalogFilters({
   onClearFilters,
   mobile = false,
 }: CatalogFiltersProps) {
-  const { data: categories = [] } = useGetCategories();
+  // 1. Отримуємо список всіх ProductTypes (Типи товарів)
+  const { data: productTypes = [] } = useGetProductTypes();
 
+  // 2. Отримуємо Категорії, які належать обраному ProductType
+  // (передаємо selectedProductType в хук)
+  const { data: categories = [] } = useGetCategories(selectedProductType);
+
+  const [showAllProductTypes, setShowAllProductTypes] = useState(false);
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [showAllColors, setShowAllColors] = useState(false);
+
+  const visibleProductTypes = showAllProductTypes
+    ? productTypes
+    : productTypes.slice(0, 5);
 
   const visibleCategories = showAllCategories
     ? categories
     : categories.slice(0, 5);
+
   const visibleColors = showAllColors
     ? COLOR_OPTIONS
     : COLOR_OPTIONS.slice(0, 5);
 
-  const toggleCategory = useCallback(
-    (id: number) => {
-      if (selectedCategories.includes(id)) {
-        onCategoriesChange(selectedCategories.filter((c) => c !== id));
-      } else {
-        onCategoriesChange([...selectedCategories, id]);
-      }
-    },
-    [selectedCategories, onCategoriesChange],
-  );
+  // Хендлер вибору одного ProductType
+  const handleSelectProductType = (typeId: number | undefined) => {
+    onProductTypeChange(typeId);
+    // При зміні типу товару скидаємо вибрані категорії
+    onCategoriesChange([]);
+  };
+
+  // Перемикач для категорій (мульти-вибір або одиночний за вашим бажанням)
+  const toggleCategory = (id: number) => {
+    if (selectedCategories.includes(id)) {
+      onCategoriesChange(selectedCategories.filter((c) => c !== id));
+    } else {
+      onCategoriesChange([...selectedCategories, id]);
+    }
+  };
 
   const toggleMemory = (mem: string) => {
     if (!onMemoryChange) return;
@@ -145,30 +171,54 @@ export default function CatalogFilters({
           <span className={styles.sidebarHeaderText}>Фільтри</span>
         </div>
 
-        <FilterSection title="Категорія">
-          <CheckboxItem
-            checked={selectedCategories.length === 0}
+        {/* 1. Блок Типів Товарів (ProductTypes) — Тільки один вибір (без чекбоксів) */}
+        <FilterSection title="Тип товару">
+          <CategoryNavItem
+            active={selectedProductType === undefined}
             label="Всі"
-            onChange={() => onCategoriesChange([])}
+            onClick={() => handleSelectProductType(undefined)}
           />
-          {visibleCategories.map((cat) => (
-            <CheckboxItem
-              key={cat.id}
-              checked={selectedCategories.includes(cat.id)}
-              label={cat.name}
-              onChange={() => toggleCategory(cat.id)}
+          {visibleProductTypes.map((type) => (
+            <CategoryNavItem
+              key={type.id}
+              active={selectedProductType === type.id}
+              label={type.name}
+              onClick={() => handleSelectProductType(type.id)}
             />
           ))}
-          {categories.length > 5 && (
+          {productTypes.length > 5 && (
             <button
               type="button"
               className={styles.showMore}
-              onClick={() => setShowAllCategories(!showAllCategories)}
+              onClick={() => setShowAllProductTypes(!showAllProductTypes)}
             >
-              {showAllCategories ? "Сховати" : "Показати ще"}
+              {showAllProductTypes ? "Сховати" : "Показати ще"}
             </button>
           )}
         </FilterSection>
+
+        {/* 2. Блок Категорій — З'являється лише після вибору ProductType */}
+        {selectedProductType !== undefined && categories.length > 0 && (
+          <FilterSection title="Категорії">
+            {visibleCategories.map((cat) => (
+              <CheckboxItem
+                key={cat.id}
+                checked={selectedCategories.includes(cat.id)}
+                label={cat.name}
+                onChange={() => toggleCategory(cat.id)}
+              />
+            ))}
+            {categories.length > 5 && (
+              <button
+                type="button"
+                className={styles.showMore}
+                onClick={() => setShowAllCategories(!showAllCategories)}
+              >
+                {showAllCategories ? "Сховати" : "Показати ще"}
+              </button>
+            )}
+          </FilterSection>
+        )}
 
         <FilterSection title="Наявність">
           <CheckboxItem

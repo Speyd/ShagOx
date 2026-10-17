@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -269,6 +269,9 @@
   </data>
   <data name="CityUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити місто.</value>
+  </data>
+  <data name="ConcurrencyConflictMessage" xml:space="preserve">
+    <value>Цей запис було змінено або видалено іншою операцією. Оновіть дані та спробуйте ще раз.</value>
   </data>
   <data name="ConditionCreateFailed" xml:space="preserve">
     <value>Не вдалося створити умову.</value>

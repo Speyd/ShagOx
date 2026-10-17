@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
@@ -102,7 +103,20 @@ public class UserUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch(Exception ex)
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating user." +
+                " Id: {Id}",
+                userId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
+        }
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;

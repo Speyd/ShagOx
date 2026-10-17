@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
@@ -11,6 +12,7 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -77,6 +79,19 @@ public class AdvertisementImageUpdateService
                 AdvertisementImageCacheMapper.ToInfo(image.Value!));
 
             return result;
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating image." +
+                " Id: {Id}",
+                imageId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
         }
         catch (Exception ex)
         {

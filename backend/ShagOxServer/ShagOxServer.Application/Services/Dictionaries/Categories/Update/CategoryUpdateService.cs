@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -10,6 +11,7 @@ using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Update;
@@ -89,7 +91,20 @@ public class CategoryUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch(Exception ex)
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating category." +
+                " Id: {Id}",
+                categoryId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
+        }
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 

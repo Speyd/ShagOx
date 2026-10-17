@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
@@ -144,7 +145,20 @@ public partial class AdvertisementUpdateService
                     DateTime.UtcNow
                 ));
         }
-        catch(Exception ex)
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating advertisement." +
+                " Id: {Id}",
+                advertId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
+        }
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
@@ -154,7 +168,7 @@ public partial class AdvertisementUpdateService
                 advertId);
 
             return Result<UpdateResponse>
-                    .Fail(EntityErrorResources.AdvertisementUpdateFailed);
+                .Fail(EntityErrorResources.AdvertisementUpdateFailed);
         }
     }
 

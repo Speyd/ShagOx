@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -269,6 +269,9 @@
   </data>
   <data name="CityUpdateFailed" xml:space="preserve">
     <value>Die Stadt konnte nicht aktualisiert werden.</value>
+  </data>
+  <data name="ConcurrencyConflictMessage" xml:space="preserve">
+    <value>Dieser Datensatz wurde durch einen anderen Vorgang geändert oder gelöscht. Bitte aktualisieren Sie die Daten und versuchen Sie es erneut.</value>
   </data>
   <data name="ConditionCreateFailed" xml:space="preserve">
     <value>Die Bedingung konnte nicht erstellt werden.</value>

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
@@ -13,6 +14,7 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Update;
 public class AvatarUpdateService
@@ -90,6 +92,19 @@ public class AvatarUpdateService
                 AvatarCacheMapper.ToInfo(avatar.Value!));
 
             return result;
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating avatar." +
+                " Id: {Id}",
+                avatarId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
         }
         catch (Exception ex)
         {

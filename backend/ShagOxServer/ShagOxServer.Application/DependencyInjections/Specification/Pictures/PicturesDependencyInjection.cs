@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DependencyInjections.Specification.Pictures.Review;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Create;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.PictureOrdering;
 

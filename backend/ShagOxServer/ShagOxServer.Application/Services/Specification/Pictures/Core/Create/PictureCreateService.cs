@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
@@ -13,7 +14,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
 public abstract class PictureCreateService<TOwner, TPicture, TRequest>
-    : IPictureCreateService<TPicture, TRequest>
+    : IPictureCreateService<TPicture, TRequest>,
+    IPictureCache<TPicture>
     where TOwner : BaseEntity
     where TPicture : BasePicture<TOwner>
     where TRequest : PictureCreateRequest
@@ -49,7 +51,7 @@ public abstract class PictureCreateService<TOwner, TPicture, TRequest>
         TRequest request,
         PictureLoaderUploadResponse response);
 
-    protected abstract Task InvalidateCache(
+    public abstract Task InvalidateCache(
         TPicture picture);
 
     public virtual async Task<Result<PictureCreateResponse>> CreateAsync(

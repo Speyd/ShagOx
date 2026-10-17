@@ -77,7 +77,7 @@ public partial class AvatarCreateService
         return AvatarCreater
             .Create(request, response);
     }
-    protected override async Task InvalidateCache(
+    public override async Task InvalidateCache(
         Avatar avatar)
     {
         await _avatarInvalidation.InvalidateCreateAsync(

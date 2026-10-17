@@ -16,7 +16,7 @@ using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.DependencyInjections.Specification.Pictures;
-public static class AdvertisementImageDependencyInjection
+public static class ImageDependencyInjection
 {
     public static IServiceCollection AddAdvertisementImageApplication(
         this IServiceCollection services)

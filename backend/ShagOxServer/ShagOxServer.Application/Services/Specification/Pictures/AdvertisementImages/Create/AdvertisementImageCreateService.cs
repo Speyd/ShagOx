@@ -105,7 +105,7 @@ public partial class AdvertisementImageCreateService
         );
     }
 
-    protected override async Task InvalidateCache(
+    public override async Task InvalidateCache(
         AdvertisementImage image)
     {
         await _imageInvalidation.InvalidateCreateAsync(

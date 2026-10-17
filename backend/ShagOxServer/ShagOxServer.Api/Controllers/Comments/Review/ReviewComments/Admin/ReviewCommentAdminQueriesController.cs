@@ -5,7 +5,7 @@ using ShagOxServer.Application.DTOs.Comments.ReviewComments.Query;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Query;
 using ShagOxServer.Domain.Filters.Comments;
 
-namespace ShagOxServer.Api.Controllers.Comments.ReviewComments.Admin;
+namespace ShagOxServer.Api.Controllers.Comments.Review.ReviewComments.Admin;
 
 [ApiController]
 [Route("api/admin/review-comment")]

@@ -6,7 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Query
 using ShagOxServer.Domain.Filters.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
-namespace ShagOxServer.Api.Controllers.Comments.ReviewComments;
+namespace ShagOxServer.Api.Controllers.Comments.Review.ReviewComments;
 
 [ApiController]
 [Route("api/review-comment")]

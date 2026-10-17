@@ -10,7 +10,7 @@ using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Delet
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Update;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Comments.ReviewComments;
+namespace ShagOxServer.Api.Controllers.Comments.Review.ReviewComments;
 
 [ApiController]
 [Route("api/review-comment")]

@@ -101,21 +101,21 @@ public class AdvertisementCreateService
                     .Fail(createVariant.Error);
             }
 
-            var imagesResult = await _imageCreateService
-                .CreateAsync(
-                    new PicturesCreateRequest(
-                        advert.Id,
-                        request.Images
-                    )
-            );
+            //var imagesResult = await _imageCreateService
+            //    .CreateAsync(
+            //        new PicturesCreateRequest(
+            //            advert.Id,
+            //            request.Images
+            //        )
+            //);
 
-            if (!imagesResult.IsSuccess)
-            {
-                await _unitOfWork.RollbackAsync();
+            //if (!imagesResult.IsSuccess)
+            //{
+            //    await _unitOfWork.RollbackAsync();
 
-                return Result<CreateResponse>
-                    .Fail(imagesResult.Error!);
-            }
+            //    return Result<CreateResponse>
+            //        .Fail(imagesResult.Error!);
+            //}
 
 
             await _unitOfWork.CommitAsync();

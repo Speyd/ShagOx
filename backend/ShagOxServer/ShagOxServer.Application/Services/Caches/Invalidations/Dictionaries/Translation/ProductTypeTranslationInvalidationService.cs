@@ -28,6 +28,9 @@ public class ProductTypeTranslationInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              SearchPattern<ProductTypeTranslation>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           EntityPagedPattern<ProductTypeTranslation>());
     }
 
     public async Task InvalidateDeleteAsync(

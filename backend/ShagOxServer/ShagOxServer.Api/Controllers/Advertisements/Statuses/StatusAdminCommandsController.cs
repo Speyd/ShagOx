@@ -13,7 +13,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Statuses;
 [ApiController]
 [Route("api/admin/statuses")]
 [Authorize(Roles = "Admin")]
-public class StatusCommandsController 
+public class StatusAdminCommandsController 
     : ApiController
 {
     private readonly IStatusCreateService _createService;
@@ -21,7 +21,7 @@ public class StatusCommandsController
     private readonly IStatusDeleteService _deleteService;
 
 
-    public StatusCommandsController(
+    public StatusAdminCommandsController(
         IStatusCreateService createService,
         IStatusUpdateService updateService,
         IStatusDeleteService deleteService)

@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Container from "@/shared/ui/container";
-
-import { ProfileTabs } from "@/widgets/profile-tabs";
-import { ProfileHeader } from "@/widgets/profile-header";
         
 import styles from "./ProfileLayout.module.css";
 import { Text } from "@mantine/core";
+import { ProfileTabs } from "@/widgets/profile/profile-tabs";
+import { ProfileHeader } from "@/widgets/profile/profile-header";
 
 export type ProfileContextType = {
   setOrientation: (orientation: "row" | "column") => void;

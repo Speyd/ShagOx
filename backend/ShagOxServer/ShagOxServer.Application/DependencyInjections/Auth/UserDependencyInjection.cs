@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;

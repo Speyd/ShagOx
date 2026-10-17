@@ -107,7 +107,7 @@ public sealed class RequestTrackingMiddleware
 
         state.RemainingTokens++;
 
-        for(int i = 0; i > 3; i++)
+        for(int i = 1; i <= _settings.BanLevelCount; i++)
         {
             var tokenThreshold = Math.Ceiling(
                 (double)_settings.MaxTokens / i);

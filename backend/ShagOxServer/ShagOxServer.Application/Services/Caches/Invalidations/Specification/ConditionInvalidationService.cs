@@ -7,8 +7,6 @@ using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Translations;
 using ShagOxServer.Application.Services.Caches.Keys;
-using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification;
@@ -46,6 +44,9 @@ public class ConditionInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
               LanguageSearchPattern<Condition>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           EntityLanguagePagedPattern<Condition>());
     }
 
     public async Task InvalidateDeleteAsync(

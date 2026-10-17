@@ -60,10 +60,12 @@ public partial class AdvertisementImageCreateService
                 .Fail(ownerValid.Error);
         }
 
-        var resultLoaderValid = await _pictureValidator
-            .PictureUploadValidator(request.File);
+       
 
         await _unitOfWork.BeginTransactionAsync();
+
+        var resultLoaderValid = await _pictureValidator
+           .PictureUploadValidator(request.File);
 
         try
         {

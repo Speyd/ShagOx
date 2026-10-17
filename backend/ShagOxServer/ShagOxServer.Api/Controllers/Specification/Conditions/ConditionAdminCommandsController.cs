@@ -32,7 +32,6 @@ public class ConditionAdminCommandsController
     }
 
 
-    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] ConditionCreateRequest request)
@@ -43,7 +42,6 @@ public class ConditionAdminCommandsController
         return result.ToActionResult();
     }
 
-    [Authorize]
     [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
         [FromRoute] long id,
@@ -55,7 +53,6 @@ public class ConditionAdminCommandsController
         return result.ToActionResult();
     }
 
-    [Authorize]
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(
         [FromRoute] long id)

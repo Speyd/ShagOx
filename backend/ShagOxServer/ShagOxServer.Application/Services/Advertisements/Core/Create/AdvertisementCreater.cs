@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 using ShagOxServer.Domain.Entities.Advertisements;
 using System.Text.Json;
 
@@ -17,6 +17,7 @@ public static class AdvertisementCreater
 
             CurrencyId = request.CurrencyId,
             CategoryId = request.CategoryId,
+            StatusId = request.StatusId,
             ConditionId = request.ConditionId,
             SellerId = userId,
 

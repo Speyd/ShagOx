@@ -28,6 +28,9 @@ public class CityTranslationInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              SearchPattern<CityTranslation>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             EntityPagedPattern<CityTranslation>());
     }
 
     public async Task InvalidateDeleteAsync(

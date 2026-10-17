@@ -28,6 +28,9 @@ public class RegionTranslationInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              SearchPattern<RegionTranslation>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             EntityPagedPattern<RegionTranslation>());
     }
 
     public async Task InvalidateDeleteAsync(

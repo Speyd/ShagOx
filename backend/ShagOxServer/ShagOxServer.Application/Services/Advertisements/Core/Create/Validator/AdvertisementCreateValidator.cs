@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
+using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
@@ -10,22 +11,32 @@ public class AdvertisementCreateValidator
     private readonly CurrencyValidator _currencyValidator;
     private readonly CategoryValidator _categoryValidator;
     private readonly ConditionValidator _conditionValidator;
+    private readonly StatusValidator _statusValidator;
+
 
 
     public AdvertisementCreateValidator(
         CurrencyValidator currencyValidator,
         CategoryValidator categoryValidator,
-        ConditionValidator conditionValidator)
+        ConditionValidator conditionValidator,
+        StatusValidator statusValidator)
     {
         _currencyValidator = currencyValidator;
         _categoryValidator = categoryValidator;
         _conditionValidator = conditionValidator;
+        _statusValidator = statusValidator;
     }
 
 
     public async Task<Result<bool>> ValidateAsync(
        AdvertisementCreateRequest request)
     {
+        var status = await _statusValidator
+            .ExistsByIdAsync(request.StatusId);
+
+        if (!status.IsSuccess)
+            return status;
+
         var currency = await _currencyValidator
             .ExistsByIdAsync(request.CurrencyId);
 

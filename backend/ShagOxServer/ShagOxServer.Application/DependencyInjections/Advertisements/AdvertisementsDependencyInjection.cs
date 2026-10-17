@@ -3,7 +3,6 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
-using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.Application.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Services.Advertisements.Core.Create.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Delete;
@@ -12,7 +11,6 @@ using ShagOxServer.Application.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Base;
-using ShagOxServer.Application.Services.Specification.Pictures.PictureOrdering;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.DependencyInjections.Advertisements;

@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
-using ShagOxServer.Domain.Filters.Specification.Pictures.Images;
+using ShagOxServer.Domain.Filters.Specification.Pictures.AdvertisementImages;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images.Extensions;
 public static class AdvertisementImageFilterExtensions
 {
     public static IQueryable<AdvertisementImage> Filter(
         this IQueryable<AdvertisementImage> query,
-        ImageSearchFilter filter)
+        AdvertisementImageSearchFilter filter)
     {
         if (filter is null)
             return query;

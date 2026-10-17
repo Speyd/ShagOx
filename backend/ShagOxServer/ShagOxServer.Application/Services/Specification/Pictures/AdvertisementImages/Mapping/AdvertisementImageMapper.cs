@@ -1,13 +1,13 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Query;
+using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 public static class AdvertisementImageMapper
 {
-    public static ImageDto ToDto(
+    public static AdvertisementImageDto ToDto(
         AdvertisementImage image)
     {
-        return new ImageDto(
+        return new AdvertisementImageDto(
             image.Id,
             image.Url,
             image.PublicId,

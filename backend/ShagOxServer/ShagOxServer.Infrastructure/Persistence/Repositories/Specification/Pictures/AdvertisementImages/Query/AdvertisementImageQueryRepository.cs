@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
-using ShagOxServer.Domain.Filters.Specification.Pictures.Images;
+using ShagOxServer.Domain.Filters.Specification.Pictures.AdvertisementImages;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars.Extensions;
@@ -9,7 +9,7 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Picture
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images.Query;
 public partial class AdvertisementImageQueryRepository 
-    : SearchRepository<AdvertisementImage, ImageSearchFilter>, 
+    : SearchRepository<AdvertisementImage, AdvertisementImageSearchFilter>, 
       IAdvertisementImageQueryRepository
 {
     public AdvertisementImageQueryRepository(

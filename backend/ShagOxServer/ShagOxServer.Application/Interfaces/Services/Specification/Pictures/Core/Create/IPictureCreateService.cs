@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Response;
 using ShagOxServer.Application.Interfaces.Services.Base.Create;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;

@@ -1,20 +1,20 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Query;
+using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Query;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
-using ShagOxServer.Domain.Filters.Specification.Pictures.Images;
+using ShagOxServer.Domain.Filters.Specification.Pictures.AdvertisementImages;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Query;
 public class AdvertisementImageQueryService 
     : BaseQueryService<
-        ImageDto,
+        AdvertisementImageDto,
         AdvertisementImage,
-        ImageSearchFilter
+        AdvertisementImageSearchFilter
         >,
     IAdvertisementImageQueryService
 {
@@ -32,7 +32,7 @@ public class AdvertisementImageQueryService
     }
 
 
-    public override async Task<ImageDto> ApplyMapperAsync(
+    public override async Task<AdvertisementImageDto> ApplyMapperAsync(
         AdvertisementImage entity)
     {
         return AdvertisementImageMapper.ToDto(entity);

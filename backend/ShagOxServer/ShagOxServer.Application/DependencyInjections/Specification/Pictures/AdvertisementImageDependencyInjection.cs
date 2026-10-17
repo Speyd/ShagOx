@@ -13,14 +13,12 @@ using ShagOxServer.Application.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Query;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.PictureOrdering;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.DependencyInjections.Specification.Pictures;
-public static class ImageDependencyInjection
+public static class AdvertisementImageDependencyInjection
 {
-    public static IServiceCollection AddImageApplication(
+    public static IServiceCollection AddAdvertisementImageApplication(
         this IServiceCollection services)
     {
         services.AddScoped<IAdvertisementImageQueryService, 
@@ -45,12 +43,6 @@ public static class ImageDependencyInjection
                 PictureOrderCreateRequest>,
             AdvertisementImageCreateService>();
 
-        //services.AddScoped
-        //    <IPictureOrderCreateService<AdvertisementImage, PictureOrderCreateRequest>,
-        //    AdvertisementImageCreateService>();
-
-        //services.AddScoped<IPictureOrderingService<Advertisement, AdvertisementImage>,
-        //    PictureOrderingService<Advertisement, AdvertisementImage>>();
 
         services.AddScoped<AdvertisementImageValidator>();
 

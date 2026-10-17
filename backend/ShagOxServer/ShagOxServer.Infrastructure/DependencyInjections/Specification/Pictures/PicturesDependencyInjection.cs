@@ -11,7 +11,7 @@ public static class PicturesDependencyInjection
 
         services.AddAvatarInfrastructure();
 
-        services.AddReviewDependencyInfrastructure();
+        services.AddReviewImagesDependencyInfrastructure();
 
 
         return services;

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
@@ -9,7 +9,7 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
-using ShagOxServer.Application.Services.Specification.Pictures.Validator;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

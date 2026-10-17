@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Response;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.SharedKernel.Abstractions.Results;

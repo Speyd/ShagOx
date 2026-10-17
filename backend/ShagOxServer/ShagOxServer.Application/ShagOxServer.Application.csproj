@@ -176,8 +176,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Interfaces\Services\Specification\Pictures\Review\ReviewImages\" />
-	  <Folder Include="Interfaces\Services\Specification\Pictures\Review\" />
 	  <Folder Include="Services\Advertisements\Core\Images\" />
 	</ItemGroup>
 	

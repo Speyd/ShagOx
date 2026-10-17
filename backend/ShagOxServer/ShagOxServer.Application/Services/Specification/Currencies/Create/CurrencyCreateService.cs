@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -33,6 +33,7 @@ public class CurrencyCreateService
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;
+        _currencyInvalidation = currencyInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -42,14 +43,14 @@ public class CurrencyCreateService
         CurrencyCreateRequest request)
     {
         var code = await _currencyValidator
-            .ExistsByCodeValidator(request.Code);
+            .NotExistsByCodeValidator(request.Code);
 
         if (!code.IsSuccess)
             return Result<CreateResponse>.Fail(code.Error);
 
 
         var name = await _currencyValidator
-            .ExistsByNameValidator(request.Name);
+            .NotExistsByNameValidator(request.Name);
 
         if (!name.IsSuccess)
             return Result<CreateResponse>.Fail(code.Error);

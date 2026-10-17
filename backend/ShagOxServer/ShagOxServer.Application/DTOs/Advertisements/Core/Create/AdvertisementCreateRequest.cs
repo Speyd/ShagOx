@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 public sealed record AdvertisementCreateRequest
@@ -9,7 +9,8 @@ public sealed record AdvertisementCreateRequest
     long CurrencyId,
     long ConditionId,
     long CategoryId,
-    List<IFormFile> Images,
+    long StatusId,
+    List<IFormFile> Pictures,
     string? Attributes,
     string? Variants
 );

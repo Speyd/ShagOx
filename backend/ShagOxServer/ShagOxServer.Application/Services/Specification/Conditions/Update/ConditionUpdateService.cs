@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -8,6 +9,7 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Update;
@@ -75,7 +77,20 @@ public class ConditionUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch(Exception ex)
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating condition." +
+                " Id: {Id}",
+                conditionId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
+        }
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 

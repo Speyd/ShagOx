@@ -10,7 +10,6 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Location;
-using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Location;
@@ -48,6 +47,9 @@ public class CityInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              LanguageSearchPattern<City>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           EntityLanguagePagedPattern<City>());
     }
 
     public async Task InvalidateDeleteAsync(

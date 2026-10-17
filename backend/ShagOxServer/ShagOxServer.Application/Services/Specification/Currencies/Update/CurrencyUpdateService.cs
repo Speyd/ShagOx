@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -78,7 +79,20 @@ public class CurrencyUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch(Exception ex)
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating currency." +
+                " Id: {Id}",
+                currencyId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
+        }
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -10,6 +11,7 @@ using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -82,7 +84,20 @@ public class AttributeDefinitionTranslationUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch(Exception ex)
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating attribute definition translation." +
+                " Id: {Id}",
+                attributeTranslationId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
+        }
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 

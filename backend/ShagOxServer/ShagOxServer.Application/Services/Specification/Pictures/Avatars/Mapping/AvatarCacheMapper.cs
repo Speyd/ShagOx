@@ -1,15 +1,15 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Cache;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 public static class AvatarCacheMapper
 {
-    public static AvatarCacheInfo ToInfo(
+    public static PictureCacheInfo ToInfo(
         Avatar avatar)
     {
-        return new AvatarCacheInfo(
+        return new PictureCacheInfo(
             avatar.Id,
-            avatar.UserId
+            avatar.OwnerId
         );
     }
 }

@@ -12,7 +12,6 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Transl
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 public class CategoryInvalidationService
@@ -56,6 +55,9 @@ public class CategoryInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              LanguageSearchPattern<Category>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           EntityLanguagePagedPattern<Category>());
     }
 
     public async Task InvalidateDeleteAsync(

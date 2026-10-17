@@ -31,7 +31,6 @@ public class CurrencyAdminCommandsController
         _deleteService = deleteService;
     }
 
-    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(CurrencyCreateRequest request)
     {
@@ -41,7 +40,6 @@ public class CurrencyAdminCommandsController
         return result.ToActionResult();
     }
 
-    [Authorize]
     [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
         [FromRoute] long id,
@@ -53,7 +51,6 @@ public class CurrencyAdminCommandsController
         return result.ToActionResult();
     }
 
-    [Authorize]
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(
         [FromRoute] long id)

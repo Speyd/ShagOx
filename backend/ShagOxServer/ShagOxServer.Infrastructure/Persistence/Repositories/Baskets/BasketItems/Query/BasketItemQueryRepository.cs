@@ -16,7 +16,8 @@ public partial class BasketItemQueryRepository
     public BasketItemQueryRepository(
         ReplicaDbContext db)
         : base(db)
-    { }
+    { 
+    }
 
     public async Task<PagedResult<BasketItem>> GetByAdvertisementVariantAsync(
         long advertisementVariantId,

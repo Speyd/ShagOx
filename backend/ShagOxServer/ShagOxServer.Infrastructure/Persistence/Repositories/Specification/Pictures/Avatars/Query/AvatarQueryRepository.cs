@@ -18,13 +18,13 @@ public partial class AvatarQueryRepository
     { }
 
 
-    public async Task<Avatar?> GetByUserIdAsync(
-        long userId,
+    public async Task<Avatar?> GetByOwnerAsync(
+        long ownerId,
         CancellationToken cancellationToken = default)
     {
         return await _db.Avatars
           .WithIncludes()
-          .FirstOrDefaultAsync(x => x.UserId == userId,
+          .FirstOrDefaultAsync(x => x.OwnerId == ownerId,
             cancellationToken);
     }
 }

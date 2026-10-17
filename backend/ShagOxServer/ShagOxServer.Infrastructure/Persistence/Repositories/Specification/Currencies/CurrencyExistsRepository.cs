@@ -16,7 +16,7 @@ public class CurrencyExistsRepository
 
 
     public async Task<bool> ExistsByCodeAsync(
-        string? code,
+        string code,
         CancellationToken cancellationToken = default)
     {
         return await _db.Currencies
@@ -25,7 +25,7 @@ public class CurrencyExistsRepository
     }
 
     public async Task<bool> ExistsBySymbolAsync(
-        string? symbol,
+        string symbol,
         CancellationToken cancellationToken = default)
     {
         return await _db.Currencies
@@ -34,7 +34,7 @@ public class CurrencyExistsRepository
     }
 
     public async Task<bool> ExistsByNameAsync(
-        string? name,
+        string name,
         CancellationToken cancellationToken = default)
     {
         return await _db.Currencies

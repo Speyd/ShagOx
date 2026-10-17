@@ -1,5 +1,6 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -7,7 +8,8 @@ using System.Text.Json;
 
 namespace ShagOxServer.Domain.Entities.Advertisements;
 public class Advertisement 
-    : BaseEntity
+    : BaseEntity, 
+    IHasPictures<Advertisement, AdvertisementImage>
 {
     public string Title { get; set; } = "";
     public string Description { get; set; } = "";
@@ -35,7 +37,7 @@ public class Advertisement
     /// <summary>
     /// Collection of product images displayed in the product gallery.
     /// </summary>
-    public ICollection<Image> Images { get; set; }
+    public ICollection<AdvertisementImage> Pictures { get; set; }
         = [];
 
     public ICollection<Favorite> Favorites { get; set; }
@@ -68,6 +70,9 @@ public class Advertisement
     public JsonDocument Attributes { get; set; } = null!;
 
     public ICollection<AdvertisementVariant> Variants { get; set; }
+        = [];
+
+    public ICollection<ReviewComment> ReviewComments { get; set; }
         = [];
 
 

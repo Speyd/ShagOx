@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -75,6 +76,19 @@ public class AttributeDictionaryValueUpdateService
             _valueRepository.Update(value.Value!);
 
             await _unitOfWork.CommitAsync();
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating attribute dictionary value." +
+                " Id: {Id}",
+                valueId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
         }
         catch (Exception ex)
         {

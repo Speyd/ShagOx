@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Domain.Entities.Baskets;
 
@@ -12,7 +12,7 @@ public static class BasketItemQueryExtensions
             .AsSplitQuery()
             .Include(x => x.AdvertisementVariant)
                 .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Images)
+                    .ThenInclude(x => x.Pictures)
 
             .Include(x => x.AdvertisementVariant)
                 .ThenInclude(x => x.Advertisement)

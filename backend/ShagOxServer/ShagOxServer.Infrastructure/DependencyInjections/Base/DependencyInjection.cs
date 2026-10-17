@@ -3,6 +3,7 @@ using ShagOxServer.Infrastructure.DependencyInjections.Advertisements;
 using ShagOxServer.Infrastructure.DependencyInjections.Auth;
 using ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
 using ShagOxServer.Infrastructure.DependencyInjections.Baskets;
+using ShagOxServer.Infrastructure.DependencyInjections.Comments;
 using ShagOxServer.Infrastructure.DependencyInjections.Db;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
 using ShagOxServer.Infrastructure.DependencyInjections.Location;
@@ -30,6 +31,7 @@ public static class DependencyInjection
             .AddBasketInfrastructure()
             .AddAuthInfrastructure()
             .AddLocationInfrastructure()
+            .AddCommentsInfrastructure()
             .AddAdvertisementsInfrastructure()
             .AddUnitOfWorkInfrastructure()
             .AddSpecificationInfrastructure()

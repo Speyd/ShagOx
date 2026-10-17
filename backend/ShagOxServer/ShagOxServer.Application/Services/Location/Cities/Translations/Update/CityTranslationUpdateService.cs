@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Cities.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -10,6 +11,7 @@ using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -44,11 +46,11 @@ public class CityTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        long statusTranslationId,
+        long cityTranslationId,
         CityTranslationUpdateRequest request)
     {
         var city = await _translationValidator
-            .GetByIdAsync(statusTranslationId);
+            .GetByIdAsync(cityTranslationId);
 
         if (!city.IsSuccess)
             return Result<UpdateResponse>.Fail(city.Error);
@@ -79,14 +81,27 @@ public class CityTranslationUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch(Exception ex)
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating city translation." +
+                " Id: {Id}",
+                cityTranslationId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
+        }
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
             _logger.LogError(
                ex,
                "Failed to update city translation. Id: {Id}",
-               statusTranslationId);
+               cityTranslationId);
 
             return Result<UpdateResponse>
                  .Fail(EntityErrorResources.CityTranslationUpdateFailed);

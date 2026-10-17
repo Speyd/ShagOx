@@ -27,9 +27,9 @@ public static class AdvertisementMapper
             category,
             UserShortMapper.ToDto(x.Seller),
             (x.Buyer is not null ? UserShortMapper.ToDto(x.Buyer) : null),
-            x.Images
+            x.Pictures
                 .OrderBy(i => i.Order)
-                .Select(ImageMapper.ToDto)
+                .Select(AdvertisementImageMapper.ToDto)
                 .ToList(),
             x.Attributes,
             VariantToDto(x, variants),

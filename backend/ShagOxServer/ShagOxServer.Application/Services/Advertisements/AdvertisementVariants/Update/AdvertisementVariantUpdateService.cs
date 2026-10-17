@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
@@ -66,6 +67,19 @@ public class AdvertisementVariantUpdateService
             await _variantInvalid.InvalidateUpdateAsync(valueId);
 
             return result;
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating advertisement variant." + 
+                " Id: {Id}",
+                valueId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
         }
         catch (Exception ex)
         {

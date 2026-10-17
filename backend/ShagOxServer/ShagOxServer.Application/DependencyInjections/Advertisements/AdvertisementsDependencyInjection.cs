@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
-using ShagOxServer.Application.Interfaces.Services.Advertisements.Images;
 using ShagOxServer.Application.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Services.Advertisements.Core.Create.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Delete;
@@ -11,7 +10,8 @@ using ShagOxServer.Application.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
-using ShagOxServer.Application.Services.Advertisements.Images;
+using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.DependencyInjections.Advertisements;
 public static class AdvertisementsDependencyInjection
@@ -28,7 +28,9 @@ public static class AdvertisementsDependencyInjection
         services.AddScoped<AdvertisementUpdateValidator>();
         services.AddScoped<AdvertisementValidator>();
 
-        services.AddScoped<IAdvertisementImageService, AdvertisementImageService>();
+        services.AddScoped<
+            BaseValidator<Advertisement>,
+            AdvertisementValidator>();
 
 
         services.AddFavoriteApplication();
@@ -36,6 +38,7 @@ public static class AdvertisementsDependencyInjection
         services.AddStatusApplication();
 
         services.AddAdvertisementVariantApplication();
+
 
         return services;
     }

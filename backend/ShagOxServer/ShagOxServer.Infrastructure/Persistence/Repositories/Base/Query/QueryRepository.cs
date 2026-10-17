@@ -40,7 +40,21 @@ public class QueryRepository<TEntity>
         PaginationParams pagination,
         CancellationToken cancellationToken = default)
     {
+        var connection = _db.Database.GetDbConnection();
+
+        Console.WriteLine($"Database: {connection.Database}");
+        Console.WriteLine($"DataSource: {connection.DataSource}");
+
         IQueryable<TEntity> query = _db.Set<TEntity>();
+
+        Console.WriteLine($"Entity: {typeof(TEntity).Name}");
+        Console.WriteLine($"SQL: {query.ToQueryString()}");
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        Console.WriteLine($"TotalCount: {totalCount}");
+
+       // IQueryable<TEntity> query = _db.Set<TEntity>();
         query = ApplyIncludes(query);
 
         return await query

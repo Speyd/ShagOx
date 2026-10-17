@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -270,6 +270,9 @@
   <data name="CityUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить город.</value>
   </data>
+  <data name="ConcurrencyConflictMessage" xml:space="preserve">
+    <value>Эта запись была изменена или удалена другой операцией. Обновите данные и попробуйте ещё раз.</value>
+  </data>
   <data name="ConditionCreateFailed" xml:space="preserve">
     <value>Не удалось создать условие.</value>
   </data>
@@ -297,6 +300,9 @@
   <data name="CurrencyUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить валюту.</value>
   </data>
+  <data name="ExternalImageUploadFailed" xml:space="preserve">
+    <value>Не удалось загрузить изображение во внешний сервис.</value>
+  </data>
   <data name="FavoriteCreateFailed" xml:space="preserve">
     <value>Не удалось добавить в избранное.</value>
   </data>
@@ -306,13 +312,13 @@
   <data name="FavoriteUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить избранное.</value>
   </data>
-  <data name="ImageCreateFailed" xml:space="preserve">
+  <data name="AdvertImageCreateFailed" xml:space="preserve">
     <value>Не удалось создать изображение.</value>
   </data>
-  <data name="ImageDeleteFailed" xml:space="preserve">
+  <data name="AdvertImageDeleteFailed" xml:space="preserve">
     <value>Не удалось удалить изображение.</value>
   </data>
-  <data name="ImageUpdateFailed" xml:space="preserve">
+  <data name="AdvertImageUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить изображение.</value>
   </data>
   <data name="ImageUploadFailed" xml:space="preserve">
@@ -354,6 +360,15 @@
   <data name="RegionUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить регион.</value>
   </data>
+  <data name="ReviewCommentCreateFailed" xml:space="preserve">
+    <value>Не удалось создать отзыв.</value>
+  </data>
+  <data name="ReviewCommentDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить отзыв.</value>
+  </data>
+  <data name="ReviewCommentUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить отзыв.</value>
+  </data>
   <data name="RoleCreateFailed" xml:space="preserve">
     <value>Не удалось создать роль.</value>
   </data>
@@ -368,5 +383,17 @@
   </data>
   <data name="UserUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить пользователя.</value>
+  </data>
+  <data name="ExternalImageDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить изображение из внешнего сервиса.</value>
+  </data>
+  <data name="ReviewImageCreateFailed" xml:space="preserve">
+    <value>Не удалось создать изображение отзыва.</value>
+  </data>
+  <data name="ReviewImageDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить изображение отзыва.</value>
+  </data>
+  <data name="ReviewImageUploadFailed" xml:space="preserve">
+    <value>Не удалось загрузить изображение отзыва.</value>
   </data>
 </root>

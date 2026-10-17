@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -10,6 +11,7 @@ using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validato
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -97,7 +99,20 @@ public class BasketAttributeUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch(Exception ex)
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating basket attribute." +
+                " Id: {Id}",
+                attributeId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
+        }
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 

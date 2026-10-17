@@ -1,6 +1,6 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Create;
 
 namespace ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 public interface IBasketItemCreateService

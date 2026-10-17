@@ -100,7 +100,8 @@ public class BasketCreateService
                 .Fail(basketUserExists.Error);
         }
 
-        var basket = BasketCreater.Create(request);
+        var basket = BasketCreater
+            .Create(ownerId, request);
 
         _basketRepository.Add(basket);
 

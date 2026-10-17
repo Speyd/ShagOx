@@ -11,6 +11,8 @@ public partial class BaseAppDbContext
     public DbSet<Currency> Currencies { get; set; }
 
     public DbSet<ReviewImage> ReviewImages { get; set; }
+    public DbSet<ReviewRepliImage> ReviewRepliImages { get; set; }
+
     public DbSet<AdvertisementImage> AdvertisementImages { get; set; }
     public DbSet<Avatar> Avatars { get; set; }
 }

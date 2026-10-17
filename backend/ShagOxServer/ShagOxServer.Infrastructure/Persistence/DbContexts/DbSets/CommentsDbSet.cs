@@ -6,4 +6,6 @@ public partial class BaseAppDbContext
     : DbContext
 {
     public DbSet<ReviewComment> ReviewComments { get; set; }
+    public DbSet<ReviewRepliComment> ReviewRepliComments { get; set; }
+
 }

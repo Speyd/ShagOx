@@ -1228,7 +1228,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<string>("PublicId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -1242,9 +1243,10 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId", "Order")
+                        .IsUnique();
 
-                    b.ToTable("ReviewRepliImage");
+                    b.ToTable("ReviewRepliImages");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Translations.ConditionTranslation", b =>

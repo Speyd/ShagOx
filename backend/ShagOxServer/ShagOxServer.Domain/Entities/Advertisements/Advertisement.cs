@@ -73,7 +73,7 @@ public class Advertisement
         = [];
 
     public ICollection<ReviewComment> ReviewComments { get; set; }
-    = [];
+        = [];
 
 
     public override string ToString()

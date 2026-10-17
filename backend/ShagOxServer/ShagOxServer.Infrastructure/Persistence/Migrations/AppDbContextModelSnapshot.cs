@@ -480,13 +480,24 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("CommentableEntityId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
                     b.Property<int>("Grade")
                         .HasColumnType("integer");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<uint>("xmin")
                         .IsConcurrencyToken()
@@ -498,10 +509,65 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("CommentableEntityId");
 
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("CommentableEntityId", "CreatedAt");
+
                     b.ToTable("ReviewComment", t =>
                         {
                             t.HasCheckConstraint("CK_ReviewComments_Grade", "\"Grade\" BETWEEN 1 AND 5");
                         });
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CommentableEntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ParentReplyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentableEntityId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("ParentReplyId");
+
+                    b.HasIndex("CommentableEntityId", "CreatedAt");
+
+                    b.HasIndex("ParentReplyId", "CreatedAt");
+
+                    b.ToTable("ReviewRepliComment");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
@@ -1125,6 +1191,43 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<string>("PublicId")
                         .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId", "Order")
+                        .IsUnique();
+
+                    b.ToTable("ReviewImages");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewRepliImage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Url")
@@ -1141,7 +1244,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("ReviewImage");
+                    b.ToTable("ReviewRepliImage");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Translations.ConditionTranslation", b =>
@@ -1402,7 +1505,41 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("CommentableEntity");
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewComment", "CommentableEntity")
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentableEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", "ParentReply")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentReplyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("CommentableEntity");
+
+                    b.Navigation("Owner");
+
+                    b.Navigation("ParentReply");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
@@ -1555,6 +1692,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewRepliImage", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", "Owner")
+                        .WithMany("Pictures")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Translations.ConditionTranslation", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Condition", "Translatable")
@@ -1629,6 +1777,15 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
                 {
                     b.Navigation("Pictures");
+
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
+                {
+                    b.Navigation("Pictures");
+
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>

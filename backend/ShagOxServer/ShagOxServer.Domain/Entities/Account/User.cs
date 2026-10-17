@@ -1,7 +1,8 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
@@ -47,7 +48,7 @@ public class User
     public ICollection<Advertisement> BoughtAdvertisements { get; set; }
         = [];
 
-    public ICollection<Favorite> Favorites { get; set; } 
+    public ICollection<Favorite> Favorites { get; set; }
         = [];
 
 

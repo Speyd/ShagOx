@@ -23,6 +23,6 @@ public class ImageConfiguration
            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => new { x.OwnerId, x.Order })
-               .IsUnique();
+            .IsUnique();
     }
 }

@@ -9,6 +9,9 @@ public class ReviewComment
 {
     public int Grade { get; set; }
 
+    public ICollection<ReviewRepliComment> Replies { get; set; }
+        = [];
+
     public ICollection<ReviewImage> Pictures { get; set; }
         = [];
 }

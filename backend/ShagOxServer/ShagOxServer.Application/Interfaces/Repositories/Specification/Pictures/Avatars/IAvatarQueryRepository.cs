@@ -1,12 +1,11 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Core;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
 public partial interface IAvatarQueryRepository
-    : ISearchRepository<Avatar, AvatarSearchFilter>
+    : ISearchRepository<Avatar, AvatarSearchFilter>,
+    IPictureQueryRepository<Avatar>
 {
-    Task<Avatar?> GetByUserIdAsync(
-        long userId,
-        CancellationToken cancellationToken = default);
 }

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Infrastructure.DependencyInjections.Specification.Pictures.Review;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Specification.Pictures;
 public static class PicturesDependencyInjection
@@ -9,6 +10,9 @@ public static class PicturesDependencyInjection
         services.AddAdvertisementImageInfrastructure();
 
         services.AddAvatarInfrastructure();
+
+        services.AddReviewDependencyInfrastructure();
+
 
         return services;
     }

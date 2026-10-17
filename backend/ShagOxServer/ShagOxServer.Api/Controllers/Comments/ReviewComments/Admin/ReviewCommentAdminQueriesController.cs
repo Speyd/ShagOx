@@ -9,7 +9,7 @@ namespace ShagOxServer.Api.Controllers.Comments.ReviewComments.Admin;
 
 [ApiController]
 [Route("api/admin/review-comment")]
-[Authorize]
+[Authorize(Roles = "Admin")]
 public class ReviewCommentAdminQueriesController
     : BaseQueryController<ReviewCommentDto,
         ReviewCommentSearchFilter>

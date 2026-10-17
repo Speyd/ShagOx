@@ -18,7 +18,7 @@ public partial class AdvertisementImageQueryRepository
     { }
 
 
-     public async Task<List<AdvertisementImage>> GetByIdsAsync(
+    public async Task<List<AdvertisementImage>> GetByIdsAsync(
         List<long> ids,
         CancellationToken cancellationToken = default)
     {
@@ -28,13 +28,13 @@ public partial class AdvertisementImageQueryRepository
            .ToListAsync(cancellationToken);
     }
 
-     public async Task<List<AdvertisementImage>> GetByAdvertisementAsync(
-        long advertId,
+    public async Task<List<AdvertisementImage>> GetByOwnerAsync(
+        long ownerId,
         CancellationToken cancellationToken = default)
     {
         return await _db.AdvertisementImages
           .WithIncludes()
-          .Where(x => x.OwnerId == advertId)
+          .Where(x => x.OwnerId == ownerId)
           .ToListAsync(cancellationToken);
     }
 

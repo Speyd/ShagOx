@@ -5,7 +5,6 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars.Query;
-
 public partial class AvatarQueryRepository
     : SearchRepository<Avatar, AvatarSearchFilter>,
       IAvatarQueryRepository

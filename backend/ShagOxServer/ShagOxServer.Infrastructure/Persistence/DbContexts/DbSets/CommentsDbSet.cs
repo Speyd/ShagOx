@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Comments;
 
-namespace ShagOxServer.Infrastructure.Persistence.DbContexts.DbSets;
+namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
 public partial class BaseAppDbContext
     : DbContext
 {

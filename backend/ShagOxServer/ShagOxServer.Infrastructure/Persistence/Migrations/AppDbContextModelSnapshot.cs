@@ -469,6 +469,41 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("BasketItems");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CommentableEntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Grade")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentableEntityId");
+
+                    b.ToTable("ReviewComment", t =>
+                        {
+                            t.HasCheckConstraint("CK_ReviewComments_Grade", "\"Grade\" BETWEEN 1 AND 5");
+                        });
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
                 {
                     b.Property<long>("Id")
@@ -1074,6 +1109,41 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("Avatars");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewImage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("ReviewImage");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Translations.ConditionTranslation", b =>
                 {
                     b.Property<long>("Id")
@@ -1324,6 +1394,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Basket");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "CommentableEntity")
+                        .WithMany("ReviewComments")
+                        .HasForeignKey("CommentableEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CommentableEntity");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Category", "Category")
@@ -1463,6 +1544,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewImage", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewComment", "Owner")
+                        .WithMany("Pictures")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Translations.ConditionTranslation", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Condition", "Translatable")
@@ -1512,6 +1604,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Navigation("Pictures");
 
+                    b.Navigation("ReviewComments");
+
                     b.Navigation("Variants");
                 });
 
@@ -1530,6 +1624,11 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.Basket", b =>
                 {
                     b.Navigation("BasketItems");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
+                {
+                    b.Navigation("Pictures");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>

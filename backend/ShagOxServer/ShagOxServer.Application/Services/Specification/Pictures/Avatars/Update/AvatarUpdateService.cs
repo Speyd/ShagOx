@@ -14,7 +14,6 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Update;
 public class AvatarUpdateService

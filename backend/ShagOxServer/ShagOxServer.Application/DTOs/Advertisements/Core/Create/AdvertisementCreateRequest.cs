@@ -10,7 +10,7 @@ public sealed record AdvertisementCreateRequest
     long ConditionId,
     long CategoryId,
     long StatusId,
-   // List<IFormFile> Images,
+    List<IFormFile> Images,
     string? Attributes,
     string? Variants
 );

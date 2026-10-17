@@ -357,6 +357,15 @@
   <data name="RegionUpdateFailed" xml:space="preserve">
     <value>Failed to update region.</value>
   </data>
+  <data name="ReviewCommentCreateFailed" xml:space="preserve">
+    <value>Failed to create review.</value>
+  </data>
+  <data name="ReviewCommentDeleteFailed" xml:space="preserve">
+    <value>Failed to delete review.</value>
+  </data>
+  <data name="ReviewCommentUpdateFailed" xml:space="preserve">
+    <value>Failed to update review.</value>
+  </data>
   <data name="RoleCreateFailed" xml:space="preserve">
     <value>Failed to create role.</value>
   </data>

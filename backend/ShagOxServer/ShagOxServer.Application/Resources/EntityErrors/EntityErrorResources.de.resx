@@ -357,6 +357,15 @@
   <data name="RegionUpdateFailed" xml:space="preserve">
     <value>Die Region konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="ReviewCommentCreateFailed" xml:space="preserve">
+    <value>Bewertung konnte nicht erstellt werden.</value>
+  </data>
+  <data name="ReviewCommentDeleteFailed" xml:space="preserve">
+    <value>Bewertung konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="ReviewCommentUpdateFailed" xml:space="preserve">
+    <value>Bewertung konnte nicht aktualisiert werden.</value>
+  </data>
   <data name="RoleCreateFailed" xml:space="preserve">
     <value>Die Rolle konnte nicht erstellt werden.</value>
   </data>

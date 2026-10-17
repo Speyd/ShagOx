@@ -60,10 +60,10 @@ public class AdvertisementCreateService
 
     public async Task<Result<CreateResponse>> CreateAsync(
         AdvertisementCreateRequest request,
-        long userId)
+        long ownerId)
     {
         var validation = await _advertCreateValidator
-            .ValidateAsync(request);
+            .ValidateAsync(request, ownerId);
 
         if (!validation.IsSuccess)
             return Result<CreateResponse>.Fail(validation.Error);
@@ -78,7 +78,7 @@ public class AdvertisementCreateService
 
 
         var advert = AdvertisementCreater
-            .Create(request, userId);
+            .Create(request, ownerId);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -89,7 +89,7 @@ public class AdvertisementCreateService
             await _unitOfWork.SaveChangesAsync();
 
             var createVariant = await CreateVariantsAsync(
-                userId,
+                ownerId,
                 advert.Id,
                 variantsResult.Value);
 
@@ -101,21 +101,21 @@ public class AdvertisementCreateService
                     .Fail(createVariant.Error);
             }
 
-            //var imagesResult = await _imageCreateService
-            //    .CreateAsync(
-            //        new PicturesCreateRequest(
-            //            advert.Id,
-            //            request.Images
-            //        )
-            //);
+            var imagesResult = await _imageCreateService
+                .CreateAsync(
+                    new PicturesCreateRequest(
+                        advert.Id,
+                        request.Images
+                    )
+            );
 
-            //if (!imagesResult.IsSuccess)
-            //{
-            //    await _unitOfWork.RollbackAsync();
+            if (!imagesResult.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
 
-            //    return Result<CreateResponse>
-            //        .Fail(imagesResult.Error!);
-            //}
+                return Result<CreateResponse>
+                    .Fail(imagesResult.Error!);
+            }
 
 
             await _unitOfWork.CommitAsync();
@@ -128,7 +128,7 @@ public class AdvertisementCreateService
                 ex,
                 "Failed to create advertisement. " +
                 "UserId: {UserId}, Title: {Title}",
-                userId,
+                ownerId,
                 request.Title);
 
             return Result<CreateResponse>

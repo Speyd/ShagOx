@@ -357,6 +357,15 @@
   <data name="RegionUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить регион.</value>
   </data>
+  <data name="ReviewCommentCreateFailed" xml:space="preserve">
+    <value>Не удалось создать отзыв.</value>
+  </data>
+  <data name="ReviewCommentDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить отзыв.</value>
+  </data>
+  <data name="ReviewCommentUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить отзыв.</value>
+  </data>
   <data name="RoleCreateFailed" xml:space="preserve">
     <value>Не удалось создать роль.</value>
   </data>

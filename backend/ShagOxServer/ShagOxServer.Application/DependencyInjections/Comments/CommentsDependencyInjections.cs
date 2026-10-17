@@ -6,7 +6,7 @@ public static class CommentsDependencyInjections
     public static IServiceCollection AddCommentsApplication(
         this IServiceCollection services)
     {
-        services.AddReviewCommentApplication();
+        services.AddReviewCommentApplication(); 
 
         return services;
     }

@@ -781,6 +781,33 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create review..
+        /// </summary>
+        internal static string ReviewCommentCreateFailed {
+            get {
+                return ResourceManager.GetString("ReviewCommentCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete review..
+        /// </summary>
+        internal static string ReviewCommentDeleteFailed {
+            get {
+                return ResourceManager.GetString("ReviewCommentDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update review..
+        /// </summary>
+        internal static string ReviewCommentUpdateFailed {
+            get {
+                return ResourceManager.GetString("ReviewCommentUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create role..
         /// </summary>
         internal static string RoleCreateFailed {

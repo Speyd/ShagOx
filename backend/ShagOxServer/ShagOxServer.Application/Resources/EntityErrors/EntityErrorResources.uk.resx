@@ -357,6 +357,15 @@
   <data name="RegionUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити регіон.</value>
   </data>
+  <data name="ReviewCommentCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити відгук.</value>
+  </data>
+  <data name="ReviewCommentDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити відгук.</value>
+  </data>
+  <data name="ReviewCommentUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити відгук.</value>
+  </data>
   <data name="RoleCreateFailed" xml:space="preserve">
     <value>Не вдалося створити роль.</value>
   </data>

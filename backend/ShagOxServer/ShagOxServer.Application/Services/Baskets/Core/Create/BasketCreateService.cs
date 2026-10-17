@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -44,13 +44,14 @@ public class BasketCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        BasketCreateRequest request)
+        BasketCreateRequest request, 
+        long ownerId)
     {
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            var result = await CreateInternalAsync(request);
+            var result = await CreateInternalAsync(request, ownerId);
 
             if (!result.IsSuccess)
             {
@@ -69,7 +70,7 @@ public class BasketCreateService
             _logger.LogError(
                 ex,
                 "Failed to create basket. UserId: {UserId}",
-                request.UserId);
+                ownerId);
 
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.BasketCreateFailed);
@@ -78,10 +79,11 @@ public class BasketCreateService
 
 
     public async Task<Result<CreateResponse>> CreateInternalAsync(
-        BasketCreateRequest request)
+        BasketCreateRequest request,
+        long ownerId)
     {
         var userExists = await _userValidator
-            .ExistsByIdAsync(request.UserId);
+            .ExistsByIdAsync(ownerId);
 
         if (!userExists.IsSuccess)
         {
@@ -90,7 +92,7 @@ public class BasketCreateService
         }
 
         var basketUserExists = await _basketValidator
-            .NotExistsByUserAsync(request.UserId);
+            .NotExistsByUserAsync(ownerId);
 
         if (!basketUserExists.IsSuccess)
         {

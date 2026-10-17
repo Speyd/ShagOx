@@ -1,10 +1,6 @@
 using ShagOxServer.Domain.Entities.Comments;
-using ShagOxServer.Domain.Entities.Specification.Pictures;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace ShagOxServer.Application.Services.Caches.Keys.Specification.Pictures.Review;
+namespace ShagOxServer.Application.Services.Caches.Keys.Comments.Review;
 public static class ReviewCommentCache
 {
     public static readonly string Prefix =
@@ -12,6 +8,12 @@ public static class ReviewCommentCache
 
 
     public static string ByAdvertisement(
+       long advertId,
+        int page,
+        int pageSize)
+           => $"{Prefix}:advertisement:{advertId}:page:{page}:size:{pageSize}";
+
+    public static string ByAdvertisementPattern(
        long advertId)
-           => $"{Prefix}:advertisement:{advertId}";
+        => $"{Prefix}:advertisement:{advertId}:*";
 }

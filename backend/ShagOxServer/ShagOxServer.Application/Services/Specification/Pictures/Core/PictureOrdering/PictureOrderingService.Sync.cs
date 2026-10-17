@@ -8,7 +8,7 @@ namespace ShagOxServer.Application.Services.Specification.Pictures.PictureOrderi
 public partial class PictureOrderingService<TOwner, TPicture>
     : IPictureOrderingService<TOwner, TPicture>
 {
-    public async Task<Result<SyncPictureResponce>> SyncPicturesAsync(
+    public async Task<Result<PictureSyncResponce>> SyncPicturesAsync(
         long ownerId,
         List<OwnerPictureOrderUpdateRequest>? request)
     {
@@ -16,14 +16,14 @@ public partial class PictureOrderingService<TOwner, TPicture>
             .GetByIdAsync(ownerId);
 
         if (!owner.IsSuccess)
-            return Result<SyncPictureResponce>.Fail(owner.Error);
+            return Result<PictureSyncResponce>.Fail(owner.Error);
 
         return await SyncPicturesAsync(
             owner.Value!,
             request);
     }
 
-    public async Task<Result<SyncPictureResponce>> SyncPicturesAsync(
+    public async Task<Result<PictureSyncResponce>> SyncPicturesAsync(
         TOwner owner,
         List<OwnerPictureOrderUpdateRequest>? request)
     {
@@ -36,7 +36,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
             if (request is null ||
                 !request.Any())
             {
-                return Result<SyncPictureResponce>.Success(new SyncPictureResponce(
+                return Result<PictureSyncResponce>.Success(new PictureSyncResponce(
                     loadedPicture,
                     deletePublicIds,
                     originalPictureOrders,
@@ -58,7 +58,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
                  );
             }
 
-            return Result<SyncPictureResponce>.Success(new SyncPictureResponce(
+            return Result<PictureSyncResponce>.Success(new PictureSyncResponce(
                 loadedPicture,
                 deletePublicIds,
                 originalPictureOrders,
@@ -77,7 +77,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
 
     public async Task Rollback(
         TOwner owner,
-        SyncPictureResponce responce)
+        PictureSyncResponce responce)
     {
         await DeleteLoadedPicturesAsync(responce.LoadedPicture);
 

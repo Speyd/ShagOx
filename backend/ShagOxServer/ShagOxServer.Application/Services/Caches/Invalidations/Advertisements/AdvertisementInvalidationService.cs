@@ -1,15 +1,18 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
+using ShagOxServer.Application.DTOs.Comments.ReviewComments.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Advertisements;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
+using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -31,6 +34,8 @@ public class AdvertisementInvalidationService
     private readonly IAdvertisementImageQueryRepository _imageRepository;
     private readonly ImageInvalidationService _imageInvalid;
 
+    private readonly IReviewCommentQueryRepository _commentRepository;
+    private readonly ReviewCommentInvalidationService _commentInvalid;
 
     private readonly IDataCacheService _cache;
 
@@ -45,6 +50,8 @@ public class AdvertisementInvalidationService
         BasketItemBasketInvalidationService basketInvalid,
         IAdvertisementImageQueryRepository imageRepository,
         ImageInvalidationService imageInvalid,
+        IReviewCommentQueryRepository commentRepository,
+        ReviewCommentInvalidationService commentInvalid,
         IDataCacheService cache)
     {
         _favoriteRepository = favoriteRepository;
@@ -55,6 +62,8 @@ public class AdvertisementInvalidationService
         _basketInvalid = basketInvalid;
         _imageRepository = imageRepository;
         _imageInvalid = imageInvalid;
+        _commentRepository = commentRepository;
+        _commentInvalid = commentInvalid;
         _cache = cache;
     }
 
@@ -104,6 +113,15 @@ public class AdvertisementInvalidationService
         {
             await _imageInvalid
                 .InvalidateDeleteAsync(imageInfo);
+        }
+
+
+        var commentInfos = await GetCommentInfos(entityInfo.Id);
+
+        foreach (var commentInfo in commentInfos)
+        {
+            await _commentInvalid
+                .InvalidateDeleteAsync(commentInfo);
         }
     }
 
@@ -171,6 +189,13 @@ public class AdvertisementInvalidationService
       long entityId)
     {
         return await _imageRepository
-            .GetCacheInfoByAdvertisementAsync(entityId);
+            .GetCacheInfosByOwnerAsync(entityId);
+    }
+
+    private async Task<List<ReviewCommentCacheInfo>> GetCommentInfos(
+        long entityId)
+    {
+        return await _commentRepository
+            .GetCacheInfoByCommentableAsync(entityId);
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -52,5 +53,35 @@ public partial class AdvertisementUpdateService
             return Result<Dictionary<long, AdvertisementVariantUpdateRequest>?>
                 .Fail(ValidationResources.InvalidJson);
         }
+    }
+
+    private async Task<Result<bool>> UpdateVariantsAsync(
+        Dictionary<long, AdvertisementVariantUpdateRequest>? variants)
+    {
+        if (variants is null)
+            return Result<bool>.Success(true);
+
+        foreach (var variant in variants)
+        {
+            var updateResult = await _variantUpdateService
+                .UpdateInternalAsync(
+                    variant.Key,
+                    variant.Value
+                );
+
+            if (!updateResult.IsSuccess)
+            {
+                _logger.LogError(
+                    "Failed to update advertisement variant(variant update). " +
+                    "VariantId: {VariantId}, Error: {Error}",
+                    variant.Key,
+                    updateResult.Error
+                );
+
+                return Result<bool>.Fail(updateResult.Error!);
+            }
+        }
+
+        return Result<bool>.Success(true);
     }
 }

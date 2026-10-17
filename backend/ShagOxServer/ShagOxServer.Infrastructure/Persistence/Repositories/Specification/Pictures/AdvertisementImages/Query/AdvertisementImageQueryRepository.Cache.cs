@@ -11,7 +11,7 @@ public partial class AdvertisementImageQueryRepository
     : SearchRepository<AdvertisementImage, AdvertisementImageSearchFilter>,
       IAdvertisementImageQueryRepository
 {
-    public async Task<List<PictureCacheInfo>> GetCacheInfoByAdvertisementAsync(
+    public async Task<List<PictureCacheInfo>> GetCacheInfosByOwnerAsync(
         long advertId,
         CancellationToken cancellationToken = default)
     {

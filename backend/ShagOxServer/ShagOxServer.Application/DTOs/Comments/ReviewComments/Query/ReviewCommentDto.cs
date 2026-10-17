@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Review.ReviewImages.Query;
 
 namespace ShagOxServer.Application.DTOs.Comments.ReviewComments.Query;
 public sealed record ReviewCommentDto
@@ -9,7 +10,8 @@ public sealed record ReviewCommentDto
     string Text,
     DateTime CreatedAt,
     DateTime? UpdatedAt,
-    int Grade
+    int Grade,
+    List<ReviewImageDto> Pictures
 ) : CommentDto(Id,
     Owner, 
     CommentableEntityId,

@@ -9,7 +9,4 @@ public partial interface IAdvertisementImageQueryRepository
     : ISearchRepository<AdvertisementImage, AdvertisementImageSearchFilter>,
     IPictureOrderQueryRepository<AdvertisementImage>
 {
-    Task<List<PictureCacheInfo>> GetCacheInfoByAdvertisementAsync(
-        long advertId,
-        CancellationToken cancellationToken = default);
 }

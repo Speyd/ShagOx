@@ -1,4 +1,4 @@
-using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
+using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments.Query;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Filters.Comments;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;

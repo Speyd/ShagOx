@@ -7,9 +7,11 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
+using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Mapping;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -21,13 +23,13 @@ public partial class ReviewImageCreateService
         PictureOrderCreateRequest>,
     IReviewImageCreateService
 {
-   // private protected ImageInvalidationService _imageInvalidation;
+    private protected ReviewImageInvalidationService _imageInvalidation;
 
     public ReviewImageCreateService(
         IRepository<ReviewImage> imageRepository,
         PictureValidator pictureValidator,
         ReviewCommentValidator commentValidator,
-        //ImageInvalidationService imageInvalidation,
+        ReviewImageInvalidationService imageInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<ReviewImageCreateService> logger
     )
@@ -37,7 +39,7 @@ public partial class ReviewImageCreateService
             unitOfWork,
             logger)
     {
-        //_imageInvalidation = imageInvalidation;
+        _imageInvalidation = imageInvalidation;
     }
 
 
@@ -104,9 +106,9 @@ public partial class ReviewImageCreateService
     }
 
     public override async Task InvalidateCache(
-        ReviewImage image)
+        ReviewImage picture)
     {
-        //await _imageInvalidation.InvalidateCreateAsync(
-        //    AdvertisementImageCacheMapper.ToInfo(image));
+        await _imageInvalidation.InvalidateCreateAsync(
+            ReviewImageCacheMapper.ToInfo(picture));
     }
 }

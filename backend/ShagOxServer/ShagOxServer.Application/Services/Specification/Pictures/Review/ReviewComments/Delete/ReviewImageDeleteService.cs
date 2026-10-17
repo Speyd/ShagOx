@@ -4,8 +4,10 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
+using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
@@ -16,14 +18,14 @@ public class ReviewImageDeleteService
     : PictureDeleteService<ReviewComment, ReviewImage>,
     IReviewImageDeleteService
 {
-    //private readonly AvatarInvalidationService _avatarInvalid;
+    private readonly ReviewImageInvalidationService _imageInvalid;
 
 
     public ReviewImageDeleteService(
         IRepository<ReviewImage> imageRepository,
         ReviewImageValidator imageValidator,
         PictureValidator pictureValidator,
-        //ReviewImageInvalidationService avatarInvalid,
+        ReviewImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ReviewImageDeleteService> logger
     )
@@ -33,7 +35,7 @@ public class ReviewImageDeleteService
             unitOfWork,
             logger)
     {
-       // _imageInvalid = imageInvalid;
+        _imageInvalid = imageInvalid;
     }
 
 
@@ -68,9 +70,9 @@ public class ReviewImageDeleteService
 
 
     public override async Task InvalidateCache(
-        ReviewImage image)
+        ReviewImage picture)
     {
-        //await _avatarInvalid.InvalidateDeleteAsync(
-        //    AvatarCacheMapper.ToInfo(avatar));
+        await _imageInvalid.InvalidateDeleteAsync(
+            ReviewImageCacheMapper.ToInfo(picture));
     }
 }

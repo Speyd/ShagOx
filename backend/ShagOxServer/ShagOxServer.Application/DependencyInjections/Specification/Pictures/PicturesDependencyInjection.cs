@@ -3,6 +3,7 @@ using ShagOxServer.Application.DependencyInjections.Specification.Pictures.Revie
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.PictureOrdering;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.PictureOrdering;
 
@@ -18,9 +19,8 @@ public static class PicturesDependencyInjection
             typeof(IPictureOrderingService<,>),
             typeof(PictureOrderingService<,>));
 
-        //services.AddScoped(
-        //    typeof(IPictureCreateService<,>),
-        //    typeof(PictureOrderingService<,>));
+        services.AddScoped(
+            typeof(PictureOrderSyncExecutor<,>));
 
         services.AddAdvertisementImageApplication();
 

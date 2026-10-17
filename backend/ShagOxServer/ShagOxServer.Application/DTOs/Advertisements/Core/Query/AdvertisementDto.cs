@@ -18,7 +18,7 @@ public sealed record AdvertisementDto
     CategoryDto Category,
     UserShortDto Seller,
     UserShortDto? Buyer,
-    List<AdvertisementImageDto> Images,
+    List<AdvertisementImageDto> Pictures,
     JsonDocument Attributes,
     List<AdvertisementVariantDto> Variants,
     DateTime? SoldAt,

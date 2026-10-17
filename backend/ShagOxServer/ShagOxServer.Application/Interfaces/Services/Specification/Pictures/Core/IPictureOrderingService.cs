@@ -11,11 +11,11 @@ public interface IPictureOrderingService<TOwner, TPicture>
     where TOwner: BaseEntity, IHasPictures<TOwner, TPicture>
     where TPicture: BasePictureOrder<TOwner>   
 {
-    Task<Result<SyncPictureResponce>> SyncPicturesAsync(
+    Task<Result<PictureSyncResponce>> SyncPicturesAsync(
         long ownerId,
         List<OwnerPictureOrderUpdateRequest>? request);
 
-    Task<Result<SyncPictureResponce>> SyncPicturesAsync(
+    Task<Result<PictureSyncResponce>> SyncPicturesAsync(
         TOwner advertisement,
         List<OwnerPictureOrderUpdateRequest>? request);
 
@@ -24,5 +24,5 @@ public interface IPictureOrderingService<TOwner, TPicture>
 
     Task Rollback(
         TOwner owner,
-        SyncPictureResponce responce);
+        PictureSyncResponce responce);
 }

@@ -3,8 +3,8 @@ using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Filters.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
-namespace ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
-public interface IReviewCommentQueryRepository
+namespace ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments.Query;
+public partial interface IReviewCommentQueryRepository
     : ISearchRepository<ReviewComment,
         ReviewCommentSearchFilter>
 {

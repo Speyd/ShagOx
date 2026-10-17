@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.DTOs.Comments.ReviewComments.Query;
+using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Mapping;
 using ShagOxServer.Domain.Entities.Comments;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewComments.Mapping;
@@ -16,7 +17,11 @@ public static class ReviewCommentMapper
             comment.Text,
             comment.CreatedAt,
             comment.UpdatedAt,
-            comment.Grade
+            comment.Grade,
+            comment.Pictures
+                .OrderBy(i => i.Order)
+                .Select(ReviewImageMapper.ToDto)
+                .ToList()
         );
     }
 }

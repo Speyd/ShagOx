@@ -5,9 +5,10 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
@@ -20,14 +21,14 @@ public class ReviewImageUpdateService
         PictureOrderUpdateRequest>,
     IReviewImageUpdateService
 {
-    //private readonly ImageInvalidationService _imageInvalid;
+    private readonly ReviewImageInvalidationService _imageInvalid;
 
 
     public ReviewImageUpdateService(
         IRepository<ReviewImage> imageRepository,
         ReviewImageValidator imageValidator,
         ReviewCommentValidator commentValidator,
-        ImageInvalidationService imageInvalid,
+        ReviewImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ReviewImageUpdateService> logger
     )
@@ -37,7 +38,7 @@ public class ReviewImageUpdateService
             unitOfWork, 
             logger)
     {
-       // _imageInvalid = imageInvalid;
+        _imageInvalid = imageInvalid;
     }
 
 
@@ -59,8 +60,8 @@ public class ReviewImageUpdateService
     public override async Task InvalidateCache(
         ReviewImage picture)
     {
-        //await _imageInvalid.InvalidateUpdateAsync(
-        //   AdvertisementImageCacheMapper.ToInfo(picture));
+        await _imageInvalid.InvalidateUpdateAsync(
+           ReviewImageCacheMapper.ToInfo(picture));
     }
 
     protected override int ApplyUpdates(

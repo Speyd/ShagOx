@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
@@ -9,17 +8,15 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Create.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Create;
-public class AdvertisementCreateService 
+public partial class AdvertisementCreateService 
     : IAdvertisementCreateService
 {
     private readonly IRepository<Advertisement> _advertRepository;
@@ -105,7 +102,7 @@ public class AdvertisementCreateService
                 .CreateAsync(
                     new PicturesCreateRequest(
                         advert.Id,
-                        request.Images
+                        request.Pictures
                     )
             );
 
@@ -147,87 +144,5 @@ public class AdvertisementCreateService
                 advert.Id,
                 advert.CreatedAt
         ));
-    }
-
-    private Result<List<AdvertisementVariantCreateRequest>?> ParseAndValidateVariants(
-        string? variantsJson)
-    {
-        if (string.IsNullOrWhiteSpace(variantsJson))
-        {
-            return Result<List<AdvertisementVariantCreateRequest>?>
-                .Success(null);
-        }
-
-        try
-        {
-            if (string.IsNullOrWhiteSpace(variantsJson))
-            {
-                return Result<List<AdvertisementVariantCreateRequest>?>
-                    .Success(null);
-            }
-
-            var variants = JsonSerializer.Deserialize<
-                List<AdvertisementVariantCreateRequest>
-                    >(variantsJson);
-
-            if (variants is null)
-            {
-                return Result<List<AdvertisementVariantCreateRequest>?>
-                    .Success(null);
-            }
-
-            var duplicateExists = _variantValidator
-                .ValidateUniqueAttributes(
-                    variants
-                        .Select(x => x.Attributes)
-                        .ToList()
-                );
-
-            if (!duplicateExists.IsSuccess)
-            {
-                return Result<List<AdvertisementVariantCreateRequest>?>
-                    .Fail(duplicateExists.Error!);
-            }
-
-            return Result<List<AdvertisementVariantCreateRequest>?>
-                .Success(variants);
-        }
-        catch (JsonException)
-        {
-            return Result<List<AdvertisementVariantCreateRequest>?>
-                .Fail(ValidationResources.InvalidJson);
-        }
-    }
-
-    private async Task<Result<bool>> CreateVariantsAsync(
-        long userId,
-        long advertisementId,
-        IEnumerable<AdvertisementVariantCreateRequest>? variants)
-    {
-        if (variants is null)
-            return Result<bool>.Success(true);
-
-        foreach (var variant in variants)
-        {
-            var newVariant = variant with
-            {
-                AdvertisementId = advertisementId
-            };
-
-            var result = await _variantCreateService
-                .CreateInternalAsync(newVariant);
-
-            if (!result.IsSuccess)
-            {
-                _logger.LogError(
-                    "Failed to create advertisement(variant create). " +
-                    "UserId: {UserId}",
-                    userId);
-
-                return Result<bool>.Fail(result.Error);
-            }
-        }
-
-        return Result<bool>.Success(true);
     }
 }

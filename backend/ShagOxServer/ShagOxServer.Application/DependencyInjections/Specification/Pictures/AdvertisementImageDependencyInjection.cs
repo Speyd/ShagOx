@@ -8,11 +8,13 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Query;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Update;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.PictureOrdering;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Query;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.DependencyInjections.Specification.Pictures;

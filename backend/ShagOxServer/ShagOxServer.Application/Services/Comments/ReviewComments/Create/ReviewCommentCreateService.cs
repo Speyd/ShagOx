@@ -1,11 +1,15 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Comments.ReviewComments.Create;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
+using ShagOxServer.Application.Services.Comments.ReviewComments.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -17,6 +21,10 @@ public class ReviewCommentCreateService
     private readonly IRepository<ReviewComment> _commentRepository;
     private readonly CommentValidator<Advertisement> _commentValidator;
 
+    private readonly ReviewCommentInvalidationService _commInvalid;
+
+    private readonly IReviewImageCreateService _imageCreateService;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ReviewCommentCreateService> _logger;
 
@@ -24,11 +32,15 @@ public class ReviewCommentCreateService
     public ReviewCommentCreateService(
         IRepository<ReviewComment> commentRepository,
         CommentValidator<Advertisement> commentValidator,
+        ReviewCommentInvalidationService commInvalid,
+        IReviewImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
         ILogger<ReviewCommentCreateService> logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
+        _commInvalid = commInvalid;
+        _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -59,10 +71,25 @@ public class ReviewCommentCreateService
         {
             _commentRepository.Add(comment);
 
-            await _unitOfWork.SaveChangesAsync();
 
-            //await _basketInvalidation.InvalidateCreateAsync(
-            //    BasketCacheMapper.ToInfo(basket));
+            var imagesResult = await _imageCreateService
+               .CreateAsync(
+                   new PicturesCreateRequest(
+                       request.CommentableEntityId,
+                       request.Pictures
+                   )
+           );
+
+            if (!imagesResult.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return Result<CreateResponse>
+                    .Fail(imagesResult.Error!);
+            }
+
+
+            await _unitOfWork.CommitAsync();
         }
         catch (Exception ex)
         {
@@ -76,6 +103,9 @@ public class ReviewCommentCreateService
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.ReviewCommentCreateFailed);
         }
+
+        await _commInvalid.InvalidateCreateAsync(
+                ReviewCommentCacheMapper.ToInfo(comment));
 
         return Result<CreateResponse>.Success(
            new CreateResponse(

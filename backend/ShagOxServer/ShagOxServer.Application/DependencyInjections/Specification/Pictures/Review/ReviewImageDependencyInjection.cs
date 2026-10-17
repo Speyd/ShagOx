@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Query;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Update;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Query;

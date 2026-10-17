@@ -12,5 +12,5 @@ public sealed record AdvertisementUpdateRequest
     long? BuyerId,
     string? Attributes,
     string? Variants,
-    List<OwnerPictureOrderUpdateRequest>? Images
+    List<OwnerPictureOrderUpdateRequest>? Pictures
 );

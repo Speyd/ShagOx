@@ -1,7 +1,10 @@
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
-using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Specification.Pictures.Images.Update;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -9,18 +12,28 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
-    : IPictureUpdateService<TPicture, TRequest>
+    : PictureUpdateService<TOwner, TPicture, TRequest>
     where TOwner : BaseEntity, IHasPictures<TOwner, TPicture>
     where TPicture : BasePictureOrder<TOwner>
-    where TRequest : PictureUpdateRequest
+    where TRequest : PictureOrderUpdateRequest
 {
     protected readonly BaseValidator<TOwner> _ownerValidator;
     protected readonly BaseValidator<TPicture> _pictureValidator;
 
 
     public PictureOrderUpdateService(
+        IRepository<TPicture> pictureRepository,
+        BaseValidator<TPicture> pictureValidator,
         BaseValidator<TOwner> ownerValidator,
-        BaseValidator<TPicture> pictureValidator)
+        IUnitOfWork unitOfWork,
+        ILogger<PictureOrderUpdateService<TOwner, 
+            TPicture, TRequest>> logger
+    )
+        : base(pictureRepository, 
+            pictureValidator, 
+            ownerValidator, 
+            unitOfWork, 
+            logger)
     {
         _ownerValidator = ownerValidator;
         _pictureValidator = pictureValidator;
@@ -29,7 +42,7 @@ public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
 
     protected virtual async Task<Result<int?>> GetNewOrder(
         long pictureId,
-        PictureOrderUpdateRequest request)
+        TRequest request)
     {
         int? newOrder = request.Order;
 
@@ -53,11 +66,27 @@ public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
         return Result<int?>.Success(newOrder);
     }
 
-    public abstract Task<Result<UpdateResponse>> UpdateInternalAsync(
+    public override async Task<Result<UpdateResponse>> UpdateInternalAsync(
         TPicture entity,
-        TRequest request);
+        TRequest request)
+    {
+        var newOrder = await GetNewOrder(entity.Id, request);
 
-    public abstract Task<Result<UpdateResponse>> UpdateAsync(
-        long id,
-        TRequest request);
+        if (!newOrder.IsSuccess)
+        {
+            return Result<UpdateResponse>.Fail(newOrder.Error);
+        }
+
+        if (newOrder.Value is null)
+        {
+            throw new Exception("Picture update error");
+        }
+
+        request = request with 
+        { 
+            Order = newOrder.Value
+        };
+
+        return await base.UpdateInternalAsync(entity, request);
+    }
 }

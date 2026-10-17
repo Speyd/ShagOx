@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
@@ -17,35 +16,25 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Update;
 public class AvatarUpdateService
-     : PictureUpdateService<User,
+    : PictureUpdateService<User,
         Avatar,
-        PictureUpdateRequest>, 
+        PictureUpdateRequest>,
     IAvatarUpdateService
 {
-    private readonly IRepository<Avatar> _avatarRepository;
-    private readonly AvatarValidator _avatarValidator;
-
     private readonly AvatarInvalidationService _avatarInvalid;
-
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<AvatarUpdateService> _logger;
 
 
     public AvatarUpdateService(
         IRepository<Avatar> avatarRepository,
         AvatarValidator avatarValidator,
-        UserValidator userValidator,
+        UserValidator advertisementValidator,
         AvatarInvalidationService avatarInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AvatarUpdateService> logger
     )
-        : base(userValidator, avatarValidator)
+        : base(avatarRepository, avatarValidator, advertisementValidator, unitOfWork, logger)
     {
-        _avatarRepository = avatarRepository;
-        _avatarValidator = avatarValidator;
         _avatarInvalid = avatarInvalid;
-        _unitOfWork = unitOfWork;
-        _logger = logger;
     }
 
 
@@ -53,99 +42,32 @@ public class AvatarUpdateService
         long avatarId,
         PictureUpdateRequest request)
     {
-        var avatar = await _avatarValidator
-            .GetByIdAsync(avatarId);
-
-        if (!avatar.IsSuccess)
-            return Result<UpdateResponse>
-                .Fail(avatar.Error);
-
-
-        var validation = await ValidateOwnerAsync(
-            avatar.Value!,
-            request);
-
-        if (!validation.IsSuccess)
-            return Result<UpdateResponse>
-                .Fail(validation.Error);
-
-
-        await _unitOfWork.BeginTransactionAsync();
-
         try
         {
-            var result = await UpdateInternalAsync(
-                avatar.Value!,
-                request);
 
-            if (!result.IsSuccess)
-            {
-                await _unitOfWork.RollbackAsync();
-
-                return result;
-            }
-
-            await _unitOfWork.CommitAsync();
-
-            await _avatarInvalid.InvalidateUpdateAsync(
-                AvatarCacheMapper.ToInfo(avatar.Value!));
-
-            return result;
+            return await base.UpdateAsync(avatarId, request);
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch
         {
-            await _unitOfWork.RollbackAsync();
-
-            _logger.LogWarning(
-                ex,
-                "Concurrency conflict while updating avatar." +
-                " Id: {Id}",
-                avatarId);
-
             return Result<UpdateResponse>.Fail(
-                EntityErrorResources.ConcurrencyConflictMessage);
-        }
-        catch (Exception ex)
-        {
-            await _unitOfWork.RollbackAsync();
-
-            _logger.LogError(
-                ex,
-                "Failed to update avatar. Id: {Id}",
-                avatarId);
-
-            return Result<UpdateResponse>
-                .Fail(EntityErrorResources.AvatarUpdateFailed);
+                EntityErrorResources.AvatarUpdateFailed);
         }
     }
 
+    public override async Task InvalidateCache(
+        Avatar picture)
+    {
+        await _avatarInvalid.InvalidateUpdateAsync(
+           AvatarCacheMapper.ToInfo(picture));
+    }
 
-    public override Task<Result<UpdateResponse>> UpdateInternalAsync(
-        Avatar avatar,
+    protected override int ApplyUpdates(
+        Avatar picture,
         PictureUpdateRequest request)
     {
-        var updatedCount = AvatarUpdater
-            .ApplyUpdates(
-                avatar,
-                request);
-
-        var result = new UpdateResponse(
-            updatedCount,
-            DateTime.UtcNow);
-
-        if (updatedCount == 0)
-        {
-            return Task.FromResult(
-                Result<UpdateResponse>.Success(result));
-        }
-
-        _avatarRepository.Update(avatar);
-
-        _logger.LogInformation(
-            "Avatar updated successfully. Id: {Id}",
-            avatar.Id);
-
-        return Task.FromResult(
-            Result<UpdateResponse>.Success(result));
+        return AvatarUpdater.ApplyUpdates(
+            picture,
+            request
+        );
     }
 }

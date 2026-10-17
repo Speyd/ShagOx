@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
@@ -12,7 +11,6 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -23,12 +21,7 @@ public class AdvertisementImageUpdateService
         PictureOrderUpdateRequest>,
     IAdvertisementImageUpdateService
 {
-    private readonly IRepository<AdvertisementImage> _imageRepository;
-
     private readonly ImageInvalidationService _imageInvalid;
-
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<AdvertisementImageUpdateService> _logger;
 
 
     public AdvertisementImageUpdateService(
@@ -39,112 +32,46 @@ public class AdvertisementImageUpdateService
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageUpdateService> logger
     )
-        : base(advertisementValidator, imageValidator)
+        : base(imageRepository,
+            imageValidator,
+            advertisementValidator,
+            unitOfWork, 
+            logger)
     {
-        _imageRepository = imageRepository;
         _imageInvalid = imageInvalid;
-        _unitOfWork = unitOfWork;
-        _logger = logger;
     }
 
-
+   
     public override async Task<Result<UpdateResponse>> UpdateAsync(
         long imageId,
         PictureOrderUpdateRequest request)
     {
-        var image = await _pictureValidator.GetByIdAsync(imageId);
-
-        if (!image.IsSuccess)
-        {
-            return Result<UpdateResponse>.Fail(image.Error);
-        }
-
-        await _unitOfWork.BeginTransactionAsync();
-
         try
         {
-            var result = await UpdateInternalAsync(
-                image.Value!,
-                request);
-
-            if (!result.IsSuccess)
-            {
-                await _unitOfWork.RollbackAsync();
-                return result;
-            }
-
-            await _unitOfWork.CommitAsync();
-
-            await _imageInvalid.InvalidateUpdateAsync(
-                AdvertisementImageCacheMapper.ToInfo(image.Value!));
-
-            return result;
+            
+            return await base.UpdateAsync(imageId, request);
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch
         {
-            await _unitOfWork.RollbackAsync();
-
-            _logger.LogWarning(
-                ex,
-                "Concurrency conflict while updating image." +
-                " Id: {Id}",
-                imageId);
-
             return Result<UpdateResponse>.Fail(
-                EntityErrorResources.ConcurrencyConflictMessage);
-        }
-        catch (Exception ex)
-        {
-            await _unitOfWork.RollbackAsync();
-
-            _logger.LogError(
-                ex,
-                "Failed to update image. Id: {Id}",
-                imageId);
-
-            return Result<UpdateResponse>
-                .Fail(EntityErrorResources.AdvertImageUpdateFailed);
+                EntityErrorResources.AdvertImageUpdateFailed);
         }
     }
 
+    public override async Task InvalidateCache(
+        AdvertisementImage picture)
+    {
+        await _imageInvalid.InvalidateUpdateAsync(
+           AdvertisementImageCacheMapper.ToInfo(picture));
+    }
 
-    public override async Task<Result<UpdateResponse>> UpdateInternalAsync(
-        AdvertisementImage image,
+    protected override int ApplyUpdates(
+        AdvertisementImage picture,
         PictureOrderUpdateRequest request)
     {
-        var newOrder = await GetNewOrder(image.Id, request);
-
-        if (!newOrder.IsSuccess)
-        {
-            return Result<UpdateResponse>.Fail(newOrder.Error);
-        }
-
-        if (newOrder.Value is null)
-        {
-            return Result<UpdateResponse>
-                .Fail(EntityErrorResources.AdvertImageUpdateFailed);
-        }
-
-        var updatedCount = AdvertisementImageUpdater.ApplyUpdates(
-            image,
-            newOrder.Value.Value,
-            request);
-
-        var response = new UpdateResponse(
-            updatedCount,
-            DateTime.UtcNow);
-
-        if (updatedCount == 0)
-        {
-            return Result<UpdateResponse>.Success(response);
-        }
-
-        _imageRepository.Update(image);
-
-        _logger.LogInformation(
-            "Image updated successfully. Id: {Id}",
-            image.Id);
-
-        return Result<UpdateResponse>.Success(response);
+        return AdvertisementImageUpdater.ApplyUpdates(
+            picture,
+            request
+        );
     }
 }

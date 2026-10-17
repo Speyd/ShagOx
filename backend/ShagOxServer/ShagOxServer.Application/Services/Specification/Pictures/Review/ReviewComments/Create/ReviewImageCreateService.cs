@@ -103,7 +103,7 @@ public partial class ReviewImageCreateService
         );
     }
 
-    protected override async Task InvalidateCache(
+    public override async Task InvalidateCache(
         ReviewImage image)
     {
         //await _imageInvalidation.InvalidateCreateAsync(

@@ -8,6 +8,7 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Validator;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -18,7 +19,7 @@ public class AvatarDeleteService
 {
     private readonly IRepository<Avatar> _avatarRepository;
     private readonly AvatarValidator _avatarValidator;
-    private readonly IPictureLoaderService _loaderService;
+    private readonly PictureValidator _pictureValidator;
 
     private readonly AvatarInvalidationService _avatarInvalid;
 
@@ -29,14 +30,14 @@ public class AvatarDeleteService
     public AvatarDeleteService(
         IRepository<Avatar> avatarRepository,
         AvatarValidator avatarValidator,
-        IPictureLoaderService loaderService,
+        PictureValidator pictureValidator,
         AvatarInvalidationService avatarInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AvatarDeleteService> logger)
     {
         _avatarRepository = avatarRepository;
         _avatarValidator = avatarValidator;
-        _loaderService = loaderService;
+        _pictureValidator = pictureValidator;
         _avatarInvalid = avatarInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -94,8 +95,8 @@ public class AvatarDeleteService
     {
         _avatarRepository.Delete(avatar);
 
-        var result = await _loaderService
-            .DeleteAsync(avatar.PublicId);
+        var result = await _pictureValidator
+            .PictureDeleteValidator(avatar.PublicId);
 
         if (!result.IsSuccess)
         {

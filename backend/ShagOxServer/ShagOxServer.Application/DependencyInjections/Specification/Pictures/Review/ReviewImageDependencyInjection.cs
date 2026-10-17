@@ -1,6 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Query;
+using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Query;
+using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Validator;
 
 namespace ShagOxServer.Application.DependencyInjections.Specification.Pictures.Review;
 public static class ReviewImageDependencyInjection
@@ -11,8 +14,8 @@ public static class ReviewImageDependencyInjection
         services.AddScoped<IReviewImageQueryService,
             ReviewImageQueryService>();
 
-        //services.AddScoped<IAdvertisementImageCreateService,
-        //    AdvertisementImageCreateService>();
+        services.AddScoped<IReviewImageCreateService,
+            ReviewImageCreateService>();
 
         //services.AddScoped<IAdvertisementImageUpdateService,
         //    AdvertisementImageUpdateService>();
@@ -31,7 +34,7 @@ public static class ReviewImageDependencyInjection
         //    AdvertisementImageCreateService>();
 
 
-        //services.AddScoped<AdvertisementImageValidator>();
+        services.AddScoped<ReviewImageValidator>();
 
         return services;
     }

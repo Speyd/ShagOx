@@ -300,6 +300,9 @@
   <data name="CurrencyUpdateFailed" xml:space="preserve">
     <value>Failed to update currency.</value>
   </data>
+  <data name="ExternalImageUploadFailed" xml:space="preserve">
+    <value>Failed to upload image to the external service.</value>
+  </data>
   <data name="FavoriteCreateFailed" xml:space="preserve">
     <value>Failed to create favorite.</value>
   </data>
@@ -309,13 +312,13 @@
   <data name="FavoriteUpdateFailed" xml:space="preserve">
     <value>Failed to update favorite.</value>
   </data>
-  <data name="ImageCreateFailed" xml:space="preserve">
+  <data name="AdvertImageCreateFailed" xml:space="preserve">
     <value>Failed to create image.</value>
   </data>
-  <data name="ImageDeleteFailed" xml:space="preserve">
+  <data name="AdvertImageDeleteFailed" xml:space="preserve">
     <value>Failed to delete image.</value>
   </data>
-  <data name="ImageUpdateFailed" xml:space="preserve">
+  <data name="AdvertImageUpdateFailed" xml:space="preserve">
     <value>Failed to update image.</value>
   </data>
   <data name="ImageUploadFailed" xml:space="preserve">
@@ -380,5 +383,17 @@
   </data>
   <data name="UserUpdateFailed" xml:space="preserve">
     <value>Failed to update user.</value>
+  </data>
+  <data name="ExternalImageDeleteFailed" xml:space="preserve">
+    <value>Failed to delete image from the external service.</value>
+  </data>
+  <data name="ReviewImageCreateFailed" xml:space="preserve">
+    <value>Failed to create review image.</value>
+  </data>
+  <data name="ReviewImageDeleteFailed" xml:space="preserve">
+    <value>Failed to delete review image.</value>
+  </data>
+  <data name="ReviewImageUploadFailed" xml:space="preserve">
+    <value>Failed to upload review image.</value>
   </data>
 </root>

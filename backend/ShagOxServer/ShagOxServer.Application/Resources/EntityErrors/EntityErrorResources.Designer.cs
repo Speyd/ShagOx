@@ -61,6 +61,33 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create image..
+        /// </summary>
+        internal static string AdvertImageCreateFailed {
+            get {
+                return ResourceManager.GetString("AdvertImageCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete image..
+        /// </summary>
+        internal static string AdvertImageDeleteFailed {
+            get {
+                return ResourceManager.GetString("AdvertImageDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update image..
+        /// </summary>
+        internal static string AdvertImageUpdateFailed {
+            get {
+                return ResourceManager.GetString("AdvertImageUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create advertisement..
         /// </summary>
         internal static string AdvertisementCreateFailed {
@@ -610,6 +637,24 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete image from the external service..
+        /// </summary>
+        internal static string ExternalImageDeleteFailed {
+            get {
+                return ResourceManager.GetString("ExternalImageDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to upload image to the external service..
+        /// </summary>
+        internal static string ExternalImageUploadFailed {
+            get {
+                return ResourceManager.GetString("ExternalImageUploadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create favorite..
         /// </summary>
         internal static string FavoriteCreateFailed {
@@ -633,33 +678,6 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         internal static string FavoriteUpdateFailed {
             get {
                 return ResourceManager.GetString("FavoriteUpdateFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to create image..
-        /// </summary>
-        internal static string ImageCreateFailed {
-            get {
-                return ResourceManager.GetString("ImageCreateFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to delete image..
-        /// </summary>
-        internal static string ImageDeleteFailed {
-            get {
-                return ResourceManager.GetString("ImageDeleteFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to update image..
-        /// </summary>
-        internal static string ImageUpdateFailed {
-            get {
-                return ResourceManager.GetString("ImageUpdateFailed", resourceCulture);
             }
         }
         
@@ -804,6 +822,33 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         internal static string ReviewCommentUpdateFailed {
             get {
                 return ResourceManager.GetString("ReviewCommentUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create review image..
+        /// </summary>
+        internal static string ReviewImageCreateFailed {
+            get {
+                return ResourceManager.GetString("ReviewImageCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete review image..
+        /// </summary>
+        internal static string ReviewImageDeleteFailed {
+            get {
+                return ResourceManager.GetString("ReviewImageDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to upload review image..
+        /// </summary>
+        internal static string ReviewImageUploadFailed {
+            get {
+                return ResourceManager.GetString("ReviewImageUploadFailed", resourceCulture);
             }
         }
         

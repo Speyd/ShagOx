@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -17,7 +18,7 @@ public class AdvertisementImageDeleteService
 {
     private readonly IRepository<AdvertisementImage> _imageRepository;
     private readonly AdvertisementImageValidator _imageValidator;
-    private readonly IPictureLoaderService _loaderService;
+    private readonly PictureValidator _pictureValidator;
 
     private readonly ImageInvalidationService _imageInvalid;
 
@@ -28,14 +29,14 @@ public class AdvertisementImageDeleteService
     public AdvertisementImageDeleteService(
         IRepository<AdvertisementImage> imageRepository,
         AdvertisementImageValidator imageValidator,
-        IPictureLoaderService loaderService,
+        PictureValidator pictureValidator,
         ImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageDeleteService> logger)
     {
         _imageRepository = imageRepository;
         _imageValidator = imageValidator;
-        _loaderService = loaderService;
+        _pictureValidator = pictureValidator;
         _imageInvalid = imageInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -78,7 +79,7 @@ public class AdvertisementImageDeleteService
                 id);
 
             return Result<DeleteResponse>
-                .Fail(EntityErrorResources.ImageDeleteFailed);
+                .Fail(EntityErrorResources.AdvertImageDeleteFailed);
         }
     }
 
@@ -87,7 +88,8 @@ public class AdvertisementImageDeleteService
     {
         _imageRepository.Delete(image);
 
-        var result = await _loaderService.DeleteAsync(image.PublicId);
+        var result = await _pictureValidator
+            .PictureDeleteValidator(image.PublicId);
 
         if (!result.IsSuccess)
             return Result<DeleteResponse>.Fail(result.Error);
@@ -125,7 +127,7 @@ public class AdvertisementImageDeleteService
                id);
 
             return Result<DeleteResponse>
-                .Fail(EntityErrorResources.ImageDeleteFailed);
+                .Fail(EntityErrorResources.AdvertImageDeleteFailed);
         }
 
         _logger.LogInformation(

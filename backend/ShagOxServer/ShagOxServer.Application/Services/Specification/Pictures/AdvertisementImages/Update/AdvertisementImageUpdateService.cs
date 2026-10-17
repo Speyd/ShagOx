@@ -103,7 +103,7 @@ public class AdvertisementImageUpdateService
                 imageId);
 
             return Result<UpdateResponse>
-                .Fail(EntityErrorResources.ImageUpdateFailed);
+                .Fail(EntityErrorResources.AdvertImageUpdateFailed);
         }
     }
 
@@ -122,7 +122,7 @@ public class AdvertisementImageUpdateService
         if (newOrder.Value is null)
         {
             return Result<UpdateResponse>
-                .Fail(EntityErrorResources.ImageUpdateFailed);
+                .Fail(EntityErrorResources.AdvertImageUpdateFailed);
         }
 
         var updatedCount = AdvertisementImageUpdater.ApplyUpdates(

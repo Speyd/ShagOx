@@ -1,138 +1,86 @@
 using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Create;
-public class AvatarCreateService
-    : IAvatarCreateService
+public partial class AvatarCreateService
+    : PictureCreateService<User,
+        Avatar,
+        PictureCreateRequest>,
+    IAvatarCreateService
 {
-    private readonly IRepository<Avatar> _avatarRepository;
-    private readonly PictureValidator _pictureValidator;
-    private readonly IPictureLoaderService _loaderService;
-
-    private readonly AvatarInvalidationService _avatarInvalidation;
-
-    private readonly UserValidator _userValidator;
-
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<AvatarCreateService> _logger;
-
+    private protected AvatarInvalidationService _avatarInvalidation;
 
     public AvatarCreateService(
-        IRepository<Avatar> avatarRepository,
+        IRepository<Avatar> imageRepository,
         PictureValidator pictureValidator,
-        IPictureLoaderService loaderService,
-        UserValidator userValidator,
+        UserValidator advertValidator,
         AvatarInvalidationService avatarInvalidation,
         IUnitOfWork unitOfWork,
-        ILogger<AvatarCreateService> logger)
+        ILogger<AvatarCreateService> logger
+    )
+        : base(imageRepository,
+            pictureValidator,
+            advertValidator,
+            unitOfWork,
+            logger)
     {
-        _avatarRepository = avatarRepository;
-        _pictureValidator = pictureValidator;
-        _loaderService = loaderService;
-        _userValidator = userValidator;
         _avatarInvalidation = avatarInvalidation;
-        _unitOfWork = unitOfWork;
-        _logger = logger;
     }
 
 
-    public async Task<Result<PictureCreateResponse>> CreateAsync(
+    public override async Task<Result<PictureCreateResponse>> CreateAsync(
         PictureCreateRequest request)
     {
-        await _unitOfWork.BeginTransactionAsync();
-
         try
         {
-            var result = await CreateInternalAsync(request);
-
-            if (!result.IsSuccess)
-            {
-                await _unitOfWork.RollbackAsync();
-
-                return result;
-            }
-
-            await _unitOfWork.CommitAsync();
-
-            return result;
+            return await base.CreateAsync(request);
         }
-        catch (Exception ex)
+        catch
         {
-            await _unitOfWork.RollbackAsync();
-
-            _logger.LogError(
-                ex,
-                "Failed to create avatar. UserId: {UserId}",
-                request.OwnerId);
-
-            return Result<PictureCreateResponse>
-                .Fail(EntityErrorResources.AvatarCreateFailed);
+            return Result<PictureCreateResponse>.Fail(
+                EntityErrorResources.AvatarCreateFailed);
         }
     }
 
-    public async Task<Result<PictureCreateResponse>> CreateInternalAsync(
-        PictureCreateRequest request)
+    public override async Task<Result<PictureCreateResponse>> CreateInternalAsync(
+       PictureCreateRequest request)
     {
-        var resultAdvertValid = await _userValidator
-            .ExistsByIdAsync(request.OwnerId);
-
-        if (!resultAdvertValid.IsSuccess)
-            return Result<PictureCreateResponse>
-                .Fail(resultAdvertValid.Error);
-
-
-        var resultLoaderValid = await _pictureValidator
-            .PictureUploadValidator(request.File);
-
-        if (!resultLoaderValid.IsSuccess)
+        try
         {
-            if (resultLoaderValid.Value is not null)
-            {
-                await _loaderService
-                    .DeleteAsync(
-                        resultLoaderValid.Value.PublicId);
-            }
-
-            return Result<PictureCreateResponse>
-                .Fail(resultLoaderValid.Error);
+            return await base.CreateInternalAsync(request);
         }
+        catch
+        {
+            return Result<PictureCreateResponse>.Fail(
+                EntityErrorResources.AvatarCreateFailed);
+        }
+    }
 
-
-        var avatar = AvatarCreater.Create(
-            request,
-            resultLoaderValid.Value!
-        );
-
-        _avatarRepository.Add(avatar);
-
-        await _unitOfWork.SaveChangesAsync();
-
+    protected override Avatar CreatePicture(
+        PictureCreateRequest request,
+        PictureLoaderUploadResponse response)
+    {
+        return AvatarCreater
+            .Create(request, response);
+    }
+    protected override async Task InvalidateCache(
+        Avatar avatar)
+    {
         await _avatarInvalidation.InvalidateCreateAsync(
-                AvatarCacheMapper.ToInfo(avatar));
-
-        _logger.LogInformation(
-            "Avatar created successfully. " +
-            "AvatarId: {AvatarId}, UserId: {UserId}",
-            avatar.Id,
-            request.OwnerId);
-
-
-        return Result<PictureCreateResponse>.Success(
-            new PictureCreateResponse(
-                avatar.Id,
-                avatar.PublicId,
-                DateTime.UtcNow));
+            AvatarCacheMapper.ToInfo(avatar));
     }
 }

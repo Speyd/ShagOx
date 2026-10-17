@@ -1,4 +1,3 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Review.ReviewImages.Query;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 

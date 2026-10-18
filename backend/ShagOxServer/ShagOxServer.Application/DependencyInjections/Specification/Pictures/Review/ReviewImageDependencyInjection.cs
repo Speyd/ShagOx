@@ -1,7 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Query;
@@ -35,6 +37,12 @@ public static class ReviewImageDependencyInjection
         services.AddScoped<
             IPictureDeleteService<ReviewImage>,
             ReviewImageDeleteService>();
+
+        services.AddScoped<
+            IPictureUpdateService<
+                ReviewImage,
+                PictureOrderUpdateRequest>,
+            ReviewImageUpdateService>();
 
         services.AddScoped<
             IPictureOrderCreateService<

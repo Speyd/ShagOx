@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Services.Base;
-using ShagOxServer.Application.Services.Specification.Pictures.Images.Update;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -23,13 +23,15 @@ public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
 
     public PictureOrderUpdateService(
         IRepository<TPicture> pictureRepository,
+        PictureValidator pictureLoadValidator,
         BaseValidator<TPicture> pictureValidator,
         BaseValidator<TOwner> ownerValidator,
         IUnitOfWork unitOfWork,
         ILogger<PictureOrderUpdateService<TOwner, 
             TPicture, TRequest>> logger
     )
-        : base(pictureRepository, 
+        : base(pictureRepository,
+            pictureLoadValidator,
             pictureValidator, 
             ownerValidator, 
             unitOfWork, 
@@ -66,7 +68,7 @@ public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
         return Result<int?>.Success(newOrder);
     }
 
-    public override async Task<Result<UpdateResponse>> UpdateInternalAsync(
+    public override async Task<Result<PictureUpdateResponse>> UpdateInternalAsync(
         TPicture entity,
         TRequest request)
     {
@@ -74,7 +76,8 @@ public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
 
         if (!newOrder.IsSuccess)
         {
-            return Result<UpdateResponse>.Fail(newOrder.Error);
+            return Result<PictureUpdateResponse>
+                .Fail(newOrder.Error);
         }
 
         if (newOrder.Value is null)

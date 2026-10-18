@@ -1,6 +1,7 @@
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Response;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.PictureOrdering;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -8,7 +9,7 @@ namespace ShagOxServer.Application.Services.Specification.Pictures.PictureOrderi
 public partial class PictureOrderingService<TOwner, TPicture>
     : IPictureOrderingService<TOwner, TPicture>
 {
-    public async Task<Result<PictureSyncResponce>> SyncPicturesAsync(
+    public async Task<Result<PictureSyncResponce<TPicture>>> SyncPicturesAsync(
         long ownerId,
         List<OwnerPictureOrderUpdateRequest>? request)
     {
@@ -16,19 +17,23 @@ public partial class PictureOrderingService<TOwner, TPicture>
             .GetByIdAsync(ownerId);
 
         if (!owner.IsSuccess)
-            return Result<PictureSyncResponce>.Fail(owner.Error);
+        {
+            return Result<PictureSyncResponce<TPicture>>
+                .Fail(owner.Error);
+        }
 
         return await SyncPicturesAsync(
             owner.Value!,
             request);
     }
 
-    public async Task<Result<PictureSyncResponce>> SyncPicturesAsync(
+    public async Task<Result<PictureSyncResponce<TPicture>>> SyncPicturesAsync(
         TOwner owner,
         List<OwnerPictureOrderUpdateRequest>? request)
     {
-        var loadedPicture = new List<PictureCreateResponse>();
+        var loadedPictures = new List<PictureCreateResponse>();
         var deletePublicIds = new List<string>();
+        var updatePictures = new Dictionary<TPicture, PictureUpdateResponse>();
         var originalPictureOrders = new List<int>();
 
         try
@@ -36,9 +41,11 @@ public partial class PictureOrderingService<TOwner, TPicture>
             if (request is null ||
                 !request.Any())
             {
-                return Result<PictureSyncResponce>.Success(new PictureSyncResponce(
-                    loadedPicture,
+                return Result<PictureSyncResponce<TPicture>>
+                    .Success(new PictureSyncResponce<TPicture>(
+                    loadedPictures,
                     deletePublicIds,
+                    updatePictures,
                     originalPictureOrders,
                     true)
                 );
@@ -53,21 +60,24 @@ public partial class PictureOrderingService<TOwner, TPicture>
                 await SyncPictureAsync(
                     owner,
                     picture,
-                    loadedPicture,
-                    deletePublicIds
+                    loadedPictures,
+                    deletePublicIds,
+                    updatePictures
                  );
             }
 
-            return Result<PictureSyncResponce>.Success(new PictureSyncResponce(
-                loadedPicture,
+            return Result<PictureSyncResponce<TPicture>>
+                .Success(new PictureSyncResponce<TPicture>(
+                loadedPictures,
                 deletePublicIds,
+                updatePictures,
                 originalPictureOrders,
                 true)
             );
         }
         catch
         {
-            await DeleteLoadedPicturesAsync(loadedPicture);
+            await DeleteLoadedPicturesAsync(loadedPictures);
 
             ToOriginalOrder(owner, originalPictureOrders);
 
@@ -77,9 +87,11 @@ public partial class PictureOrderingService<TOwner, TPicture>
 
     public async Task Rollback(
         TOwner owner,
-        PictureSyncResponce responce)
+        PictureSyncResponce<TPicture> responce)
     {
         await DeleteLoadedPicturesAsync(responce.LoadedPicture);
+
+        await RollbackUploadedPicturesAsync(responce.UpdatePictures);
 
         ToOriginalOrder(owner, responce.OriginalPictureOrders);
     }
@@ -88,7 +100,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
         TOwner owner,
         OwnerPictureOrderUpdateRequest picture,
         List<PictureCreateResponse> loadedPicture,
-        List<string> deletePublicIds)
+        List<string> deletePublicIds,
+        Dictionary<TPicture, PictureUpdateResponse> updatePicture)
     {
         var getImage = owner.Pictures.FirstOrDefault(
             x => x.Id == picture.Id);
@@ -104,7 +117,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
                deletePublicIds);
         }
 
-        if (!picture.IsDeleted &&
+        if (picture.Id is null &&
+            !picture.IsDeleted &&
             picture.File is not null)
         {
             result = await CreatePictureAsync(
@@ -115,9 +129,23 @@ public partial class PictureOrderingService<TOwner, TPicture>
 
         if (picture.Id is not null)
         {
-            result = UpdateImageOrder(
+            var updateResult = await UpdateImage(
+                owner.Id,
                 picture,
                 getImage);
+
+            if (updateResult.IsSuccess)
+            {
+                if (getImage is not null)
+                { 
+                    updatePicture
+                        .Add(getImage, updateResult.Value!);
+                }
+            }
+            else
+            {
+                result = Result<bool>.Fail("");
+            }
         }
 
         if (result is not null &&

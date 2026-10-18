@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
 public abstract partial class BaseAppDbContext : DbContext
@@ -19,14 +20,8 @@ public abstract partial class BaseAppDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(BaseAppDbContext).Assembly);
 
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        {
-            if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
-            {
-                modelBuilder.Entity(entityType.ClrType)
-                    .Property<uint>("xmin")
-                    .IsRowVersion();
-            }
-        }
+        //modelBuilder.Entity<User>()
+        //    .Property<uint>("xmin")
+        //    .IsRowVersion();
     }
 }

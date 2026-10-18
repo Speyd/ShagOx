@@ -1,16 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
@@ -22,6 +26,8 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
 {
     private readonly IRepository<TPicture> _pictureRepository;
 
+    protected readonly PictureValidator _pictureLoadValidator;
+
     private readonly BaseValidator<TPicture> _pictureValidator;
     private readonly BaseValidator<TOwner> _ownerValidator;
 
@@ -32,6 +38,7 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
 
     public PictureUpdateService(
         IRepository<TPicture> pictureRepository,
+        PictureValidator pictureLoadValidator,
         BaseValidator<TPicture> pictureValidator,
         BaseValidator<TOwner> ownerValidator,
         IUnitOfWork unitOfWork,
@@ -40,6 +47,7 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
     )
     {
         _pictureRepository = pictureRepository;
+        _pictureLoadValidator = pictureLoadValidator;
         _pictureValidator = pictureValidator;
         _ownerValidator = ownerValidator;
         _unitOfWork = unitOfWork;
@@ -52,7 +60,8 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
 
     protected abstract int ApplyUpdates(
         TPicture picture,
-        TRequest request);
+        TRequest request,
+        PictureLoaderUploadResponse? response);
 
     protected async Task<Result<bool>> ValidateOwnerAsync(
        TPicture picture,
@@ -70,7 +79,7 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
         return existsValidator;
     }
 
-    public virtual async Task<Result<UpdateResponse>> UpdateAsync(
+    public virtual async Task<Result<PictureUpdateResponse>> UpdateAsync(
         long pictureId,
         TRequest request)
     {
@@ -79,7 +88,7 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
 
         if (!picture.IsSuccess)
         {
-            return Result<UpdateResponse>
+            return Result<PictureUpdateResponse>
                 .Fail(picture.Error);
         }
 
@@ -113,7 +122,7 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
                 " Id: {Id}",
                 pictureId);
 
-            return Result<UpdateResponse>.Fail(
+            return Result<PictureUpdateResponse>.Fail(
                 EntityErrorResources.ConcurrencyConflictMessage);
         }
         catch (Exception ex)
@@ -131,22 +140,46 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
     }
 
 
-    public virtual async Task<Result<UpdateResponse>> UpdateInternalAsync(
+    public virtual async Task<Result<PictureUpdateResponse>> UpdateInternalAsync(
         TPicture picture,
         TRequest request)
     {
+        var oldPictureId = picture.PublicId;
+        var oldPictureUrl = picture.PublicId;
+
+
+        PictureLoaderUploadResponse? responseLoad = null;
+        if (request.File is not null)
+        {
+            var responseLoadRes = await _pictureLoadValidator
+                .PictureUploadValidator(request.File);
+
+            if (!responseLoadRes.IsSuccess)
+            {
+                Result<PictureUpdateResponse>
+                    .Fail(responseLoadRes.Error);
+            }
+
+            responseLoad = responseLoadRes.Value;
+        }
+
         var updatedCount = ApplyUpdates(
             picture,
-            request
+            request,
+            responseLoad
         );
 
-        var response = new UpdateResponse(
+        var response = new PictureUpdateResponse(
             updatedCount,
+            oldPictureId,
+            oldPictureUrl,
+            responseLoad?.PublicId,
+            responseLoad?.Url,
             DateTime.UtcNow);
 
         if (updatedCount == 0)
         {
-            return Result<UpdateResponse>.Success(response);
+            return Result<PictureUpdateResponse>.Success(response);
         }
 
         _pictureRepository.Update(picture);
@@ -156,6 +189,24 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
             "Id: {Id}",
             picture.Id);
 
-        return Result<UpdateResponse>.Success(response);
+        return Result<PictureUpdateResponse>.Success(response);
+    }
+
+    public async Task RollbackAsync(
+        TPicture picture,
+        PictureUpdateResponse response)
+    {
+        if (response.NewPublicId is null)
+            return;
+
+        if(response.OldPublicId is null)
+            return;
+
+        picture.PublicId = response.OldPublicId;
+        picture.Url = response.OldUrl ?? "";
+
+
+        var responseLoadRes = await _pictureLoadValidator
+            .PictureDeleteValidator(response.NewPublicId);
     }
 }

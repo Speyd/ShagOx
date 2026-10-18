@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.PictureOrdering;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.Domain.Base;
@@ -27,7 +27,7 @@ public class PictureOrderSyncExecutor<TOwner, TPicture>
     }
 
 
-    public async Task<Result<PictureSyncResponce>> SyncAsync(
+    public async Task<Result<PictureSyncResponce<TPicture>>> SyncAsync(
         TOwner owner,
         List<OwnerPictureOrderUpdateRequest>? pictures)
     {
@@ -43,7 +43,7 @@ public class PictureOrderSyncExecutor<TOwner, TPicture>
 
             await _unitOfWork.RollbackAsync();
 
-            return Result<PictureSyncResponce>
+            return Result<PictureSyncResponce<TPicture>>
                 .Fail(result.Error);
         }
 
@@ -51,7 +51,7 @@ public class PictureOrderSyncExecutor<TOwner, TPicture>
     }
 
     public async Task CommitAndDeleteAsync(
-        PictureSyncResponce response)
+        PictureSyncResponce<TPicture> response)
     {
         await _unitOfWork.CommitAsync();
 

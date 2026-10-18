@@ -147,10 +147,10 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
         var oldPictureId = picture.PublicId;
         var oldPictureUrl = picture.PublicId;
 
-
         PictureLoaderUploadResponse? responseLoad = null;
         if (request.File is not null)
         {
+
             var responseLoadRes = await _pictureLoadValidator
                 .PictureUploadValidator(request.File);
 

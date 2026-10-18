@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Create;
@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Dictionaries.Attributes.AttributeDefiniti
 
 [ApiController]
 [Route("api/admin/attributes-definitions")]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class AttributeDefinitionCommandsController 
     : ApiController
 {

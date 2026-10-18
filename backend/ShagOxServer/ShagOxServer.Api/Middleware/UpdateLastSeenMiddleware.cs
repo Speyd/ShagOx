@@ -1,9 +1,11 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Systems.Middleware;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
 
 namespace ShagOxServer.Api.Middleware;
@@ -24,30 +26,27 @@ public class UpdateLastSeenMiddleware
 
     public async Task InvokeAsync(
         HttpContext context,
-        IRepository<User> repository,
-        IQueryRepository<User> queryRepository,
-        IUnitOfWork unitOfWork)
+        AppDbContext dbContext)
     {
         if (context.User.Identity?.IsAuthenticated == true)
         {
             var userIdClaim =
                 context.User.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (userIdClaim is not null)
+            if (int.TryParse(userIdClaim?.Value, out var userId))
             {
-                var userId = int.Parse(userIdClaim.Value);
-
-                var user = await queryRepository.GetByIdAsync(userId);
-
                 var now = DateTime.UtcNow;
+                var cutoff = now - _settings.UpdateLastSeen;
 
-                if (user is not null && (user.LastSeenAt is null ||
-                     now - user.LastSeenAt >= _settings.UpdateLastSeen))
-                {
-                    user.LastSeenAt = now;
-                    repository.Update(user);
-                    await unitOfWork.SaveChangesAsync();
-                }
+                await dbContext.Users
+                    .Where(u => u.Id == userId &&
+                        (u.LastSeenAt == null ||
+                         u.LastSeenAt <= cutoff))
+                    .ExecuteUpdateAsync(
+                        setters => setters.SetProperty(
+                            u => u.LastSeenAt,
+                            now),
+                        context.RequestAborted);
             }
         }
 

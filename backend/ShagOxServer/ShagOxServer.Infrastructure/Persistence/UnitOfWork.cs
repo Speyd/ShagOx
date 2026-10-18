@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 

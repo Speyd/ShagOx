@@ -1,4 +1,5 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Update;
@@ -20,6 +21,41 @@ public static class ReviewImageUpdater
             image.OwnerId != request.OwnerId.Value)
         {
             image.OwnerId = request.OwnerId.Value;
+            updated++;
+        }
+
+        return updated;
+    }
+
+    public static int ApplyUpdates(
+        ReviewImage image,
+        PictureOrderUpdateRequest request,
+        PictureLoaderUploadResponse response)
+    {
+        var updated = 0;
+
+        if (request.Order.HasValue)
+        {
+            image.Order = request.Order.Value;
+            updated++;
+        }
+
+        if (request.OwnerId is not null &&
+            image.OwnerId != request.OwnerId.Value)
+        {
+            image.OwnerId = request.OwnerId.Value;
+            updated++;
+        }
+
+        if (!string.IsNullOrWhiteSpace(response.Url))
+        {
+            image.Url = response.Url;
+            updated++;
+        }
+
+        if (!string.IsNullOrWhiteSpace(response.PublicId))
+        {
+            image.PublicId = response.PublicId;
             updated++;
         }
 

@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
-using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
-using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
@@ -26,8 +26,7 @@ public class UserUpdateService
 
     private readonly CityValidator _cityValidator;
 
-    private readonly IAvatarDeleteService _avatarDeleteService;
-    private readonly IAvatarCreateService _avatarCreateService;
+    private readonly IAvatarUpdateService _avatarUploadService;
 
     private readonly UserInvalidationService _userInvalid;
 
@@ -39,8 +38,7 @@ public class UserUpdateService
         IRepository<User> userRepository,
         UserValidator userValidator,
         CityValidator cityValidator,
-        IAvatarDeleteService avatarDeleteService,
-        IAvatarCreateService avatarCreateService,
+        IAvatarUpdateService avatarUploadService,
         UserInvalidationService userInvalid,
         IUnitOfWork unitOfWork,
         ILogger<UserUpdateService> logger)
@@ -48,8 +46,7 @@ public class UserUpdateService
         _userRepository = userRepository;
         _userValidator = userValidator;
         _cityValidator = cityValidator;
-        _avatarDeleteService = avatarDeleteService;
-        _avatarCreateService = avatarCreateService;
+        _avatarUploadService = avatarUploadService;
         _userInvalid = userInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -92,20 +89,38 @@ public class UserUpdateService
 
         await _unitOfWork.BeginTransactionAsync();
 
+        PictureUpdateResponse? avatarResponse = null;
         try
-        {
+        {    
             _userRepository.Update(user.Value!);
 
-            if(normalizedRequest.Avatar is not null)
-                await UpdateAvatarAsync(user.Value!,
-                    normalizedRequest.Avatar
-                );
+            var avatarResult = await UpdateAvatarAsync(user.Value!,
+                normalizedRequest.Avatar);
+
+            avatarResponse = avatarResult.Value;
+
+            if (!avatarResult.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return Result<UpdateResponse>
+                    .Fail(avatarResult.Error);
+            }
 
             await _unitOfWork.CommitAsync();
         }
         catch (DbUpdateConcurrencyException ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            if (avatarResponse is not null &&
+                user.Value!.Avatar is not null)
+            {
+                await _avatarUploadService.RollbackAsync(
+                    user.Value!.Avatar,
+                    avatarResponse
+                );
+            }
 
             _logger.LogWarning(
                 ex,
@@ -119,6 +134,15 @@ public class UserUpdateService
         catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
+
+            if (avatarResponse is not null &&
+                user.Value!.Avatar is not null)
+            {
+                await _avatarUploadService.RollbackAsync(
+                    user.Value!.Avatar,
+                    avatarResponse
+                );
+            }
 
             _logger.LogError(
                 ex,
@@ -162,23 +186,23 @@ public class UserUpdateService
         return Result<bool>.Success(true);
     }
 
-    private async Task UpdateAvatarAsync(
+    private async Task<Result<PictureUpdateResponse?>> UpdateAvatarAsync(
         User user,
-        IFormFile avatarFile)
+        IFormFile? avatarFile)
     {
-        var oldAvatar = user.Avatar;
+        if(avatarFile is null || user.Avatar is null)
+            return Result<PictureUpdateResponse?>.Success(null);
 
-        var result = await _avatarCreateService.CreateInternalAsync(
-            new PictureCreateRequest(
+        var result = await _avatarUploadService.UpdateInternalAsync(
+            user.Avatar,
+            new PictureUpdateRequest(
                 user.Id,
                 avatarFile));
 
         if (!result.IsSuccess)
-            throw new Exception(result.Error?.ToString());
+            return Result<PictureUpdateResponse?>
+                .Fail(result.Error);
 
-        if (oldAvatar is not null)
-        {
-            await _avatarDeleteService.DeleteInternalAsync(oldAvatar);
-        }
+        return Result<PictureUpdateResponse?>.Success(result.Value);
     }
 }

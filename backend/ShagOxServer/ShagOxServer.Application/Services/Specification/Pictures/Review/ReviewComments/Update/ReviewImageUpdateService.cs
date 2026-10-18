@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Update;
@@ -8,6 +10,7 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
@@ -26,6 +29,7 @@ public class ReviewImageUpdateService
 
     public ReviewImageUpdateService(
         IRepository<ReviewImage> imageRepository,
+        PictureValidator pictureLoadValidator,
         ReviewImageValidator imageValidator,
         ReviewCommentValidator commentValidator,
         ReviewImageInvalidationService imageInvalid,
@@ -33,6 +37,7 @@ public class ReviewImageUpdateService
         ILogger<ReviewImageUpdateService> logger
     )
         : base(imageRepository,
+            pictureLoadValidator,
             imageValidator,
             commentValidator,
             unitOfWork, 
@@ -42,7 +47,7 @@ public class ReviewImageUpdateService
     }
 
 
-    public override async Task<Result<UpdateResponse>> UpdateAsync(
+    public override async Task<Result<PictureUpdateResponse>> UpdateAsync(
         long imageId,
         PictureOrderUpdateRequest request)
     {
@@ -52,7 +57,7 @@ public class ReviewImageUpdateService
         }
         catch
         {
-            return Result<UpdateResponse>.Fail(
+            return Result<PictureUpdateResponse>.Fail(
                 EntityErrorResources.ReviewCommentUpdateFailed);
         }
     }
@@ -66,8 +71,18 @@ public class ReviewImageUpdateService
 
     protected override int ApplyUpdates(
         ReviewImage picture,
-        PictureOrderUpdateRequest request)
+        PictureOrderUpdateRequest request,
+        PictureLoaderUploadResponse? response)
     {
+        if (response is not null)
+        {
+            return ReviewImageUpdater.ApplyUpdates(
+                picture,
+                request,
+                response
+            );
+        }
+
         return ReviewImageUpdater.ApplyUpdates(
             picture,
             request

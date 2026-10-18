@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
@@ -10,6 +12,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictu
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -26,19 +29,25 @@ public class AvatarUpdateService
 
     public AvatarUpdateService(
         IRepository<Avatar> avatarRepository,
+        PictureValidator pictureLoadValidator,
         AvatarValidator avatarValidator,
         UserValidator advertisementValidator,
         AvatarInvalidationService avatarInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AvatarUpdateService> logger
     )
-        : base(avatarRepository, avatarValidator, advertisementValidator, unitOfWork, logger)
+        : base(avatarRepository,
+            pictureLoadValidator,
+            avatarValidator,
+            advertisementValidator,
+            unitOfWork,
+            logger)
     {
         _avatarInvalid = avatarInvalid;
     }
 
 
-    public override async Task<Result<UpdateResponse>> UpdateAsync(
+    public override async Task<Result<PictureUpdateResponse>> UpdateAsync(
         long avatarId,
         PictureUpdateRequest request)
     {
@@ -49,7 +58,7 @@ public class AvatarUpdateService
         }
         catch
         {
-            return Result<UpdateResponse>.Fail(
+            return Result<PictureUpdateResponse>.Fail(
                 EntityErrorResources.AvatarUpdateFailed);
         }
     }
@@ -63,8 +72,18 @@ public class AvatarUpdateService
 
     protected override int ApplyUpdates(
         Avatar picture,
-        PictureUpdateRequest request)
+        PictureUpdateRequest request,
+        PictureLoaderUploadResponse? response)
     {
+        if (response is not null)
+        {
+            return AvatarUpdater.ApplyUpdates(
+                picture,
+                request,
+                response
+            );
+        }
+
         return AvatarUpdater.ApplyUpdates(
             picture,
             request

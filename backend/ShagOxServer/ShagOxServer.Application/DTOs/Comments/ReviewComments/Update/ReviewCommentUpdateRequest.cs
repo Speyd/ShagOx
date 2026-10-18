@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 
 namespace ShagOxServer.Application.DTOs.Comments.ReviewComments.Update;
 public sealed record ReviewCommentUpdateRequest

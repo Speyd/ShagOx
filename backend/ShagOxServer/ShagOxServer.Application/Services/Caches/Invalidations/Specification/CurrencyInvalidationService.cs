@@ -34,6 +34,9 @@ public class CurrencyInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
             SearchPattern<Currency>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           EntityPagedPattern<Currency>());   
     }
 
     public async Task InvalidateDeleteAsync(

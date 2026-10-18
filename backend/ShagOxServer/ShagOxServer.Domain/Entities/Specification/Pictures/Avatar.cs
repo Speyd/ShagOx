@@ -1,14 +1,10 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Domain.Entities.Specification.Pictures;
 public class Avatar 
-    : BaseImage
+    : BasePicture<User>
 {
-    public long UserId { get; set; }
-    public User User { get; set; } = null!;
-
-
     public override string ToString()
     {
         return $"Url: {Url}";

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -206,5 +206,8 @@
   </data>
   <data name="Status" xml:space="preserve">
     <value>Статус объявления</value>
+  </data>
+  <data name="ReviewComment" xml:space="preserve">
+    <value>Комментарий к отзыву</value>
   </data>
 </root>

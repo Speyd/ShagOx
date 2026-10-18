@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DependencyInjections.Location.Translations;
+using ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
+using ShagOxServer.Application.Services.Location.Regions.Create;
 using ShagOxServer.Application.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Services.Location.Regions.Query;
 using ShagOxServer.Application.Services.Location.Regions.Update;
@@ -14,9 +16,17 @@ public static class RegionDependencyInjections
     public static IServiceCollection AddRegionApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<IRegionQueryService, RegionQueryService>();
-        services.AddScoped<IRegionUpdateService, RegionUpdateService>();
-        services.AddScoped<IRegionDeleteService, RegionDeleteService>();
+        services.AddScoped<IRegionQueryService,
+            RegionQueryService>();
+
+        services.AddScoped<IRegionCreateService,
+            RegionCreateService>();
+
+        services.AddScoped<IRegionUpdateService,
+            RegionUpdateService>();
+
+        services.AddScoped<IRegionDeleteService,
+            RegionDeleteService>();
 
         services.AddScoped<RegionValidator>();
 

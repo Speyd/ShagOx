@@ -70,19 +70,21 @@ type ApiProductTypeItem = {
   description?: string;
   lable?: string;
 };
-
 export async function getCatalogAdvertisements(
   params: CatalogParams = {},
 ): Promise<PaginatedResponse<Advertisement>> {
   const search = params.search?.trim();
+  const categoryIds = params.categoryIds?.length
+    ? params.categoryIds
+    : undefined;
+
   const hasFilters =
     Boolean(search) ||
-    (params.categoryIds?.length ?? 0) > 0 ||
+    Boolean(categoryIds) ||
     params.inStock !== undefined ||
     params.minPrice !== undefined ||
-    params.maxPrice !== undefined ||
-    (params.memory?.length ?? 0) > 0 ||
-    (params.colors?.length ?? 0) > 0;
+    params.maxPrice !== undefined;
+
   const endpoint = hasFilters ? "/advertisements/search" : "/advertisements";
 
   const response = await api.get<PaginatedResponse<ApiAdvertisement>>(
@@ -91,19 +93,14 @@ export async function getCatalogAdvertisements(
       params: {
         page: params.page ?? 1,
         pageSize: params.pageSize ?? 20,
-        attributes: [],
         title: search || undefined,
-        categoryIds: params.categoryIds,
+        categoryIds: categoryIds, // Якщо порожньо, буде undefined і не потрапить в URL
         inStock: params.inStock,
         minPrice: params.minPrice,
         maxPrice: params.maxPrice,
-        memory: params.memory,
-        colors: params.colors,
-        sortBy: params.sortBy,
-        sortOrder: params.sortOrder,
       },
       paramsSerializer: {
-        indexes: null,
+        indexes: null, // Дозволяє писати categoryIds=21 замість categoryIds[0]=21
       },
     },
   );
@@ -145,17 +142,22 @@ export async function getAdvertisement(id: number) {
   return normalizeAdvertisement(response.data);
 }
 
-export async function getCategories(): Promise<CategoryItem[]> {
-  const response = await api.get<PaginatedResponse<CategoryItem>>(
-    "/categories",
-    {
-      params: { page: 1, pageSize: 100 },
+export async function getCategories(
+  productTypeId?: number,
+): Promise<CategoryItem[]> {
+  const endpoint = productTypeId ? "/categories/search" : "/categories";
+
+  const response = await api.get<PaginatedResponse<ApiCategoryItem>>(endpoint, {
+    params: {
+      page: 1,
+      pageSize: 100,
+      productTypeId: productTypeId ?? undefined,
     },
-  );
+  });
 
   return response.data.items.map((category: ApiCategoryItem) => ({
     id: category.id,
-    name: category.lable ?? "",
+    name: category.lable ?? category.name ?? "",
   }));
 }
 

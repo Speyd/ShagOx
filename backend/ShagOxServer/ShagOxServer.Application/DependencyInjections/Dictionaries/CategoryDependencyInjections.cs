@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DependencyInjections.Dictionaries.Translations;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
+using ShagOxServer.Application.Services.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Update;
@@ -15,9 +17,17 @@ public static class CategoryDependencyInjections
     public static IServiceCollection AddCategoryApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<ICategoryQueryService, CategoryQueryService>();
-        services.AddScoped<ICategoryUpdateService, CategoryUpdateService>();
-        services.AddScoped<ICategoryDeleteService, CategoryDeleteService>();
+        services.AddScoped<ICategoryQueryService,
+            CategoryQueryService>();
+
+        services.AddScoped<ICategoryCreateService,
+            CategoryCreateService>();
+
+        services.AddScoped<ICategoryUpdateService,
+            CategoryUpdateService>();
+
+        services.AddScoped<ICategoryDeleteService,
+            CategoryDeleteService>();
 
         services.AddScoped<CategoryValidator>();
         services.AddScoped<CategoryUpdateValidator>();

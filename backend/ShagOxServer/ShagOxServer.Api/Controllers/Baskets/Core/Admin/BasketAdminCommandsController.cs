@@ -1,4 +1,3 @@
-﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Baskets.Core.Create;
@@ -31,12 +30,14 @@ public class BasketAdminCommandsController
     }
 
 
-    [HttpPost]
+    [HttpPost("{userId:long}")]
     public async Task<IActionResult> Create(
+    [FromRoute] long userId,
+
         [FromBody] BasketCreateRequest request)
     {
         var result = await _createService
-            .CreateAsync(request);
+            .CreateAsync(request, userId);
 
         return result.ToActionResult();
     }

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 
 namespace ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Specification.Pictures;
@@ -10,6 +10,8 @@ public static class PicturesInvalidationDependencyInjection
         services.AddScoped<AvatarInvalidationService>();
 
         services.AddScoped<ImageInvalidationService>();
+
+        services.AddReviewImagesInvalidationApplication();
 
 
         return services;

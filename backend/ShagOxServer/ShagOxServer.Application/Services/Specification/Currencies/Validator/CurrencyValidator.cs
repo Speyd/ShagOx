@@ -26,7 +26,7 @@ public class CurrencyValidator
         string code)
     {
         if (!await _existsRepository.ExistsByCodeAsync(code))
-            return Result<bool>.AlreadyExists(
+            return Result<bool>.NotFound(
                 EntityNamesResources.Currency);
 
         return Result<bool>.Success(true);
@@ -36,6 +36,8 @@ public class CurrencyValidator
     public async Task<Result<bool>> NotExistsByCodeValidator(
         string code)
     {
+        Console.WriteLine(await _existsRepository.ExistsByCodeAsync(code));
+
         if (await _existsRepository.ExistsByCodeAsync(code))
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Currency);
@@ -47,7 +49,7 @@ public class CurrencyValidator
         string name)
     {
         if (!await _existsRepository.ExistsByNameAsync(name))
-            return Result<bool>.AlreadyExists(
+            return Result<bool>.NotFound(
                 EntityNamesResources.Currency);
 
         return Result<bool>.Success(true);
@@ -56,6 +58,7 @@ public class CurrencyValidator
     public async Task<Result<bool>> NotExistsByNameValidator(
         string name)
     {
+        Console.WriteLine(await _existsRepository.ExistsByNameAsync(name));
         if (await _existsRepository.ExistsByNameAsync(name))
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Currency);

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Base;
 
 namespace ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 public sealed record UserShortDto

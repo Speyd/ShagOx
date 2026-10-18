@@ -54,6 +54,9 @@
 }
 
 .navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   padding: 10px;
 }
 
@@ -82,25 +85,11 @@
 }
 
 .menuItemActive {
-  
   color: var(--color-base);
 }
 
-.menuItem {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 10px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  text-align: left;
-  font-size: var(--font-sm);
-}
-
 .menuItem.menuItemActive {
-  background-color: var(--color-border); 
+  background-color: var(--color-border);
   color: var(--color-primary);
 }
 
@@ -117,17 +106,6 @@
 .menuFooter {
   margin-top: auto;
   padding: 10px;
-}
-
-.menuItem {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 16px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
 }
 
 .menuItemText {

@@ -58,6 +58,7 @@ public class AdvertisementQueryService
     public override async Task<AdvertisementDto> ApplyMapperAsync(
         Advertisement entity)
     {
+
         var attributes = 
             await GetAttributesByVariantIdAsync(entity.Variants);
 

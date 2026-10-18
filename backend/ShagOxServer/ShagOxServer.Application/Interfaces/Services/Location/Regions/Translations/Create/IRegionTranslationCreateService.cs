@@ -1,6 +1,6 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Translations.Create;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Create;
 
 namespace ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Create;
 public interface IRegionTranslationCreateService

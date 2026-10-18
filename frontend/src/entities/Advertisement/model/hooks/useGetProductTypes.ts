@@ -4,6 +4,8 @@ import { getProductTypes } from "../../api/api";
 export function useGetProductTypes() {
   return useQuery({
     queryKey: ["product-types"],
-    queryFn: () => getProductTypes(),
+    queryFn: getProductTypes,
+    staleTime: 1000 * 60 * 10,
+    retry: false,
   });
 }

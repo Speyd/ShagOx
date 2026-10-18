@@ -17,7 +17,7 @@ public static class AdvertisementQueryExtensions
                 .ThenInclude(x => x.ProductType)
             .Include(x => x.Seller)
             .Include(x => x.Buyer)
-            .Include(x => x.Images);
+            .Include(x => x.Pictures);
     }
 
     public static IQueryable<AdvertisementCacheInfo> SelectCacheInfo(

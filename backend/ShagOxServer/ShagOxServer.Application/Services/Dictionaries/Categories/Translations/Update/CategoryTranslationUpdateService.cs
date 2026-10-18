@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -46,11 +47,11 @@ public class CategoryTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        long statusTranslationId,
+        long categoryTranslationId,
         CategoryTranslationUpdateRequest request)
     {
         var category = await _categoryTranslationValidator
-            .GetByIdAsync(statusTranslationId);
+            .GetByIdAsync(categoryTranslationId);
 
         if (!category.IsSuccess)
             return Result<UpdateResponse>.Fail(category.Error);
@@ -81,14 +82,27 @@ public class CategoryTranslationUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch(Exception ex)
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating category translation." +
+                " Id: {Id}",
+                categoryTranslationId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
+        }
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
             _logger.LogError(
                ex,
                "Failed to update category translation. Id: {id}",
-               statusTranslationId);
+               categoryTranslationId);
 
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.CategoryTranslationUpdateFailed);

@@ -25,6 +25,9 @@ public class BasketAttributeInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              LanguageSearchPattern<BasketAttribute>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             EntityLanguagePagedPattern<BasketAttribute>());
     }
 
     public async Task InvalidateDeleteAsync(

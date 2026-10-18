@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Baskets;
 using System.Text.Json;
 

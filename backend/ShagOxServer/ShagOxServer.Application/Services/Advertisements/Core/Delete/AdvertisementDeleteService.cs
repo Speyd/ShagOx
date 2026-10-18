@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
+using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
@@ -18,7 +19,8 @@ public class AdvertisementDeleteService
     private readonly IRepository<Advertisement> _advertRepository;
     private readonly AdvertisementValidator _advertValidator;
 
-    private readonly IImageDeleteService _imageDeleteService;
+    private readonly IAdvertisementImageDeleteService _imageDeleteService;
+    private readonly IPictureLoaderService _loaderService;
     private readonly AdvertisementInvalidationService _advertInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -28,7 +30,8 @@ public class AdvertisementDeleteService
     public AdvertisementDeleteService(
         IRepository<Advertisement> advertRepository,
         AdvertisementValidator advertValidator,
-        IImageDeleteService imageDeleteService,
+        IAdvertisementImageDeleteService imageDeleteService,
+        IPictureLoaderService loaderService,
         AdvertisementInvalidationService advertInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementDeleteService> logger)
@@ -36,6 +39,7 @@ public class AdvertisementDeleteService
         _advertRepository = advertRepository;
         _advertValidator = advertValidator;
         _imageDeleteService = imageDeleteService;
+        _loaderService = loaderService;
         _advertInvalid = advertInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -57,13 +61,20 @@ public class AdvertisementDeleteService
         {
             _advertRepository.Delete(advert.Value!);
 
-            foreach (var image in advert.Value!.Images)
+            foreach (var image in advert.Value!.Pictures)
             {
-                await _imageDeleteService.DeleteAsync(image.Id);
+                await _imageDeleteService
+                    .DeleteRecordAsync(image.Id);
             }
 
             await _unitOfWork.CommitAsync();
-            
+
+            foreach (var image in advert.Value!.Pictures)
+            {
+                await _loaderService
+                    .DeleteAsync(image.PublicId);
+            }
+
         }
         catch(Exception ex)
         {

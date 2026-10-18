@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Cache;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
@@ -11,17 +11,17 @@ public partial class AvatarQueryRepository
     : SearchRepository<Avatar, AvatarSearchFilter>,
       IAvatarQueryRepository
 {
-    public async Task<AvatarCacheInfo?> GetCacheInfoByUserIdAsync(
+    public async Task<PictureCacheInfo?> GetCacheInfoByUserIdAsync(
         long userId,
         CancellationToken cancellationToken = default)
     {
         var avatar = await _db.Avatars
-           .FirstOrDefaultAsync(x => x.UserId == userId,
+           .FirstOrDefaultAsync(x => x.OwnerId == userId,
                 cancellationToken);
 
         return avatar == null ?
             null :
-            new AvatarCacheInfo(avatar.Id,
-                avatar.UserId);
+            new PictureCacheInfo(avatar.Id,
+                avatar.OwnerId);
     }
 }

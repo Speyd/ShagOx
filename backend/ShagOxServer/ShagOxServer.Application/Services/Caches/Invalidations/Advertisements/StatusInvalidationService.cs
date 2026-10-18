@@ -43,6 +43,9 @@ public class StatusInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              LanguageSearchPattern<Status>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             EntityLanguagePagedPattern<Status>());
     }
 
     public async Task InvalidateDeleteAsync(

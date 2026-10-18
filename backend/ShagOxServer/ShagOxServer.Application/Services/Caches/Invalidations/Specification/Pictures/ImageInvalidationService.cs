@@ -1,13 +1,13 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Images.Cache;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
-using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 public class ImageInvalidationService
-    : ICacheInvalidationService<Image, ImageCacheInfo>
+    : ICacheInvalidationService<AdvertisementImage, 
+        PictureCacheInfo>
 {
     private readonly IDataCacheService _cache;
 
@@ -20,33 +20,33 @@ public class ImageInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        ImageCacheInfo entityInfo)
+        PictureCacheInfo entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        ImageCacheInfo entityInfo)
+        PictureCacheInfo entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateUpdateAsync(
-        ImageCacheInfo entityInfo)
+        PictureCacheInfo entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        ImageCacheInfo entityInfo)
+        PictureCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
-            .Entity<Image>(entityInfo.Id));
+            .Entity<AdvertisementImage>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-           EntityPagedPattern<Image>());
+           EntityPagedPattern<AdvertisementImage>());
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-             SearchPattern<Image>());
+             SearchPattern<AdvertisementImage>());
     }
 }

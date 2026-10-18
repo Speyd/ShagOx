@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 
@@ -21,7 +21,7 @@ public static class AvatarFilterExtensions
         if (filter.UserId.HasValue)
         {
             query = query.Where(x => 
-                x.UserId == filter.UserId);
+                x.OwnerId == filter.UserId);
         }
 
         return query;

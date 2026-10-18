@@ -10,6 +10,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attrib
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
@@ -48,6 +49,9 @@ public class AttributeDefinitionInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              LanguageSearchPattern<AttributeDefinition>());
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           EntityLanguagePagedPattern<AttributeDefinition>());
     }
 
     public async Task InvalidateDeleteAsync(

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -40,11 +41,11 @@ public class RegionTranslationUpdateService
 
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
-        long statusTranslationId,
+        long regionTranslationId,
         RegionTranslationUpdateRequest request)
     {
         var region = await _regionTranslationValidator
-            .GetByIdAsync(statusTranslationId);
+            .GetByIdAsync(regionTranslationId);
 
         if (!region.IsSuccess)
             return Result<UpdateResponse>.Fail(region.Error);
@@ -75,14 +76,27 @@ public class RegionTranslationUpdateService
 
             await _unitOfWork.CommitAsync();
         }
-        catch(Exception ex)
+        catch (DbUpdateConcurrencyException ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogWarning(
+                ex,
+                "Concurrency conflict while updating region translation." +
+                " Id: {Id}",
+                regionTranslationId);
+
+            return Result<UpdateResponse>.Fail(
+                EntityErrorResources.ConcurrencyConflictMessage);
+        }
+        catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
 
             _logger.LogError(
                 ex,
                 "Failed to update region translation. Id: {Id}",
-                statusTranslationId);
+                regionTranslationId);
 
             return Result<UpdateResponse>
                    .Fail(EntityErrorResources.RegionTranslationUpdateFailed);

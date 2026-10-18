@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Cache;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
@@ -8,7 +8,7 @@ using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 public class AvatarInvalidationService
-    : ICacheInvalidationService<Condition, AvatarCacheInfo>
+    : ICacheInvalidationService<Condition, PictureCacheInfo>
 {
     private readonly IDataCacheService _cache;
 
@@ -21,31 +21,31 @@ public class AvatarInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        AvatarCacheInfo entityInfo)
+        PictureCacheInfo entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        AvatarCacheInfo entityInfo)
+        PictureCacheInfo entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateUpdateAsync(
-        AvatarCacheInfo entityInfo)
+        PictureCacheInfo entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        AvatarCacheInfo entityInfo)
+        PictureCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
             .Entity<Avatar>(entityInfo.Id));
 
         await _cache.RemoveAsync(AvatarCache
-           .ByUser(entityInfo.UserId));
+           .ByUser(entityInfo.OwnerId));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
            EntityPagedPattern<Avatar>());

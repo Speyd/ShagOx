@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Cache;
+using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars.Extensions;
@@ -9,14 +9,14 @@ public static class AvatarQueryExtensions
       this IQueryable<Avatar> query)
     {
         return query
-           .Include(x => x.User);
+           .Include(x => x.Owner);
     }
 
-    public static IQueryable<AvatarCacheInfo> SelectCacheInfo(
+    public static IQueryable<PictureCacheInfo> SelectCacheInfo(
         this IQueryable<Avatar> query)
     {
-        return query.Select(x => new AvatarCacheInfo(
+        return query.Select(x => new PictureCacheInfo(
             x.Id,
-            x.UserId));
+            x.OwnerId));
     }
 }

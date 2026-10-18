@@ -40,6 +40,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
@@ -105,6 +111,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
@@ -133,6 +145,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -189,6 +207,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BuyerId");
@@ -244,6 +268,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdvertisementId");
@@ -264,6 +294,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -287,6 +323,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -321,6 +363,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
@@ -344,6 +392,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
@@ -365,6 +419,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<int>("Order")
                         .HasColumnType("integer");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -393,6 +453,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(1);
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdvertisementVariantId");
@@ -401,6 +467,107 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("BasketItems");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CommentableEntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("Grade")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentableEntityId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("CommentableEntityId", "CreatedAt");
+
+                    b.ToTable("ReviewComment", t =>
+                        {
+                            t.HasCheckConstraint("CK_ReviewComments_Grade", "\"Grade\" BETWEEN 1 AND 5");
+                        });
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CommentableEntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ParentReplyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentableEntityId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("ParentReplyId");
+
+                    b.HasIndex("CommentableEntityId", "CreatedAt");
+
+                    b.HasIndex("ParentReplyId", "CreatedAt");
+
+                    b.ToTable("ReviewRepliComment");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
@@ -441,6 +608,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DictionaryId");
@@ -463,6 +636,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -490,6 +669,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -519,6 +704,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -553,6 +744,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
@@ -581,6 +778,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("ProductTypeId")
                         .HasColumnType("bigint");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductTypeId");
@@ -607,6 +810,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -636,6 +845,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -670,6 +885,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
@@ -698,6 +919,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("RegionId")
                         .HasColumnType("bigint");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
@@ -720,6 +947,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -749,6 +982,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -783,6 +1022,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
@@ -807,6 +1052,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -839,12 +1090,55 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("character varying(5)");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
                         .IsUnique();
 
                     b.ToTable("Currencies");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.AdvertisementImage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId", "Order")
+                        .IsUnique();
+
+                    b.ToTable("AdvertisementImages");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Avatar", b =>
@@ -855,6 +1149,9 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("PublicId")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -864,18 +1161,21 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex("OwnerId")
                         .IsUnique();
 
                     b.ToTable("Avatars");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Image", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewImage", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -883,11 +1183,11 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("AdvertisementId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("Order")
                         .HasColumnType("integer");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("PublicId")
                         .IsRequired()
@@ -898,12 +1198,55 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AdvertisementId", "Order")
+                    b.HasIndex("OwnerId", "Order")
                         .IsUnique();
 
-                    b.ToTable("Images");
+                    b.ToTable("ReviewImages");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewRepliImage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId", "Order")
+                        .IsUnique();
+
+                    b.ToTable("ReviewRepliImages");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Translations.ConditionTranslation", b =>
@@ -926,6 +1269,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -975,6 +1324,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -1144,6 +1499,51 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Basket");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "CommentableEntity")
+                        .WithMany("ReviewComments")
+                        .HasForeignKey("CommentableEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CommentableEntity");
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewComment", "CommentableEntity")
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentableEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", "ParentReply")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentReplyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("CommentableEntity");
+
+                    b.Navigation("Owner");
+
+                    b.Navigation("ParentReply");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Category", "Category")
@@ -1261,26 +1661,48 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Translatable");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Avatar", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.AdvertisementImage", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "User")
-                        .WithOne("Avatar")
-                        .HasForeignKey("ShagOxServer.Domain.Entities.Specification.Pictures.Avatar", "UserId")
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "Owner")
+                        .WithMany("Pictures")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Image", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Avatar", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "Advertisement")
-                        .WithMany("Images")
-                        .HasForeignKey("AdvertisementId")
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                        .WithOne("Avatar")
+                        .HasForeignKey("ShagOxServer.Domain.Entities.Specification.Pictures.Avatar", "OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Advertisement");
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewImage", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewComment", "Owner")
+                        .WithMany("Pictures")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewRepliImage", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", "Owner")
+                        .WithMany("Pictures")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Translations.ConditionTranslation", b =>
@@ -1330,7 +1752,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                 {
                     b.Navigation("Favorites");
 
-                    b.Navigation("Images");
+                    b.Navigation("Pictures");
+
+                    b.Navigation("ReviewComments");
 
                     b.Navigation("Variants");
                 });
@@ -1350,6 +1774,20 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.Basket", b =>
                 {
                     b.Navigation("BasketItems");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
+                {
+                    b.Navigation("Pictures");
+
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
+                {
+                    b.Navigation("Pictures");
+
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>

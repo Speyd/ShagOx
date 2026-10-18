@@ -1,5 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
-using ShagOxServer.Application.DTOs.Advertisements.Core.Update.Images;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 public sealed record AdvertisementUpdateRequest
@@ -13,5 +12,5 @@ public sealed record AdvertisementUpdateRequest
     long? BuyerId,
     string? Attributes,
     string? Variants,
-    List<ImageAdvertUpdateRequest>? Images
+    List<OwnerPictureOrderUpdateRequest>? Pictures
 );

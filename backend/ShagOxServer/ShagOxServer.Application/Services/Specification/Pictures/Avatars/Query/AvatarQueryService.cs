@@ -56,7 +56,7 @@ public class AvatarQueryService
             async () =>
             {
                 var image = await _avatarQueryRepository
-                    .GetByUserIdAsync(userId, cancellationToken);
+                    .GetByOwnerAsync(userId, cancellationToken);
 
                 return await image.ToResultAsync(
                     ApplyMapperAsync);

@@ -3,17 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
+using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -27,6 +30,8 @@ public class UserUpdateService
     private readonly CityValidator _cityValidator;
 
     private readonly IAvatarUpdateService _avatarUploadService;
+    private readonly IAvatarCreateService _avatarCreateService;
+
 
     private readonly UserInvalidationService _userInvalid;
 
@@ -39,6 +44,7 @@ public class UserUpdateService
         UserValidator userValidator,
         CityValidator cityValidator,
         IAvatarUpdateService avatarUploadService,
+        IAvatarCreateService avatarCreateService,
         UserInvalidationService userInvalid,
         IUnitOfWork unitOfWork,
         ILogger<UserUpdateService> logger)
@@ -47,6 +53,7 @@ public class UserUpdateService
         _userValidator = userValidator;
         _cityValidator = cityValidator;
         _avatarUploadService = avatarUploadService;
+        _avatarCreateService = avatarCreateService;
         _userInvalid = userInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -190,8 +197,29 @@ public class UserUpdateService
         User user,
         IFormFile? avatarFile)
     {
-        if(avatarFile is null || user.Avatar is null)
+        if (avatarFile is null) 
+        {
+            return Result<PictureUpdateResponse?>
+                .Success(null); 
+        }
+
+        if (user.Avatar is null)
+        {
+            var request = new PictureCreateRequest(
+                user.Id,
+                avatarFile);
+
+            var createResult = await _avatarCreateService
+                .CreateInternalAsync(request);
+
+            if (!createResult.IsSuccess)
+            {
+                return Result<PictureUpdateResponse?>
+                    .Fail(createResult.Error);
+            }
+
             return Result<PictureUpdateResponse?>.Success(null);
+        }
 
         var result = await _avatarUploadService.UpdateInternalAsync(
             user.Avatar,

@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 public sealed record AdvertisementUpdateRequest

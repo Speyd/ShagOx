@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+namespace ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 public sealed record OwnerPictureOrderUpdateRequest
 (
     long? Id,

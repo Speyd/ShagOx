@@ -1,6 +1,5 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.PictureOrdering;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -11,11 +10,11 @@ public interface IPictureOrderingService<TOwner, TPicture>
     where TOwner: BaseEntity, IHasPictures<TOwner, TPicture>
     where TPicture: BasePictureOrder<TOwner>   
 {
-    Task<Result<PictureSyncResponce>> SyncPicturesAsync(
+    Task<Result<PictureSyncResponce<TPicture>>> SyncPicturesAsync(
         long ownerId,
         List<OwnerPictureOrderUpdateRequest>? request);
 
-    Task<Result<PictureSyncResponce>> SyncPicturesAsync(
+    Task<Result<PictureSyncResponce<TPicture>>> SyncPicturesAsync(
         TOwner advertisement,
         List<OwnerPictureOrderUpdateRequest>? request);
 
@@ -24,5 +23,5 @@ public interface IPictureOrderingService<TOwner, TPicture>
 
     Task Rollback(
         TOwner owner,
-        PictureSyncResponce responce);
+        PictureSyncResponce<TPicture> responce);
 }

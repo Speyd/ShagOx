@@ -1,6 +1,4 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
-using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.PictureOrdering;
 public partial class PictureOrderingService<TOwner, TPicture>
@@ -37,18 +35,5 @@ public partial class PictureOrderingService<TOwner, TPicture>
             owner.Pictures.ElementAt(i).Order 
                 = originalPictureOrders[i];
         }
-    }
-
-
-    private Result<bool> UpdateImageOrder(
-        OwnerPictureOrderUpdateRequest picture,
-        TPicture? getPicture)
-    {
-        if (getPicture is not null)
-        {
-            getPicture.Order = picture.Order;
-        }
-
-        return Result<bool>.Success(true);
     }
 }

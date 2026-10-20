@@ -1,9 +1,11 @@
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
@@ -16,22 +18,32 @@ public partial class PictureOrderingService<TOwner, TPicture>
     where TPicture : BasePictureOrder<TOwner>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPictureOrderCreateService<TPicture, PictureOrderCreateRequest> _pictureCreateService;
+    private readonly IPictureOrderCreateService<TPicture, 
+        PictureOrderCreateRequest> _pictureCreateService;
+
     private readonly IPictureDeleteService<TPicture> _pictureDeleteService;
+
+    private readonly IPictureUpdateService<TPicture, 
+        PictureOrderUpdateRequest> _pictureUpdateService;
+
     private readonly IPictureLoaderService _pictureLoaderService;
     private readonly BaseValidator<TOwner>  _ownerValidator;
 
 
     public PictureOrderingService(
         IUnitOfWork unitOfWork,
-        IPictureOrderCreateService<TPicture, PictureOrderCreateRequest> pictureCreateService,
+        IPictureOrderCreateService<TPicture, 
+            PictureOrderCreateRequest> pictureCreateService,
         IPictureDeleteService<TPicture> pictureDeleteService,
+        IPictureUpdateService<TPicture, 
+            PictureOrderUpdateRequest> pictureUpdateService,
         IPictureLoaderService pictureLoaderService,
         BaseValidator<TOwner> ownerValidator)
     {
         _unitOfWork = unitOfWork;
         _pictureCreateService = pictureCreateService;
         _pictureDeleteService = pictureDeleteService;
+        _pictureUpdateService = pictureUpdateService;
         _pictureLoaderService = pictureLoaderService;
         _ownerValidator = ownerValidator;
     }

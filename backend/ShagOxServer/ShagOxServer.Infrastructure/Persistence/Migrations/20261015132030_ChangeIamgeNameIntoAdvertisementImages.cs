@@ -28,6 +28,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                 table: "Avatars",
                 newName: "IX_Avatars_OwnerId");
 
+            migrationBuilder.Sql(@"DELETE FROM ""Avatars"" WHERE ""OwnerId"" NOT IN (SELECT ""Id"" FROM ""Users"");");
+
             migrationBuilder.CreateTable(
                 name: "AdvertisementImages",
                 columns: table => new

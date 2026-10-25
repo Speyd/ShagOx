@@ -10,7 +10,7 @@ using ShagOxServer.Domain.Entities.Comments;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 public class ReviewCommentInvalidationService 
-    : ICacheInvalidationService<ReviewComment, ReviewCommentCacheInfo>
+    : ICacheInvalidationService<ReviewComment, CommentCacheInfo>
 {
     private readonly IReviewImageQueryRepository _imageRepository;
     private readonly ReviewImageInvalidationService _imageInvalid;
@@ -30,12 +30,12 @@ public class ReviewCommentInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        ReviewCommentCacheInfo entityInfo)
+        CommentCacheInfo entityInfo)
     {
     }
 
     public async Task InvalidateDeleteAsync(
-        ReviewCommentCacheInfo entityInfo)
+        CommentCacheInfo entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -51,19 +51,19 @@ public class ReviewCommentInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        ReviewCommentCacheInfo entityInfo)
+        CommentCacheInfo entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        ReviewCommentCacheInfo entityInfo)
+        CommentCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys.
              Entity<ReviewComment>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(ReviewCommentCache.
-             ByAdvertisementPattern(entityInfo.AdvertisementId));
+             ByAdvertisementPattern(entityInfo.CommentableEntityId));
     }
 
     private async Task<List<PictureCacheInfo>> GetImageInfos(

@@ -15,7 +15,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Delete;
 public class AdvertisementImageDeleteService 
-    : PictureDeleteService<Advertisement, AdvertisementImage>,
+    : PictureDeleteService<AdvertisementImage>,
     IAdvertisementImageDeleteService
 {
     private readonly ImageInvalidationService _imageInvalid;
@@ -29,7 +29,11 @@ public class AdvertisementImageDeleteService
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageDeleteService> logger
     )
-        : base(imageRepository, imageValidator, pictureValidator, unitOfWork, logger)
+        : base(imageRepository, 
+            imageValidator, 
+            pictureValidator, 
+            unitOfWork, 
+            logger)
     {
         _imageInvalid = imageInvalid;
     }

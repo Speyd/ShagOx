@@ -26,7 +26,7 @@ public partial class BasketQueryRepository
         return await _db.Baskets
             .WithIncludes()
             .FirstOrDefaultAsync(c =>
-                c.UserId == userId,
+                c.OwnerId == userId,
                 cancellationToken);
     }
 
@@ -36,7 +36,7 @@ public partial class BasketQueryRepository
     {
         var basketId =  await _db.Baskets
             .FirstOrDefaultAsync(c =>
-                c.UserId == userId,
+                c.OwnerId == userId,
                 cancellationToken);
 
         return basketId?.Id;
@@ -51,6 +51,6 @@ public partial class BasketQueryRepository
                 c.Id == basketId,
                 cancellationToken);
 
-        return basket?.UserId;
+        return basket?.OwnerId;
     }
 }

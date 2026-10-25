@@ -10,7 +10,7 @@ public static class AdvertisementCacheMapper
         return new AdvertisementCacheInfo
         (
             x.Id,
-            x.SellerId,
+            x.OwnerId,
             x.BuyerId,
             x.Variants
                 .Select(x => x.Id)

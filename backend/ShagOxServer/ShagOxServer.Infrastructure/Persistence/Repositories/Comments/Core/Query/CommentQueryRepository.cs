@@ -23,7 +23,9 @@ public partial class CommentQueryRepository<TEntity, TFilter>
         PaginationParams paginationParams,
         CancellationToken cancellationToken = default)
     {
-        return await _db.Set<TEntity>()
+        var query = ApplyIncludes(_db.Set<TEntity>());
+
+        return await query
             .Where(x => x.OwnerId == ownerId)
             .ToPagedResultAsync(paginationParams,
                  x => x.Id,
@@ -35,7 +37,9 @@ public partial class CommentQueryRepository<TEntity, TFilter>
         PaginationParams paginationParams,
         CancellationToken cancellationToken = default)
     {
-        return await _db.Set<TEntity>()
+        var query = ApplyIncludes(_db.Set<TEntity>());
+
+        return await query
             .Where(x => x.CommentableEntityId == commentableId)
             .ToPagedResultAsync(paginationParams,
                  x => x.Id,

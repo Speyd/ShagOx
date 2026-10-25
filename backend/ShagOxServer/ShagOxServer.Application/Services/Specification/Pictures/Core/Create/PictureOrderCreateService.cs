@@ -16,7 +16,7 @@ public abstract class PictureOrderCreateService<TOwner, TPicture, TRequest>
     : PictureCreateService<TOwner, TPicture, TRequest>,
     IPictureOrderCreateService<TPicture, TRequest>
     where TOwner : BaseEntity
-    where TPicture : BasePictureOrder<TOwner>
+    where TPicture : BasePictureOrder
     where TRequest : PictureOrderCreateRequest
 {
     public PictureOrderCreateService(

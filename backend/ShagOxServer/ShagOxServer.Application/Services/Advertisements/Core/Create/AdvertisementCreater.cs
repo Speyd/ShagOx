@@ -19,7 +19,7 @@ public static class AdvertisementCreater
             CategoryId = request.CategoryId,
             StatusId = request.StatusId,
             ConditionId = request.ConditionId,
-            SellerId = userId,
+            OwnerId = userId,
 
             Attributes = string.IsNullOrWhiteSpace(request.Attributes)
                 ? JsonDocument.Parse("{}")

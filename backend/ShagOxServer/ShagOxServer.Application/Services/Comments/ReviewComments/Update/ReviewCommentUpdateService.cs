@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
+using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.PictureOrdering;
@@ -118,7 +119,7 @@ public class ReviewCommentUpdateService
         }
 
         await _commInvalid.InvalidateUpdateAsync(
-            ReviewCommentCacheMapper.ToInfo(comment.Value!));
+            CommentCacheMapper.ToInfo(comment.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

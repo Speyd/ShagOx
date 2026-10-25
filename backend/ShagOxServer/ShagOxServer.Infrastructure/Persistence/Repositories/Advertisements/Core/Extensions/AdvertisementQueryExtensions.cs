@@ -15,7 +15,7 @@ public static class AdvertisementQueryExtensions
             .Include(x => x.Condition)
             .Include(x => x.Category)
                 .ThenInclude(x => x.ProductType)
-            .Include(x => x.Seller)
+            .Include(x => x.Owner)
             .Include(x => x.Buyer)
             .Include(x => x.Pictures);
     }
@@ -25,7 +25,7 @@ public static class AdvertisementQueryExtensions
     {
         return query.Select(x => new AdvertisementCacheInfo(
             x.Id,
-            x.SellerId,
+            x.OwnerId,
             x.BuyerId,
             x.Variants
                 .Select(v => v.Id)

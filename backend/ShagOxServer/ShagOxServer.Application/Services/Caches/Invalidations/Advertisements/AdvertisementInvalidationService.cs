@@ -192,7 +192,7 @@ public class AdvertisementInvalidationService
             .GetCacheInfosByOwnerAsync(entityId);
     }
 
-    private async Task<List<ReviewCommentCacheInfo>> GetCommentInfos(
+    private async Task<List<CommentCacheInfo>> GetCommentInfos(
         long entityId)
     {
         return await _commentRepository

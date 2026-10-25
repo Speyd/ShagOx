@@ -9,13 +9,12 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Validator;
-using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Delete;
 public class ReviewImageDeleteService
-    : PictureDeleteService<ReviewComment, ReviewImage>,
+    : PictureDeleteService<ReviewImage>,
     IReviewImageDeleteService
 {
     private readonly ReviewImageInvalidationService _imageInvalid;

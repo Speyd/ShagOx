@@ -26,7 +26,7 @@ public partial class AdvertisementQueryRepository
         CancellationToken cancellationToken = default)
     {
         return await _db.Advertisements
-            .Where(x => x.SellerId == userId ||
+            .Where(x => x.OwnerId == userId ||
                 x.BuyerId == userId)
             .SelectCacheInfo()
             .ToListAsync(cancellationToken);

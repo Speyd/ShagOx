@@ -1,5 +1,5 @@
-﻿namespace ShagOxServer.Application.DTOs.Baskets.Core.Update;
+namespace ShagOxServer.Application.DTOs.Baskets.Core.Update;
 public sealed record BasketUpdateRequest
 (
-    long? UserId
+    long? OwnerId
 );

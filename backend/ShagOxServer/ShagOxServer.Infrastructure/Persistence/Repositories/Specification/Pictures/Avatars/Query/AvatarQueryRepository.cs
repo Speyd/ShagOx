@@ -1,30 +1,16 @@
-using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars.Extensions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Images.Extensions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Core;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars.Query;
 public partial class AvatarQueryRepository
-    : SearchRepository<Avatar, AvatarSearchFilter>,
+    : PictureQueryRepository<Avatar, AvatarSearchFilter>,
       IAvatarQueryRepository
 {
     public AvatarQueryRepository(
         ReplicaDbContext db)
         : base(db)
     { }
-
-
-    public async Task<Avatar?> GetByOwnerAsync(
-        long ownerId,
-        CancellationToken cancellationToken = default)
-    {
-        return await _db.Avatars
-          .WithIncludes()
-          .FirstOrDefaultAsync(x => x.OwnerId == ownerId,
-            cancellationToken);
-    }
 }

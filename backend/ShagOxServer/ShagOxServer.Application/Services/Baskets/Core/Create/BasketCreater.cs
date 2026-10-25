@@ -10,7 +10,7 @@ public static class BasketCreater
     {
         return new Basket
         {
-            UserId = ownerId
+            OwnerId = ownerId
         };
     }
 }

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.Core;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core.Extensions;
@@ -15,7 +15,7 @@ public static class BasketFilterExtensions
         if (filter.UserId.HasValue)
         {
             query = query.Where(u =>
-                u.UserId == filter.UserId);
+                u.OwnerId == filter.UserId);
         }
 
         return query;

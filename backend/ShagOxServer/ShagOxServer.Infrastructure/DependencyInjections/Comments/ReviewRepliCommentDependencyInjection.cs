@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Comments.ReviewRepliComments;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Comments.ReviewRepliComments.Query;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Comments;

@@ -135,6 +135,6 @@ public class UserInvalidationService
         long entityId)
     {
         return await _avatarRepository
-            .GetCacheInfoByUserIdAsync(entityId);
+            .GetCacheInfoByOwnerAsync(entityId);
     }
 }

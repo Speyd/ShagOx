@@ -15,8 +15,8 @@ public static class AdvertisementShortMapper
             x.Description,
             x.CurrencyId,
             x.CategoryId,
-            x.Seller.Id,
-            x.Buyer?.Id,
+            x.OwnerId,
+            x.BuyerId,
             x.Pictures
                 .OrderBy(i => i.Order)
                 .Select(i => i.Id)

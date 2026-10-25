@@ -13,6 +13,7 @@ public static class ReviewCommentCreater
             OwnerId = userId,
             CommentableEntityId = request.CommentableEntityId,
             Text = request.Text,
+            Grade = request.Grade,
             CreatedAt = DateTime.UtcNow
         };
     }

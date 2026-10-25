@@ -1,20 +1,24 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Create;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Query;
+using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
+using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Create;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Query;
+using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
 
 namespace ShagOxServer.Application.DependencyInjections.Comments;
 public static class ReviewRepliCommentDependencyInjections
 {
-    public static IServiceCollection AddReviewCommentApplication(
+    public static IServiceCollection AddReviewRepliCommentApplication(
         this IServiceCollection services)
     {
         services.AddScoped<IReviewRepliCommentQueryService,
             ReviewRepliCommentQueryService>();
 
-        //services.AddScoped<IReviewCommentCreateService,
-        //    ReviewCommentCreateService>();
+        services.AddScoped<IReviewRepliCommentCreateService,
+            ReviewRepliCommentCreateService>();
 
         //services.AddScoped<IReviewCommentUpdateService,
         //    ReviewCommentUpdateService>();
@@ -22,13 +26,13 @@ public static class ReviewRepliCommentDependencyInjections
         //services.AddScoped<IReviewCommentDeleteService,
         //    ReviewCommentDeleteService>();
 
-       // services.AddScoped<ReviewCommentValidator>();
+        services.AddScoped<ReviewRepliCommentValidator>();
 
         services.AddScoped<CommentValidator<ReviewComment>>();
 
-        //services.AddScoped<
-        //    BaseValidator<ReviewComment>,
-        //    ReviewCommentValidator>();
+        services.AddScoped<
+            BaseValidator<ReviewRepliComment>,
+            ReviewRepliCommentValidator>();
 
 
         return services;

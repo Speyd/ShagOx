@@ -1,4 +1,3 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
@@ -21,7 +20,10 @@ public class FavoriteInvalidationService
 
     public async Task InvalidateCreateAsync(
         FavoriteCacheInfo entityInfo)
-    { }
+    {
+        await _cache.RemoveByPatternAsync(
+            FavoriteCache.ByUserPattern(entityInfo.UserId));
+    }
 
     public async Task InvalidateDeleteAsync(
         FavoriteCacheInfo entityInfo)

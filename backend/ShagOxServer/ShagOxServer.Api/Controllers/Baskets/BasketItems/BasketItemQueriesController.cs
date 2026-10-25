@@ -10,7 +10,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Baskets.BasketItems;
 [ApiController]
 [Route("api/basket-items")]
-[Authorize]
+//[Authorize]
 public class BasketItemQueriesController
     : ApiOwnerExistsController
 {

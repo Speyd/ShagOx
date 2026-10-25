@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -68,7 +68,8 @@ public class BasketAttributeCreateService
         }
 
 
-        var attribute = BasketAttributeCreater.Create(request);
+        var attribute = BasketAttributeCreater
+            .Create(request);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -93,7 +94,10 @@ public class BasketAttributeCreateService
         }
 
         await _attributeInvalid.InvalidateCreateAsync(
-            BasketAttributeCacheMapper.ToInfo(attribute));
+            BasketAttributeCacheMapper.ToInfo(
+                attribute,
+                attributeDefinition.Value!.CategoryId)
+            );
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 
@@ -9,8 +10,10 @@ public class FavoriteValidator
 {
     public FavoriteValidator(
         IQueryRepository<Favorite> favoriteRepository,
-        IExistsRepository<Favorite> favoriteExistsRepository
-    ) : base(favoriteRepository, favoriteExistsRepository)
+        IExistsRepository<Favorite> favoriteExistsRepository,
+        IDataCacheService cache
+    ) 
+        : base(favoriteRepository, favoriteExistsRepository, cache)
     {
     }
 }

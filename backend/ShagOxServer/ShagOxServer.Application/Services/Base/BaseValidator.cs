@@ -1,6 +1,8 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
+using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -10,14 +12,17 @@ public abstract class BaseValidator<TEntity>
 {
     private readonly IQueryRepository<TEntity> _objectRepository;
     private readonly IExistsRepository<TEntity> _objectExistsRepository;
+    private readonly IDataCacheService _cache;
 
 
     public BaseValidator(
         IQueryRepository<TEntity> objectRepository,
-        IExistsRepository<TEntity> objectExistsRepository)
+        IExistsRepository<TEntity> objectExistsRepository,
+        IDataCacheService cache)
     {
         _objectRepository = objectRepository;
         _objectExistsRepository = objectExistsRepository;
+        _cache = cache;
     }
 
 
@@ -54,6 +59,13 @@ public abstract class BaseValidator<TEntity>
     public async Task<Result<bool>> ExistsByIdAsync(
         long entityId)
     {
+        var cache = await _cache.GetAsync<TEntity>(
+            CacheKeys.Entity<TEntity>(entityId));
+
+        if (cache is not null)
+            return Result<bool>.Success(true);
+
+
         if (!await _objectExistsRepository
             .ExistsByIdAsync(entityId))
         {
@@ -67,6 +79,13 @@ public abstract class BaseValidator<TEntity>
     public async Task<Result<bool>> NotExistsByIdAsync(
         long entityId)
     {
+        var cache = await _cache.GetAsync<TEntity>(
+           CacheKeys.Entity<TEntity>(entityId));
+
+        if (cache is null)
+            return Result<bool>.Success(true);
+
+
         if (await _objectExistsRepository
             .ExistsByIdAsync(entityId))
         {

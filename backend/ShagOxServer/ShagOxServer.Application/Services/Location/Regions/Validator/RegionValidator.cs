@@ -1,6 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Location;
@@ -15,8 +16,10 @@ public class RegionValidator
 
     public RegionValidator(
         IQueryRepository<Region> regionRepository,
-        IRegionExistsRepository regionExistsRepository
-    ) : base(regionRepository, regionExistsRepository)
+        IRegionExistsRepository regionExistsRepository,
+        IDataCacheService cache
+    ) 
+        : base(regionRepository, regionExistsRepository, cache)
     {
         _regionExistsRepository = regionExistsRepository;
     }

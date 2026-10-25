@@ -1,6 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -15,8 +16,10 @@ public class StatusValidator
 
     public StatusValidator(
         IQueryRepository<Status> statusRepository,
-        IStatusExistsRepository statusExistsRepository
-    ) : base(statusRepository, statusExistsRepository)
+        IStatusExistsRepository statusExistsRepository,
+        IDataCacheService cache
+    ) 
+        : base(statusRepository, statusExistsRepository, cache)
     {
         _statusExistsRepository = statusExistsRepository;
     }

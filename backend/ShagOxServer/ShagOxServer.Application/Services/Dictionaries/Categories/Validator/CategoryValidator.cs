@@ -1,6 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -15,8 +16,10 @@ public class CategoryValidator
 
     public CategoryValidator(
         IQueryRepository<Category> categoryRepository,
-        ICategoryExistsRepository categoryExistsRepository
-    ) : base(categoryRepository, categoryExistsRepository)
+        ICategoryExistsRepository categoryExistsRepository,
+        IDataCacheService cache
+    ) 
+        : base(categoryRepository, categoryExistsRepository, cache)
     {
         _categoryExistsRepository = categoryExistsRepository;
     }

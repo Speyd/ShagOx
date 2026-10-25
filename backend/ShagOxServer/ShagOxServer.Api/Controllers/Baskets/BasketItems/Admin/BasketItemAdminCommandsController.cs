@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Baskets.BasketItems.Admin;
 
 [ApiController]
 [Route("api/admin/basket-items")]
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class BasketItemAdminCommandsController
     : ApiController
 {

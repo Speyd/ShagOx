@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Services.Base.Cache;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -12,32 +13,25 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Base.Query;
 public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
-    : IQueryService<TDto, TEntity, TFilter>
+    : CacheService<TDto, TEntity, TFilter>,
+    IQueryService<TDto, TEntity, TFilter>
     where TDto : BaseDto
     where TEntity : BaseEntity
     where TFilter : BaseFilter
 {
     protected readonly ISearchRepository<TEntity, TFilter> _queryRepository;
-    protected readonly IDataCacheService _cache;
-    protected readonly CacheSettings _settings;
-
-    protected virtual bool CacheById => true;
-
-    protected virtual bool CacheBySearch => true;
-
-    protected virtual bool CacheByPaged => true;
 
 
     public BaseQueryService(
         ISearchRepository<TEntity, TFilter> queryRepository,
         IDataCacheService cache,
         IOptions<CacheSettings> settings
-        )
+    )
+        : base(cache, settings)
     {
         _queryRepository = queryRepository;
-        _cache = cache;
-        _settings = settings.Value;
     }
+
 
     public abstract Task<TDto> ApplyMapperAsync(
         TEntity entity);
@@ -57,6 +51,7 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         }
 
         var cache = await GetByCache(id);
+
         if (cache is not null)
             return Result<TDto>.Success(cache);
 

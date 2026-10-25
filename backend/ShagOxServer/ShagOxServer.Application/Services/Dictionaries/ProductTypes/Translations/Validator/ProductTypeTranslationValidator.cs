@@ -1,6 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
@@ -12,8 +13,10 @@ public class ProductTypeTranslationValidator
 {
     public ProductTypeTranslationValidator(
         IQueryRepository<ProductTypeTranslation> typeRepository,
-        IProductTypeTranslationExistsRepository typeExistsRepository
-    ) : base(typeRepository, typeExistsRepository)
+        IProductTypeTranslationExistsRepository typeExistsRepository,
+        IDataCacheService cache
+    ) 
+        : base(typeRepository, typeExistsRepository, cache)
     {
     }
 }

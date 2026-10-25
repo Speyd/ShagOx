@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Baskets.BasketItems.Admin;
 
 [ApiController]
 [Route("api/admin/basket-items")]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class BasketItemAdminCommandsController
     : ApiController
 {

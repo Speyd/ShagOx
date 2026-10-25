@@ -36,6 +36,21 @@ public abstract class BaseValidator<TEntity>
         return Result<TEntity>.Success(entity);
     }
 
+    public async Task<Result<TEntity>> GetByIdIncludeAsync(
+        long entityId)
+    {
+        var entity = await _objectRepository
+            .GetByIdIncludeAsync(entityId);
+
+        if (entity is null)
+        {
+            return Result<TEntity>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
+        }
+
+        return Result<TEntity>.Success(entity);
+    }
+
     public async Task<Result<bool>> ExistsByIdAsync(
         long entityId)
     {

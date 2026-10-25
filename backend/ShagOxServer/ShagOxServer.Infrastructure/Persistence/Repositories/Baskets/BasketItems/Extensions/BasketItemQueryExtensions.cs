@@ -33,6 +33,10 @@ public static class BasketItemQueryExtensions
 
             .Include(x => x.AdvertisementVariant)
                 .ThenInclude(x => x.Advertisement)
+                    .ThenInclude(x => x.Status)
+
+            .Include(x => x.AdvertisementVariant)
+                .ThenInclude(x => x.Advertisement)
                     .ThenInclude(x => x.Condition)
 
             .Include(x => x.AdvertisementVariant)

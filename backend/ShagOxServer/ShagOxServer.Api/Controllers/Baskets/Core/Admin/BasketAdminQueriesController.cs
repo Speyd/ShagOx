@@ -9,7 +9,7 @@ using ShagOxServer.Domain.Filters.Baskets.Core;
 namespace ShagOxServer.Api.Controllers.Baskets.Core.Admin;
 [ApiController]
 [Route("api/admin/baskets")]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class BasketAdminQueriesController
     : BaseQueryController<BasketDto,
         BasketSearchFilter>

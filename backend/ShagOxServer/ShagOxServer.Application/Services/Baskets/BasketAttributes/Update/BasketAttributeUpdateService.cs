@@ -11,7 +11,6 @@ using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validato
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
-using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -55,7 +54,7 @@ public class BasketAttributeUpdateService
         BasketAttributeUpdateRequest request)
     {
         var attribute = await _attributeValidator
-            .GetByIdAsync(attributeId);
+            .GetByIdIncludeAsync(attributeId);
 
         if (!attribute.IsSuccess)
             return Result<UpdateResponse>.Fail(attribute.Error);
@@ -128,7 +127,10 @@ public class BasketAttributeUpdateService
         }
 
         await _attributeInvalid.InvalidateUpdateAsync(
-            BasketAttributeCacheMapper.ToInfo(attribute.Value!));
+            BasketAttributeCacheMapper.ToInfo(
+                attribute.Value!,
+                attribute.Value!.AttributeDefinition.CategoryId)
+            );
 
         return Result<UpdateResponse>.Success(result);
     }

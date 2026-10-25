@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -41,7 +41,7 @@ public class BasketAttributeDeleteService
         long id)
     {
         var attribute = await _attributeValidator
-            .GetByIdAsync(id);
+            .GetByIdIncludeAsync(id);
 
         if (!attribute.IsSuccess)
             return Result<DeleteResponse>.Fail(attribute.Error);
@@ -68,7 +68,11 @@ public class BasketAttributeDeleteService
         }
 
         await _attributeInvalid.InvalidateDeleteAsync(
-            BasketAttributeCacheMapper.ToInfo(attribute.Value!));
+            BasketAttributeCacheMapper.ToInfo(
+                attribute.Value!,
+                attribute.Value!.AttributeDefinition
+                    .CategoryId)
+            );
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

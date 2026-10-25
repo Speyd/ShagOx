@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Advertisem
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Extensions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 using System.Text.Json;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants;

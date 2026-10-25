@@ -1,12 +1,12 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
-using ShagOxServer.Application.DTOs.Comments.ReviewComments.Cache;
+using ShagOxServer.Application.DTOs.Comments.Core.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;

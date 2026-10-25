@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Comments.ReviewComments.Cache;
+using ShagOxServer.Application.DTOs.Comments.Core.Cache;
 using ShagOxServer.Domain.Entities.Comments;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewComments.Mapping;

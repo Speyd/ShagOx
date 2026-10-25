@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Regions;
 public class RegionExistsRepository

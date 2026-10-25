@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories;
 public class CategoryExistsRepository

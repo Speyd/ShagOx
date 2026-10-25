@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users;
 public class UserExistsRepository

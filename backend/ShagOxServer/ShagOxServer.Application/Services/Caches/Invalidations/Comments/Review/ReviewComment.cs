@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Comments.ReviewComments.Cache;
+using ShagOxServer.Application.DTOs.Comments.Core.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Review.ReviewImages;
 using ShagOxServer.Application.Interfaces.Services.Caches;

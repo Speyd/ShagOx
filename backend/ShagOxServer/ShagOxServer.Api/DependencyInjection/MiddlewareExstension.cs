@@ -7,7 +7,7 @@ public static class MiddlewareExstension
         this WebApplication app)
     {
 
-        //app.UseMiddleware<RequestTrackingMiddleware>();
+        app.UseMiddleware<RequestTrackingMiddleware>();
 
         app.UseMiddleware<UpdateLastSeenMiddleware>();
 

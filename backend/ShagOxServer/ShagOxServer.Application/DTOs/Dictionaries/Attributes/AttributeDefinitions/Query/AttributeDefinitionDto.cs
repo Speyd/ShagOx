@@ -8,6 +8,7 @@ public sealed record AttributeDefinitionDto
     long CategoryId,
     string CategoryCode,
     string Key,
+    long? DictionaryId,
     AttributeType Type,
     bool Required,
     decimal? Min,

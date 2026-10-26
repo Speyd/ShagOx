@@ -6,13 +6,13 @@ public static class ProductTypeMapper
 {
     public static ProductTypeDto ToDto(
        ProductType productType,
-       string? lable)
+       string label)
     {
         return new ProductTypeDto(
             productType.Id,
             productType.Code,
             productType.Description,
-            lable
+            label
         );
     }
 }

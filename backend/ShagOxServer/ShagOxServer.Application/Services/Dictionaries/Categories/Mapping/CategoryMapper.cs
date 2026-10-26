@@ -6,14 +6,16 @@ public static class CategoryMapper
 {
     public static CategoryDto ToDto(
        Category category,
-       string? lable)
+       string? lable,
+       string productTypeLabel)
     {
         return new CategoryDto(
             category.Id,
             category.Code,
             new CategoryProductTypeDto(
                 category.ProductType.Id,
-                category.ProductType.Code
+                category.ProductType.Code,
+                productTypeLabel
             ),
             lable
         );

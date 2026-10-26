@@ -6,7 +6,6 @@ using ShagOxServer.Domain.Entities.Security;
 using System.Net;
 
 namespace ShagOxServer.Api.Middleware;
-
 public sealed class RequestTrackingMiddleware
 {
     private readonly RequestDelegate _next;
@@ -53,7 +52,7 @@ public sealed class RequestTrackingMiddleware
 
         var state = await _userCache
             .GetAsync<IpRateLimitState>(cacheKey);
-        Console.WriteLine(state?.BannedUntil?.ToString());
+
         state ??= new IpRateLimitState(ipAddress);
 
         var now = DateTime.UtcNow;

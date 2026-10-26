@@ -27,4 +27,8 @@ public interface IAdvertisementQueryService
         AdvertisementSearchFilter filter,
         PaginationParams pagination,
         CancellationToken cancellationToken = default);
+
+    Task<List<AdvertisementAttributeFilterOptionDto>> GetAttributeFilterOptionsAsync(
+        long categoryId,
+        CancellationToken cancellationToken = default);
 }

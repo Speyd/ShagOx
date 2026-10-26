@@ -49,7 +49,15 @@ public class CategoryQueryService
         var translation = await _translationRepository
             .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        return CategoryMapper.ToDto(entity, translation?.Name);
+        var productTypeLabel = entity.ProductType.Translations
+            .FirstOrDefault(x => x.Language == _language.Language)?.Name
+            ?? entity.ProductType.Translations
+                .FirstOrDefault(x => x.Language == "uk-UA")?.Name
+            ?? entity.ProductType.Translations
+                .FirstOrDefault(x => x.Language == "uk")?.Name
+            ?? entity.ProductType.Code;
+
+        return CategoryMapper.ToDto(entity, translation?.Name, productTypeLabel);
     }
 
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(

@@ -1,19 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Systems.Middleware;
-using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
-using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
 
 namespace ShagOxServer.Api.Middleware;
+
 public class UpdateLastSeenMiddleware
 {
     private readonly UpdateLastSeenSettings _settings;
     private readonly RequestDelegate _next;
-
 
     public UpdateLastSeenMiddleware(
         IOptions<UpdateLastSeenSettings> settings,
@@ -23,15 +19,13 @@ public class UpdateLastSeenMiddleware
         _settings = settings.Value;
     }
 
-
     public async Task InvokeAsync(
         HttpContext context,
         AppDbContext dbContext)
     {
         if (context.User.Identity?.IsAuthenticated == true)
         {
-            var userIdClaim =
-                context.User.FindFirst(ClaimTypes.NameIdentifier);
+            var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier);
 
             if (int.TryParse(userIdClaim?.Value, out var userId))
             {

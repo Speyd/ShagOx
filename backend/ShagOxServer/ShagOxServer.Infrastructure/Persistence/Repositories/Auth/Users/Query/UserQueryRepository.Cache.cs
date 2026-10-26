@@ -20,4 +20,14 @@ public partial class UserQueryRepository
             .SelectCacheInfo()
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<UserCacheInfo?> GetCacheInfoByIdAsync(
+        long id,
+        CancellationToken cancellationToken = default)
+    {
+        var user = await _db.Users
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        return user?.SelectCacheInfo();
+    }
 }

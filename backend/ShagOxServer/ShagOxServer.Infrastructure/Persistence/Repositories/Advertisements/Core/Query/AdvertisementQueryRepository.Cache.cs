@@ -11,6 +11,16 @@ public partial class AdvertisementQueryRepository
     : SearchRepository<Advertisement, AdvertisementSearchFilter>,
       IAdvertisementQueryRepository
 {
+    public async Task<AdvertisementCacheInfo?> GetCacheInfoByIdAsync(
+        long id,
+        CancellationToken cancellationToken = default)
+    {
+        var advert = await _db.Advertisements
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        return advert?.SelectCacheInfo();
+    }
+
     public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByStatusAsync(
         long statusId,
         CancellationToken cancellationToken = default)
@@ -26,7 +36,7 @@ public partial class AdvertisementQueryRepository
         CancellationToken cancellationToken = default)
     {
         return await _db.Advertisements
-            .Where(x => x.SellerId == userId ||
+            .Where(x => x.OwnerId == userId ||
                 x.BuyerId == userId)
             .SelectCacheInfo()
             .ToListAsync(cancellationToken);

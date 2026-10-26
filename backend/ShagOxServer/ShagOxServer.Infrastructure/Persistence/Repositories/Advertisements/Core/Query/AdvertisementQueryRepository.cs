@@ -34,7 +34,7 @@ public partial class AdvertisementQueryRepository
     {
         return await _db.Advertisements
             .WithIncludes()
-            .Where(x => x.SellerId == userId)
+            .Where(x => x.OwnerId == userId)
             .OrderByDescending(x => x.Popularity)
             .ToPagedResultAsync(pagination,
                 (x => x.Id),

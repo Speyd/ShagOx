@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Advertisements;
 
@@ -36,9 +36,9 @@ public class AdvertisementConfiguration
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.Seller)
+        builder.HasOne(x => x.Owner)
             .WithMany(x => x.SoldAdvertisements)
-            .HasForeignKey(x => x.SellerId)
+            .HasForeignKey(x => x.OwnerId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Buyer)
@@ -52,7 +52,7 @@ public class AdvertisementConfiguration
               .OnDelete(DeleteBehavior.Restrict);
 
 
-        builder.HasIndex(x => x.SellerId);
+        builder.HasIndex(x => x.OwnerId);
         builder.HasIndex(x => x.CategoryId);
         builder.HasIndex(x => x.CurrencyId);
         builder.HasIndex(x => x.ConditionId);
@@ -64,6 +64,6 @@ public class AdvertisementConfiguration
         builder.HasIndex(x => new { x.CategoryId, x.CreatedAt });
         builder.HasIndex(x => new { x.CategoryId, x.Popularity });
         builder.HasIndex(x => new { x.CategoryId, x.ConditionId, x.CreatedAt });
-        builder.HasIndex(x => new { x.SellerId, x.CreatedAt });
+        builder.HasIndex(x => new { x.OwnerId, x.CreatedAt });
     }
 }

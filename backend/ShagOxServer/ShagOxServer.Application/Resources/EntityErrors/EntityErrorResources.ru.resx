@@ -396,4 +396,22 @@
   <data name="ReviewImageUploadFailed" xml:space="preserve">
     <value>Не удалось загрузить изображение отзыва.</value>
   </data>
+  <data name="ReviewRepliCommentCreateFailed" xml:space="preserve">
+    <value>Не удалось создать ответ на отзыв.</value>
+  </data>
+  <data name="ReviewRepliCommentDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить ответ на отзыв.</value>
+  </data>
+  <data name="ReviewRepliCommentUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить ответ на отзыв.</value>
+  </data>
+  <data name="ReviewRepliImageCreateFailed" xml:space="preserve">
+    <value>Не удалось создать изображение ответа на отзыв.</value>
+  </data>
+  <data name="ReviewRepliImageDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить изображение ответа на отзыв.</value>
+  </data>
+  <data name="ReviewRepliImageUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить изображение ответа на отзыв.</value>
+  </data>
 </root>

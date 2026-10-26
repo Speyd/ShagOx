@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDictionaries;
 public class AttributeDictionaryExistsRepository

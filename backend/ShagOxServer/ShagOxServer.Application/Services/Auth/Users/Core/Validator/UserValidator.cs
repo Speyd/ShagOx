@@ -1,6 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Account;
@@ -17,8 +18,10 @@ public class UserValidator
     public UserValidator(
         IQueryRepository<User> userRepository,
         IUserQueryRepository userQueryRepository,
-        IUserExistsRepository userExistsRepository
-    ) : base(userRepository, userExistsRepository)
+        IUserExistsRepository userExistsRepository,
+        IDataCacheService cache
+    ) 
+        : base(userRepository, userExistsRepository, cache)
     {
         _userQueryRepository = userQueryRepository;
         _userExistsRepository = userExistsRepository;

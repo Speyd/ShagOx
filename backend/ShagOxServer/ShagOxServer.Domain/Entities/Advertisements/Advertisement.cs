@@ -1,4 +1,4 @@
-using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Owner;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace ShagOxServer.Domain.Entities.Advertisements;
 public class Advertisement 
-    : BaseEntity, 
+    : OwnedEntity<User>, 
     IHasPictures<Advertisement, AdvertisementImage>
 {
     public string Title { get; set; } = "";
@@ -42,13 +42,6 @@ public class Advertisement
 
     public ICollection<Favorite> Favorites { get; set; }
         = [];
-
-    public long SellerId { get; set; }
-    /// <summary>
-    /// User who published the product listing.
-    /// </summary>
-    public User Seller { get; set; } = null!;
-
 
     public long? BuyerId { get; set; }
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Baskets;
 
@@ -9,12 +9,12 @@ public class BasketConfiguration
     public void Configure(
         EntityTypeBuilder<Basket> builder)
     {
-        builder.HasOne(x => x.User)
+        builder.HasOne(x => x.Owner)
                .WithOne(x => x.Basket)
-               .HasForeignKey<Basket>(x => x.UserId)
+               .HasForeignKey<Basket>(x => x.OwnerId)
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => x.UserId)
+        builder.HasIndex(x => x.OwnerId)
             .IsUnique();
     }
 }

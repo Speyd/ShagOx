@@ -10,6 +10,7 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -23,13 +24,13 @@ public partial class AdvertisementImageCreateService
         PictureOrderCreateRequest>,
     IAdvertisementImageCreateService
 {
-    private protected ImageInvalidationService _imageInvalidation;
+    private protected AdvertisementImageInvalidationService _imageInvalidation;
 
     public AdvertisementImageCreateService(
         IRepository<AdvertisementImage> imageRepository,
         PictureValidator pictureValidator,
         AdvertisementValidator advertValidator,
-        ImageInvalidationService imageInvalidation,
+        AdvertisementImageInvalidationService imageInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageCreateService> logger
     )
@@ -109,6 +110,6 @@ public partial class AdvertisementImageCreateService
         AdvertisementImage image)
     {
         await _imageInvalidation.InvalidateCreateAsync(
-            AdvertisementImageCacheMapper.ToInfo(image));
+            PictureCacheMapper.ToInfo(image));
     }
 }

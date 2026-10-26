@@ -14,14 +14,13 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
     : IPictureUpdateService<TPicture, TRequest>,
     IPictureCache<TPicture>
     where TOwner : BaseEntity
-    where TPicture : BasePicture<TOwner>
+    where TPicture : BasePicture
     where TRequest : PictureUpdateRequest
 {
     private readonly IRepository<TPicture> _pictureRepository;

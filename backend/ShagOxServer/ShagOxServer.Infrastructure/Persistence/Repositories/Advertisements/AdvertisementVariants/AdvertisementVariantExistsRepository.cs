@@ -4,6 +4,7 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 using System.Text.Json;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants;
@@ -15,6 +16,7 @@ public class AdvertisementVariantExistsRepository
         AppDbContext db)
         : base(db)
     { }
+
 
     public async Task<bool> ExistsAsync(
         long advertisementId, 
@@ -37,7 +39,7 @@ public class AdvertisementVariantExistsRepository
             .WithIncludes()
             .AnyAsync(x =>
                 x.Id == entityId &&
-                x.Advertisement.SellerId == userId,
+                x.Advertisement.OwnerId == userId,
                 cancellationToken);
     }
 }

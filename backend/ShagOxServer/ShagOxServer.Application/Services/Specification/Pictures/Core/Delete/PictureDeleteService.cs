@@ -6,23 +6,21 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
-using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
-public abstract class PictureDeleteService<TOwner, TPicture>
+public abstract class PictureDeleteService<TPicture>
     : IPictureDeleteService<TPicture>,
     IPictureCache<TPicture>
-    where TOwner : BaseEntity
-    where TPicture : BasePicture<TOwner>
+    where TPicture : BasePicture
 {
     private readonly IRepository<TPicture> _pictureRepository;
     private readonly BaseValidator<TPicture> _pictureBaseValidator;
     private readonly PictureValidator _pictureValidator;
 
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<PictureDeleteService<TOwner, TPicture>> _logger;
+    private readonly ILogger<PictureDeleteService<TPicture>> _logger;
 
 
     public PictureDeleteService(
@@ -30,7 +28,7 @@ public abstract class PictureDeleteService<TOwner, TPicture>
         BaseValidator<TPicture> pictureBaseValidator,
         PictureValidator pictureValidator,
         IUnitOfWork unitOfWork,
-        ILogger<PictureDeleteService<TOwner, TPicture>> logger)
+        ILogger<PictureDeleteService<TPicture>> logger)
     {
         _pictureRepository = pictureRepository;
         _pictureBaseValidator = pictureBaseValidator;

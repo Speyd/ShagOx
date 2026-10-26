@@ -18,7 +18,7 @@ public static class BasketQueryExtensions
             .Include(x => x.BasketItems)
                 .ThenInclude(x => x.AdvertisementVariant)
                     .ThenInclude(x => x.Advertisement)
-                        .ThenInclude(x => x.Seller)
+                        .ThenInclude(x => x.Owner)
 
             .Include(x => x.BasketItems)
                 .ThenInclude(x => x.AdvertisementVariant)

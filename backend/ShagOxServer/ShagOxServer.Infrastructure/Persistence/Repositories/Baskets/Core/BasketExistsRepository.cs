@@ -3,11 +3,11 @@ using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core;
 public class BasketExistsRepository
-    : ExistsRepository<Basket>,
+    : ExistsOwnerRepository<Basket>,
       IBasketExistsRepository
 {
     public BasketExistsRepository(
@@ -21,21 +21,7 @@ public class BasketExistsRepository
         CancellationToken cancellationToken = default)
     {
         return await _db.Baskets
-           .AnyAsync(c => c.UserId == userId,
+           .AnyAsync(c => c.OwnerId == userId,
             cancellationToken);
-    }
-
-    public async Task<bool> IsOwnerAsync(
-        long basketId,
-        long userId,
-        CancellationToken cancellationToken = default)
-    {
-        return await _db.Baskets
-            .AnyAsync(c =>
-                c.UserId == userId &&
-                c.Id == basketId,
-                cancellationToken
-            );
-
     }
 }

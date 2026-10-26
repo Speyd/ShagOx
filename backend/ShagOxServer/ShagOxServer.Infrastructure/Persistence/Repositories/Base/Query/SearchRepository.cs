@@ -16,6 +16,7 @@ public class SearchRepository<TEntity, TFilter>
     {
     }
 
+    
     public virtual async Task<PagedResult<TEntity>> SearchAsync(
         TFilter filter,
         PaginationParams pagination,

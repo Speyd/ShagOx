@@ -1,11 +1,9 @@
+using ShagOxServer.Domain.Base.Owner;
+
 namespace ShagOxServer.Domain.Base.Pictures;
-public abstract class BasePicture<TOwner>
-    : BaseEntity
-    where TOwner : BaseEntity
+public abstract class BasePicture
+    : OwnedEntity
 {
     public string Url { get; set; } = "";
     public string PublicId { get; set; } = "";
-
-    public long OwnerId { get; set; }
-    public TOwner Owner { get; set; } = null!;
 }

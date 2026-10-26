@@ -7,4 +7,9 @@ public sealed record ReviewCommentSearchFilter
     DateTime? CreatedAt,
     DateTime? UpdatedAt,
     int? Grade
-) : BaseFilter();
+) : CommentSearchFilter(
+    CommentableEntityId,
+    OwnerId,
+    Text,
+    CreatedAt,
+    UpdatedAt);

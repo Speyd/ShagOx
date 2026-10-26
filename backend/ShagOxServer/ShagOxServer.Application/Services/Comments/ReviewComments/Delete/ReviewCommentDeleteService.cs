@@ -5,7 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
-using ShagOxServer.Application.Services.Comments.ReviewComments.Mapping;
+using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -69,7 +69,7 @@ public class ReviewCommentDeleteService
         }
 
         await _commInvalid.InvalidateDeleteAsync(
-            ReviewCommentCacheMapper.ToInfo(comment.Value!));
+            CommentCacheMapper.ToInfo(comment.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

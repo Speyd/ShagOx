@@ -11,12 +11,4 @@ public static class AdvertisementImageQueryExtensions
         return query
            .Include(x => x.Owner);
     }
-
-    public static IQueryable<PictureCacheInfo> SelectCacheInfo(
-        this IQueryable<AdvertisementImage> query)
-    {
-        return query.Select(x => new PictureCacheInfo(
-            x.Id,
-            x.OwnerId));
-    }
 }

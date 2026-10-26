@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
@@ -9,8 +10,10 @@ public class AdvertisementImageValidator
 {
     public AdvertisementImageValidator(
         IQueryRepository<AdvertisementImage> imageRepository,
-        IExistsRepository<AdvertisementImage> imageExistsRepository
-    ) : base(imageRepository, imageExistsRepository)
+        IExistsRepository<AdvertisementImage> imageExistsRepository,
+        IDataCacheService cache
+    ) 
+        : base(imageRepository, imageExistsRepository, cache)
     {
     }
 }

@@ -17,7 +17,7 @@ public abstract class PictureCreateService<TOwner, TPicture, TRequest>
     : IPictureCreateService<TPicture, TRequest>,
     IPictureCache<TPicture>
     where TOwner : BaseEntity
-    where TPicture : BasePicture<TOwner>
+    where TPicture : BasePicture
     where TRequest : PictureCreateRequest
 {
     protected readonly IRepository<TPicture> _pictureRepository;

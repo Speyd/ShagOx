@@ -53,7 +53,7 @@ public partial class BasketItemQueryRepository
     {
         return await _db.BasketItems
             .WithIncludes()
-            .Where(x => x.Basket.UserId == userId)
+            .Where(x => x.Basket.OwnerId == userId)
             .ToPagedResultAsync(pagination,
                 (x => x.Id),
                 cancellationToken);

@@ -1,6 +1,6 @@
-using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
@@ -11,8 +11,12 @@ public class CategoryTranslationValidator
 {
     public CategoryTranslationValidator(
         IQueryRepository<CategoryTranslation> categoryRepository,
-        ICategoryTranslationExistsRepository categoryExistsRepository
-    ) : base(categoryRepository, categoryExistsRepository)
+        ICategoryTranslationExistsRepository categoryExistsRepository,
+        IDataCacheService cache
+    ) 
+        : base(categoryRepository, 
+        categoryExistsRepository, 
+        cache)
     {
     }
 }

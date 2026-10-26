@@ -105,12 +105,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
-                    b.Property<uint>("xmin")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
@@ -178,11 +172,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("Popularity")
                         .HasColumnType("integer");
-
-                    b.Property<long>("SellerId")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("SoldAt")
                         .HasColumnType("timestamp with time zone");
@@ -207,9 +201,9 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("CurrencyId");
 
-                    b.HasIndex("Popularity");
+                    b.HasIndex("OwnerId");
 
-                    b.HasIndex("SellerId");
+                    b.HasIndex("Popularity");
 
                     b.HasIndex("StatusId");
 
@@ -217,7 +211,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId", "Popularity");
 
-                    b.HasIndex("SellerId", "CreatedAt");
+                    b.HasIndex("OwnerId", "CreatedAt");
 
                     b.HasIndex("CategoryId", "ConditionId", "CreatedAt");
 
@@ -347,12 +341,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("UserId")
+                    b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex("OwnerId")
                         .IsUnique();
 
                     b.ToTable("Baskets");
@@ -1194,9 +1188,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Seller")
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
                         .WithMany("SoldAdvertisements")
-                        .HasForeignKey("SellerId")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1214,7 +1208,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Navigation("Currency");
 
-                    b.Navigation("Seller");
+                    b.Navigation("Owner");
 
                     b.Navigation("Status");
                 });
@@ -1262,13 +1256,13 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.Basket", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "User")
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
                         .WithOne("Basket")
-                        .HasForeignKey("ShagOxServer.Domain.Entities.Baskets.Basket", "UserId")
+                        .HasForeignKey("ShagOxServer.Domain.Entities.Baskets.Basket", "OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketAttribute", b =>

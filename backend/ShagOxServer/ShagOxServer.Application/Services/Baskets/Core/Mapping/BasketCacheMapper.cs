@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
+using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.Core.Mapping;
@@ -9,7 +9,7 @@ public static class BasketCacheMapper
     {
         return new BasketCacheInfo(
             item.Id,
-            item.UserId
+            item.OwnerId
         );
     }
 }

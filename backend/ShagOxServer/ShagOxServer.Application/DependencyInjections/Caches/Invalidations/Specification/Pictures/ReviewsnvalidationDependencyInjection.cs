@@ -9,6 +9,8 @@ public static class ReviewsnvalidationDependencyInjection
     {
         services.AddScoped<ReviewImageInvalidationService>();
 
+        services.AddScoped<ReviewRepliImageInvalidationService>();
+
 
         return services;
     }

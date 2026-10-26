@@ -10,4 +10,8 @@ public partial interface IUserQueryRepository
     Task<List<UserCacheInfo>> GetCacheInfosByCityAsync(
         long cityId,
         CancellationToken cancellationToken = default);
+
+    Task<UserCacheInfo?> GetCacheInfoByIdAsync(
+        long id,
+        CancellationToken cancellationToken = default);
 }

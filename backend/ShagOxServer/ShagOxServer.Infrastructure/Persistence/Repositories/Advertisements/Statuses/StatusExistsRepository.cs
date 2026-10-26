@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses;
 public class StatusExistsRepository

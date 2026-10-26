@@ -1,11 +1,15 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
+using ShagOxServer.Application.DTOs.Comments.Core.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
+using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
+using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
@@ -21,6 +25,12 @@ public class UserInvalidationService
     private readonly IAvatarQueryRepository _avatarRepository;
     private readonly AvatarInvalidationService _avatarInvalid;
 
+    private readonly IReviewCommentQueryRepository _reviewRepository;
+    private readonly ReviewCommentInvalidationService _reviewInvalid;
+
+    private readonly IReviewRepliCommentQueryRepository _reviewRepliRepository;
+    private readonly ReviewRepliCommentInvalidationService _reviewRepliInvalid;
+
     private readonly IDataCacheService _cache;
 
 
@@ -29,12 +39,20 @@ public class UserInvalidationService
         AdvertisementInvalidationService advertInvalid,
         IAvatarQueryRepository avatarRepository,
         AvatarInvalidationService avatarInvalid,
+        IReviewCommentQueryRepository reviewRepository,
+        ReviewCommentInvalidationService reviewInvalid,
+        IReviewRepliCommentQueryRepository reviewRepliRepository,
+        ReviewRepliCommentInvalidationService reviewRepliInvalid,
         IDataCacheService cache)
     {
         _advertRepository = advertRepository;
         _advertInvalid = advertInvalid;
         _avatarRepository = avatarRepository;
         _avatarInvalid = avatarInvalid;
+        _reviewRepository = reviewRepository;
+        _reviewInvalid = reviewInvalid;
+        _reviewRepliRepository = reviewRepliRepository;
+        _reviewRepliInvalid = reviewRepliInvalid;
         _cache = cache;
     }
 
@@ -66,6 +84,26 @@ public class UserInvalidationService
         {
             await _avatarInvalid
                 .InvalidateDeleteAsync(avatarInfo);
+        }
+
+
+        var reviewInfos = await GetReviewInfos(
+            entityInfo.Id);
+
+        foreach (var reviewInfo in reviewInfos)
+        {
+            await _reviewInvalid
+                .InvalidateDeleteAsync(reviewInfo);
+        }
+
+
+        var reviewRepliInfos = await GetReviewRepliInfos(
+            entityInfo.Id);
+
+        foreach (var reviewRepliInfo in reviewRepliInfos)
+        {
+            await _reviewRepliInvalid
+                .InvalidateDeleteAsync(reviewRepliInfo);
         }
     }
 
@@ -135,6 +173,20 @@ public class UserInvalidationService
         long entityId)
     {
         return await _avatarRepository
-            .GetCacheInfoByUserIdAsync(entityId);
+            .GetCacheInfoByOwnerAsync(entityId);
+    }
+
+    private async Task<List<CommentCacheInfo>> GetReviewInfos(
+        long entityId)
+    {
+        return await _reviewRepository
+            .GetCacheInfosByOwnerAsync(entityId);
+    }
+
+    private async Task<List<CommentCacheInfo>> GetReviewRepliInfos(
+        long entityId)
+    {
+        return await _reviewRepliRepository
+            .GetCacheInfosByOwnerAsync(entityId);
     }
 }

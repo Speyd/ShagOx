@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.Core.Update;
+using ShagOxServer.Application.DTOs.Baskets.Core.Update;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.Core.Update;
@@ -10,9 +10,9 @@ public static class BasketUpdater
     {
         int countUpdated = 0;
 
-        if (request.UserId.HasValue)
+        if (request.OwnerId.HasValue)
         {
-            basket.UserId = request.UserId.Value;
+            basket.OwnerId = request.OwnerId.Value;
 
             countUpdated++;
         }

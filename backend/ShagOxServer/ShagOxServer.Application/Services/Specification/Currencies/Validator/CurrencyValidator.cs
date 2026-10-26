@@ -1,6 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Domain.Entities.Specification;
@@ -15,8 +16,10 @@ public class CurrencyValidator
 
     public CurrencyValidator(
         IQueryRepository<Currency> repository,
-        ICurrencyExistsRepository existsRepository
-    ) : base(repository, existsRepository)
+        ICurrencyExistsRepository existsRepository,
+        IDataCacheService cache
+    ) 
+        : base(repository, existsRepository, cache)
     {
         _existsRepository = existsRepository;
     }

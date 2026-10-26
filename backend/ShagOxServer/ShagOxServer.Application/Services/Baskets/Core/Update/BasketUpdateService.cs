@@ -113,18 +113,18 @@ public class BasketUpdateService
     private async Task<Result<bool>> ValidateUpdatesAsync(
         BasketUpdateRequest request)
     {
-        if (!request.UserId.HasValue)
+        if (!request.OwnerId.HasValue)
             return Result<bool>.Success(true);
 
         var userExists = await _userValidator
-                .ExistsByIdAsync(request.UserId.Value);
+            .ExistsByIdAsync(request.OwnerId.Value);
 
         if (!userExists.IsSuccess)
             return Result<bool>.Fail(userExists.Error);
 
 
         var basketUserExists = await _basketValidator
-            .NotExistsByUserAsync(request.UserId.Value);
+            .NotExistsByUserAsync(request.OwnerId.Value);
 
         if (!basketUserExists.IsSuccess)
             return Result<bool>.Fail(basketUserExists.Error);

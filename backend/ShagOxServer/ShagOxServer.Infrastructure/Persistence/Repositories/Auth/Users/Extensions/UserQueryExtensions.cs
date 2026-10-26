@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Domain.Entities.Account;
 
@@ -19,10 +19,17 @@ public static class UserQueryExtensions
     public static IQueryable<UserCacheInfo> SelectCacheInfo(
         this IQueryable<User> query)
     {
-        return query.Select(x => new UserCacheInfo(
+        return query.Select(
+            x => SelectCacheInfo(x));
+    }
+
+    public static UserCacheInfo SelectCacheInfo(
+        this User x)
+    {
+        return new UserCacheInfo(
             x.Id,
             x.Email,
             x.Phone,
-            x.UserName));
+            x.UserName);
     }
 }

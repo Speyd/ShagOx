@@ -21,7 +21,7 @@ public static class FavoriteQueryExtensions
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Currency)
             .Include(x => x.Advertisement)
-                .ThenInclude(a => a.Seller)
+                .ThenInclude(a => a.Owner)
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Buyer)
             .Include(x => x.Advertisement)

@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Conditions;
 public class ConditionExistsRepository

@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations.Query;

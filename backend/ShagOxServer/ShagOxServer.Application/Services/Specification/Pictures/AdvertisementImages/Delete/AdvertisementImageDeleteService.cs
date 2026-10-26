@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
@@ -15,21 +16,25 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Delete;
 public class AdvertisementImageDeleteService 
-    : PictureDeleteService<Advertisement, AdvertisementImage>,
+    : PictureDeleteService<AdvertisementImage>,
     IAdvertisementImageDeleteService
 {
-    private readonly ImageInvalidationService _imageInvalid;
+    private readonly AdvertisementImageInvalidationService _imageInvalid;
 
 
     public AdvertisementImageDeleteService(
         IRepository<AdvertisementImage> imageRepository,
         AdvertisementImageValidator imageValidator,
         PictureValidator pictureValidator,
-        ImageInvalidationService imageInvalid,
+        AdvertisementImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageDeleteService> logger
     )
-        : base(imageRepository, imageValidator, pictureValidator, unitOfWork, logger)
+        : base(imageRepository, 
+            imageValidator, 
+            pictureValidator, 
+            unitOfWork, 
+            logger)
     {
         _imageInvalid = imageInvalid;
     }
@@ -69,6 +74,6 @@ public class AdvertisementImageDeleteService
         AdvertisementImage image)
     {
         await _imageInvalid.InvalidateDeleteAsync(
-            AdvertisementImageCacheMapper.ToInfo(image));
+            PictureCacheMapper.ToInfo(image));
     }
 }

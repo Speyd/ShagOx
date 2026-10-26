@@ -25,7 +25,7 @@ public static class AdvertisementMapper
             status,
             CurrencyMapper.ToDto(x.Currency),
             category,
-            UserShortMapper.ToDto(x.Seller),
+            UserShortMapper.ToDto(x.Owner),
             (x.Buyer is not null ? UserShortMapper.ToDto(x.Buyer) : null),
             x.Pictures
                 .OrderBy(i => i.Order)

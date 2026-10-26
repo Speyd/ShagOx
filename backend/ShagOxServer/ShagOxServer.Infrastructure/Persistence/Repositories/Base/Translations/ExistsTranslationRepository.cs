@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations;
 public class ExistsTranslationRepository<TEntity, TTranslation> 
     : ExistsRepository<TTranslation>, 

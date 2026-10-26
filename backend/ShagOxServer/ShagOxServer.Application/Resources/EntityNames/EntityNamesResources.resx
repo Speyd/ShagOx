@@ -210,4 +210,10 @@
   <data name="ReviewComment" xml:space="preserve">
     <value>Review сomment</value>
   </data>
+  <data name="ReviewRepliComment" xml:space="preserve">
+    <value>Review reply</value>
+  </data>
+  <data name="ReviewRepliImage" xml:space="preserve">
+    <value>Review repli image</value>
+  </data>
 </root>

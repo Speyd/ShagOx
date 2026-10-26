@@ -1,5 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Core;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Core.Multiple;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Review;
 

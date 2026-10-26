@@ -1,12 +1,13 @@
-using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Filters.Comments;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Comments.Core.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Comments.ReviewComments.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Comments.ReviewComments.Query;
 public partial class ReviewCommentQueryRepository
-    : SearchRepository<ReviewComment, ReviewCommentSearchFilter>,
+    : CommentQueryRepository<ReviewComment, 
+        ReviewCommentSearchFilter>,
       IReviewCommentQueryRepository
 {
     protected override IQueryable<ReviewComment> ApplyIncludes(

@@ -1,6 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Translations;
@@ -12,8 +13,12 @@ public class ConditionTranslationValidator
 {
     public ConditionTranslationValidator(
         IQueryRepository<ConditionTranslation> conditionRepository,
-        IConditionTranslationExistsRepository conditionExistsRepository
-    ) : base(conditionRepository, conditionExistsRepository)
+        IConditionTranslationExistsRepository conditionExistsRepository,
+        IDataCacheService cache
+    ) 
+        : base(conditionRepository, 
+        conditionExistsRepository,
+        cache)
     {
     }
 }

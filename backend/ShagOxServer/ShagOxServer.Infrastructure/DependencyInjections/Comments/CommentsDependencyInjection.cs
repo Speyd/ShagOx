@@ -8,6 +8,9 @@ public static class CommentsDependencyInjection
     {
         services.AddReviewCommentInfrastructure();
 
+        services.AddReviewRepliCommentInfrastructure();
+
+
         return services;
     }
 }

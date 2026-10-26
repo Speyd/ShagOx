@@ -9,6 +9,8 @@ public static class CommentsInvalidationDependencyInjection
     {
         services.AddReviewCommentInvalidationApplication();
 
+        services.AddReviewRepliCommentInvalidationApplication();
+
 
         return services;
     }

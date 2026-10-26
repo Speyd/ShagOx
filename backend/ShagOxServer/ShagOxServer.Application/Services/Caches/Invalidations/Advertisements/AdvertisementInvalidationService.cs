@@ -1,12 +1,12 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
-using ShagOxServer.Application.DTOs.Comments.ReviewComments.Cache;
+using ShagOxServer.Application.DTOs.Comments.Core.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
@@ -32,7 +32,7 @@ public class AdvertisementInvalidationService
     private readonly BasketItemBasketInvalidationService _basketInvalid;
 
     private readonly IAdvertisementImageQueryRepository _imageRepository;
-    private readonly ImageInvalidationService _imageInvalid;
+    private readonly AdvertisementImageInvalidationService _imageInvalid;
 
     private readonly IReviewCommentQueryRepository _commentRepository;
     private readonly ReviewCommentInvalidationService _commentInvalid;
@@ -49,7 +49,7 @@ public class AdvertisementInvalidationService
         BasketItemInvalidationService basketItemInvalid,
         BasketItemBasketInvalidationService basketInvalid,
         IAdvertisementImageQueryRepository imageRepository,
-        ImageInvalidationService imageInvalid,
+        AdvertisementImageInvalidationService imageInvalid,
         IReviewCommentQueryRepository commentRepository,
         ReviewCommentInvalidationService commentInvalid,
         IDataCacheService cache)
@@ -192,10 +192,10 @@ public class AdvertisementInvalidationService
             .GetCacheInfosByOwnerAsync(entityId);
     }
 
-    private async Task<List<ReviewCommentCacheInfo>> GetCommentInfos(
+    private async Task<List<CommentCacheInfo>> GetCommentInfos(
         long entityId)
     {
         return await _commentRepository
-            .GetCacheInfoByCommentableAsync(entityId);
+            .GetCacheInfosByCommentableAsync(entityId);
     }
 }

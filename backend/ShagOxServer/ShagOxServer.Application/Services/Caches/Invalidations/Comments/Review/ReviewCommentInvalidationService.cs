@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Comments.Core.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Review.ReviewImages;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
@@ -15,16 +16,23 @@ public class ReviewCommentInvalidationService
     private readonly IReviewImageQueryRepository _imageRepository;
     private readonly ReviewImageInvalidationService _imageInvalid;
 
+    private readonly IReviewRepliCommentQueryRepository _repliRepository;
+    private readonly ReviewRepliCommentInvalidationService _repliInvalid;
+
     private readonly IDataCacheService _cache;
 
 
     public ReviewCommentInvalidationService(
         IReviewImageQueryRepository imageRepository,
         ReviewImageInvalidationService imageInvalid,
+        IReviewRepliCommentQueryRepository repliRepository,
+        ReviewRepliCommentInvalidationService repliInvalid,
         IDataCacheService cache)
     {
         _imageRepository = imageRepository;
         _imageInvalid = imageInvalid;
+        _repliRepository = repliRepository;
+        _repliInvalid = repliInvalid;
         _cache = cache;
     }
 
@@ -47,6 +55,16 @@ public class ReviewCommentInvalidationService
         {
             await _imageInvalid
                 .InvalidateDeleteAsync(imageInfo);
+        }
+
+
+        var repliInfos = await GetRepliInfos(
+            entityInfo.Id);
+
+        foreach (var repliInfo in repliInfos)
+        {
+            await _repliInvalid
+                .InvalidateDeleteAsync(repliInfo);
         }
     }
 
@@ -71,5 +89,12 @@ public class ReviewCommentInvalidationService
     {
         return await _imageRepository
             .GetCacheInfosByOwnerAsync(entityId);
+    }
+
+    private async Task<List<CommentCacheInfo>> GetRepliInfos(
+        long entityId)
+    {
+        return await _repliRepository
+            .GetCacheInfoByCommentableAsync(entityId);
     }
 }

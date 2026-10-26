@@ -4,6 +4,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
+using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -15,7 +17,7 @@ public class ReviewRepliCommentDeleteService
     private readonly IRepository<ReviewComment> _commentRepository;
     private readonly ReviewCommentValidator _commentValidator;
 
-    //private readonly ReviewCommentInvalidationService _commInvalid;
+    private readonly ReviewRepliCommentInvalidationService _commInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ReviewRepliCommentDeleteService> _logger;
@@ -24,13 +26,13 @@ public class ReviewRepliCommentDeleteService
     public ReviewRepliCommentDeleteService(
         IRepository<ReviewComment> commentRepository,
         ReviewCommentValidator commentValidator,
-        //ReviewCommentInvalidationService commInvalid,
+        ReviewRepliCommentInvalidationService commInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ReviewRepliCommentDeleteService> logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
-        //_commInvalid = commInvalid;
+        _commInvalid = commInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -66,8 +68,8 @@ public class ReviewRepliCommentDeleteService
                 .Fail(EntityErrorResources.ReviewRepliCommentDeleteFailed);
         }
 
-        //await _commInvalid.InvalidateDeleteAsync(
-        //    CommentCacheMapper.ToInfo(comment.Value!));
+        await _commInvalid.InvalidateDeleteAsync(
+            CommentCacheMapper.ToInfo(comment.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

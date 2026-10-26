@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
@@ -22,13 +23,13 @@ public partial class ReviewRepliImageCreateService
         PictureOrderCreateRequest>,
     IReviewRepliImageCreateService
 {
-    //private protected ReviewImageInvalidationService _imageInvalidation;
+    private protected ReviewRepliImageInvalidationService _imageInvalidation;
 
     public ReviewRepliImageCreateService(
         IRepository<ReviewRepliImage> imageRepository,
         PictureValidator pictureValidator,
         ReviewRepliCommentValidator commentValidator,
-        //ReviewImageInvalidationService imageInvalidation,
+        ReviewRepliImageInvalidationService imageInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<ReviewRepliImageCreateService> logger
     )
@@ -38,7 +39,7 @@ public partial class ReviewRepliImageCreateService
             unitOfWork,
             logger)
     {
-       // _imageInvalidation = imageInvalidation;
+        _imageInvalidation = imageInvalidation;
     }
 
 
@@ -107,7 +108,7 @@ public partial class ReviewRepliImageCreateService
     public override async Task InvalidateCache(
         ReviewRepliImage picture)
     {
-        //await _imageInvalidation.InvalidateCreateAsync(
-        //    PictureCacheMapper.ToInfo(picture));
+        await _imageInvalidation.InvalidateCreateAsync(
+            PictureCacheMapper.ToInfo(picture));
     }
 }

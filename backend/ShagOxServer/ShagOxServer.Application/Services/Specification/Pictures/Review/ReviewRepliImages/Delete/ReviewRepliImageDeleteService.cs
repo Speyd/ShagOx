@@ -4,7 +4,9 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
@@ -15,14 +17,14 @@ public class ReviewRepliImageDeleteService
     : PictureDeleteService<ReviewRepliImage>,
     IReviewRepliImageDeleteService
 {
-    //private readonly ReviewImageInvalidationService _imageInvalid;
+    private readonly ReviewRepliImageInvalidationService _imageInvalid;
 
 
     public ReviewRepliImageDeleteService(
         IRepository<ReviewRepliImage> imageRepository,
         ReviewRepliImageValidator imageValidator,
         PictureValidator pictureValidator,
-        //ReviewImageInvalidationService imageInvalid,
+        ReviewRepliImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ReviewRepliImageDeleteService> logger
     )
@@ -32,7 +34,7 @@ public class ReviewRepliImageDeleteService
             unitOfWork,
             logger)
     {
-        //_imageInvalid = imageInvalid;
+        _imageInvalid = imageInvalid;
     }
 
 
@@ -69,7 +71,7 @@ public class ReviewRepliImageDeleteService
     public override async Task InvalidateCache(
         ReviewRepliImage picture)
     {
-       // await _imageInvalid.InvalidateDeleteAsync(
-           //PictureCacheMapper.ToInfo(picture));
+        await _imageInvalid.InvalidateDeleteAsync(
+           PictureCacheMapper.ToInfo(picture));
     }
 }

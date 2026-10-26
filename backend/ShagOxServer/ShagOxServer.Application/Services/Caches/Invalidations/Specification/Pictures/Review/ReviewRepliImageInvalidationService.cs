@@ -2,6 +2,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 
@@ -12,15 +13,17 @@ public class ReviewRepliImageInvalidationService
 {
     private readonly IDataCacheService _cache;
     private readonly IReviewRepliCommentQueryRepository _ownerRepository;
-    //private readonly ReviewRepliCommentInvalidationService _ownerInvalid;
+    private readonly ReviewRepliCommentInvalidationService _ownerInvalid;
 
 
     public ReviewRepliImageInvalidationService(
         IDataCacheService cache,
-        IReviewRepliCommentQueryRepository ownerRepository)
+        IReviewRepliCommentQueryRepository ownerRepository,
+        ReviewRepliCommentInvalidationService ownerInvalid)
     {
         _cache = cache;
         _ownerRepository = ownerRepository;
+        _ownerInvalid = ownerInvalid;
     }
 
 
@@ -60,7 +63,7 @@ public class ReviewRepliImageInvalidationService
         if (info is null)
             return;
 
-        // await _ownerInvalid
-        //.InvalidateUpdateAsync(info);
+        await _ownerInvalid
+            .InvalidateUpdateAsync(info);
     }
 }

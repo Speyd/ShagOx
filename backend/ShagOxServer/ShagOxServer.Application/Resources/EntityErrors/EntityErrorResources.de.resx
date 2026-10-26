@@ -405,4 +405,13 @@
   <data name="ReviewRepliCommentUpdateFailed" xml:space="preserve">
     <value>Antwort auf die Bewertung konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="ReviewRepliImageCreateFailed" xml:space="preserve">
+    <value>Bild der Antwort auf eine Bewertung konnte nicht erstellt werden.</value>
+  </data>
+  <data name="ReviewRepliImageDeleteFailed" xml:space="preserve">
+    <value>Bild der Antwort auf eine Bewertung konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="ReviewRepliImageUpdateFailed" xml:space="preserve">
+    <value>Bild der Antwort auf eine Bewertung konnte nicht aktualisiert werden.</value>
+  </data>
 </root>

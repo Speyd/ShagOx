@@ -213,4 +213,7 @@
   <data name="ReviewRepliComment" xml:space="preserve">
     <value>Antwort auf eine Bewertung</value>
   </data>
+  <data name="ReviewRepliImage" xml:space="preserve">
+    <value>Bild der Antwort auf eine Bewertung</value>
+  </data>
 </root>

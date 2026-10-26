@@ -405,4 +405,13 @@
   <data name="ReviewRepliCommentUpdateFailed" xml:space="preserve">
     <value>Failed to update review repli.</value>
   </data>
+  <data name="ReviewRepliImageCreateFailed" xml:space="preserve">
+    <value>Failed to create review repli image.</value>
+  </data>
+  <data name="ReviewRepliImageDeleteFailed" xml:space="preserve">
+    <value>Failed to delete review repli image.</value>
+  </data>
+  <data name="ReviewRepliImageUpdateFailed" xml:space="preserve">
+    <value>Failed to update review repli image.</value>
+  </data>
 </root>

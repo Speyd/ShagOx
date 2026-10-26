@@ -1,6 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Query;
+using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Query;
+using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Validator;
+using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 
 namespace ShagOxServer.Application.DependencyInjections.Specification.Pictures.Review;
 public static class ReviewRepliImageDependencyInjection
@@ -11,8 +17,8 @@ public static class ReviewRepliImageDependencyInjection
         services.AddScoped<IReviewRepliImageQueryService,
             ReviewRepliImageQueryService>();
 
-        //services.AddScoped<IReviewImageCreateService,
-        //    ReviewImageCreateService>();
+        services.AddScoped<IReviewRepliImageCreateService,
+            ReviewRepliImageCreateService>();
 
         //services.AddScoped<IReviewImageUpdateService,
         //    ReviewImageUpdateService>();
@@ -30,14 +36,14 @@ public static class ReviewRepliImageDependencyInjection
         //        PictureOrderUpdateRequest>,
         //    ReviewImageUpdateService>();
 
-        //services.AddScoped<
-        //    IPictureOrderCreateService<
-        //        ReviewImage,
-        //        PictureOrderCreateRequest>,
-        //    ReviewImageCreateService>();
+        services.AddScoped<
+            IPictureOrderCreateService<
+                ReviewRepliImage,
+                PictureOrderCreateRequest>,
+           ReviewRepliImageCreateService>();
 
 
-        //services.AddScoped<ReviewImageValidator>();
+        services.AddScoped<ReviewRepliImageValidator>();
 
         return services;
     }

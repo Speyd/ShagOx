@@ -1,0 +1,40 @@
+.catalogFilters {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.filterK {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.legend {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.optionBtn {
+  background-color: #f1f3f5;
+  color: #000;
+  border: 1px solid transparent;
+}
+
+.optionBtnSelected {
+  background-color: #228be6;
+  color: #ffffff;
+  border-color: #228be6;
+}

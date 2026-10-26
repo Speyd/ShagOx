@@ -1,59 +1,130 @@
-import type { AdvertisementFormData } from "@/features/advertisement/advertisement-form/model/schemas/schema";
-import type { AdvertisementDto } from "@/features/advertisement/advertisement-form/model/types";
-import AdvertisementForm from "@/features/advertisement/advertisement-form/ui/AdvertisementForm";
-import { useCreateAdvertisement } from "@/features/advertisement/create-advertisement/model/hooks/useCreateAdvertisement";
-import type { ImageItem } from "@/shared/lib/types/image";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { Button } from "@mantine/core";
+import Container from "@/shared/ui/container";
+import {
+  CreateAdvertisementForm,
+  useCreateAdvertisement,
+} from "@/features/advertisement/create-advertisement";
+import type { CreateAdvertisementSchema } from "@/features/advertisement/create-advertisement/model/schemas/createAdvertisementSchema";
+import type { ImageFileItem } from "@/features/advertisement/create-advertisement/model/types";
 import styles from "./CreateAdvertisementPage.module.css";
-
 
 export default function CreateAdvertisementPage() {
   const navigate = useNavigate();
-  const mutation = useCreateAdvertisement();
+  const { mutateAsync, isPending } = useCreateAdvertisement();
 
-  async function handleCreate(
-    data: AdvertisementFormData,
-    images: ImageItem[],
-  ) {
-    const validFiles = images
-      .map((x) => x.file)
-      .filter((file): file is File => file instanceof File);
+  const handleSubmit = async (
+    data: CreateAdvertisementSchema,
+    images: ImageFileItem[],
+  ) => {
+    const categoryId = Number(data.categoryId);
+    const conditionId = Number(data.conditionId);
 
-    const dto: AdvertisementDto = {
-      title: data.title,
-      description: data.description,
+    if (isNaN(categoryId) || isNaN(conditionId)) {
+      toast.error("Оберіть категорію та стан товару");
+      return;
+    }
+
+    // Build attributes object, merge brand/tags into it if provided
+    const attributes: Record<string, unknown> = {
+      ...data.attributes,
+    };
+    if (data.brand.trim()) {
+      attributes["brand"] = data.brand.trim();
+    }
+    if (data.tags.trim()) {
+      attributes["tags"] = data.tags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+    }
+    if (data.hashtags.length > 0) {
+      attributes["hashtags"] = data.hashtags;
+    }
+
+    // Variant attributes (e.g. color, storage size)
+    const variantAttributes: Record<string, unknown> = {
+      ...data.variantAttributes,
+    };
+
+    const payload = {
+      title: data.title.trim(),
+      description: data.description.trim(),
       popularity: 0,
-      currencyId: 0,
-      categoryId: 1,
-      conditionId: 0,
-      images: validFiles,
-      attributes: {},
+      currencyId: 1, // UAH by default
+      conditionId,
+      categoryId,
+      statusId: 0, // ACTIVE
+      pictures: images.map((img) => img.file),
+      attributes,
       variants: [
         {
-          price: data.price,
-          previousPrice: data.price,
-          stock: 1,
-          attributes: {},
+          advertisementId: 0, // placeholder, assigned by backend
+          price: Number(data.price),
+          previousPrice: Number(data.price),
+          stock: Number(data.stock),
+          attributes: variantAttributes,
         },
       ],
     };
 
-    const advertisement = await mutation.mutateAsync(dto);
+    try {
+      const result = await mutateAsync(payload);
+      navigate(`/advertisement/${result.id}`);
+    } catch {
+      // Error toast is handled in the mutation hook
+    }
+  };
 
-    navigate(`/advertisement/${advertisement.id}`);
-  }
+  const handleCancel = () => {
+    navigate(-1);
+  };
 
   return (
-    <div className={styles.createAdvertisementPage}>
-      <div className={styles.title}>
-        <h2>Створення оголошення</h2>
-        <p>Заповніть форму та завантажте фотографії.</p>
-      </div>
+    <div className={styles.page}>
+      <Container>
+        <div className={styles.topBar}>
+          <div />
+          <div className={styles.topBarActions}>
+            <Button
+              variant="default"
+              size="md"
+              onClick={handleCancel}
+              disabled={isPending}
+            >
+              Скасувати
+            </Button>
+            <Button
+              variant="filled"
+              size="md"
+              type="submit"
+              form="create-advertisement-form"
+              loading={isPending}
+              bg="var(--color-base)"
+            >
+              Опублікувати товар
+            </Button>
+          </div>
+        </div>
 
-      <AdvertisementForm
-        onSubmit={handleCreate}
-        isLoading={mutation.isPending}
-      />
+        <div className={styles.headerCard}>
+          <h2 className={styles.pageTitle}>Додати товар</h2>
+          <p className={styles.pageSubtitle}>
+            Заповніть інформацію про товар та додайте фото
+          </p>
+        </div>
+        
+        <div className={styles.layout}>
+          <div className={styles.mainColumn}>
+            <CreateAdvertisementForm
+              formId="create-advertisement-form"
+              onSubmit={handleSubmit}
+              isLoading={isPending}
+            />
+          </div>
+        </div>
+      </Container>
     </div>
   );
 }

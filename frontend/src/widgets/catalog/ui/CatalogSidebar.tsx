@@ -8,16 +8,15 @@ export default function CatalogSidebar() {
   const { data: productTypes, isLoading: isLoadingTypes } =
     useGetProductTypes();
 
-  if (isLoadingTypes) return null;
-  if (!productTypes) return null;
+  if (isLoadingTypes || !productTypes) return null;
 
   return (
     <section className={styles.catalogSidebar}>
       <nav className={styles.navigation}>
-        {productTypes.map(({ id, lable: label }) => (
+        {productTypes.map(({ id, name, label }) => (
           <NavLink
             key={id}
-            to={`/catalog/${id}`}
+            to={`/catalog/${name}`}
             className={({ isActive }) =>
               clsx(styles.menuItem, {
                 [styles.menuItemActive]: isActive,

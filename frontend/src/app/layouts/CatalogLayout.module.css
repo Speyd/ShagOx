@@ -17,9 +17,3 @@
   gap: 32px;
 }
 
-.catalogContent {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 24px;
-  align-items: start;
-}

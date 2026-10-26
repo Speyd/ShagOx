@@ -13,8 +13,8 @@ import TrustGuarantees from "@/widgets/basket/basket-trust-guarantees";
 import BasketFreeShipping from "@/widgets/basket/basket-free-shipping";
 import { useDeleteBasketItem } from "@/features/basket/model/hooks/useDeleteBacketItem";
 import Container from "@/shared/ui/container";
-import BasketEmpty from "@/widgets/basket/basket-empty";
 import ConfirmModal from "@/shared/ui/confirm-modal";
+import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
 export default function BasketPage() {
   const navigate = useNavigate();
@@ -46,8 +46,7 @@ export default function BasketPage() {
   const selectedTotal = useMemo(
     () =>
       selectedItems.reduce(
-        (acc, item) =>
-          acc + getBasketItemPrice(item) * item.quantity,
+        (acc, item) => acc + getBasketItemPrice(item) * item.quantity,
         0,
       ),
     [selectedItems],
@@ -103,7 +102,10 @@ export default function BasketPage() {
       <Container>
         <div className={styles.content}>
           {items.length === 0 ? (
-            <BasketEmpty />
+            <EmptyState
+              label="Ваш кошик порожній"
+              description="Перейдіть до головної сторінки та скористайтеся пошуком або каталогом."
+            />
           ) : (
             <>
               <div className={styles.header}>

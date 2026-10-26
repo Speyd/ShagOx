@@ -46,6 +46,8 @@ import CatalogLayout from "../layouts/CatalogLayout";
 import { CatalogMainPage } from "@/pages/catalog/main-page";
 import { CatalogCategorySelectionPage } from "@/pages/catalog/category-selection-page";
 import { CategoryAdvertisementsPage } from "@/pages/catalog/advertisements-page";
+import CreateAdvertisementPage from "@/pages/advertisement/create-advertisement-page";
+import ComparisonPage from "@/pages/comparison";
 
 export default function Router() {
   return (
@@ -91,6 +93,14 @@ export default function Router() {
 
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
+
+          <Route
+            path="/create-advertisement"
+            element={<CreateAdvertisementPage />}
+          />
+
+          <Route path="/comparison" element={<ComparisonPage />} />
+
           <Route
             path="/profile"
             element={
@@ -117,11 +127,11 @@ export default function Router() {
           <Route path="/catalog" element={<CatalogLayout />}>
             <Route index element={<CatalogMainPage />} />
             <Route
-              path=":productTypeId"
+              path=":productTypeCode"
               element={<CatalogCategorySelectionPage />}
             />
             <Route
-              path="category/:categoryId"
+              path="category/:categoryCode"
               element={<CategoryAdvertisementsPage />}
             />
           </Route>

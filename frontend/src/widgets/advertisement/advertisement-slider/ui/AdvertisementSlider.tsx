@@ -51,6 +51,15 @@ export default function AdvertisementSlider({
         slideGap="md"
         withControls={false}
         className={styles.carousel}
+        styles={{
+          viewport: {
+            paddingTop: "10px",
+            paddingBottom: "10px",
+          },
+          container: {
+            alignItems: "stretch",
+          },
+        }}
       >
         {items.map((item) => (
           <Carousel.Slide key={item.id} className={styles.slide}>

@@ -95,6 +95,6 @@ public class ReviewCommentInvalidationService
         long entityId)
     {
         return await _repliRepository
-            .GetCacheInfoByCommentableAsync(entityId);
+            .GetCacheInfosByCommentableAsync(entityId);
     }
 }

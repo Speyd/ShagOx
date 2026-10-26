@@ -196,6 +196,6 @@ public class AdvertisementInvalidationService
         long entityId)
     {
         return await _commentRepository
-            .GetCacheInfoByCommentableAsync(entityId);
+            .GetCacheInfosByCommentableAsync(entityId);
     }
 }

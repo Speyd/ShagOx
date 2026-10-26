@@ -13,13 +13,24 @@ public partial class CommentQueryRepository<TEntity, TFilter>
     where TEntity : Comment
     where TFilter : BaseFilter
 {
-    public async Task<List<CommentCacheInfo>> GetCacheInfoByCommentableAsync(
+    public async Task<List<CommentCacheInfo>> GetCacheInfosByCommentableAsync(
         long commentableId,
         CancellationToken cancellationToken = default)
     {
         return await _db.Set<TEntity>()
             .Where(x =>
                 x.CommentableEntityId == commentableId)
+            .SelectCacheInfo()
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<CommentCacheInfo>> GetCacheInfosByOwnerAsync(
+        long ownerId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _db.Set<TEntity>()
+            .Where(x =>
+                x.OwnerId == ownerId)
             .SelectCacheInfo()
             .ToListAsync(cancellationToken);
     }

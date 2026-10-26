@@ -9,9 +9,13 @@ public partial interface ICommentQueryRepository<TEntity, TFilter>
     where TEntity : BaseEntity
     where TFilter : BaseFilter
 {
-    Task<List<CommentCacheInfo>> GetCacheInfoByCommentableAsync(
+    Task<List<CommentCacheInfo>> GetCacheInfosByCommentableAsync(
         long commentableId,
         CancellationToken cancellationToken = default);
+
+    Task<List<CommentCacheInfo>> GetCacheInfosByOwnerAsync(
+       long ownerId,
+       CancellationToken cancellationToken = default);
 
     Task<CommentCacheInfo?> GetCacheInfoByIdAsync(
         long id,

@@ -10,9 +10,10 @@ public class BasketConfiguration
         EntityTypeBuilder<Basket> builder)
     {
         builder.HasOne(x => x.Owner)
-               .WithOne(x => x.Basket)
-               .HasForeignKey<Basket>(x => x.OwnerId)
-               .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(x => x.Basket)
+            .HasForeignKey<Basket>(x => x.OwnerId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => x.OwnerId)
             .IsUnique();

@@ -210,4 +210,7 @@
   <data name="ReviewComment" xml:space="preserve">
     <value>Комментарий к отзыву</value>
   </data>
+  <data name="ReviewRepliComment" xml:space="preserve">
+    <value>Ответ на отзыв</value>
+  </data>
 </root>

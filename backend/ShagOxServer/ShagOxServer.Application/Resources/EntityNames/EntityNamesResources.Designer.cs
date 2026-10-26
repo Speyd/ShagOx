@@ -295,6 +295,15 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Review reply.
+        /// </summary>
+        public static string ReviewRepliComment {
+            get {
+                return ResourceManager.GetString("ReviewRepliComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Role.
         /// </summary>
         public static string Role {

@@ -396,4 +396,13 @@
   <data name="ReviewImageUploadFailed" xml:space="preserve">
     <value>Не вдалося завантажити зображення відгуку.</value>
   </data>
+  <data name="ReviewRepliCommentCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити відповідь на відгук.</value>
+  </data>
+  <data name="ReviewRepliCommentDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити відповідь на відгук.</value>
+  </data>
+  <data name="ReviewRepliCommentUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити відповідь на відгук.</value>
+  </data>
 </root>

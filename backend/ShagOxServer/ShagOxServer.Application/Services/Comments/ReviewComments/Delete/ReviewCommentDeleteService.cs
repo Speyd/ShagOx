@@ -6,7 +6,6 @@ using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Delet
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
-using ShagOxServer.Application.Services.Comments.ReviewComments.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Results;

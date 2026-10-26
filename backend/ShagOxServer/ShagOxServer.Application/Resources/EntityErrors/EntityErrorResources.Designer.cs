@@ -853,6 +853,33 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create review repli..
+        /// </summary>
+        internal static string ReviewRepliCommentCreateFailed {
+            get {
+                return ResourceManager.GetString("ReviewRepliCommentCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete review repli..
+        /// </summary>
+        internal static string ReviewRepliCommentDeleteFailed {
+            get {
+                return ResourceManager.GetString("ReviewRepliCommentDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update review repli..
+        /// </summary>
+        internal static string ReviewRepliCommentUpdateFailed {
+            get {
+                return ResourceManager.GetString("ReviewRepliCommentUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create role..
         /// </summary>
         internal static string RoleCreateFailed {

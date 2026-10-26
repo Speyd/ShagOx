@@ -1,9 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Create;
+using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Query;
 using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Create;
+using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Query;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
@@ -23,8 +25,8 @@ public static class ReviewRepliCommentDependencyInjections
         //services.AddScoped<IReviewCommentUpdateService,
         //    ReviewCommentUpdateService>();
 
-        //services.AddScoped<IReviewCommentDeleteService,
-        //    ReviewCommentDeleteService>();
+        services.AddScoped<IReviewRepliCommentDeleteService,
+            ReviewRepliCommentDeleteService>();
 
         services.AddScoped<ReviewRepliCommentValidator>();
 

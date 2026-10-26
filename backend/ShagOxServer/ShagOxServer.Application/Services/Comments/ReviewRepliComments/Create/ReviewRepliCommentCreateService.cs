@@ -93,11 +93,12 @@ public class ReviewRepliCommentCreateService
 
             _logger.LogError(
                 ex,
-                "Failed to create review comment. UserId: {UserId}",
+                "Failed to create review repli comment. " + 
+                "UserId: {UserId}",
                 ownerId);
 
             return Result<CreateResponse>
-                .Fail(EntityErrorResources.ReviewCommentCreateFailed);
+                .Fail(EntityErrorResources.ReviewRepliCommentCreateFailed);
         }
 
         //await _commInvalid.InvalidateCreateAsync(

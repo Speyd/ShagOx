@@ -7,8 +7,8 @@ export function useDeleteFavorite() {
 
   return useMutation({
     mutationFn: deleteFavorite,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ["favorites"],
       });
       toast.success("Оголошення видалено з обраного!");

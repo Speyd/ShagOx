@@ -18,8 +18,8 @@ export default function AdvertisementCard(
   const variantId = props.variants[0]?.id;
   const { handleAdd, isInBasket, isLoading } = useBasketAction(variantId);
   const imageUrl =
-    "images" in props
-      ? props.images?.[0]?.url || "/placeholder-image.png"
+    "pictures" in props
+      ? props.pictures?.[0]?.url || "/placeholder-image.png"
       : "/placeholder-image.png";
 
   return (
@@ -38,12 +38,12 @@ export default function AdvertisementCard(
           to={`/advertisement/${props.id}`}
           style={{ textDecoration: "none", color: "inherit" }}
         >
-          <Text fw={600} size="md" className={styles.title}>
+          <Text fw={600} fz={18} className={styles.title}>
             {props.title}
           </Text>
         </Link>
 
-        <Text c="dimmed" size="sm" className={styles.description}>
+        <Text c="dimmed" fz={14} className={styles.description}>
           {props.description}
         </Text>
 

@@ -40,13 +40,33 @@ export type CatalogParams = {
   maxPrice?: number;
   memory?: string[];
   colors?: string[];
+  attributes?: Record<string, unknown>;
+  variantAttributes?: Record<string, unknown>;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
 };
 
-export type CategoryItem = {
+export type ProductTypeItem = {
   id: number;
   name: string;
+  description: string;
+  label: string;
+};
+
+type ApiProductTypeItem = {
+  id: number;
+  name?: string;
+  code?: string;
+  description?: string;
+  label?: string;
+  lable?: string;
+};
+
+export type CategoryItem = {
+  id: number;
+  code: string;
+  productType: ProductTypeItem;
+  label: string;
 };
 
 type ApiCategoryItem = {
@@ -55,35 +75,52 @@ type ApiCategoryItem = {
   code?: string;
   label?: string;
   lable?: string;
+  productType?: ApiProductTypeItem;
 };
 
-export type ProductTypeItem = {
+export type AttributeDefinition = {
   id: number;
-  name: string;
-  description: string;
+  categoryId: number;
+  categoryCode: string;
+  key: string;
+  type: string;
+  dictionaryId: number | null;
+  required: boolean;
+  min: number | null;
+  max: number | null;
+  isVariant: boolean;
+  multiple: boolean;
   lable: string;
 };
 
-type ApiProductTypeItem = {
+export type AttributeDictionaryValue = {
   id: number;
-  name?: string;
-  description?: string;
-  lable?: string;
+  dictionaryId: number;
+  code: string;
+  value: string | null;
+  label: string | null;
 };
+
+export type AttributeFilterOption = {
+  key: string;
+  value: string;
+  isVariant: boolean;
+};
+
 export async function getCatalogAdvertisements(
   params: CatalogParams = {},
 ): Promise<PaginatedResponse<Advertisement>> {
   const search = params.search?.trim();
-  const categoryIds = params.categoryIds?.length
-    ? params.categoryIds
-    : undefined;
+  const categoryId = params.categoryId ?? params.categoryIds?.[0];
 
   const hasFilters =
     Boolean(search) ||
-    Boolean(categoryIds) ||
+    categoryId !== undefined ||
     params.inStock !== undefined ||
     params.minPrice !== undefined ||
-    params.maxPrice !== undefined;
+    params.maxPrice !== undefined ||
+    Object.keys(params.attributes ?? {}).length > 0 ||
+    Object.keys(params.variantAttributes ?? {}).length > 0;
 
   const endpoint = hasFilters ? "/advertisements/search" : "/advertisements";
 
@@ -91,16 +128,19 @@ export async function getCatalogAdvertisements(
     endpoint,
     {
       params: {
-        page: params.page ?? 1,
-        pageSize: params.pageSize ?? 20,
-        title: search || undefined,
-        categoryIds: categoryIds, // Якщо порожньо, буде undefined і не потрапить в URL
-        inStock: params.inStock,
-        minPrice: params.minPrice,
-        maxPrice: params.maxPrice,
-      },
-      paramsSerializer: {
-        indexes: null, // Дозволяє писати categoryIds=21 замість categoryIds[0]=21
+        Page: params.page ?? 1,
+        PageSize: params.pageSize ?? 20,
+        Title: search || undefined,
+        CategoryId: categoryId,
+        InStock: params.inStock,
+        MinPrice: params.minPrice,
+        MaxPrice: params.maxPrice,
+        Attributes: Object.keys(params.attributes ?? {}).length
+          ? JSON.stringify(params.attributes)
+          : undefined,
+        VariantAttributes: Object.keys(params.variantAttributes ?? {}).length
+          ? JSON.stringify(params.variantAttributes)
+          : undefined,
       },
     },
   );
@@ -111,11 +151,19 @@ export async function getCatalogAdvertisements(
   };
 }
 
-export async function getAdvertisements(): Promise<
-  PaginatedResponse<Advertisement>
-> {
-  const response =
-    await api.get<PaginatedResponse<ApiAdvertisement>>("/advertisements");
+export async function getAdvertisements(params?: {
+  page?: number;
+  pageSize?: number;
+}): Promise<PaginatedResponse<Advertisement>> {
+  const response = await api.get<PaginatedResponse<ApiAdvertisement>>(
+    "/advertisements",
+    {
+      params: {
+        Page: params?.page ?? 1,
+        PageSize: params?.pageSize ?? 20,
+      },
+    },
+  );
 
   return {
     ...response.data,
@@ -145,7 +193,8 @@ export async function getAdvertisement(id: number) {
 export async function getCategories(
   productTypeId?: number,
 ): Promise<CategoryItem[]> {
-  const endpoint = productTypeId ? "/categories/search" : "/categories";
+  const hasProductType = productTypeId != null;
+  const endpoint = hasProductType ? "/categories/search" : "/categories";
 
   const response = await api.get<PaginatedResponse<ApiCategoryItem>>(endpoint, {
     params: {
@@ -155,24 +204,88 @@ export async function getCategories(
     },
   });
 
-  return response.data.items.map((category: ApiCategoryItem) => ({
-    id: category.id,
-    name: category.lable ?? category.name ?? "",
-  }));
+  return response.data.items.map((category) => {
+    const categoryTitle =
+      category.label || category.lable || category.name || category.code || "";
+    const productTypeTitle =
+      category.productType?.label ||
+      category.productType?.lable ||
+      category.productType?.name ||
+      "";
+
+    return {
+      id: category.id,
+      code: category.code ?? category.name ?? "",
+      productType: {
+        id: category.productType?.id ?? 0,
+        name: category.productType?.code ?? category.productType?.name ?? "",
+        description: category.productType?.description ?? "",
+        label: productTypeTitle,
+      },
+      label: categoryTitle,
+    };
+  });
 }
 
 export async function getProductTypes(): Promise<ProductTypeItem[]> {
-  const response = await api.get<PaginatedResponse<ProductTypeItem>>(
+  const response = await api.get<PaginatedResponse<ApiProductTypeItem>>(
     "/product-types",
     {
       params: { page: 1, pageSize: 100 },
     },
   );
 
-  return response.data.items.map((productType: ApiProductTypeItem) => ({
-    id: productType.id,
-    name: productType.lable ?? "",
-    description: productType.description ?? "",
-    lable: productType.lable ?? "",
-  }));
+  return response.data.items.map((productType) => {
+    const title =
+      productType.label || productType.lable || productType.name || "";
+
+    return {
+      id: productType.id,
+      name: productType.code ?? productType.name ?? title,
+      description: productType.description ?? "",
+      label: title,
+    };
+  });
+}
+
+export async function getAttributeDefinitions(
+  categoryId: number,
+): Promise<AttributeDefinition[]> {
+  const response = await api.get<PaginatedResponse<AttributeDefinition>>(
+    "/attribute-definitions/search",
+    {
+      params: {
+        categoryId,
+        page: 1,
+        pageSize: 100,
+      },
+    },
+  );
+  return response.data.items;
+}
+
+export async function getAttributeDictionaryValues(
+  dictionaryId: number,
+): Promise<AttributeDictionaryValue[]> {
+  const response = await api.get<PaginatedResponse<AttributeDictionaryValue>>(
+    "/attribute-dictionary-values/search",
+    {
+      params: {
+        dictionaryId,
+        page: 1,
+        pageSize: 100,
+      },
+    },
+  );
+  return response.data.items;
+}
+
+export async function getCategoryAttributeFilterOptions(
+  categoryId: number,
+): Promise<AttributeFilterOption[]> {
+  const response = await api.get<AttributeFilterOption[]>(
+    "/advertisements/attribute-filter-options",
+    { params: { categoryId } },
+  );
+  return response.data;
 }

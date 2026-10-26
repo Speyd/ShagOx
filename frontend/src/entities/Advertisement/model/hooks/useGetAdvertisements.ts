@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAdvertisements } from "../../api/api";
 
-export function useGetAdvertisements() {
+export function useGetAdvertisements(params?: {
+  page?: number;
+  pageSize?: number;
+}) {
   return useQuery({
-    queryKey: ["advertisements"],
-    queryFn: () => getAdvertisements(),
+    queryKey: ["advertisements", params],
+    queryFn: () => getAdvertisements(params),
   });
 }

@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
@@ -68,7 +69,7 @@ public class AdvertisementImageUpdateService
         AdvertisementImage picture)
     {
         await _imageInvalid.InvalidateUpdateAsync(
-           AdvertisementImageCacheMapper.ToInfo(picture));
+           PictureCacheMapper.ToInfo(picture));
     }
 
     protected override int ApplyUpdates(

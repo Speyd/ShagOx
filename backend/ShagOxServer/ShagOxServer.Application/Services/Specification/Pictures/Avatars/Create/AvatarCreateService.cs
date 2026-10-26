@@ -8,8 +8,8 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatar
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
-using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -81,6 +81,6 @@ public partial class AvatarCreateService
         Avatar avatar)
     {
         await _avatarInvalidation.InvalidateCreateAsync(
-            AvatarCacheMapper.ToInfo(avatar));
+            PictureCacheMapper.ToInfo(avatar));
     }
 }

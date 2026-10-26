@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
@@ -73,6 +74,6 @@ public class AdvertisementImageDeleteService
         AdvertisementImage image)
     {
         await _imageInvalid.InvalidateDeleteAsync(
-            AdvertisementImageCacheMapper.ToInfo(image));
+            PictureCacheMapper.ToInfo(image));
     }
 }

@@ -6,8 +6,8 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -72,6 +72,6 @@ public class ReviewImageDeleteService
         ReviewImage picture)
     {
         await _imageInvalid.InvalidateDeleteAsync(
-            ReviewImageCacheMapper.ToInfo(picture));
+            PictureCacheMapper.ToInfo(picture));
     }
 }

@@ -6,7 +6,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Comments.ReviewRepliC
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Comments.ReviewRepliComments.Query;
 public partial class ReviewRepliCommentQueryRepository
-    : CommentQueryRepository<ReviewRepliComment, CommentSearchFilter>,
+    : CommentQueryRepository<ReviewRepliComment, 
+        ReviewRepliCommentSearchFilter>,
       IReviewRepliCommentQueryRepository
 {
     protected override IQueryable<ReviewRepliComment> ApplyIncludes(
@@ -17,7 +18,7 @@ public partial class ReviewRepliCommentQueryRepository
 
     public override IQueryable<ReviewRepliComment> ApplyFilter(
         IQueryable<ReviewRepliComment> query,
-        CommentSearchFilter filter)
+        ReviewRepliCommentSearchFilter filter)
     {
         return query.Filter(filter);
     }

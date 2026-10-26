@@ -15,11 +15,14 @@ public static class ReviewRepliCommentMapper
             comment.CommentableEntityId,
             comment.Text,
             comment.CreatedAt,
-            comment.UpdatedAt
-            //comment.Pictures
-            //    .OrderBy(i => i.Order)
-            //    .Select(ReviewImageMapper.ToDto)
-            //    .ToList()
+            comment.UpdatedAt,
+            comment.Replies
+                .Select(x => x.Id)
+                .ToList()
+        //comment.Pictures
+        //    .OrderBy(i => i.Order)
+        //    .Select(ReviewImageMapper.ToDto)
+        //    .ToList()
         );
     }
 }

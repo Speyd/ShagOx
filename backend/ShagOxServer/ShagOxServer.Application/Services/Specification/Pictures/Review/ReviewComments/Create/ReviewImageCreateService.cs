@@ -10,8 +10,8 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Mapping;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -109,6 +109,6 @@ public partial class ReviewImageCreateService
         ReviewImage picture)
     {
         await _imageInvalidation.InvalidateCreateAsync(
-            ReviewImageCacheMapper.ToInfo(picture));
+            PictureCacheMapper.ToInfo(picture));
     }
 }

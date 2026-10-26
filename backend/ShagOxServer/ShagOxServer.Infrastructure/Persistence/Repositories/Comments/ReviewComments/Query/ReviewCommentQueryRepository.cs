@@ -6,7 +6,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Comments.Core.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Comments.ReviewComments.Query;
 public partial class ReviewCommentQueryRepository
-    : CommentQueryRepository<ReviewComment, ReviewCommentSearchFilter>,
+    : CommentQueryRepository<ReviewComment,
+        ReviewCommentSearchFilter>,
       IReviewCommentQueryRepository
 {
     public ReviewCommentQueryRepository(

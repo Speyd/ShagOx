@@ -9,9 +9,9 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
@@ -66,7 +66,7 @@ public class ReviewImageUpdateService
         ReviewImage picture)
     {
         await _imageInvalid.InvalidateUpdateAsync(
-           ReviewImageCacheMapper.ToInfo(picture));
+           PictureCacheMapper.ToInfo(picture));
     }
 
     protected override int ApplyUpdates(

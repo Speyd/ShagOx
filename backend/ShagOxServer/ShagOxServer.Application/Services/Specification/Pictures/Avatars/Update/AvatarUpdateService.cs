@@ -11,6 +11,7 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Validator;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Account;
@@ -67,7 +68,7 @@ public class AvatarUpdateService
         Avatar picture)
     {
         await _avatarInvalid.InvalidateUpdateAsync(
-           AvatarCacheMapper.ToInfo(picture));
+           PictureCacheMapper.ToInfo(picture));
     }
 
     protected override int ApplyUpdates(

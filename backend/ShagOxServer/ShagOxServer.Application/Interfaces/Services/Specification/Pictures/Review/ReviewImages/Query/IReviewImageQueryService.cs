@@ -4,7 +4,6 @@ using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Review;
 
 namespace ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Query;
-
 public interface IReviewImageQueryService
     : IQueryService<ReviewImageDto,
         ReviewImage,

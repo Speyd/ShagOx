@@ -13,27 +13,7 @@ public static class ReviewDependencyInjection
     {
         services.AddReviewImageApplication();
 
-        //services.AddScoped<IAdvertisementImageCreateService,
-        //    AdvertisementImageCreateService>();
-
-        //services.AddScoped<IAdvertisementImageUpdateService,
-        //    AdvertisementImageUpdateService>();
-
-        //services.AddScoped<IAdvertisementImageDeleteService,
-        //    AdvertisementImageDeleteService>();
-
-        //services.AddScoped<
-        //    IPictureDeleteService<ReviewImage>,
-        //    AdvertisementImageDeleteService>();
-
-        //services.AddScoped<
-        //    IPictureOrderCreateService<
-        //        AdvertisementImage,
-        //        PictureOrderCreateRequest>,
-        //    AdvertisementImageCreateService>();
-
-
-        //services.AddScoped<AdvertisementImageValidator>();
+        services.AddReviewRepliImageApplication();
 
         return services;
     }

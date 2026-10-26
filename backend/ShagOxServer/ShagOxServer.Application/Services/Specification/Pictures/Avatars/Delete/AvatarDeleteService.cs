@@ -8,6 +8,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictu
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -72,6 +73,6 @@ public class AvatarDeleteService
         Avatar avatar)
     {
         await _avatarInvalid.InvalidateDeleteAsync(
-            AvatarCacheMapper.ToInfo(avatar));
+            PictureCacheMapper.ToInfo(avatar));
     }
 }

@@ -9,8 +9,9 @@ public sealed record ReviewRepliCommentDto
     long CommentableEntityId,
     string Text,
     DateTime CreatedAt,
-    DateTime? UpdatedAt
-    //List<ReviewRepliImageDto> Pictures
+    DateTime? UpdatedAt,
+    List<long> RepliComments
+//List<ReviewRepliImageDto> Pictures
 ) : CommentDto(Id,
     Owner,
     CommentableEntityId,

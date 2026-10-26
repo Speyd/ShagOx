@@ -11,6 +11,10 @@ public partial interface IAdvertisementQueryRepository
         long statusId,
         CancellationToken cancellationToken = default);
 
+    Task<AdvertisementCacheInfo?> GetCacheInfoByIdAsync(
+        long id,
+        CancellationToken cancellationToken = default);
+
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByUserAsync(
         long userId,
         CancellationToken cancellationToken = default);

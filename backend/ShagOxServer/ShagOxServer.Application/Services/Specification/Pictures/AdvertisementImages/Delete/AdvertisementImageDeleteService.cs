@@ -19,14 +19,14 @@ public class AdvertisementImageDeleteService
     : PictureDeleteService<AdvertisementImage>,
     IAdvertisementImageDeleteService
 {
-    private readonly ImageInvalidationService _imageInvalid;
+    private readonly AdvertisementImageInvalidationService _imageInvalid;
 
 
     public AdvertisementImageDeleteService(
         IRepository<AdvertisementImage> imageRepository,
         AdvertisementImageValidator imageValidator,
         PictureValidator pictureValidator,
-        ImageInvalidationService imageInvalid,
+        AdvertisementImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageDeleteService> logger
     )

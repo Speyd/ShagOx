@@ -12,4 +12,8 @@ public partial interface ICommentQueryRepository<TEntity, TFilter>
     Task<List<CommentCacheInfo>> GetCacheInfoByCommentableAsync(
         long commentableId,
         CancellationToken cancellationToken = default);
+
+    Task<CommentCacheInfo?> GetCacheInfoByIdAsync(
+        long id,
+        CancellationToken cancellationToken = default);
 }

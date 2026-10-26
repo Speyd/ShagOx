@@ -32,7 +32,7 @@ public class AdvertisementInvalidationService
     private readonly BasketItemBasketInvalidationService _basketInvalid;
 
     private readonly IAdvertisementImageQueryRepository _imageRepository;
-    private readonly ImageInvalidationService _imageInvalid;
+    private readonly AdvertisementImageInvalidationService _imageInvalid;
 
     private readonly IReviewCommentQueryRepository _commentRepository;
     private readonly ReviewCommentInvalidationService _commentInvalid;
@@ -49,7 +49,7 @@ public class AdvertisementInvalidationService
         BasketItemInvalidationService basketItemInvalid,
         BasketItemBasketInvalidationService basketInvalid,
         IAdvertisementImageQueryRepository imageRepository,
-        ImageInvalidationService imageInvalid,
+        AdvertisementImageInvalidationService imageInvalid,
         IReviewCommentQueryRepository commentRepository,
         ReviewCommentInvalidationService commentInvalid,
         IDataCacheService cache)

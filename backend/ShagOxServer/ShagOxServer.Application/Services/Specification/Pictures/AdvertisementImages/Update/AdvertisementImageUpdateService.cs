@@ -26,7 +26,7 @@ public class AdvertisementImageUpdateService
         PictureOrderUpdateRequest>,
     IAdvertisementImageUpdateService
 {
-    private readonly ImageInvalidationService _imageInvalid;
+    private readonly AdvertisementImageInvalidationService _imageInvalid;
 
 
     public AdvertisementImageUpdateService(
@@ -34,7 +34,7 @@ public class AdvertisementImageUpdateService
         PictureValidator pictureLoadValidator,
         AdvertisementImageValidator imageValidator,
         AdvertisementValidator advertisementValidator,
-        ImageInvalidationService imageInvalid,
+        AdvertisementImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageUpdateService> logger
     )

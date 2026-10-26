@@ -23,12 +23,19 @@ public static class AdvertisementQueryExtensions
     public static IQueryable<AdvertisementCacheInfo> SelectCacheInfo(
         this IQueryable<Advertisement> query)
     {
-        return query.Select(x => new AdvertisementCacheInfo(
+        return query.Select(
+            x => x.SelectCacheInfo());
+    }
+
+    public static AdvertisementCacheInfo SelectCacheInfo(
+        this Advertisement x)
+    {
+        return new AdvertisementCacheInfo(
             x.Id,
             x.OwnerId,
             x.BuyerId,
             x.Variants
                 .Select(v => v.Id)
-                .ToList()));
+                .ToList());
     }
 }

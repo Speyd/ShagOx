@@ -7,8 +7,15 @@ public static class CommentQueryExtensions
     public static IQueryable<CommentCacheInfo> SelectCacheInfo(
         this IQueryable<Comment> query)
     {
-        return query.Select(x => new CommentCacheInfo(
+        return query.Select(
+            x => x.SelectCacheInfo());
+    }
+
+    public static CommentCacheInfo SelectCacheInfo(
+        this Comment x)
+    {
+        return new CommentCacheInfo(
             x.Id,
-            x.CommentableEntityId));
+            x.CommentableEntityId);
     }
 }

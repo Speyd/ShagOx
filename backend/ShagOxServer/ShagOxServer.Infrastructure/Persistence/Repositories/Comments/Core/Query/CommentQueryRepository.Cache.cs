@@ -23,4 +23,14 @@ public partial class CommentQueryRepository<TEntity, TFilter>
             .SelectCacheInfo()
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<CommentCacheInfo?> GetCacheInfoByIdAsync(
+        long id,
+        CancellationToken cancellationToken = default)
+    {
+        var comment = await _db.Set<TEntity>()
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        return comment?.SelectCacheInfo();
+    }
 }

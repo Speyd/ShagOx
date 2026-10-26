@@ -24,13 +24,13 @@ public partial class AdvertisementImageCreateService
         PictureOrderCreateRequest>,
     IAdvertisementImageCreateService
 {
-    private protected ImageInvalidationService _imageInvalidation;
+    private protected AdvertisementImageInvalidationService _imageInvalidation;
 
     public AdvertisementImageCreateService(
         IRepository<AdvertisementImage> imageRepository,
         PictureValidator pictureValidator,
         AdvertisementValidator advertValidator,
-        ImageInvalidationService imageInvalidation,
+        AdvertisementImageInvalidationService imageInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageCreateService> logger
     )

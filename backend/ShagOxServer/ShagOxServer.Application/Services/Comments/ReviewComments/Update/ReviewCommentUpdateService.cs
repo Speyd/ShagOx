@@ -8,7 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Updat
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
-using ShagOxServer.Application.Services.Comments.ReviewComments.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.PictureOrdering;
 using ShagOxServer.Domain.Entities.Comments;

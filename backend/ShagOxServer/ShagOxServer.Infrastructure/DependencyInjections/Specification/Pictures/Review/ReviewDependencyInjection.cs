@@ -8,6 +8,9 @@ public static class ReviewDependencyInjection
     {
         services.AddReviewImageDependencyInfrastructure();
 
+        services.AddReviewRepliImageDependencyInfrastructure();
+
+
         return services;
     }
 }

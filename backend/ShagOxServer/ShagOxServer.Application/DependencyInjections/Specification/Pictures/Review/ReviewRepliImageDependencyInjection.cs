@@ -1,13 +1,17 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Query;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Query;
+using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 
@@ -23,8 +27,8 @@ public static class ReviewRepliImageDependencyInjection
         services.AddScoped<IReviewRepliImageCreateService,
             ReviewRepliImageCreateService>();
 
-        //services.AddScoped<IReviewImageUpdateService,
-        //    ReviewImageUpdateService>();
+        services.AddScoped<IReviewRepliImageUpdateService,
+            ReviewRepliImageUpdateService>();
 
         services.AddScoped<IReviewRepliImageDeleteService,
             ReviewRepliImageDeleteService>();
@@ -33,11 +37,11 @@ public static class ReviewRepliImageDependencyInjection
             IPictureDeleteService<ReviewRepliImage>,
             ReviewRepliImageDeleteService>();
 
-        //services.AddScoped<
-        //    IPictureUpdateService<
-        //        ReviewImage,
-        //        PictureOrderUpdateRequest>,
-        //    ReviewImageUpdateService>();
+        services.AddScoped<
+            IPictureUpdateService<
+                ReviewRepliImage,
+                PictureOrderUpdateRequest>,
+            ReviewRepliImageUpdateService>();
 
         services.AddScoped<
             IPictureOrderCreateService<

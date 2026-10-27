@@ -1,37 +1,26 @@
 import { api } from "@/shared/api/api";
 import type { Favorite, FavoriteCreateRequest } from "../model/types";
 import type { PaginatedResponse } from "@/shared/lib/types/paginatedResponse";
-import { getAdvertisement } from "@/entities/Advertisement/api/api";
+import { getAdvertisement } from "@/entities/advertisement/api/api";
 
-export async function getFavorites(): Promise<PaginatedResponse<Favorite>> {
-  const pageSize = 100;
-  const firstPage = await api.get<PaginatedResponse<Favorite>>("/favorites/me", {
-    params: { page: 1, pageSize },
+export async function getFavorites(
+  page = 1,
+  pageSize = 12,
+): Promise<PaginatedResponse<Favorite>> {
+  const response = await api.get<PaginatedResponse<Favorite>>("/favorites/me", {
+    params: { page, pageSize },
   });
-  const pages = [firstPage.data];
 
-  for (let page = 2; page <= firstPage.data.totalPages; page += 1) {
-    const response = await api.get<PaginatedResponse<Favorite>>(
-      "/favorites/me",
-      { params: { page, pageSize } },
-    );
-    pages.push(response.data);
-  }
-
-  const favorites = pages.flatMap((page) => page.items);
   const items = await Promise.all(
-    favorites.map(async (favorite) => ({
+    response.data.items.map(async (favorite) => ({
       ...favorite,
       advertisement: await getAdvertisement(favorite.advertisement.id),
     })),
   );
 
   return {
-    ...firstPage.data,
+    ...response.data,
     items,
-    page: 1,
-    pageSize: items.length,
-    totalPages: items.length === 0 ? 0 : 1,
   };
 }
 

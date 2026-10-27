@@ -1,10 +1,8 @@
 import styles from "./ProfileHeader.module.css";
-// 1. Додаємо Avatar в імпорт з Mantine
 import { Avatar, Button, Text } from "@mantine/core";
 import { Link, Mail, MapPin } from "lucide-react";
 import { useDisclosure } from "@mantine/hooks";
 import ProfileDrawer from "./ProfileDrawer";
-import ChannelDrawer from "./ChannelDrawer";
 import { useAuthStore } from "@/features/auth";
 
 type ProfileHeaderProps = {
@@ -16,13 +14,11 @@ export default function ProfileHeader({
 }: ProfileHeaderProps) {
   const user = useAuthStore((state) => state.user);
 
+  console.log(user);
+
   const [
     userProfileOpened,
     { open: openUserProfile, close: closeUserProfile },
-  ] = useDisclosure(false);
-  const [
-    userChannelOpened,
-    { open: openUserChannel, close: closeUserChannel },
   ] = useDisclosure(false);
 
   const displayName =
@@ -135,30 +131,18 @@ export default function ProfileHeader({
             )}
           </div>
 
-          <div className={styles.buttonsBlock}>
-            <Button
-              bg="var(--color-base)"
-              fz={15}
-              className={styles.editButton}
-              onClick={openUserProfile}
-            >
-              Редагувати профіль
-            </Button>
-            <Button
-              bg="white"
-              c="black"
-              fz={15}
-              className={styles.channelButton}
-              onClick={openUserChannel}
-            >
-              Налаштувати канал
-            </Button>
-          </div>
+          <Button
+            bg="var(--color-base)"
+            fz={15}
+            className={styles.editButton}
+            onClick={openUserProfile}
+          >
+            Редагувати профіль
+          </Button>
         </div>
       </div>
 
       <ProfileDrawer opened={userProfileOpened} close={closeUserProfile} />
-      <ChannelDrawer opened={userChannelOpened} close={closeUserChannel} />
     </section>
   );
 }

@@ -10,6 +10,7 @@ public static class CategoryQueryExtensions
     {
         return query
            .Include(x => x.ProductType)
+               .ThenInclude(x => x.Translations)
            .Include(x => x.Attributes)
            .Include(x => x.Advertisements);
     }

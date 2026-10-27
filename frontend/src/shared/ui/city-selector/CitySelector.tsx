@@ -76,21 +76,14 @@ export default function CitySelector() {
                 setCity(cityName);
                 setSearch("");
               }}
-              rightSection={
-                city === cityName ? <Check size={16} /> : null
-              }
+              rightSection={city === cityName ? <Check size={16} /> : null}
             >
               {cityName}
             </Menu.Item>
           ))}
 
           {filteredCities.length === 0 && (
-            <Text
-              size="sm"
-              c="dimmed"
-              ta="center"
-              py="md"
-            >
+            <Text size="sm" c="dimmed" ta="center" py="md">
               Місто не знайдено
             </Text>
           )}

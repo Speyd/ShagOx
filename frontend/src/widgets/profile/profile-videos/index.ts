@@ -1,1 +1,0 @@
-export { default as VideosTab } from './ui/VideosTab'

@@ -1,0 +1,19 @@
+.comparisonPage {
+  background-color: var(--bg-base);
+  flex: 1;
+  height: 100%;
+  padding: 40px 0;
+}
+
+.comparisonPageContent {
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.description {
+  color: var(--text-secondary);
+}

@@ -23,22 +23,28 @@ export default function FavoriteButton({
   const addMutation = useAddToFavorites();
   const deleteMutation = useDeleteFavorite();
 
-  const { data: favorites } = useGetFavorites();
+  const { data: favorites, isLoading: isFavoritesLoading } = useGetFavorites();
+
+  // Шукаємо, чи є оголошення в обраному (без useState!)
   const favorite = favorites?.items?.find(
     (x) => x.advertisement?.id === advertisementId,
   );
+  const isFavorite = Boolean(favorite);
 
-  const isPending = addMutation.isPending || deleteMutation.isPending;
+  const isPending =
+    isFavoritesLoading || addMutation.isPending || deleteMutation.isPending;
 
   function handleClick(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
+
     if (!user) {
       toast.error(
         "Ви повинні бути зареєстровані, щоб додавати оголошення в обране.",
       );
       return;
     }
+
     if (favorite) {
       deleteMutation.mutate(favorite.id);
     } else {
@@ -60,8 +66,8 @@ export default function FavoriteButton({
         <Heart
           size={18}
           strokeWidth={2}
-          fill={favorite ? "#ef4444" : "none"}
-          color={favorite ? "#ef4444" : "#475569"}
+          fill={isFavorite ? "#ef4444" : "none"}
+          color={isFavorite ? "#ef4444" : "#475569"}
         />
       </button>
     );
@@ -77,8 +83,8 @@ export default function FavoriteButton({
       <Heart
         size={24}
         strokeWidth={2}
-        fill={favorite ? "var(--color-base)" : "none"}
-        color={favorite ? "var(--color-base)" : "#374151"}
+        fill={isFavorite ? "var(--color-base)" : "none"}
+        color={isFavorite ? "var(--color-base)" : "#374151"}
       />
     </IconButton>
   );

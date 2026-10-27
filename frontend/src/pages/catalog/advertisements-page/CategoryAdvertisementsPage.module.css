@@ -1,0 +1,20 @@
+.categoryAdvertisementsPage {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 42px;
+  padding: 40px 0;
+  width: 100%;
+}
+
+.categoryAdvertisementsPageSingle {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .categoryAdvertisementsPage {
+    grid-template-columns: 1fr;
+  }
+}

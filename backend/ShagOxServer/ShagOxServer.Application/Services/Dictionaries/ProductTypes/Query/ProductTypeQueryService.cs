@@ -42,6 +42,12 @@ public class ProductTypeQueryService
         var translation = await _translationRepository
             .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        return ProductTypeMapper.ToDto(entity, translation?.Name);
+        translation ??= await _translationRepository
+            .GetByIdentificatorAsync(entity.Code, "uk-UA");
+
+        translation ??= await _translationRepository
+            .GetByIdentificatorAsync(entity.Code, "uk");
+
+        return ProductTypeMapper.ToDto(entity, translation?.Name ?? entity.Code);
     }
 }

@@ -90,3 +90,13 @@ body {
   width: 30px;
   height: 30px;
 }
+
+.emptyState {
+  display: flex;
+  min-height: 120px;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #c6d5e6;
+  border-radius: 12px;
+  background: #f8fbff;
+}

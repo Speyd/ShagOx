@@ -32,7 +32,7 @@ const NAV_ITEMS = [
   { to: "/catalog", label: "Каталог", icon: LayoutGrid },
   { to: "/profile/orders", label: "Мої замовлення", icon: Package },
   { to: "/devices", label: "Мої пристрої", icon: Smartphone },
-  { to: "/delivery", label: "Доставка та оплата", icon: Truck },
+  { to: "/delivery-terms", label: "Доставка та оплата", icon: Truck },
   { to: "/reviews", label: "Відео та огляди", icon: Shield },
   { to: "/contacts", label: "Контакти", icon: Phone },
   { to: "/support", label: "Підтримка", icon: Headphones },

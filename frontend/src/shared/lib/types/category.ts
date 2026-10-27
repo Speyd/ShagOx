@@ -1,8 +1,10 @@
 export type Category = {
   id: number;
-  name: string;
+  code: string;
   productType: {
     id: number;
-    name: string;
+    code: string;
+    label: string;
   };
+  label: string;
 };

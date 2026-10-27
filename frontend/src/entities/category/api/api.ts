@@ -22,3 +22,29 @@ export async function getAdminCategory(id: number): Promise<Category> {
   const response = await api.get<Category>(`/categories/${id}`);
   return response.data;
 }
+
+export async function getCategory(categoryId: number): Promise<Category> {
+  const response = await api.get<Category>("/category", {
+    params: {
+      categoryId,
+    },
+  });
+  return response.data;
+}
+
+export async function getCategoryByCode(
+  code: string,
+): Promise<Category | null> {
+  const response = await api.get<PaginatedResponse<Category>>(
+    "/categories/search",
+    {
+      params: {
+        code: code,
+        page: 1,
+        pageSize: 1,
+      },
+    },
+  );
+
+  return response.data.items[0] ?? null;
+}

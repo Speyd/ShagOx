@@ -16,7 +16,6 @@ import UpdateUserPage from "@/pages/admin/users/update-user-page/UpdateUserPage"
 import UpdateCategoriesPage from "@/pages/admin/categories/update-categories-page/UpdateCategoriesPage";
 
 import { GeneralTab } from "@/widgets/profile/profile-general";
-import { VideosTab } from "@/widgets/profile/profile-videos";
 import { FavoritesTab } from "@/widgets/profile/profile-favorites";
 import { OrdersTab } from "@/widgets/profile/profile-orders";
 import ProfileLayout from "../layouts/ProfileLayout";
@@ -110,7 +109,6 @@ export default function Router() {
             }
           >
             <Route index element={<GeneralTab />} />
-            <Route path="videos" element={<VideosTab />} />
             <Route path="favorites" element={<FavoritesTab />} />
             <Route path="orders" element={<OrdersTab />} />
             <Route path="statistics" element={<StatisticsTab />} />

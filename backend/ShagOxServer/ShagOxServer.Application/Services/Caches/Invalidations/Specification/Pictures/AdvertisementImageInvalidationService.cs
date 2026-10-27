@@ -13,25 +13,17 @@ public class AdvertisementImageInvalidationService
 {
     private readonly IDataCacheService _cache;
 
-    private readonly IAdvertisementQueryRepository _ownerRepository;
-    private readonly AdvertisementInvalidationService _ownerInvalid;
-
 
     public AdvertisementImageInvalidationService(
-        IDataCacheService cache,
-        IAdvertisementQueryRepository ownerRepository,
-        AdvertisementInvalidationService ownerInvalid)
+        IDataCacheService cache)
     {
         _cache = cache;
-        _ownerRepository = ownerRepository;
-        _ownerInvalid = ownerInvalid;
     }
 
 
     public async Task InvalidateCreateAsync(
         PictureCacheInfo entityInfo)
     {
-        await InvalidOwner(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
@@ -49,22 +41,7 @@ public class AdvertisementImageInvalidationService
     private async Task InvalidateAsync(
         PictureCacheInfo entityInfo)
     {
-        await InvalidOwner(entityInfo);
-
         await _cache.RemoveAsync(CacheKeys
             .Entity<AdvertisementImage>(entityInfo.Id));
-    }
-
-    private async Task InvalidOwner(
-        PictureCacheInfo entityInfo)
-    {
-        var info = await _ownerRepository
-            .GetCacheInfoByIdAsync(entityInfo.OwnerId);
-
-        if (info is null)
-            return;
-
-        await _ownerInvalid
-            .InvalidateUpdateAsync(info);
     }
 }

@@ -10,9 +10,9 @@ namespace ShagOxServer.Application.Services.Base;
 public abstract class BaseValidator<TEntity>
     where TEntity : BaseEntity
 {
-    private readonly IQueryRepository<TEntity> _objectRepository;
-    private readonly IExistsRepository<TEntity> _objectExistsRepository;
-    private readonly IDataCacheService _cache;
+    protected readonly IQueryRepository<TEntity> _objectRepository;
+    protected readonly IExistsRepository<TEntity> _objectExistsRepository;
+    protected readonly IDataCacheService _cache;
 
 
     public BaseValidator(

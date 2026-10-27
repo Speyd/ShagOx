@@ -14,25 +14,17 @@ public class AvatarInvalidationService
 {
     private readonly IDataCacheService _cache;
 
-    private readonly IUserQueryRepository _ownerRepository;
-    private readonly UserInvalidationService _ownerInvalid;
-
 
     public AvatarInvalidationService(
-        IDataCacheService cache,
-        IUserQueryRepository ownerRepository,
-        UserInvalidationService ownerInvalid)
+        IDataCacheService cache)
     {
         _cache = cache;
-        _ownerRepository = ownerRepository;
-        _ownerInvalid = ownerInvalid;
     }
 
 
     public async Task InvalidateCreateAsync(
         PictureCacheInfo entityInfo)
     {
-        await InvalidOwner(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
@@ -50,25 +42,10 @@ public class AvatarInvalidationService
     private async Task InvalidateAsync(
         PictureCacheInfo entityInfo)
     {
-        await InvalidOwner(entityInfo);
-
         await _cache.RemoveAsync(CacheKeys
             .Entity<Avatar>(entityInfo.Id));
 
         await _cache.RemoveAsync(AvatarCache
            .ByUser(entityInfo.OwnerId));
-    }
-
-    private async Task InvalidOwner(
-        PictureCacheInfo entityInfo)
-    {
-        var info = await _ownerRepository
-            .GetCacheInfoByIdAsync(entityInfo.OwnerId);
-
-        if (info is null)
-            return;
-
-        await _ownerInvalid
-            .InvalidateUpdateAsync(info);
     }
 }

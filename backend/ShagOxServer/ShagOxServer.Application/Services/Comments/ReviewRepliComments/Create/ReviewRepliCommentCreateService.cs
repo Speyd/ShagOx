@@ -11,6 +11,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Create;
+using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,6 +21,7 @@ public class ReviewRepliCommentCreateService
 {
     private readonly IRepository<ReviewRepliComment> _commentRepository;
     private readonly CommentValidator<ReviewComment> _commentValidator;
+    private readonly ReviewRepliCommentValidator _repliValidator;
 
     private readonly ReviewRepliCommentInvalidationService _commInvalid;
 
@@ -33,6 +35,7 @@ public class ReviewRepliCommentCreateService
         IRepository<ReviewRepliComment> commentRepository,
         CommentValidator<ReviewComment> commentValidator,
         ReviewRepliCommentInvalidationService commInvalid,
+        ReviewRepliCommentValidator repliValidator,
         IReviewRepliImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
         ILogger<ReviewCommentCreateService> logger)
@@ -40,6 +43,7 @@ public class ReviewRepliCommentCreateService
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
         _commInvalid = commInvalid;
+        _repliValidator = repliValidator;
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -50,10 +54,9 @@ public class ReviewRepliCommentCreateService
         ReviewRepliCommentCreateRequest request,
         long ownerId)
     {
-        var exists = await _commentValidator
-            .ValidateCommentAsync(
-                ownerId,
-                request.CommentableEntityId
+        var exists = await ValidationAsync(
+                request, 
+                ownerId
         );
 
         if (!exists.IsSuccess)
@@ -97,7 +100,7 @@ public class ReviewRepliCommentCreateService
 
             _logger.LogError(
                 ex,
-                "Failed to create review repli comment. " + 
+                "Failed to create review repli comment. " +
                 "UserId: {UserId}",
                 ownerId);
 
@@ -105,12 +108,43 @@ public class ReviewRepliCommentCreateService
                 .Fail(EntityErrorResources.ReviewRepliCommentCreateFailed);
         }
 
-       await _commInvalid.InvalidateCreateAsync(
-            CommentCacheMapper.ToInfo(comment));
+        await _commInvalid.InvalidateCreateAsync(
+             CommentCacheMapper.ToInfo(comment));
 
         return Result<CreateResponse>.Success(
            new CreateResponse(
                comment.Id,
                DateTime.UtcNow));
+    }
+
+    public async Task<Result<bool>> ValidationAsync(
+        ReviewRepliCommentCreateRequest request,
+        long ownerId)
+    {
+        var existsComment = await _commentValidator
+           .ValidateCommentAsync(
+               ownerId,
+               request.CommentableEntityId
+        );
+
+        if (!existsComment.IsSuccess)
+        {
+            return Result<bool>
+                .Fail(existsComment.Error);
+        }
+
+        if (request.RepliId.HasValue)
+        {
+            var existsRepli = await _repliValidator
+               .ExistsByIdAsync(request.RepliId.Value);
+
+            if (!existsRepli.IsSuccess)
+            {
+                return Result<bool>
+                    .Fail(existsComment.Error);
+            }
+        }
+
+        return Result<bool>.Success(true);
     }
 }

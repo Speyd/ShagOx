@@ -12,25 +12,18 @@ public class ReviewRepliImageInvalidationService
         PictureCacheInfo>
 {
     private readonly IDataCacheService _cache;
-    private readonly IReviewRepliCommentQueryRepository _ownerRepository;
-    private readonly ReviewRepliCommentInvalidationService _ownerInvalid;
 
 
     public ReviewRepliImageInvalidationService(
-        IDataCacheService cache,
-        IReviewRepliCommentQueryRepository ownerRepository,
-        ReviewRepliCommentInvalidationService ownerInvalid)
+        IDataCacheService cache)
     {
         _cache = cache;
-        _ownerRepository = ownerRepository;
-        _ownerInvalid = ownerInvalid;
     }
 
 
     public async Task InvalidateCreateAsync(
         PictureCacheInfo entityInfo)
     {
-        await InvalidOwner(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
@@ -48,22 +41,7 @@ public class ReviewRepliImageInvalidationService
     private async Task InvalidateAsync(
         PictureCacheInfo entityInfo)
     {
-        await InvalidOwner(entityInfo);
-
         await _cache.RemoveAsync(CacheKeys
             .Entity<ReviewRepliImage>(entityInfo.Id));
-    }
-
-    private async Task InvalidOwner(
-       PictureCacheInfo entityInfo)
-    {
-        var info = await _ownerRepository
-            .GetCacheInfoByIdAsync(entityInfo.OwnerId);
-
-        if (info is null)
-            return;
-
-        await _ownerInvalid
-            .InvalidateUpdateAsync(info);
     }
 }

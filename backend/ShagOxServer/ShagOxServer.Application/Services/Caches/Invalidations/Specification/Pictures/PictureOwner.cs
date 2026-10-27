@@ -1,12 +1,5 @@
-using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
-using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
-using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 public class PictureOwner<TOwner>

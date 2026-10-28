@@ -1,22 +1,22 @@
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.CategoryAttributes;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
-namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query;
-public partial class VariantAttributeQueryService
+namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeProcessor;
+public partial class AttributeQueryService
 {
     protected readonly IAttributeDictionaryValueQueryService _valueService;
 
 
-    public VariantAttributeQueryService(
+    public AttributeQueryService(
         IAttributeDictionaryValueQueryService valueService)
     {
         _valueService = valueService;
     }
 
 
-    public async Task<VariantAttributeDto> ApplyMapperAsync(
+    public async Task<AttributeDto> ApplyMapperAsync(
         AttributeDefinition attributeDefinition,
         AttributeDictionaryValue value)
     {

@@ -2,12 +2,15 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.CategoryAttributes;
 using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Base.Localized;
@@ -28,6 +31,7 @@ public class AdvertisementQueryService
 {
     private readonly IAdvertisementQueryRepository _advertisementRepository;
     private readonly IAdvertisementVariantQueryService _variantService;
+    private readonly IAttributeProcessor _attributeProcessor;
 
     private readonly ICategoryQueryService _categoryService;
     private readonly IStatusQueryService _statusService;
@@ -40,16 +44,21 @@ public class AdvertisementQueryService
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository,
         IAdvertisementVariantQueryService variantService,
+        IAttributeProcessor attributeProcessor,
         ICategoryQueryService categoryService,
         IDataCacheService cacheService,
         IStatusQueryService statusService,
         IOptions<CacheSettings> settings,
         ILanguageProvider language
     )
-        : base(advertisementRepository, language, cacheService, settings)
+        : base(advertisementRepository, 
+            language,
+            cacheService, 
+            settings)
     {
         _advertisementRepository = advertisementRepository;
         _variantService = variantService;
+        _attributeProcessor = attributeProcessor;
         _categoryService = categoryService;
         _statusService = statusService;
     }
@@ -58,8 +67,13 @@ public class AdvertisementQueryService
     public override async Task<AdvertisementDto> ApplyMapperAsync(
         Advertisement entity)
     {
-        var attributes = 
-            await GetAttributesByVariantIdAsync(entity.Variants);
+        var variants = new List<AdvertisementVariantDto>();
+
+        foreach (var variant in entity.Variants)
+        {
+            var variantDto = await _variantService.ApplyMapperAsync(variant);
+            variants.Add(variantDto);
+        }
 
         var categoryDto = await _categoryService
             .ApplyMapperAsync(entity.Category);
@@ -67,36 +81,19 @@ public class AdvertisementQueryService
         var statusDto = await _statusService
             .ApplyMapperAsync(entity.Status);
 
+        var attributeDto = await _attributeProcessor
+            .GetAttributesAsync(
+                entity.Attributes,
+                entity.CategoryId
+            );
+
+
         return AdvertisementMapper.ToDto(
             entity,
-            attributes,
+            variants,
             categoryDto,
-            statusDto);
-    }
-
-    private async Task<Dictionary<long, List<VariantAttributeDto>>>
-    GetAttributesByVariantIdAsync(
-        IEnumerable<AdvertisementVariant> variants,
-        CancellationToken cancellationToken = default)
-    {
-        var result = new Dictionary<long, List<VariantAttributeDto>>();
-
-        foreach (var variant in variants)
-        {
-            var attributesResult = await _variantService
-                .GetVariantAttributeAsync(variant, cancellationToken);
-
-            if (!attributesResult.IsSuccess)
-            {
-                throw new InvalidOperationException(
-                    attributesResult.Error);
-            }
-
-            result[variant.Id] =
-                attributesResult.Value ?? [];
-        }
-
-        return result;
+            statusDto,
+            attributeDto.Value!);
     }
 
     public async Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
@@ -159,6 +156,7 @@ public class AdvertisementQueryService
            _language.Language,
            pagination.Page,
            pagination.PageSize);
+       
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -166,7 +164,7 @@ public class AdvertisementQueryService
             {
                 var adverts = await _advertisementRepository
                     .GetPagedAsync(pagination, cancellationToken);
-
+                
                 return adverts.ToResultPaged(
                     AdvertisementShortMapper.ToDto);
             },

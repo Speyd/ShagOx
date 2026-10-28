@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
@@ -16,7 +16,7 @@ public class Category
     public ICollection<AttributeDefinition> Attributes { get; set; }
         = [];
 
-    public ICollection<Advertisement> Advertisements { get; set; }
+    public ICollection<Advertisement> AdvertisementsByCategory { get; set; }
        = [];
 
     public List<CategoryTranslation> Translations { get; set; }

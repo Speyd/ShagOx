@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Baskets;
+
 public class BasketConfiguration
     : IEntityTypeConfiguration<Basket>
 {

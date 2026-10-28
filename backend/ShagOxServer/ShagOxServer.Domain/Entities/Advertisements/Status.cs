@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 
 namespace ShagOxServer.Domain.Entities.Advertisements;
@@ -7,7 +7,7 @@ public class Status
 {
     public string Code { get; set; } = null!;
 
-    public ICollection<Advertisement> Advertisements { get; set; } 
+    public ICollection<Advertisement> AdvertisementsByStatus { get; set; } 
         = [];
 
     public ICollection<StatusTranslation> Translations { get; set; }

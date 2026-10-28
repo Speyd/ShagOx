@@ -1,9 +1,7 @@
 using Docker.DotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Interfaces.Db;
-using ShagOxServer.Infrastructure.Monitoring;
 using ShagOxServer.Infrastructure.Persistence.Db;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 

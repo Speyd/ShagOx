@@ -8,16 +8,20 @@ public static class ConfigureBaseEntityPropertiesExtensions
     public static void ConfigureBaseEntityProperties(
         this ModelBuilder modelBuilder)
     {
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        {
-            if (!typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
-                continue;
+        var entityTypes = modelBuilder.Model
+            .GetEntityTypes()
+            .Where(entityType =>
+                entityType.ClrType != typeof(BaseEntity) &&
+                typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+            .ToList();
 
-            modelBuilder.Entity<BaseEntity>()
-               .Property(x => x.EntityStatus)
-               .HasConversion<string>()
-               .HasDefaultValue(EntityStatus.Active)
-               .IsRequired();
+        foreach (var entityType in entityTypes)
+        {
+            modelBuilder.Entity(entityType.ClrType)
+             .Property(nameof(BaseEntity.EntityStatus))
+             .HasConversion<string>()
+             .HasDefaultValue(EntityStatus.Active)
+             .IsRequired();
         }
     }
 }

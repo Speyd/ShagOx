@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Helpers;
+using ShagOxServer.Application.Common.Helpers;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;

@@ -13,7 +13,7 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 namespace ShagOxServer.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261026165633_StatusInBaseEntity")]
+    [Migration("20261027213622_StatusInBaseEntity")]
     partial class StatusInBaseEntity
     {
         /// <inheritdoc />
@@ -26,18 +26,16 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.HasSequence("BaseEntitySequence");
+
             modelBuilder.Entity("ShagOxServer.Domain.Base.BaseEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasDefaultValueSql("nextval('\"BaseEntitySequence\"')");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(55)
-                        .HasColumnType("character varying(55)");
+                    NpgsqlPropertyBuilderExtensions.UseSequence(b.Property<long>("Id"));
 
                     b.Property<string>("EntityStatus")
                         .IsRequired()
@@ -47,11 +45,9 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BaseEntity");
+                    b.ToTable((string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("BaseEntity");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTpcMappingStrategy();
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.UserRole", b =>
@@ -62,8 +58,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("RoleId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("EntityStatus")
-                        .HasColumnType("integer");
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
@@ -89,7 +88,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.HasDiscriminator().HasValue("Role");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.User", b =>
@@ -165,7 +164,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Users_UserName");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
@@ -196,7 +195,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<long>("OwnerId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint");
 
                     b.Property<int>("Popularity")
@@ -249,13 +247,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("CategoryId", "ConditionId", "CreatedAt")
                         .HasDatabaseName("IX_Advertisements_CategoryId_ConditionId_CreatedAt");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Description")
-                                .HasColumnName("Advertisement_Description");
-                        });
-
-                    b.HasDiscriminator().HasValue("Advertisement");
+                    b.ToTable("Advertisements");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.AdvertisementVariant", b =>
@@ -283,13 +275,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("AdvertisementId")
                         .HasDatabaseName("IX_AdvertisementVariants_AdvertisementId");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Attributes")
-                                .HasColumnName("AdvertisementVariant_Attributes");
-                        });
-
-                    b.HasDiscriminator().HasValue("AdvertisementVariant");
+                    b.ToTable("AdvertisementVariants");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Favorite", b =>
@@ -309,13 +295,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Favorites_UserId_AdvertisementId");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("AdvertisementId")
-                                .HasColumnName("Favorite_AdvertisementId");
-                        });
-
-                    b.HasDiscriminator().HasValue("Favorite");
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Status", b =>
@@ -331,7 +311,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Statuses_Code");
 
-                    b.HasDiscriminator().HasValue("Status");
+                    b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Translations.StatusTranslation", b =>
@@ -365,16 +345,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_StatusTranslations_TranslatableId_Language");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Description")
-                                .HasColumnName("StatusTranslation_Description");
-
-                            t.Property("Name")
-                                .HasColumnName("StatusTranslation_Name");
-                        });
-
-                    b.HasDiscriminator().HasValue("StatusTranslation");
+                    b.ToTable("StatusTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.Basket", b =>
@@ -382,14 +353,13 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
 
                     b.Property<long>("OwnerId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint");
 
                     b.HasIndex("OwnerId")
                         .IsUnique()
                         .HasDatabaseName("IX_Baskets_OwnerId");
 
-                    b.HasDiscriminator().HasValue("Basket");
+                    b.ToTable("Baskets");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketAttribute", b =>
@@ -406,7 +376,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_BasketAttributes_AttributeDefinitionId");
 
-                    b.HasDiscriminator().HasValue("BasketAttribute");
+                    b.ToTable("BasketAttributes");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketItem", b =>
@@ -431,7 +401,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_BasketItems_BasketId_AdvertisementVariantId");
 
-                    b.HasDiscriminator().HasValue("BasketItem");
+                    b.ToTable("BasketItems");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
@@ -439,7 +409,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
 
                     b.Property<long>("CommentableEntityId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -451,17 +420,14 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<long>("OwnerId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("timestamp with time zone");
 
                     b.HasIndex("CommentableEntityId")
@@ -473,15 +439,10 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("CommentableEntityId", "CreatedAt")
                         .HasDatabaseName("IX_ReviewComments_CommentableEntityId_CreatedAt");
 
-                    b.ToTable("BaseEntity", t =>
+                    b.ToTable("ReviewComments", t =>
                         {
                             t.HasCheckConstraint("CK_ReviewComments_Grade", "\"Grade\" BETWEEN 1 AND 5");
-
-                            t.Property("CreatedAt")
-                                .HasColumnName("ReviewComment_CreatedAt");
                         });
-
-                    b.HasDiscriminator().HasValue("ReviewComment");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
@@ -489,7 +450,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
 
                     b.Property<long>("CommentableEntityId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -498,7 +458,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<long>("OwnerId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint");
 
                     b.Property<long?>("ParentReplyId")
@@ -506,12 +465,10 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("timestamp with time zone");
 
                     b.HasIndex("CommentableEntityId")
@@ -529,13 +486,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("ParentReplyId", "CreatedAt")
                         .HasDatabaseName("IX_ReviewRepliComments_ParentReplyId_CreatedAt");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("CreatedAt")
-                                .HasColumnName("ReviewRepliComment_CreatedAt");
-                        });
-
-                    b.HasDiscriminator().HasValue("ReviewRepliComment");
+                    b.ToTable("ReviewRepliComments");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
@@ -579,13 +530,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDefinitions_CategoryId_Key");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("CategoryId")
-                                .HasColumnName("AttributeDefinition_CategoryId");
-                        });
-
-                    b.HasDiscriminator().HasValue("AttributeDefinition");
+                    b.ToTable("AttributeDefinitions");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDictionary", b =>
@@ -601,13 +546,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDictionaries_Code");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Code")
-                                .HasColumnName("AttributeDictionary_Code");
-                        });
-
-                    b.HasDiscriminator().HasValue("AttributeDictionary");
+                    b.ToTable("AttributeDictionaries");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDictionaryValue", b =>
@@ -629,16 +568,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDictionaryValues_DictionaryId_Code");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Code")
-                                .HasColumnName("AttributeDictionaryValue_Code");
-
-                            t.Property("DictionaryId")
-                                .HasColumnName("AttributeDictionaryValue_DictionaryId");
-                        });
-
-                    b.HasDiscriminator().HasValue("AttributeDictionaryValue");
+                    b.ToTable("AttributeDictionaryValues");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations.AttributeDefinitionTranslation", b =>
@@ -668,19 +598,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDefinitionTranslations_TranslatableId_Language");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Language")
-                                .HasColumnName("AttributeDefinitionTranslation_Language");
-
-                            t.Property("Name")
-                                .HasColumnName("AttributeDefinitionTranslation_Name");
-
-                            t.Property("TranslatableId")
-                                .HasColumnName("AttributeDefinitionTranslation_TranslatableId");
-                        });
-
-                    b.HasDiscriminator().HasValue("AttributeDefinitionTranslation");
+                    b.ToTable("AttributeDefinitionTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations.AttributeDictionaryValueTranslation", b =>
@@ -710,19 +628,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDictionaryValueTranslations_TranslatableId_Language");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Language")
-                                .HasColumnName("AttributeDictionaryValueTranslation_Language");
-
-                            t.Property("Name")
-                                .HasColumnName("AttributeDictionaryValueTranslation_Name");
-
-                            t.Property("TranslatableId")
-                                .HasColumnName("AttributeDictionaryValueTranslation_TranslatableId");
-                        });
-
-                    b.HasDiscriminator().HasValue("AttributeDictionaryValueTranslation");
+                    b.ToTable("AttributeDictionaryValueTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Category", b =>
@@ -744,13 +650,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Categories_ProductTypeId_Code");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Code")
-                                .HasColumnName("Category_Code");
-                        });
-
-                    b.HasDiscriminator().HasValue("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.ProductType", b =>
@@ -770,16 +670,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_ProductTypes_Code");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Code")
-                                .HasColumnName("ProductType_Code");
-
-                            t.Property("Description")
-                                .HasColumnName("ProductType_Description");
-                        });
-
-                    b.HasDiscriminator().HasValue("ProductType");
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Translations.CategoryTranslation", b =>
@@ -809,19 +700,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_CategoryTranslations_TranslatableId_Language");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Language")
-                                .HasColumnName("CategoryTranslation_Language");
-
-                            t.Property("Name")
-                                .HasColumnName("CategoryTranslation_Name");
-
-                            t.Property("TranslatableId")
-                                .HasColumnName("CategoryTranslation_TranslatableId");
-                        });
-
-                    b.HasDiscriminator().HasValue("CategoryTranslation");
+                    b.ToTable("CategoryTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Translations.ProductTypeTranslation", b =>
@@ -851,19 +730,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_ProductTypeTranslations_TranslatableId_Language");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Language")
-                                .HasColumnName("ProductTypeTranslation_Language");
-
-                            t.Property("Name")
-                                .HasColumnName("ProductTypeTranslation_Name");
-
-                            t.Property("TranslatableId")
-                                .HasColumnName("ProductTypeTranslation_TranslatableId");
-                        });
-
-                    b.HasDiscriminator().HasValue("ProductTypeTranslation");
+                    b.ToTable("ProductTypeTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>
@@ -885,13 +752,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("RegionId")
                         .HasDatabaseName("IX_Cities_RegionId");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Code")
-                                .HasColumnName("City_Code");
-                        });
-
-                    b.HasDiscriminator().HasValue("City");
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Region", b =>
@@ -907,13 +768,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Regions_Code");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Code")
-                                .HasColumnName("Region_Code");
-                        });
-
-                    b.HasDiscriminator().HasValue("Region");
+                    b.ToTable("Regions");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Translations.CityTranslation", b =>
@@ -943,19 +798,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_CityTranslations_TranslatableId_Language");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Language")
-                                .HasColumnName("CityTranslation_Language");
-
-                            t.Property("Name")
-                                .HasColumnName("CityTranslation_Name");
-
-                            t.Property("TranslatableId")
-                                .HasColumnName("CityTranslation_TranslatableId");
-                        });
-
-                    b.HasDiscriminator().HasValue("CityTranslation");
+                    b.ToTable("CityTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Translations.RegionTranslation", b =>
@@ -985,19 +828,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_RegionTranslations_TranslatableId_Language");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Language")
-                                .HasColumnName("RegionTranslation_Language");
-
-                            t.Property("Name")
-                                .HasColumnName("RegionTranslation_Name");
-
-                            t.Property("TranslatableId")
-                                .HasColumnName("RegionTranslation_TranslatableId");
-                        });
-
-                    b.HasDiscriminator().HasValue("RegionTranslation");
+                    b.ToTable("RegionTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>
@@ -1013,13 +844,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Conditions_Code");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Code")
-                                .HasColumnName("Condition_Code");
-                        });
-
-                    b.HasDiscriminator().HasValue("Condition");
+                    b.ToTable("Conditions");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Currency", b =>
@@ -1045,16 +870,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Currencies_Code");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Code")
-                                .HasColumnName("Currency_Code");
-
-                            t.Property("Name")
-                                .HasColumnName("Currency_Name");
-                        });
-
-                    b.HasDiscriminator().HasValue("Currency");
+                    b.ToTable("Currencies");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.AdvertisementImage", b =>
@@ -1065,31 +881,22 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<long>("OwnerId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint");
 
                     b.Property<string>("PublicId")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("text");
 
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
                         .HasDatabaseName("IX_AdvertisementImages_OwnerId_Order");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Order")
-                                .HasColumnName("AdvertisementImage_Order");
-                        });
-
-                    b.HasDiscriminator().HasValue("AdvertisementImage");
+                    b.ToTable("AdvertisementImages");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Avatar", b =>
@@ -1097,25 +904,22 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
 
                     b.Property<long>("OwnerId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint");
 
                     b.Property<string>("PublicId")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("text");
 
                     b.HasIndex("OwnerId")
                         .IsUnique()
                         .HasDatabaseName("IX_Avatars_OwnerId");
 
-                    b.HasDiscriminator().HasValue("Avatar");
+                    b.ToTable("Avatars");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewImage", b =>
@@ -1126,31 +930,22 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<long>("OwnerId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint");
 
                     b.Property<string>("PublicId")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("text");
 
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
                         .HasDatabaseName("IX_ReviewImages_OwnerId_Order");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Order")
-                                .HasColumnName("ReviewImage_Order");
-                        });
-
-                    b.HasDiscriminator().HasValue("ReviewImage");
+                    b.ToTable("ReviewImages");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewRepliImage", b =>
@@ -1161,31 +956,22 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<long>("OwnerId")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint");
 
                     b.Property<string>("PublicId")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("text");
 
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
                         .HasDatabaseName("IX_ReviewRepliImages_OwnerId_Order");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Order")
-                                .HasColumnName("ReviewRepliImage_Order");
-                        });
-
-                    b.HasDiscriminator().HasValue("ReviewRepliImage");
+                    b.ToTable("ReviewRepliImages");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Translations.ConditionTranslation", b =>
@@ -1212,19 +998,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_ConditionTranslations_Language_Name");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("Language")
-                                .HasColumnName("ConditionTranslation_Language");
-
-                            t.Property("Name")
-                                .HasColumnName("ConditionTranslation_Name");
-
-                            t.Property("TranslatableId")
-                                .HasColumnName("ConditionTranslation_TranslatableId");
-                        });
-
-                    b.HasDiscriminator().HasValue("ConditionTranslation");
+                    b.ToTable("ConditionTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Verifications.VerificationCode", b =>
@@ -1265,16 +1039,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .HasDatabaseName("IX_VerificationCodes_UserId");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("CreatedAt")
-                                .HasColumnName("VerificationCode_CreatedAt");
-
-                            t.Property("UserId")
-                                .HasColumnName("VerificationCode_UserId");
-                        });
-
-                    b.HasDiscriminator().HasValue("VerificationCode");
+                    b.ToTable("VerificationCodes");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.UserRole", b =>

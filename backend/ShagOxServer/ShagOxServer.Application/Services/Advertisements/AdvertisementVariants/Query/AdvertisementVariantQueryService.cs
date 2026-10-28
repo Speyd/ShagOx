@@ -8,8 +8,10 @@ using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.A
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Application.Services.Base.Localized;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
@@ -25,7 +27,8 @@ public partial class AdvertisementVariantQueryService
     protected readonly IAdvertisementVariantQueryRepository _variantRepository;
     protected readonly IAttributeDefinitionQueryRepository _attributeRepository;
     protected readonly IAttributeDictionaryValueQueryRepository _valueRepository;
-    protected readonly VariantAttributeQueryService _variantAttributeService;
+    protected readonly IAttributeProcessor _attributeProcessor;
+    protected readonly AttributeQueryService _variantAttributeService;
 
     protected readonly ILogger<AdvertisementVariantQueryService> _logger;
 
@@ -38,7 +41,8 @@ public partial class AdvertisementVariantQueryService
         IAdvertisementVariantQueryRepository variantRepository,
         IAttributeDefinitionQueryRepository attributeRepository,
         IAttributeDictionaryValueQueryRepository valueRepository,
-        VariantAttributeQueryService variantAttributeService,
+        IAttributeProcessor attributeProcessor,
+        AttributeQueryService variantAttributeService,
         ILogger<AdvertisementVariantQueryService> logger,
         IDataCacheService cacheService,
         IOptions<CacheSettings> settings,
@@ -49,6 +53,7 @@ public partial class AdvertisementVariantQueryService
         _variantRepository = variantRepository;
         _attributeRepository = attributeRepository;
         _valueRepository = valueRepository;
+        _attributeProcessor = attributeProcessor;
         _variantAttributeService = variantAttributeService;
         _logger = logger;
     }
@@ -57,7 +62,11 @@ public partial class AdvertisementVariantQueryService
     public override async Task<AdvertisementVariantDto> ApplyMapperAsync(
         AdvertisementVariant entity)
     {
-        var attributesResult = await GetVariantAttributeAsync(entity);
+        var attributesResult = await _attributeProcessor
+            .GetAttributesAsync(
+                entity.Attributes,
+                entity.Advertisement.CategoryId
+            );
 
         if (!attributesResult.IsSuccess)
         {

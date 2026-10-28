@@ -5,12 +5,12 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
 
 namespace ShagOxServer.Api.Middleware;
-
 public class UpdateLastSeenMiddleware
 {
     private readonly UpdateLastSeenSettings _settings;
     private readonly RequestDelegate _next;
 
+  
     public UpdateLastSeenMiddleware(
         IOptions<UpdateLastSeenSettings> settings,
         RequestDelegate next)

@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using Twilio.TwiML.Voice;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 public class QueryRepository<TEntity>
@@ -19,8 +21,13 @@ public class QueryRepository<TEntity>
         long id,
         CancellationToken cancellationToken = default)
     {
-        return await _db.Set<TEntity>()
-            .FindAsync(id, cancellationToken);
+        IQueryable<TEntity> query = _db.Set<TEntity>();
+
+        query = ApplyIncludes(query);
+
+        return await query
+            .FirstOrDefaultAsync(x => x.Id == id, 
+                cancellationToken);
     }
 
     public virtual async Task<TEntity?> GetByIdIncludeAsync(
@@ -31,30 +38,18 @@ public class QueryRepository<TEntity>
 
         query = ApplyIncludes(query);
 
-        return await query.FirstOrDefaultAsync(
-            x => x.Id == id,
-            cancellationToken);
+        return await query
+            .FirstOrDefaultAsync(
+                x => x.Id == id,
+                cancellationToken);
     }
 
     public virtual async Task<PagedResult<TEntity>> GetPagedAsync(
         PaginationParams pagination,
         CancellationToken cancellationToken = default)
     {
-        var connection = _db.Database.GetDbConnection();
-
-        Console.WriteLine($"Database: {connection.Database}");
-        Console.WriteLine($"DataSource: {connection.DataSource}");
-
         IQueryable<TEntity> query = _db.Set<TEntity>();
-
-        Console.WriteLine($"Entity: {typeof(TEntity).Name}");
-        Console.WriteLine($"SQL: {query.ToQueryString()}");
-
-        var totalCount = await query.CountAsync(cancellationToken);
-
-        Console.WriteLine($"TotalCount: {totalCount}");
-
-       // IQueryable<TEntity> query = _db.Set<TEntity>();
+           
         query = ApplyIncludes(query);
 
         return await query

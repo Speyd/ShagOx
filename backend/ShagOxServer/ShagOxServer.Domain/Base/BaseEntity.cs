@@ -5,7 +5,8 @@ public abstract class BaseEntity
 {
     public long Id { get; set; }
 
-    public EntityStatus EntityStatus { get; set; }
+    public EntityStatus EntityStatus { get; set; } 
+        = EntityStatus.Active;
 
 
     public abstract override string ToString();

@@ -22,17 +22,17 @@ public class AdvertisementConfiguration
             .IsRequired();
 
         builder.HasOne(x => x.Currency)
-            .WithMany(x => x.Advertisements)
+            .WithMany(x => x.AdvertisementsByCurrency)
             .HasForeignKey(x => x.CurrencyId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Condition)
-            .WithMany(x => x.Advertisements)
+            .WithMany(x => x.AdvertisementsByCondition)
             .HasForeignKey(x => x.ConditionId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Category)
-            .WithMany(x => x.Advertisements)
+            .WithMany(x => x.AdvertisementsByCategory)
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -47,7 +47,7 @@ public class AdvertisementConfiguration
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Status)
-              .WithMany(x => x.Advertisements)
+              .WithMany(x => x.AdvertisementsByStatus)
               .HasForeignKey(x => x.StatusId)
               .OnDelete(DeleteBehavior.Restrict);
 

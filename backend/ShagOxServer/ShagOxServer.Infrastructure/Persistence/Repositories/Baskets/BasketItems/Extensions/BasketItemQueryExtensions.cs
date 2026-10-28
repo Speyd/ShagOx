@@ -24,11 +24,6 @@ public static class BasketItemQueryExtensions
 
             .Include(x => x.AdvertisementVariant)
                 .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Category)
-                        .ThenInclude(x => x.ProductType)
-
-            .Include(x => x.AdvertisementVariant)
-                .ThenInclude(x => x.Advertisement)
                     .ThenInclude(x => x.Currency)
 
             .Include(x => x.AdvertisementVariant)

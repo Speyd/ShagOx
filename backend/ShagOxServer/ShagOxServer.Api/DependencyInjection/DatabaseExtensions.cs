@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Common.Settings.Db;
 using ShagOxServer.Domain.Entities.Db;
+using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
 namespace ShagOxServer.Api.DependencyInjection;
@@ -28,6 +29,7 @@ public static class DatabaseExtensions
             .Where(x => !string.IsNullOrWhiteSpace(x.Value))
             .Select(x =>
             {
+
                 var connectionString = x.Value!;
 
                 var containerName = config[

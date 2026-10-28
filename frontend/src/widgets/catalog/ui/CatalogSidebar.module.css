@@ -1,0 +1,43 @@
+.catalogSidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.menuItem,
+.menuItemActive {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  font-size: var(--font-sm);
+}
+
+.menuItem {
+  text-decoration: none;
+  background: transparent;
+  color: var(--text-base);
+}
+
+.menuItem:hover {
+  background-color: #f1f5f9;
+}
+
+.menuItemActive {
+  color: var(--color-base);
+}
+
+.menuItem.menuItemActive {
+  background-color: var(--color-border);
+  color: var(--color-primary);
+}

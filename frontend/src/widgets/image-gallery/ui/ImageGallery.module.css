@@ -8,7 +8,8 @@
 
 .mainImageContainer {
   width: 100%;
-  max-width: 655px;
+  width: 655px;
+  padding: 16px;
   aspect-ratio: 1 / 1;
 
   background-color: #ffffff;
@@ -27,10 +28,9 @@
 }
 
 .mainImage {
-  display: block;
-  width: 655px;
-  width: 100%;
-  height: 100%;
+  max-width: 655px !important;
+  width: 100% !important;
+  height: 100% !important;
   object-fit: contain;
 }
 

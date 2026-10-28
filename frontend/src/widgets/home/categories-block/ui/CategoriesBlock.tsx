@@ -41,8 +41,6 @@ const categories = [
 export default function CategoriesBlock() {
   const { data: availableCategories = [] } = useGetCategories();
 
-  const normalize = (value: string) => value.trim().toLocaleLowerCase();
-
   return (
     <Container>
       <section className={styles.categoriesBlock}>
@@ -67,12 +65,11 @@ export default function CategoriesBlock() {
           }}
         >
           {categories.map((category, index) => {
-            const matchedCategory = availableCategories.find((item) => {
-              const categoryName = normalize(item.name);
-              return category.keys.some((key) =>
-                categoryName.includes(normalize(key)),
-              );
-            });
+            const matchedCategory = availableCategories.find((cat) =>
+              category.keys.some((key) =>
+                cat.label.toLowerCase().includes(key),
+              ),
+            );
             const categoryLink = matchedCategory
               ? `/catalog?category=${matchedCategory.id}`
               : "/catalog";

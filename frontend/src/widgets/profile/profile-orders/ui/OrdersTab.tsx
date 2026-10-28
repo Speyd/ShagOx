@@ -37,6 +37,9 @@ export default function OrdersTab() {
           </Tabs.Tab>
         </Tabs.List>
       </Tabs>
+      <div className="emptyState">
+        <Text c="dimmed">У вас поки що немає замовлень.</Text>
+      </div>
     </Paper>
   );
 }

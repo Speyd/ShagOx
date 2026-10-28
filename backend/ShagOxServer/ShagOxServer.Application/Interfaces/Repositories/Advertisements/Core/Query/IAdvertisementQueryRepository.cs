@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
@@ -19,5 +20,9 @@ public partial interface IAdvertisementQueryRepository
     Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
         long userId,
         PaginationParams pagination,
+        CancellationToken cancellationToken = default);
+
+    Task<List<AdvertisementAttributeFilterOptionDto>> GetAttributeFilterOptionsAsync(
+        long categoryId,
         CancellationToken cancellationToken = default);
 }

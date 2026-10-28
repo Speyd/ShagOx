@@ -1,11 +1,13 @@
-import { Paper, Select, Tabs, Text } from "@mantine/core";
+import { Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import type { ProfileContextType } from "@/app/layouts/ProfileLayout";
 import styles from "./FavoritesTab.module.css";
-import { ChevronDown, ArrowRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useGetFavorites } from "@/features/favorites/model/hooks/useGetFavorites";
 import AdvertisementCard from "@/entities/advertisement/ui/AdvertisementCard";
+import AdvertisementCardSkeleton from "@/shared/ui/advertisement-card-skeleton";
+import AppPagination from "@/shared/ui/pagination";
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Найновіші" },
@@ -15,13 +17,24 @@ const SORT_OPTIONS = [
 
 export default function FavoritesTab() {
   const { setOrientation } = useOutletContext<ProfileContextType>();
-  const [activeTab, setActiveTab] = useState<string | null>("all");
   const [sort, setSort] = useState<string | null>("newest");
-  const { data: favorites, isLoading } = useGetFavorites();
+  const [page, setPage] = useState(1);
+
+  const { data: favorites, isLoading } = useGetFavorites(page);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useEffect(() => {
     setOrientation("row");
   }, [setOrientation]);
+
+  const handleSortChange = (value: string | null) => {
+    setSort(value);
+    setPage(1);
+  };
 
   const advertisements = [...(favorites?.items ?? [])].sort((left, right) => {
     if (sort === "oldest") {
@@ -30,31 +43,37 @@ export default function FavoritesTab() {
         new Date(right.advertisement.createdAt).getTime()
       );
     }
-
     if (sort === "popular") {
       return right.advertisement.id - left.advertisement.id;
     }
-
     return (
       new Date(right.advertisement.createdAt).getTime() -
       new Date(left.advertisement.createdAt).getTime()
     );
   });
 
-  const showProducts = activeTab === "all" || activeTab === "advertisements";
-  const showVideos = activeTab === "all" || activeTab === "videos";
+  if (isLoading) {
+    return (
+      <section className={styles.favoritesAdvertisements}>
+        <div className={styles.advertisementsGrid}>
+          {Array.from({ length: 8 }).map((_, index) => (
+            <AdvertisementCardSkeleton key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <Paper p="xl" radius="lg" className={styles.paper}>
-      <div className={styles.favoritesTab}>
-        <div className={styles.header}>
-          <Text fw={700} fz={24}>
-            Обране
-          </Text>
-
+    <section className={styles.favoritesTab}>
+      <div className={styles.header}>
+        <Text fw={700} fz={24}>
+          Обрані товари
+        </Text>
+        {advertisements.length > 0 && (
           <Select
             value={sort}
-            onChange={setSort}
+            onChange={handleSortChange}
             data={SORT_OPTIONS}
             rightSection={<ChevronDown size={16} />}
             rightSectionPointerEvents="none"
@@ -63,108 +82,27 @@ export default function FavoritesTab() {
             radius="md"
             classNames={{ input: styles.input }}
           />
+        )}
+      </div>
+
+      {advertisements.length > 0 ? (
+        <div className={styles.advertisementsGrid}>
+          {advertisements.map(({ advertisement }) => (
+            <AdvertisementCard key={advertisement.id} {...advertisement} />
+          ))}
         </div>
-
-        <Tabs value={activeTab} onChange={setActiveTab}>
-          <Tabs.List className={styles.list}>
-            <Tabs.Tab value="all" className={styles.tab}>
-              Усі
-            </Tabs.Tab>
-            <Tabs.Tab value="advertisements" className={styles.tab}>
-              Товари
-            </Tabs.Tab>
-            <Tabs.Tab value="videos" className={styles.tab}>
-              Відео
-            </Tabs.Tab>
-          </Tabs.List>
-        </Tabs>
-      </div>
-
-      <div className={styles.favoritesTab}>
-        {showProducts && (
-          <FavoriteSection
-            title="Товари"
-            linkLabel="Дивитися всі"
-            isLoading={isLoading}
-            emptyMessage="У вас поки що немає обраних товарів."
-            onTabChange={
-              activeTab === "all"
-                ? () => setActiveTab("advertisements")
-                : undefined
-            }
-          >
-            {advertisements.length > 0 ? (
-              <div className={styles.productsGrid}>
-                {advertisements.map(({ advertisement }) => (
-                  <AdvertisementCard
-                    key={advertisement.id}
-                    {...advertisement}
-                  />
-                ))}
-              </div>
-            ) : null}
-          </FavoriteSection>
-        )}
-
-        {showVideos && (
-          <FavoriteSection
-            title="Збережені відео"
-            linkLabel="Всі відео"
-            emptyMessage="У вас поки що немає збережених відео."
-            onTabChange={
-              activeTab === "all" ? () => setActiveTab("videos") : undefined
-            }
-          />
-        )}
-      </div>
-    </Paper>
-  );
-}
-
-type FavoriteSectionProps = {
-  title: string;
-  linkLabel: string;
-  isLoading?: boolean;
-  emptyMessage: string;
-  onTabChange?: () => void;
-  children?: React.ReactNode;
-};
-
-function FavoriteSection({
-  title,
-  linkLabel,
-  isLoading = false,
-  emptyMessage,
-  onTabChange,
-  children,
-}: FavoriteSectionProps) {
-  return (
-    <section className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <Text fw={700} fz={20}>
-          {title}
-        </Text>
-
-        {onTabChange && (
-          <button
-            type="button"
-            className={styles.viewAll}
-            onClick={onTabChange}
-          >
-            {linkLabel}
-            <ArrowRight size={16} />
-          </button>
-        )}
-      </div>
-
-      {isLoading ? (
-        <Text c="dimmed">Завантаження...</Text>
-      ) : children ? (
-        children
       ) : (
-        <div className={styles.emptyState}>
-          <Text c="dimmed">{emptyMessage}</Text>
+        <div className="emptyState">
+          <Text c="dimmed">У вас поки що немає обраних товарів.</Text>
         </div>
+      )}
+
+      {(favorites?.totalPages ?? 0) > 1 && (
+        <AppPagination
+          page={favorites?.page ?? page}
+          totalPages={favorites?.totalPages ?? 1}
+          onPageChange={handlePageChange}
+        />
       )}
     </section>
   );

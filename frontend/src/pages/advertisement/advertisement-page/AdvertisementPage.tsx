@@ -9,15 +9,30 @@ import ReviewsBlock from "@/widgets/reviews/reviews-block";
 import ReviewsSection from "@/widgets/reviews/reviews-section";
 import AdvertisementSlider from "@/widgets/advertisement/advertisement-slider/ui/AdvertisementSlider";
 import { useGetAdvertisements } from "@/entities/advertisement/model/hooks/useGetAdvertisements";
+import { useEffect } from "react";
+import { useRecentlyViewedStore } from "@/features/recently-viewed/ui/useRecentlyViewedStore.ts";
+import AdvertisementDetailsSkeleton from "@/widgets/advertisement/advertisement-detail-skeleton/ui/AdvertisementDetailsSkeleton";
 
 export default function AdvertisementPage() {
   const { id } = useParams<{ id: string }>();
 
+  const addProduct = useRecentlyViewedStore((state) => state.addProduct);
+
   const { data: advertisement, isLoading } = useGetAdvertisement(Number(id));
   const { data: advertisements } = useGetAdvertisements();
 
+  useEffect(() => {
+    if (advertisement) {
+      addProduct(advertisement);
+    }
+  }, [advertisement, addProduct]);
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <section className={styles.wrapper}>
+        <AdvertisementDetailsSkeleton />
+      </section>
+    );
   }
 
   if (!advertisement) {
@@ -25,14 +40,17 @@ export default function AdvertisementPage() {
   }
 
   return (
-    <div className={styles.wrapper}>
+    <section className={styles.wrapper}>
       <Container>
         <div className={styles.pageContent}>
-          <Breadcrumbs lastItemLabel={advertisement?.title} />
+          <Breadcrumbs
+            category={advertisement.category}
+            lastItemLabel={advertisement.title}
+          />
 
           <section className={styles.topSection}>
             <ImageGallery
-              images={advertisement.images?.map((image) => image.url) || []}
+              images={advertisement.pictures?.map((image) => image.url) || []}
             />
             <div className={styles.infoColumn}>
               <AdvertisementInfo advertisement={advertisement} />
@@ -49,6 +67,6 @@ export default function AdvertisementPage() {
           </section>
         </div>
       </Container>
-    </div>
+    </section>
   );
 }

@@ -13,6 +13,7 @@ public static class AttributeDefinitionMapper
             attribute.CategoryId,
             attribute.Category.Code,
             attribute.Key,
+            attribute.DictionaryId,
             attribute.Type,
             attribute.Required,
             attribute.Min,

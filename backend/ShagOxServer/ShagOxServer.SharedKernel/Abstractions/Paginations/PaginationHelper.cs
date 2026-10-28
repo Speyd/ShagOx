@@ -26,8 +26,15 @@ public static class PaginationHelper
         CancellationToken cancellationToken = default,
         bool descending = false)
     {
+
+
         var totalCount = await query
             .CountAsync(cancellationToken);
+
+        var firstItems = await query.Take(20).ToListAsync();
+
+        Console.WriteLine($"Count: {totalCount}");
+        Console.WriteLine($"First items: {firstItems.Count}");
 
         var items = await query
             .WithPagination(pagination,

@@ -12,7 +12,7 @@ export function useBasketAction(
   quantity = 1,
   availableStock?: number,
 ) {
-  const { data: basket, refetch, isFetching: isBasketFetching } = useGetBasket();
+  const { data: basket, refetch } = useGetBasket();
   const addToBasket = useCreateBasketItem();
   const updateBasketItem = useUpdateBasketItem();
   const user = useAuthStore((state) => state.user);
@@ -106,7 +106,6 @@ export function useBasketAction(
     isInBasket,
     isLoading:
       isAdding ||
-      isBasketFetching ||
       addToBasket.isPending ||
       updateBasketItem.isPending,
     handleAdd,

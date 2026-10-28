@@ -10,7 +10,7 @@ public class UpdateLastSeenMiddleware
     private readonly UpdateLastSeenSettings _settings;
     private readonly RequestDelegate _next;
 
-
+  
     public UpdateLastSeenMiddleware(
         IOptions<UpdateLastSeenSettings> settings,
         RequestDelegate next)
@@ -19,15 +19,13 @@ public class UpdateLastSeenMiddleware
         _settings = settings.Value;
     }
 
-
     public async Task InvokeAsync(
         HttpContext context,
         AppDbContext dbContext)
     {
         if (context.User.Identity?.IsAuthenticated == true)
         {
-            var userIdClaim =
-                context.User.FindFirst(ClaimTypes.NameIdentifier);
+            var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier);
 
             if (int.TryParse(userIdClaim?.Value, out var userId))
             {

@@ -16,7 +16,6 @@ import UpdateUserPage from "@/pages/admin/users/update-user-page/UpdateUserPage"
 import UpdateCategoriesPage from "@/pages/admin/categories/update-categories-page/UpdateCategoriesPage";
 
 import { GeneralTab } from "@/widgets/profile/profile-general";
-import { VideosTab } from "@/widgets/profile/profile-videos";
 import { FavoritesTab } from "@/widgets/profile/profile-favorites";
 import { OrdersTab } from "@/widgets/profile/profile-orders";
 import ProfileLayout from "../layouts/ProfileLayout";
@@ -28,7 +27,7 @@ import VerifyPage from "@/pages/verify-page";
 import CheckoutPage from "@/pages/checkout";
 import PaymentPage from "@/pages/payment";
 import BasketPage from "@/pages/basket";
-import CatalogPage from "@/pages/catalog";
+
 import NotificationSettingsPage from "@/pages/notification-settings/NotificationSettingsPage";
 import NotificationsLayout from "../layouts/NotificationsLayout";
 import NotificationsGeneral from "@/widgets/notifications/notifications-generel/ui/NotificationsGeneral";
@@ -42,6 +41,12 @@ import PaymentMethodsPage from "@/pages/payment-methods";
 import DeliveryTermsPage from "@/pages/delivery-terms";
 import OrderTrackingPage from "@/pages/order-tracking";
 import SupportPage from "@/pages/support/SupportPage";
+import CatalogLayout from "../layouts/CatalogLayout";
+import { CatalogMainPage } from "@/pages/catalog/main-page";
+import { CatalogCategorySelectionPage } from "@/pages/catalog/category-selection-page";
+import { CategoryAdvertisementsPage } from "@/pages/catalog/advertisements-page";
+import CreateAdvertisementPage from "@/pages/advertisement/create-advertisement-page";
+import ComparisonPage from "@/pages/comparison";
 
 export default function Router() {
   return (
@@ -87,6 +92,14 @@ export default function Router() {
 
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
+
+          <Route
+            path="/create-advertisement"
+            element={<CreateAdvertisementPage />}
+          />
+
+          <Route path="/comparison" element={<ComparisonPage />} />
+
           <Route
             path="/profile"
             element={
@@ -96,7 +109,6 @@ export default function Router() {
             }
           >
             <Route index element={<GeneralTab />} />
-            <Route path="videos" element={<VideosTab />} />
             <Route path="favorites" element={<FavoritesTab />} />
             <Route path="orders" element={<OrdersTab />} />
             <Route path="statistics" element={<StatisticsTab />} />
@@ -110,6 +122,18 @@ export default function Router() {
             <Route path="discounts" element={<NotificationsDiscounts />} />
           </Route>
 
+          <Route path="/catalog" element={<CatalogLayout />}>
+            <Route index element={<CatalogMainPage />} />
+            <Route
+              path=":productTypeCode"
+              element={<CatalogCategorySelectionPage />}
+            />
+            <Route
+              path="category/:categoryCode"
+              element={<CategoryAdvertisementsPage />}
+            />
+          </Route>
+
           <Route
             path="/payment"
             element={
@@ -118,8 +142,6 @@ export default function Router() {
               </ProtectedRoute>
             }
           />
-
-          <Route path="/catalog" element={<CatalogPage />} />
 
           <Route
             path="/checkout"

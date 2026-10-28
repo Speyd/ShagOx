@@ -6,6 +6,7 @@ public sealed record BasketItemDto
 (
     long Id,
     long BasketId,
+    long AdvertisementVariantId,
     int Quantity,
     AdvertisementDto Advertisement
 ) : BaseDto(Id);

@@ -6,7 +6,8 @@
   background-color: #ffffff;
   border: 1px solid #eef2f6;
   gap: 12px;
-  height: 100%;
+  height: fit-content;
+  width: 100%;
   box-sizing: border-box;
   transition:
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
@@ -60,12 +61,24 @@
 }
 
 .title {
-  font-size: 15px;
-  font-weight: 700;
   color: var(--color-base);
   line-height: 1.3;
-  margin: 0;
-  white-space: nowrap;
+
+  height: 50px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.description {
+  line-height: 1.3;
+
+  height: 45px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -140,9 +153,9 @@
 .actionButtons {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
   margin-top: auto;
-  padding-top: 8px;
+  padding: 8px;
 }
 
 .addButton {

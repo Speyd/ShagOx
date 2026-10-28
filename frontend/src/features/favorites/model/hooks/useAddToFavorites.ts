@@ -7,8 +7,8 @@ export function useAddToFavorites() {
 
   return useMutation({
     mutationFn: addToFavorites,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["favorites"] });
       toast.success("Оголошення додано в обране!");
     },
     onError: () => {

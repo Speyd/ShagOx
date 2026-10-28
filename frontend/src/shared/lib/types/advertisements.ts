@@ -6,7 +6,7 @@ export type Advertisement = {
   category: Category;
   seller: UserShort;
   buyer: UserShort | null;
-  images: AdvertisementImage[];
+  pictures: AdvertisementImage[];
   attributes: Record<string, unknown>;
   variants: AdvertisementVariant[];
   price?: number;
@@ -25,7 +25,7 @@ export type AdvertisementShort = {
   categoryId: number;
   sellerId: number;
   buyerId: number | null;
-  images: AdvertisementImage[];
+  pictures: AdvertisementImage[];
   attributes: Record<string, unknown>;
   variants: AdvertisementVariantShort[];
   createdAt: string;

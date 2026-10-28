@@ -32,3 +32,5 @@ TestResults/
 coverage/
 
 infrastructure/my_redis/certs/server/
+
+*.sql

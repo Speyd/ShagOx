@@ -6,7 +6,8 @@ public static class CategoryMapper
 {
     public static CategoryDto ToDto(
        Category category,
-       string? lable)
+       string? lable,
+       string productTypeLabel)
     {
         return new CategoryDto(
             category.Id,

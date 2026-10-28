@@ -197,4 +197,14 @@ public class AdvertisementQueryService
             _settings.KeyExpiration
         );
     }
+
+    public Task<List<AdvertisementAttributeFilterOptionDto>>
+        GetAttributeFilterOptionsAsync(
+            long categoryId,
+            CancellationToken cancellationToken = default)
+    {
+        return _advertisementRepository.GetAttributeFilterOptionsAsync(
+            categoryId,
+            cancellationToken);
+    }
 }

@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -67,8 +68,8 @@ public class AttributeDefinitionDeleteService
                 EntityErrorResources.AttributeDefinitionDeleteFailed);
         }
 
-        await _attribureInvalid
-            .InvalidateDeleteAsync(id);
+        await _attribureInvalid.InvalidateDeleteAsync(
+           AttributeDefinitionCacheMapper.ToInfo(attribute.Value!));
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(

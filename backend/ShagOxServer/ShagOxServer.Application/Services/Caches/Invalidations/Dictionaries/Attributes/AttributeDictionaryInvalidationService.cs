@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
@@ -89,11 +90,11 @@ public class AttributeDictionaryInvalidationService
              LanguageSearchPattern<AttributeDictionary>());
     }
 
-    private async Task<List<long>> GetAttributeDefinitionIds(
+    private async Task<List<AttributeDefinitionCacheInfo>> GetAttributeDefinitionIds(
         long entityId)
     {
         return await _attributeRepository
-            .GetIdsByAttributeDictionaryAsync(entityId);
+            .GetCacheInfosByAttributeDictionaryAsync(entityId);
     }
 
     private async Task<List<AttributeDictionaryValueCacheInfo>> GetValueInfos(

@@ -14,6 +14,11 @@ public partial interface IAttributeDictionaryValueQueryRepository
         PaginationParams pagination,
         CancellationToken cancellationToken = default);
 
+    Task<PagedResult<AttributeDictionaryValue>> GetByDictionariesAsync(
+        List<long?> dictionaryId,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default);
+
     Task<AttributeDictionaryValue?> GetAsync(
         string dictionaryCode,
         long valueId,

@@ -81,4 +81,23 @@ public partial class AttributeDictionaryValueQueryRepository
                 (x => x.Id),
                 cancellationToken);
     }
+
+    public async Task<PagedResult<AttributeDictionaryValue>> GetByDictionariesAsync(
+        List<long?> dictionaryIds,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
+    {
+        var ids = dictionaryIds
+            .Where(id => id.HasValue)
+            .Select(id => id!.Value)
+            .ToList();
+
+        return await _db.AttributeDictionaryValues
+            .WithIncludes()
+            .Where(x => ids.Contains(x.DictionaryId))
+            .ToPagedResultAsync(
+                pagination,
+                x => x.Id,
+                cancellationToken);
+    }
 }

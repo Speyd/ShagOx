@@ -15,7 +15,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Core;
 
 [ApiController]
 [Route("api/advertisements")]
-//[Authorize]
+[Authorize]
 public class AdvertisementCommandsController 
     : ApiOwnerExistsController
 {
@@ -53,9 +53,9 @@ public class AdvertisementCommandsController
         [FromRoute] long id,
         [FromForm] AdvertisementUpdateRequest request)
     {
-        //var forbidden = await CheckOwnershipAsync(id);
-        //if (forbidden is not null)
-        //    return forbidden;
+        var forbidden = await CheckOwnershipAsync(id);
+        if (forbidden is not null)
+            return forbidden;
 
         var result = await _updateService
             .UpdateAsync(id, request);

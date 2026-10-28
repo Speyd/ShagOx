@@ -149,10 +149,11 @@ public partial class RegisterService
         _userRepository.Add(user);
 
         await _unitOfWork.SaveChangesAsync();
-        
+
         var basketResult = await _basketService.CreateInternalAsync(
             new BasketCreateRequest(),
             user.Id);
+
 
         if (!basketResult.IsSuccess)
         {

@@ -1,10 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Systems.Middleware;
-using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
-using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
 

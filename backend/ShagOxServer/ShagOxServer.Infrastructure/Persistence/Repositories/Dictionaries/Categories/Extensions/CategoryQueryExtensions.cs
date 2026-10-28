@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
@@ -11,7 +11,7 @@ public static class CategoryQueryExtensions
         return query
            .Include(x => x.ProductType)
            .Include(x => x.Attributes)
-           .Include(x => x.Advertisements);
+           .Include(x => x.AdvertisementsByCategory);
     }
 
     public static IQueryable<CategoryCacheInfo> SelectCacheInfo(

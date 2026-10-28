@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Cache;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -74,7 +75,7 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         {
             var entity = await _queryRepository
                 .GetPagedAsync(pagination);
-
+            
             return await entity.ToResultPagedAsync(
                 ApplyMapperAsync);
         }

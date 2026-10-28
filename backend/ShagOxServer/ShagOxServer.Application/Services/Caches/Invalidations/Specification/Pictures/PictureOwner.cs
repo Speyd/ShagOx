@@ -22,7 +22,6 @@ public class PictureOwner<TOwner>
             .InvalidateCreateAsync(ownerId);
     }
 
-
     public async Task InvalidateDeleteAsync(
         long ownerId)
     {

@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames;
+using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 using ShagOxServer.Application.Services.Auth.Users.Roles;
@@ -20,12 +21,10 @@ public partial class GoogleLoginService
 
     private readonly IRegisterService _register;
 
-    private readonly IRepository<User> _userRepository;
     private readonly IUserQueryRepository _userQueryRepository;
     private readonly IUserNameService _userNameService;
     private readonly UserCreater _userCreater;
-
-    private readonly UserRoleService _roleService;
+    private readonly IBasketCreateService _basketService;
 
     private readonly IJwtService _jwtService;
     private readonly IUnitOfWork _unitOfWork;
@@ -35,22 +34,20 @@ public partial class GoogleLoginService
     public GoogleLoginService(
         IOptions<GoogleSettings> googleSettings,
         IRegisterService register,
-        IRepository<User> userRepository,
+        IBasketCreateService basketService,
         IUserQueryRepository userQueryRepository,
         IUserNameService userNameService,
         UserCreater userCreater,
-        UserRoleService roleService,
         IJwtService jwtService,
         IUnitOfWork unitOfWork,
         ILogger<GoogleLoginService> logger)
     {
         _googleSettings = googleSettings.Value;
         _register = register;
-        _userRepository = userRepository;
+        _basketService = basketService; 
         _userQueryRepository = userQueryRepository;
         _userNameService = userNameService;
         _userCreater = userCreater;
-        _roleService = roleService;
         _jwtService = jwtService;
         _unitOfWork = unitOfWork;
         _logger = logger;

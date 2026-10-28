@@ -1,8 +1,8 @@
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.CategoryAttributes;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
-using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
@@ -13,9 +13,10 @@ public static class AdvertisementMapper
 {
     public static AdvertisementDto ToDto(
         Advertisement x,
-        Dictionary<long, List<VariantAttributeDto>> variants,
+        List<AdvertisementVariantDto> variants,
         CategoryDto category,
-        StatusDto status)
+        StatusDto status,
+        List<AttributeDto> attributes)
     {
         return new AdvertisementDto
         (
@@ -31,26 +32,26 @@ public static class AdvertisementMapper
                 .OrderBy(i => i.Order)
                 .Select(AdvertisementImageMapper.ToDto)
                 .ToList(),
-            x.Attributes,
-            VariantToDto(x, variants),
+            attributes,
+            variants,
             x.SoldAt,
             x.CreatedAt
         );
     }
 
-    internal static List<AdvertisementVariantDto> VariantToDto(
-        Advertisement x, 
-        Dictionary<long, List<VariantAttributeDto>> variants)
-    {
-        return x.Variants.Select(variant =>
-        {
-            variants.TryGetValue(
-                variant.Id,
-                out var attributes);
+    //internal static List<AdvertisementVariantDto> VariantToDto(
+    //    Advertisement x, 
+    //    Dictionary<long, List<AttributeDto>> variants)
+    //{
+    //    return x.Variants.Select(variant =>
+    //    {
+    //        variants.TryGetValue(
+    //            variant.Id,
+    //            out var attributes);
 
-            return AdvertisementVariantMapper.ToDto(
-                variant,
-                attributes ?? []);
-        }).ToList();
-    }
+    //        return AdvertisementVariantMapper.ToDto(
+    //            variant,
+    //            attributes ?? []);
+    //    }).ToList();
+    //}
 }

@@ -1,36 +1,38 @@
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.CategoryAttributes;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Validations;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
 
-namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query;
-public partial class AdvertisementVariantQueryService
+namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeProcessor;
+public partial class AttributeProcessor
+    : IAttributeProcessor
 {
-    public async Task<Result<List<VariantAttributeDto>>> GetVariantAttributeAsync(
-        AdvertisementVariant variant,
+    public async Task<Result<List<AttributeDto>>> GetAttributesAsync(
+        JsonDocument variant,
+        long categoryId,
         CancellationToken cancellationToken = default)
     {
-        var jsonAttributes = variant.Attributes
+        var jsonAttributes = variant
             .RootElement
             .EnumerateObject()
             .ToList();
 
         if (jsonAttributes.Count == 0)
         {
-            return Result<List<VariantAttributeDto>>.Success([]);
+            return Result<List<AttributeDto>>.Success([]);
         }
 
         var definitionsResult = await GetAttributeDefinitionsAsync(
-            variant,
+            categoryId,
             jsonAttributes);
 
         if (!definitionsResult.IsSuccess)
         {
-            return Result<List<VariantAttributeDto>>.Fail(
+            return Result<List<AttributeDto>>.Fail(
                 definitionsResult.Error);
         }
 
@@ -42,7 +44,7 @@ public partial class AdvertisementVariantQueryService
 
         if (!valueIdsResult.IsSuccess)
         {
-            return Result<List<VariantAttributeDto>>.Fail(
+            return Result<List<AttributeDto>>.Fail(
                 valueIdsResult.Error);
         }
 
@@ -60,7 +62,7 @@ public partial class AdvertisementVariantQueryService
 
     private async Task<Result<Dictionary<string, AttributeDefinition>>>
         GetAttributeDefinitionsAsync(
-            AdvertisementVariant variant,
+            long categoryId,
             List<JsonProperty> jsonAttributes)
     {
         var keys = jsonAttributes
@@ -69,7 +71,7 @@ public partial class AdvertisementVariantQueryService
             .ToList();
 
         var definitions = await _attributeRepository.GetByKeysAsync(
-            variant.Advertisement.CategoryId,
+            categoryId,
             keys);
 
         var definitionsByKey = definitions
@@ -89,8 +91,8 @@ public partial class AdvertisementVariantQueryService
     }
 
     private Result<List<long>> GetDictionaryValueIds(
-        List<JsonProperty> jsonAttributes,
-        Dictionary<string, AttributeDefinition> definitionsByKey)
+    List<JsonProperty> jsonAttributes,
+    Dictionary<string, AttributeDefinition> definitionsByKey)
     {
         var valueIds = new List<long>();
 
@@ -109,27 +111,47 @@ public partial class AdvertisementVariantQueryService
                     EntityNamesResources.AttributeDictionary);
             }
 
-            if (item.Value.ValueKind != JsonValueKind.Number ||
-                !item.Value.TryGetInt64(out var valueId))
+            if (definition.Multiple &&
+                item.Value.ValueKind == JsonValueKind.Array)
             {
-                return Result<List<long>>.Fail(
-                    string.Format(
-                        ValidationResources.AttributeMustContainDictionaryValueId,
-                        definition.Key));
-            }
+                foreach (var element in item.Value.EnumerateArray())
+                {
+                    if (element.ValueKind != JsonValueKind.Number ||
+                        !element.TryGetInt64(out var valueId))
+                    {
+                        return Result<List<long>>.Fail(
+                            string.Format(
+                                ValidationResources.AttributeMustContainDictionaryValueId,
+                                definition.Key));
+                    }
 
-            valueIds.Add(valueId);
+                    valueIds.Add(valueId);
+                }
+            }
+            else
+            {
+                if (item.Value.ValueKind != JsonValueKind.Number ||
+                    !item.Value.TryGetInt64(out var valueId))
+                {
+                    return Result<List<long>>.Fail(
+                        string.Format(
+                            ValidationResources.AttributeMustContainDictionaryValueId,
+                            definition.Key));
+                }
+
+                valueIds.Add(valueId);
+            }
         }
 
         return Result<List<long>>.Success(valueIds);
     }
 
-    private async Task<Result<List<VariantAttributeDto>>> MapAttributes(
+    private async Task<Result<List<AttributeDto>>> MapAttributes(
         List<JsonProperty> jsonAttributes,
         Dictionary<string, AttributeDefinition> definitionsByKey,
         Dictionary<long, AttributeDictionaryValue> valuesById)
     {
-        var result = new List<VariantAttributeDto>();
+        var result = new List<AttributeDto>();
 
         foreach (var item in jsonAttributes)
         {
@@ -142,13 +164,13 @@ public partial class AdvertisementVariantQueryService
 
             if (!attributeResult.IsSuccess)
             {
-                return Result<List<VariantAttributeDto>>.Fail(
+                return Result<List<AttributeDto>>.Fail(
                     attributeResult.Error);
             }
 
             result.Add(attributeResult.Value!);
         }
 
-        return Result<List<VariantAttributeDto>>.Success(result);
+        return Result<List<AttributeDto>>.Success(result);
     }
 }

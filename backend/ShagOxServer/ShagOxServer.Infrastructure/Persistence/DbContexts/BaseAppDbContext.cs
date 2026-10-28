@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -18,6 +19,7 @@ public abstract partial class BaseAppDbContext
 
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(BaseAppDbContext).Assembly);
+       
 
         modelBuilder.ApplyGlobalNamingConvention();
 

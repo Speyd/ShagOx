@@ -14,6 +14,12 @@ public  class Repository<TEntity>
     }
 
 
+    public virtual void Attach(
+        TEntity entity)
+    {
+        _db.Set<TEntity>().Attach(entity);
+    }
+
     public virtual void Add(
         TEntity entity)
     {
@@ -27,7 +33,7 @@ public  class Repository<TEntity>
         _db.Set<TEntity>()
             .Remove(entity);
     }
-
+   
     public virtual bool Update(
         TEntity entity)
     {

@@ -14,7 +14,6 @@ public static class AdvertisementQueryExtensions
             .Include(x => x.Currency)
             .Include(x => x.Condition)
             .Include(x => x.Category)
-                .ThenInclude(x => x.ProductType)
             .Include(x => x.Owner)
             .Include(x => x.Buyer)
             .Include(x => x.Pictures);

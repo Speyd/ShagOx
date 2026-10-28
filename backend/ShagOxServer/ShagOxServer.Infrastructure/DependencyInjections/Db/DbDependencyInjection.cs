@@ -2,6 +2,7 @@ using Docker.DotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Interfaces.Db;
 using ShagOxServer.Infrastructure.Monitoring;
 using ShagOxServer.Infrastructure.Persistence.Db;
@@ -30,6 +31,10 @@ public static class DbDependencyInjection
             }
 
             options.UseNpgsql(replica.ConnectionString);
+            //options.UseNpgsql(replica.ConnectionString, o =>
+                //o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+            options.EnableSensitiveDataLogging();
+            options.LogTo(Console.WriteLine, LogLevel.Information);
         });
 
         return services;

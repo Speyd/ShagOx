@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;

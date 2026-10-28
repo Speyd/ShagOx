@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 
@@ -9,7 +9,7 @@ public class Condition
 {
     public string Code { get; set; } = "";
 
-    public ICollection<Advertisement> Advertisements { get; set; }
+    public ICollection<Advertisement> AdvertisementsByCondition { get; set; }
         = [];
 
     public ICollection<ConditionTranslation> Translations { get; set; }

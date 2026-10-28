@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using Microsoft.Extensions.Logging;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Query;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.CategoryAttributes;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
@@ -8,11 +10,53 @@ using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
 
-namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query;
-
-public partial class AdvertisementVariantQueryService
+namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeProcessor;
+public partial class AttributeProcessor
+    : IAttributeProcessor
 {
-    private async Task<Result<VariantAttributeDto>> GetVariantAttributeDto(
+    private async Task<Result<AttributeDto>> GetVariantAttributeDto(
+    AttributeDefinition attribute,
+    JsonElement element,
+    Dictionary<long, AttributeDictionaryValue> valuesById)
+    {
+        if (attribute.Multiple)
+        {
+            if (element.ValueKind != JsonValueKind.Array)
+            {
+                return Result<AttributeDto>.Fail(
+                    string.Format(
+                        ValidationResources.UnsupportedAttributeType,
+                        attribute.Type));
+            }
+
+            var values = new List<AttributeDictionaryValueDto>();
+
+            foreach (var item in element.EnumerateArray())
+            {
+                var result = await GetSingleVariantAttributeDto(
+                    attribute,
+                    item,
+                    valuesById);
+
+                if (!result.IsSuccess)
+                    return result;
+
+                values.AddRange(result.Value!.Values);
+            }
+
+            return Result<AttributeDto>.Success(
+                new AttributeDto(
+                    attribute.Id,
+                    attribute.Key,
+                    values));
+        }
+
+        return await GetSingleVariantAttributeDto(
+            attribute,
+            element,
+            valuesById);
+    }
+    private async Task<Result<AttributeDto>> GetSingleVariantAttributeDto(
         AttributeDefinition attribute,
         JsonElement element,
         Dictionary<long, AttributeDictionaryValue> valuesById)
@@ -46,7 +90,7 @@ public partial class AdvertisementVariantQueryService
                     valuesById);
 
             default:
-                return Result<VariantAttributeDto>.Fail(
+                return Result<AttributeDto>.Fail(
                     string.Format(
                         ValidationResources.UnsupportedAttributeType,
                         attribute.Type));
@@ -54,7 +98,7 @@ public partial class AdvertisementVariantQueryService
     }
 
 
-    private async Task<Result<VariantAttributeDto>> GetSelectAttributeDto(
+    private async Task<Result<AttributeDto>> GetSelectAttributeDto(
         AttributeDefinition attribute,
         JsonElement element,
         Dictionary<long, AttributeDictionaryValue> valuesById)
@@ -65,14 +109,14 @@ public partial class AdvertisementVariantQueryService
                 "Select attribute '{AttributeKey}' has no configured dictionary.",
                 attribute.Key);
 
-            return Result<VariantAttributeDto>.NotFound(
+            return Result<AttributeDto>.NotFound(
                 EntityNamesResources.AttributeDictionary);
         }
 
         if (element.ValueKind != JsonValueKind.Number ||
             !element.TryGetInt64(out var valueId))
         {
-            return Result<VariantAttributeDto>.Fail(
+            return Result<AttributeDto>.Fail(
                 string.Format(
                     ValidationResources.AttributeMustContainDictionaryValueId,
                     attribute.Key));
@@ -87,7 +131,7 @@ public partial class AdvertisementVariantQueryService
                 attribute.DictionaryId.Value,
                 valueId);
 
-            return Result<VariantAttributeDto>.NotFound(
+            return Result<AttributeDto>.NotFound(
                 EntityNamesResources.AttributeDictionaryValue);
         }
 
@@ -100,82 +144,82 @@ public partial class AdvertisementVariantQueryService
                 attribute.DictionaryId.Value,
                 attribute.Key);
 
-            return Result<VariantAttributeDto>.NotFound(
+            return Result<AttributeDto>.NotFound(
                 EntityNamesResources.AttributeDictionaryValue);
         }
         var resuultDto = await _variantAttributeService
             .ApplyMapperAsync(attribute,value);
 
-        return Result<VariantAttributeDto>.Success(resuultDto);
+        return Result<AttributeDto>.Success(resuultDto);
     }
 
-    private Result<VariantAttributeDto> GetStringAttributeDto(
+    private Result<AttributeDto> GetStringAttributeDto(
         AttributeDefinition attribute,
         JsonElement element)
     {
         if (element.ValueKind != JsonValueKind.String)
         {
-            return Result<VariantAttributeDto>.Fail(
+            return Result<AttributeDto>.Fail(
                 string.Format(
                     ValidationResources.AttributeMustBeString,
                     attribute.Key));
         }
 
-        return Result<VariantAttributeDto>.Success(
+        return Result<AttributeDto>.Success(
             VariantAttributeMapper.ToDto(
                 attribute,
                 element));
     }
-    private Result<VariantAttributeDto> GetIntegerAttributeDto(
+    private Result<AttributeDto> GetIntegerAttributeDto(
         AttributeDefinition attribute,
         JsonElement element)
     {
         if (element.ValueKind != JsonValueKind.Number ||
             !element.TryGetInt64(out _))
         {
-            return Result<VariantAttributeDto>.Fail(
+            return Result<AttributeDto>.Fail(
                 string.Format(
                     ValidationResources.AttributeMustBeInteger,
                     attribute.Key));
         }
 
-        return Result<VariantAttributeDto>.Success(
+        return Result<AttributeDto>.Success(
             VariantAttributeMapper.ToDto(
                 attribute,
                 element));
     }
-    private Result<VariantAttributeDto> GetDecimalAttributeDto(
+    private Result<AttributeDto> GetDecimalAttributeDto(
         AttributeDefinition attribute,
         JsonElement element)
     {
         if (element.ValueKind != JsonValueKind.Number ||
             !element.TryGetDecimal(out _))
         {
-            return Result<VariantAttributeDto>.Fail(
+            return Result<AttributeDto>.Fail(
                 string.Format(
                     ValidationResources.AttributeMustBeDecimal,
                     attribute.Key));
         }
 
-        return Result<VariantAttributeDto>.Success(
+        return Result<AttributeDto>.Success(
             VariantAttributeMapper.ToDto(
                 attribute,
                 element));
     }
-    private Result<VariantAttributeDto> GetBooleanAttributeDto(
+    private Result<AttributeDto> GetBooleanAttributeDto(
         AttributeDefinition attribute,
         JsonElement element)
     {
         if (element.ValueKind is not JsonValueKind.True &&
             element.ValueKind is not JsonValueKind.False)
         {
-            return Result<VariantAttributeDto>.Fail(
+            return Result<AttributeDto>.Fail(
                 string.Format(
                     ValidationResources.AttributeMustBeBoolean,
                     attribute.Key));
         }
 
-        return Result<VariantAttributeDto>.Success(
+        return Result<AttributeDto>.Success(
             VariantAttributeMapper.ToDto(
                 attribute,
                 element));

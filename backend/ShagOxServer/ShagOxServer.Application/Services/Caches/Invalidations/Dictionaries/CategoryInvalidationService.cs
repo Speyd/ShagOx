@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
@@ -66,8 +67,8 @@ public class CategoryInvalidationService
         await InvalidateAsync(entityInfo);
 
 
-        var attributeIds =
-            await GetAttributeDefinitionIds(entityInfo.Id);
+        var attributeIds = await GetAttributeDefinitionCacheInfos(
+            entityInfo.Id);
 
         foreach (var attributeId in attributeIds)
         {
@@ -103,7 +104,7 @@ public class CategoryInvalidationService
 
 
         var attributeIds =
-            await GetAttributeDefinitionIds(entityInfo.Id);
+            await GetAttributeDefinitionCacheInfos(entityInfo.Id);
 
         foreach (var attributeId in attributeIds)
         {
@@ -138,11 +139,12 @@ public class CategoryInvalidationService
              LanguageSearchPattern<Category>());
     }
 
-    private async Task<List<long>> GetAttributeDefinitionIds(
+    private async Task<List<AttributeDefinitionCacheInfo>> 
+        GetAttributeDefinitionCacheInfos(
         long entityId)
     {
         return await _attributeRepository
-            .GetIdsByAttributeDictionaryAsync(entityId);
+            .GetCacheInfosByAttributeDictionaryAsync(entityId);
     }
 
     private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(

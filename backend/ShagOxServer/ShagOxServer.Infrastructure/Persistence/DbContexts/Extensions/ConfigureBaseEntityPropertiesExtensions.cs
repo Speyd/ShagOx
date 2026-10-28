@@ -1,27 +1,43 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
+using System.Reflection;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
 public static class ConfigureBaseEntityPropertiesExtensions
 {
-    public static void ConfigureBaseEntityProperties(
-        this ModelBuilder modelBuilder)
+    public static void ConfigureBaseEntityProperties(this ModelBuilder modelBuilder)
     {
-        var entityTypes = modelBuilder.Model
+        var derivedTypes = modelBuilder.Model
             .GetEntityTypes()
-            .Where(entityType =>
-                entityType.ClrType != typeof(BaseEntity) &&
-                typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+            .Where(e =>
+                e.ClrType != typeof(BaseEntity) &&
+                !e.IsOwned() &&
+                e.BaseType == null &&
+                typeof(BaseEntity).IsAssignableFrom(e.ClrType))
+            .Select(e => e.ClrType)
             .ToList();
 
-        foreach (var entityType in entityTypes)
+        var method = typeof(ConfigureBaseEntityPropertiesExtensions)
+            .GetMethod(nameof(ConfigureEntity),
+                BindingFlags.NonPublic | BindingFlags.Static)!;
+
+        foreach (var clrType in derivedTypes)
         {
-            modelBuilder.Entity(entityType.ClrType)
-             .Property(nameof(BaseEntity.EntityStatus))
+            method.MakeGenericMethod(clrType)
+                  .Invoke(null, new object[] { modelBuilder });
+        }
+    }
+
+    private static void ConfigureEntity<TEntity>(ModelBuilder modelBuilder)
+        where TEntity : BaseEntity
+    {
+        modelBuilder.Entity<TEntity>(b =>
+        {
+            b.Property(e => e.EntityStatus)
              .HasConversion<string>()
              .HasDefaultValue(EntityStatus.Active)
              .IsRequired();
-        }
+        });
     }
 }

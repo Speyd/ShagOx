@@ -64,4 +64,14 @@ public partial class AttributeDefinitionQueryRepository
                 (parentId.HasValue && x.CategoryId == parentId),
                 cancellationToken);
     }
+
+    public async Task<List<AttributeDefinition>> GetByCategoryAsync(
+        long categoryId, 
+        CancellationToken cancellationToken = default)
+    {
+        return await _db.AttributeDefinitions
+           .WithIncludes()
+           .Where(x => x.CategoryId == categoryId)
+           .ToListAsync(cancellationToken);
+    }
 }

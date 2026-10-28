@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.Attri
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -87,7 +88,7 @@ public class AttributeDefinitionCreateService
         }
 
         await _attributeInvalidation.InvalidateCreateAsync(
-            attribute.Id);
+            AttributeDefinitionCacheMapper.ToInfo(attribute));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

@@ -38,6 +38,9 @@ public class AttributeDictionaryValueInvalidationService
 
         await _cache.RemoveByPatternAsync(CacheKeys.
            EntityLanguagePagedPattern<AttributeDictionaryValue>());
+
+        await _cache.RemoveByPatternAsync(AttributeDictionaryValueCache
+            .ByDictionaryPattern(entityInfo.DictionaryId));
     }
 
     public async Task InvalidateDeleteAsync(

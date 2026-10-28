@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -10,6 +11,14 @@ public interface IAttributeDefinitionQueryRepository
 {
     Task<List<long>> GetIdsByAttributeDictionaryAsync(
         long dictionaryId,
+        CancellationToken cancellationToken = default);
+
+    Task<List<AttributeDefinitionCacheInfo>> GetCacheInfosByAttributeDictionaryAsync(
+        long dictionaryId,
+        CancellationToken cancellationToken = default);
+
+    Task<List<AttributeDefinition>> GetByCategoryAsync(
+        long categoryId,
         CancellationToken cancellationToken = default);
 
     Task<List<AttributeDefinition>> GetByIdsAsync(

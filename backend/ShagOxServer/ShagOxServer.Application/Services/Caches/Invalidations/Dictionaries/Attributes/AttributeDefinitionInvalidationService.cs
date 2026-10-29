@@ -1,5 +1,3 @@
-using CloudinaryDotNet.Actions;
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
@@ -48,11 +46,7 @@ public class AttributeDefinitionInvalidationService
     public async Task InvalidateCreateAsync(
         AttributeDefinitionCacheInfo entityInfo)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             LanguageSearchPattern<AttributeDefinition>());
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-           EntityLanguagePagedPattern<AttributeDefinition>());
+        await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
@@ -103,14 +97,20 @@ public class AttributeDefinitionInvalidationService
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePattern<AttributeDefinition>(entityInfo.Id));
 
+        await InvalidatePatternAsync(entityInfo);
+    }
+    
+    private async Task InvalidatePatternAsync(
+        AttributeDefinitionCacheInfo entityInfo)
+    {
         await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityLanguagePagedPattern<AttributeDefinition>());
+            LanguageSearchPattern<AttributeDefinition>());
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-             LanguageSearchPattern<AttributeDefinition>());
+           EntityLanguagePagedPattern<AttributeDefinition>());
 
         await _cache.RemoveByPatternAsync(AttributeDefinitionCache.
-            ValueByCategoryPattern(entityInfo.CategoryId));
+             ValueByCategoryPattern(entityInfo.CategoryId));
     }
 
     private async Task<BasketAttributeCacheInfo?> GetBasketAttributeInfos(

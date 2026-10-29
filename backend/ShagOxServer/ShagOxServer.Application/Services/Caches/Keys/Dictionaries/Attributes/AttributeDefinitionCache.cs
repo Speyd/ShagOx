@@ -7,13 +7,11 @@ public static class AttributeDefinitionCache
        CacheKeys.LanguagePrefix<AttributeDefinition>();
 
     public static string ValueByCategory(
-      long categoryId,
-      string language,
-      int page,
-      int pageSize)
-          => $"{Prefix}:{language}:value-category:{categoryId}:page:{page}:size:{pageSize}";
+     long categoryId,
+     string language)
+         => $"{Prefix}:{language}:category:{categoryId}";
 
     public static string ValueByCategoryPattern(
        long categoryId)
-           => $"{Prefix}:*value-category:{categoryId}:page:*";
+           => $"{Prefix}:*category:{categoryId}";
 }

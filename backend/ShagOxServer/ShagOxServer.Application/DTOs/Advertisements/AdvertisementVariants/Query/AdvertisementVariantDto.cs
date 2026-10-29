@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Base;
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.CategoryAttributes;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 public sealed record AdvertisementVariantDto
@@ -9,5 +9,5 @@ public sealed record AdvertisementVariantDto
     decimal Price,
     decimal PreviousPrice,
     int Stock,
-    ICollection<AttributeDto> Attributes
+    List<AttributeDto> Attributes
 ) : BaseDto(Id);

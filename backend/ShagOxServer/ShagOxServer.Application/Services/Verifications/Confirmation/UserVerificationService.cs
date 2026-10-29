@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Account.Enum;
@@ -41,6 +41,8 @@ public class UserVerificationService
         }
 
         user.Email = verificationCode.PendingValue;
+        user.EmailConfirmed = true;
+        user.Status = UserStatus.Active;
 
         return Result<bool>.Success(true);
     }
@@ -78,6 +80,8 @@ public class UserVerificationService
         }
 
         user.Phone = verificationCode.PendingValue;
+        user.EmailConfirmed = true;
+        user.Status = UserStatus.Active;
 
         return Result<bool>.Success(true);
     }

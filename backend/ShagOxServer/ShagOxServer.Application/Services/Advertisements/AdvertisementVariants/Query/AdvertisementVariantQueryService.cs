@@ -11,7 +11,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Application.Services.Base.Localized;
-using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeProcessor;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeValues.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
@@ -27,8 +27,8 @@ public partial class AdvertisementVariantQueryService
     protected readonly IAdvertisementVariantQueryRepository _variantRepository;
     protected readonly IAttributeDefinitionQueryRepository _attributeRepository;
     protected readonly IAttributeDictionaryValueQueryRepository _valueRepository;
-    protected readonly IAttributeProcessor _attributeProcessor;
-    protected readonly AttributeQueryService _variantAttributeService;
+    protected readonly IAttributeValueService _attributeProcessor;
+    protected readonly AttributeValueQueryService _variantAttributeService;
 
     protected readonly ILogger<AdvertisementVariantQueryService> _logger;
 
@@ -41,8 +41,8 @@ public partial class AdvertisementVariantQueryService
         IAdvertisementVariantQueryRepository variantRepository,
         IAttributeDefinitionQueryRepository attributeRepository,
         IAttributeDictionaryValueQueryRepository valueRepository,
-        IAttributeProcessor attributeProcessor,
-        AttributeQueryService variantAttributeService,
+        IAttributeValueService attributeProcessor,
+        AttributeValueQueryService variantAttributeService,
         ILogger<AdvertisementVariantQueryService> logger,
         IDataCacheService cacheService,
         IOptions<CacheSettings> settings,

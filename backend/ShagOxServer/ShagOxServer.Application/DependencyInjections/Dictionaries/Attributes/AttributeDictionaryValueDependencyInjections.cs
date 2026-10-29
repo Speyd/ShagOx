@@ -9,7 +9,7 @@ using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDiction
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Update;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Validator;
-using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeProcessor;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeValues.Query;
 
 namespace ShagOxServer.Application.DependencyInjections.Dictionaries.Attributes;
 public static class AttributeDictionaryValueDependencyInjections
@@ -31,7 +31,7 @@ public static class AttributeDictionaryValueDependencyInjections
 
         services.AddScoped<AttributeDictionaryValueValidator>();
 
-        services.AddScoped<AttributeQueryService>();
+        services.AddScoped<AttributeValueQueryService>();
 
         services.AddAttributeValueTranslationApplication();
 

@@ -2,9 +2,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.CategoryAttributes;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
@@ -31,7 +29,7 @@ public class AdvertisementQueryService
 {
     private readonly IAdvertisementQueryRepository _advertisementRepository;
     private readonly IAdvertisementVariantQueryService _variantService;
-    private readonly IAttributeProcessor _attributeProcessor;
+    private readonly IAttributeValueService _attributeProcessor;
 
     private readonly ICategoryQueryService _categoryService;
     private readonly IStatusQueryService _statusService;
@@ -44,7 +42,7 @@ public class AdvertisementQueryService
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository,
         IAdvertisementVariantQueryService variantService,
-        IAttributeProcessor attributeProcessor,
+        IAttributeValueService attributeProcessor,
         ICategoryQueryService categoryService,
         IDataCacheService cacheService,
         IStatusQueryService statusService,
@@ -198,13 +196,13 @@ public class AdvertisementQueryService
         );
     }
 
-    public Task<List<AdvertisementAttributeFilterOptionDto>>
-        GetAttributeFilterOptionsAsync(
-            long categoryId,
-            CancellationToken cancellationToken = default)
-    {
-        return _advertisementRepository.GetAttributeFilterOptionsAsync(
-            categoryId,
-            cancellationToken);
-    }
+    //public Task<List<AdvertisementAttributeFilterOptionDto>>
+    //    GetAttributeFilterOptionsAsync(
+    //        long categoryId,
+    //        CancellationToken cancellationToken = default)
+    //{
+    //    return _advertisementRepository.GetAttributeFilterOptionsAsync(
+    //        categoryId,
+    //        cancellationToken);
+    //}
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
@@ -48,15 +48,18 @@ public class ChangePasswordService
         if (!user.IsSuccess)
             return Result<bool>.Fail(user.Error);
 
-        var verifyResult = _passwordHasher.VerifyHashedPassword(
-            user.Value!,
-            user.Value!.PasswordHash,
-            request.OldPassword);
-
-        if (verifyResult == PasswordVerificationResult.Failed)
+        if (!string.IsNullOrEmpty(user.Value!.PasswordHash))
         {
-            return Result<bool>
-                .Fail(PasswordAuthResources.InvalidPassword);
+            var verifyResult = _passwordHasher.VerifyHashedPassword(
+                user.Value!,
+                user.Value!.PasswordHash,
+                request.OldPassword);
+
+            if (verifyResult == PasswordVerificationResult.Failed)
+            {
+                return Result<bool>
+                    .Fail(PasswordAuthResources.InvalidPassword);
+            } 
         }
 
         string newPasswordHash =

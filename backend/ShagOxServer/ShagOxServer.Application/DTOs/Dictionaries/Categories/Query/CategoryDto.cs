@@ -6,5 +6,5 @@ public sealed record CategoryDto
     long Id,
     string Code,
     long ProductTypeId,
-    string? Lable
+    string? Label
 ) : BaseDto(Id);

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Resources.Results;
 
 namespace ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

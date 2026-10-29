@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Location.Regions.Query;
+using ShagOxServer.Application.DTOs.Location.Regions.Query;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Mapping;
@@ -6,7 +6,7 @@ public static class RegionMapper
 {
     public static RegionDto ToDto(
         Region? region,
-        string? lable)
+        string? label)
     {
         if(region is null)
             return new RegionDto(
@@ -18,7 +18,7 @@ public static class RegionMapper
         return new RegionDto(
             region.Id,
             region.Code,
-            lable
+            label
         );
     }
 }

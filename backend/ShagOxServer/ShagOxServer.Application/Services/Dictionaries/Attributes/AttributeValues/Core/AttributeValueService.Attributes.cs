@@ -1,4 +1,5 @@
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.CategoryAttributes;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Query;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Validations;
@@ -8,8 +9,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeProcessor;
-public partial class AttributeProcessor
-    : IAttributeProcessor
+public partial class AttributeValueService
+    : IAttributeValueService
 {
     public async Task<Result<List<AttributeDto>>> GetAttributesAsync(
         JsonDocument variant,
@@ -23,7 +24,8 @@ public partial class AttributeProcessor
 
         if (jsonAttributes.Count == 0)
         {
-            return Result<List<AttributeDto>>.Success([]);
+            return Result<List<AttributeDto>>.
+                Success([]);
         }
 
         var definitionsResult = await GetAttributeDefinitionsAsync(
@@ -157,20 +159,26 @@ public partial class AttributeProcessor
         {
             var definition = definitionsByKey[item.Name];
 
-            var attributeResult = await GetVariantAttributeDto(
+            var valueDtos = await GetAttributeValuesDto(
                 definition,
                 item.Value,
                 valuesById);
 
-            if (!attributeResult.IsSuccess)
+            if (!valueDtos.IsSuccess)
             {
                 return Result<List<AttributeDto>>.Fail(
-                    attributeResult.Error);
+                    valueDtos.Error);
             }
 
-            result.Add(attributeResult.Value!);
+            var attributeDto = await _attributeService
+                .ApplyMapperAsync(definition);
+
+            result.Add(new AttributeDto(
+                attributeDto,
+                valueDtos.Value));
         }
 
-        return Result<List<AttributeDto>>.Success(result);
+        return Result<List<AttributeDto>>
+            .Success(result);
     }
 }

@@ -16,7 +16,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Query;
-public class CategoryQueryService 
+
+public class CategoryQueryService
     : BaseTranslatableQueryService<
         CategoryDto,
         Category,
@@ -49,15 +50,7 @@ public class CategoryQueryService
         var translation = await _translationRepository
             .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        var productTypeLabel = entity.ProductType.Translations
-            .FirstOrDefault(x => x.Language == _language.Language)?.Name
-            ?? entity.ProductType.Translations
-                .FirstOrDefault(x => x.Language == "uk-UA")?.Name
-            ?? entity.ProductType.Translations
-                .FirstOrDefault(x => x.Language == "uk")?.Name
-            ?? entity.ProductType.Code;
-
-        return CategoryMapper.ToDto(entity, translation?.Name, productTypeLabel);
+        return CategoryMapper.ToDto(entity, translation?.Name);
     }
 
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(

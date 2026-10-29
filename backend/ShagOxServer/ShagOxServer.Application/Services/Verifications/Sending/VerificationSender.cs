@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Verifications.Core;
@@ -104,8 +104,8 @@ public class VerificationSender
                 break;
 
             default:
-                return Result<bool>.Fail(
-                    VerificationResources.UnsupportedVerificationPurpose);
+                return Result<bool>.Fail(VerificationResources
+                    .UnsupportedVerificationPurpose);
         }
 
         return Result<bool>.Success(true);
@@ -170,8 +170,8 @@ public class VerificationSender
         if (!code.IsSuccess || 
             code.Value is null)
         { 
-            return Result<string>.Fail(
-                VerificationResources.FailedToGenerateVerificationCode);
+            return Result<string>.Fail(VerificationResources
+                .FailedToGenerateVerificationCode);
         }
 
         await _unitOfWork.SaveChangesAsync();

@@ -67,17 +67,19 @@ public class AdvertisementQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("attribute-filter-options")]
-    public async Task<IActionResult> GetAttributeFilterOptions(
-        [FromQuery] long categoryId,
-        CancellationToken cancellationToken)
-    {
-        var result = await _advertQueryService.GetAttributeFilterOptionsAsync(
-            categoryId,
-            cancellationToken);
+    //[HttpGet("attribute-filter-options")]
+    //public async Task<IActionResult> GetAttributeFilterOptions(
+    //    [FromQuery] long categoryId,
+    //    CancellationToken cancellationToken)
+    //{
+    //    var result = await _advertQueryService
+    //        .GetAttributeFilterOptionsAsync(
+    //            categoryId,
+    //            cancellationToken
+    //        );
 
-        return Ok(result);
-    }
+    //    return Ok(result);
+    //}
 
     [HttpGet("short-search")]
     public async Task<IActionResult> ShortSearch(

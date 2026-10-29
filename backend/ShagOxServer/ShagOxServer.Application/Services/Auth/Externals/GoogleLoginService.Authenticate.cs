@@ -45,6 +45,8 @@ public partial class GoogleLoginService
 
                     await _userCreater.SetDefaultName(user);
 
+                    user.EmailConfirmed = true;
+
                     await _unitOfWork.CommitAsync();
                 }
                 catch(Exception ex)

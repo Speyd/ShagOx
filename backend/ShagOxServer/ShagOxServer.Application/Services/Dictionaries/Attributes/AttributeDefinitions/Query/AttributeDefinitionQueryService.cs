@@ -1,20 +1,16 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Query;
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Mapping;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -28,8 +24,6 @@ public class AttributeDefinitionQueryService
     IAttributeDefinitionQueryService
 {
     public readonly IAttributeDefinitionQueryRepository _attributeRepository;
-    public readonly IAttributeDictionaryValueQueryRepository _dictQueryRepository;
-    public readonly IAttributeDictionaryValueQueryService _dictQueryService;
 
 
     private readonly IAttributeDefinitionTranslationQueryRepository _translationRepository;
@@ -38,8 +32,6 @@ public class AttributeDefinitionQueryService
     public AttributeDefinitionQueryService(
         IAttributeDefinitionQueryRepository attributeQueryRepository,
         IAttributeDefinitionTranslationQueryRepository translationRepository,
-        IAttributeDictionaryValueQueryRepository dictQueryRepository,
-        IAttributeDictionaryValueQueryService dictQueryService,
         ILanguageProvider language,
         IDataCacheService cacheService,
         IOptions<CacheSettings> settings
@@ -48,8 +40,6 @@ public class AttributeDefinitionQueryService
     {
         _attributeRepository = attributeQueryRepository;
         _translationRepository = translationRepository;
-        _dictQueryRepository = dictQueryRepository;
-        _dictQueryService = dictQueryService;
     }
 
 
@@ -62,35 +52,24 @@ public class AttributeDefinitionQueryService
         return AttributeDefinitionMapper.ToDto(entity, translation?.Name);
     }
 
-    public async Task<Result<PagedResult<AttributeDictionaryValueDto>>>
-       GetValuesByCaregoryAsync(
-           long categoryId,
-           PaginationParams pagination,
-           CancellationToken cancellationToken = default)
+    public async Task<Result<List<AttributeDefinitionDto>>>
+       GetByCategoryAsync(
+       long categoryId,
+       CancellationToken cancellationToken = default)
     {
         var cacheKey = AttributeDefinitionCache.ValueByCategory(
            categoryId,
-           _language.Language,
-           pagination.Page,
-           pagination.PageSize);
+           _language.Language);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
             async () =>
             {
-                var attributreDefinition = await _attributeRepository
+                var values = await _attributeRepository
                     .GetByCategoryAsync(categoryId, cancellationToken);
 
-                var dictionaryIds = attributreDefinition
-                    .Select(x => x.DictionaryId)
-                    .ToList();
-
-                var values = await _dictQueryRepository
-                    .GetByDictionariesAsync(dictionaryIds, pagination,
-                        cancellationToken);
-
-                return await values.ToResultPagedAsync(
-                    _dictQueryService.ApplyMapperAsync);
+                return await values.ToResultListAsync(
+                    ApplyMapperAsync);
             },
             _settings.KeyExpiration
         );

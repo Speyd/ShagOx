@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Common.Helpers;
+using ShagOxServer.Application.Common.Helpers;
 
 namespace ShagOxServer.Application.Services.Caches.Keys;
 public static class CacheKeys
@@ -10,6 +10,9 @@ public static class CacheKeys
 
     public static string LanguagePrefix<TEntity>()
         => $"{Prefix<TEntity>()}:language";
+
+    public static string LanguagePrefix(string prefix)
+        => $"{prefix}:language";
 
     #endregion
 

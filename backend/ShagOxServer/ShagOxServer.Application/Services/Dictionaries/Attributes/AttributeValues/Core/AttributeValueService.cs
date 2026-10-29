@@ -6,36 +6,40 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Advertisem
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeValues.Query;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeProcessor;
-public partial class AttributeProcessor
-    : IAttributeProcessor
+public partial class AttributeValueService
+    : IAttributeValueService
 {
-    protected readonly IAdvertisementVariantQueryRepository _variantRepository;
     protected readonly IAttributeDefinitionQueryRepository _attributeRepository;
+    protected readonly IAttributeDefinitionQueryService _attributeService;
     protected readonly IAttributeDictionaryValueQueryRepository _valueRepository;
-    protected readonly AttributeQueryService _variantAttributeService;
+    protected readonly IAttributeDictionaryValueQueryService _valueService;
 
     protected readonly ILogger<AdvertisementVariantQueryService> _logger;
 
 
-    public AttributeProcessor(
-        IAdvertisementVariantQueryRepository variantRepository,
+    public AttributeValueService(
         IAttributeDefinitionQueryRepository attributeRepository,
+        IAttributeDefinitionQueryService attributeService,
         IAttributeDictionaryValueQueryRepository valueRepository,
-        AttributeQueryService variantAttributeService,
+        IAttributeDictionaryValueQueryService valueService,
+        AttributeValueQueryService variantAttributeService,
         ILogger<AdvertisementVariantQueryService> logger,
         IDataCacheService cacheService,
         IOptions<CacheSettings> settings,
         ILanguageProvider language
     )
     {
-        _variantRepository = variantRepository;
         _attributeRepository = attributeRepository;
+        _attributeService = attributeService;
         _valueRepository = valueRepository;
-        _variantAttributeService = variantAttributeService;
+        _valueService = valueService;
         _logger = logger;
     }
 

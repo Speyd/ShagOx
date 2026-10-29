@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Mapping;
@@ -6,13 +6,13 @@ public static class StatusMapper
 {
     public static StatusDto ToDto(
         Status x,
-        string? lable)
+        string? label)
     {
         return new StatusDto
         (
             x.Id,
             x.Code,
-            lable
+            label
         );
     }
 }

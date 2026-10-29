@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Domain.Entities.Account.Enum;
+namespace ShagOxServer.Domain.Entities.Account.Enum;
 public enum UserStatus
 {
     PendingVerification = 0,

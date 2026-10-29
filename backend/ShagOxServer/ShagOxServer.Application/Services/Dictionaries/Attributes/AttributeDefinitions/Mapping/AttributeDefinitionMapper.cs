@@ -6,7 +6,7 @@ public static class AttributeDefinitionMapper
 {
     public static AttributeDefinitionDto ToDto(
         AttributeDefinition attribute,
-        string? lable)
+        string? label)
     {
         return new AttributeDefinitionDto(
             attribute.Id,
@@ -20,7 +20,7 @@ public static class AttributeDefinitionMapper
             attribute.Max,
             attribute.IsVariant,
             attribute.Multiple,
-            lable
+            label
         );
     }
 }

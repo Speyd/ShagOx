@@ -1,9 +1,10 @@
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.CategoryAttributes;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Query;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
 
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
-public interface IAttributeProcessor
+public interface IAttributeValueService
 {
     Task<Result<List<AttributeDto>>> GetAttributesAsync(
         JsonDocument variant,

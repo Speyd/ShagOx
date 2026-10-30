@@ -1,5 +1,4 @@
 .drawerContent {
-
   background-color: white;
 }
 
@@ -72,13 +71,16 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-}.footer {
+}
+
+.footer {
   display: flex;
   flex-direction: column;
   gap: 16px;
 
   padding: 24px;
 }
+
 .link {
   align-self: center;
   text-decoration: underline;

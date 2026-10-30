@@ -25,7 +25,7 @@ if (-not (Get-Command openssl -ErrorAction SilentlyContinue)) {
 Write-Host "OpenSSL is available."
 openssl version
 
-Write-Host "=== Starting infrastructure ==="
+Write-Host "=== Starting infrastructure (Redis) ==="
 
 Push-Location infrastructure\my_redis\init
 try {
@@ -35,14 +35,4 @@ finally {
     Pop-Location
 }
 
-Write-Host "=== Starting PostgreSQL replication ==="
-
-Push-Location postgres-replication\replica
-try {
-    .\init-replica.ps1
-}
-finally {
-    Pop-Location
-}
-
-Write-Host "=== Server started ==="
+Write-Host "=== Redis started ==="

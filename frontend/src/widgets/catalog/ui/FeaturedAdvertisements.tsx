@@ -50,7 +50,11 @@ export default function FeaturedAdvertisements() {
       <section className={styles.featuredAdvertisements}>
         {searchQuery && (
           <div className={styles.searchHeader}>
-            <Text fz={20} fw={600}>
+            <Text
+              fz={{ base: 16, sm: 20 }}
+              fw={600}
+              style={{ wordBreak: "break-word" }}
+            >
               Результати пошуку: «{searchQuery}»
             </Text>
           </div>
@@ -101,11 +105,13 @@ export default function FeaturedAdvertisements() {
         ))}
       </div>
 
-      <AppPagination
-        page={advertisementsData.page ?? page}
-        totalPages={advertisementsData.totalPages ?? 1}
-        onPageChange={handlePageChange}
-      />
+      {advertisementsData.totalPages > 1 && (
+        <AppPagination
+          page={advertisementsData.page ?? page}
+          totalPages={advertisementsData.totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </section>
   );
 }

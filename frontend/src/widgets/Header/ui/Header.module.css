@@ -3,58 +3,83 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-
-  border-bottom: 1px solid #064ea62e;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-}
-
-.headerLogo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(6, 78, 166, 0.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .headerTop {
-  color: #fff;
-  background-color: var(--color-base);
+  color: #ffffff;
+  background-color: var(--color-base, #0f172a);
 }
 
 .headerTopContent {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 11px 0;
-}
-
-.headerCity {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  padding: 6px 0;
 }
 
 .headerInfo {
-  display: flex;
-  align-items: center;
-  gap: 50px;
+  display: none;
 }
 
 .headerBottom {
-  background-color: white;
+  background-color: #ffffff;
 }
 
 .headerBottomContent {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 60px;
-  padding: 16px 0;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--color-base, #0f172a);
+}
+
+.headerLogo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoImage {
+  width: 36px !important;
+  height: auto;
+}
+
+.logoText {
+  display: none;
+  font-size: 22px !important;
+  letter-spacing: -0.5px;
 }
 
 .headerActions {
+  display: none;
+}
+
+.mobileCartButton {
   display: flex;
   align-items: center;
-  gap: 50px;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--color-base, #0f172a);
+  flex-shrink: 0;
 }
 
 .iconContainer {
@@ -62,12 +87,69 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-
+  gap: 3px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .iconContainerText {
-  font-size: var(--font-xs) !important;
-  color: var(--text-base);
+  font-size: 11px !important;
+  color: var(--text-base, #475569);
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .headerTopContent {
+    padding: 8px 0;
+  }
+
+  .headerInfo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .headerInfoText {
+    font-size: 13px !important;
+    cursor: pointer;
+    opacity: 0.9;
+  }
+
+  .logoImage {
+    width: 44px !important;
+  }
+
+  .logoText {
+    display: block;
+    font-size: 26px !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .headerBottomContent {
+    gap: 24px;
+    padding: 14px 0;
+  }
+
+  .headerInfo {
+    gap: 32px;
+  }
+
+  .logoImage {
+    width: 50px !important;
+  }
+
+  .logoText {
+    font-size: 28px !important;
+  }
+
+  .mobileCartButton {
+    display: none;
+  }
+
+  .headerActions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
 }

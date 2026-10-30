@@ -17,9 +17,10 @@ export default function Footer() {
     <footer className={styles.footer}>
       <Container>
         <div className={styles.content}>
-          <Text fz={35} fw={600}>
+          <Text fz={35} fw={600} className={styles.logo}>
             Marketly
           </Text>
+
           <nav className={styles.footerLinks} aria-label="Навігація футера">
             {footerLinks.map(({ label, to }) => (
               <Link key={to} to={to} className={styles.footerLink}>
@@ -27,14 +28,12 @@ export default function Footer() {
               </Link>
             ))}
           </nav>
+
           <div className={styles.footerInfo}>
-            <Divider
-              orientation="vertical"
-              h={85}
-              color="var(--color-primary)"
-            />
+            <Divider color="var(--color-primary)" className={styles.divider} />
+
             <div className={styles.support}>
-              <Headset size={30} />
+              <Headset size={30} className={styles.supportIcon} />
               <div className={styles.supportText}>
                 <Text>Підтримка</Text>
                 <a
@@ -45,11 +44,9 @@ export default function Footer() {
                 </a>
               </div>
             </div>
-            <Divider
-              orientation="vertical"
-              h={85}
-              color="var(--color-primary)"
-            />
+
+            <Divider color="var(--color-primary)" className={styles.divider} />
+
             <div className={styles.copyright}>
               <Text c="var(--color-primary)" fz={14}>
                 © 2026 Marketly

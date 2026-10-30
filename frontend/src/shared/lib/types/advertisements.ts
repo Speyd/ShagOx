@@ -60,14 +60,7 @@ export type VariantAttribute = {
   };
 };
 
-export function getVariantAttributeText(attribute: VariantAttribute): string {
-  return (
-    attribute.value.label?.trim() ||
-    attribute.value.value?.trim() ||
-    attribute.value.code?.trim() ||
-    ""
-  );
-}
+
 
 export function formatAttributeValue(value: unknown): string {
   if (value == null) return "";

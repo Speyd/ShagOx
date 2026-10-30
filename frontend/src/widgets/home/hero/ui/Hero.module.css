@@ -2,12 +2,11 @@
   user-select: none;
   position: relative;
   width: 100%;
-}
-
-.image {
-  display: block;
-  width: 100%;
-  height: auto;
+  min-height: 480px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
 }
 
 .overlay {
@@ -15,41 +14,86 @@
   inset: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 24px 0;
 }
 
 .content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
+  gap: 12px;
+  max-width: 100%;
 }
 
 .title {
+  font-size: clamp(26px, 7vw, 68px) !important;
   font-family: var(--font-secondary);
-  color: #fff;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .description {
+  font-size: clamp(14px, 3.5vw, 22px) !important;
   font-family: var(--font-secondary);
-  color: #fff;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .heroButton {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 30px;
-  font-size: 24px;
-  font-weight: 700;
-  background-color: #a6b7c9;
-  color: #fff;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  background-color: var(--color-primary-hover);
+  color: #ffffff;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.25s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .heroButton:hover {
-  background-color: #7f95aa;
+  background-color: var(--color-primary-hover, #2563eb);
+}
+
+.heroButton:active {
+  transform: scale(0.98);
+}
+
+@media (min-width: 768px) {
+  .hero {
+    min-height: 520px;
+  }
+
+  .content {
+    gap: 18px;
+    max-width: 550px;
+  }
+
+  .heroButton {
+    padding: 16px 28px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    min-height: 600px;
+  }
+
+  .content {
+    gap: 24px;
+    max-width: 700px;
+  }
+
+  .heroButton {
+    padding: 18px 32px;
+    font-size: 20px;
+  }
 }

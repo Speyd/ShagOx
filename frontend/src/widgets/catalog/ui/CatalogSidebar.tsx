@@ -11,22 +11,20 @@ export default function CatalogSidebar() {
   if (isLoadingTypes || !productTypes) return null;
 
   return (
-    <section className={styles.catalogSidebar}>
+    <aside className={styles.catalogSidebar}>
       <nav className={styles.navigation}>
         {productTypes.map(({ id, name, label }) => (
           <NavLink
             key={id}
             to={`/catalog/${name}`}
             className={({ isActive }) =>
-              clsx(styles.menuItem, {
-                [styles.menuItemActive]: isActive,
-              })
+              clsx(styles.menuItem, isActive && styles.menuItemActive)
             }
           >
             <Text fz={14}>{label}</Text>
           </NavLink>
         ))}
       </nav>
-    </section>
+    </aside>
   );
 }

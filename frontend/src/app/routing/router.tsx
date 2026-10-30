@@ -46,7 +46,7 @@ import { CatalogMainPage } from "@/pages/catalog/main-page";
 import { CatalogCategorySelectionPage } from "@/pages/catalog/category-selection-page";
 import { CategoryAdvertisementsPage } from "@/pages/catalog/advertisements-page";
 import CreateAdvertisementPage from "@/pages/advertisement/create-advertisement-page";
-import ComparisonPage from "@/pages/comparison";
+import ComparisonPage from "@/pages/compare";
 
 export default function Router() {
   return (
@@ -98,7 +98,7 @@ export default function Router() {
             element={<CreateAdvertisementPage />}
           />
 
-          <Route path="/comparison" element={<ComparisonPage />} />
+          <Route path="/compare" element={<ComparisonPage />} />
 
           <Route
             path="/profile"

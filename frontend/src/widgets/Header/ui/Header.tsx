@@ -15,7 +15,6 @@ interface ActionItem {
   label: string;
   to?: string;
   icon: React.ComponentType<{ className?: string; fill?: string }>;
-  isCart?: boolean;
 }
 
 const ACTION_ITEMS: ActionItem[] = [
@@ -27,7 +26,7 @@ const ACTION_ITEMS: ActionItem[] = [
     to: "/notifications",
     icon: Bell,
   },
-  { id: "cart", label: "Кошик", icon: ShoppingBag, isCart: true },
+  { id: "profile", label: "Профіль", to: "/profile", icon: User },
 ];
 
 export default function Header() {
@@ -45,14 +44,15 @@ export default function Header() {
           <div className={styles.headerTopContent}>
             <CitySelector />
             <div className={styles.headerInfo}>
-              <Text>Питання</Text>
+              <Text className={styles.headerInfoText}>Питання</Text>
               <Divider
                 orientation="vertical"
-                h={19}
-                size={2}
+                h={16}
+                size={1}
+                color="rgba(255, 255, 255, 0.3)"
                 style={{ alignSelf: "center" }}
               />
-              <Text>Повернення</Text>
+              <Text className={styles.headerInfoText}>Повернення</Text>
             </div>
           </div>
         </Container>
@@ -61,17 +61,19 @@ export default function Header() {
       <div className={styles.headerBottom}>
         <Container>
           <div className={styles.headerBottomContent}>
-            <Menu
-              size={50}
-              strokeWidth={1.5}
-              className="icon iconLarge"
+            <button
+              type="button"
+              className={styles.menuButton}
               onClick={open}
-            />
+              aria-label="Відкрити меню"
+            >
+              <Menu size={26} strokeWidth={1.75} />
+            </button>
             <NavigationDrawer opened={menuOpened} onClose={close} />
 
             <Link to="/" className={styles.headerLogo}>
-              <Image src={logo} alt="ShagOx" w={55} />
-              <Text c="black" fw={600} fz={30}>
+              <Image src={logo} alt="Marketly" className={styles.logoImage} />
+              <Text c="black" fw={600} className={styles.logoText}>
                 Marketly
               </Text>
             </Link>
@@ -84,21 +86,6 @@ export default function Header() {
                 const isFavorite = item.id === "favorites";
                 const iconFill =
                   isFavorite && isFavoritesActive ? "currentColor" : "none";
-
-                if (item.isCart) {
-                  return (
-                    <div
-                      key={item.id}
-                      className={styles.iconContainer}
-                      onClick={openCart}
-                    >
-                      <Icon className="icon iconLarge" />
-                      <Text className={styles.iconContainerText}>
-                        {item.label}
-                      </Text>
-                    </div>
-                  );
-                }
 
                 return (
                   <Link
@@ -113,12 +100,21 @@ export default function Header() {
                   </Link>
                 );
               })}
+
+              <div onClick={openCart} className={styles.iconContainer}>
+                <ShoppingBag className="icon iconLarge" />
+                <Text className={styles.iconContainerText}>Кошик</Text>
+              </div>
             </div>
 
-            <Link to="/profile" className={styles.iconContainer}>
-              <User className="icon iconLarge" />
-              <Text className={styles.iconContainerText}>Профіль</Text>
-            </Link>
+            <button
+              type="button"
+              className={styles.mobileCartButton}
+              onClick={openCart}
+              aria-label="Кошик"
+            >
+              <ShoppingBag size={24} />
+            </button>
 
             <CartDrawer opened={cartOpened} onClose={closeCart} />
           </div>

@@ -1,6 +1,6 @@
 import styles from "./CategoriesBlock.module.css";
 import Container from "@/shared/ui/container";
-import { Divider, Image, Text } from "@mantine/core";
+import { Image, Text } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -41,35 +41,38 @@ const categories = [
 export default function CategoriesBlock() {
   const { data: availableCategories = [] } = useGetCategories();
 
+  const normalize = (value: string) => value.trim().toLocaleLowerCase();
+
   return (
     <Container>
       <section className={styles.categoriesBlock}>
-        <Text fw={700} fz={24}>
+        <Text fw={700} fz={{ base: 20, sm: 24 }}>
           Категорії
         </Text>
 
         <Carousel
           slideSize={{
-            base: "100%",
-            sm: "50%",
-            md: "33.333333%",
-            lg: "16.666667%",
+            base: "33.333333%",
+            xs: "25%",
+            sm: "20%",
+            md: "16.666667%",
           }}
-          slideGap={0}
-          nextControlIcon={<ChevronRight size={24} />}
-          previousControlIcon={<ChevronLeft size={24} />}
+          slideGap={{ base: "xs", sm: "md" }}
+          nextControlIcon={<ChevronRight size={20} />}
+          previousControlIcon={<ChevronLeft size={20} />}
           classNames={{
             root: styles.carouselRoot,
             controls: styles.carouselControls,
             control: styles.carouselControl,
           }}
         >
-          {categories.map((category, index) => {
-            const matchedCategory = availableCategories.find((cat) =>
-              category.keys.some((key) =>
-                cat.label.toLowerCase().includes(key),
-              ),
-            );
+          {categories.map((category) => {
+            const matchedCategory = availableCategories.find((item) => {
+              const categoryName = normalize(item.label);
+              return category.keys.some((key) =>
+                categoryName.includes(normalize(key)),
+              );
+            });
             const categoryLink = matchedCategory
               ? `/catalog?category=${matchedCategory.id}`
               : "/catalog";
@@ -86,18 +89,11 @@ export default function CategoriesBlock() {
                       alt={category.title}
                       className={styles.icon}
                     />
-                    <Text className={styles.categoryTitle} fw={600} fz={16}>
+                    <Text className={styles.categoryTitle} fw={600}>
                       {category.title}
                     </Text>
                   </div>
                 </Link>
-                {index < categories.length - 1 && (
-                  <Divider
-                    orientation="vertical"
-                    h={65}
-                    color="var(--color-primary)"
-                  />
-                )}
               </Carousel.Slide>
             );
           })}

@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
 }
 
 .searchHeader {
@@ -10,36 +11,67 @@
   justify-content: space-between;
   gap: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--mantine-color-gray-3, #e2e8f0);
 }
 
 .searchTitleGroup {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .featuredAdvertisementsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
   width: 100%;
   min-width: 0;
 }
 
-.emptyWrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 0;
+@media (min-width: 480px) {
+  .featuredAdvertisementsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
 }
 
+@media (min-width: 1024px) {
+  .featuredAdvertisementsGrid {
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+.emptyWrapper,
 .statusWrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 80px 0;
+  padding: 40px 16px;
+}
+
+@media (min-width: 768px) {
+  .emptyWrapper,
+  .statusWrapper {
+    padding: 80px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .featuredAdvertisements {
+    gap: 16px;
+  }
+
+  .searchHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .searchHeader button {
+    align-self: flex-start;
+    padding-left: 0;
+  }
 }

@@ -2,25 +2,30 @@
   user-select: none;
   width: 100%;
   background-color: #f3f7ff;
-  padding: 60px;
+  padding: 24px 16px;
   border-radius: 16px;
 }
 
 .content {
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 24px;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .benefits {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 100px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 16px;
 }
 
 .benefit {
@@ -37,14 +42,45 @@
   gap: 4px;
 }
 
-.titleContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  flex-shrink: 0;
-}
-
 .description {
   text-align: center;
   color: var(--color-primary);
+}
+
+@media (min-width: 768px) {
+  .whyMarketly {
+    padding: 36px 28px;
+  }
+
+  .content {
+    gap: 36px;
+  }
+
+  .benefits {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .whyMarketly {
+    padding: 48px 40px;
+  }
+
+  .content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .titleContainer {
+    align-items: flex-start;
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  .benefits {
+    gap: 32px;
+  }
 }

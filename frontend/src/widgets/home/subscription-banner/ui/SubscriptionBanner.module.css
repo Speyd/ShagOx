@@ -1,15 +1,29 @@
 .subscriptionBanner {
-    user-select: none;
-    width: 100%;
-    background-color: var(--color-base);
-    color: white;
-    padding: 30px;
-    border-radius: 12px;
+  user-select: none;
+  width: 100%;
+  background-color: var(--color-base);
+  color: white;
+  padding: 30px;
+  border-radius: 12px;
 }
 
 .content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: stretch;
+}
 
-    display: flex;
+@media (min-width: 768px) {
+  .content {
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    gap: 32px;
+  }
+
+  .text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
 }

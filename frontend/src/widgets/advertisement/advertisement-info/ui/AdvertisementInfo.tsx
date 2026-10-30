@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import Price from "@/shared/ui/price";
 import {
   formatAttributeValue,
-  getVariantAttributeText,
   type Advertisement,
 } from "@/shared/lib/types/advertisements";
 import CountBlock from "@/shared/ui/count-block";
@@ -27,10 +26,6 @@ export default function AdvertisementInfo({
     if (text) attributes.set(key, text);
   });
 
-  variant?.attributes.forEach((attribute) => {
-    const text = getVariantAttributeText(attribute);
-    if (text) attributes.set(attribute.attributeKey, text);
-  });
 
   const stock = variant?.stock ?? advertisement.stock ?? 0;
   const { handleAdd, isLoading } = useBasketAction(

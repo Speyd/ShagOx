@@ -265,13 +265,12 @@ export async function getAttributeDefinitions(
 }
 
 export async function getAttributeDictionaryValues(
-  dictionaryId: number,
+  categoryId: number,
 ): Promise<AttributeDictionaryValue[]> {
   const response = await api.get<PaginatedResponse<AttributeDictionaryValue>>(
-    "/attribute-dictionary-values/search",
+    `/attribute-dictionary-values/category/${categoryId}`,
     {
       params: {
-        dictionaryId,
         page: 1,
         pageSize: 100,
       },

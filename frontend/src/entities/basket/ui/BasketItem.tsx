@@ -22,7 +22,6 @@ import {
 } from "@/features/basket/model/types";
 import {
   formatAttributeValue,
-  getVariantAttributeText,
 } from "@/shared/lib/types/advertisements";
 
 type BasketItemProps = {
@@ -59,11 +58,6 @@ export default function BasketItem({
   Object.entries(advertisement?.attributes ?? {}).forEach(([key, value]) => {
     const text = formatAttributeValue(value);
     if (text) attributes.set(key, text);
-  });
-
-  variant?.attributes.forEach((attribute) => {
-    const text = getVariantAttributeText(attribute);
-    if (text) attributes.set(attribute.attributeKey, text);
   });
 
   const currencySymbol = item.advertisement?.currency?.symbol ?? "";

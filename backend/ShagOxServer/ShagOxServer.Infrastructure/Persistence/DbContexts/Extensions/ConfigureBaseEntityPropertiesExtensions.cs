@@ -4,6 +4,7 @@ using ShagOxServer.Domain.Base.Enum;
 using System.Reflection;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
+
 public static class ConfigureBaseEntityPropertiesExtensions
 {
     public static void ConfigureBaseEntityProperties(this ModelBuilder modelBuilder)

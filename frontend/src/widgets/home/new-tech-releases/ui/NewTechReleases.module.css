@@ -1,19 +1,27 @@
 .newTechReleases {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .content {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
 }

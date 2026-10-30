@@ -4,13 +4,17 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { useGetAttributeDefinitions } from "@/entities/advertisement/model/hooks/useGetAttributeDefinitions";
 import { useGetCategoryAttributeFilterOptions } from "@/entities/advertisement/model/hooks/useGetCategoryAttributeFilterOptions";
-import type { AttributeDefinition } from "@/entities/advertisement/api/api";
+import {
+  getAttributeDictionaryValues,
+  type AttributeDefinition,
+} from "@/entities/advertisement/api/api";
 import { useDebouncedValue } from "@mantine/hooks";
 import { useGetCategoryByCode } from "@/entities/category/model/useGetCategoryByCode";
 import {
   priceRangeSchema,
   type PriceRange,
 } from "@/widgets/catalog/model/priceRangeSchema";
+import { useGetAttributeDictionaryValues } from "@/entities/advertisement/model/hooks/useGetAttributeDictionaryValues";
 
 function parseAttributeValue(value: string, type: string): unknown {
   const normalizedType = type.toLowerCase();
@@ -81,10 +85,22 @@ export default function CategoryAdvertisementsPage() {
     useGetCategoryByCode(categoryCode);
   const categoryId = category?.id;
 
+  console.log(categoryId);
+  
   const { data: attributeDefinitions = [] } =
     useGetAttributeDefinitions(categoryId);
+
+  console.log(attributeDefinitions);
+
   const { data: categoryAttributeOptions = [] } =
     useGetCategoryAttributeFilterOptions(categoryId);
+
+  console.log(categoryAttributeOptions);
+
+  const { data: dictionaryValues, isLoading } =
+    useGetAttributeDictionaryValues(categoryId);
+
+  console.log(dictionaryValues);
 
   useEffect(() => {
     setSelectedValues({});
@@ -107,7 +123,21 @@ export default function CategoryAdvertisementsPage() {
         set = new Set<string>();
         optionsByKey.set(key, set);
       }
-      set.add(opt.value);
+
+      if (typeof opt.value === "string" && opt.value.startsWith("[")) {
+        try {
+          const parsed = JSON.parse(opt.value) as unknown[];
+          if (Array.isArray(parsed)) {
+            parsed.forEach((item) => set!.add(String(item)));
+          } else {
+            set.add(opt.value);
+          }
+        } catch {
+          set.add(opt.value);
+        }
+      } else {
+        set.add(opt.value);
+      }
     }
 
     const result: Record<number, { value: string; label: string }[]> = {};

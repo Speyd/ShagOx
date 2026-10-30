@@ -262,9 +262,5 @@ foreach ($replica in $replicas) {
     Write-Host "$($replica.Name) is running as replica."
 }
 
-<<<<<<< Updated upstream
-Write-Host ""
-=======
 Write-Host ""
 Write-Host "=== Replica initialization completed ==="
->>>>>>> Stashed changes

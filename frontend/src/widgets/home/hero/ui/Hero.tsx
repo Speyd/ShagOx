@@ -1,4 +1,4 @@
-import { Image, Text, Title } from "@mantine/core";
+import { Text, Title } from "@mantine/core";
 import styles from "./Hero.module.css";
 import heroImage from "@/shared/assets/images/hero-headphones.png";
 import Container from "@/shared/ui/container";
@@ -6,14 +6,16 @@ import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
   const navigate = useNavigate();
-  return (
-    <section className={styles.hero}>
-      <Image src={heroImage} alt="Навушники" className={styles.image} />
 
+  return (
+    <section
+      className={styles.hero}
+      style={{ backgroundImage: `url(${heroImage})` }}
+    >
       <div className={styles.overlay}>
         <Container>
           <div className={styles.content}>
-            <Title className={styles.title} fz={90} fw={600} lh={0.95}>
+            <Title className={styles.title} order={1} fw={600} lh={1.05}>
               Технології
               <br />
               майбутнього
@@ -21,7 +23,7 @@ export default function Hero() {
               вже тут
             </Title>
 
-            <Text className={styles.description} fz={25} fw={500}>
+            <Text className={styles.description} fw={500}>
               Відчуйте досконалість у кожній деталі
             </Text>
 

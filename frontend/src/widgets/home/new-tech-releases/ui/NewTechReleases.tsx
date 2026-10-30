@@ -2,7 +2,6 @@ import { Text } from "@mantine/core";
 import styles from "./NewTechReleases.module.css";
 import ReleaseCard from "./ReleaseCard";
 import Container from "@/shared/ui/container";
-import Arrow from "@/shared/ui/arrow/Arrow";
 
 const releases = [
   {
@@ -36,8 +35,6 @@ export default function NewTechReleases() {
           <Text fw={700} fz={24}>
             Новинки техніки
           </Text>
-
-          <Arrow to="/" text="Переглянути всі" />
         </div>
 
         <div className={styles.content}>

@@ -2,19 +2,43 @@ import { AdvertisementsGrid, CatalogFilters } from "@/widgets/catalog";
 import styles from "./CategoryAdvertisementsPage.module.css";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
-import { useGetAttributeDefinitions } from "@/entities/advertisement/model/hooks/useGetAttributeDefinitions";
-import { useGetCategoryAttributeFilterOptions } from "@/entities/advertisement/model/hooks/useGetCategoryAttributeFilterOptions";
-import {
-  getAttributeDictionaryValues,
-  type AttributeDefinition,
-} from "@/entities/advertisement/api/api";
-import { useDebouncedValue } from "@mantine/hooks";
+import { useDebouncedValue, useDisclosure } from "@mantine/hooks";
 import { useGetCategoryByCode } from "@/entities/category/model/useGetCategoryByCode";
 import {
   priceRangeSchema,
   type PriceRange,
 } from "@/widgets/catalog/model/priceRangeSchema";
 import { useGetAttributeDictionaryValues } from "@/entities/advertisement/model/hooks/useGetAttributeDictionaryValues";
+import { Button, Drawer } from "@mantine/core";
+import { SlidersHorizontal } from "lucide-react";
+
+export type AttributeInfo = {
+  id: number;
+  categoryId: number;
+  categoryCode: string;
+  key: string;
+  dictionaryId: number | null;
+  type: string;
+  required: boolean;
+  min: number | null;
+  max: number | null;
+  isVariant: boolean;
+  multiple: boolean;
+  lable: string;
+};
+
+export type DictionaryValueItem = {
+  id: number;
+  dictionaryId: number;
+  code: string;
+  value: string | null;
+  label: string;
+};
+
+export type CategoryAttributeValueResponse = {
+  attribute: AttributeInfo;
+  values: DictionaryValueItem[] | null;
+};
 
 function parseAttributeValue(value: string, type: string): unknown {
   const normalizedType = type.toLowerCase();
@@ -33,22 +57,23 @@ function parseAttributeValue(value: string, type: string): unknown {
 }
 
 function buildAttributeFilters(
-  definitions: AttributeDefinition[],
+  items: CategoryAttributeValueResponse[],
   selectedValues: Record<number, string[]>,
   priceRange: PriceRange,
 ) {
   const attributes: Record<string, unknown[]> = {};
   const variantAttributes: Record<string, unknown> = {};
 
-  for (const definition of definitions) {
-    const values = selectedValues[definition.id];
+  for (const item of items) {
+    const { attribute } = item;
+    const values = selectedValues[attribute.id];
     if (!values || values.length === 0) continue;
 
     const parsedValues = values.map((val) =>
-      parseAttributeValue(val, definition.type),
+      parseAttributeValue(val, attribute.type),
     );
-    const target = definition.isVariant ? variantAttributes : attributes;
-    target[definition.key] = parsedValues;
+    const target = attribute.isVariant ? variantAttributes : attributes;
+    target[attribute.key] = parsedValues;
   }
 
   let minPrice: number | undefined = undefined;
@@ -69,6 +94,8 @@ function buildAttributeFilters(
 
 export default function CategoryAdvertisementsPage() {
   const { categoryCode } = useParams<{ categoryCode: string }>();
+  const [drawerOpened, { open: openDrawer, close: closeDrawer }] =
+    useDisclosure(false);
 
   const [selectedValues, setSelectedValues] = useState<
     Record<number, string[]>
@@ -85,22 +112,8 @@ export default function CategoryAdvertisementsPage() {
     useGetCategoryByCode(categoryCode);
   const categoryId = category?.id;
 
-  console.log(categoryId);
-  
-  const { data: attributeDefinitions = [] } =
-    useGetAttributeDefinitions(categoryId);
-
-  console.log(attributeDefinitions);
-
-  const { data: categoryAttributeOptions = [] } =
-    useGetCategoryAttributeFilterOptions(categoryId);
-
-  console.log(categoryAttributeOptions);
-
-  const { data: dictionaryValues, isLoading } =
+  const { data: categoryAttributeValues = [], isLoading: isLoadingAttributes } =
     useGetAttributeDictionaryValues(categoryId);
-
-  console.log(dictionaryValues);
 
   useEffect(() => {
     setSelectedValues({});
@@ -111,61 +124,28 @@ export default function CategoryAdvertisementsPage() {
     number,
     { value: string; label: string }[]
   > => {
-    if (!categoryAttributeOptions.length || !attributeDefinitions.length) {
-      return {};
-    }
+    if (!categoryAttributeValues.length) return {};
 
-    const optionsByKey = new Map<string, Set<string>>();
-    for (const opt of categoryAttributeOptions) {
-      const key = opt.key.toLowerCase();
-      let set = optionsByKey.get(key);
-      if (!set) {
-        set = new Set<string>();
-        optionsByKey.set(key, set);
+    const result: Record<number, { value: string; label: label }> = {};
+
+    for (const item of categoryAttributeValues) {
+      const { attribute, values } = item;
+
+      if (values && values.length > 0) {
+        result[attribute.id] = values.map((val) => ({
+          value: val.code || val.label,
+          label: val.label,
+        }));
       }
-
-      if (typeof opt.value === "string" && opt.value.startsWith("[")) {
-        try {
-          const parsed = JSON.parse(opt.value) as unknown[];
-          if (Array.isArray(parsed)) {
-            parsed.forEach((item) => set!.add(String(item)));
-          } else {
-            set.add(opt.value);
-          }
-        } catch {
-          set.add(opt.value);
-        }
-      } else {
-        set.add(opt.value);
-      }
-    }
-
-    const result: Record<number, { value: string; label: string }[]> = {};
-
-    for (const definition of attributeDefinitions) {
-      const key = definition.key.toLowerCase();
-      const valueSet = optionsByKey.get(key);
-      if (!valueSet || valueSet.size === 0) continue;
-
-      const type = definition.type.toLowerCase();
-      const isNumeric = type === "integer" || type === "decimal";
-
-      const options = Array.from(valueSet).map((val) => ({
-        value: val,
-        label: val,
-      }));
-
-      options.sort((left, right) =>
-        isNumeric
-          ? Number(left.value) - Number(right.value)
-          : left.label.localeCompare(right.label),
-      );
-
-      result[definition.id] = options;
     }
 
     return result;
-  }, [attributeDefinitions, categoryAttributeOptions]);
+  }, [categoryAttributeValues]);
+
+  const attributeDefinitions = useMemo(
+    () => categoryAttributeValues.map((item) => item.attribute),
+    [categoryAttributeValues],
+  );
 
   const hasFilters = useMemo(
     () => Object.keys(optionsByDefinition).length > 0,
@@ -175,11 +155,11 @@ export default function CategoryAdvertisementsPage() {
   const { attributes, variantAttributes, minPrice, maxPrice } = useMemo(
     () =>
       buildAttributeFilters(
-        attributeDefinitions,
+        categoryAttributeValues,
         selectedValues,
         debouncedPriceRange,
       ),
-    [attributeDefinitions, selectedValues, debouncedPriceRange],
+    [categoryAttributeValues, selectedValues, debouncedPriceRange],
   );
 
   const attributeFilters = useMemo(
@@ -217,19 +197,61 @@ export default function CategoryAdvertisementsPage() {
       }
     >
       {hasFilters && (
-        <CatalogFilters
-          definitions={attributeDefinitions}
-          optionsByDefinition={optionsByDefinition}
-          selectedValues={selectedValues}
-          onSelectValue={handleSelectValue}
-          priceRange={priceRange}
-          onPriceChange={setPriceRange}
-          onReset={handleClearFilters}
-        />
+        <>
+          <div className={styles.mobileFilterButtonWrapper}>
+            <Button
+              leftSection={<SlidersHorizontal size={18} />}
+              variant="outline"
+              color="gray"
+              onClick={openDrawer}
+              className={styles.mobileFilterBtn}
+            >
+              Фільтри {hasActiveFilters && "•"}
+            </Button>
+          </div>
+
+          <aside className={styles.desktopFilters}>
+            <CatalogFilters
+              definitions={attributeDefinitions}
+              optionsByDefinition={optionsByDefinition}
+              selectedValues={selectedValues}
+              onSelectValue={handleSelectValue}
+              priceRange={priceRange}
+              onPriceChange={setPriceRange}
+              onReset={handleClearFilters}
+            />
+          </aside>
+
+          <Drawer
+            opened={drawerOpened}
+            onClose={closeDrawer}
+            title="Фільтри"
+            padding="md"
+            size="85%"
+            position="left"
+            withCloseButton={false}
+            zIndex={1002}
+            className={styles.mobileDrawer}
+          >
+            <CatalogFilters
+              definitions={attributeDefinitions}
+              optionsByDefinition={optionsByDefinition}
+              selectedValues={selectedValues}
+              onSelectValue={handleSelectValue}
+              priceRange={priceRange}
+              onPriceChange={setPriceRange}
+              onReset={() => {
+                handleClearFilters();
+                closeDrawer();
+              }}
+            />
+          </Drawer>
+        </>
       )}
+
       <AdvertisementsGrid
         categoryId={categoryId}
-        isLoadingCategory={isLoadingCategory}
+        isLoadingCategory={isLoadingCategory || isLoadingAttributes}
         attributeFilters={attributeFilters}
         minPrice={minPrice}
         maxPrice={maxPrice}

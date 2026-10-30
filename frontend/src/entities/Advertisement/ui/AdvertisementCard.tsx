@@ -34,38 +34,27 @@ export default function AdvertisementCard(
       </Link>
 
       <div className={styles.info}>
-        <Link
-          to={`/advertisement/${props.id}`}
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <Text fw={600} fz={18} className={styles.title}>
+        <Link to={`/advertisement/${props.id}`} className={styles.titleLink}>
+          <Text fw={600} className={styles.title}>
             {props.title}
           </Text>
         </Link>
 
-        <Text c="dimmed" fz={14} className={styles.description}>
+        <Text c="dimmed" className={styles.description}>
           {props.description}
         </Text>
 
         <div className={styles.ratingContainer}>
           <div className={styles.rating}>
-            <Star size={16} fill="#fea945" color="#fea945" />
-            <Text size="sm" c="dimmed">
-              4.8
-            </Text>
-            <Text size="sm" c="dimmed">
-              (12 відгуків)
-            </Text>
+            <Star className={styles.ratingStar} />
+            <Text className={styles.ratingText}>4.8</Text>
+            <Text className={styles.ratingCount}>(12)</Text>
           </div>
 
           {getAdvertisementStock(props) > 0 ? (
-            <Text c="green" fw={600} size="xs">
-              В наявності
-            </Text>
+            <Text className={styles.inStock}>В наявності</Text>
           ) : (
-            <Text c="red" fw={600} size="xs">
-              Не в наявності
-            </Text>
+            <Text className={styles.outOfStock}>Не в наявності</Text>
           )}
         </div>
 
@@ -79,14 +68,17 @@ export default function AdvertisementCard(
             onClick={handleAdd}
             loading={isLoading}
             disabled={!variantId}
-            leftSection={isInBasket ? <Check size={16} /> : <Plus size={16} />}
+            leftSection={
+              isInBasket ? (
+                <Check className={styles.btnIcon} />
+              ) : (
+                <Plus className={styles.btnIcon} />
+              )
+            }
             bg="var(--color-base)"
-            bdrs={4}
-            h={44}
-            px={16}
-            className={styles.addToBasketButton}
+            className={styles.addButton}
           >
-            {isInBasket ? "У кошику" : "Додати в кошик"}
+            {isInBasket ? "У кошику" : "У кошик"}
           </Button>
           <FavoriteButton advertisementId={props.id} />
         </div>

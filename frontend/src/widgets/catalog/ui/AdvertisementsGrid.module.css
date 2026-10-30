@@ -33,3 +33,51 @@
   padding: 60px 0;
   grid-column: 1 / -1;
 }
+
+@media (max-width: 1024px) {
+  .advertisementsContainer {
+    gap: 24px;
+  }
+
+  .advertisementsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .advertisementsContainer {
+    gap: 20px;
+  }
+
+  .emptyCategoryWrapper {
+    padding: 40px 0;
+  }
+
+  .statusWrapper {
+    padding: 40px 0;
+  }
+}
+
+@media (max-width: 479px) {
+  .advertisementsContainer {
+    gap: 16px;
+  }
+
+  .advertisementsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .emptyStateWrapper {
+    padding: 24px 0;
+  }
+
+  .emptyCategoryWrapper {
+    padding: 32px 0;
+  }
+
+  .statusWrapper {
+    padding: 32px 0;
+  }
+}

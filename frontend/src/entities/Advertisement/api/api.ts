@@ -264,19 +264,44 @@ export async function getAttributeDefinitions(
   return response.data.items;
 }
 
+export type AttributeInfo = {
+  id: number;
+  categoryId: number;
+  categoryCode: string;
+  key: string;
+  dictionaryId: number | null;
+  type: string;
+  required: boolean;
+  min: number | null;
+  max: number | null;
+  isVariant: boolean;
+  multiple: boolean;
+  lable: string;
+};
+
+export type DictionaryValueItem = {
+  id: number;
+  dictionaryId: number;
+  code: string;
+  value: string | null;
+  label: string;
+};
+
+export type CategoryAttributeValueResponse = {
+  attribute: AttributeInfo;
+  values: DictionaryValueItem[] | null;
+};
+
 export async function getAttributeDictionaryValues(
-  categoryId: number,
-): Promise<AttributeDictionaryValue[]> {
-  const response = await api.get<PaginatedResponse<AttributeDictionaryValue>>(
-    `/attribute-dictionary-values/category/${categoryId}`,
-    {
-      params: {
-        page: 1,
-        pageSize: 100,
-      },
-    },
+  categoryId?: number,
+): Promise<CategoryAttributeValueResponse[]> {
+  if (!categoryId) return [];
+
+  const response = await api.get<CategoryAttributeValueResponse[]>(
+    `/attribute-values/category/${categoryId}`,
   );
-  return response.data.items;
+
+  return response.data;
 }
 
 export async function getCategoryAttributeFilterOptions(

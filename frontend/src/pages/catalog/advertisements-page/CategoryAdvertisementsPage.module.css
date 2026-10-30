@@ -13,8 +13,33 @@
   width: 100%;
 }
 
+.desktopFilters {
+  display: block;
+}
+
+.mobileFilterButtonWrapper {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .categoryAdvertisementsPage {
     grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px 0;
+  }
+
+  .desktopFilters {
+    display: none;
+  }
+
+  .mobileFilterButtonWrapper {
+    display: flex;
+    width: 100%;
+  }
+
+  .mobileFilterBtn {
+    width: 100%;
+    height: 42px !important;
+    border-radius: 8px !important;
   }
 }

@@ -1,12 +1,19 @@
-import type { AttributeDefinition } from "@/entities/advertisement/api/api";
 import styles from "./CatalogFilters.module.css";
-import { Text, Checkbox, Stack, NumberInput, Group } from "@mantine/core";
+import {
+  Text,
+  Checkbox,
+  Stack,
+  NumberInput,
+  Group,
+  Accordion,
+} from "@mantine/core";
 import { Sliders } from "lucide-react";
 import Button from "@/shared/ui/button";
 import { priceRangeSchema, type PriceRange } from "../model/priceRangeSchema";
+import type { AttributeInfo } from "@/entities/advertisement/api/api";
 
 type CatalogFiltersProps = {
-  definitions: AttributeDefinition[];
+  definitions: AttributeInfo[];
   optionsByDefinition: Record<number, { value: string; label: string }[]>;
   selectedValues: Record<number, string[]>;
   onSelectValue: (definitionId: number, values: string[]) => void;
@@ -37,85 +44,117 @@ export default function CatalogFilters({
     return null;
   }
 
+  const defaultOpenedValues = [
+    "price",
+    ...filterableDefinitions.map((def) => String(def.id)),
+  ];
+
   return (
     <section aria-label="Фільтри" className={styles.catalogFilters}>
       <div className={styles.header}>
-        <Sliders />
-        <Text fw={700} fz={15}>
+        <Sliders size={18} />
+        <Text fw={700} fz={16}>
           Фільтри
         </Text>
       </div>
 
-      <div className="divider" />
+      <Accordion
+        multiple
+        defaultValue={defaultOpenedValues}
+        variant="separated"
+        radius="md"
+        chevronPosition="right"
+        className={styles.accordion}
+      >
+        <Accordion.Item value="price" className={styles.accordionItem}>
+          <Accordion.Control className={styles.accordionControl}>
+            <Text fw={600} fz={14}>
+              Ціна (грн)
+            </Text>
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Group grow align="flex-start" gap="xs">
+              <NumberInput
+                placeholder="Від"
+                min={0}
+                allowNegative={false}
+                value={priceRange.min}
+                onChange={(val) =>
+                  onPriceChange({
+                    ...priceRange,
+                    min: val === "" ? "" : Number(val),
+                  })
+                }
+                clampBehavior="strict"
+                size="sm"
+              />
+              <NumberInput
+                placeholder="До"
+                min={0}
+                allowNegative={false}
+                value={priceRange.max}
+                onChange={(val) =>
+                  onPriceChange({
+                    ...priceRange,
+                    max: val === "" ? "" : Number(val),
+                  })
+                }
+                clampBehavior="strict"
+                error={!!errorMessage}
+                size="sm"
+              />
+            </Group>
+            {errorMessage && (
+              <Text c="red" fz={12} mt={6}>
+                {errorMessage}
+              </Text>
+            )}
+          </Accordion.Panel>
+        </Accordion.Item>
 
-      <div className={styles.filter}>
-        <Text fw={600} fz={14} mb={8}>
-          Ціна (грн)
-        </Text>
-        <Group grow align="flex-start">
-          <NumberInput
-            placeholder="Від"
-            min={0}
-            allowNegative={false}
-            value={priceRange.min}
-            onChange={(val) =>
-              onPriceChange({
-                ...priceRange,
-                min: val === "" ? "" : Number(val),
-              })
-            }
-            clampBehavior="strict"
-          />
-          <NumberInput
-            placeholder="До"
-            min={0}
-            allowNegative={false}
-            value={priceRange.max}
-            onChange={(val) =>
-              onPriceChange({
-                ...priceRange,
-                max: val === "" ? "" : Number(val),
-              })
-            }
-            clampBehavior="strict"
-            error={!!errorMessage}
-          />
-        </Group>
-        {errorMessage && (
-          <Text c="red" fz={12} mt={4}>
-            {errorMessage}
-          </Text>
-        )}
-      </div>
+        {filterableDefinitions.map((definition) => {
+          const options = optionsByDefinition[definition.id] ?? [];
+          const currentValues = selectedValues[definition.id] ?? [];
 
-      <div className="divider" />
-
-      {filterableDefinitions.map((definition) => {
-        const options = optionsByDefinition[definition.id] ?? [];
-        const currentValues = selectedValues[definition.id] ?? [];
-
-        return (
-          <div key={definition.id} className={styles.filterK}>
-            <Checkbox.Group
-              label={definition.lable || definition.key}
-              value={currentValues}
-              onChange={(values) => onSelectValue(definition.id, values)}
+          return (
+            <Accordion.Item
+              key={definition.id}
+              value={String(definition.id)}
+              className={styles.accordionItem}
             >
-              <Stack gap="xs" mt="xs">
-                {options.map((option) => (
-                  <Checkbox
-                    key={option.value}
-                    value={option.value}
-                    label={option.label}
-                  />
-                ))}
-              </Stack>
-            </Checkbox.Group>
-            <div className="divider" />
-          </div>
-        );
-      })}
-      <Button variant="outline" onClick={onReset}>
+              <Accordion.Control className={styles.accordionControl}>
+                <Text fw={600} fz={14}>
+                  {definition.lable || definition.key}
+                </Text>
+              </Accordion.Control>
+              <Accordion.Panel>
+                <Checkbox.Group
+                  value={currentValues}
+                  onChange={(values) => onSelectValue(definition.id, values)}
+                >
+                  <Stack gap="sm">
+                    {options.map((option) => (
+                      <Checkbox
+                        key={option.value}
+                        value={option.value}
+                        label={option.label}
+                        size="sm"
+                        className={styles.checkboxOption}
+                      />
+                    ))}
+                  </Stack>
+                </Checkbox.Group>
+              </Accordion.Panel>
+            </Accordion.Item>
+          );
+        })}
+      </Accordion>
+
+      <Button
+        variant="outline"
+        onClick={onReset}
+        className={styles.resetButton}
+      >
         Очистити фільтри
       </Button>
     </section>

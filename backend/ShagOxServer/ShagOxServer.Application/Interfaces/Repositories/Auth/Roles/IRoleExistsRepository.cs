@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
@@ -7,5 +8,6 @@ public interface IRoleExistsRepository
 {
     Task<bool> ExistsByNameAsync(
         string name,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

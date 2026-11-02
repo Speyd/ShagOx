@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
 
@@ -9,9 +10,11 @@ public partial interface IUserQueryRepository
 {
     Task<List<UserCacheInfo>> GetCacheInfosByCityAsync(
         long cityId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<UserCacheInfo?> GetCacheInfoByIdAsync(
         long id,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

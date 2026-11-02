@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Special;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using System.Text.Json;
 
@@ -11,5 +12,6 @@ public interface IAdvertisementVariantExistsRepository
     Task<bool> ExistsAsync(
         long advertisementId,
         JsonDocument attributes,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

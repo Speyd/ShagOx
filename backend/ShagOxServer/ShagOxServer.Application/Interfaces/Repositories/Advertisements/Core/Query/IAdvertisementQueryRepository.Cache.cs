@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
@@ -9,21 +10,26 @@ public partial interface IAdvertisementQueryRepository
 {
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByStatusAsync(
         long statusId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<AdvertisementCacheInfo?> GetCacheInfoByIdAsync(
         long id,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByUserAsync(
         long userId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByCategoryAsync(
         long categoryId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByConditionAsync(
         long conditionId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

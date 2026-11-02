@@ -1,3 +1,4 @@
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Base.Pictures;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Core.Multiple;
@@ -6,5 +7,6 @@ public partial interface IPictureOrderQueryRepository<TEntity>
 {
     Task<List<TEntity>> GetByOwnerAsync(
         long ownerId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

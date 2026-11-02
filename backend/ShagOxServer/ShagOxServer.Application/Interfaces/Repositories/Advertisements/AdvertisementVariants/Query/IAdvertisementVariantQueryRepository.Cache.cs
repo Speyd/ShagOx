@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
@@ -9,5 +10,6 @@ public partial interface IAdvertisementVariantQueryRepository
 {
     Task<List<long>> GetIdsByAdvertisementAsync(
         long advertId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

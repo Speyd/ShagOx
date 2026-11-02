@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,23 +12,27 @@ namespace ShagOxServer.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.RenameTable(
+                name: "ReviewComment",
+                newName: "ReviewComments");
+
             migrationBuilder.AddColumn<DateTime>(
                 name: "CreatedAt",
-                table: "ReviewComment",
+                table: "ReviewComments",
                 type: "timestamp with time zone",
                 nullable: false,
                 defaultValueSql: "CURRENT_TIMESTAMP");
 
             migrationBuilder.AddColumn<long>(
                 name: "OwnerId",
-                table: "ReviewComment",
+                table: "ReviewComments",
                 type: "bigint",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "UpdatedAt",
-                table: "ReviewComment",
+                table: "ReviewComments",
                 type: "timestamp with time zone",
                 nullable: true);
 
@@ -50,9 +54,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_ReviewRepliComment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ReviewRepliComment_ReviewComment_CommentableEntityId",
+                        name: "FK_ReviewRepliComment_ReviewComments_CommentableEntityId",
                         column: x => x.CommentableEntityId,
-                        principalTable: "ReviewComment",
+                        principalTable: "ReviewComments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -93,13 +97,13 @@ namespace ShagOxServer.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReviewComment_CommentableEntityId_CreatedAt",
-                table: "ReviewComment",
+                name: "IX_ReviewComments_CommentableEntityId_CreatedAt",
+                table: "ReviewComments",
                 columns: new[] { "CommentableEntityId", "CreatedAt" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReviewComment_OwnerId",
-                table: "ReviewComment",
+                name: "IX_ReviewComments_OwnerId",
+                table: "ReviewComments",
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
@@ -133,8 +137,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                 column: "OwnerId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ReviewComment_Users_OwnerId",
-                table: "ReviewComment",
+                name: "FK_ReviewComments_Users_OwnerId",
+                table: "ReviewComments",
                 column: "OwnerId",
                 principalTable: "Users",
                 principalColumn: "Id",
@@ -145,8 +149,8 @@ namespace ShagOxServer.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ReviewComment_Users_OwnerId",
-                table: "ReviewComment");
+                name: "FK_ReviewComments_Users_OwnerId",
+                table: "ReviewComments");
 
             migrationBuilder.DropTable(
                 name: "ReviewRepliImage");
@@ -155,24 +159,28 @@ namespace ShagOxServer.Infrastructure.Migrations
                 name: "ReviewRepliComment");
 
             migrationBuilder.DropIndex(
-                name: "IX_ReviewComment_CommentableEntityId_CreatedAt",
-                table: "ReviewComment");
+                name: "IX_ReviewComments_CommentableEntityId_CreatedAt",
+                table: "ReviewComments");
 
             migrationBuilder.DropIndex(
-                name: "IX_ReviewComment_OwnerId",
-                table: "ReviewComment");
+                name: "IX_ReviewComments_OwnerId",
+                table: "ReviewComments");
 
             migrationBuilder.DropColumn(
                 name: "CreatedAt",
-                table: "ReviewComment");
+                table: "ReviewComments");
 
             migrationBuilder.DropColumn(
                 name: "OwnerId",
-                table: "ReviewComment");
+                table: "ReviewComments");
 
             migrationBuilder.DropColumn(
                 name: "UpdatedAt",
-                table: "ReviewComment");
+                table: "ReviewComments");
+
+            migrationBuilder.RenameTable(
+              name: "ReviewComments",
+              newName: "ReviewComment");
         }
     }
 }

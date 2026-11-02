@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 public interface IQueryTranslatableRepository<TEntity>
@@ -9,5 +10,6 @@ public interface IQueryTranslatableRepository<TEntity>
     Task<TEntity?> GetByIdentificatorAsync(
         string identificator,
         long? parentId = null,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

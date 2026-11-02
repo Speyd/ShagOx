@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Extensions;
@@ -23,10 +26,12 @@ public partial class AttributeDictionaryValueQueryRepository
     public async Task<AttributeDictionaryValue?> GetByIdentificatorAsync(
         string identificator,
         long? parentId = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.AttributeDictionaryValues
             .WithIncludes()
+            .WithStatusFilter(status)
             .FirstOrDefaultAsync(x =>
                 x.Code == identificator &&
                 (parentId.HasValue && x.DictionaryId == parentId),
@@ -35,10 +40,12 @@ public partial class AttributeDictionaryValueQueryRepository
 
     public async Task<List<AttributeDictionaryValue>> GetByIdsAsync(
         IEnumerable<long> ids,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.AttributeDictionaryValues
             .WithIncludes()
+            .WithStatusFilter(status)
             .Where(x => ids.Contains(x.Id))
             .ToListAsync(cancellationToken);
     }
@@ -46,10 +53,12 @@ public partial class AttributeDictionaryValueQueryRepository
     public async Task<AttributeDictionaryValue?> GetAsync(
         string dictionaryCode,
         long valueId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.AttributeDictionaryValues
             .WithIncludes()
+            .WithStatusFilter(status)
             .FirstOrDefaultAsync(x =>
                 x.Dictionary.Code == dictionaryCode &&
                 x.Id == valueId,
@@ -59,10 +68,12 @@ public partial class AttributeDictionaryValueQueryRepository
     public async Task<AttributeDictionaryValue?> GetAsync(
         long dictionaryId,
         long valueId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.AttributeDictionaryValues
             .WithIncludes()
+            .WithStatusFilter(status)
             .FirstOrDefaultAsync(x =>
                 x.DictionaryId == dictionaryId &&
                 x.Id == valueId,
@@ -72,10 +83,12 @@ public partial class AttributeDictionaryValueQueryRepository
     public async Task<PagedResult<AttributeDictionaryValue>> GetByDictionaryAsync(
         long dictionaryId, 
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.AttributeDictionaryValues
             .WithIncludes()
+            .WithStatusFilter(status)
             .Where(x => x.DictionaryId == dictionaryId)
             .ToPagedResultAsync(pagination,
                 (x => x.Id),
@@ -85,7 +98,8 @@ public partial class AttributeDictionaryValueQueryRepository
     public async Task<PagedResult<AttributeDictionaryValue>> GetByDictionariesAsync(
         List<long?> dictionaryIds,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         var ids = dictionaryIds
             .Where(id => id.HasValue)
@@ -94,6 +108,7 @@ public partial class AttributeDictionaryValueQueryRepository
 
         return await _db.AttributeDictionaryValues
             .WithIncludes()
+            .WithStatusFilter(status)
             .Where(x => ids.Contains(x.DictionaryId))
             .ToPagedResultAsync(
                 pagination,

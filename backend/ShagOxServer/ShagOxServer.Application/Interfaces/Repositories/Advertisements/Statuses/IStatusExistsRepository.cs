@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
@@ -7,5 +8,6 @@ public interface IStatusExistsRepository
 {
     Task<bool> ExistsByCodeAsync(
         string code,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

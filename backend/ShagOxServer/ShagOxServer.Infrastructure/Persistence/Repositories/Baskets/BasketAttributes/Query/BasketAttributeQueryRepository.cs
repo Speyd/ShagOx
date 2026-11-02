@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
@@ -22,10 +24,12 @@ public partial class BasketAttributeQueryRepository
     public async Task<PagedResult<BasketAttribute>> GetByCategoryAsync(
         long categoryId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.BasketAttributes
             .WithIncludes()
+            .WithStatusFilter(status)
             .Where(c =>
                 c.AttributeDefinition.CategoryId == categoryId)
             .OrderBy(c => c.Order)
@@ -36,10 +40,12 @@ public partial class BasketAttributeQueryRepository
 
     public async Task<BasketAttribute?> GetByAttributeDefinitionAsync(
         long attributeDefinitionId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.BasketAttributes
             .WithIncludes()
+            .WithStatusFilter(status)
             .FirstOrDefaultAsync(c =>
                 c.AttributeDefinitionId == attributeDefinitionId,
                 cancellationToken);

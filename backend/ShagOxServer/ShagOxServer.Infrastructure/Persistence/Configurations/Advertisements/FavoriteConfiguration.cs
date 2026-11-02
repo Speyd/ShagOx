@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements;
 public class FavoriteConfiguration 
@@ -20,8 +21,7 @@ public class FavoriteConfiguration
                .HasForeignKey(x => x.AdvertisementId)
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => 
-            new { x.OwnerId, x.AdvertisementId })
-            .IsUnique();
+        builder.HasUniqueActiveIndex(x => 
+            new { x.OwnerId, x.AdvertisementId });
     }
 }

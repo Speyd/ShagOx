@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Advertisements;
 
@@ -10,11 +10,11 @@ public class AdvertisementVariantConfiguration
         EntityTypeBuilder<AdvertisementVariant> builder)
     {
         builder.Property(x => x.Price)
-         .HasPrecision(18, 2)
-         .IsRequired();
+            .HasPrecision(18, 2)
+            .IsRequired();
 
         builder.Property(x => x.PreviousPrice)
-         .HasPrecision(18, 2);
+            .HasPrecision(18, 2);
 
         builder.Property(x => x.Stock)
             .IsRequired();
@@ -24,9 +24,9 @@ public class AdvertisementVariantConfiguration
             .IsRequired();
 
         builder.HasOne(x => x.Advertisement)
-               .WithMany(x => x.Variants)
-               .HasForeignKey(x => x.AdvertisementId)
-               .OnDelete(DeleteBehavior.Cascade);
+            .WithMany(x => x.Variants)
+            .HasForeignKey(x => x.AdvertisementId)
+            .OnDelete(DeleteBehavior.Cascade);
 
 
         builder.HasIndex(x => x.AdvertisementId);

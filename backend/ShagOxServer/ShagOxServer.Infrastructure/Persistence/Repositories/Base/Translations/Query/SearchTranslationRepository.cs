@@ -1,7 +1,9 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations.Query;
@@ -21,7 +23,8 @@ public class SearchTranslationRepository<TEntity, TTranslator, TFilter>
     public virtual async Task<PagedResult<TTranslator>> SearchAsync(
         TFilter filter,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         IQueryable<TTranslator> query = _db.Set<TTranslator>();
 
@@ -29,6 +32,7 @@ public class SearchTranslationRepository<TEntity, TTranslator, TFilter>
         query = ApplyFilter(query, filter);
 
         return await query
+            .WithStatusFilter(status)
             .ToPagedResultAsync(
                 pagination,
                 (x => x.Id),

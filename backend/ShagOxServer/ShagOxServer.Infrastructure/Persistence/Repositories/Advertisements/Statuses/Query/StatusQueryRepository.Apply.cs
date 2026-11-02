@@ -1,7 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Statuses.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 

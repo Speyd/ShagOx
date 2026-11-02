@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements.Translations;
 public class StatusTranslationConfiguration 
@@ -26,8 +27,8 @@ public class StatusTranslationConfiguration
             .HasForeignKey(x => x.TranslatableId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => new { x.TranslatableId, x.Language })
-           .IsUnique();
+        builder.HasUniqueActiveIndex(x => 
+            new { x.TranslatableId, x.Language });
 
         builder.HasIndex(x => x.Name);
 

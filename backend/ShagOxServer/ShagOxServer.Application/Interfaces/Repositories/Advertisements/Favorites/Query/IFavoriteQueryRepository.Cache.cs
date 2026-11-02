@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
@@ -9,5 +10,6 @@ public partial interface IFavoriteQueryRepository
 {
     Task<List<FavoriteCacheInfo>> GetCacheInfosByAdvertisementAsync(
         long advertId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

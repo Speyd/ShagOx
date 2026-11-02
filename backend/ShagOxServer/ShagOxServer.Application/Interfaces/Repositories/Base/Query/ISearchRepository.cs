@@ -1,4 +1,5 @@
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -11,7 +12,8 @@ public interface ISearchRepository<TEntity, TFilter>
     Task<PagedResult<TEntity>> SearchAsync(
         TFilter filter,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     IQueryable<TEntity> ApplyFilter(
         IQueryable<TEntity> query,

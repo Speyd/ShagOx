@@ -60,14 +60,4 @@ public class RoleCommandsController
 
         return result.ToActionResult();
     }
-
-    [HttpDelete("soft/{id:long}")]
-    public async Task<IActionResult> SoftDelete(
-        [FromRoute] long id)
-    {
-        var result = await _deleteService
-            .SoftDeleteAsync(id);
-
-        return result.ToActionResult();
-    }
 }

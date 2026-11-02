@@ -1,29 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace ShagOxServer.Infrastructure.Migrations
 {
-    /// <inheritdoc />
     public partial class SyncPendingChanges : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_ReviewComment_Advertisements_CommentableEntityId",
-                table: "ReviewComment");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_ReviewComment_Users_OwnerId",
-                table: "ReviewComment");
+                table: "ReviewComments");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_ReviewImages_ReviewComment_OwnerId",
                 table: "ReviewImages");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_ReviewRepliComment_ReviewComment_CommentableEntityId",
+                name: "FK_ReviewRepliComment_ReviewComments_CommentableEntityId",
                 table: "ReviewRepliComment");
 
             migrationBuilder.DropForeignKey(
@@ -39,40 +34,16 @@ namespace ShagOxServer.Infrastructure.Migrations
                 table: "ReviewRepliImages");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_ReviewRepliComment",
-                table: "ReviewRepliComment");
+                name: "PK_ReviewComment",
+                table: "ReviewComments");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_ReviewComment",
-                table: "ReviewComment");
+                name: "PK_ReviewRepliComment",
+                table: "ReviewRepliComment");
 
             migrationBuilder.RenameTable(
                 name: "ReviewRepliComment",
                 newName: "ReviewRepliComments");
-
-            migrationBuilder.RenameTable(
-                name: "ReviewComment",
-                newName: "ReviewComments");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_ReviewRepliComment_ParentReplyId_CreatedAt",
-                table: "ReviewRepliComments",
-                newName: "IX_ReviewRepliComments_ParentReplyId_CreatedAt");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_ReviewRepliComment_ParentReplyId",
-                table: "ReviewRepliComments",
-                newName: "IX_ReviewRepliComments_ParentReplyId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_ReviewRepliComment_OwnerId",
-                table: "ReviewRepliComments",
-                newName: "IX_ReviewRepliComments_OwnerId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_ReviewRepliComment_CommentableEntityId_CreatedAt",
-                table: "ReviewRepliComments",
-                newName: "IX_ReviewRepliComments_CommentableEntityId_CreatedAt");
 
             migrationBuilder.RenameIndex(
                 name: "IX_ReviewRepliComment_CommentableEntityId",
@@ -80,28 +51,33 @@ namespace ShagOxServer.Infrastructure.Migrations
                 newName: "IX_ReviewRepliComments_CommentableEntityId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_ReviewComment_OwnerId",
-                table: "ReviewComments",
-                newName: "IX_ReviewComments_OwnerId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_ReviewComment_CommentableEntityId_CreatedAt",
-                table: "ReviewComments",
-                newName: "IX_ReviewComments_CommentableEntityId_CreatedAt");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_ReviewComment_CommentableEntityId",
-                table: "ReviewComments",
-                newName: "IX_ReviewComments_CommentableEntityId");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_ReviewRepliComments",
+                name: "IX_ReviewRepliComment_CommentableEntityId_CreatedAt",
                 table: "ReviewRepliComments",
-                column: "Id");
+                newName: "IX_ReviewRepliComments_CommentableEntityId_CreatedAt");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_ReviewRepliComment_OwnerId",
+                table: "ReviewRepliComments",
+                newName: "IX_ReviewRepliComments_OwnerId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_ReviewRepliComment_ParentReplyId",
+                table: "ReviewRepliComments",
+                newName: "IX_ReviewRepliComments_ParentReplyId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_ReviewRepliComment_ParentReplyId_CreatedAt",
+                table: "ReviewRepliComments",
+                newName: "IX_ReviewRepliComments_ParentReplyId_CreatedAt");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ReviewComments",
                 table: "ReviewComments",
+                column: "Id");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_ReviewRepliComments",
+                table: "ReviewRepliComments",
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
@@ -111,14 +87,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                 principalTable: "Advertisements",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ReviewComments_Users_OwnerId",
-                table: "ReviewComments",
-                column: "OwnerId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ReviewImages_ReviewComments_OwnerId",
@@ -161,15 +129,10 @@ namespace ShagOxServer.Infrastructure.Migrations
                 onDelete: ReferentialAction.Cascade);
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_ReviewComments_Advertisements_CommentableEntityId",
-                table: "ReviewComments");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_ReviewComments_Users_OwnerId",
                 table: "ReviewComments");
 
             migrationBuilder.DropForeignKey(
@@ -193,40 +156,16 @@ namespace ShagOxServer.Infrastructure.Migrations
                 table: "ReviewRepliImages");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_ReviewRepliComments",
-                table: "ReviewRepliComments");
-
-            migrationBuilder.DropPrimaryKey(
                 name: "PK_ReviewComments",
                 table: "ReviewComments");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_ReviewRepliComments",
+                table: "ReviewRepliComments");
 
             migrationBuilder.RenameTable(
                 name: "ReviewRepliComments",
                 newName: "ReviewRepliComment");
-
-            migrationBuilder.RenameTable(
-                name: "ReviewComments",
-                newName: "ReviewComment");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_ReviewRepliComments_ParentReplyId_CreatedAt",
-                table: "ReviewRepliComment",
-                newName: "IX_ReviewRepliComment_ParentReplyId_CreatedAt");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_ReviewRepliComments_ParentReplyId",
-                table: "ReviewRepliComment",
-                newName: "IX_ReviewRepliComment_ParentReplyId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_ReviewRepliComments_OwnerId",
-                table: "ReviewRepliComment",
-                newName: "IX_ReviewRepliComment_OwnerId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_ReviewRepliComments_CommentableEntityId_CreatedAt",
-                table: "ReviewRepliComment",
-                newName: "IX_ReviewRepliComment_CommentableEntityId_CreatedAt");
 
             migrationBuilder.RenameIndex(
                 name: "IX_ReviewRepliComments_CommentableEntityId",
@@ -234,59 +173,56 @@ namespace ShagOxServer.Infrastructure.Migrations
                 newName: "IX_ReviewRepliComment_CommentableEntityId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_ReviewComments_OwnerId",
-                table: "ReviewComment",
-                newName: "IX_ReviewComment_OwnerId");
+                name: "IX_ReviewRepliComments_CommentableEntityId_CreatedAt",
+                table: "ReviewRepliComment",
+                newName: "IX_ReviewRepliComment_CommentableEntityId_CreatedAt");
 
             migrationBuilder.RenameIndex(
-                name: "IX_ReviewComments_CommentableEntityId_CreatedAt",
-                table: "ReviewComment",
-                newName: "IX_ReviewComment_CommentableEntityId_CreatedAt");
+                name: "IX_ReviewRepliComments_OwnerId",
+                table: "ReviewRepliComment",
+                newName: "IX_ReviewRepliComment_OwnerId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_ReviewComments_CommentableEntityId",
-                table: "ReviewComment",
-                newName: "IX_ReviewComment_CommentableEntityId");
+                name: "IX_ReviewRepliComments_ParentReplyId",
+                table: "ReviewRepliComment",
+                newName: "IX_ReviewRepliComment_ParentReplyId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_ReviewRepliComments_ParentReplyId_CreatedAt",
+                table: "ReviewRepliComment",
+                newName: "IX_ReviewRepliComment_ParentReplyId_CreatedAt");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_ReviewComment",
+                table: "ReviewComments",
+                column: "Id");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ReviewRepliComment",
                 table: "ReviewRepliComment",
                 column: "Id");
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_ReviewComment",
-                table: "ReviewComment",
-                column: "Id");
-
             migrationBuilder.AddForeignKey(
                 name: "FK_ReviewComment_Advertisements_CommentableEntityId",
-                table: "ReviewComment",
+                table: "ReviewComments",
                 column: "CommentableEntityId",
                 principalTable: "Advertisements",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ReviewComment_Users_OwnerId",
-                table: "ReviewComment",
-                column: "OwnerId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_ReviewImages_ReviewComment_OwnerId",
                 table: "ReviewImages",
                 column: "OwnerId",
-                principalTable: "ReviewComment",
+                principalTable: "ReviewComments",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ReviewRepliComment_ReviewComment_CommentableEntityId",
+                name: "FK_ReviewRepliComment_ReviewComments_CommentableEntityId",
                 table: "ReviewRepliComment",
                 column: "CommentableEntityId",
-                principalTable: "ReviewComment",
+                principalTable: "ReviewComments",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 

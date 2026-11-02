@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification;
 
@@ -22,7 +23,7 @@ public class CurrencyConfiguration
                .IsRequired()
                .HasMaxLength(5);
 
-        builder.HasIndex(x => x.Code)
-               .IsUnique();
+
+        builder.HasUniqueActiveIndex(x => x.Code);
     }
 }

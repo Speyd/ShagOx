@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Base.Pictures;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Core.Single;
@@ -7,5 +8,6 @@ public partial interface IPictureQueryRepository<TEntity>
 {
     Task<PictureCacheInfo?> GetCacheInfoByOwnerAsync(
         long ownerId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

@@ -25,7 +25,7 @@ import {
 } from "@/features/profile/update-profile/model/schemas/schema";
 import useUpdateProfile from "@/features/profile/update-profile/model/hooks/useUpdateProfile";
 import { useAuthStore } from "@/features/auth";
-import Button from "@/shared/ui/button";
+import Button from "@/shared/ui/buttons/button";
 
 type ProfileDrawerProps = {
   opened: boolean;

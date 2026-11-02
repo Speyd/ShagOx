@@ -1,14 +1,25 @@
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 import styles from "./Header.module.css";
-import { Bell, Heart, Menu, Scale, ShoppingBag, User } from "lucide-react";
+import {
+  Bell,
+  Heart,
+  LayoutGrid,
+  Menu,
+  Scale,
+  ShoppingBag,
+  User,
+} from "lucide-react";
 import { Divider, Image, Text } from "@mantine/core";
 import logo from "@/shared/assets/icons/logo.png";
-import SearchInput from "@/shared/ui/search-input/SearchInput";
-import { useDisclosure } from "@mantine/hooks";
-import { Link, useLocation } from "react-router-dom";
-import CitySelector from "@/shared/ui/city-selector";
+import SearchInput from "@/shared/ui/data-display/inputs/search-input/SearchInput";
+import { useDisclosure, useElementSize } from "@mantine/hooks";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import NavigationDrawer from "./NavigationDrawer";
 import CartDrawer from "./BasketDrawer";
+import Button from "@/shared/ui/buttons/button";
+import { CitySelector } from "@/entities/city";
+
 
 interface ActionItem {
   id: string;
@@ -34,11 +45,18 @@ export default function Header() {
   const [cartOpened, { open: openCart, close: closeCart }] =
     useDisclosure(false);
 
+  const { ref, height } = useElementSize();
+  const navigate = useNavigate();
+
   const location = useLocation();
   const isFavoritesActive = location.pathname.startsWith("/profile/favorites");
 
   return (
-    <header className={styles.header}>
+    <header
+      className={styles.header}
+      ref={ref}
+      style={{ "--header-height": `${height}px` } as React.CSSProperties}
+    >
       <div className={styles.headerTop}>
         <Container>
           <div className={styles.headerTopContent}>
@@ -77,6 +95,22 @@ export default function Header() {
                 Marketly
               </Text>
             </Link>
+
+            <Button
+              variant="outline"
+              className={styles.catalogButton}
+              onClick={() => navigate("/catalog")}
+            >
+              <LayoutGrid size={20} strokeWidth={2.2} />
+              <Text
+                fz={15}
+                fw={600}
+                inherit
+                className={styles.catalogButtonText}
+              >
+                Каталог
+              </Text>
+            </Button>
 
             <SearchInput />
 

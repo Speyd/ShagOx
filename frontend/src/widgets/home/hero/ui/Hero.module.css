@@ -44,7 +44,7 @@
   align-items: center;
   justify-content: center;
   padding: 12px 20px;
-  font-size: 15px;
+  font-size: 15px !important;
   font-weight: 600;
   background-color: var(--color-primary-hover);
   color: #ffffff;
@@ -77,7 +77,7 @@
 
   .heroButton {
     padding: 16px 28px;
-    font-size: 18px;
+    font-size: 18px !important;
     border-radius: 12px;
   }
 }
@@ -94,6 +94,6 @@
 
   .heroButton {
     padding: 18px 32px;
-    font-size: 20px;
+    font-size: 20px !important;
   }
 }

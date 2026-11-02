@@ -1,7 +1,7 @@
 import { Text, Title } from "@mantine/core";
 import styles from "./Hero.module.css";
 import heroImage from "@/shared/assets/images/hero-headphones.png";
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 import { useNavigate } from "react-router-dom";
 
 export default function Hero() {

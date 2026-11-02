@@ -1,17 +1,20 @@
 .promoBlock {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 20px;
+  width: 100%;
 }
 
 .promoBlockCard {
   position: relative;
   overflow: hidden;
+  border-radius: 12px;
+  width: 100%;
 }
 
 .image {
   width: 100%;
-  max-height: 250px;
+  height: clamp(180px, 25vw, 250px);
   object-fit: cover;
 }
 
@@ -21,52 +24,58 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 30px;
-  gap: 20px;
+  align-items: flex-start;
+  padding: clamp(16px, 4vw, 30px);
+  gap: clamp(10px, 2vw, 20px);
 }
 
 .labelWrapper {
   max-width: fit-content;
   background: var(--color-primary);
   border-radius: 8px;
-
-  padding: 8px 12px;
+  padding: 6px 12px;
 }
 
 .label {
   color: #a6b7c9;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 600 !important;
+  font-size: clamp(12px, 1.5vw, 16px) !important;
+  line-height: 1.2;
 }
 
 .title {
   color: var(--color-base);
-  font-weight: 700;
-  font-size: 24px;
+  font-weight: 700 !important;
+  font-size: clamp(18px, 2.5vw, 24px) !important;
+  line-height: 1.2;
+  margin: 0;
 }
 
 .button {
   max-width: fit-content;
   background: #fcfdff;
-  border: none;
+  border: 1px solid #064ea62e;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: clamp(6px, 1vw, 8px) clamp(10px, 1.5vw, 16px);
   color: #000;
   font-weight: 600;
-  font-size: 16px;
+  font-size: clamp(13px, 1.5vw, 16px);
   cursor: pointer;
-  border: 1px solid #064ea62e;
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
 }
 
 .button:hover {
   background: var(--color-border);
 }
 
+.button:active {
+  transform: scale(0.98);
+}
+
 @media (min-width: 768px) {
   .promoBlock {
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
   }
 }

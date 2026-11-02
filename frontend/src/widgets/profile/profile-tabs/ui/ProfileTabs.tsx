@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styles from "./ProfileTabs.module.css";
+import { Text } from "@mantine/core";
 
 const TABS = [
   { label: "Профіль та канал", to: "/profile" },
@@ -20,7 +21,7 @@ export default function ProfileTabs() {
             `${styles.tabBtn} ${isActive ? styles.active : ""}`
           }
         >
-          {tab.label}
+          <Text className={styles.label}>{tab.label}</Text>
         </NavLink>
       ))}
     </nav>

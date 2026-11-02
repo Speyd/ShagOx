@@ -1,22 +1,38 @@
 .tabsNav {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .tabBtn {
-    padding: 10px 18px;
-    background-color: white;
-    cursor: pointer;
-    font-size: var(--font-sm);
-    font-weight: 500;
-    text-decoration: none;
-    color: var(--text-base);
-    border-radius: 10px;
-    border: 1px solid var(--color-border);
+  padding: 10px 18px;
+  background-color: white;
+  cursor: pointer;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--text-base);
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
 }
 
 .active {
-    background-color: var(--color-base);
-    color: white;
+  background-color: var(--color-base);
+  color: white;
+}
+
+.label {
+  font-size: clamp(12px, 1.2vw, 15px) !important;
+  font-weight: 500 !important;
+}
+
+@media (max-width: 768px) {
+  .tabsNav {
+    gap: 6px;
+  }
+
+  .tabBtn {
+    padding: 8px 12px;
+  }
 }

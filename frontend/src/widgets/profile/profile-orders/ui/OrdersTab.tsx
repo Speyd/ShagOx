@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import type { ProfileContextType } from "@/app/layouts/ProfileLayout";
 import styles from "./OrdersTab.module.css";
+import { EmptyState } from "@/shared/ui/data-display/empty-state/EmptyState";
 
 export default function OrdersTab() {
   const { setOrientation } = useOutletContext<ProfileContextType>();
@@ -15,9 +16,7 @@ export default function OrdersTab() {
 
   return (
     <Paper p="xl" radius="lg" className={styles.profileOrders}>
-      <Text fw={700} fz={24}>
-        Мої замовлення
-      </Text>
+      <Text className={styles.title}>Мої замовлення</Text>
       <Tabs value={activeTab} onChange={setActiveTab}>
         <Tabs.List className={styles.list}>
           <Tabs.Tab value="all" className={styles.tab}>
@@ -37,9 +36,11 @@ export default function OrdersTab() {
           </Tabs.Tab>
         </Tabs.List>
       </Tabs>
-      <div className="emptyState">
-        <Text c="dimmed">У вас поки що немає замовлень.</Text>
-      </div>
+
+      <EmptyState
+        variant="dashed"
+        description="У вас поки що немає обраних товарів."
+      />
     </Paper>
   );
 }

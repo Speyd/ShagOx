@@ -1,45 +1,59 @@
 import { Text } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 import styles from "./NewTechReleases.module.css";
 import ReleaseCard from "./ReleaseCard";
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 
 const releases = [
   {
     title: "iPhone 15 Pro Max",
     description: "The latest iPhone with Pro Max features.",
     image:
-      "https://res.cloudinary.com/dvq5kvhpy/image/upload/v1791526357/468491a7c6fdd81c946b3d38710b520a33e7b3e2_1_kskcvl.png",
+      "https://res.cloudinary.com/dvq5kvhpy/image/upload/v1793649332/594345298_tik9id.webp",
     price: 1120,
+    searchQuery: "iPhone 15 Pro Max",
   },
   {
     title: "Samsung Galaxy S23 Ultra",
     description: "The latest Samsung Galaxy with Ultra features.",
     image:
-      "https://res.cloudinary.com/dvq5kvhpy/image/upload/v1791526374/c4ed186fcebbf4c6861f6d6c9a7d536eaa6aadab_1_wh9no3.png",
+      "https://res.cloudinary.com/dvq5kvhpy/image/upload/v1793649480/532097917_m1aysg.webp",
     price: 320,
+    searchQuery: "Samsung Galaxy S23 Ultra",
   },
   {
     title: "Google Pixel 7 Pro",
     description: "The latest Google Pixel with Pro features.",
     image:
-      "https://res.cloudinary.com/dvq5kvhpy/image/upload/v1791526376/9a56dbb652cde537cecdbb60fd8e31eed174680f_1_s3f4y0.png",
+      "https://res.cloudinary.com/dvq5kvhpy/image/upload/v1793649509/308403743_dkfsum.webp",
     price: 5000,
+    searchQuery: "Google Pixel 7 Pro",
   },
 ];
 
 export default function NewTechReleases() {
+  const navigate = useNavigate();
+
+  const handleCardClick = (query: string) => {
+    navigate(`/catalog?search=${encodeURIComponent(query)}`);
+  };
+
   return (
     <Container>
       <section className={styles.newTechReleases}>
         <div className={styles.header}>
-          <Text fw={700} fz={24}>
+          <Text fw={700} fz={{ base: 20, sm: 24 }}>
             Новинки техніки
           </Text>
         </div>
 
         <div className={styles.content}>
           {releases.map((release) => (
-            <ReleaseCard key={release.title} {...release} />
+            <ReleaseCard
+              key={release.title}
+              {...release}
+              onClick={() => handleCardClick(release.searchQuery)}
+            />
           ))}
         </div>
       </section>

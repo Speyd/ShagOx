@@ -1,18 +1,16 @@
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 import styles from "./SubscriptionBanner.module.css";
 import { Text } from "@mantine/core";
-import SubscriptionBannerSearch from "./SubscriptionBannerSearch";
+import { SubscriptionBannerSearch } from "./SubscriptionBannerSearch";
 
-export default function SubscriptionBanner() {
+export function SubscriptionBanner() {
   return (
     <Container>
       <section className={styles.subscriptionBanner}>
         <div className={styles.content}>
           <div className={styles.text}>
-            <Text fw={700} fz={28}>
-              Весняний розпродаж техніки!
-            </Text>
-            <Text fw={400} fz={14} color="var(--text-secondary)">
+            <Text className={styles.title}>Весняний розпродаж техніки!</Text>
+            <Text className={styles.description}>
               Підпишіться на новини та отримуйте знижки
             </Text>
           </div>

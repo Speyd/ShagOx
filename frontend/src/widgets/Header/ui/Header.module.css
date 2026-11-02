@@ -66,6 +66,39 @@
   letter-spacing: -0.5px;
 }
 
+.catalogButton {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid var(--color-primary);
+  background-color: transparent;
+  color: var(--color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.catalogButtonText {
+  display: none;
+}
+
+.catalogButton:hover {
+  background-color: rgba(50, 99, 157, 0.08);
+  border-color: var(--color-primary-hover);
+}
+
+.catalogButton:active {
+  transform: scale(0.98);
+}
+
 .headerActions {
   display: none;
 }
@@ -98,6 +131,13 @@
   white-space: nowrap;
 }
 
+@media (min-width: 576px) {
+  .catalogButton {
+    display: flex;
+    padding: 0 12px;
+  }
+}
+
 @media (min-width: 640px) {
   .headerTopContent {
     padding: 8px 0;
@@ -116,16 +156,47 @@
   }
 
   .logoImage {
-    width: 44px !important;
+    width: 42px !important;
   }
 
-  .logoText {
-    display: block;
-    font-size: 26px !important;
+  .catalogButtonText {
+    display: inline;
+  }
+
+  .catalogButton {
+    padding: 0 16px;
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
+  .logoText {
+    display: block;
+    font-size: 24px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .headerBottomContent {
+    gap: 20px;
+    padding: 12px 0;
+  }
+
+  .headerInfo {
+    gap: 28px;
+  }
+
+  .mobileCartButton {
+    display: none;
+  }
+
+  .headerActions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+@media (min-width: 1280px) {
   .headerBottomContent {
     gap: 24px;
     padding: 14px 0;
@@ -136,20 +207,14 @@
   }
 
   .logoImage {
-    width: 50px !important;
+    width: 48px !important;
   }
 
   .logoText {
     font-size: 28px !important;
   }
 
-  .mobileCartButton {
-    display: none;
-  }
-
   .headerActions {
-    display: flex;
-    align-items: center;
-    gap: 18px;
+    gap: 28px;
   }
 }

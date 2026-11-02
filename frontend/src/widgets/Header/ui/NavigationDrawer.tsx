@@ -9,7 +9,6 @@ import {
   Package,
   Phone,
   Settings,
-  Shield,
   Smartphone,
   Truck,
   X,
@@ -18,9 +17,9 @@ import styles from "./NavigationDrawer.module.css";
 import logo from "@/shared/assets/icons/logo.png";
 import { useState } from "react";
 import { useLogout } from "@/features/auth/model/hooks/useLogout";
-import ConfirmModal from "@/shared/ui/confirm-modal";
-import { NavLink } from "react-router-dom"; // 1. Імпортуємо NavLink
-import clsx from "clsx"; // 2. Імпортуємо clsx для підключення активних класів
+import ConfirmModal from "@/shared/ui/feedback/confirm-modal";
+import { NavLink } from "react-router-dom";
+import clsx from "clsx";
 
 type NavigationDrawerProps = {
   opened: boolean;
@@ -33,7 +32,6 @@ const NAV_ITEMS = [
   { to: "/profile/orders", label: "Мої замовлення", icon: Package },
   { to: "/devices", label: "Мої пристрої", icon: Smartphone },
   { to: "/delivery-terms", label: "Доставка та оплата", icon: Truck },
-  { to: "/reviews", label: "Відео та огляди", icon: Shield },
   { to: "/contacts", label: "Контакти", icon: Phone },
   { to: "/support", label: "Підтримка", icon: Headphones },
   { to: "/settings", label: "Налаштування", icon: Settings },
@@ -88,7 +86,7 @@ export default function NavigationDrawer({
               <NavLink
                 key={to}
                 to={to}
-                end={end} 
+                end={end}
                 onClick={onClose}
                 className={({ isActive }) =>
                   clsx(styles.menuItem, {

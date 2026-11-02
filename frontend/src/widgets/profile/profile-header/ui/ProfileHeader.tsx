@@ -14,8 +14,6 @@ export default function ProfileHeader({
 }: ProfileHeaderProps) {
   const user = useAuthStore((state) => state.user);
 
-  console.log(user);
-
   const [
     userProfileOpened,
     { open: openUserProfile, close: closeUserProfile },
@@ -33,13 +31,11 @@ export default function ProfileHeader({
           src={user?.avatar?.url}
           name={displayName}
           color="initials"
-          w={170}
-          h={170}
           radius={100}
           className={styles.avatar}
           styles={{
             placeholder: {
-              fontSize: "48px",
+              fontSize: "clamp(24px, 4vw, 48px)",
               fontWeight: 700,
             },
           }}
@@ -49,17 +45,19 @@ export default function ProfileHeader({
       <div className={styles.content}>
         <div className={styles.leftBlock}>
           <div className={styles.nameBlock}>
-            <Text fw={800} fz={24}>
+            <Text fw={800} fz={{ base: 20, sm: 24 }}>
               {displayName}
             </Text>
-            <Text fw={400} fz={15}>
+            <Text fw={400} fz={14} c="dimmed">
               @{user?.userName}
             </Text>
           </div>
 
-          <Text fw={500} fz={15}>
-            {user?.bio || ""}
-          </Text>
+          {user?.bio && (
+            <Text fw={500} fz={14} className={styles.bio}>
+              {user.bio}
+            </Text>
+          )}
 
           <div
             className={
@@ -94,11 +92,11 @@ export default function ProfileHeader({
             </div>
             {orientation === "horizontal" && (
               <div className={styles.statItem}>
+                <Text fw={700} fz={15}>
+                  12.10.24
+                </Text>
                 <Text fw={500} fz={12} c="dimmed">
                   На платформі
-                </Text>
-                <Text fw={700} fz={15}>
-                  з 12.10.24
                 </Text>
               </div>
             )}

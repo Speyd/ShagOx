@@ -1,9 +1,9 @@
-import Input from "@/shared/ui/input";
+import Input from "@/shared/ui/data-display/inputs/input";
 import styles from "./SubscriptionBannerSearch.module.css";
-import Button from "@/shared/ui/button";
+import Button from "@/shared/ui/buttons/button";
 import { ArrowRight } from "lucide-react";
 
-export default function SubscriptionBannerSearch() {
+export function SubscriptionBannerSearch() {
   return (
     <div className={styles.inputWrapper}>
       <Input placeholder="Ваш e-mail" className={styles.input} />

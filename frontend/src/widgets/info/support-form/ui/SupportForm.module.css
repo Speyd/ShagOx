@@ -1,0 +1,124 @@
+.supportPage {
+  flex: 1;
+  width: 100%;
+  min-height: 100dvh;
+  background-color: var(--bg-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 40px);
+  box-sizing: border-box;
+}
+
+.supportPageContent {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* SupportForm.module.css */
+.supportForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 570px;
+  width: 100%;
+  gap: clamp(20px, 3vw, 32px);
+  padding: clamp(24px, 5vw, 56px);
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.formHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(22px, 3.5vw, 32px) !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+}
+
+.formDescription {
+  font-size: clamp(13px, 1.5vw, 14px) !important;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.formFields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.submitButton {
+  max-width: 250px;
+  width: 100%;
+  padding: 12px 24px;
+  border-radius: 8px;
+}
+
+.contactsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  width: 100%;
+}
+
+.contactItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background-color: #f8fafc;
+  border: 1px solid var(--color-border);
+  padding: 10px 12px;
+  border-radius: 8px;
+  flex: 1;
+  text-align: center;
+}
+
+.contactValue {
+  font-size: clamp(12px, 1.5vw, 14px) !important;
+  font-weight: 500 !important;
+  word-break: break-all;
+}
+
+.textSecondary {
+  font-size: 12px !important;
+  color: #94a3b8;
+}
+
+.privacyText {
+  font-size: clamp(12px, 1.3vw, 13px) !important;
+  text-align: center;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+@media (max-width: 576px) {
+  .submitButton {
+    max-width: 100%;
+  }
+
+  .contactsContainer {
+    flex-direction: column;
+  }
+}

@@ -1,29 +1,46 @@
 .subscriptionBanner {
-  user-select: none;
   width: 100%;
-  background-color: var(--color-base);
-  color: white;
-  padding: 30px;
-  border-radius: 12px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: clamp(20px, 4vw, 40px);
+  border: 1px solid var(--color-border);
+  box-sizing: border-box;
 }
 
 .content {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(16px, 3vw, 32px);
 }
 
-@media (min-width: 768px) {
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title {
+  font-size: clamp(20px, 3.5vw, 32px) !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+}
+
+.description {
+  font-size: clamp(13px, 1.8vw, 16px) !important;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
   .content {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 32px;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
   }
 
   .text {
-    flex: 1 1 auto;
-    min-width: 0;
+    align-items: center;
   }
 }

@@ -1,6 +1,6 @@
 import { Image, Text } from "@mantine/core";
 import styles from "./WhyMarketly.module.css";
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 
 import shield from "@/shared/assets/icons/shield.png";
 import creditCard from "@/shared/assets/icons/credit-card.png";

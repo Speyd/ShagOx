@@ -1,4 +1,4 @@
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 import styles from "./Footer.module.css";
 import { Divider, Text } from "@mantine/core";
 import { Link } from "react-router-dom";
@@ -6,10 +6,10 @@ import { Headset } from "lucide-react";
 
 const footerLinks = [
   { label: "Про нас", to: "/about" },
-  { label: "Доставка", to: "/delivery" },
+  { label: "Доставка", to: "/delivery-terms" },
   { label: "Гарантія", to: "/warranty" },
   { label: "Повернення", to: "/returns" },
-  { label: "Конфіденційність", to: "/privacy" },
+  { label: "Конфіденційність", to: "/privacy-policy" },
 ];
 
 export default function Footer() {

@@ -1,0 +1,65 @@
+import { LogOut, ShieldCheck } from "lucide-react";
+import styles from "./AdminHeader.module.css";
+import { useNavigate } from "react-router-dom";
+import { useLogout } from "@/features/auth/model/hooks/useLogout";
+import { Button } from "@mantine/core";
+import { useAuthStore } from "@/features/auth";
+import { useDisclosure } from "@mantine/hooks";
+import ConfirmModal from "@/shared/ui/feedback/confirm-modal";
+
+export default function AdminHeader() {
+  const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
+  const logoutStore = useAuthStore((state) => state.logout);
+  const logoutMutation = useLogout();
+  const [
+    logoutModalOpened,
+    { open: openLogoutModal, close: closeLogoutModal },
+  ] = useDisclosure(false);
+
+  const handleLogout = () => {
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        logoutStore();
+        navigate("/", { replace: true });
+        closeLogoutModal();
+      },
+    });
+  };
+
+  return (
+    <header className={styles.header}>
+      <div className={styles.left}>
+        <ShieldCheck size={24} color="#2563eb" />
+
+        <div>
+          <h1 className={styles.title}>Admin Panel</h1>
+          <p className={styles.subtitle}>Manage marketplace content</p>
+        </div>
+      </div>
+
+      <div className={styles.right}>
+        <div className={styles.user}>
+          <span className={styles.name}>{user?.userName}</span>
+          <span className={styles.role}>Administrator</span>
+        </div>
+
+        <Button onClick={openLogoutModal}>
+          <LogOut size={18} />
+          Logout
+        </Button>
+      </div>
+
+      <ConfirmModal
+        opened={logoutModalOpened}
+        onClose={closeLogoutModal}
+        onConfirm={handleLogout}
+        title="Вихід з акаунту"
+        message="Ви впевнені, що хочете вийти з акаунту?"
+        confirmLabel="Вийти"
+        confirmColor="red"
+        isLoading={logoutMutation.isPending}
+      />
+    </header>
+  );
+}

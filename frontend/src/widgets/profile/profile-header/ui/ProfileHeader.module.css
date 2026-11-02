@@ -1,24 +1,30 @@
 .profileHeader {
   box-sizing: border-box;
   width: 100%;
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 42px;
-  background-color: var(--color-bg-surface, white);
+  gap: 32px;
+  background-color: var(--color-bg-surface, #ffffff);
   border-radius: 20px;
   padding: 30px;
   border: 1px solid var(--color-border);
+  transition: all 0.2s ease-in-out;
 }
 
 .profileHeader[data-orientation="vertical"] {
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 .avatarBlock {
   flex-shrink: 0;
+}
+
+.avatar {
+  width: clamp(100px, 12vw, 170px) !important;
+  height: clamp(100px, 12vw, 170px) !important;
 }
 
 .content {
@@ -26,26 +32,31 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 32px;
+  gap: 24px;
+  width: 100%;
 }
 
 .profileHeader[data-orientation="vertical"] .content {
   flex-direction: column;
-  width: 100%;
-}
-
-.nameBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
 }
 
 .leftBlock {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 24px;
-  max-width: 500px;
+  gap: 20px;
+  flex: 1;
+}
+
+.nameBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bio {
+  word-break: break-word;
 }
 
 .rightBlock {
@@ -53,58 +64,54 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 24px;
+  gap: 20px;
+  min-width: 220px;
+}
+
+.profileHeader[data-orientation="vertical"] .rightBlock {
+  align-items: center;
+  width: 100%;
 }
 
 .infoBlock {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  background-color: var(--color-bg-surface, white);
-  border-radius: 20px;
-  padding: 16px;
+  gap: 10px;
+  background-color: var(--color-bg-subtle, #f8f9fa);
+  border-radius: 12px;
+  padding: 14px 16px;
   border: 1px solid var(--color-border);
   width: 100%;
+  box-sizing: border-box;
 }
 
 .infoItem {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
-}
-
-.buttonsBlock {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.channelButton {
-  border: 1px solid var(--color-border) !important;
-  width: 100% !important;
+  gap: 8px;
+  color: var(--text-base);
+  word-break: break-all;
 }
 
 .editButton {
   width: 100% !important;
 }
 
-.statsBlockVertical {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0 16px;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
 .statsBlockHorizontal {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
   flex-wrap: wrap;
+}
+
+.statsBlockVertical {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
 }
 
 .statItem {
@@ -112,27 +119,63 @@
   flex-direction: column;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .profileHeader {
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    gap: 20px;
+    padding: 24px;
   }
 
   .content {
     flex-direction: column;
-    gap: 20px;
-  }
-
-  .leftBlock {
-    max-width: 100%;
   }
 
   .rightBlock {
     align-items: stretch;
+    min-width: 100%;
   }
 
-  .buttonsBlock {
+  .statsBlockHorizontal {
+    gap: 16px;
+    justify-content: space-between;
+    background-color: var(--color-bg-subtle, #f8f9fa);
+    padding: 12px 16px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .profileHeader {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .leftBlock {
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nameBlock {
+    align-items: center;
+  }
+
+  .infoBlock {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .statsBlockHorizontal {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .statItem {
+    align-items: center;
   }
 }

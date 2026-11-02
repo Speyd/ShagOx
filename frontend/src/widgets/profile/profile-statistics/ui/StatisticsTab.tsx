@@ -13,11 +13,7 @@ export default function StatisticsTab() {
 
   return (
     <section className={styles.profileStatistics}>
-      <div>
-        <Text fw={700} fz={24}>
-          Моя статистика
-        </Text>
-      </div>
+      <Text className={styles.title}>Моя статистика</Text>
     </section>
   );
 }

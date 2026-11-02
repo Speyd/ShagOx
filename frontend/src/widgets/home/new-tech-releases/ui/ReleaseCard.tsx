@@ -8,6 +8,7 @@ type ReleaseCardProps = {
   description: string;
   image: string;
   price: number;
+  onClick?: () => void;
 };
 
 export default function ReleaseCard({
@@ -15,10 +16,17 @@ export default function ReleaseCard({
   description,
   image,
   price,
+  onClick,
 }: ReleaseCardProps) {
   return (
-    <article className={styles.card}>
-      <Image src={image} alt={title} className={styles.image} />
+    <article
+      className={styles.card}
+      onClick={onClick}
+      style={{ cursor: "pointer" }}
+    >
+      <div className={styles.imageWrapper}>
+        <Image src={image} alt={title} className={styles.image} fit="contain" />
+      </div>
 
       <div className={styles.content}>
         <Text className={styles.title} fw={600} fz={22}>

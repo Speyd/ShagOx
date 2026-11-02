@@ -7,7 +7,7 @@ import {
   Smartphone,
   Tv,
 } from "lucide-react";
-import Button from "@/shared/ui/button";
+import Button from "@/shared/ui/buttons/button";
 import styles from "./CommunicationChannels.module.css";
 
 type ChannelItem = {

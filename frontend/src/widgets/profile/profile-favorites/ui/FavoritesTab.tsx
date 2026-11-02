@@ -5,9 +5,10 @@ import type { ProfileContextType } from "@/app/layouts/ProfileLayout";
 import styles from "./FavoritesTab.module.css";
 import { ChevronDown } from "lucide-react";
 import { useGetFavorites } from "@/features/favorites/model/hooks/useGetFavorites";
-import AdvertisementCard from "@/entities/advertisement/ui/AdvertisementCard";
-import AdvertisementCardSkeleton from "@/shared/ui/advertisement-card-skeleton";
-import AppPagination from "@/shared/ui/pagination";
+
+import AppPagination from "@/shared/ui/navigation/pagination";
+import { EmptyState } from "@/shared/ui/data-display/empty-state/EmptyState";
+import { AdvertisementCard, AdvertisementCardSkeleton } from "@/entities/advertisement";
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Найновіші" },
@@ -67,9 +68,7 @@ export default function FavoritesTab() {
   return (
     <section className={styles.favoritesTab}>
       <div className={styles.header}>
-        <Text fw={700} fz={24}>
-          Обрані товари
-        </Text>
+        <Text className={styles.title}>Обрані товари</Text>
         {advertisements.length > 0 && (
           <Select
             value={sort}
@@ -92,9 +91,10 @@ export default function FavoritesTab() {
           ))}
         </div>
       ) : (
-        <div className="emptyState">
-          <Text c="dimmed">У вас поки що немає обраних товарів.</Text>
-        </div>
+        <EmptyState
+          variant="dashed"
+          description="У вас поки що немає обраних товарів."
+        />
       )}
 
       {(favorites?.totalPages ?? 0) > 1 && (

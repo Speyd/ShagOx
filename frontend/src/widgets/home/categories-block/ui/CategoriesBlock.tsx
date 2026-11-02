@@ -1,8 +1,9 @@
 import styles from "./CategoriesBlock.module.css";
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 import { Image, Text } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import smartphone from "@/shared/assets/icons/mobile-phone.png";
 import laptop from "@/shared/assets/icons/laptop.png";
@@ -12,7 +13,6 @@ import joystick from "@/shared/assets/icons/joystick.png";
 import smartwatch from "@/shared/assets/icons/smartwatch.png";
 import monitor from "@/shared/assets/icons/monitor.png";
 import tablet from "@/shared/assets/icons/tablet.png";
-import { Link } from "react-router-dom";
 import { useGetCategories } from "@/entities/advertisement/model/hooks/useGetCategories";
 
 const categories = [
@@ -20,21 +20,49 @@ const categories = [
     title: "Смартфони",
     icon: smartphone,
     keys: ["смартфон", "smartphone", "phone"],
+    fallbackCode: "smartphones",
   },
-  { title: "Ноутбуки", icon: laptop, keys: ["ноутбук", "laptop"] },
-  { title: "Аудіо", icon: headphones, keys: ["аудіо", "audio", "headphone"] },
-  { title: "Камери", icon: camera, keys: ["камера", "camera"] },
-  { title: "Геймінг", icon: joystick, keys: ["геймінг", "gaming"] },
+  {
+    title: "Ноутбуки",
+    icon: laptop,
+    keys: ["ноутбук", "laptop"],
+    fallbackCode: "laptops",
+  },
+  {
+    title: "Аудіо",
+    icon: headphones,
+    keys: ["аудіо", "audio", "headphone"],
+    fallbackCode: "audio",
+  },
+  {
+    title: "Камери",
+    icon: camera,
+    keys: ["камера", "camera"],
+    fallbackCode: "cameras",
+  },
+  {
+    title: "Геймінг",
+    icon: joystick,
+    keys: ["геймінг", "gaming"],
+    fallbackCode: "gaming",
+  },
   {
     title: "Телевізори",
     icon: monitor,
     keys: ["телевізор", "телевизор", "tv", "television"],
+    fallbackCode: "tvs",
   },
-  { title: "Планшети", icon: tablet, keys: ["планшет", "tablet"] },
+  {
+    title: "Планшети",
+    icon: tablet,
+    keys: ["планшет", "tablet"],
+    fallbackCode: "tablets",
+  },
   {
     title: "Аксесуари",
     icon: smartwatch,
     keys: ["аксесуар", "accessor"],
+    fallbackCode: "accessories",
   },
 ];
 
@@ -73,9 +101,13 @@ export default function CategoriesBlock() {
                 categoryName.includes(normalize(key)),
               );
             });
-            const categoryLink = matchedCategory
-              ? `/catalog?category=${matchedCategory.id}`
-              : "/catalog";
+
+            const categoryCode =
+              matchedCategory?.code || category.fallbackCode;
+
+            const categoryLink = categoryCode
+              ? `/catalog/category/${categoryCode}`
+              : `/catalog?search=${encodeURIComponent(category.title)}`;
 
             return (
               <Carousel.Slide

@@ -1,0 +1,1 @@
+export { CatalogSidebar } from "./CatalogSidebar";

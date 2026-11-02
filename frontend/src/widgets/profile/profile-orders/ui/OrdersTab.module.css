@@ -4,6 +4,12 @@
   gap: 32px !important;
   border-radius: 20px;
   border: 1px solid var(--color-border);
+  width: 100%;
+}
+
+.title {
+  font-size: clamp(18px, 3vw, 24px) !important;
+  font-weight: 600 !important;
 }
 
 .list {
@@ -21,7 +27,7 @@
   border: 1px solid #d9e4f2 !important;
   border-radius: 8px !important;
   color: #183250;
-  font-size: 13px;
+  font-size: clamp(12px, 1.2vw, 15px) !important;
 }
 
 .tab[data-active] {

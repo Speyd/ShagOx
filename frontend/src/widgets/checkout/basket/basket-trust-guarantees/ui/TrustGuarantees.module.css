@@ -1,0 +1,17 @@
+.card {
+  background-color: #ffffff;
+  border-color: #f1f5f9;
+}
+
+.title {
+  color: #0f172a;
+}
+
+.icon {
+  color: #228be6;
+}
+
+.checkIcon {
+  color: #22c55e;
+  flex-shrink: 0;
+}

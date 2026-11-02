@@ -1,4 +1,4 @@
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 import { Text } from "@mantine/core";
 import { Outlet } from "react-router-dom";
 import styles from "./NotificationsLayout.module.css";
@@ -10,10 +10,10 @@ export default function NotificationsLayout() {
       <Container>
         <div className={styles.notificationsContainer}>
           <div className={styles.notificationsHeader}>
-            <Text fz={40} fw={700}>
+            <Text className={styles.title} fw={700} fz={32}>
               Центр сповіщень
             </Text>
-            <Text fz={14} fw={400} className={styles.description}>
+            <Text className={styles.description}>
               У вас немає нових сповіщень.
             </Text>
           </div>

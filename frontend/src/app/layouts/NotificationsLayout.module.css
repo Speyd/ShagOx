@@ -11,6 +11,17 @@
   gap: 16px;
 }
 
+.title {
+  font-size: clamp(20px, 4vw, 32px) !important;
+  font-weight: 700 !important;
+}
+
+.description {
+  font-size: clamp(14px, 3vw, 16px) !important;
+  font-weight: 400 !important;
+  color: var(--text-secondary);
+}
+
 .notificationsHeader {
   display: flex;
   flex-direction: column;

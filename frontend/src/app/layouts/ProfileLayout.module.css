@@ -10,6 +10,12 @@
   padding: 60px 0;
 }
 
+.title {
+  font-size: clamp(24px, 3vw, 40px) !important;
+  font-weight: 700 !important;
+  color: var(--color-base);
+}
+
 .pageLayout {
   display: flex;
   align-items: flex-start;
@@ -30,7 +36,7 @@
 }
 
 .row > :first-child {
-  flex: 0 0 380px; 
+  flex: 0 0 380px;
   width: 380px;
 }
 

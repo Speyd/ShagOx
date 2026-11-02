@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
@@ -14,7 +14,7 @@ public static class FavoriteFilterExtensions
         if (filter.UserId.HasValue)
         {
             query = query.Where(x =>
-                x.UserId == filter.UserId);
+                x.OwnerId == filter.UserId);
         }
 
         if (filter.AdvertisementId.HasValue)

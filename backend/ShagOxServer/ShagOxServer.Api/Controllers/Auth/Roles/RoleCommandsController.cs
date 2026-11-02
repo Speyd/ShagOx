@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 using ShagOxServer.Application.DTOs.Auth.Roles.Create;
@@ -57,6 +57,16 @@ public class RoleCommandsController
     {
         var result = await _deleteService
             .DeleteAsync(id);
+
+        return result.ToActionResult();
+    }
+
+    [HttpDelete("soft/{id:long}")]
+    public async Task<IActionResult> SoftDelete(
+        [FromRoute] long id)
+    {
+        var result = await _deleteService
+            .SoftDeleteAsync(id);
 
         return result.ToActionResult();
     }

@@ -4,7 +4,7 @@ using ShagOxServer.Application.Interfaces.Services.Base.Create;
 
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Create;
 public interface IFavoriteCreateService
-    : ICreateService<
+    : ICreateOwnerService<
         CreateResponse,
         FavoriteCreateRequest
         >

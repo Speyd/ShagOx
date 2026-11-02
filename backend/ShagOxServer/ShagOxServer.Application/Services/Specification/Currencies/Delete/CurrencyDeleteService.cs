@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
@@ -11,8 +12,9 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Delete;
-public class CurrencyDeleteService 
-    : ICurrencyDeleteService
+public class CurrencyDeleteService
+    : BaseDeleteService<Currency>
+    , ICurrencyDeleteService
 {
     private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyValidator _currencyValidator;
@@ -28,7 +30,9 @@ public class CurrencyDeleteService
         CurrencyValidator currencyValidator,
         CurrencyInvalidationService currencyInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<CurrencyDeleteService> logger)
+        ILogger<CurrencyDeleteService> logger
+    )
+        : base(currencyValidator, unitOfWork, logger)
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;
@@ -67,8 +71,7 @@ public class CurrencyDeleteService
                  .Fail(EntityErrorResources.CurrencyDeleteFailed);
         }
 
-        await _currencyInvalid.InvalidateDeleteAsync(
-            CurrencyCacheMapper.ToInfo(currency.Value!));
+        await InvalidateCache(currency.Value!);
 
         return Result<DeleteResponse>.Success(
           new DeleteResponse(
@@ -76,5 +79,12 @@ public class CurrencyDeleteService
               DateTime.UtcNow
           )
       );
+    }
+
+    public override async Task InvalidateCache(
+        Currency entity)
+    {
+        await _currencyInvalid.InvalidateDeleteAsync(
+            CurrencyCacheMapper.ToInfo(entity));
     }
 }

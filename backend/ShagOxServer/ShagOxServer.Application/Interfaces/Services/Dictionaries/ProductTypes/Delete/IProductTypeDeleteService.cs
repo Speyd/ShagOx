@@ -1,9 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.DTOs.Base.Responses;
+using ShagOxServer.Application.Interfaces.Services.Base.Delete;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Delete;
 public interface IProductTypeDeleteService
-    : IDeleteService<DeleteResponse>
+    : IDeleteService<DeleteResponse>,
+    ISoftDeleteService<DeleteResponse>
 {
 }

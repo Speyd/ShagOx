@@ -1,17 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Delete;
-public class RegionDeleteService 
-    : IRegionDeleteService
+public class RegionDeleteService
+    : BaseDeleteService<Region>
+    , IRegionDeleteService
 {
     private readonly IRepository<Region> _regionRepository;
     private readonly RegionValidator _regionValidator;
@@ -27,7 +29,9 @@ public class RegionDeleteService
         RegionValidator regionValidator,
         RegionInvalidationService regionInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<RegionDeleteService> logger)
+        ILogger<RegionDeleteService> logger
+    )
+        : base(regionValidator, unitOfWork, logger)
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;
@@ -65,7 +69,7 @@ public class RegionDeleteService
                  .Fail(EntityErrorResources.RegionDeleteFailed);
         }
 
-        await _regionInvalid.InvalidateDeleteAsync(id);
+        await InvalidateCache(region.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -73,5 +77,12 @@ public class RegionDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        Region entity)
+    {
+         await _regionInvalid
+            .InvalidateDeleteAsync(entity.Id);
     }
 }

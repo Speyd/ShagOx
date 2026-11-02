@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 
 namespace ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Query;
@@ -15,5 +15,5 @@ public sealed record AttributeDefinitionDto
     decimal? Max,
     bool IsVariant,
     bool Multiple,
-    string? Lable
+    string? Label
 ) : BaseDto(Id);

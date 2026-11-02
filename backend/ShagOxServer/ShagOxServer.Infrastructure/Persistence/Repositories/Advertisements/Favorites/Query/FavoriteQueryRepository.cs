@@ -36,7 +36,7 @@ public partial class FavoriteQueryRepository
     {
         return await _db.Favorites
              .WithIncludes()
-             .Where(x => x.UserId == usderId)
+             .Where(x => x.OwnerId == usderId)
              .ToPagedResultAsync(pagination,
                 (x => x.Id),
                 cancellationToken);

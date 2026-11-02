@@ -48,7 +48,7 @@ public class FavoriteQueryService
         Favorite entity)
     {
         var userDto = await _userService
-            .ApplyMapperAsync(entity.User);
+            .ApplyMapperAsync(entity.Owner);
 
         return FavoriteMapper.ToDto(entity, userDto);
     }

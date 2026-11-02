@@ -98,7 +98,7 @@ public class FavoriteUpdateService
                 "FavoriteId: {FavoriteIdId}, " +
                 "UserId: {UserId}, AdvertisementId: {AdvertisementId}",
                 favoriteId,
-                request.UserId,
+                favorite.Value?.OwnerId,
                 request.AdvertisementId);
 
             return Result<UpdateResponse>

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
@@ -23,17 +23,6 @@ public class FavoriteUpdateValidator
     public async Task<Result<bool>> ValidateAsync(
         FavoriteUpdateRequest request)
     {
-        if (request.UserId is not null)
-        {
-            var user = await _userValidator
-                .GetByIdAsync(request.UserId.Value);
-
-            if (!user.IsSuccess)
-                return Result<bool>.NotFound(
-                    EntityNamesResources.User);
-        }
-
-
         if (request.AdvertisementId is not null)
         {
             var advert = await _advertisementValidator

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Login;
@@ -13,7 +13,7 @@ using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Auth;
+namespace ShagOxServer.Application.Services.Auth.Core.Login;
 
 public class LoginService : ILoginService
 {

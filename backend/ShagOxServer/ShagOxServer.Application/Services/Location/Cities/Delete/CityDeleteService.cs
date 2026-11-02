@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
@@ -11,8 +12,9 @@ using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Delete;
-public class CityDeleteService 
-    : ICityDeleteService
+public class CityDeleteService
+    : BaseDeleteService<City>
+    , ICityDeleteService
 {
     private readonly IRepository<City> _cityRepository;
     private readonly CityValidator _cityValidator;
@@ -28,7 +30,9 @@ public class CityDeleteService
         CityValidator cityValidator,
         CityInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<CityDeleteService> logger)
+        ILogger<CityDeleteService> logger
+    )
+        : base(cityValidator, unitOfWork, logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
@@ -66,8 +70,7 @@ public class CityDeleteService
                  .Fail(EntityErrorResources.CityDeleteFailed);
         }
 
-        await _cityInvalid.InvalidateDeleteAsync(
-            CityCacheMapper.ToInfo(city.Value!));
+        await InvalidateCache(city.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -75,5 +78,12 @@ public class CityDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        City entity)
+    {
+        await _cityInvalid.InvalidateDeleteAsync(
+           CityCacheMapper.ToInfo(entity));
     }
 }

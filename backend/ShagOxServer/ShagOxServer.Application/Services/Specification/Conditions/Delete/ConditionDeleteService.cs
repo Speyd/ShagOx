@@ -1,18 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
-using ShagOxServer.Application.Services.Specification.Conditions.Create;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Delete;
-public class ConditionDeleteService 
-    : IConditionDeleteService
+public class ConditionDeleteService
+    : BaseDeleteService<Condition>
+    , IConditionDeleteService
 {
     private readonly IRepository<Condition> _conditionRepository;
     private readonly ConditionValidator _conditionValidator;
@@ -20,7 +21,7 @@ public class ConditionDeleteService
     private readonly ConditionInvalidationService _conditionInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<ConditionCreateService> _logger;
+    private readonly ILogger<ConditionDeleteService> _logger;
 
 
     public ConditionDeleteService(
@@ -28,7 +29,9 @@ public class ConditionDeleteService
         ConditionValidator conditionValidator,
         ConditionInvalidationService conditionInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<ConditionCreateService> logger)
+        ILogger<ConditionDeleteService> logger
+    )
+        : base(conditionValidator, unitOfWork, logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
@@ -66,8 +69,7 @@ public class ConditionDeleteService
                  .Fail(EntityErrorResources.ConditionDeleteFailed);
         }
 
-        await _conditionInvalid
-            .InvalidateDeleteAsync(id);
+        await InvalidateCache(condition.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -75,5 +77,12 @@ public class ConditionDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+       Condition entity)
+    {
+        await _conditionInvalid
+            .InvalidateDeleteAsync(entity.Id);
     }
 }

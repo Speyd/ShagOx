@@ -1,6 +1,7 @@
 .comparisonPage {
   background-color: var(--bg-base);
   flex: 1;
+  min-height: 4000px;
   height: 100%;
   padding: 40px 0;
 }

@@ -1,6 +1,7 @@
 import { useCompareStore } from "@/entities/compare/model/compareStore";
-import { CompareTable } from "@/widgets/compare-table/ui/CompareTable";
+import { CompareTable } from "@/widgets/checkout/compare-table/ui/CompareTable";
 import { useMemo, useState } from "react";
+import styles from "./ComparePage.module.css";
 
 export default function ComparePage() {
   const { compareList, removeAdvertisement } = useCompareStore();
@@ -25,7 +26,7 @@ export default function ComparePage() {
   }, [compareList, activeCategoryId, categories]);
 
   return (
-    <div className="container mx-auto py-8">
+    <section className={styles.comparisonPage}>
       <h1 className="text-2xl font-bold mb-6">Порівняння товарів</h1>
 
       <div className="flex border-b mb-6">
@@ -46,6 +47,6 @@ export default function ComparePage() {
       </div>
 
       <CompareTable advertisements={activeAds} onRemove={removeAdvertisement} />
-    </div>
+    </section>
   );
 }

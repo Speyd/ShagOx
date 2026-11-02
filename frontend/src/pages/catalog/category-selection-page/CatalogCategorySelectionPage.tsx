@@ -1,7 +1,7 @@
 import { CategoriesGrid } from "@/widgets/catalog";
 import styles from "./CatalogCategorySelectionPage.module.css";
 import { useParams } from "react-router-dom";
-import RecentlyViewedSection from "@/widgets/recently-viewed-list";
+import RecentlyViewedSection from "@/widgets/advertisement/recently-viewed";
 
 export default function CatalogCategorySelectionPage() {
   const { productTypeId } = useParams<{ productTypeId: string }>();

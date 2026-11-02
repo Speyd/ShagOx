@@ -1,111 +1,38 @@
-import { AdvertisementsGrid, CatalogFilters } from "@/widgets/catalog";
-import styles from "./CategoryAdvertisementsPage.module.css";
-import { useParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useDebouncedValue, useDisclosure } from "@mantine/hooks";
-import { useGetCategoryByCode } from "@/entities/category/model/useGetCategoryByCode";
-import {
-  priceRangeSchema,
-  type PriceRange,
-} from "@/widgets/catalog/model/priceRangeSchema";
-import { useGetAttributeDictionaryValues } from "@/entities/advertisement/model/hooks/useGetAttributeDictionaryValues";
 import { Button, Drawer } from "@mantine/core";
 import { SlidersHorizontal } from "lucide-react";
 
-export type AttributeInfo = {
-  id: number;
-  categoryId: number;
-  categoryCode: string;
-  key: string;
-  dictionaryId: number | null;
-  type: string;
-  required: boolean;
-  min: number | null;
-  max: number | null;
-  isVariant: boolean;
-  multiple: boolean;
-  lable: string;
-};
+import { AdvertisementsGrid, CatalogFilters } from "@/widgets/catalog";
+import { useGetCategoryByCode } from "@/entities/category/model/useGetCategoryByCode";
+import { useGetAttributeDictionaryValues } from "@/entities/advertisement/model/hooks/useGetAttributeDictionaryValues";
+import {
+  type PriceRange,
+} from "@/widgets/catalog/model/priceRangeSchema";
 
-export type DictionaryValueItem = {
-  id: number;
-  dictionaryId: number;
-  code: string;
-  value: string | null;
-  label: string;
-};
-
-export type CategoryAttributeValueResponse = {
-  attribute: AttributeInfo;
-  values: DictionaryValueItem[] | null;
-};
-
-function parseAttributeValue(value: string, type: string): unknown {
-  const normalizedType = type.toLowerCase();
-
-  if (normalizedType === "integer" || normalizedType === "decimal") {
-    const numberValue = Number(value);
-    return Number.isFinite(numberValue) ? numberValue : value;
-  }
-
-  if (normalizedType === "boolean") {
-    if (value.toLowerCase() === "true") return true;
-    if (value.toLowerCase() === "false") return false;
-  }
-
-  return value;
-}
-
-function buildAttributeFilters(
-  items: CategoryAttributeValueResponse[],
-  selectedValues: Record<number, string[]>,
-  priceRange: PriceRange,
-) {
-  const attributes: Record<string, unknown[]> = {};
-  const variantAttributes: Record<string, unknown> = {};
-
-  for (const item of items) {
-    const { attribute } = item;
-    const values = selectedValues[attribute.id];
-    if (!values || values.length === 0) continue;
-
-    const parsedValues = values.map((val) =>
-      parseAttributeValue(val, attribute.type),
-    );
-    const target = attribute.isVariant ? variantAttributes : attributes;
-    target[attribute.key] = parsedValues;
-  }
-
-  let minPrice: number | undefined = undefined;
-  let maxPrice: number | undefined = undefined;
-
-  const priceValidation = priceRangeSchema.safeParse(priceRange);
-  if (priceValidation.success) {
-    if (typeof priceRange.min === "number") {
-      minPrice = priceRange.min;
-    }
-    if (typeof priceRange.max === "number") {
-      maxPrice = priceRange.max;
-    }
-  }
-
-  return { attributes, variantAttributes, minPrice, maxPrice };
-}
+import styles from "./CategoryAdvertisementsPage.module.css";
+import {
+  buildAttributeFilters,
+  type CategoryAttributeValueResponse,
+} from "./utils/filterHelpers";
 
 export default function CategoryAdvertisementsPage() {
   const { categoryCode } = useParams<{ categoryCode: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const searchQuery = searchParams.get("search") || "";
+  const [debouncedSearchQuery] = useDebouncedValue(searchQuery, 400);
+
   const [drawerOpened, { open: openDrawer, close: closeDrawer }] =
     useDisclosure(false);
-
   const [selectedValues, setSelectedValues] = useState<
     Record<number, string[]>
   >({});
-
   const [priceRange, setPriceRange] = useState<PriceRange>({
     min: "",
     max: "",
   });
-
   const [debouncedPriceRange] = useDebouncedValue(priceRange, 500);
 
   const { data: category, isLoading: isLoadingCategory } =
@@ -120,17 +47,12 @@ export default function CategoryAdvertisementsPage() {
     setPriceRange({ min: "", max: "" });
   }, [categoryId]);
 
-  const optionsByDefinition = useMemo((): Record<
-    number,
-    { value: string; label: string }[]
-  > => {
+  const optionsByDefinition = useMemo(() => {
     if (!categoryAttributeValues.length) return {};
+    const result: Record<number, { value: string; label: string }[]> = {};
 
-    const result: Record<number, { value: string; label: label }> = {};
-
-    for (const item of categoryAttributeValues) {
+    for (const item of categoryAttributeValues as CategoryAttributeValueResponse[]) {
       const { attribute, values } = item;
-
       if (values && values.length > 0) {
         result[attribute.id] = values.map((val) => ({
           value: val.code || val.label,
@@ -138,12 +60,14 @@ export default function CategoryAdvertisementsPage() {
         }));
       }
     }
-
     return result;
   }, [categoryAttributeValues]);
 
   const attributeDefinitions = useMemo(
-    () => categoryAttributeValues.map((item) => item.attribute),
+    () =>
+      categoryAttributeValues.map(
+        (item: CategoryAttributeValueResponse) => item.attribute,
+      ),
     [categoryAttributeValues],
   );
 
@@ -155,7 +79,7 @@ export default function CategoryAdvertisementsPage() {
   const { attributes, variantAttributes, minPrice, maxPrice } = useMemo(
     () =>
       buildAttributeFilters(
-        categoryAttributeValues,
+        categoryAttributeValues as CategoryAttributeValueResponse[],
         selectedValues,
         debouncedPriceRange,
       ),
@@ -170,7 +94,8 @@ export default function CategoryAdvertisementsPage() {
   const hasActiveFilters =
     Object.keys(selectedValues).length > 0 ||
     priceRange.min !== "" ||
-    priceRange.max !== "";
+    priceRange.max !== "" ||
+    searchQuery !== "";
 
   function handleSelectValue(definitionId: number, values: string[]) {
     setSelectedValues((current) => {
@@ -186,6 +111,10 @@ export default function CategoryAdvertisementsPage() {
   function handleClearFilters() {
     setSelectedValues({});
     setPriceRange({ min: "", max: "" });
+    if (searchQuery) {
+      searchParams.delete("search");
+      setSearchParams(searchParams);
+    }
   }
 
   return (
@@ -255,6 +184,7 @@ export default function CategoryAdvertisementsPage() {
         attributeFilters={attributeFilters}
         minPrice={minPrice}
         maxPrice={maxPrice}
+        searchQuery={debouncedSearchQuery} 
         hasActiveFilters={hasActiveFilters}
         onResetFilters={handleClearFilters}
       />

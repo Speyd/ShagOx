@@ -15,7 +15,7 @@ import {
 import { Pencil, Search, Trash2 } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { User } from "@/shared/lib/types/user";
-import DataTable from "@/shared/ui/data-table";
+import DataTable from "@/shared/ui/data-display/data-table";
 
 export default function UsersPage() {
   const [page, setPage] = useState(1);
@@ -23,9 +23,9 @@ export default function UsersPage() {
   const pageSize = 10;
 
   const { data, isLoading } = useGetUsers(page, pageSize);
-  
+
   console.log(data);
-  
+
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
@@ -54,7 +54,9 @@ export default function UsersPage() {
           <Text fw={600}>
             {row.original.firstName}
             {row.original.lastName && ` ${row.original.lastName}`}
-            {!row.original.firstName && !row.original.lastName && `@${row.original.userName}`}
+            {!row.original.firstName &&
+              !row.original.lastName &&
+              `@${row.original.userName}`}
           </Text>
 
           <Text size="sm" c="dimmed">

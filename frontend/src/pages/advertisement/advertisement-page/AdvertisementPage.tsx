@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import styles from "./AdvertisementPage.module.css";
 import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGetAdvertisement";
-import Container from "@/shared/ui/container";
-import Breadcrumbs from "@/widgets/breadcrumbs";
-import { ImageGallery } from "@/widgets/image-gallery";
+import Container from "@/shared/ui/layout/container";
+import Breadcrumbs from "@/shared/ui/navigation/breadcrumbs";
+import { ImageGallery } from "@/shared/ui/data-display/image-gallery";
 import AdvertisementInfo from "@/widgets/advertisement/advertisement-info";
-import ReviewsBlock from "@/widgets/reviews/reviews-block";
-import ReviewsSection from "@/widgets/reviews/reviews-section";
+import ReviewsBlock from "@/widgets/advertisement/reviews/reviews-block";
+import ReviewsSection from "@/widgets/advertisement/reviews/reviews-section";
 import AdvertisementSlider from "@/widgets/advertisement/advertisement-slider/ui/AdvertisementSlider";
 import { useGetAdvertisements } from "@/entities/advertisement/model/hooks/useGetAdvertisements";
 import { useEffect } from "react";

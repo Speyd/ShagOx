@@ -7,7 +7,7 @@ import logo from "@/shared/assets/images/logo.png";
 import RegisterForm from "@/features/auth/ui/register";
 import { Link } from "react-router-dom";
 import { MoveRight } from "lucide-react";
-import { GoogleLoginButton } from "@/shared/ui/google-button/GoogleLoginButton";
+import { GoogleLoginButton } from "@/features/auth";
 
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState<string | null>("login");

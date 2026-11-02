@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@mantine/core";
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 import {
   CreateAdvertisementForm,
   useCreateAdvertisement,
@@ -114,7 +114,7 @@ export default function CreateAdvertisementPage() {
             Заповніть інформацію про товар та додайте фото
           </p>
         </div>
-        
+
         <div className={styles.layout}>
           <div className={styles.mainColumn}>
             <CreateAdvertisementForm

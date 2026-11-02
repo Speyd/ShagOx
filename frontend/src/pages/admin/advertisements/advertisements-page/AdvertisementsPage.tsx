@@ -1,5 +1,5 @@
 import type { Advertisement } from "@/shared/lib/types/advertisements";
-import DataTable from "@/shared/ui/data-table";
+import DataTable from "@/shared/ui/data-display/data-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
   ActionIcon,

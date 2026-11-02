@@ -9,7 +9,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import DataTable from "@/shared/ui/data-table";
+import DataTable from "@/shared/ui/data-display/data-table";
 import { useState } from "react";
 import { Pencil, Search, Trash2 } from "lucide-react";
 import type { Category } from "@/shared/lib/types/category";

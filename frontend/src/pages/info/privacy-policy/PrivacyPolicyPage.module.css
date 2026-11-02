@@ -1,0 +1,127 @@
+.privacyPage {
+  width: 100%;
+  min-height: 100dvh;
+  padding: clamp(24px, 4vw, 60px) 16px;
+  background-color: var(--bg-base, #f8fafc);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4vw, 40px);
+}
+
+.headerSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background-color: rgba(var(--color-base-rgb, 37, 99, 235), 0.1);
+  color: var(--color-base, #2563eb);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: clamp(26px, 4vw, 36px) !important;
+  font-weight: 800 !important;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: clamp(14px, 1.8vw, 16px);
+  color: #64748b;
+  line-height: 1.5;
+  max-width: 600px;
+}
+
+.contentSection {
+  width: 100%;
+}
+
+.accordion {
+  width: 100%;
+}
+
+.accordionItem {
+  background-color: #ffffff !important;
+  border: 1px solid var(--color-border, #e2e8f0) !important;
+  border-radius: 12px !important;
+  margin-bottom: 10px;
+}
+
+.accordionControl {
+  font-weight: 600 !important;
+  font-size: clamp(15px, 2vw, 17px) !important;
+  color: #0f172a !important;
+  padding: 16px 20px !important;
+}
+
+.accordionPanel {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+  padding: 0 20px 16px !important;
+}
+
+.contactCard {
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--color-border, #e2e8f0);
+  padding: clamp(20px, 3vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.contactContent {
+  max-width: 500px;
+}
+
+.contactTitle {
+  font-size: clamp(16px, 2vw, 18px) !important;
+  font-weight: 700 !important;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.contactText {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.contactButton {
+  padding: 10px 24px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .contactCard {
+    flex-direction: column;
+    text-align: center;
+    align-items: stretch;
+  }
+
+  .contactButton {
+    width: 100%;
+  }
+}

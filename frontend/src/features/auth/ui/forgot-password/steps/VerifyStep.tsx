@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Text } from "@mantine/core";
 import { toast } from "sonner";
-import Button from "@/shared/ui/button";
+import Button from "@/shared/ui/buttons/button";
 import styles from "../ForgotPasswordForm.module.css";
 import { useVerify } from "@/features/auth/model/hooks/useVerify";
 

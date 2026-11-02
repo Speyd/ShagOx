@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Text } from "@mantine/core";
 import { toast } from "sonner";
-import Input from "@/shared/ui/input";
-import Button from "@/shared/ui/button";
+import Input from "@/shared/ui/data-display/inputs/input";
+import Button from "@/shared/ui/buttons/button";
 import { useGetByContact } from "@/entities/user/model/hooks/useGetByContact";
 import styles from "../ForgotPasswordForm.module.css";
 import {

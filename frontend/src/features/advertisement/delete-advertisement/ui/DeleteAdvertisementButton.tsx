@@ -1,6 +1,6 @@
 import { useDeleteAdvertisement } from "../model/hooks/useDeleteAdvertisement";
 import { Trash2 } from "lucide-react";
-import IconButton from "@/shared/ui/icon-button/IconButton";
+import IconButton from "@/shared/ui/buttons/icon-button/IconButton";
 import { useNavigate } from "react-router-dom";
 
 type DeleteAdvertisementButtonProps = {
@@ -22,7 +22,8 @@ export default function DeleteAdvertisementButton({
       centered: true,
       children: (
         <Text size="sm">
-          Ви дійсно бажаєте видалити це оголошення? Цю дію неможливо буде скасувати.
+          Ви дійсно бажаєте видалити це оголошення? Цю дію неможливо буде
+          скасувати.
         </Text>
       ),
       labels: {
@@ -44,10 +45,7 @@ export default function DeleteAdvertisementButton({
   };
 
   return (
-    <IconButton
-      onClick={handleDelete}
-      disabled={deleteMutation.isPending}
-    >
+    <IconButton onClick={handleDelete} disabled={deleteMutation.isPending}>
       <Trash2 size={20} />
     </IconButton>
   );

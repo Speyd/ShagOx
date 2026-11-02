@@ -4,7 +4,7 @@ import { Group, Image, Text } from "@mantine/core";
 import styles from "./VerifyForm.module.css";
 import logo from "@/shared/assets/images/logo.png";
 import { ArrowRight } from "lucide-react";
-import Button from "@/shared/ui/button";
+import Button from "@/shared/ui/buttons/button";
 import { useVerify } from "@/features/auth/model/hooks/useVerify";
 import { toast } from "sonner";
 import { useLogin } from "../../model/hooks/useLogin";

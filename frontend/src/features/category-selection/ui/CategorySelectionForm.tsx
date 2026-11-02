@@ -6,7 +6,7 @@ import laptop from "@/shared/assets/icons/laptop.png";
 import smartphone from "@/shared/assets/icons/mobile-phone.png";
 import smartHome from "@/shared/assets/icons/smart-home.png";
 import smartwatch from "@/shared/assets/icons/smartwatch.png";
-import Button from "@/shared/ui/button";
+import Button from "@/shared/ui/buttons/button";
 import { useCategoryStore } from "../model/store/useCategoryStore";
 import styles from "./CategorySelectionForm.module.css";
 

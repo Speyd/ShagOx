@@ -1,4 +1,4 @@
-import IconButton from "@/shared/ui/icon-button";
+import IconButton from "@/shared/ui/buttons/icon-button";
 import { useCreateBasketItem } from "../model/hooks/useCreateBasketItem";
 import { useGetBasket } from "../model/hooks/useGetBasket";
 import { createBasket } from "../api/api";
@@ -85,11 +85,7 @@ export default function AddToBasket({
       aria-label="Додати товар до кошика"
       title="Додати товар до кошика"
     >
-      <ShoppingCart
-        size={24}
-        strokeWidth={2}
-        color="#374151"
-      />
+      <ShoppingCart size={24} strokeWidth={2} color="#374151" />
     </IconButton>
   );
 }

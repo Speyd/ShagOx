@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Flex, Text } from "@mantine/core";
-import Input from "@/shared/ui/input";
+import Input from "@/shared/ui/data-display/inputs/input";
 
 import styles from "./ApplyPromoCode.module.css";
 

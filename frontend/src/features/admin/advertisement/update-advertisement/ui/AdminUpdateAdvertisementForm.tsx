@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
 import useUpdateAdvertisement from "../model/hooks/useAdminUpdateAdvertisement";
 import { useState } from "react";
-import Button from "@/shared/ui/button";
+import Button from "@/shared/ui/buttons/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import styles from "./UpdateAdvertisementForm.module.css";
-import Input from "@/shared/ui/input";
-import TextArea from "@/shared/ui/text-area";
-import ImageUploader from "@/shared/ui/image-uploader";
+import Input from "@/shared/ui/data-display/inputs/input";
+import TextArea from "@/shared/ui/data-display/inputs/text-area";
+import ImageUploader from "@/shared/ui/data-display/inputs/image-uploader";
 import {
   adminUpdateAdvertisementSchema,
   type UpdateAdvertisementDto,
@@ -24,7 +24,8 @@ type UpdateAdvertisementFormProps = {
 export default function AdminUpdateAdvertisementForm({
   advertisementId,
 }: UpdateAdvertisementFormProps) {
-  const { data: advertisement, isLoading } = useGetAdvertisement(advertisementId);
+  const { data: advertisement, isLoading } =
+    useGetAdvertisement(advertisementId);
 
   if (isLoading) return <p>Loading...</p>;
   if (!advertisement) return <p>Advertisement not found</p>;

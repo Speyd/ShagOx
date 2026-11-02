@@ -1,4 +1,4 @@
-import IconButton from "@/shared/ui/icon-button";
+import IconButton from "@/shared/ui/buttons/icon-button";
 import styles from "./FavoriteButton.module.css";
 import { Heart } from "lucide-react";
 import { useAddToFavorites } from "../model/hooks/useAddToFavorites";

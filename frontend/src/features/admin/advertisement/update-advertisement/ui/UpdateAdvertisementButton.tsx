@@ -1,6 +1,6 @@
 import { Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import IconButton from "@/shared/ui/icon-button/IconButton";
+import IconButton from "@/shared/ui/buttons/icon-button/IconButton";
 
 type UpdateAdvertisementButtonProps = {
   id: number;

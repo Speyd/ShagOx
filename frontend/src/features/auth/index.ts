@@ -1,7 +1,7 @@
 export { default as ForgotPasswordForm } from "./ui/forgot-password/ForgotPasswordForm";
 export { default as LoginForm } from "./ui/login/LoginForm";
 export { default as RegisterForm } from "./ui/register/RegisterForm";
-
+export { default as GoogleLoginButton } from "./ui/google-button/GoogleLoginButton";
 export { default as VerifyForm } from "./ui/verify/VerifyForm";
 
 export { useAuthStore } from "./model/store/useAuthStore";

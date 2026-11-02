@@ -12,8 +12,8 @@ import { useLogin } from "../../model/hooks/useLogin";
 import { ArrowRight, Eye, EyeOff, LockIcon, Mail } from "lucide-react";
 
 import { Text } from "@mantine/core";
-import Input from "@/shared/ui/input";
-import Button from "@/shared/ui/button";
+import Input from "@/shared/ui/data-display/inputs/input";
+import Button from "@/shared/ui/buttons/button";
 
 export default function LoginForm() {
   const [serverError, setServerError] = useState("");

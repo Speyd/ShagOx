@@ -1,5 +1,5 @@
 import { Pencil } from "lucide-react";
-import IconButton from "@/shared/ui/icon-button/IconButton";
+import IconButton from "@/shared/ui/buttons/icon-button/IconButton";
 import { useNavigate } from "react-router-dom";
 
 type UpdateButtonProps = {

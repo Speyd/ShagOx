@@ -4,15 +4,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Text } from "@mantine/core";
 import { toast } from "sonner";
-import Input from "@/shared/ui/input";
-import Button from "@/shared/ui/button";
+import Input from "@/shared/ui/data-display/inputs/input";
+import Button from "@/shared/ui/buttons/button";
 import styles from "../ForgotPasswordForm.module.css";
 import {
   resetPasswordSchema,
   type ResetPasswordFormData,
 } from "@/features/auth/model/schemas/resetPasswordSchema";
 import { useResetPassword } from "@/features/auth/model/hooks/useResetPassword";
-
 
 type Props = {
   userId: number;

@@ -1,1 +1,1 @@
-export { default as CategoryCardSkeleton } from "./ui/CategoryCardSkeleton";
+export * from "./ui";

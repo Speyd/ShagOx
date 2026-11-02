@@ -1,0 +1,19 @@
+.headerCity {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.headerCity:hover {
+  opacity: 0.7;
+}
+
+.dropdownHeader {
+  padding: 8px 8px 12px;
+}

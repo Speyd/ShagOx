@@ -1,0 +1,1 @@
+export { AdvertisementCardSkeleton } from "./AdvertisementCardSkeleton";

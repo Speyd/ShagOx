@@ -1,10 +1,9 @@
 import styles from "./AdvertisementCard.module.css";
-import Price from "@/shared/ui/price";
+import Price from "@/shared/ui/data-display/price";
 import {
   getAdvertisementPrice,
   getAdvertisementStock,
   type Advertisement,
-  type AdvertisementShort,
 } from "@/shared/lib/types/advertisements";
 import FavoriteButton from "@/features/favorites";
 import { useBasketAction } from "@/features/basket/model/hooks/useBasketAction";
@@ -12,9 +11,7 @@ import { Button, Image, Text } from "@mantine/core";
 import { Check, Plus, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export default function AdvertisementCard(
-  props: Advertisement | AdvertisementShort,
-) {
+export function AdvertisementCard(props: Advertisement) {
   const variantId = props.variants[0]?.id;
   const { handleAdd, isInBasket, isLoading } = useBasketAction(variantId);
   const imageUrl =

@@ -1,35 +1,65 @@
-export type Advertisement = {
+export type Category = {
   id: number;
-  title: string;
-  description: string;
-  currency: Currency;
-  category: Category;
-  seller: UserShort;
-  buyer: UserShort | null;
-  pictures: AdvertisementImage[];
-  attributes: Record<string, unknown>;
-  variants: AdvertisementVariant[];
-  price?: number;
-  previousPrice?: number;
-  stock?: number;
-  properties?: Record<string, unknown>;
-  createdAt: string;
-  soldAt: string | null;
+  code: string;
+  productTypeId: number;
+  lable: string;
 };
 
-export type AdvertisementShort = {
+export type Currency = {
   id: number;
-  title: string;
-  description: string;
-  currencyId: number;
+  code: string;
+  symbol: string;
+  name: string;
+};
+
+export type UserSeller = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  bio: string | null;
+  phone: string | null;
+  email: string;
+  avatarId: string | null;
+  cityId: number | null;
+  cityCode: string;
+  lastSeenAt: string;
+};
+
+export type AdvertisementImage = {
+  id: number;
+  order: number;
+  advertisementId: number;
+  url: string;
+  publicId: string;
+};
+
+export type AttributeDefinition = {
+  id: number;
   categoryId: number;
-  sellerId: number;
-  buyerId: number | null;
-  pictures: AdvertisementImage[];
-  attributes: Record<string, unknown>;
-  variants: AdvertisementVariantShort[];
-  createdAt: string;
-  soldAt: string | null;
+  categoryCode: string;
+  key: string;
+  dictionaryId: number | null;
+  type: string;
+  required: boolean;
+  min: number | null;
+  max: number | null;
+  isVariant: boolean;
+  multiple: boolean;
+  label: string;
+};
+
+export type AttributeValue = {
+  id: number;
+  dictionaryId: number;
+  code: string;
+  value: string;
+  label: string;
+};
+
+export type VariantAttribute = {
+  attribute: AttributeDefinition;
+  values: AttributeValue[];
 };
 
 export type AdvertisementVariant = {
@@ -41,26 +71,25 @@ export type AdvertisementVariant = {
   attributes: VariantAttribute[];
 };
 
-export type AdvertisementVariantShort = Omit<
-  AdvertisementVariant,
-  "attributes"
-> & {
-  attributes: Record<string, unknown>;
-};
-
-export type VariantAttribute = {
-  attributeId: number;
-  attributeKey: string;
-  value: {
+export type Advertisement = {
+  id: number;
+  title: string;
+  description: string;
+  status: {
     id: number;
-    dictionaryId: number;
     code: string;
-    value: string | null;
-    label: string | null;
+    lable: string | null;
   };
+  currency: Currency;
+  category: Category;
+  seller: UserSeller;
+  buyer: UserSeller | null;
+  pictures: AdvertisementImage[];
+  attributes: VariantAttribute[];
+  variants: AdvertisementVariant[];
+  soldAt: string | null;
+  createdAt: string;
 };
-
-
 
 export function formatAttributeValue(value: unknown): string {
   if (value == null) return "";
@@ -89,48 +118,24 @@ export function formatAttributeValue(value: unknown): string {
   return String(value);
 }
 
-export type Currency = {
-  id: number;
-  name: string;
-  symbol: string;
-};
-
-export type Condition = {
-  id: number;
-  name: string;
-};
-
-export type Category = {
-  id: number;
-  name: string;
-};
-
-export type UserShort = {
-  id: number;
-  username: string;
-  name: string;
-};
-
-export type AdvertisementImage = {
-  id: number;
-  advertisementId: number;
-  order: number;
-  publicId: string;
-  url: string;
-};
-
 export function getAdvertisementPrice(
-  advertisement:
-    | Pick<Advertisement, "variants">
-    | Pick<AdvertisementShort, "variants">,
+  advertisement: Pick<Advertisement, "variants">,
 ): number {
   return advertisement.variants[0]?.price ?? 0;
 }
 
 export function getAdvertisementStock(
-  advertisement:
-    | Pick<Advertisement, "variants">
-    | Pick<AdvertisementShort, "variants">,
+  advertisement: Pick<Advertisement, "variants">,
 ): number {
   return advertisement.variants[0]?.stock ?? 0;
+}
+
+export function getVariantAttributeDisplayValue(
+  attr: VariantAttribute,
+): string {
+  const valObj = attr.values[0];
+  if (!valObj) return "";
+  if (valObj.label) return valObj.label;
+  if (valObj.value) return valObj.value;
+  return valObj.code;
 }

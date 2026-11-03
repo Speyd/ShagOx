@@ -156,25 +156,12 @@ public class AdvertisementQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
     {
-        var cacheKey = AdvertisementCache.ByShortPaged(
-           _language.Language,
-           pagination.Page,
-           pagination.PageSize,
-           status);
-
-        return await _cache.GetOrCreateAsync(
-            cacheKey,
-            async () =>
-            {
-                var adverts = await _advertisementRepository
-                    .GetPagedAsync(pagination, 
-                        cancellationToken, status);
+        var adverts = await _advertisementRepository
+            .GetPagedAsync(pagination, 
+                cancellationToken, status);
                 
-                return adverts.ToResultPaged(
-                    AdvertisementShortMapper.ToDto);
-            },
-            _settings.KeyExpiration
-        );
+        return adverts.ToResultPaged(
+            AdvertisementShortMapper.ToDto);
     }
 
     public async Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
@@ -183,25 +170,11 @@ public class AdvertisementQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
     {
-        var cacheKey = AdvertisementCache.ByShortSearch(
-            filter,
-           _language.Language,
-           pagination.Page,
-           pagination.PageSize,
-           status);
+        var adverts = await _advertisementRepository
+            .ShortSearchAsync(filter, pagination, 
+                cancellationToken, status);
 
-        return await _cache.GetOrCreateAsync(
-            cacheKey,
-            async () =>
-            {
-                var adverts = await _advertisementRepository
-                    .SearchAsync(filter, pagination, 
-                        cancellationToken, status);
-
-                return adverts.ToResultPaged(
-                    AdvertisementShortMapper.ToDto);
-            },
-            _settings.KeyExpiration
-        );
+        return adverts.ToResultPaged(
+            AdvertisementShortMapper.ToDto);
     }
 }

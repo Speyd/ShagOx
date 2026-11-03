@@ -78,4 +78,20 @@ public partial class AdvertisementQueryRepository
                 (x => x.Id),
                 cancellationToken);
     }
+
+    public async Task<PagedResult<Advertisement>> ShortSearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Advertisements
+            .ShortWithIncludes()
+            .WithStatusFilter(status)
+            .Filter(filter)
+            .OrderByDescending(x => x.Popularity)
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
+                cancellationToken);
+    }
 }

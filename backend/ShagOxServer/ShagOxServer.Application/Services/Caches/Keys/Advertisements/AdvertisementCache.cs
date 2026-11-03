@@ -27,12 +27,12 @@ public static class AdvertisementCache
         EntityStatus status = EntityStatus.Active)
             => $"{Prefix}:{language}:status{status}:buyer:{buyerId}:page:{page}:size:{pageSize}";
 
-    public static string ByShortPaged(
-        string language,
-        int page,
-        int pageSize,
-        EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:{language}:status{status}:page:{page}:size:{pageSize}";
+    //public static string ByShortPaged(
+    //    string language,
+    //    int page,
+    //    int pageSize,
+    //    EntityStatus status = EntityStatus.Active)
+    //        => $"{Prefix}:{language}:status{status}:page:{page}:size:{pageSize}";
 
     public static string BySellerPattern(
         long sellerId,
@@ -44,19 +44,19 @@ public static class AdvertisementCache
         EntityStatus status = EntityStatus.Active)
             => $"{Prefix}:*:status{status}:buyer:{buyerId}:page:*";
 
-    public static string ByShortSearch(
-        AdvertisementSearchFilter filter,
-        string language,
-        int page,
-        int pageSize,
-        EntityStatus status = EntityStatus.Active)
-    {
-        var hash = CacheKeyHelper.GetSearchHash(
-            filter,
-            page,
-            pageSize);
+    //public static string ByShortSearch(
+    //    AdvertisementSearchFilter filter,
+    //    string language,
+    //    int page,
+    //    int pageSize,
+    //    EntityStatus status = EntityStatus.Active)
+    //{
+    //    var hash = CacheKeyHelper.GetSearchHash(
+    //        filter,
+    //        page,
+    //        pageSize);
 
-        return $"{Prefix}:{language}:status{status}:search:{hash}";
-    }
+    //    return $"{Prefix}:{language}:status{status}:search:{hash}";
+    //}
 
 }

@@ -21,6 +21,14 @@ public static class AdvertisementQueryExtensions
             .Include(x => x.Pictures);
     }
 
+    public static IQueryable<Advertisement> ShortWithIncludes(
+        this IQueryable<Advertisement> query)
+    {
+        return query
+            .Include(x => x.Variants)
+            .Include(x => x.Pictures);
+    }
+
     public static IQueryable<AdvertisementCacheInfo> SelectCacheInfo(
         this IQueryable<Advertisement> query,
         EntityStatus status = EntityStatus.Active)

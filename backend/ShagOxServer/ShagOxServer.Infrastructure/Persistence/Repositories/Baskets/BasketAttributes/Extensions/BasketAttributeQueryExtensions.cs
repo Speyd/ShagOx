@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
@@ -14,11 +15,13 @@ public static class BasketAttributeQueryExtensions
     }
 
     public static IQueryable<BasketAttributeCacheInfo> SelectCacheInfo(
-        this IQueryable<BasketAttribute> query)
+        this IQueryable<BasketAttribute> query,
+        EntityStatus status = EntityStatus.Active)
     {
         return query.Select(x => new BasketAttributeCacheInfo(
             x.Id,
             x.AttributeDefinition.CategoryId,
-            x.AttributeDefinitionId));
+            x.AttributeDefinitionId,
+            status));
     }
 }

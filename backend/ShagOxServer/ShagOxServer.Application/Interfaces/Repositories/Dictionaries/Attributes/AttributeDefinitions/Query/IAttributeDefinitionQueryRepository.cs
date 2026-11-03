@@ -1,0 +1,32 @@
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
+using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions;
+
+namespace ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
+public partial interface IAttributeDefinitionQueryRepository
+    : ISearchTranslatableRepository<AttributeDefinition, 
+        AttributeDefinitionSearchFilter>
+{
+    Task<List<long>> GetIdsByAttributeDictionaryAsync(
+        long dictionaryId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
+    Task<List<AttributeDefinition>> GetByCategoryAsync(
+        long categoryId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
+    Task<List<AttributeDefinition>> GetByIdsAsync(
+        List<long> ids,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
+    Task<List<AttributeDefinition>> GetByKeysAsync(
+        long categoryId,
+        IEnumerable<string> keys,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+}

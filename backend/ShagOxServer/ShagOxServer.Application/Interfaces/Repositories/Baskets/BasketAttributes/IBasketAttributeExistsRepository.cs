@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 using System.Text.Json;
 
@@ -10,18 +11,22 @@ public interface IBasketAttributeExistsRepository
         long categoryId,
         long attributeId,
         int order,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<bool> ExistsByCategoryAsync(
         long categoryId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<bool> ExistsByAttributeDefenitionAsync(
         long attributeDefenitionId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<List<string>> ExistsByKeysAsync(
         JsonDocument attributes,
         long categoryId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

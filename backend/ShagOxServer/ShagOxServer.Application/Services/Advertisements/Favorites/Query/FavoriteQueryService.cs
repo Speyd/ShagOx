@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
@@ -48,18 +49,19 @@ public class FavoriteQueryService
         Favorite entity)
     {
         var userDto = await _userService
-            .ApplyMapperAsync(entity.User);
+            .ApplyMapperAsync(entity.Owner);
 
         return FavoriteMapper.ToDto(entity, userDto);
     }
 
     public async Task<Result<int>> CountByAdvertisementAsync(
         long advertisementId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var count = await _favoriteRepository
             .CountByAdvertisementAsync(advertisementId,
-                cancellationToken);
+                cancellationToken, status);
 
         return Result<int>.Success(count);
     }
@@ -67,12 +69,13 @@ public class FavoriteQueryService
     public async Task<Result<PagedResult<FavoriteDto>>> GetByUserAsync(
         long userId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = FavoriteCache.ByUser(
             userId,
             pagination.Page,
-            pagination.PageSize);
+            pagination.PageSize, status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -80,7 +83,7 @@ public class FavoriteQueryService
             {
                 var favorites = await _favoriteRepository
                     .GetByUserAsync(userId, pagination, 
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await favorites.ToResultPagedAsync(
                     ApplyMapperAsync);

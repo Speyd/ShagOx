@@ -23,74 +23,44 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.HasSequence("BaseEntitySequence");
-
-            modelBuilder.Entity("ShagOxServer.Domain.Base.BaseEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasDefaultValueSql("nextval('\"BaseEntitySequence\"')");
-
-                    NpgsqlPropertyBuilderExtensions.UseSequence(b.Property<long>("Id"));
-
-                    b.Property<string>("EntityStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("Active");
-
-                    b.HasKey("Id");
-
-                    b.ToTable((string)null);
-
-                    b.UseTpcMappingStrategy();
-                });
-
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.UserRole", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("EntityStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("Active");
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("IX_UserRoles_RoleId");
-
-                    b.ToTable("UserRoles");
-                });
-
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.Role", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.HasKey("Id");
+
                     b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.User", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long?>("AvatarId")
                         .HasColumnType("bigint");
@@ -102,12 +72,21 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long?>("CityId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
                         .HasMaxLength(254)
                         .HasColumnType("character varying(254)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(35)
@@ -144,6 +123,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("CityId")
                         .HasDatabaseName("IX_Users_CityId");
 
@@ -159,14 +140,47 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("UserName")
                         .IsUnique()
-                        .HasDatabaseName("IX_Users_UserName");
+                        .HasDatabaseName("IX_Users_UserName")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.UserRole", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId")
+                        .HasDatabaseName("IX_UserRoles_RoleId");
+
+                    b.ToTable("UserRoles");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<JsonDocument>("Attributes")
                         .IsRequired()
@@ -187,9 +201,18 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("CurrencyId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
@@ -207,6 +230,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("BuyerId")
                         .HasDatabaseName("IX_Advertisements_BuyerId");
@@ -249,7 +274,11 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.AdvertisementVariant", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("AdvertisementId")
                         .HasColumnType("bigint");
@@ -257,6 +286,15 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<JsonDocument>("Attributes")
                         .IsRequired()
                         .HasColumnType("jsonb");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<decimal>("PreviousPrice")
                         .HasPrecision(18, 2)
@@ -269,6 +307,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("AdvertisementId")
                         .HasDatabaseName("IX_AdvertisementVariants_AdvertisementId");
 
@@ -277,47 +317,92 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Favorite", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("AdvertisementId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AdvertisementId")
                         .HasDatabaseName("IX_Favorites_AdvertisementId");
 
-                    b.HasIndex("UserId", "AdvertisementId")
+                    b.HasIndex("OwnerId", "AdvertisementId")
                         .IsUnique()
-                        .HasDatabaseName("IX_Favorites_UserId_AdvertisementId");
+                        .HasDatabaseName("IX_Favorites_OwnerId_AdvertisementId")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Status", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("Code")
                         .IsUnique()
-                        .HasDatabaseName("IX_Statuses_Code");
+                        .HasDatabaseName("IX_Statuses_Code")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Translations.StatusTranslation", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Language")
                         .IsRequired()
@@ -332,6 +417,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_StatusTranslations_Name");
 
@@ -340,45 +427,82 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
-                        .HasDatabaseName("IX_StatusTranslations_TranslatableId_Language");
+                        .HasDatabaseName("IX_StatusTranslations_TranslatableId_Language")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("StatusTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.Basket", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("OwnerId")
                         .IsUnique()
-                        .HasDatabaseName("IX_Baskets_OwnerId");
+                        .HasDatabaseName("IX_Baskets_OwnerId")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("Baskets");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketAttribute", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("AttributeDefinitionId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
                     b.Property<int>("Order")
                         .HasColumnType("integer");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("AttributeDefinitionId")
                         .IsUnique()
-                        .HasDatabaseName("IX_BasketAttributes_AttributeDefinitionId");
+                        .HasDatabaseName("IX_BasketAttributes_AttributeDefinitionId")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("BasketAttributes");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketItem", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("AdvertisementVariantId")
                         .HasColumnType("bigint");
@@ -386,24 +510,40 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("BasketId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
                     b.Property<int>("Quantity")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(1);
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AdvertisementVariantId")
                         .HasDatabaseName("IX_BasketItems_AdvertisementVariantId");
 
                     b.HasIndex("BasketId", "AdvertisementVariantId")
                         .IsUnique()
-                        .HasDatabaseName("IX_BasketItems_BasketId_AdvertisementVariantId");
+                        .HasDatabaseName("IX_BasketItems_BasketId_AdvertisementVariantId")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("BasketItems");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("CommentableEntityId")
                         .HasColumnType("bigint");
@@ -412,6 +552,15 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<int>("Grade")
                         .HasColumnType("integer");
@@ -426,6 +575,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CommentableEntityId")
                         .HasDatabaseName("IX_ReviewComments_CommentableEntityId");
@@ -444,7 +595,11 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("CommentableEntityId")
                         .HasColumnType("bigint");
@@ -453,6 +608,15 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
@@ -467,6 +631,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CommentableEntityId")
                         .HasDatabaseName("IX_ReviewRepliComments_CommentableEntityId");
@@ -488,13 +654,26 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("CategoryId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<long?>("DictionaryId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<bool>("IsVariant")
                         .HasColumnType("boolean");
@@ -520,57 +699,105 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("DictionaryId")
                         .HasDatabaseName("IX_AttributeDefinitions_DictionaryId");
 
                     b.HasIndex("CategoryId", "Key")
                         .IsUnique()
-                        .HasDatabaseName("IX_AttributeDefinitions_CategoryId_Key");
+                        .HasDatabaseName("IX_AttributeDefinitions_CategoryId_Key")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("AttributeDefinitions");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDictionary", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("Code")
                         .IsUnique()
-                        .HasDatabaseName("IX_AttributeDictionaries_Code");
+                        .HasDatabaseName("IX_AttributeDictionaries_Code")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("AttributeDictionaries");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDictionaryValue", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<long>("DictionaryId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("DictionaryId", "Code")
                         .IsUnique()
-                        .HasDatabaseName("IX_AttributeDictionaryValues_DictionaryId_Code");
+                        .HasDatabaseName("IX_AttributeDictionaryValues_DictionaryId_Code")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("AttributeDictionaryValues");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations.AttributeDefinitionTranslation", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Language")
                         .IsRequired()
@@ -584,6 +811,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_AttributeDefinitionTranslations_Name");
@@ -593,14 +822,28 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
-                        .HasDatabaseName("IX_AttributeDefinitionTranslations_TranslatableId_Language");
+                        .HasDatabaseName("IX_AttributeDefinitionTranslations_TranslatableId_Language")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("AttributeDefinitionTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations.AttributeDictionaryValueTranslation", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Language")
                         .IsRequired()
@@ -614,6 +857,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_AttributeDictionaryValueTranslations_Name");
@@ -623,56 +868,102 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
-                        .HasDatabaseName("IX_AttributeDictionaryValueTranslations_TranslatableId_Language");
+                        .HasDatabaseName("IX_AttributeDictionaryValueTranslations_TranslatableId_Language")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("AttributeDictionaryValueTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Category", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
                     b.Property<long>("ProductTypeId")
                         .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductTypeId")
                         .HasDatabaseName("IX_Categories_ProductTypeId");
 
                     b.HasIndex("ProductTypeId", "Code")
                         .IsUnique()
-                        .HasDatabaseName("IX_Categories_ProductTypeId_Code");
+                        .HasDatabaseName("IX_Categories_ProductTypeId_Code")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.ProductType", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("Code")
                         .IsUnique()
-                        .HasDatabaseName("IX_ProductTypes_Code");
+                        .HasDatabaseName("IX_ProductTypes_Code")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Translations.CategoryTranslation", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Language")
                         .IsRequired()
@@ -686,6 +977,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_CategoryTranslations_Name");
@@ -695,14 +988,28 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
-                        .HasDatabaseName("IX_CategoryTranslations_TranslatableId_Language");
+                        .HasDatabaseName("IX_CategoryTranslations_TranslatableId_Language")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("CategoryTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Translations.ProductTypeTranslation", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Language")
                         .IsRequired()
@@ -716,6 +1023,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_ProductTypeTranslations_Name");
@@ -725,26 +1034,43 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
-                        .HasDatabaseName("IX_ProductTypeTranslations_TranslatableId_Language");
+                        .HasDatabaseName("IX_ProductTypeTranslations_TranslatableId_Language")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("ProductTypeTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
                     b.Property<long>("RegionId")
                         .HasColumnType("bigint");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("Code")
                         .IsUnique()
-                        .HasDatabaseName("IX_Cities_Code");
+                        .HasDatabaseName("IX_Cities_Code")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.HasIndex("RegionId")
                         .HasDatabaseName("IX_Cities_RegionId");
@@ -754,23 +1080,52 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Region", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("Code")
                         .IsUnique()
-                        .HasDatabaseName("IX_Regions_Code");
+                        .HasDatabaseName("IX_Regions_Code")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("Regions");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Translations.CityTranslation", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Language")
                         .IsRequired()
@@ -784,6 +1139,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_CityTranslations_Name");
@@ -793,14 +1150,28 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
-                        .HasDatabaseName("IX_CityTranslations_TranslatableId_Language");
+                        .HasDatabaseName("IX_CityTranslations_TranslatableId_Language")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("CityTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.Translations.RegionTranslation", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Language")
                         .IsRequired()
@@ -815,6 +1186,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_RegionTranslations_Name");
 
@@ -823,35 +1196,65 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
-                        .HasDatabaseName("IX_RegionTranslations_TranslatableId_Language");
+                        .HasDatabaseName("IX_RegionTranslations_TranslatableId_Language")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("RegionTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("Code")
                         .IsUnique()
-                        .HasDatabaseName("IX_Conditions_Code");
+                        .HasDatabaseName("IX_Conditions_Code")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("Conditions");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Currency", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("character varying(3)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -863,16 +1266,32 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("character varying(5)");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("Code")
                         .IsUnique()
-                        .HasDatabaseName("IX_Currencies_Code");
+                        .HasDatabaseName("IX_Currencies_Code")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("Currencies");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.AdvertisementImage", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<int>("Order")
                         .HasColumnType("integer");
@@ -889,16 +1308,32 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
-                        .HasDatabaseName("IX_AdvertisementImages_OwnerId_Order");
+                        .HasDatabaseName("IX_AdvertisementImages_OwnerId_Order")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("AdvertisementImages");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Avatar", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
@@ -912,16 +1347,32 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("OwnerId")
                         .IsUnique()
-                        .HasDatabaseName("IX_Avatars_OwnerId");
+                        .HasDatabaseName("IX_Avatars_OwnerId")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("Avatars");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewImage", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<int>("Order")
                         .HasColumnType("integer");
@@ -938,16 +1389,32 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
-                        .HasDatabaseName("IX_ReviewImages_OwnerId_Order");
+                        .HasDatabaseName("IX_ReviewImages_OwnerId_Order")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("ReviewImages");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewRepliImage", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<int>("Order")
                         .HasColumnType("integer");
@@ -964,16 +1431,32 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
-                        .HasDatabaseName("IX_ReviewRepliImages_OwnerId_Order");
+                        .HasDatabaseName("IX_ReviewRepliImages_OwnerId_Order")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("ReviewRepliImages");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Translations.ConditionTranslation", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Language")
                         .IsRequired()
@@ -988,19 +1471,26 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("TranslatableId")
                         .HasColumnType("bigint");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("TranslatableId")
                         .HasDatabaseName("IX_ConditionTranslations_TranslatableId");
 
                     b.HasIndex("Language", "Name")
                         .IsUnique()
-                        .HasDatabaseName("IX_ConditionTranslations_Language_Name");
+                        .HasDatabaseName("IX_ConditionTranslations_Language_Name")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.ToTable("ConditionTranslations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Verifications.VerificationCode", b =>
                 {
-                    b.HasBaseType("ShagOxServer.Domain.Base.BaseEntity");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<int>("Attempts")
                         .HasColumnType("integer");
@@ -1011,6 +1501,15 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamptz");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamptz");
@@ -1033,10 +1532,23 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("UserId")
                         .HasDatabaseName("IX_VerificationCodes_UserId");
 
                     b.ToTable("VerificationCodes");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.User", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Location.City", "City")
+                        .WithMany("Users")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Users_Cities_CityId");
+
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.UserRole", b =>
@@ -1058,17 +1570,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.User", b =>
-                {
-                    b.HasOne("ShagOxServer.Domain.Entities.Location.City", "City")
-                        .WithMany("Users")
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("FK_Users_Cities_CityId");
-
-                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
@@ -1148,16 +1649,16 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Favorites_Advertisements_AdvertisementId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "User")
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
                         .WithMany("Favorites")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_Favorites_Users_UserId");
+                        .HasConstraintName("FK_Favorites_Users_OwnerId");
 
                     b.Navigation("Advertisement");
 
-                    b.Navigation("User");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Translations.StatusTranslation", b =>

@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -10,10 +11,12 @@ public partial interface IUserRoleQueryRepository
     Task<PagedResult<Role>> GetRolesByUserAsync(
         long userId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<PagedResult<User>> GetUsersByRoleAsync(
         long roleId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

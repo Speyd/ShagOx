@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
 public class ProductTypeConfiguration 
@@ -17,7 +18,6 @@ public class ProductTypeConfiguration
             .HasColumnType("text")
             .IsRequired();
 
-        builder.HasIndex(x => x.Code)
-            .IsUnique();
+        builder.HasUniqueActiveIndex(x => x.Code);
     }
 }

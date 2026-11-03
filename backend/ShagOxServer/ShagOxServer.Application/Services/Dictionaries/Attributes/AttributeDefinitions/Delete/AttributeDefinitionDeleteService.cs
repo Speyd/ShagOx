@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
@@ -11,8 +12,9 @@ using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
-public class AttributeDefinitionDeleteService 
-    : IAttributeDefinitionDeleteService
+public class AttributeDefinitionDeleteService
+    : BaseDeleteService<AttributeDefinition>
+    , IAttributeDefinitionDeleteService
 {
     private readonly IRepository<AttributeDefinition> _attributeRepository;
     private readonly AttributeDefinitionValidator _attributeValidator;
@@ -28,7 +30,9 @@ public class AttributeDefinitionDeleteService
         AttributeDefinitionValidator attributeValidator,
         AttributeDefinitionInvalidationService attribureInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<AttributeDefinitionDeleteService> logger)
+        ILogger<AttributeDefinitionDeleteService> logger
+    )
+        : base(attributeValidator, unitOfWork, logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
@@ -68,8 +72,7 @@ public class AttributeDefinitionDeleteService
                 EntityErrorResources.AttributeDefinitionDeleteFailed);
         }
 
-        await _attribureInvalid.InvalidateDeleteAsync(
-           AttributeDefinitionCacheMapper.ToInfo(attribute.Value!));
+        await InvalidateCache(attribute.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -77,5 +80,12 @@ public class AttributeDefinitionDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        AttributeDefinition entity)
+    {
+        await _attribureInvalid.InvalidateDeleteAsync(
+            AttributeDefinitionCacheMapper.ToInfo(entity));
     }
 }

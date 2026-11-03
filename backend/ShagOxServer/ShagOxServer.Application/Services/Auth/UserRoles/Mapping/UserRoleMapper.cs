@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.UserRoles;
+using ShagOxServer.Application.DTOs.Auth.UserRoles;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Auth.UserRoles.Mapping;
@@ -9,6 +9,7 @@ public static class UserRoleMapper
     {
         return new UserRoleDto(
             userRole.Id,
+            userRole.EntityStatus,
             userRole.UserId,
             userRole.RoleId
         );

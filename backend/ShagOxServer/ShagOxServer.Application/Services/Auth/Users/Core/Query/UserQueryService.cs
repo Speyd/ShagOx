@@ -14,6 +14,7 @@ using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -73,18 +74,21 @@ public class UserQueryService
 
     public async Task<Result<UserShortDto>> GetByContactAsync(
         string value,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = UserCache.ByContact(
             value,
-            _language.Language);
+            _language.Language, 
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
             async () =>
             {
                 var user = await _userQueryRepository
-                    .GetByContactAsync(value, cancellationToken);
+                    .GetByContactAsync(value, 
+                        cancellationToken, status);
 
                 return user.ToResult(UserShortMapper.ToDto);
             },
@@ -93,9 +97,12 @@ public class UserQueryService
     }
 
     public async Task<Result<UserDto>> GetMyProfileAsync(
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
-        var cacheKey = GetCacheKey(_context.UserId);
+        var cacheKey = GetCacheKey(
+            _context.UserId,
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -103,7 +110,7 @@ public class UserQueryService
             {
                 var user = await _userQueryRepository
                     .GetByIdIncludeAsync(_context.UserId,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await user.ToResultAsync(ApplyMapperAsync);
             },
@@ -113,12 +120,14 @@ public class UserQueryService
 
     public async Task<Result<PagedResult<RoleDto>>> GetMyRoleAsync(
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = UserRoleCache.RolesByUser(
             _context.UserId,
             pagination.Page,
-            pagination.PageSize);
+            pagination.PageSize,
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -126,7 +135,7 @@ public class UserQueryService
             {
                 var roles = await _roleQueryRepository
                     .GetByUserAsync(_context.UserId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return roles.ToResultPaged(RoleMapper.ToDto);
             },

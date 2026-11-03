@@ -1,4 +1,3 @@
-using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;

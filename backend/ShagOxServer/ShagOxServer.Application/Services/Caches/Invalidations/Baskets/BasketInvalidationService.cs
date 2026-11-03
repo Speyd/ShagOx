@@ -61,10 +61,12 @@ public class BasketInvalidationService
         BasketCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-           .EntityLanguagePattern<Basket>(entityInfo.Id));
+           .EntityLanguagePattern<Basket>(entityInfo.Id,
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(BasketCache
-          .ByUserPattern(entityInfo.UserId));
+          .ByUserPattern(entityInfo.UserId,
+                entityInfo.Status));
     }
 
     private async Task<List<BasketItemCacheInfo>> GetBasketItemInfos(

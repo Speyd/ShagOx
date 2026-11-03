@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries.Attributes;
 public class AttributeDefinitionConfiguration 
@@ -22,7 +23,7 @@ public class AttributeDefinitionConfiguration
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => new { x.CategoryId, x.Key })
-             .IsUnique();
+        builder.HasUniqueActiveIndex(x =>
+            new { x.CategoryId, x.Key });
     }
 }

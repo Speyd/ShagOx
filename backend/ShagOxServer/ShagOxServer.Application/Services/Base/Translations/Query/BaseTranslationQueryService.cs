@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Base.Translations.Translation
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -38,24 +39,28 @@ public abstract class BaseTranslationQueryService<TDto, TEntity, TTranslation, T
     public async Task<Result<PagedResult<TDto>>> GetPagedAsync(
         PaginationParams pagination,
         string language,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var entities = await _queryTranslationRepository
             .GetPagedAsync(pagination, language,
-                cancellationToken);
+                cancellationToken, status);
 
-        return await entities.ToResultPagedAsync(ApplyMapperAsync);
+        return await entities.ToResultPagedAsync(
+            ApplyMapperAsync);
     }
 
     public async Task<Result<TDto>> GetByIdentificatorAsync(
         string identificator,
         string language,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var entity = await _queryTranslationRepository
             .GetByIdentificatorAsync(identificator, language,
-                cancellationToken);
+                cancellationToken, status);
 
-        return await entity.ToResultAsync(ApplyMapperAsync);
+        return await entity.ToResultAsync(
+            ApplyMapperAsync);
     }
 }

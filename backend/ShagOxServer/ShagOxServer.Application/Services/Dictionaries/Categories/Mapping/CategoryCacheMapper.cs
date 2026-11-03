@@ -1,15 +1,18 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 public static class CategoryCacheMapper
 {
     public static CategoryCacheInfo ToInfo(
-       Category category)
+       Category category,
+        EntityStatus status = EntityStatus.Active)
     {
         return new CategoryCacheInfo(
             category.Id,
-            category.ProductTypeId
+            category.ProductTypeId,
+            status
         );
     }
 }

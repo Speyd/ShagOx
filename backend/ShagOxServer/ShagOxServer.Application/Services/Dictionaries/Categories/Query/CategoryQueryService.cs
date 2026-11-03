@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -56,13 +57,15 @@ public class CategoryQueryService
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
         long productTypeId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = CategoryCache.ByProductType(
            productTypeId,
            _language.Language,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize,
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -70,7 +73,7 @@ public class CategoryQueryService
             {
                 var categories = await _categoryQueryRepository
                     .GetByProductTypeAsync(productTypeId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await categories.ToResultPagedAsync(
                     ApplyMapperAsync);

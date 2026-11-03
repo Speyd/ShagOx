@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Location.Cities.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
 
@@ -9,5 +10,6 @@ public partial interface ICityQueryRepository
 {
     Task<List<CityCacheInfo>> GetCacheInfoByRegionAsync(
         long regionId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

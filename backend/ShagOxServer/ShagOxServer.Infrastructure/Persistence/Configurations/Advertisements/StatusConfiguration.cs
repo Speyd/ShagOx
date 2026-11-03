@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Advertisements;
 public class StatusConfiguration 
@@ -13,7 +14,6 @@ public class StatusConfiguration
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.HasIndex(x => x.Code)
-            .IsUnique();
+        builder.HasUniqueActiveIndex(x => x.Code);
     }
 }

@@ -1,8 +1,8 @@
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Validations;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -15,7 +15,8 @@ public partial class AttributeValueService
     public async Task<Result<List<AttributeDto>>> GetAttributesAsync(
         JsonDocument variant,
         long categoryId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var jsonAttributes = variant
             .RootElement
@@ -30,7 +31,9 @@ public partial class AttributeValueService
 
         var definitionsResult = await GetAttributeDefinitionsAsync(
             categoryId,
-            jsonAttributes);
+            jsonAttributes,
+            cancellationToken,
+            status);
 
         if (!definitionsResult.IsSuccess)
         {
@@ -52,7 +55,8 @@ public partial class AttributeValueService
 
         var values = await _valueRepository.GetByIdsAsync(
             valueIdsResult.Value!.Distinct(),
-            cancellationToken);
+            cancellationToken,
+            status);
 
         var valuesById = values.ToDictionary(x => x.Id);
 
@@ -65,7 +69,9 @@ public partial class AttributeValueService
     private async Task<Result<Dictionary<string, AttributeDefinition>>>
         GetAttributeDefinitionsAsync(
             long categoryId,
-            List<JsonProperty> jsonAttributes)
+            List<JsonProperty> jsonAttributes,
+            CancellationToken cancellationToken = default,
+            EntityStatus status = EntityStatus.Active)
     {
         var keys = jsonAttributes
             .Select(x => x.Name)
@@ -74,7 +80,9 @@ public partial class AttributeValueService
 
         var definitions = await _attributeRepository.GetByKeysAsync(
             categoryId,
-            keys);
+            keys,
+            cancellationToken,
+            status);
 
         var definitionsByKey = definitions
             .ToDictionary(x => x.Key);

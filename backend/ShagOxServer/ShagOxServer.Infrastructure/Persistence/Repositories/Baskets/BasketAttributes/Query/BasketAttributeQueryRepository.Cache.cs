@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
 
@@ -13,24 +15,28 @@ public partial class BasketAttributeQueryRepository
 {
     public async Task<List<BasketAttributeCacheInfo>> GetCacheInfosByCategoryAsync(
         long categoryId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         return await _db.BasketAttributes
             .WithIncludes()
+            .WithStatusFilter(status)
             .Where(c =>
                 c.AttributeDefinition.CategoryId == categoryId)
             .OrderBy(c => c.Order)
-            .SelectCacheInfo()
+            .SelectCacheInfo(status)
             .ToListAsync(cancellationToken);
     }
     public async Task<BasketAttributeCacheInfo?> GetCacheInfoByAttributeDefinitionAsync(
         long attributeDefinitionId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         return await _db.BasketAttributes
             .WithIncludes()
+            .WithStatusFilter(status)
             .Where(x => x.AttributeDefinitionId == attributeDefinitionId)
-            .SelectCacheInfo()
+            .SelectCacheInfo(status)
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

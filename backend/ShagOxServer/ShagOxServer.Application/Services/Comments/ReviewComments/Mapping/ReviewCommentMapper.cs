@@ -12,6 +12,7 @@ public static class ReviewCommentMapper
     {
         return new ReviewCommentDto(
             comment.Id,
+            comment.EntityStatus,
             user,
             comment.CommentableEntityId,
             comment.Text,

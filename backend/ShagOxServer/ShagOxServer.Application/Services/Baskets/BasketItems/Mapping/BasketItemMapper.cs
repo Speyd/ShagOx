@@ -11,6 +11,7 @@ public static class BasketItemMapper
     {
         return new BasketItemDto(
             item.Id,
+            item.EntityStatus,
             item.BasketId,
             item.AdvertisementVariantId,
             item.Quantity,

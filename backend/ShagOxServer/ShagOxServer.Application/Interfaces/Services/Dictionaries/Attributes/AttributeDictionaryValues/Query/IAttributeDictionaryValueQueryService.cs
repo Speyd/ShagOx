@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -15,5 +16,6 @@ public interface IAttributeDictionaryValueQueryService
         GetByDictionaryAsync(
             long dictionaryId,
             PaginationParams pagination,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default,
+            EntityStatus status = EntityStatus.Active);
 }

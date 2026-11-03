@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Categories.Extensions;
@@ -16,10 +17,12 @@ public static class CategoryQueryExtensions
     }
 
     public static IQueryable<CategoryCacheInfo> SelectCacheInfo(
-        this IQueryable<Category> query)
+        this IQueryable<Category> query,
+        EntityStatus status = EntityStatus.Active)
     {
         return query.Select(x => new CategoryCacheInfo(
             x.Id,
-            x.ProductTypeId));
+            x.ProductTypeId,
+            status));
     }
 }

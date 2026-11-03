@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -14,10 +15,12 @@ public interface ITranslationQueryOperations<TDto, TFilter>
     Task<Result<PagedResult<TDto>>> GetPagedAsync(
         PaginationParams pagination,
         string language,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<Result<TDto>> GetByIdentificatorAsync(
         string identificator,
         string language,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

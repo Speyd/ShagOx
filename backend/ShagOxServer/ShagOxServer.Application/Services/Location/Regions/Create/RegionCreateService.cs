@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
+using ShagOxServer.Application.Services.Location.Regions.Mapping;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -71,7 +72,7 @@ public class RegionCreateService
         }
 
         await _regionInvalidation.InvalidateCreateAsync(
-            region.Id);
+            RegionCacheMapper.ToInfo(region));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

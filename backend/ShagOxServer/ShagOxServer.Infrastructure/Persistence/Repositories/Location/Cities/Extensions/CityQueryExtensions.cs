@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Location.Cities.Cache;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.Extensions;
@@ -13,10 +14,12 @@ public static class CityQueryExtensions
     }
 
     public static IQueryable<CityCacheInfo> SelectCacheInfo(
-        this IQueryable<City> query)
+        this IQueryable<City> query,
+        EntityStatus status = EntityStatus.Active)
     {
         return query.Select(x => new CityCacheInfo(
             x.Id,
-            x.RegionId));
+            x.RegionId,
+            status));
     }
 }

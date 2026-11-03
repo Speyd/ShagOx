@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -12,9 +13,11 @@ public interface IRoleQueryService
     Task<Result<PagedResult<RoleDto>>> GetByUserAsync(
        long userId,
        PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<Result<RoleDto>> GetByNameAsync(
         string name,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

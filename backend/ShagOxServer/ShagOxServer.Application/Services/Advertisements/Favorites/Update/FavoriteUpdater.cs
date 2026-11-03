@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Update;
@@ -9,12 +9,6 @@ public static class FavoriteUpdater
         FavoriteUpdateRequest request)
     {
         int countUpdated = 0;
-
-        if (request.UserId is not null)
-        {
-            favorite.UserId = request.UserId.Value;
-            countUpdated++;
-        }
 
         if (request.AdvertisementId.HasValue)
         {

@@ -2,6 +2,7 @@ using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -29,10 +30,11 @@ public class UserAdminQueryService
 
     public async Task<Result<PagedResult<UserDto>>> GetPagedAsync(
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var users = await _userQueryRepository
-            .GetPagedAsync(pagination, cancellationToken);
+            .GetPagedAsync(pagination, cancellationToken, status);
 
         return await users.ToResultPagedAsync(
             _userQueryService.ApplyMapperAsync);
@@ -53,10 +55,11 @@ public class UserAdminQueryService
 
     public async Task<bool> ExistsByIdAsync(
         long id,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var result = await _userExistsRepository
-            .ExistsByIdAsync(id, cancellationToken);
+            .ExistsByIdAsync(id, cancellationToken, status);
 
         return result;
     }

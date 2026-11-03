@@ -1,11 +1,14 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 public static class AdvertisementCacheMapper
 {
     public static AdvertisementCacheInfo ToInfo(
-        Advertisement x)
+        Advertisement x,
+        EntityStatus status = EntityStatus.Active)
     {
         return new AdvertisementCacheInfo
         (
@@ -13,8 +16,10 @@ public static class AdvertisementCacheMapper
             x.OwnerId,
             x.BuyerId,
             x.Variants
-                .Select(x => x.Id)
-                .ToList()
+                .Select(x => AdvertisementVariantCacheMapper
+                    .ToInfo(x, status))
+                .ToList(),
+            status
         );
     }
 }

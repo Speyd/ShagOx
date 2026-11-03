@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Baskets;
 public class BasketAttributeConfiguration
@@ -17,7 +18,6 @@ public class BasketAttributeConfiguration
                .HasForeignKey<BasketAttribute>(x => x.AttributeDefinitionId)
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => x.AttributeDefinitionId )
-            .IsUnique();
+        builder.HasUniqueActiveIndex(x => x.AttributeDefinitionId);
     }
 }

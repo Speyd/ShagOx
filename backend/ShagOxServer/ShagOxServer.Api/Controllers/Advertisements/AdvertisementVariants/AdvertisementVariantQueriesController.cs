@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Domain.Filters.Advertisements;

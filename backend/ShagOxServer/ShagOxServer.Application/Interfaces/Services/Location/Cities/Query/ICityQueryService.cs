@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -14,5 +15,6 @@ public interface ICityQueryService
     Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
         long regionId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

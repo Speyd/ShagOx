@@ -1,6 +1,7 @@
 using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 
@@ -10,9 +11,11 @@ public partial interface IUserRoleQueryRepository
 {
     Task<List<RoleCacheInfo>> GetRoleCacheInfoByUserAsync(
         long userId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<List<UserCacheInfo>> GetUserCacheInfoByRoleAsync(
         long roleId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

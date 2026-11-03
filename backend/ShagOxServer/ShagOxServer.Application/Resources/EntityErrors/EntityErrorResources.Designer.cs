@@ -934,6 +934,15 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete the record..
+        /// </summary>
+        internal static string SoftDeleteFailed {
+            get {
+                return ResourceManager.GetString("SoftDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete user..
         /// </summary>
         internal static string UserDeleteFailed {

@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Core.Multiple;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.AdvertisementImages;
 
@@ -10,5 +11,6 @@ public partial interface IAdvertisementImageQueryRepository
 {
     Task<List<AdvertisementImage>> GetByIdsAsync(
         List<long> ids,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

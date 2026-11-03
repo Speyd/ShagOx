@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
+using ShagOxServer.Application.Services.Location.Regions.Mapping;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
@@ -100,8 +101,8 @@ public class RegionUpdateService
                  .Fail(EntityErrorResources.RegionUpdateFailed);
         }
 
-        await _regionInvalid
-            .InvalidateUpdateAsync(regionId);
+        await _regionInvalid.InvalidateUpdateAsync(
+            RegionCacheMapper.ToInfo(region.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

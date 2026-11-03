@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
 public static class ConfigureBaseEntityPropertiesExtensions
 {
-    public static void ConfigureBaseEntityProperties(this ModelBuilder modelBuilder)
+    public static void ConfigureBaseEntityProperties(
+        this ModelBuilder modelBuilder)
     {
         var derivedTypes = modelBuilder.Model
             .GetEntityTypes()
@@ -29,7 +32,8 @@ public static class ConfigureBaseEntityPropertiesExtensions
         }
     }
 
-    private static void ConfigureEntity<TEntity>(ModelBuilder modelBuilder)
+    private static void ConfigureEntity<TEntity>(
+        ModelBuilder modelBuilder)
         where TEntity : BaseEntity
     {
         modelBuilder.Entity<TEntity>(b =>
@@ -38,6 +42,10 @@ public static class ConfigureBaseEntityPropertiesExtensions
              .HasConversion<string>()
              .HasDefaultValue(EntityStatus.Active)
              .IsRequired();
+
+            b.Property(e => e.DeletedAt)
+               .HasColumnType("timestamp with time zone")
+               .IsRequired(false);
         });
     }
 }

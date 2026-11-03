@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+using DotNetEnv;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Validator;
@@ -13,7 +15,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Delete;
 public class AttributeDictionaryValueDeleteService
-    : IAttributeDictionaryValueDeleteService
+    : BaseDeleteService<AttributeDictionaryValue>
+    , IAttributeDictionaryValueDeleteService
 {
     private readonly IRepository<AttributeDictionaryValue> _valueRepository;
     private readonly AttributeDictionaryValueValidator _valueValidator;
@@ -29,7 +32,9 @@ public class AttributeDictionaryValueDeleteService
         AttributeDictionaryValueValidator valueValidator,
         AttributeDictionaryValueInvalidationService valueInvalidation,
         IUnitOfWork unitOfWork,
-        ILogger<AttributeDictionaryValueDeleteService> logger)
+        ILogger<AttributeDictionaryValueDeleteService> logger
+    )
+        : base(valueValidator, unitOfWork, logger)
     {
         _valueRepository = valueRepository;
         _valueValidator = valueValidator;
@@ -69,8 +74,7 @@ public class AttributeDictionaryValueDeleteService
                 EntityErrorResources.AttributeDictionaryValueDeleteFailed);
         }
 
-        await _valueInvalidation.InvalidateDeleteAsync(
-            AttributeDictionaryValueCacheMapper.ToInfo(value.Value!));
+        await InvalidateCache(value.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -78,5 +82,12 @@ public class AttributeDictionaryValueDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        AttributeDictionaryValue entity)
+    {
+        await _valueInvalidation.InvalidateDeleteAsync(
+            AttributeDictionaryValueCacheMapper.ToInfo(entity));
     }
 }

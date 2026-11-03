@@ -13,6 +13,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Auth.UserRoles.Mapping;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -57,12 +58,14 @@ public class UserRoleQueryService
     public async Task<Result<PagedResult<RoleDto>>> GetRolesByUserAsync(
         long userId,
 		PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = UserRoleCache.RolesByUser(
            userId,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize, 
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -70,7 +73,7 @@ public class UserRoleQueryService
             {
                 var roles = await _userRoleQueryRepository
                     .GetRolesByUserAsync(userId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await roles.ToResultPagedAsync(
                     _roleService.ApplyMapperAsync);
@@ -81,9 +84,12 @@ public class UserRoleQueryService
 
     public async Task<Result<List<RoleCacheInfo>>> GetRolesCacheInfoByUserAsync(
         long userId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
-        var cacheKey = UserRoleCache.RoleIdsByUser(userId);
+        var cacheKey = UserRoleCache.RoleIdsByUser(
+            userId, 
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -91,7 +97,7 @@ public class UserRoleQueryService
             {
                 var roles = await _userRoleQueryRepository
                     .GetRoleCacheInfoByUserAsync(userId,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return Result<List<RoleCacheInfo>>.Success(roles);
             },
@@ -102,12 +108,14 @@ public class UserRoleQueryService
     public async Task<Result<PagedResult<UserDto>>> GetUsersByRoleAsync(
         long roleId,
 		PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = UserRoleCache.UsersByRole(
            roleId,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize, 
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -115,7 +123,7 @@ public class UserRoleQueryService
             {
                 var users = await _userRoleQueryRepository
                     .GetUsersByRoleAsync(roleId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await users.ToResultPagedAsync(
                     _userService.ApplyMapperAsync);
@@ -126,9 +134,12 @@ public class UserRoleQueryService
 
     public async Task<Result<List<UserCacheInfo>>> GetUserCacheInfoByRoleAsync(
         long roleId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
-        var cacheKey = UserRoleCache.UserIdsByRole(roleId);
+        var cacheKey = UserRoleCache.UserIdsByRole(
+            roleId, 
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -136,7 +147,7 @@ public class UserRoleQueryService
             {
                 var users = await _userRoleQueryRepository
                     .GetUserCacheInfoByRoleAsync(roleId,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return Result<List<UserCacheInfo>>.Success(users);
             },

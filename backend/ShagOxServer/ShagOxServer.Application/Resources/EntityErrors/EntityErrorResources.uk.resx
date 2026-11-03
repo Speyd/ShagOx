@@ -414,4 +414,7 @@
   <data name="ReviewRepliImageUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити зображення відповіді на відгук.</value>
   </data>
+  <data name="SoftDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити запис.</value>
+  </data>
 </root>

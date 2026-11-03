@@ -1,4 +1,5 @@
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Base.Query;
@@ -7,13 +8,16 @@ public interface IQueryRepository<TEntity>
 {
     Task<TEntity?> GetByIdAsync(
         long id,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<TEntity?> GetByIdIncludeAsync(
         long id,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<PagedResult<TEntity>> GetPagedAsync(
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

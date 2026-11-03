@@ -1,8 +1,9 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.DTOs.Base.Responses;
+using ShagOxServer.Application.Interfaces.Services.Base.Delete;
 
 namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Delete;
 public interface IAttributeDictionaryValueDeleteService
-    : IDeleteService<DeleteResponse>
+    : IDeleteService<DeleteResponse>,
+    ISoftDeleteService<DeleteResponse>
 {
 }

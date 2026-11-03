@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations;
+using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Query;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Mapping;
@@ -10,6 +10,7 @@ public static class ProductTypeTranslationMapper
         return new ProductTypeTranslationDto
         (
             x.Id,
+            x.EntityStatus,
             x.Name
         );
     }

@@ -69,10 +69,10 @@ public class ReviewCommentCommandsController
     {
         var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)
-            return forbidden;
 
+            return forbidden;
         var result = await _deleteService
-            .DeleteAsync(id);
+            .SoftDeleteAsync(id);
 
         return result.ToActionResult();
     }

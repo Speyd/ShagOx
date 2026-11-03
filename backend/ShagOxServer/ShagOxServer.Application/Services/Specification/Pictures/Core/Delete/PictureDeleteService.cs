@@ -5,14 +5,16 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
 public abstract class PictureDeleteService<TPicture>
-    : IPictureDeleteService<TPicture>,
-    IPictureCache<TPicture>
+    : BaseDeleteService<TPicture>
+    , IPictureDeleteService<TPicture>
+    ,IPictureCache<TPicture>
     where TPicture : BasePicture
 {
     private readonly IRepository<TPicture> _pictureRepository;
@@ -28,7 +30,9 @@ public abstract class PictureDeleteService<TPicture>
         BaseValidator<TPicture> pictureBaseValidator,
         PictureValidator pictureValidator,
         IUnitOfWork unitOfWork,
-        ILogger<PictureDeleteService<TPicture>> logger)
+        ILogger<PictureDeleteService<TPicture>> logger
+    )
+        : base(pictureBaseValidator, unitOfWork, logger)
     {
         _pictureRepository = pictureRepository;
         _pictureBaseValidator = pictureBaseValidator;
@@ -37,9 +41,6 @@ public abstract class PictureDeleteService<TPicture>
         _logger = logger;
     }
 
-
-    public abstract Task InvalidateCache(
-        TPicture picture);
 
     public virtual async Task<Result<DeleteResponse>> DeleteAsync(
         long id)

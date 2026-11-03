@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -6,13 +6,15 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Delete;
-public class RoleDeleteService 
-    : IRoleDeleteService
+public class RoleDeleteService
+    : BaseDeleteService<Role>
+    , IRoleDeleteService
 {
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;
@@ -28,7 +30,9 @@ public class RoleDeleteService
         RoleValidator roleValidator,
         RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<RoleDeleteService> logger)
+        ILogger<RoleDeleteService> logger
+    )
+        : base(roleValidator, unitOfWork, logger)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
@@ -68,8 +72,7 @@ public class RoleDeleteService
                 .Fail(EntityErrorResources.RoleDeleteFailed);
         }
 
-        await _roleInvalid.InvalidateDeleteAsync(
-            RoleCacheMapper.ToInfo(role.Value!));
+        await InvalidateCache(role.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -77,5 +80,12 @@ public class RoleDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+       Role entity)
+    {
+        await _roleInvalid.InvalidateDeleteAsync(
+            RoleCacheMapper.ToInfo(entity));
     }
 }

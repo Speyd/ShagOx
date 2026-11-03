@@ -1,6 +1,7 @@
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,5 +16,6 @@ public interface ITranslatableQueryService<TDto, TEntity, TFilter>
     Task<Result<TDto>> GetByIdentificatorAsync(
         string identificator,
         long? parentId = null,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

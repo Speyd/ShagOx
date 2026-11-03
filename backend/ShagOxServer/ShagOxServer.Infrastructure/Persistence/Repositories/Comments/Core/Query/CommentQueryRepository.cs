@@ -1,7 +1,9 @@
 using ShagOxServer.Application.Interfaces.Repositories.Comments;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -21,11 +23,13 @@ public partial class CommentQueryRepository<TEntity, TFilter>
     public async Task<PagedResult<TEntity>> GetByOwnerAsync(
         long ownerId,
         PaginationParams paginationParams,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         var query = ApplyIncludes(_db.Set<TEntity>());
 
         return await query
+            .WithStatusFilter(status)
             .Where(x => x.OwnerId == ownerId)
             .ToPagedResultAsync(paginationParams,
                  x => x.Id,
@@ -35,11 +39,13 @@ public partial class CommentQueryRepository<TEntity, TFilter>
     public async Task<PagedResult<TEntity>> GetByCommentableAsync(
         long commentableId,
         PaginationParams paginationParams,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         var query = ApplyIncludes(_db.Set<TEntity>());
 
         return await query
+            .WithStatusFilter(status)
             .Where(x => x.CommentableEntityId == commentableId)
             .ToPagedResultAsync(paginationParams,
                  x => x.Id,

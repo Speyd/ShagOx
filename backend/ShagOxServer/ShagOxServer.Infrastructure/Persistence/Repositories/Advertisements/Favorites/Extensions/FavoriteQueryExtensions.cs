@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Advertisements.Core;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
@@ -10,10 +10,10 @@ public static class FavoriteQueryExtensions
         this IQueryable<Favorite> query)
     {
         return query
-            .Include(x => x.User)
+            .Include(x => x.Owner)
                 .ThenInclude(a => a.City)
                     .ThenInclude(c => c.Region)
-            .Include(x => x.User)
+            .Include(x => x.Owner)
                 .ThenInclude(a => a.UserRoles)
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Category)
@@ -31,10 +31,12 @@ public static class FavoriteQueryExtensions
     }
 
     public static IQueryable<FavoriteCacheInfo> SelectCacheInfo(
-        this IQueryable<Favorite> query)
+        this IQueryable<Favorite> query,
+        EntityStatus status = EntityStatus.Active)
     {
         return query.Select(x => new FavoriteCacheInfo(
             x.Id,
-            x.UserId));
+            x.OwnerId,
+            status));
     }
 }

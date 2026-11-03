@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
+using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -71,7 +72,7 @@ public class ConditionCreateService
         }
 
         await _conditionInvalidation.InvalidateCreateAsync(
-            condition.Id);
+            ConditionCacheMapper.ToInfo(condition));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

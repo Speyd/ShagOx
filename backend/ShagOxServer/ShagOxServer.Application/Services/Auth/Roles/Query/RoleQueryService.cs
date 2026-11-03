@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -45,12 +46,14 @@ public class RoleQueryService
     public async Task<Result<PagedResult<RoleDto>>> GetByUserAsync(
        long userId,
        PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = RoleCache.ByUser(
            userId,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize, 
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -58,7 +61,7 @@ public class RoleQueryService
             {
                 var roles = await _roleQueryRepository
                     .GetByUserAsync(userId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await roles.ToResultPagedAsync(
                     ApplyMapperAsync);
@@ -69,16 +72,18 @@ public class RoleQueryService
 
     public async Task<Result<RoleDto>> GetByNameAsync(
         string name,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
-        var cacheKey = RoleCache.ByName(name);
+        var cacheKey = RoleCache.ByName(name, status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
             async () =>
             {
                 var role = await _roleQueryRepository
-                    .GetByNameAsync(name, cancellationToken);
+                    .GetByNameAsync(name, 
+                        cancellationToken, status);
 
                 return await role.ToResultAsync(
                     ApplyMapperAsync);

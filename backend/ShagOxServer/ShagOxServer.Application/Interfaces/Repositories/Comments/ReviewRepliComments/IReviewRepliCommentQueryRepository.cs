@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Comments.Core.Cache;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Filters.Comments;
 
@@ -9,5 +10,6 @@ public interface IReviewRepliCommentQueryRepository
 {
     Task<List<CommentCacheInfo>> GetCacheInfoByRepliAsync(
        long repliId,
-       CancellationToken cancellationToken = default);
+       CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

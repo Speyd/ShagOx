@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -6,14 +6,15 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Dele
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
-using ShagOxServer.Domain.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Delete;
-public class FavoriteDeleteService 
-    : IFavoriteDeleteService
+public class FavoriteDeleteService
+    : BaseDeleteService<Favorite>
+    , IFavoriteDeleteService
 {
     private readonly IRepository<Favorite> _favoriteRepository;
     private readonly FavoriteValidator _favoriteValidator;
@@ -29,7 +30,9 @@ public class FavoriteDeleteService
         FavoriteValidator favoriteValidator,
         FavoriteInvalidationService favoriteInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<FavoriteDeleteService> logger)
+        ILogger<FavoriteDeleteService> logger
+    )
+        : base(favoriteValidator, unitOfWork, logger)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;
@@ -40,17 +43,13 @@ public class FavoriteDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id, 
-        long userId)
+        long id)
     {
         var favorite = await _favoriteValidator
             .GetByIdAsync(id);
 
         if (!favorite.IsSuccess)
             return Result<DeleteResponse>.Fail(favorite.Error);
-
-        if (userId != favorite.Value!.UserId)
-            return Result<DeleteResponse>.Forbidden();
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -68,7 +67,7 @@ public class FavoriteDeleteService
                 ex,
                 "Failed to delete favorite. " +
                 "UserId: {Id}, AdvertisementId: {AdvertisementId}",
-                userId,
+                favorite.Value?.OwnerId,
                 id);
 
             return Result<DeleteResponse>
@@ -79,8 +78,7 @@ public class FavoriteDeleteService
             "Favorite delete successfully. Id: {Id}",
             favorite.Value!.Id);
 
-        await _favoriteInvalid.InvalidateDeleteAsync(
-            FavoriteCacheMapper.ToInfo(favorite.Value!));
+        await InvalidateCache(favorite.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -88,5 +86,12 @@ public class FavoriteDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        Favorite entity)
+    {
+        await _favoriteInvalid.InvalidateDeleteAsync(
+            FavoriteCacheMapper.ToInfo(entity));
     }
 }

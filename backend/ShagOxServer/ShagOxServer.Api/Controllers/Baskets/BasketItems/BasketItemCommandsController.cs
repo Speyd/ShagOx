@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Baskets.BasketItems;
 [ApiController]
 [Route("api/basket-items")]
-//[Authorize]
+[Authorize]
 public class BasketItemCommandsController
     : ApiOwnerExistsController
 {
@@ -45,10 +45,10 @@ public class BasketItemCommandsController
     public async Task<IActionResult> Create(
         [FromBody] BasketItemCreateRequest request)
     {
-        //var IsOwner = await _basketExistsService
-        //    .IsOwnerAsync(request.BasketId, UserId);
-        //if (!IsOwner)
-        //    return Forbid();
+        var IsOwner = await _basketExistsService
+            .IsOwnerAsync(request.BasketId, UserId);
+        if (!IsOwner)
+            return Forbid();
 
         var result = await _createService
             .CreateAsync(request);
@@ -77,10 +77,10 @@ public class BasketItemCommandsController
     {
         var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)
-            return forbidden;
 
+            return forbidden;
         var result = await _deleteService
-            .DeleteAsync(id);
+            .SoftDeleteAsync(id);
 
         return result.ToActionResult();
     }

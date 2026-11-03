@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Mappers;
@@ -9,6 +9,7 @@ public static class AttributeDictionaryMapper
     {
         return new AttributeDictionaryDto(
             dictionary.Id,
+            dictionary.EntityStatus,
             dictionary.Code,
             dictionary.Attributes
                 .Select(x => x.Id)

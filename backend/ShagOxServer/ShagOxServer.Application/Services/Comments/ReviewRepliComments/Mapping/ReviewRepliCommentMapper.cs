@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.DTOs.Comments.ReviewRepliComments.Query;
+using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Mapping;
 using ShagOxServer.Domain.Entities.Comments;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewRepliComments.Mapping;
@@ -11,6 +12,7 @@ public static class ReviewRepliCommentMapper
     {
         return new ReviewRepliCommentDto(
             comment.Id,
+            comment.EntityStatus,
             user,
             comment.CommentableEntityId,
             comment.Text,
@@ -18,11 +20,11 @@ public static class ReviewRepliCommentMapper
             comment.UpdatedAt,
             comment.Replies
                 .Select(x => x.Id)
+                .ToList(),
+            comment.Pictures
+                .OrderBy(i => i.Order)
+                .Select(ReviewRepliImageMapper.ToDto)
                 .ToList()
-        //comment.Pictures
-        //    .OrderBy(i => i.Order)
-        //    .Select(ReviewImageMapper.ToDto)
-        //    .ToList()
         );
     }
 }

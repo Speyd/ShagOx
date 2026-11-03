@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Location;
 public static class CityCache
@@ -11,10 +12,12 @@ public static class CityCache
        long regionId,
        string language,
        int page,
-       int pageSize)
-           => $"{Prefix}:{language}:region:{regionId}:page:{page}:size:{pageSize}";
+       int pageSize,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:{language}:status{status}:region:{regionId}:page:{page}:size:{pageSize}";
 
     public static string ByRegionPattern(
-       long regionId)
-           => $"{Prefix}:*region:{regionId}:page:*";
+       long regionId,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:*status{status}:region:{regionId}:page:*";
 }

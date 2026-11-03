@@ -1,3 +1,4 @@
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Specification.Pictures.Review;
@@ -8,6 +9,7 @@ public static class ReviewRepliImageCache
 
 
     public static string ByReviewRepliComment(
-       long commentId)
-           => $"{Prefix}:review-repli-comment:{commentId}";
+       long commentId,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:status{status}:review-repli-comment:{commentId}";
 }

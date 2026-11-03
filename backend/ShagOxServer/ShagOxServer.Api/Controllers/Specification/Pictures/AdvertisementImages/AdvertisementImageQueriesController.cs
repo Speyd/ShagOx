@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Query;
 using ShagOxServer.Domain.Filters.Specification.Pictures.AdvertisementImages;

@@ -7,9 +7,9 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
+using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
-using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Update;
@@ -103,8 +103,8 @@ public class ConditionUpdateService
                  .Fail(EntityErrorResources.ConditionUpdateFailed);
         }
 
-        await _conditionInvalid
-            .InvalidateUpdateAsync(conditionId);
+        await _conditionInvalid.InvalidateUpdateAsync(
+            ConditionCacheMapper.ToInfo(condition.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

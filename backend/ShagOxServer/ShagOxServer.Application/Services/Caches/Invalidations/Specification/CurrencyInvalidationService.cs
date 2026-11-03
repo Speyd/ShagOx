@@ -32,11 +32,7 @@ public class CurrencyInvalidationService
     public async Task InvalidateCreateAsync(
        CurrencyCacheInfo entityInfo)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys.
-            SearchPattern<Currency>());
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-           EntityPagedPattern<Currency>());   
+        await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
@@ -75,19 +71,30 @@ public class CurrencyInvalidationService
         CurrencyCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
-            .Entity<Currency>(entityInfo.Id));
+            .Entity<Currency>(entityInfo.Id,
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CurrencyCache
-           .ByCode(entityInfo.Code));
+           .ByCode(entityInfo.Code,
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CurrencyCache
-          .BySymbol(entityInfo.Symbol));
+          .BySymbol(entityInfo.Symbol,
+                entityInfo.Status));
+
+        await InvalidatePatternAsync(entityInfo);
+    }
+
+    private async Task InvalidatePatternAsync(
+        CurrencyCacheInfo entityInfo)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           SearchPattern<Currency>(
+               entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-           EntityPagedPattern<Currency>());
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             SearchPattern<Currency>());
+           EntityPagedPattern<Currency>(
+                entityInfo.Status));
     }
 
     private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(

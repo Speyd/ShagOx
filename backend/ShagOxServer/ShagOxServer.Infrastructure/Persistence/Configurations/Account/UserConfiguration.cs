@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Account;
 
@@ -55,16 +56,13 @@ public class UserConfiguration
 
         builder.HasIndex(x => x.CityId);
 
-        builder.HasIndex(x => x.UserName)
-            .IsUnique();
+        builder.HasUniqueActiveIndex(x => x.UserName);
 
-        builder.HasIndex(x => x.Email)
-               .IsUnique()
+        builder.HasUniqueActiveIndex(x => x.Email)
                .HasFilter("\"Email\" IS NOT NULL");
 
 
-        builder.HasIndex(x => x.Phone)
-               .IsUnique()
+        builder.HasUniqueActiveIndex(x => x.Phone)
                .HasFilter("\"Phone\" IS NOT NULL");
     }
 }

@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
+using ShagOxServer.Application.Services.Location.Regions.Mapping;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -82,7 +83,7 @@ public class RegionDeleteService
     public override async Task InvalidateCache(
         Region entity)
     {
-         await _regionInvalid
-            .InvalidateDeleteAsync(entity.Id);
+         await _regionInvalid.InvalidateDeleteAsync(
+             RegionCacheMapper.ToInfo(entity));
     }
 }

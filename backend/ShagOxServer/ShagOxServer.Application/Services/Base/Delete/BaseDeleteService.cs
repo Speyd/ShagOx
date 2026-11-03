@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Services.Base.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityNames.Extensions;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -40,12 +41,19 @@ public abstract class BaseDeleteService<TEntity>
         if (!entity.IsSuccess)
             return Result<DeleteResponse>.Fail(entity.Error);
 
+        if (entity.Value is null)
+        {
+            return Result<DeleteResponse>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
+        }
+
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            if(entity.Value is not null)
-                entity.Value.EntityStatus = EntityStatus.Deleted;
+            var body = await SoftBodyDeleteAsync(entity.Value);
+            if (!body.IsSuccess)
+                return Result<DeleteResponse>.Fail(body.Error);
 
             await _unitOfWork.CommitAsync();
         }
@@ -55,7 +63,8 @@ public abstract class BaseDeleteService<TEntity>
 
             _logger.LogError(
                 ex,
-                "Failed to delete basket attribute. Id: {Id}",
+                $"Failed to delete {typeof(TEntity).Name}. " + 
+                "Id: {Id}",
                 id);
 
             return Result<DeleteResponse>.Fail(
@@ -70,5 +79,14 @@ public abstract class BaseDeleteService<TEntity>
                DateTime.UtcNow
            )
        );
+    }
+
+    public virtual async Task<Result<bool>> SoftBodyDeleteAsync(
+        TEntity entity)
+    {
+        entity.EntityStatus = EntityStatus.Deleted;
+        entity.DeletedAt = DateTime.UtcNow;
+
+        return Result<bool>.Success(true);
     }
 }

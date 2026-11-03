@@ -19,13 +19,13 @@ public partial class PictureQueryRepository<TEntity, TFilter>
     public virtual async Task<PictureCacheInfo?> GetCacheInfoByOwnerAsync(
         long ownerId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+        EntityStatus status = EntityStatus.Active)
     {
         var picture = await _db.Set<TEntity>()
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(x => x.OwnerId == ownerId,
                 cancellationToken);
 
-        return picture?.SelectCacheInfo();
+        return picture?.SelectCacheInfo(status);
     }
 }

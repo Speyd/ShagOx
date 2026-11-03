@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Comments.ReviewComments.Query;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Query;
 using ShagOxServer.Domain.Filters.Comments;

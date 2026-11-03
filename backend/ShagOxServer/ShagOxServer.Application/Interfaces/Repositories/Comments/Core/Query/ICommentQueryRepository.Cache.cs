@@ -13,15 +13,15 @@ public partial interface ICommentQueryRepository<TEntity, TFilter>
     Task<List<CommentCacheInfo>> GetCacheInfosByCommentableAsync(
         long commentableId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 
     Task<List<CommentCacheInfo>> GetCacheInfosByOwnerAsync(
-       long ownerId,
-       CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        long ownerId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<CommentCacheInfo?> GetCacheInfoByIdAsync(
         long id,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
+using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -102,8 +103,8 @@ public class ProductTypeUpdateService
                 .Fail(EntityErrorResources.ProductTypeUpdateFailed);
         }
 
-        await _productInvalid
-            .InvalidateUpdateAsync(productTypeId);
+        await _productInvalid.InvalidateUpdateAsync(
+            ProductTypeCacheMapper.ToInfo(productType.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

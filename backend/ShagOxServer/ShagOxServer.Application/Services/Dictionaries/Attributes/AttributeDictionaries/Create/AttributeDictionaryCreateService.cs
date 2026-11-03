@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Mappers;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -72,8 +73,8 @@ public class AttributeDictionaryCreateService
                 EntityErrorResources.AttributeDictionaryCreateFailed);
         }
 
-        await _attributeInvalidation
-            .InvalidateCreateAsync(dictionary.Id);
+        await _attributeInvalidation.InvalidateCreateAsync(
+            AttributeDictionaryCacheMapper.ToInfo(dictionary));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

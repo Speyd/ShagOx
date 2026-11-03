@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Specification;
 public static class CurrencyCache
@@ -8,10 +9,12 @@ public static class CurrencyCache
 
 
     public static string ByCode(
-       string code)
-           => $"{Prefix}:code:{code}";
+       string code,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:status{status}:code:{code}";
 
     public static string BySymbol(
-       string symbol)
-           => $"{Prefix}:symbol:{symbol}";
+       string symbol,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:status{status}:symbol:{symbol}";
 }

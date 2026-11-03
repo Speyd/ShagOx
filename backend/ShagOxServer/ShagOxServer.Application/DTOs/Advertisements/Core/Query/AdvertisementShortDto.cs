@@ -1,11 +1,13 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Domain.Base.Enum;
 using System.Text.Json;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 public sealed record AdvertisementShortDto
 (
     long Id,
+    EntityStatus EntityStatus,
     string Title,
     string Description,
     long CurrencyId,
@@ -17,4 +19,4 @@ public sealed record AdvertisementShortDto
     List<AdvertisementVariantShortDto> Variants,
     DateTime? SoldAt,
     DateTime CreatedAt
-) : BaseDto(Id);
+) : BaseDto(Id, EntityStatus);

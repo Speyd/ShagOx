@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles.Query;
+using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Mapping;
@@ -9,6 +9,7 @@ public static class RoleMapper
     {
         return new RoleDto(
             role.Id,
+            role.EntityStatus,
             role.Name,
             role.Description
         );

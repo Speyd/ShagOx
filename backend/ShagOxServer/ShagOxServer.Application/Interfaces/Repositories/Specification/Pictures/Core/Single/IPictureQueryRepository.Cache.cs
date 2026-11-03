@@ -9,5 +9,5 @@ public partial interface IPictureQueryRepository<TEntity>
     Task<PictureCacheInfo?> GetCacheInfoByOwnerAsync(
         long ownerId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.Attri
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketAttributes;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -54,11 +55,13 @@ public class BasketAttributeQueryService
 
     public async Task<Result<BasketAttributeDto>> GetByAttributeDefinitionAsync(
         long attributeDefenitionId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = BasketAttributeCache.ByAttributeDefenition(
             attributeDefenitionId, 
-            _language.Language);
+            _language.Language,
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -66,7 +69,7 @@ public class BasketAttributeQueryService
             {
                 var attribute = await _attributeQueryRepository
                     .GetByAttributeDefinitionAsync(attributeDefenitionId,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await attribute.ToResultAsync(
                     ApplyMapperAsync);
@@ -78,13 +81,15 @@ public class BasketAttributeQueryService
     public async Task<Result<PagedResult<BasketAttributeDto>>> GetByCategoryAsync(
         long categoryId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = BasketAttributeCache.ByCategory(
             categoryId,
             _language.Language,
             pagination.Page,
-            pagination.PageSize);
+            pagination.PageSize,
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -92,7 +97,7 @@ public class BasketAttributeQueryService
             {
                 var attributes = await _attributeQueryRepository
                     .GetByCategoryAsync(categoryId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await attributes.ToResultPagedAsync(
                     ApplyMapperAsync);

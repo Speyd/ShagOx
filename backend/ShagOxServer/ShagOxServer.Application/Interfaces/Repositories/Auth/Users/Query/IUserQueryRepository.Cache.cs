@@ -11,10 +11,10 @@ public partial interface IUserQueryRepository
     Task<List<UserCacheInfo>> GetCacheInfosByCityAsync(
         long cityId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 
     Task<UserCacheInfo?> GetCacheInfoByIdAsync(
         long id,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

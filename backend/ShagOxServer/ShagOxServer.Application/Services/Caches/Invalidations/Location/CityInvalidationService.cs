@@ -1,6 +1,7 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Cache;
 using ShagOxServer.Application.DTOs.Location.Cities.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
@@ -10,6 +11,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Location;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Location;
@@ -45,11 +47,7 @@ public class CityInvalidationService
     public async Task InvalidateCreateAsync(
        CityCacheInfo entityInfo)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             LanguageSearchPattern<City>());
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-           EntityLanguagePagedPattern<City>());
+        await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
@@ -97,16 +95,26 @@ public class CityInvalidationService
         CityCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-            .EntityLanguagePattern<City>(entityInfo.Id));
+            .EntityLanguagePattern<City>(entityInfo.Id,
+                entityInfo.Status));
 
+        await InvalidatePatternAsync(entityInfo);
+    }
+
+    private async Task InvalidatePatternAsync(
+        CityCacheInfo entityInfo)
+    {
         await _cache.RemoveByPatternAsync(CityCache
-            .ByRegionPattern(entityInfo.RegionId));
+            .ByRegionPattern(entityInfo.RegionId,
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityLanguagePagedPattern<City>());
+            EntityLanguagePagedPattern<City>(
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-             LanguageSearchPattern<City>());
+             LanguageSearchPattern<City>(
+                entityInfo.Status));
     }
 
     private async Task<List<UserCacheInfo>> GetUserInfos(

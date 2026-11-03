@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Query;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Query;
 using ShagOxServer.Domain.Filters.Specification.Conditions;

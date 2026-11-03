@@ -11,5 +11,5 @@ public partial interface IFavoriteQueryRepository
     Task<List<FavoriteCacheInfo>> GetCacheInfosByAdvertisementAsync(
         long advertId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

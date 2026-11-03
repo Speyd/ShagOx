@@ -10,6 +10,7 @@ using ShagOxServer.Application.Interfaces.Services.Location.Regions.Query;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Caches.Keys.Location;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -64,13 +65,15 @@ public class CityQueryService
     public async Task<Result<PagedResult<CityDto>>> GetByRegionAsync(
         long regionId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = CityCache.ByRegion(
            regionId,
            _language.Language,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize,
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -78,7 +81,7 @@ public class CityQueryService
             {
                 var cities = await _repositoryQueryCity
                     .GetByRegionAsync(regionId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await cities.ToResultPagedAsync(
                     ApplyMapperAsync);

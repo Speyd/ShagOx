@@ -9,6 +9,7 @@ public static class AvatarMapper
     {
         return new AvatarDto(
             avatar.Id,
+            avatar.EntityStatus,
             avatar.Url,
             avatar.PublicId,
             avatar.OwnerId

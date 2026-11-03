@@ -11,6 +11,7 @@ public static class BasketMapper
     {
         return new BasketDto(
             basket.Id,
+            basket.EntityStatus,
             basket.OwnerId,
             items
         );

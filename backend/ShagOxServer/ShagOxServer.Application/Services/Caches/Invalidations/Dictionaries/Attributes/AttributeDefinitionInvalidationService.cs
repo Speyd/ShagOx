@@ -95,7 +95,8 @@ public class AttributeDefinitionInvalidationService
         AttributeDefinitionCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityLanguagePattern<AttributeDefinition>(entityInfo.Id));
+            EntityLanguagePattern<AttributeDefinition>(entityInfo.Id,
+                entityInfo.Status));
 
         await InvalidatePatternAsync(entityInfo);
     }
@@ -104,13 +105,16 @@ public class AttributeDefinitionInvalidationService
         AttributeDefinitionCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
-            LanguageSearchPattern<AttributeDefinition>());
+            LanguageSearchPattern<AttributeDefinition>(
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-           EntityLanguagePagedPattern<AttributeDefinition>());
+           EntityLanguagePagedPattern<AttributeDefinition>(
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(AttributeDefinitionCache.
-             ValueByCategoryPattern(entityInfo.CategoryId));
+             ValueByCategoryPattern(entityInfo.CategoryId,
+                entityInfo.Status));
     }
 
     private async Task<BasketAttributeCacheInfo?> GetBasketAttributeInfos(

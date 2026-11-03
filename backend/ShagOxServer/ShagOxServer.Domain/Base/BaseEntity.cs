@@ -8,6 +8,8 @@ public abstract class BaseEntity
     public EntityStatus EntityStatus { get; set; } 
         = EntityStatus.Active;
 
+    public DateTime? DeletedAt { get; set; }
+
 
     public abstract override string ToString();
 }

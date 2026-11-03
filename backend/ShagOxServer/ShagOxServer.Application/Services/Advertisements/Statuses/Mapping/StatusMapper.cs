@@ -11,6 +11,7 @@ public static class StatusMapper
         return new StatusDto
         (
             x.Id,
+            x.EntityStatus,
             x.Code,
             label
         );

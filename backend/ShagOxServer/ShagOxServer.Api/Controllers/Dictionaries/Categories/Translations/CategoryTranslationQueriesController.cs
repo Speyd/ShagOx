@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Api.Controllers.Base;
-using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations;
+using ShagOxServer.Api.Controllers.Base.Translations;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Query;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories.Translations;

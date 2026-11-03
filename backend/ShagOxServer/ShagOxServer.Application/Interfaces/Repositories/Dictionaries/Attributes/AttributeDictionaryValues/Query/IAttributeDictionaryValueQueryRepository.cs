@@ -22,6 +22,11 @@ public partial interface IAttributeDictionaryValueQueryRepository
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
+    Task<List<AttributeDictionaryValue>> GetByIdsAsync(
+        IEnumerable<long> ids,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<AttributeDictionaryValue?> GetAsync(
         string dictionaryCode,
         long valueId,

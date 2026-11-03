@@ -10,6 +10,7 @@ public static class AttributeDefinitionMapper
     {
         return new AttributeDefinitionDto(
             attribute.Id,
+            attribute.EntityStatus,
             attribute.CategoryId,
             attribute.Category.Code,
             attribute.Key,

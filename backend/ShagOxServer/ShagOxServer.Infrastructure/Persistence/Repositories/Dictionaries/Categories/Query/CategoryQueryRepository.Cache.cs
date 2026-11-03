@@ -17,12 +17,12 @@ public partial class CategoryQueryRepository
     public async Task<List<CategoryCacheInfo>> GetCacheInfosByProductTypeAsync(
         long productTypeId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+        EntityStatus status = EntityStatus.Active)
     {
         return await _db.Categories
             .WithStatusFilter(status)
             .Where(c => c.ProductTypeId == productTypeId)
-            .SelectCacheInfo()
+            .SelectCacheInfo(status)
             .ToListAsync(cancellationToken);
     }
 }

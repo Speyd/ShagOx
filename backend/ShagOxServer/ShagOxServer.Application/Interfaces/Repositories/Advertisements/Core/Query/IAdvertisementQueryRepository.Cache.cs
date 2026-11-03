@@ -11,25 +11,25 @@ public partial interface IAdvertisementQueryRepository
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByStatusAsync(
         long statusId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 
     Task<AdvertisementCacheInfo?> GetCacheInfoByIdAsync(
         long id,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByUserAsync(
         long userId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByCategoryAsync(
         long categoryId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 
     Task<List<AdvertisementCacheInfo>> GetCacheInfosByConditionAsync(
         long conditionId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

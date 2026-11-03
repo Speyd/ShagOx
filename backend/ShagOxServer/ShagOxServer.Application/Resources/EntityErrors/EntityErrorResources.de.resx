@@ -414,4 +414,7 @@
   <data name="ReviewRepliImageUpdateFailed" xml:space="preserve">
     <value>Bild der Antwort auf eine Bewertung konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="SoftDeleteFailed" xml:space="preserve">
+    <value>Der Eintrag konnte nicht gelöscht werden.</value>
+  </data>
 </root>

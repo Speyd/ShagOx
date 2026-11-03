@@ -16,12 +16,12 @@ public partial class CityQueryRepository
     public async Task<List<CityCacheInfo>> GetCacheInfoByRegionAsync(
         long regionId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+        EntityStatus status = EntityStatus.Active)
     {
         return await _db.Cities
             .WithStatusFilter(status)
             .Where(x => x.RegionId == regionId)
-            .SelectCacheInfo()
+            .SelectCacheInfo(status)
             .ToListAsync(cancellationToken);
     }
 }

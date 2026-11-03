@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Del
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
+using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -84,7 +85,7 @@ public class ProductTypeDeleteService
     public override async Task InvalidateCache(
         ProductType entity)
     {
-        await _productInvalid
-            .InvalidateDeleteAsync(entity.Id);
+        await _productInvalid.InvalidateDeleteAsync(
+            ProductTypeCacheMapper.ToInfo(entity));
     }
 }

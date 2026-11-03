@@ -16,25 +16,25 @@ public partial class BasketItemQueryRepository
     public async Task<List<BasketItemCacheInfo>> GetCacheInfosByBasketAsync(
         long basketId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+        EntityStatus status = EntityStatus.Active)
     {
         return await _db.BasketItems
             .WithStatusFilter(status)
             .Where(x => x.BasketId == basketId)
-            .SelectCacheInfo()
+            .SelectCacheInfo(status)
             .ToListAsync(cancellationToken);
     }
 
     public async Task<List<BasketItemCacheInfo>> GetCacheInfosByAdvertisementVariantAsync(
         long advertisementVariantId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+        EntityStatus status = EntityStatus.Active)
     {
         return await _db.BasketItems
             .WithStatusFilter(status)
            .Where(x =>
                 x.AdvertisementVariantId == advertisementVariantId)
-           .SelectCacheInfo()
+           .SelectCacheInfo(status)
            .ToListAsync(cancellationToken);
     }
 }

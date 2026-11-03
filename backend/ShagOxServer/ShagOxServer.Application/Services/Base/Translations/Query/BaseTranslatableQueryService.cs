@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Base.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -37,11 +38,12 @@ public abstract class BaseTranslatableQueryService<TDto, TEntity, TFilter>
     public async Task<Result<TDto>> GetByIdentificatorAsync(
         string identificator, 
         long? parentId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+         EntityStatus status =  EntityStatus.Active)
     {
         var entity = await _translatableRepository
             .GetByIdentificatorAsync(identificator, parentId,
-                cancellationToken);
+                cancellationToken, status);
 
         return await entity.ToResultAsync(ApplyMapperAsync);
     }

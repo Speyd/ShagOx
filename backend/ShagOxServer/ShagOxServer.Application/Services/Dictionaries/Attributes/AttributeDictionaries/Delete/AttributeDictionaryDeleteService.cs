@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.Attri
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Mappers;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -84,6 +85,7 @@ public class AttributeDictionaryDeleteService
     public override async Task InvalidateCache(
         AttributeDictionary entity)
     {
-        await _dictInvalid.InvalidateDeleteAsync(entity.Id);
+        await _dictInvalid.InvalidateDeleteAsync(
+            AttributeDictionaryCacheMapper.ToInfo(entity));
     }
 }

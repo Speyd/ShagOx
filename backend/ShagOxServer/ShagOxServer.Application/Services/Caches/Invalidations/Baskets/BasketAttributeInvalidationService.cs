@@ -23,11 +23,7 @@ public class BasketAttributeInvalidationService
     public async Task InvalidateCreateAsync(
         BasketAttributeCacheInfo entityInfo)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             LanguageSearchPattern<BasketAttribute>());
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             EntityLanguagePagedPattern<BasketAttribute>());
+        await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
@@ -46,18 +42,29 @@ public class BasketAttributeInvalidationService
         BasketAttributeCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-           .EntityLanguagePattern<BasketAttribute>(entityInfo.Id));
+           .EntityLanguagePattern<BasketAttribute>(entityInfo.Id,
+                entityInfo.Status));
 
-        await _cache.RemoveByPatternAsync(BasketAttributeCache
-           .ByCategoryPattern(entityInfo.CategoryId));
+        await InvalidatePatternAsync(entityInfo);
+    }
 
-        await _cache.RemoveByPatternAsync(BasketAttributeCache
-           .ByAttributeDefenitionPattern(entityInfo.AttributeDefinitionId));
+    private async Task InvalidatePatternAsync(
+        BasketAttributeCacheInfo entityInfo)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            LanguageSearchPattern<BasketAttribute>(
+               entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityLanguagePagedPattern<BasketAttribute>());
+             EntityLanguagePagedPattern<BasketAttribute>(
+                entityInfo.Status));
 
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             LanguageSearchPattern<BasketAttribute>());
+        await _cache.RemoveByPatternAsync(BasketAttributeCache
+           .ByCategoryPattern(entityInfo.CategoryId,
+                entityInfo.Status));
+
+        await _cache.RemoveByPatternAsync(BasketAttributeCache
+           .ByAttributeDefenitionPattern(entityInfo.AttributeDefinitionId,
+                entityInfo.Status));
     }
 }

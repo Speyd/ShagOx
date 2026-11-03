@@ -13,10 +13,10 @@ public partial interface IBasketAttributeQueryRepository
     Task<List<BasketAttributeCacheInfo>> GetCacheInfosByCategoryAsync(
         long categoryId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 
     Task<BasketAttributeCacheInfo?> GetCacheInfoByAttributeDefinitionAsync(
        long attributeDefinitionId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

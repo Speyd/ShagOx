@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Query;
 using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes;

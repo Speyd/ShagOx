@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatar
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -47,7 +48,8 @@ public class AvatarQueryService
 
     public async Task<Result<AvatarDto>> GetByUserIdAsync(
         long userId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = AvatarCache.ByUser(userId);
 
@@ -56,7 +58,8 @@ public class AvatarQueryService
             async () =>
             {
                 var image = await _avatarQueryRepository
-                    .GetByOwnerAsync(userId, cancellationToken);
+                    .GetByOwnerAsync(userId, 
+                        cancellationToken, status);
 
                 return await image.ToResultAsync(
                     ApplyMapperAsync);

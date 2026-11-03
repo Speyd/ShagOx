@@ -2,6 +2,7 @@ using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeValues;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -25,10 +26,12 @@ public partial class AttributeValueQueryService
     public async Task<Result<List<AttributeDto>>> GetValuesByCategoryAsync(
         long categoryId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var definitions = await _attributeService
-            .GetByCategoryAsync(categoryId, cancellationToken);
+            .GetByCategoryAsync(categoryId,
+                cancellationToken, status);
 
         if (!definitions.IsSuccess ||
             definitions.Value is null)
@@ -56,7 +59,8 @@ public partial class AttributeValueQueryService
                 .GetByDictionaryAsync(
                     definition.DictionaryId.Value,
                     pagination,
-                    cancellationToken);
+                    cancellationToken,
+                    status);
 
             if (!dictionaryResult.IsSuccess)
             {

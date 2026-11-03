@@ -1,10 +1,12 @@
 using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 
 namespace ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Query;
 public sealed record AttributeDefinitionDto
 (
     long Id,
+    EntityStatus EntityStatus,
     long CategoryId,
     string CategoryCode,
     string Key,
@@ -16,4 +18,4 @@ public sealed record AttributeDefinitionDto
     bool IsVariant,
     bool Multiple,
     string? Label
-) : BaseDto(Id);
+) : BaseDto(Id, EntityStatus);

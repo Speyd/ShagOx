@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
 public static class CategoryCache
@@ -10,10 +11,12 @@ public static class CategoryCache
        long productTypeId,
        string language,
        int page,
-       int pageSize)
-           => $"{Prefix}:{language}:product-type:{productTypeId}:page:{page}:size:{pageSize}";
+       int pageSize,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:{language}:status{status}:product-type:{productTypeId}:page:{page}:size:{pageSize}";
 
     public static string ByProductTypePattern(
-       long productTypeId)
-           => $"{Prefix}:*product-type:{productTypeId}:page:*";
+       long productTypeId,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:*status{status}:product-type:{productTypeId}:page:*";
 }

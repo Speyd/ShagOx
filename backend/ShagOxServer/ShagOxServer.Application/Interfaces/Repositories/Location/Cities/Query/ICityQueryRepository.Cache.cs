@@ -11,5 +11,5 @@ public partial interface ICityQueryRepository
     Task<List<CityCacheInfo>> GetCacheInfoByRegionAsync(
         long regionId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

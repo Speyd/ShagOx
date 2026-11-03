@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
@@ -6,12 +7,14 @@ public static class BasketAttributeCacheMapper
 {
     public static BasketAttributeCacheInfo ToInfo(
         BasketAttribute attribute,
-        long categoryId)
+        long categoryId,
+        EntityStatus status = EntityStatus.Active)
     {
         return new BasketAttributeCacheInfo(
             attribute.Id,
             categoryId,
-            attribute.AttributeDefinitionId
+            attribute.AttributeDefinitionId,
+            status
         );
     }
 }

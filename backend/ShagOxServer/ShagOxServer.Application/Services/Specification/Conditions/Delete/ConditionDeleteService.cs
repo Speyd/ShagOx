@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Dele
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
+using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -82,7 +83,7 @@ public class ConditionDeleteService
     public override async Task InvalidateCache(
        Condition entity)
     {
-        await _conditionInvalid
-            .InvalidateDeleteAsync(entity.Id);
+        await _conditionInvalid.InvalidateDeleteAsync(
+            ConditionCacheMapper.ToInfo(entity));
     }
 }

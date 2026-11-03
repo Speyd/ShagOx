@@ -10,6 +10,7 @@ public static class AttributeDictionaryValueMapper
     {
         return new AttributeDictionaryValueDto(
             value.Id,
+            value.EntityStatus,
             value.DictionaryId,
             value.Code,
             value.Value,

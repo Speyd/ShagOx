@@ -11,10 +11,10 @@ public partial interface IBasketItemQueryRepository
     Task<List<BasketItemCacheInfo>> GetCacheInfosByBasketAsync(
         long basketId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 
     Task<List<BasketItemCacheInfo>> GetCacheInfosByAdvertisementVariantAsync(
         long advertisementVariantId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

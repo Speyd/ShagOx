@@ -18,12 +18,12 @@ public partial class AttributeDictionaryValueQueryRepository
     public async Task<List<AttributeDictionaryValueCacheInfo>> GetCacheInfosByDictionaryAsync(
         long dictionaryId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+        EntityStatus status = EntityStatus.Active)
     {
         return await _db.AttributeDictionaryValues
             .WithStatusFilter(status)
             .Where(x => x.DictionaryId == dictionaryId)
-            .SelectCacheInfo()
+            .SelectCacheInfo(status)
             .ToListAsync();
     }
 }

@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -6,7 +7,8 @@ namespace ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.A
 public interface IAttributeValueQueryService
 {
     Task<Result<List<AttributeDto>>> GetValuesByCategoryAsync(
-            long categoryId,
-            PaginationParams pagination,
-            CancellationToken cancellationToken = default);
+        long categoryId,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

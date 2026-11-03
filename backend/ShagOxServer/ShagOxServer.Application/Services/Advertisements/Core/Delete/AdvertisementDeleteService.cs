@@ -107,6 +107,26 @@ public class AdvertisementDeleteService
        );
     }
 
+    public override async Task<Result<bool>> SoftBodyDeleteAsync(
+       Advertisement entity)
+    {
+        var body = await base.SoftBodyDeleteAsync(entity);
+
+        if (!body.IsSuccess)
+            Result<bool>.Fail(body.Error);
+
+        foreach (var image in entity.Pictures)
+        {
+            var imageDelete = await _imageDeleteService
+                .SoftDeleteAsync(image.Id);
+
+            if (!imageDelete.IsSuccess)
+                Result<bool>.Fail(imageDelete.Error);
+        }
+
+        return Result<bool>.Success(true);
+    }
+
     public override async Task InvalidateCache(
         Advertisement entity)
     {

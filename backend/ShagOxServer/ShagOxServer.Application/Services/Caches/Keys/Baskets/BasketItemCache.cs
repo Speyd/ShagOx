@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Baskets;
 public static class BasketItemCache
@@ -10,22 +11,26 @@ public static class BasketItemCache
         long variantId,
         string language,
         int page,
-        int pageSize)
+        int pageSize,
+        EntityStatus status = EntityStatus.Active)
              => $"{Prefix}:{language}:advertisement-variant:{variantId}:page:{page}:size:{pageSize}";
 
     public static string ByAdvertisementVariantPattern(
-        long variantId)
-           => $"{Prefix}:*advertisement-variant:{variantId}:page:*";
+        long variantId,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:*status{status}:advertisement-variant:{variantId}:page:*";
 
 
     public static string ByBasket(
         long basketId,
         string language,
         int page,
-        int pageSize)
-             => $"{Prefix}:{language}:basket:{basketId}:page:{page}:size:{pageSize}";
+        int pageSize,
+        EntityStatus status = EntityStatus.Active)
+             => $"{Prefix}:{language}:status{status}:basket:{basketId}:page:{page}:size:{pageSize}";
 
     public static string ByBasketPattern(
-        long basketId)
-           => $"{Prefix}:*basket:{basketId}:page:*";
+        long basketId,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:*status{status}:basket:{basketId}:page:*";
 }

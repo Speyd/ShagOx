@@ -12,10 +12,10 @@ public partial interface IUserRoleQueryRepository
     Task<List<RoleCacheInfo>> GetRoleCacheInfoByUserAsync(
         long userId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 
     Task<List<UserCacheInfo>> GetUserCacheInfoByRoleAsync(
         long roleId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

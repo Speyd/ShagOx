@@ -16,24 +16,24 @@ public partial class UserQueryRepository
     public async Task<List<UserCacheInfo>> GetCacheInfosByCityAsync(
         long cityId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+        EntityStatus status = EntityStatus.Active)
     {
         return await _db.Users
             .WithStatusFilter(status)
             .Where(x => x.CityId == cityId)
-            .SelectCacheInfo()
+            .SelectCacheInfo(status)
             .ToListAsync(cancellationToken);
     }
 
     public async Task<UserCacheInfo?> GetCacheInfoByIdAsync(
         long id,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+        EntityStatus status = EntityStatus.Active)
     {
         var user = await _db.Users
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(x => x.Id == id);
 
-        return user?.SelectCacheInfo();
+        return user?.SelectCacheInfo(status);
     }
 }

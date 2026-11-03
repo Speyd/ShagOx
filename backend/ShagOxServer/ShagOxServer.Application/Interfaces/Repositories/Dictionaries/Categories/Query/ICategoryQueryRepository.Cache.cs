@@ -11,5 +11,5 @@ public partial interface ICategoryQueryRepository
     Task<List<CategoryCacheInfo>> GetCacheInfosByProductTypeAsync(
         long productTypeId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

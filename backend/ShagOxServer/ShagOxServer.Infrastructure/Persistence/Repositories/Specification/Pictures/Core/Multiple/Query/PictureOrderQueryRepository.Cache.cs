@@ -3,7 +3,6 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Core.Multiple;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Base.Pictures;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -19,12 +18,12 @@ public partial class PictureOrderQueryRepository<TEntity, TFilter>
     public async Task<List<PictureCacheInfo>> GetCacheInfosByOwnerAsync(
         long advertId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+        EntityStatus status = EntityStatus.Active)
     {
         return await _db.AdvertisementImages
             .WithStatusFilter(status)
             .Where(x => x.OwnerId == advertId)
-            .SelectCacheInfo()
+            .SelectCacheInfo(status)
             .ToListAsync(cancellationToken);
     }
 }

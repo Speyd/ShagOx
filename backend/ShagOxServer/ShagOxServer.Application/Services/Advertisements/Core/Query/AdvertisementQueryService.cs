@@ -13,6 +13,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Advertisements;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -97,13 +98,15 @@ public class AdvertisementQueryService
     public async Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
         long userId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = AdvertisementCache.BySeller(
            userId,
            _language.Language,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize,
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -111,7 +114,7 @@ public class AdvertisementQueryService
             {
                 var advert = await _advertisementRepository
                     .GetBySellerAsync(userId, pagination, 
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
@@ -123,13 +126,15 @@ public class AdvertisementQueryService
     public async Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         long userId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = AdvertisementCache.ByBuyer(
            userId,
            _language.Language,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize,
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -137,7 +142,7 @@ public class AdvertisementQueryService
             {
                 var advert = await _advertisementRepository
                     .GetPurchasedByUserAsync(userId, pagination, 
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
@@ -148,20 +153,22 @@ public class AdvertisementQueryService
 
     public async Task<Result<PagedResult<AdvertisementShortDto>>> GetShortPagedAsync(
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = AdvertisementCache.ByShortPaged(
            _language.Language,
            pagination.Page,
-           pagination.PageSize);
-       
+           pagination.PageSize,
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
             async () =>
             {
                 var adverts = await _advertisementRepository
-                    .GetPagedAsync(pagination, cancellationToken);
+                    .GetPagedAsync(pagination, 
+                        cancellationToken, status);
                 
                 return adverts.ToResultPaged(
                     AdvertisementShortMapper.ToDto);
@@ -173,13 +180,15 @@ public class AdvertisementQueryService
     public async Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
         AdvertisementSearchFilter filter,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = AdvertisementCache.ByShortSearch(
             filter,
            _language.Language,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize,
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -187,7 +196,7 @@ public class AdvertisementQueryService
             {
                 var adverts = await _advertisementRepository
                     .SearchAsync(filter, pagination, 
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return adverts.ToResultPaged(
                     AdvertisementShortMapper.ToDto);
@@ -195,14 +204,4 @@ public class AdvertisementQueryService
             _settings.KeyExpiration
         );
     }
-
-    //public Task<List<AdvertisementAttributeFilterOptionDto>>
-    //    GetAttributeFilterOptionsAsync(
-    //        long categoryId,
-    //        CancellationToken cancellationToken = default)
-    //{
-    //    return _advertisementRepository.GetAttributeFilterOptionsAsync(
-    //        categoryId,
-    //        cancellationToken);
-    //}
 }

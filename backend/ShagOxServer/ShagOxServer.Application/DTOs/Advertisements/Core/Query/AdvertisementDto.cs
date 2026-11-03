@@ -6,11 +6,13 @@ using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
+using ShagOxServer.Domain.Base.Enum;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 public sealed record AdvertisementDto
 (
     long Id,
+    EntityStatus EntityStatus,
     string Title,
     string Description,
     StatusDto Status,
@@ -23,4 +25,4 @@ public sealed record AdvertisementDto
     List<AdvertisementVariantDto> Variants,
     DateTime? SoldAt,
     DateTime CreatedAt
-) : BaseDto(Id);
+) : BaseDto(Id, EntityStatus);

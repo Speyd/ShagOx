@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Location.Regions.Translations;
+using ShagOxServer.Application.DTOs.Location.Regions.Translations.Query;
 using ShagOxServer.Domain.Entities.Location.Translations;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Translations.Mapping;
@@ -10,6 +10,7 @@ public static class RegionTranslationMapper
         return new RegionTranslationDto
         (
             x.Id,
+            x.EntityStatus,
             x.Name
         );
     }

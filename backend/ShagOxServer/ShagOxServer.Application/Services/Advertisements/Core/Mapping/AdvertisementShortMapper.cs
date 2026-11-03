@@ -11,6 +11,7 @@ public static class AdvertisementShortMapper
         return new AdvertisementShortDto
         (
             x.Id,
+            x.EntityStatus,
             x.Title,
             x.Description,
             x.CurrencyId,

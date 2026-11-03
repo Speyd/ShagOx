@@ -12,6 +12,7 @@ using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
@@ -74,7 +75,7 @@ public class BasketItemQueryService
     }
 
     public async Task PrepareAttributesForMappingAsync(
-     AdvertisementVariant advert)
+        AdvertisementVariant advert)
     {
         var variantKeys = await _attributeRepository.ExistsByKeysAsync(
             advert.Attributes,
@@ -106,13 +107,15 @@ public class BasketItemQueryService
     public async Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementVariantAsync(
         long variantId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = BasketItemCache.ByAdvertisementVariant(
             variantId,
             _language.Language,
             pagination.Page,
-            pagination.PageSize);
+            pagination.PageSize,
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -120,7 +123,7 @@ public class BasketItemQueryService
             {
                 var items = await _itemQueryRepository
                     .GetByAdvertisementVariantAsync(variantId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await items.ToResultPagedAsync(ApplyMapperAsync);
             },
@@ -131,13 +134,15 @@ public class BasketItemQueryService
     public async Task<Result<PagedResult<BasketItemDto>>> GetByBasketAsync(
         long basketId, 
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = BasketItemCache.ByBasket(
            basketId,
            _language.Language,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize,
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -145,7 +150,7 @@ public class BasketItemQueryService
             {
                 var items = await _itemQueryRepository
                     .GetByBasketAsync(basketId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await items.ToResultPagedAsync(ApplyMapperAsync);
             },
@@ -156,10 +161,13 @@ public class BasketItemQueryService
     public async Task<Result<PagedResult<BasketItemDto>>> GetPagedAsync(
         long userId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var basketId = await _basketQueryRepository
-            .GetIdByUserAsync(userId);
+            .GetIdByUserAsync(userId, 
+                cancellationToken, status);
+
         if (!basketId.HasValue)
         {
             return Result<PagedResult<BasketItemDto>>
@@ -170,7 +178,8 @@ public class BasketItemQueryService
            basketId.Value,
            _language.Language,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize,
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -178,7 +187,7 @@ public class BasketItemQueryService
             {
                 var items = await _itemQueryRepository
                     .GetPagedAsync(userId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await items.ToResultPagedAsync(ApplyMapperAsync);
             },

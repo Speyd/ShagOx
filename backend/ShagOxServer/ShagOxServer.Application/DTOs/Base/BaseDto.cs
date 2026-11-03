@@ -1,5 +1,8 @@
-﻿namespace ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Domain.Base.Enum;
+
+namespace ShagOxServer.Application.DTOs.Base;
 public record BaseDto
 (
-    long Id
+    long Id,
+    EntityStatus EntityStatus
 );

@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -32,30 +33,36 @@ public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
     }
 
     public override string GetCacheKey(
-        long id)
+        long id,
+        EntityStatus status = EntityStatus.Active)
     {
         return CacheKeys.EntityLanguage<TEntity>(
             id,
-            _language.Language);
+            _language.Language,
+            status);
     }
 
     public override string GetPagedCacheKey(
-        PaginationParams pagination)
+        PaginationParams pagination,
+        EntityStatus status = EntityStatus.Active)
     {
         return CacheKeys.EntityLanguagePaged<TEntity>(
            _language.Language,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize,
+           status);
     }
 
     public override string GetSearchCacheKey(
         TFilter filter,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        EntityStatus status = EntityStatus.Active)
     {
         return CacheKeys.ByLanguageSearch<TEntity, TFilter>(
             filter,
             _language.Language,
             pagination.Page,
-            pagination.PageSize);
+            pagination.PageSize,
+            status);
     }
 }

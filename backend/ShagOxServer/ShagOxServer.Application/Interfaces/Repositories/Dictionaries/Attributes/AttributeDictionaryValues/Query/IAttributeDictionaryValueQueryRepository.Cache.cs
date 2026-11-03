@@ -1,5 +1,4 @@
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -13,10 +12,5 @@ public partial interface IAttributeDictionaryValueQueryRepository
     Task<List<AttributeDictionaryValueCacheInfo>> GetCacheInfosByDictionaryAsync(
         long dictionaryId,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
-
-    Task<List<AttributeDictionaryValue>> GetByIdsAsync(
-        IEnumerable<long> ids,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        EntityStatus status = EntityStatus.Active);
 }

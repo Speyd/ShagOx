@@ -92,6 +92,26 @@ public class UserDeleteService
        );
     }
 
+    public override async Task<Result<bool>> SoftBodyDeleteAsync(
+       User entity)
+    {
+        var body = await base.SoftBodyDeleteAsync(entity);
+
+        if (!body.IsSuccess)
+            Result<bool>.Fail(body.Error);
+
+        if (entity.Avatar is not null)
+        {
+            var avatarDelete = await _avatarDeleteService
+                .DeleteInternalAsync(entity.Avatar);
+
+            if (!avatarDelete.IsSuccess)
+                Result<bool>.Fail(avatarDelete.Error);
+        }
+
+        return Result<bool>.Success(true);
+    }
+
     public override async Task InvalidateCache(
         User entity)
     {

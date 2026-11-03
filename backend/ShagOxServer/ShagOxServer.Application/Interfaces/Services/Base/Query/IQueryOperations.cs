@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -10,14 +11,17 @@ public interface IQueryOperations<TDto, TFilter>
 {
     Task<Result<TDto>> GetByIdAsync(
         long id,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<Result<PagedResult<TDto>>> GetPagedAsync(
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<Result<PagedResult<TDto>>> SearchAsync(
         TFilter filter,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations.Translation;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;

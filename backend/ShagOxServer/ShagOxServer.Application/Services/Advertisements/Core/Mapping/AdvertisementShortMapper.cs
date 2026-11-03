@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
+using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping;
@@ -20,8 +21,8 @@ public static class AdvertisementShortMapper
             x.BuyerId,
             x.Pictures
                 .OrderBy(i => i.Order)
-                .Select(i => i.Id)
-                .ToList(),
+                .Select(AdvertisementImageMapper.ToDto)
+                .FirstOrDefault(),
             x.Attributes,
             x.Variants
                 .Select(AdvertisementVariantShortMapper.ToDto)

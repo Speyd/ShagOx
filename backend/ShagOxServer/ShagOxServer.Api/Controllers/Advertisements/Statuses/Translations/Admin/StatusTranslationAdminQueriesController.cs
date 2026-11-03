@@ -8,7 +8,7 @@ using ShagOxServer.Domain.Filters.Advertisements.Translations;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Statuses.Translations.Admin;
 [ApiController]
-[Route("api/statuses/translations")]
+[Route("api/admin/statuses/translations")]
 [Authorize(Roles = "Admin")]
 public class StatusTranslationAdminQueriesController
     : BaseTranslationQueryController<StatusTranslationDto,

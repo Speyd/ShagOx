@@ -7,7 +7,6 @@ public sealed record AdvertisementSearchFilter(
     string? Description,
     long? CategoryId,
     string? Attributes,
-    string? VariantAttributes = null,
     decimal? MinPrice = null,
     decimal? MaxPrice = null) : BaseFilter
 {
@@ -19,7 +18,6 @@ public sealed record AdvertisementSearchFilter(
             filter.Description,
             filter.CategoryId,
             NormalizeAttributes(filter.Attributes),
-            NormalizeAttributes(filter.VariantAttributes),
             filter.MinPrice,
             filter.MaxPrice);
     }

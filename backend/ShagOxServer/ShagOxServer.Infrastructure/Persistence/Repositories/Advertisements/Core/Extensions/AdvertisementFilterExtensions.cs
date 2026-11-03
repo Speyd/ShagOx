@@ -44,132 +44,53 @@ public static class AdvertisementFilterExtensions
             query = query.Where(x => x.Variants.Any(v => v.Price <= filter.MaxPrice.Value));
         }
 
-        if (filter.Attributes is not null)
+        if (!string.IsNullOrWhiteSpace(filter.Attributes))
         {
-            query = ApplyAttributeFilters(
-                query,
-                filter.Attributes,
-                isVariant: false);
-        }
-
-        if (filter.VariantAttributes is not null)
-        {
-            query = ApplyAttributeFilters(
-                query,
-                filter.VariantAttributes,
-                isVariant: true);
+            query = query.Where(x =>
+                EF.Functions.JsonContains(
+                    x.Attributes,
+                    filter.Attributes)
+                ||
+                x.Variants.Any(v =>
+                    EF.Functions.JsonContains(
+                        v.Attributes,
+                        filter.Attributes)));
         }
 
         return query;
     }
 
-    private static IQueryable<Advertisement> ApplyAttributeFilters(
-        IQueryable<Advertisement> query,
-        string filtersJson,
-        bool isVariant)
-    {
-        using var filters = JsonDocument.Parse(filtersJson);
-        var filterProperties = filters.RootElement
-            .EnumerateObject()
-            .Select(property => new
-            {
-                property.Name,
-                Values = property.Value.ValueKind == JsonValueKind.Array
-                    ? property.Value.EnumerateArray()
-                        .Select(value => value.Clone())
-                        .ToArray()
-                    : [property.Value.Clone()]
-            })
-            .Where(property => property.Values.Length > 0)
-            .ToArray();
+    //private static IQueryable<Advertisement> ApplyAttributeFilters(
+    //    IQueryable<Advertisement> query,
+    //    string filtersJson,
+    //    bool isVariant)
+    //{
+    //    using var document = JsonDocument.Parse(filtersJson);
 
-        if (filterProperties.Length == 0)
-            return query;
+    //    foreach (var property in document.RootElement.EnumerateObject())
+    //    {
+    //        var values = property.Value.ValueKind == JsonValueKind.Array
+    //            ? property.Value.EnumerateArray().ToArray()
+    //            : [property.Value];
 
-        if (isVariant)
-        {
-            var advertisementParameter = Expression.Parameter(
-                typeof(Advertisement), "advertisement");
-            var variantParameter = Expression.Parameter(
-                typeof(AdvertisementVariant), "variant");
-            Expression variantBody = Expression.Constant(true);
+    //        query = query.Where(ad =>
+    //            isVariant
+    //                ? ad.Variants.Any(v =>
+    //                    values.Any(value =>
+    //                        EF.Functions.JsonContains(
+    //                            v.Attributes,
+    //                            JsonSerializer.Serialize(new Dictionary<string, JsonElement>
+    //                            {
+    //                                [property.Name] = value
+    //                            }))))
+    //                : EF.Functions.JsonContains(
+    //                    ad.Attributes,
+    //                    JsonSerializer.Serialize(new Dictionary<string, JsonElement>
+    //                    {
+    //                        [property.Name] = values[0]
+    //                    })));
+    //    }
 
-            foreach (var property in filterProperties)
-            {
-                var candidateMatches = BuildCandidateMatches(
-                    Expression.Property(
-                        variantParameter,
-                        nameof(AdvertisementVariant.Attributes)),
-                    property.Name,
-                    property.Values);
-                variantBody = Expression.AndAlso(variantBody, candidateMatches);
-            }
-
-            var variantPredicate = Expression.Lambda<
-                Func<AdvertisementVariant, bool>>(
-                    variantBody,
-                    variantParameter);
-            var anyVariant = Expression.Call(
-                typeof(Enumerable),
-                nameof(Enumerable.Any),
-                [typeof(AdvertisementVariant)],
-                Expression.Property(
-                    advertisementParameter,
-                    nameof(Advertisement.Variants)),
-                variantPredicate);
-
-            return query.Where(Expression.Lambda<Func<Advertisement, bool>>(
-                anyVariant,
-                advertisementParameter));
-        }
-
-        foreach (var property in filterProperties)
-        {
-            var advertisementParameter = Expression.Parameter(
-                typeof(Advertisement), "advertisement");
-            var matches = BuildCandidateMatches(
-                Expression.Property(
-                    advertisementParameter,
-                    nameof(Advertisement.Attributes)),
-                property.Name,
-                property.Values);
-
-            query = query.Where(Expression.Lambda<Func<Advertisement, bool>>(
-                matches,
-                advertisementParameter));
-        }
-
-        return query;
-    }
-
-    private static Expression BuildCandidateMatches(
-        Expression attributesExpression,
-        string key,
-        JsonElement[] selectedValues)
-    {
-        Expression? matches = null;
-
-        foreach (var selectedValue in selectedValues)
-        {
-            var candidate = JsonSerializer.SerializeToDocument(
-                new Dictionary<string, JsonElement>
-                {
-                    [key] = selectedValue
-                });
-            var contains = Expression.Call(
-                typeof(NpgsqlJsonDbFunctionsExtensions),
-                nameof(NpgsqlJsonDbFunctionsExtensions.JsonContains),
-                Type.EmptyTypes,
-                Expression.Property(null, typeof(EF).GetProperty(
-                    nameof(EF.Functions))!),
-                attributesExpression,
-                Expression.Constant(candidate, typeof(object)));
-
-            matches = matches is null
-                ? contains
-                : Expression.OrElse(matches, contains);
-        }
-
-        return matches ?? Expression.Constant(false);
-    }
+    //    return query;
+    //}
 }

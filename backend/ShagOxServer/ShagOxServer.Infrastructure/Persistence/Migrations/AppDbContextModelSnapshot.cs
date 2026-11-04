@@ -141,7 +141,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("UserName")
                         .IsUnique()
                         .HasDatabaseName("IX_Users_UserName")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Users");
                 });
@@ -346,7 +346,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId", "AdvertisementId")
                         .IsUnique()
                         .HasDatabaseName("IX_Favorites_OwnerId_AdvertisementId")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Favorites");
                 });
@@ -378,7 +378,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Statuses_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Statuses");
                 });
@@ -428,7 +428,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_StatusTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("StatusTranslations");
                 });
@@ -458,7 +458,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId")
                         .IsUnique()
                         .HasDatabaseName("IX_Baskets_OwnerId")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Baskets");
                 });
@@ -491,7 +491,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("AttributeDefinitionId")
                         .IsUnique()
                         .HasDatabaseName("IX_BasketAttributes_AttributeDefinitionId")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("BasketAttributes");
                 });
@@ -532,7 +532,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("BasketId", "AdvertisementVariantId")
                         .IsUnique()
                         .HasDatabaseName("IX_BasketItems_BasketId_AdvertisementVariantId")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("BasketItems");
                 });
@@ -707,7 +707,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("CategoryId", "Key")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDefinitions_CategoryId_Key")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AttributeDefinitions");
                 });
@@ -739,7 +739,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDictionaries_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AttributeDictionaries");
                 });
@@ -777,7 +777,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("DictionaryId", "Code")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDictionaryValues_DictionaryId_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AttributeDictionaryValues");
                 });
@@ -823,7 +823,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDefinitionTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AttributeDefinitionTranslations");
                 });
@@ -869,7 +869,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDictionaryValueTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AttributeDictionaryValueTranslations");
                 });
@@ -907,7 +907,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("ProductTypeId", "Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Categories_ProductTypeId_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Categories");
                 });
@@ -943,7 +943,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_ProductTypes_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ProductTypes");
                 });
@@ -989,7 +989,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_CategoryTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("CategoryTranslations");
                 });
@@ -1035,7 +1035,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_ProductTypeTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ProductTypeTranslations");
                 });
@@ -1070,7 +1070,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Cities_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.HasIndex("RegionId")
                         .HasDatabaseName("IX_Cities_RegionId");
@@ -1105,7 +1105,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Regions_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Regions");
                 });
@@ -1151,7 +1151,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_CityTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("CityTranslations");
                 });
@@ -1197,7 +1197,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_RegionTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("RegionTranslations");
                 });
@@ -1229,7 +1229,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Conditions_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Conditions");
                 });
@@ -1271,7 +1271,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Currencies_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Currencies");
                 });
@@ -1313,7 +1313,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
                         .HasDatabaseName("IX_AdvertisementImages_OwnerId_Order")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AdvertisementImages");
                 });
@@ -1352,7 +1352,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId")
                         .IsUnique()
                         .HasDatabaseName("IX_Avatars_OwnerId")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Avatars");
                 });
@@ -1394,7 +1394,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
                         .HasDatabaseName("IX_ReviewImages_OwnerId_Order")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ReviewImages");
                 });
@@ -1436,7 +1436,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
                         .HasDatabaseName("IX_ReviewRepliImages_OwnerId_Order")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ReviewRepliImages");
                 });
@@ -1479,7 +1479,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Language", "Name")
                         .IsUnique()
                         .HasDatabaseName("IX_ConditionTranslations_Language_Name")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ConditionTranslations");
                 });

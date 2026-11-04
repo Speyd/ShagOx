@@ -4,9 +4,11 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.Core.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Baskets.Core.Mapping;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
@@ -15,7 +17,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.Core.Update;
 public class BasketUpdateService
-    : IBasketUpdateService
+    : BaseUpdateService<Basket>,
+    IBasketUpdateService
 {
     private readonly IRepository<Basket> _basketRepository;
     private readonly BasketValidator _basketValidator;
@@ -31,10 +34,13 @@ public class BasketUpdateService
     public BasketUpdateService(
         IRepository<Basket> basketRepository,
         BasketValidator basketValidator,
+        IBasketDeleteService basketDeleteService,
         BasketInvalidationService basketInvalid,
         UserValidator userValidator,
         IUnitOfWork unitOfWork,
-        ILogger<BasketUpdateService> logger)
+        ILogger<BasketUpdateService> logger
+    )
+        : base(basketDeleteService, basketValidator, logger, unitOfWork)
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;

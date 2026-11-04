@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Translations;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Validator;
@@ -12,7 +13,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Translations.Delete;
 public class ConditionTranslationDeleteService
-    : IConditionTranslationDeleteService
+    : BaseDeleteService<ConditionTranslation>,
+    IConditionTranslationDeleteService
 {
     private readonly IRepository<ConditionTranslation> _conditionRepository;
     private readonly ConditionTranslationValidator _conditionValidator;
@@ -28,7 +30,9 @@ public class ConditionTranslationDeleteService
         ConditionTranslationValidator conditionValidator,
         ConditionTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<ConditionTranslationDeleteService> logger)
+        ILogger<ConditionTranslationDeleteService> logger
+    )
+        : base(conditionValidator, unitOfWork, logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
@@ -71,8 +75,7 @@ public class ConditionTranslationDeleteService
                  .Fail(EntityErrorResources.ConditionTranslationDeleteFailed);
         }
 
-        await _transInvalid.InvalidateUpdateAsync(
-            BaseTranslationCacheMapper.ToInfo(condition.Value!));
+        await InvalidateCache(condition.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -80,5 +83,12 @@ public class ConditionTranslationDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        ConditionTranslation entity)
+    {
+        await _transInvalid.InvalidateUpdateAsync(
+            BaseTranslationCacheMapper.ToInfo(entity));
     }
 }

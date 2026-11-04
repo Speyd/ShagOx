@@ -12,13 +12,15 @@ public class ConditionTranslationValidator
         ConditionTranslation>
 {
     public ConditionTranslationValidator(
+        IRepository<ConditionTranslation> repository,
         IQueryRepository<ConditionTranslation> conditionRepository,
         IConditionTranslationExistsRepository conditionExistsRepository,
         IDataCacheService cache
     ) 
-        : base(conditionRepository, 
-        conditionExistsRepository,
-        cache)
+        : base(repository, 
+            conditionRepository, 
+            conditionExistsRepository, 
+            cache)
     {
     }
 }

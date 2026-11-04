@@ -20,18 +20,24 @@ public class FavoriteUpdateValidator
     }
 
 
-    public async Task<Result<bool>> ValidateAsync(
+    public Task<Result<bool>> ValidateAsync(
         FavoriteUpdateRequest request)
     {
-        if (request.AdvertisementId is not null)
-        {
-            var advert = await _advertisementValidator
-                .GetByIdAsync(request.AdvertisementId.Value);
+        return ValidateFavoriteAsync(request.AdvertisementId);
+    }
 
-            if (!advert.IsSuccess)
-                return Result<bool>.NotFound(
-                    EntityNamesResources.Advertisement);
-        }
+    private async Task<Result<bool>> ValidateFavoriteAsync(
+        long? advertisementId)
+    {
+        if (advertisementId is null)
+            return Result<bool>.Success(true);
+
+        var advert = await _advertisementValidator
+            .GetByIdAsync(advertisementId.Value);
+
+        if (!advert.IsSuccess)
+            return Result<bool>.NotFound(
+                EntityNamesResources.Advertisement);
 
         return Result<bool>.Success(true);
     }

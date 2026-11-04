@@ -1,11 +1,12 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
@@ -21,13 +22,14 @@ public class AdvertisementVariantValidator
 
 
     public AdvertisementVariantValidator(
+        IRepository<AdvertisementVariant> repository,
         IQueryRepository<AdvertisementVariant> variantRepository,
         IAdvertisementVariantExistsRepository variantExistsRepository,
         IAttributeDefinitionQueryRepository attributeRepository,
         AdvertisementValidator advertValidator,
         IDataCacheService cache
     ) 
-        : base(variantRepository,
+        : base(repository, variantRepository,
             variantExistsRepository, 
             cache)
     {

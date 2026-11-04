@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,11 +15,12 @@ public class ConditionValidator
 
 
     public ConditionValidator(
+        IRepository<Condition> repository,
         IQueryRepository<Condition> conditionRepository,
         IConditionExistsRepository conditionExistsRepository,
         IDataCacheService cache
     ) 
-        : base(conditionRepository, conditionExistsRepository, cache)
+        : base(repository, conditionRepository, conditionExistsRepository, cache)
     {
         _conditionExistsRepository = conditionExistsRepository;
     }

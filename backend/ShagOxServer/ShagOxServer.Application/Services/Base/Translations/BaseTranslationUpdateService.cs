@@ -1,9 +1,17 @@
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Requests.Translations;
+using ShagOxServer.Application.DTOs.Base.Responses;
+using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Services.Base.Delete;
+using ShagOxServer.Application.Services.Base.Delete;
+using ShagOxServer.Application.Services.Base.Update;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
 public abstract class BaseTranslationUpdateService<TObject, TTranslation>
+    : BaseUpdateService<TTranslation>
     where TObject : BaseEntity
     where TTranslation : BaseTranslation<TObject>
 {
@@ -13,8 +21,12 @@ public abstract class BaseTranslationUpdateService<TObject, TTranslation>
 
     public BaseTranslationUpdateService(
         BaseValidator<TObject> objectValidator,
-        BaseTranslationValidator<TObject, TTranslation> translationValidator
-        )
+        ISoftDeleteService<TTranslation, DeleteResponse> deleteService,
+        BaseTranslationValidator<TObject, TTranslation> translationValidator,
+        ILogger<BaseTranslationUpdateService<TObject, TTranslation>> logger,
+        IUnitOfWork unitOfWork
+    )
+        : base(deleteService, translationValidator, logger, unitOfWork)
     {
         _objectValidator = objectValidator;
         _translationValidator = translationValidator;

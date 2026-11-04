@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Location.Regions.Create;
 using ShagOxServer.Application.DTOs.Location.Regions.Update;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Location.Regions.Admin;
@@ -54,6 +56,18 @@ public class RegionAdminCommandsController
         return result.ToActionResult();
     }
 
+    [HttpPatch("{id:long}/status")]
+    public async Task<IActionResult> ChangeStatus(
+        [FromRoute] long id,
+        [FromBody] ChangeStatusRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _updateService
+            .ChangeStatusAsync(id, request,
+                cancellationToken);
+
+        return result.ToActionResult();
+    }
 
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(

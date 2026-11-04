@@ -4,19 +4,21 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Cities.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Application.Services.Location.Cities.Update.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Location;
-using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Update;
 public class CityUpdateService 
-    : ICityUpdateService
+    : BaseUpdateService<City>,
+    ICityUpdateService
 {
     private readonly IRepository<City> _cityRepository;
     private readonly CityValidator _cityValidator;
@@ -31,10 +33,13 @@ public class CityUpdateService
     public CityUpdateService(
         IRepository<City> cityRepository,
         CityValidator cityValidator,
+        ICityDeleteService cityDeleteService,
         CityUpdateValidator cityUpdateValidator,
         CityInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<CityUpdateService> logger)
+        ILogger<CityUpdateService> logger
+    )
+        : base(cityDeleteService, cityValidator, logger, unitOfWork)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;

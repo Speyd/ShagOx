@@ -1,9 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Update;
 
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
 public interface IFavoriteUpdateService
-    : IUpdateService<UpdateResponse, FavoriteUpdateRequest>
+    : IUpdateService<UpdateResponse, FavoriteUpdateRequest>,
+    IEntityStatusUpdateService
 {
 }

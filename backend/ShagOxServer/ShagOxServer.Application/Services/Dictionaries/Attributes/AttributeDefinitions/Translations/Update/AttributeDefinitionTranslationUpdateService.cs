@@ -4,11 +4,14 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Delete;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
@@ -35,10 +38,16 @@ public class AttributeDefinitionTranslationUpdateService
         IRepository<AttributeDefinitionTranslation> attributeRepository,
         AttributeDefinitionTranslationValidator attributeTranslationValidator,
         AttributeDefinitionValidator attributeValidator,
+        IAttributeDefinitionTranslationDeleteService attributeDeleteService,
         AttributeDefinitionTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionTranslationUpdateService> logger
-    ) : base(attributeValidator, attributeTranslationValidator)
+    ) 
+        : base(attributeValidator, 
+            attributeDeleteService,
+            attributeTranslationValidator,
+            logger,
+            unitOfWork)
     {
         _attributeRepository = attributeRepository;
         _attributeTranslationValidator = attributeTranslationValidator;

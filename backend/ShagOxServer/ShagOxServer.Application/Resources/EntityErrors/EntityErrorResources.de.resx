@@ -417,4 +417,10 @@
   <data name="SoftDeleteFailed" xml:space="preserve">
     <value>Der Eintrag konnte nicht gelöscht werden.</value>
   </data>
+  <data name="InvalidStatusValue" xml:space="preserve">
+    <value>Es wurde ein ungültiger Statuswert angegeben.</value>
+  </data>
+  <data name="StatusChangeFailed" xml:space="preserve">
+    <value>Beim Ändern des Status ist ein unerwarteter Fehler aufgetreten.</value>
+  </data>
 </root>

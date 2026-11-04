@@ -4,8 +4,12 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Delete;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Auth.Users.Core.Delete;
+using ShagOxServer.Application.Services.Base.Update;
+using ShagOxServer.Application.Services.Baskets.BasketAttributes.Delete;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Mapping;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
@@ -16,7 +20,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketAttributes.Update;
 public class BasketAttributeUpdateService
-    : IBasketAttributeUpdateService
+    : BaseUpdateService<BasketAttribute>,
+    IBasketAttributeUpdateService
 {
     private readonly IRepository<BasketAttribute> _attributeRepository;
     private readonly BasketAttributeValidator _attributeValidator;
@@ -33,11 +38,14 @@ public class BasketAttributeUpdateService
     public BasketAttributeUpdateService(
         IRepository<BasketAttribute> attributeRepository,
         BasketAttributeValidator attributeValidator,
+        IBasketAttributeDeleteService attributeDeleteService,
         BasketAttributeUpdateValidator attributeUpdateValidator,
         AttributeDefinitionValidator attributeDefinitionValidator,
         BasketAttributeInvalidationService attributeInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<BasketAttributeUpdateService> logger)
+        ILogger<BasketAttributeUpdateService> logger
+    )
+        : base(attributeDeleteService, attributeValidator, logger, unitOfWork)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;

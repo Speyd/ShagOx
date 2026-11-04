@@ -6,12 +6,14 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.PictureOrdering;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -20,7 +22,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Update;
 public partial class AdvertisementUpdateService 
-    : IAdvertisementUpdateService
+    : BaseUpdateService<Advertisement>,
+    IAdvertisementUpdateService
 {
     private readonly IRepository<Advertisement> _advertRepository;
 
@@ -36,8 +39,6 @@ public partial class AdvertisementUpdateService
 
     private readonly AdvertisementInvalidationService _advertInvalid;
 
-
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementUpdateService> _logger;
 
@@ -45,15 +46,18 @@ public partial class AdvertisementUpdateService
     public AdvertisementUpdateService(
         IRepository<Advertisement> advertRepository,
         PictureOrderSyncExecutor<Advertisement,
-            AdvertisementImage> executor,
+        AdvertisementImage> executor,
         AdvertisementValidator validator,
         AdvertisementUpdateValidator validatorUpdate,
         AdvertisementVariantValidator variantValidator,
+        IAdvertisementDeleteService deleteService,
         IAdvertisementVariantUpdateService variantUpdateService,
         AdvertisementInvalidationService advertInvalid,
         IFavoriteQueryRepository favoriteRepository,
         IUnitOfWork unitOfWork,
-        ILogger<AdvertisementUpdateService> logger)
+        ILogger<AdvertisementUpdateService> logger
+    )
+        : base(deleteService, validator, logger, unitOfWork)
     {
         _validator = validator;
         _advertRepository = advertRepository;
@@ -77,7 +81,7 @@ public partial class AdvertisementUpdateService
             return Result<UpdateResponse>.Fail(advert.Error);
 
         var validation = await _validatorUpdate
-            .ValidateAsync(request);
+            .ValidateUpdateConflictsAsync(request);
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error!);
 

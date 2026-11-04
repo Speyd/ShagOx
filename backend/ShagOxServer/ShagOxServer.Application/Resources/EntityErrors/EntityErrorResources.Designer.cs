@@ -691,6 +691,15 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The specified status value is invalid..
+        /// </summary>
+        internal static string InvalidStatusValue {
+            get {
+                return ResourceManager.GetString("InvalidStatusValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create product type..
         /// </summary>
         internal static string ProductTypeCreateFailed {
@@ -939,6 +948,15 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         internal static string SoftDeleteFailed {
             get {
                 return ResourceManager.GetString("SoftDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на An unexpected error occurred while changing the status..
+        /// </summary>
+        internal static string StatusChangeFailed {
+            get {
+                return ResourceManager.GetString("StatusChangeFailed", resourceCulture);
             }
         }
         

@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -17,11 +17,12 @@ public class BasketItemValidator
 
 
     public BasketItemValidator(
+        IRepository<BasketItem> repository,
         IBasketItemExistsRepository itemExistsRepository,
         IBasketItemQueryRepository itemQeuryRepository,
         IDataCacheService cache
     ) 
-        : base(itemQeuryRepository, itemExistsRepository, cache)
+        : base(repository, itemQeuryRepository, itemExistsRepository, cache)
     {
         _itemExistsRepository = itemExistsRepository;
         _itemQeuryRepository = itemQeuryRepository;

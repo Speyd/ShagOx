@@ -1,18 +1,21 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Cities.Translations.Delete;
 public class CityTranslationDeleteService
-    : ICityTranslationDeleteService
+    : BaseDeleteService<CityTranslation>,
+    ICityTranslationDeleteService
 {
     private readonly IRepository<CityTranslation> _cityRepository;
     private readonly CityTranslationValidator _cityValidator;
@@ -28,7 +31,9 @@ public class CityTranslationDeleteService
         CityTranslationValidator cityValidator,
         CityTranslationInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<CityTranslationDeleteService> logger)
+        ILogger<CityTranslationDeleteService> logger
+    )
+        : base(cityValidator, unitOfWork, logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
@@ -68,8 +73,7 @@ public class CityTranslationDeleteService
                  .Fail(EntityErrorResources.CityTranslationDeleteFailed);
         }
 
-        await _cityInvalid.InvalidateDeleteAsync(
-            BaseTranslationCacheMapper.ToInfo(city.Value!));
+        await InvalidateCache(city.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -77,5 +81,12 @@ public class CityTranslationDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        CityTranslation entity)
+    {
+        await _cityInvalid.InvalidateDeleteAsync(
+            BaseTranslationCacheMapper.ToInfo(entity)); ;
     }
 }

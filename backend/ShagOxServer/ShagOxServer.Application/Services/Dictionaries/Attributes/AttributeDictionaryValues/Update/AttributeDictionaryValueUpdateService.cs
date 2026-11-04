@@ -4,8 +4,10 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Mapping;
@@ -15,7 +17,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Update;
 public class AttributeDictionaryValueUpdateService
-    : IAttributeDictionaryValueUpdateService
+    : BaseUpdateService<AttributeDictionaryValue>,
+    IAttributeDictionaryValueUpdateService
 {
     private readonly IRepository<AttributeDictionaryValue> _valueRepository;
     private readonly AttributeDictionaryValueValidator _valueValidator;
@@ -31,10 +34,13 @@ public class AttributeDictionaryValueUpdateService
     public AttributeDictionaryValueUpdateService(
         IRepository<AttributeDictionaryValue> valueRepository,
         AttributeDictionaryValueValidator valueValidator,
+        IAttributeDictionaryValueDeleteService valueDeleteService,
         AttributeDictionaryValidator dictionaryValidator,
         AttributeDictionaryValueInvalidationService valueInvalidation,
         IUnitOfWork unitOfWork,
-        ILogger<AttributeDictionaryValueUpdateService> logger)
+        ILogger<AttributeDictionaryValueUpdateService> logger
+    )
+        : base(valueDeleteService, valueValidator, logger, unitOfWork)
     {
         _valueRepository = valueRepository;
         _valueValidator = valueValidator;

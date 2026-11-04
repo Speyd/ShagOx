@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Update;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Specification.Currencies.Admin;
@@ -47,6 +49,19 @@ public class CurrencyAdminCommandsController
     {
         var result = await _updateService
             .UpdateAsync(id, request);
+
+        return result.ToActionResult();
+    }
+
+    [HttpPatch("{id:long}/status")]
+    public async Task<IActionResult> ChangeStatus(
+        [FromRoute] long id,
+        [FromBody] ChangeStatusRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _updateService
+            .ChangeStatusAsync(id, request,
+                cancellationToken);
 
         return result.ToActionResult();
     }

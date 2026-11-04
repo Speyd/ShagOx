@@ -5,6 +5,6 @@ using ShagOxServer.Domain.Entities.Advertisements;
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Delete;
 public interface IStatusDeleteService
     : IDeleteService<DeleteResponse>,
-    ISoftDeleteService<DeleteResponse>
+    ISoftDeleteService<Status,DeleteResponse>
 {
 }

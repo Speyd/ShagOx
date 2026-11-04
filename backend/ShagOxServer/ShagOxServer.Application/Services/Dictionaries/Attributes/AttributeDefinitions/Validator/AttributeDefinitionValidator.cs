@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,11 +15,12 @@ public class AttributeDefinitionValidator
 
 
     public AttributeDefinitionValidator(
+        IRepository<AttributeDefinition> repository,
         IQueryRepository<AttributeDefinition> attributeRepository,
         IAttributeDefinitionExistsRepository attributeExistsRepository,
         IDataCacheService cache
     ) 
-        : base(attributeRepository, attributeExistsRepository, cache)
+        : base(repository, attributeRepository, attributeExistsRepository, cache)
     {
         _attributeExistsRepository = attributeExistsRepository;
     }

@@ -26,8 +26,6 @@ public static class DbDependencyInjection
                 throw new InvalidOperationException(
                     "No healthy PostgreSQL replicas available.");
             }
-
-            options.UseNpgsql(replica.ConnectionString);
         });
 
         return services;

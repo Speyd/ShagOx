@@ -4,18 +4,20 @@ using ShagOxServer.Application.DTOs.Advertisements.Statuses.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Update;
 public class StatusUpdateService
-    : IStatusUpdateService
+    : BaseUpdateService<Status>,
+    IStatusUpdateService
 {
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
@@ -29,9 +31,12 @@ public class StatusUpdateService
     public StatusUpdateService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
+        IStatusDeleteService deleteService,
         StatusInvalidationService statusInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<StatusUpdateService> logger)
+        ILogger<StatusUpdateService> logger
+    )
+        : base(deleteService, statusValidator, logger, unitOfWork)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;

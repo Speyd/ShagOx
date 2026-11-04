@@ -8,21 +8,23 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Update;
 public class UserUpdateService 
-    : IUserUpdateService
+    : BaseUpdateService<User>,
+    IUserUpdateService
 {
     private readonly IRepository<User> _userRepository;
     private readonly UserValidator _userValidator;
@@ -42,12 +44,15 @@ public class UserUpdateService
     public UserUpdateService(
         IRepository<User> userRepository,
         UserValidator userValidator,
+        IUserDeleteService userDeleteService,
         CityValidator cityValidator,
         IAvatarUpdateService avatarUploadService,
         IAvatarCreateService avatarCreateService,
         UserInvalidationService userInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<UserUpdateService> logger)
+        ILogger<UserUpdateService> logger
+    )
+        : base(userDeleteService, userValidator, logger, unitOfWork)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;

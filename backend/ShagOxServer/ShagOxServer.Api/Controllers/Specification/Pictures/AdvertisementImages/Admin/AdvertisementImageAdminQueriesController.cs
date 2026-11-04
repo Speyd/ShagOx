@@ -5,7 +5,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Q
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Query;
 using ShagOxServer.Domain.Filters.Specification.Pictures.AdvertisementImages;
 
-namespace ShagOxServer.Api.Controllers.Specification.Pictures.AdvertisementImages;
+namespace ShagOxServer.Api.Controllers.Specification.Pictures.AdvertisementImages.Admin;
 
 [ApiController]
 [Route("api/admin/advertisement-images")]

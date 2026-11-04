@@ -1,8 +1,9 @@
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -15,11 +16,12 @@ public class BasketAttributeValidator
 
 
     public BasketAttributeValidator(
+        IRepository<BasketAttribute> repository,
         IQueryRepository<BasketAttribute> attributeRepository,
         IBasketAttributeExistsRepository attributeExistsRepository,
         IDataCacheService cache
     ) 
-        : base(attributeRepository, attributeExistsRepository, cache)
+        : base(repository, attributeRepository, attributeExistsRepository, cache)
     {
         _attributeExistsRepository = attributeExistsRepository;
     }

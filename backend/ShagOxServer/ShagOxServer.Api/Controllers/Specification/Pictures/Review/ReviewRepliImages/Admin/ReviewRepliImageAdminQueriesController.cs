@@ -5,7 +5,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Review.ReviewRepliIma
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Query;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Review;
 
-namespace ShagOxServer.Api.Controllers.Specification.Pictures.Review.ReviewRepliImages;
+namespace ShagOxServer.Api.Controllers.Specification.Pictures.Review.ReviewRepliImages.Admin;
 
 [ApiController]
 [Route("api/admin/review-repli-images")]

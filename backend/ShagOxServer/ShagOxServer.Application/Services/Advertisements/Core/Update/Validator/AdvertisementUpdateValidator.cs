@@ -1,8 +1,9 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
@@ -27,48 +28,63 @@ public class AdvertisementUpdateValidator
     }
 
 
-    public async Task<Result<bool>> ValidateAsync(
+    public Task<Result<bool>> ValidateUpdateConflictsAsync(
         AdvertisementUpdateRequest request)
     {
-        if (request.BuyerId is not null)
-        {
-            var buyer = await _userValidator
-                .ExistsByIdAsync(request.BuyerId.Value);
+        return ValidateReferencesAsync(
+            request.BuyerId,
+            request.CurrencyId,
+            request.ConditionId,
+            request.CategoryId);
+    }
 
-            if (!buyer.IsSuccess)
-                return buyer;
+    public Task<Result<bool>> ValidateUpdateConflictsAsync(
+        Advertisement advert)
+    {
+        return ValidateReferencesAsync(
+            advert.BuyerId,
+            advert.CurrencyId,
+            advert.ConditionId,
+            advert.CategoryId);
+    }
+
+    private async Task<Result<bool>> ValidateReferencesAsync(
+        long? buyerId,
+        long? currencyId,
+        long? conditionId,
+        long? categoryId)
+    {
+        if (buyerId.HasValue)
+        {
+            var result = await _userValidator
+                .ExistsByIdAsync(buyerId.Value);
+            if (!result.IsSuccess)
+                return result;
         }
 
-
-        if (request.CurrencyId is not null)
+        if (currencyId.HasValue)
         {
-            var currency = await _currencyValidator
-                .ExistsByIdAsync(request.CurrencyId.Value);
-
-            if (!currency.IsSuccess)
-                return currency;
+            var result = await _currencyValidator
+                .ExistsByIdAsync(currencyId.Value);
+            if (!result.IsSuccess)
+                return result;
         }
 
-
-        if (request.ConditionId is not null)
+        if (conditionId.HasValue)
         {
-            var condition = await _conditionValidator
-                .ExistsByIdAsync(request.ConditionId.Value);
-
-            if (!condition.IsSuccess)
-                return condition;
+            var result = await _conditionValidator
+                .ExistsByIdAsync(conditionId.Value);
+            if (!result.IsSuccess)
+                return result;
         }
 
-
-        if (request.CategoryId is not null)
+        if (categoryId.HasValue)
         {
-            var category = await _categoryValidator
-                .ExistsByIdAsync(request.CategoryId.Value);
-
-            if (!category.IsSuccess)
-                return category;
+            var result = await _categoryValidator
+                .ExistsByIdAsync(categoryId.Value);
+            if (!result.IsSuccess)
+                return result;
         }
-
 
         return Result<bool>.Success(true);
     }

@@ -4,19 +4,22 @@ using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Update;
-public class AdvertisementVariantUpdateService
-    : IAdvertisementVariantUpdateService
+public partial class AdvertisementVariantUpdateService
+    : BaseUpdateService<AdvertisementVariant>,
+    IAdvertisementVariantUpdateService
 {
     private readonly IRepository<AdvertisementVariant> _variantRepository;
     private readonly AdvertisementVariantValidator _variantValidator;
@@ -34,9 +37,13 @@ public class AdvertisementVariantUpdateService
         AdvertisementVariantValidator variantValidator,
         AdvertisementValidator advertValidator,
         AdvertisementVariantInvalidationService variantInvalid,
+        IAdvertisementVariantDeleteService deleteService,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantUpdateService> logger,
-        IDataCacheService cache)
+        IDataCacheService cache
+    )
+        : base(deleteService, variantValidator, 
+            logger, unitOfWork)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;
@@ -98,7 +105,8 @@ public class AdvertisementVariantUpdateService
         long variantId,
         AdvertisementVariantUpdateRequest request)
     {
-        var variant = await _variantValidator.GetByIdAsync(variantId);
+        var variant = await _variantValidator
+            .GetByIdAsync(variantId);
 
         if (!variant.IsSuccess)
         {
@@ -106,7 +114,7 @@ public class AdvertisementVariantUpdateService
                 .Fail(variant.Error);
         }
 
-        var validation = await ValidateUpdatesAsync(
+        var validation = await ValidateUpdateConflictsAsync(
             variant.Value!,
             request);
 
@@ -134,50 +142,5 @@ public class AdvertisementVariantUpdateService
             AdvertisementVariantCacheMapper.ToInfo(variant.Value!));
 
         return Result<UpdateResponse>.Success(result);
-    }
-
-    private async Task<Result<bool>> ValidateUpdatesAsync(
-        AdvertisementVariant variant,
-        AdvertisementVariantUpdateRequest request)
-    {
-        var attributes = request.Attributes ?? variant.Attributes;
-        var advertId = request.AdvertisementId ?? variant.AdvertisementId;
-
-        if (advertId != variant.AdvertisementId)
-        {
-            var advertExists = await _advertValidator
-                .ExistsByIdAsync(advertId);
-
-            if (!advertExists.IsSuccess)
-                return Result<bool>.Fail(advertExists.Error);
-        }
-
-        if (attributes != variant.Attributes ||
-            advertId != variant.AdvertisementId)
-        {
-            var variantExists = await _variantValidator
-                .NotExistsAsync(advertId, attributes);
-
-            if (!variantExists.IsSuccess)
-                return Result<bool>.Fail(variantExists.Error);
-        }
-
-        if (request.Attributes is not null)
-        {
-            
-            var isVariantExists = await _variantValidator
-                .ValidateVariantAttributesAsync(
-                    advertId,
-                    request.Attributes);
-
-            if (!isVariantExists.IsSuccess)
-            {
-                return Result<bool>
-                    .Fail(isVariantExists.Error);
-            }
-        }
-
-
-        return Result<bool>.Success(true);
     }
 }

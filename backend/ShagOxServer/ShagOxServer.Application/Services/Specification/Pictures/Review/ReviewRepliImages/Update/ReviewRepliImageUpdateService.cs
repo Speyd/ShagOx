@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
@@ -30,6 +31,7 @@ public class ReviewRepliImageUpdateService
         IRepository<ReviewRepliImage> imageRepository,
         PictureValidator pictureLoadValidator,
         ReviewRepliImageValidator imageValidator,
+        IReviewRepliImageDeleteService pictureDeleteService,
         ReviewRepliCommentValidator commentValidator,
         ReviewRepliImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
@@ -37,6 +39,7 @@ public class ReviewRepliImageUpdateService
     )
         : base(imageRepository,
             pictureLoadValidator,
+            pictureDeleteService,
             imageValidator,
             commentValidator,
             unitOfWork,

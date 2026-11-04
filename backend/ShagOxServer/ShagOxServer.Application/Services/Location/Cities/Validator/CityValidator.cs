@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,11 +15,12 @@ public class CityValidator
 
 
     public CityValidator(
+        IRepository<City> repository,
         IQueryRepository<City> cityRepository,
         ICityExistsRepository cityExistsRepository,
         IDataCacheService cache
     ) 
-        : base(cityRepository, cityExistsRepository, cache)
+        : base(repository, cityRepository, cityExistsRepository, cache)
     {
         _cityExistsRepository = cityExistsRepository;
     }

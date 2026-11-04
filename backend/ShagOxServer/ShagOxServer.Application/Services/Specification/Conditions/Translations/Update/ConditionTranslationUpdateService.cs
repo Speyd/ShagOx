@@ -4,11 +4,13 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Translations;
+using ShagOxServer.Application.Services.Specification.Conditions.Translations.Delete;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Validator;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
 using ShagOxServer.Domain.Entities.Location;
@@ -33,11 +35,17 @@ public class ConditionTranslationUpdateService
     public ConditionTranslationUpdateService(
         IRepository<ConditionTranslation> conditionRepository,
         ConditionTranslationValidator conditionTranslationValidator,
+        IConditionTranslationDeleteService conditionTranslationDeleteService,
         ConditionValidator conditionValidator,
         ConditionTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ConditionTranslationUpdateService> logger
-    ) : base(conditionValidator, conditionTranslationValidator)
+    ) 
+        : base(conditionValidator,
+            conditionTranslationDeleteService,
+            conditionTranslationValidator,
+            logger,
+            unitOfWork)
     {
         _conditionRepository = conditionRepository;
         _conditionTranslationValidator = conditionTranslationValidator;

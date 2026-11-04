@@ -4,19 +4,21 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Update;
 public class CategoryUpdateService 
-    : ICategoryUpdateService
+    : BaseUpdateService<Category>,
+    ICategoryUpdateService
 {
     private readonly IRepository<Category> _categoryRepository;
     private readonly CategoryValidator _categoryValidator;
@@ -31,10 +33,13 @@ public class CategoryUpdateService
     public CategoryUpdateService(
         IRepository<Category> categoryRepository,
         CategoryValidator categoryValidator,
+        ICategoryDeleteService categoryDeleteValidator,
         CategoryUpdateValidator categoryUpdateValidator,
         CategoryInvalidationService categoryInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<CategoryUpdateService> logger)
+        ILogger<CategoryUpdateService> logger
+    )
+        : base(categoryDeleteValidator, categoryValidator, logger, unitOfWork)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;

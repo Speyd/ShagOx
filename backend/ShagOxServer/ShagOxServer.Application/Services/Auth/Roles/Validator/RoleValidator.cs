@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,11 +15,12 @@ public class RoleValidator
 
 
     public RoleValidator(
+        IRepository<Role> repository,
         IQueryRepository<Role> roleRepository,
         IRoleExistsRepository roleExistsRepository,
         IDataCacheService cache
     ) 
-        : base(roleRepository, roleExistsRepository, cache)
+        : base(repository, roleRepository, roleExistsRepository, cache)
     {
         _roleExistsRepository = roleExistsRepository;
     }

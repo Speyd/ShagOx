@@ -1,5 +1,5 @@
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

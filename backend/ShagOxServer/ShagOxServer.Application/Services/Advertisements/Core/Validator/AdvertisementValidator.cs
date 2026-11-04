@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -15,11 +15,12 @@ public class AdvertisementValidator
     private readonly IAdvertisementQueryRepository _advertisementQueryRepository;
 
     public AdvertisementValidator(
+        IRepository<Advertisement> repository,
         IAdvertisementQueryRepository advertisementQueryRepository,
         IAdvertisementExistsRepository advertisementExistsRepository,
         IDataCacheService cache
     ) 
-        : base(advertisementQueryRepository, 
+        : base(repository, advertisementQueryRepository, 
             advertisementExistsRepository,
             cache)
     {

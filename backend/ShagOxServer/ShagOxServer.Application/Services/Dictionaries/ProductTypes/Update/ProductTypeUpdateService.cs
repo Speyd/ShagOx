@@ -4,9 +4,12 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
+using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Delete;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -14,7 +17,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Update;
 public class ProductTypeUpdateService 
-    : IProductTypeUpdateService
+    : BaseUpdateService<ProductType>,
+    IProductTypeUpdateService
 {
     private readonly IRepository<ProductType> _productTypeRepository;
     private readonly ProductTypeValidator _productTypeValidator;
@@ -29,8 +33,11 @@ public class ProductTypeUpdateService
         IRepository<ProductType> productTypeRepository,
         ProductTypeValidator productTypeValidator,
         ProductTypeInvalidationService productInvalid,
+        IProductTypeDeleteService productDeleteService,
         IUnitOfWork unitOfWork,
-        ILogger<ProductTypeUpdateService> logger)
+        ILogger<ProductTypeUpdateService> logger
+    )
+        : base(productDeleteService, productTypeValidator, logger, unitOfWork)
     {
         _productTypeRepository = productTypeRepository;
         _productTypeValidator = productTypeValidator;

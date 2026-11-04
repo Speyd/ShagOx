@@ -4,8 +4,10 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Update.Validator;
@@ -15,7 +17,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Update;
 public class AttributeDefinitionUpdateService 
-    : IAttributeDefinitionUpdateService
+    : BaseUpdateService<AttributeDefinition>,
+    IAttributeDefinitionUpdateService
 {
     private readonly IRepository<AttributeDefinition> _attributeRepository;
     private readonly AttributeDefinitionValidator _attributeValidator;
@@ -30,10 +33,13 @@ public class AttributeDefinitionUpdateService
     public AttributeDefinitionUpdateService(
         IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
+        IAttributeDefinitionDeleteService attributeDeleteService,
         AttributeDefinitionUpdateValidator attributeUpdateValidator,
         AttributeDefinitionInvalidationService attribureInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<AttributeDefinitionUpdateService> logger)
+        ILogger<AttributeDefinitionUpdateService> logger
+    )
+        : base(attributeDeleteService, attributeValidator, logger, unitOfWork)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
@@ -48,7 +54,8 @@ public class AttributeDefinitionUpdateService
         long attributeId,
         AttributeDefinitionUpdateRequest request)
     {
-        var attribute = await _attributeValidator.GetByIdAsync(attributeId);
+        var attribute = await _attributeValidator
+            .GetByIdAsync(attributeId);
         if (!attribute.IsSuccess)
             return Result<UpdateResponse>.Fail(attribute.Error);
 

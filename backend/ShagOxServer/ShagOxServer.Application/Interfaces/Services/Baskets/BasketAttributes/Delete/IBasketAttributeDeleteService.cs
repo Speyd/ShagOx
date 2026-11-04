@@ -1,9 +1,10 @@
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Services.Base.Delete;
+using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Delete;
 public interface IBasketAttributeDeleteService
     : IDeleteService<DeleteResponse>,
-    ISoftDeleteService<DeleteResponse>
+    ISoftDeleteService<BasketAttribute,DeleteResponse>
 {
 }

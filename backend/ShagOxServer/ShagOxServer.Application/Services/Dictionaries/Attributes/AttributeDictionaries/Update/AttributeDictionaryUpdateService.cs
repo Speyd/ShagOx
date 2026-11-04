@@ -4,8 +4,10 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Mappers;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Validator;
@@ -14,7 +16,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Update;
 public class AttributeDictionaryUpdateService
-    : IAttributeDictionaryUpdateService
+    : BaseUpdateService<AttributeDictionary>,
+    IAttributeDictionaryUpdateService
 {
     private readonly IRepository<AttributeDictionary> _dictionaryRepository;
     private readonly AttributeDictionaryValidator _dictionaryValidator;
@@ -26,9 +29,12 @@ public class AttributeDictionaryUpdateService
     public AttributeDictionaryUpdateService(
         IRepository<AttributeDictionary> dictionaryRepository,
         AttributeDictionaryValidator dictionaryValidator,
+        IAttributeDictionaryDeleteService dictionaryDeleteService,
         AttributeDictionaryInvalidationService dictInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<AttributeDictionaryUpdateService> logger)
+        ILogger<AttributeDictionaryUpdateService> logger
+    )
+        : base(dictionaryDeleteService, dictionaryValidator, logger, unitOfWork)
     {
         _dictionaryRepository = dictionaryRepository;
         _dictionaryValidator = dictionaryValidator;

@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Query;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Update;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Create;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Delete;

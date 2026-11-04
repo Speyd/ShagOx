@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
@@ -12,12 +12,10 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictu
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Update;
 public class AdvertisementImageUpdateService 
@@ -33,6 +31,7 @@ public class AdvertisementImageUpdateService
         IRepository<AdvertisementImage> imageRepository,
         PictureValidator pictureLoadValidator,
         AdvertisementImageValidator imageValidator,
+        IAdvertisementImageDeleteService imageDeleteService,
         AdvertisementValidator advertisementValidator,
         AdvertisementImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
@@ -40,6 +39,7 @@ public class AdvertisementImageUpdateService
     )
         : base(imageRepository,
             pictureLoadValidator,
+            imageDeleteService,
             imageValidator,
             advertisementValidator,
             unitOfWork, 

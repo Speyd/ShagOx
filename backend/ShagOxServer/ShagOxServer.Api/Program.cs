@@ -24,6 +24,7 @@ try
         .AddLanguageProvider()
         .AddSerilogConfiguration(builder.Configuration)  
         .AddJWT(builder.Configuration)
+        .AddFx(builder.Configuration)
         .AddCloudinary(builder.Configuration)
         .AddSettingsConfiguration(builder.Configuration)
         .AddFrontendPolicy()

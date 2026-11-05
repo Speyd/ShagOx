@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Systems.BackgroundServices;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
-namespace ShagOxServer.Api.BackgroundServices;
+namespace ShagOxServer.Infrastructure.BackgroundServices.Auth;
 public class VerificationCodeCleanupService 
     : BackgroundService
 {

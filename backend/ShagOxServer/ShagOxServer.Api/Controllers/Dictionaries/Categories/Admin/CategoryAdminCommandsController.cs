@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
@@ -26,8 +27,10 @@ public class CategoryAdminCommandsController
     public CategoryAdminCommandsController(
         ICategoryCreateService createService,
         ICategoryUpdateService updateService,
-        ICategoryDeleteService deleteService
-        )
+        ICategoryDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;

@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Update;
@@ -26,7 +27,10 @@ public class ProductTypeTranslationAdminCommandsController
     public ProductTypeTranslationAdminCommandsController(
         IProductTypeTranslationCreateService createService,
         IProductTypeTranslationUpdateService updateService,
-        IProductTypeTranslationDeleteService deleteService)
+        IProductTypeTranslationDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;

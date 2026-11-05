@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -10,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Auth.Users.Admin;
 
 [ApiController]
 [Route("api/admin/users")]
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class UserAdminQueriesController
     : ApiController
 {
@@ -18,7 +20,10 @@ public class UserAdminQueriesController
 
 
     public UserAdminQueriesController(
-        IUserAdminQueryService queryService)
+        IUserAdminQueryService queryService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _queryService = queryService;
     }
@@ -27,11 +32,12 @@ public class UserAdminQueriesController
     [HttpGet]
     public async Task<IActionResult> GetPaged(
         [FromQuery] PaginationParams pagination,
+        [FromQuery] EntityStatus status,
         CancellationToken cancellationToken)
     {
         var result = await _queryService
             .GetPagedAsync(pagination, 
-                cancellationToken);
+                cancellationToken, status);
 
         return result.ToActionResult();
     }

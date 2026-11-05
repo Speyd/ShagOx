@@ -1,8 +1,8 @@
 namespace ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 public interface ICurrencyConverter
 {
-    public decimal Convert(
-        decimal amount,
+    public (decimal? ConvertedAmount, decimal Coefficient) Convert(
+        decimal? amount,
         string from,
         string to);
 }

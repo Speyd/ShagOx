@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Create;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Update;
@@ -26,7 +27,10 @@ public class ConditionTranslationAdminCommandsController
     public ConditionTranslationAdminCommandsController(
         IConditionTranslationCreateService createService,
         IConditionTranslationUpdateService updateService,
-        IConditionTranslationDeleteService deleteService)
+        IConditionTranslationDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;

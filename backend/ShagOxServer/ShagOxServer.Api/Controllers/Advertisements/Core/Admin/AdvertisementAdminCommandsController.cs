@@ -7,6 +7,7 @@ using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -26,7 +27,10 @@ public class AdvertisementAdminCommandsController
     public AdvertisementAdminCommandsController(
         IAdvertisementCreateService createService,
         IAdvertisementDeleteService deleteService,
-        IAdvertisementUpdateService updateService)
+        IAdvertisementUpdateService updateService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _deleteService = deleteService;

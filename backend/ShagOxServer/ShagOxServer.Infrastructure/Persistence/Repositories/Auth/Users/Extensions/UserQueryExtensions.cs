@@ -11,6 +11,7 @@ public static class UserQueryExtensions
     {
         return query
             .Include(x => x.Avatar)
+            .Include(x => x.Currency)
             .Include(x => x.City)
                 .ThenInclude(x => x!.Region)
             .Include(x => x.UserRoles)

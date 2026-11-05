@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -19,7 +20,10 @@ public abstract class BaseQueryController<TDto, TFilter>
 
 
     protected BaseQueryController(
-       IQueryOperations<TDto, TFilter> queryService)
+       IQueryOperations<TDto, TFilter> queryService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _queryService = queryService;
     }

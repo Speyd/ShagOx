@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Query;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
 
@@ -15,9 +16,10 @@ public class ConditionAdminQueriesController
         ConditionSearchFilter>
 {
     public ConditionAdminQueriesController(
-        IConditionQueryService queryService
+        IConditionQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 }

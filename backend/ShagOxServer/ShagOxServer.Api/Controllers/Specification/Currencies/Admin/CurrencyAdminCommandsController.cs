@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Create;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Update;
@@ -26,7 +27,10 @@ public class CurrencyAdminCommandsController
     public CurrencyAdminCommandsController(
         ICurrencyCreateService createService,
         ICurrencyUpdateService updateService,
-        ICurrencyDeleteService deleteService)
+        ICurrencyDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;

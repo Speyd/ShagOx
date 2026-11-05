@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Update;
@@ -26,8 +27,10 @@ public class AttributeDictionaryAdminCommandsController
     public AttributeDictionaryAdminCommandsController(
         IAttributeDictionaryCreateService createService,
         IAttributeDictionaryUpdateService updateService,
-        IAttributeDictionaryDeleteService deleteService
-        )
+        IAttributeDictionaryDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;

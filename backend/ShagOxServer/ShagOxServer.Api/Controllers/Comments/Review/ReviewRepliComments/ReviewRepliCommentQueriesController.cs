@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Comments.ReviewRepliComments.Query;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Filters.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -16,9 +17,10 @@ public class ReviewRepliCommentQueriesController
         ReviewRepliCommentSearchFilter>
 {
     public ReviewRepliCommentQueriesController(
-        IReviewRepliCommentQueryService queryService
+        IReviewRepliCommentQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 

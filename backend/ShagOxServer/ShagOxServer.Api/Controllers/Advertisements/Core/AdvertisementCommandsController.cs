@@ -8,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 using System.Security.Claims;
 
@@ -29,8 +30,10 @@ public class AdvertisementCommandsController
         IAdvertisementUpdateService updateService,
         IAdvertisementDeleteService deleteService,
         IAdvertisementExistsRepository existsAdvertRepository,
-        IUserAdminQueryService userQueryService
-    ) : base(existsAdvertRepository, userQueryService)
+        IUserAdminQueryService userQueryService,
+        IUserContext userContext
+    ) 
+        : base(existsAdvertRepository, userQueryService, userContext)
     {
         _createService = createService;
         _updateService = updateService;

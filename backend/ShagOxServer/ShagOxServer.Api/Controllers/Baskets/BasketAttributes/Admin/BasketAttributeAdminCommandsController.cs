@@ -7,6 +7,7 @@ using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Update;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Delete;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -26,7 +27,10 @@ public class BasketAttributeAdminCommandsController
     public BasketAttributeAdminCommandsController(
         IBasketAttributeCreateService createService,
         IBasketAttributeUpdateService updateService,
-        IBasketAttributeDeleteService deleteService)
+        IBasketAttributeDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;

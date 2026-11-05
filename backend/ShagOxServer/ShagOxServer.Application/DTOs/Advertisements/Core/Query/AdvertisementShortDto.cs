@@ -1,5 +1,7 @@
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Common.Currencies;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 using ShagOxServer.Domain.Base.Enum;
 using System.Text.Json;
@@ -11,6 +13,9 @@ public sealed record AdvertisementShortDto
     EntityStatus EntityStatus,
     string Title,
     string Description,
+    decimal? Price,
+    decimal? PreviousPrice,
+    ConvertedPricesDto PriceConversion,
     long CurrencyId,
     long CategoryId,
     long SellerId,

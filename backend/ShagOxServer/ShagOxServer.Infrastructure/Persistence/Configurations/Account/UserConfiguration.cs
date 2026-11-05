@@ -44,6 +44,11 @@ public class UserConfiguration
         builder.Property(x => x.RegisteredAt)
                 .HasColumnType("timestamptz");
 
+        builder.HasOne(x => x.Currency)
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.CurrencyId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.HasOne(x => x.City)
                .WithMany(x => x.Users)
                .HasForeignKey(x => x.CityId)

@@ -13,7 +13,7 @@ public static class CategoryQueryExtensions
            .Include(x => x.ProductType)
                .ThenInclude(x => x.Translations)
            .Include(x => x.Attributes)
-           .Include(x => x.AdvertisementsByCategory);
+           .Include(x => x.Advertisements);
     }
 
     public static IQueryable<CategoryCacheInfo> SelectCacheInfo(

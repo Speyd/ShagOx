@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Common.Settings.Systems;
 using ShagOxServer.Application.DTOs.Auth.Externals.Google;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 
 namespace ShagOxServer.Api.Controllers.Auth.Core;
 
@@ -18,9 +19,10 @@ public class ExternalAuthController
     public ExternalAuthController(
         IGoogleLoginService googleLoginService,
         IOptions<JwtSettings> jwtSettings,
-        ILogger<ApiCookieController> logger
+        ILogger<ApiCookieController> logger,
+        IUserContext userContext
     )
-    : base(jwtSettings, logger)
+        : base(jwtSettings, logger, userContext)
     {
         _googleLoginService = googleLoginService;
     }

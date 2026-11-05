@@ -39,11 +39,6 @@ public static class SettingsConfigurationExtensions
 
         #endregion
 
-        #region Currency Settings
-        services.Configure<CurrencyRatesUpdaterSettings>(
-            config.GetSection("CurrencyRatesUpdaterSettings"));
-        #endregion
-
         #region Authentication Settings
 
         services.Configure<GoogleSettings>(

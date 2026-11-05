@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Create;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
@@ -26,7 +27,10 @@ public class ConditionAdminCommandsController
     public ConditionAdminCommandsController(
         IConditionCreateService createService,
         IConditionUpdateService updateService,
-        IConditionDeleteService deleteService)
+        IConditionDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;

@@ -7,6 +7,7 @@ using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -26,7 +27,10 @@ public class StatusTranslationAdminCommandsController
     public StatusTranslationAdminCommandsController(
         IStatusTranslationCreateService createService,
         IStatusTranslationUpdateService updateService,
-        IStatusTranslationDeleteService deleteService)
+        IStatusTranslationDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;

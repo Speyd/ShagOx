@@ -72,6 +72,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long?>("CityId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("CurrencyId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -127,6 +130,9 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("CityId")
                         .HasDatabaseName("IX_Users_CityId");
+
+                    b.HasIndex("CurrencyId")
+                        .HasDatabaseName("IX_Users_CurrencyId");
 
                     b.HasIndex("Email")
                         .IsUnique()
@@ -219,6 +225,14 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<int>("Popularity")
                         .HasColumnType("integer");
+
+                    b.Property<decimal?>("PreviousPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal?>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<DateTime?>("SoldAt")
                         .HasColumnType("timestamp with time zone");
@@ -1548,7 +1562,15 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .HasConstraintName("FK_Users_Cities_CityId");
 
+                    b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
+                        .WithMany("Users")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Users_Currencies_CurrencyId");
+
                     b.Navigation("City");
+
+                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.UserRole", b =>
@@ -1581,21 +1603,21 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasConstraintName("FK_Advertisements_Users_BuyerId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Category", "Category")
-                        .WithMany("AdvertisementsByCategory")
+                        .WithMany("Advertisements")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Advertisements_Categories_CategoryId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Condition", "Condition")
-                        .WithMany("AdvertisementsByCondition")
+                        .WithMany("Advertisements")
                         .HasForeignKey("ConditionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Advertisements_Conditions_ConditionId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
-                        .WithMany("AdvertisementsByCurrency")
+                        .WithMany("Advertisements")
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -1609,7 +1631,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasConstraintName("FK_Advertisements_Users_OwnerId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Status", "Status")
-                        .WithMany("AdvertisementsByStatus")
+                        .WithMany("Advertisements")
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -2007,7 +2029,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Status", b =>
                 {
-                    b.Navigation("AdvertisementsByStatus");
+                    b.Navigation("Advertisements");
 
                     b.Navigation("Translations");
                 });
@@ -2052,7 +2074,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Category", b =>
                 {
-                    b.Navigation("AdvertisementsByCategory");
+                    b.Navigation("Advertisements");
 
                     b.Navigation("Attributes");
 
@@ -2082,14 +2104,16 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>
                 {
-                    b.Navigation("AdvertisementsByCondition");
+                    b.Navigation("Advertisements");
 
                     b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Currency", b =>
                 {
-                    b.Navigation("AdvertisementsByCurrency");
+                    b.Navigation("Advertisements");
+
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

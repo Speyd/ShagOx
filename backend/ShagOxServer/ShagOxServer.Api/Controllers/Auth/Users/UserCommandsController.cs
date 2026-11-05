@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Auth.Users;
@@ -30,7 +31,10 @@ public class UserCommandsController
         IChangeEmailService emailService,
         IChangePhoneService phoneService,
         IChangePasswordService passwordService,
-        IResetPasswordService resetPasswordService)
+        IResetPasswordService resetPasswordService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _updateService = updateService;
         _emailService = emailService;

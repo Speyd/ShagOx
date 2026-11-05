@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 
@@ -7,7 +8,8 @@ public static class AdvertisementVariantMapper
 {
     public static AdvertisementVariantDto ToDto(
         AdvertisementVariant x,
-        List<AttributeDto> attributes)
+        List<AttributeDto> attributes,
+        ConvertedPricesDto priceConversion)
     {
         return new AdvertisementVariantDto
         (
@@ -16,6 +18,7 @@ public static class AdvertisementVariantMapper
             x.AdvertisementId,
             x.Price,
             x.PreviousPrice,
+            priceConversion,
             x.Stock,
             attributes
         );

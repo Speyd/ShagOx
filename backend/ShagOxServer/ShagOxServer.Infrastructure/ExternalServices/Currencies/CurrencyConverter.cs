@@ -11,14 +11,18 @@ public class CurrencyConverter
         _rateStore = rateStore;
     }
 
-    public decimal Convert(
-        decimal amount,
+
+    public (decimal? ConvertedAmount, decimal Coefficient) Convert(
+        decimal? amount,
         string from,
         string to)
     {
         var fromRate = _rateStore.GetRate(from);
         var toRate = _rateStore.GetRate(to);
 
-        return amount * toRate / fromRate;
+        var coefficient = toRate / fromRate;
+
+        return (amount is null? null : amount * coefficient,
+            coefficient);
     }
 }

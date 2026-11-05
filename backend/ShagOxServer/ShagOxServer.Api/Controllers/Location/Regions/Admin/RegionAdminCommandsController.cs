@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Location.Regions.Create;
 using ShagOxServer.Application.DTOs.Location.Regions.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Create;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
@@ -26,8 +27,10 @@ public class RegionAdminCommandsController
     public RegionAdminCommandsController(
         IRegionCreateService createService,
         IRegionUpdateService updateService,
-        IRegionDeleteService deleteService
-        )
+        IRegionDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;

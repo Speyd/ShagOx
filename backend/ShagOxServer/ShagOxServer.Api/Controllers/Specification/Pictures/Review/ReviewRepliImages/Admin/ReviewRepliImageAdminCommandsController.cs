@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Update;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -18,7 +19,10 @@ public class ReviewRepliImageAdminCommandsController
 
 
     public ReviewRepliImageAdminCommandsController(
-        IReviewRepliImageUpdateService updateService)
+        IReviewRepliImageUpdateService updateService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _updateService = updateService;
     }

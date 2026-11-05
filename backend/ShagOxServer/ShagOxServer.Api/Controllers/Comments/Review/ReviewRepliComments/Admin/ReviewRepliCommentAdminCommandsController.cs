@@ -5,6 +5,7 @@ using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.Interfaces.Services.Base.Update;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -22,7 +23,10 @@ public class ReviewRepliCommentAdminCommandsController
 
     public ReviewRepliCommentAdminCommandsController(
         IReviewRepliCommentDeleteService deleteService,
-        IReviewRepliCommentUpdateService updateService)
+        IReviewRepliCommentUpdateService updateService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _deleteService = deleteService;
         _updateService = updateService;

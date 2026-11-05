@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Filters.Advertisements;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.AdvertisementVariants.Admin;
@@ -14,9 +15,10 @@ public class AdvertisementVariantAdminQueriesController
         AdvertisementVariantSearchFilter>
 {
     public AdvertisementVariantAdminQueriesController(
-        IAdvertisementVariantQueryService queryService
+        IAdvertisementVariantQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 }

@@ -8,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Create;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Comments.Review.ReviewRepliComments;
@@ -28,9 +29,10 @@ public class ReviewRepliCommentCommandsController
         IReviewRepliCommentUpdateService updateService,
         IReviewRepliCommentDeleteService deleteService,
         IReviewRepliCommentExistsRepository existsCommentRepository,
-        IUserAdminQueryService userQueryService
+        IUserAdminQueryService userQueryService,
+        IUserContext userContext
     )
-        : base(existsCommentRepository, userQueryService)
+        : base(existsCommentRepository, userQueryService, userContext)
     {
         _createService = createService;
         _updateService = updateService;

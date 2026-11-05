@@ -2,9 +2,11 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
@@ -27,6 +29,8 @@ public class FavoriteQueryService
     private readonly IFavoriteQueryRepository _favoriteRepository;
     private readonly IUserQueryService _userService;
 
+    protected readonly IAdvertisementQueryService _advertService;
+
     protected override bool CacheBySearch => false;
 
     protected override bool CacheByPaged => false;
@@ -35,6 +39,7 @@ public class FavoriteQueryService
     public FavoriteQueryService(
         IFavoriteQueryRepository favoriteRepository,
         IUserQueryService userService,
+        IAdvertisementQueryService advertService,
         IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
@@ -42,6 +47,7 @@ public class FavoriteQueryService
     {
         _favoriteRepository = favoriteRepository;
         _userService = userService;
+        _advertService = advertService;
     }
 
 
@@ -51,7 +57,13 @@ public class FavoriteQueryService
         var userDto = await _userService
             .ApplyMapperAsync(entity.Owner);
 
-        return FavoriteMapper.ToDto(entity, userDto);
+        var converts = await _advertService.ConvertPricesAsync(
+           entity.Advertisement);
+
+        return FavoriteMapper.ToDto(
+            entity,
+            userDto,
+            converts);
     }
 
     public async Task<Result<int>> CountByAdvertisementAsync(

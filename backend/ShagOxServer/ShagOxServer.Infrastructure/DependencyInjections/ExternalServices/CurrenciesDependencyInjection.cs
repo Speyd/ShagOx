@@ -14,6 +14,9 @@ public static class CurrenciesDependencyInjection
         services.AddScoped<ICurrencyConverter, 
             CurrencyConverter>();
 
+        services.AddScoped<IPriceConversionService,
+           PriceConversionService>();
+
         services.AddHostedService<CurrencyBackgroundService>();
 
         return services;

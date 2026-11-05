@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations.Translation;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -24,9 +25,10 @@ public abstract class BaseTranslationQueryController<TDto, TFilter>
 
     protected BaseTranslationQueryController(
        ITranslationQueryOperations<TDto, TFilter> queryService,
-       ILanguageProvider languageProvider
+       ILanguageProvider languageProvider,
+        IUserContext userContext
     )
-        :base(queryService)
+        : base(queryService, userContext)
     {
         _translationQueryService = queryService;
         _languageProvider = languageProvider;

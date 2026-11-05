@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Base.Translations;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Statuses.Translations.Admin;
@@ -16,9 +17,10 @@ public class StatusTranslationAdminQueriesController
 {
     public StatusTranslationAdminQueriesController(
         IStatusTranslationQueryService queryService,
-        ILanguageProvider languageProvider
+        ILanguageProvider languageProvider,
+        IUserContext userContext
     )
-        : base(queryService, languageProvider)
+        : base(queryService, languageProvider, userContext)
     {
     }
 }

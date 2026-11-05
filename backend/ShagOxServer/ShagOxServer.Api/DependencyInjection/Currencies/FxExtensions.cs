@@ -3,7 +3,7 @@ using ShagOxServer.Application.Common.Settings.Currencies.Fx;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies.FxApi;
 using ShagOxServer.Infrastructure.ExternalServices.Currencies.FxApi;
 
-namespace ShagOxServer.Api.DependencyInjection;
+namespace ShagOxServer.Api.DependencyInjection.Currencies;
 public static class FxExtensions
 {
     public static IServiceCollection AddFx(

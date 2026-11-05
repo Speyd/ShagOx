@@ -5,6 +5,7 @@ using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -22,7 +23,10 @@ public class UserAdminCommandsController
 
     public UserAdminCommandsController(
         IUserDeleteService deleteService,
-        IUserUpdateService updateService)
+        IUserUpdateService updateService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _deleteService = deleteService;
         _updateService = updateService;

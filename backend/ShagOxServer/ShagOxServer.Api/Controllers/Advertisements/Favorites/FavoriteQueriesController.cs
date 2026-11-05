@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -16,7 +17,10 @@ public class FavoriteQueriesController
 
 
     public FavoriteQueriesController(
-        IFavoriteQueryService queryService)
+        IFavoriteQueryService queryService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _queryService = queryService;
     }

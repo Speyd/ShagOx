@@ -8,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Crea
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Favorites;
@@ -28,9 +29,10 @@ public class FavoriteCommandsController
         IFavoriteUpdateService updateService,
         IFavoriteDeleteService deleteService,
         IFavoriteExistsRepository existsAdvertRepository,
-        IUserAdminQueryService userQueryService
+        IUserAdminQueryService userQueryService,
+        IUserContext userContext
     )
-        : base(existsAdvertRepository, userQueryService)
+        : base(existsAdvertRepository, userQueryService, userContext)
     {
         _createService = createService;
         _updateService = updateService;

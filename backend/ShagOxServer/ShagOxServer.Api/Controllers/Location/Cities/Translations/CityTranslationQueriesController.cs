@@ -3,6 +3,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Api.Controllers.Base.Translations;
 using ShagOxServer.Application.DTOs.Location.Cities.Translations.Query;
 using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Query;
 using ShagOxServer.Domain.Filters.Location.Cities.Translations;
 
@@ -16,9 +17,10 @@ public  class CityTranslationQueriesController
 {
     public CityTranslationQueriesController(
         ICityTranslationQueryService queryService,
-        ILanguageProvider languageProvider
+        ILanguageProvider languageProvider,
+        IUserContext userContext
     )
-        : base(queryService, languageProvider)
+        : base(queryService, languageProvider, userContext)
     {
     }
 }

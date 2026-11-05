@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Location.Cities.Create;
 using ShagOxServer.Application.DTOs.Location.Cities.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Create;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
@@ -26,8 +27,10 @@ public class CityAdminCommandsController
     public CityAdminCommandsController(
         ICityCreateService createService,
         ICityUpdateService updateService,
-        ICityDeleteService deleteService
-        )
+        ICityDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;

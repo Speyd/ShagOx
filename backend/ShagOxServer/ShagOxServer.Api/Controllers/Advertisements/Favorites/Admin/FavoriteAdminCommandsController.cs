@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Favorites.Admin;
@@ -17,7 +18,10 @@ public class FavoriteAdminCommandsController
 
 
     public FavoriteAdminCommandsController(
-        IFavoriteUpdateService updateService)
+        IFavoriteUpdateService updateService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _updateService = updateService;
     }

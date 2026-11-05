@@ -1,10 +1,12 @@
-﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 
 namespace ShagOxServer.Application.DTOs.Verifications;
 public sealed record VerificationCodeDto
 (
     long Id,
+    EntityStatus EntityStatus,
     long UserId,
     DateTime ExpiresAt,
     DateTime? UsedAt,
@@ -12,4 +14,4 @@ public sealed record VerificationCodeDto
     DateTime CreatedAt,
     DateTime? InvalidatedAt,
     VerificationCodePurpose Purpose
-) : BaseDto(Id);
+) : BaseDto(Id, EntityStatus);

@@ -9,6 +9,7 @@ public static class ReviewRepliImageMapper
     {
         return new ReviewRepliImageDto(
             image.Id,
+            image.EntityStatus,
             image.Url,
             image.PublicId,
             image.Order,

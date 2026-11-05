@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification.Pictures.Review;
 public class ReviewImageConfiguration
@@ -22,7 +23,7 @@ public class ReviewImageConfiguration
             .HasForeignKey(x => x.OwnerId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => new { x.OwnerId, x.Order })
-            .IsUnique();
+        builder.HasUniqueActiveIndex(x => 
+            new { x.OwnerId, x.Order });
     }
 }

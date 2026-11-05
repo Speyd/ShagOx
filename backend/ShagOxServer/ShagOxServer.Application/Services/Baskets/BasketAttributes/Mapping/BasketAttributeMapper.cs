@@ -11,6 +11,7 @@ public static class BasketAttributeMapper
     {
         return new BasketAttributeDto(
             attribute.Id,
+            attribute.EntityStatus,
             attributeDef,
             attribute.Order
         );

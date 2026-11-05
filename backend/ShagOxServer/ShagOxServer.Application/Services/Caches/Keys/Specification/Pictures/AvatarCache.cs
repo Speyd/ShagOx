@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Specification.Pictures;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Specification.Pictures;
 public static class AvatarCache
@@ -8,6 +9,7 @@ public static class AvatarCache
 
 
     public static string ByUser(
-       long userId)
-           => $"{Prefix}:user:{userId}";
+       long userId,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:status{status}:user:{userId}";
 }

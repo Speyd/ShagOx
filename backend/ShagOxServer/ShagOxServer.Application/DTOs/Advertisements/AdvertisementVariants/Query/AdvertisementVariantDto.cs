@@ -1,13 +1,15 @@
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
+using ShagOxServer.Domain.Base.Enum;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 public sealed record AdvertisementVariantDto
 (
     long Id,
+    EntityStatus EntityStatus,
     long AdvertisementId,
     decimal Price,
     decimal PreviousPrice,
     int Stock,
     List<AttributeDto> Attributes
-) : BaseDto(Id);
+) : BaseDto(Id, EntityStatus);

@@ -10,6 +10,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Baskets.Core.Mapping;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -64,18 +65,21 @@ public class BasketQueryService
 
     public async Task<Result<BasketDto>> GetByUserAsync(
         long userId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = BasketCache.ByUser(
             userId,
-            _language.Language);
+            _language.Language,
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
             async () =>
             {
                 var basket = await _basketQueryRepository
-                    .GetByUserAsync(userId, cancellationToken);
+                    .GetByUserAsync(userId, 
+                        cancellationToken, status);
 
                 return await basket.ToResultAsync(ApplyMapperAsync);
             },

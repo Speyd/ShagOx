@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Translations;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Translations.Query;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Mapping;
@@ -10,6 +10,7 @@ public static class AttributeDefinitionTranslationMapper
         return new AttributeDefinitionTranslationDto
         (
             x.Id,
+            x.EntityStatus,
             x.Name
         );
     }

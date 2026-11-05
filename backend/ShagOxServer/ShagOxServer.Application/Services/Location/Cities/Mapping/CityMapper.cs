@@ -14,12 +14,14 @@ public static class CityMapper
         if(city is null)
             return new CityDto(
                 -1,
+                city.EntityStatus,
                 "Unknown city",
                 regionDto,
                 null
             );
         return new CityDto(
             city.Id,
+            city.EntityStatus,
             city.Code,
             regionDto,
             lableCity

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
@@ -9,6 +9,7 @@ public static class UserShortMapper
     {
         return new UserShortDto(
             user.Id,
+            user.EntityStatus,
             user.FirstName,
             user.LastName,
             user.UserName,
@@ -17,7 +18,6 @@ public static class UserShortMapper
             user.Email,
             user.Avatar?.Id,
             user.CityId,
-            user.City?.Code ?? "Unknown city code",
             user.LastSeenAt
         );
     }

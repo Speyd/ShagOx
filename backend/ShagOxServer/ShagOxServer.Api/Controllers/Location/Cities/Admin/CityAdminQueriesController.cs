@@ -1,0 +1,23 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Api.Controllers.Base.Query;
+using ShagOxServer.Application.DTOs.Location.Cities.Query;
+using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
+using ShagOxServer.Domain.Filters.Location.Cities;
+
+namespace ShagOxServer.Api.Controllers.Location.Cities.Admin;
+
+[ApiController]
+[Route("api/admin/cities")]
+[Authorize(Roles = "Admin")]
+public class CityAdminQueriesController
+    : BaseAdminQueryController<CityDto,
+        CitySearchFilter>
+{
+    public CityAdminQueriesController(
+        ICityQueryService queryService
+    )
+        : base(queryService)
+    {
+    }
+}

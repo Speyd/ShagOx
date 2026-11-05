@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification.Pictures;
 public class AvatarConfiguration 
@@ -22,7 +23,6 @@ public class AvatarConfiguration
             .HasForeignKey<Avatar>(x => x.OwnerId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => x.OwnerId)
-            .IsUnique();
+        builder.HasUniqueActiveIndex(x => x.OwnerId);
     }
 }

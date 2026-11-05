@@ -4,18 +4,20 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
-using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
+using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewRepliComments.Delete;
 public class ReviewRepliCommentDeleteService
-    : IReviewRepliCommentDeleteService
+    : BaseDeleteService<ReviewRepliComment>
+    , IReviewRepliCommentDeleteService
 {
-    private readonly IRepository<ReviewComment> _commentRepository;
-    private readonly ReviewCommentValidator _commentValidator;
+    private readonly IRepository<ReviewRepliComment> _commentRepository;
+    private readonly ReviewRepliCommentValidator _commentValidator;
 
     private readonly ReviewRepliCommentInvalidationService _commInvalid;
 
@@ -24,11 +26,13 @@ public class ReviewRepliCommentDeleteService
 
 
     public ReviewRepliCommentDeleteService(
-        IRepository<ReviewComment> commentRepository,
-        ReviewCommentValidator commentValidator,
+        IRepository<ReviewRepliComment> commentRepository,
+        ReviewRepliCommentValidator commentValidator,
         ReviewRepliCommentInvalidationService commInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<ReviewRepliCommentDeleteService> logger)
+        ILogger<ReviewRepliCommentDeleteService> logger
+    )
+        : base(commentValidator, unitOfWork, logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
@@ -68,8 +72,7 @@ public class ReviewRepliCommentDeleteService
                 .Fail(EntityErrorResources.ReviewRepliCommentDeleteFailed);
         }
 
-        await _commInvalid.InvalidateDeleteAsync(
-            CommentCacheMapper.ToInfo(comment.Value!));
+        await InvalidateCache(comment.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -77,5 +80,12 @@ public class ReviewRepliCommentDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        ReviewRepliComment entity)
+    {
+        await _commInvalid.InvalidateDeleteAsync(
+           CommentCacheMapper.ToInfo(entity));
     }
 }

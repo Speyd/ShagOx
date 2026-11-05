@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -46,10 +46,11 @@ public class FavoriteCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        FavoriteCreateRequest request)
+        FavoriteCreateRequest request,
+        long ownerId)
     {
         var validationUser = await _userValidator
-            .ExistsByIdAsync(request.UserId);
+            .ExistsByIdAsync(ownerId);
 
         if (!validationUser.IsSuccess)
             return Result<CreateResponse>.Fail(validationUser.Error);
@@ -61,7 +62,8 @@ public class FavoriteCreateService
         if (!validationAdvert.IsSuccess)
             return Result<CreateResponse>.Fail(validationAdvert.Error);
 
-        var favorite = FavoriteCreater.Create(request);
+        var favorite = FavoriteCreater
+            .Create(request, ownerId);
         
 
         await _unitOfWork.BeginTransactionAsync();
@@ -80,7 +82,7 @@ public class FavoriteCreateService
                 ex,
                 "Failed to create favorite. " +
                 "UserId: {Id}, AdvertisementId: {AdvertisementId}",
-                request.UserId,
+                ownerId,
                 request.AdvertisementId);
 
             return Result<CreateResponse>

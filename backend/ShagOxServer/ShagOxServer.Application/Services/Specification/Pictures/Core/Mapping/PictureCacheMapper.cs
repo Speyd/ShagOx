@@ -1,15 +1,18 @@
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Base.Pictures;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 public static class PictureCacheMapper
 {
     public static PictureCacheInfo ToInfo(
-        BasePicture picture)
+        BasePicture picture,
+        EntityStatus status = EntityStatus.Active)
     {
         return new PictureCacheInfo(
             picture.Id,
-            picture.OwnerId
+            picture.OwnerId,
+            status
         );
     }
 }

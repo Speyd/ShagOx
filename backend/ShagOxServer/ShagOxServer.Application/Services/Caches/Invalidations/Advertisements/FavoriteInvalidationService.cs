@@ -21,8 +21,7 @@ public class FavoriteInvalidationService
     public async Task InvalidateCreateAsync(
         FavoriteCacheInfo entityInfo)
     {
-        await _cache.RemoveByPatternAsync(
-            FavoriteCache.ByUserPattern(entityInfo.UserId));
+        await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
@@ -43,7 +42,14 @@ public class FavoriteInvalidationService
         await _cache.RemoveAsync(CacheKeys.
              Entity<Favorite>(entityInfo.Id));
 
+        await InvalidatePatternAsync(entityInfo);
+    }
+
+    private async Task InvalidatePatternAsync(
+        FavoriteCacheInfo entityInfo)
+    {
         await _cache.RemoveByPatternAsync(
-            FavoriteCache.ByUserPattern(entityInfo.UserId));
+           FavoriteCache.ByUserPattern(entityInfo.UserId,
+               entityInfo.Status));
     }
 }

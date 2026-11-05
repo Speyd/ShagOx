@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
@@ -12,7 +13,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewComments.Delete;
 public class ReviewCommentDeleteService
-    : IReviewCommentDeleteService
+    : BaseDeleteService<ReviewComment>
+    , IReviewCommentDeleteService
 {
     private readonly IRepository<ReviewComment> _commentRepository;
     private readonly ReviewCommentValidator _commentValidator;
@@ -28,7 +30,9 @@ public class ReviewCommentDeleteService
         ReviewCommentValidator commentValidator,
         ReviewCommentInvalidationService commInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<ReviewCommentDeleteService> logger)
+        ILogger<ReviewCommentDeleteService> logger
+    )
+        : base(commentValidator, unitOfWork, logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
@@ -68,8 +72,7 @@ public class ReviewCommentDeleteService
                 .Fail(EntityErrorResources.ReviewCommentDeleteFailed);
         }
 
-        await _commInvalid.InvalidateDeleteAsync(
-            CommentCacheMapper.ToInfo(comment.Value!));
+        await InvalidateCache(comment.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -77,5 +80,12 @@ public class ReviewCommentDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        ReviewComment entity)
+    {
+        await _commInvalid.InvalidateDeleteAsync(
+            CommentCacheMapper.ToInfo(entity));
     }
 }

@@ -15,6 +15,7 @@ public static class UserMapper
     {
         return new UserDto(
             user.Id,
+            user.EntityStatus,
             user.FirstName,
             user.LastName,
             user.UserName,
@@ -39,6 +40,7 @@ public static class UserMapper
          .Where(x => x.Role != null)
          .Select(x => new RoleDto(
              x.Role!.Id,
+                x.EntityStatus,
              x.Role.Name,
              x.Role.Description))
          .ToList();

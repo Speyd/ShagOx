@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Extensions;
@@ -12,10 +13,12 @@ public static class AttributeDefinitionQueryExtensions
     }
 
     public static IQueryable<AttributeDefinitionCacheInfo> SelectCacheInfo(
-       this IQueryable<AttributeDefinition> query)
+       this IQueryable<AttributeDefinition> query,
+        EntityStatus status = EntityStatus.Active)
     {
         return query.Select(x => new AttributeDefinitionCacheInfo(
             x.Id,
-            x.CategoryId));
+            x.CategoryId,
+            status));
     }
 }

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations;
+using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Query;

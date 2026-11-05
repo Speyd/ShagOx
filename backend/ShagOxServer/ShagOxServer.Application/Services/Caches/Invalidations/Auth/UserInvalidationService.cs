@@ -1,3 +1,4 @@
+using CloudinaryDotNet.Actions;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.DTOs.Comments.Core.Cache;
@@ -126,21 +127,24 @@ public class UserInvalidationService
         UserCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
-             EntityLanguagePattern<User>(entityInfo.Id));
+             EntityLanguagePattern<User>(entityInfo.Id,
+                entityInfo.Status));
 
         await InvalidateContactAsync(entityInfo);
 
-        await InvalidateUserRoleAsync(entityInfo.Id);
+        await InvalidateUserRoleAsync(entityInfo);
     }
 
     private async Task InvalidateUserRoleAsync(
-        long entityId)
+        UserCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(
-            UserRoleCache.RolesByUserPattern(entityId));
+            UserRoleCache.RolesByUserPattern(entityInfo.Id,
+                entityInfo.Status));
 
         await _cache.RemoveAsync(
-            UserRoleCache.RoleIdsByUser(entityId));
+            UserRoleCache.RoleIdsByUser(entityInfo.Id,
+                entityInfo.Status));
     }
 
     private async Task InvalidateContactAsync(
@@ -149,17 +153,20 @@ public class UserInvalidationService
         if (!string.IsNullOrEmpty(entityInfo.Phone))
         {
             await _cache.RemoveAsync(UserCache.
-                ByContactPattern(entityInfo.Phone));
+                ByContactPattern(entityInfo.Phone,
+                entityInfo.Status));
         }
 
         if (!string.IsNullOrEmpty(entityInfo.Email))
         {
             await _cache.RemoveAsync(UserCache.
-                ByContactPattern(entityInfo.Email));
+                ByContactPattern(entityInfo.Email,
+                entityInfo.Status));
         }
 
         await _cache.RemoveAsync(UserCache.
-            ByContactPattern(entityInfo.UserName));
+            ByContactPattern(entityInfo.UserName,
+                entityInfo.Status));
     }
 
     private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(

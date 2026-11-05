@@ -10,6 +10,7 @@ public static class AdvertisementVariantShortMapper
         return new AdvertisementVariantShortDto
         (
             x.Id,
+            x.EntityStatus,
             x.AdvertisementId,
             x.Price,
             x.PreviousPrice,

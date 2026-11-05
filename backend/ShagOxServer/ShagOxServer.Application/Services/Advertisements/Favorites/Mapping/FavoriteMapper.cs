@@ -13,6 +13,7 @@ public static class FavoriteMapper
         return new FavoriteDto
         (
             x.Id,
+            x.EntityStatus,
             user,
             AdvertisementShortMapper.ToDto(x.Advertisement)
         );

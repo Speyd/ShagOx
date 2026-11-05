@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Translations.Translation;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories.Translations;

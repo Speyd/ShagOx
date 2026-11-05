@@ -43,6 +43,7 @@ public class ReviewImageInvalidationService
     {
 
         await _cache.RemoveAsync(CacheKeys
-            .Entity<ReviewImage>(entityInfo.Id));
+            .Entity<ReviewImage>(entityInfo.Id,
+                entityInfo.Status));
     }
 }

@@ -7,13 +7,15 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatar
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Delete;
-public class UserDeleteService 
-    : IUserDeleteService
+public class UserDeleteService
+    : BaseDeleteService<User>
+    , IUserDeleteService
 {
     private readonly IRepository<User> _userRepository;
     private readonly UserValidator _userValidator;
@@ -33,7 +35,9 @@ public class UserDeleteService
         IAvatarDeleteService avatarDeleteService,
         UserInvalidationService userInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<UserDeleteService> logger)
+        ILogger<UserDeleteService> logger
+    )
+        : base(userValidator, unitOfWork, logger)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
@@ -78,8 +82,7 @@ public class UserDeleteService
                 .Fail(EntityErrorResources.UserDeleteFailed);
         }
 
-        await _userInvalid.InvalidateDeleteAsync(
-            UserCacheMapper.ToInfo(user.Value!));
+        await InvalidateCache(user.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -87,5 +90,32 @@ public class UserDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task<Result<bool>> SoftBodyDeleteAsync(
+       User entity)
+    {
+        var body = await base.SoftBodyDeleteAsync(entity);
+
+        if (!body.IsSuccess)
+            Result<bool>.Fail(body.Error);
+
+        if (entity.Avatar is not null)
+        {
+            var avatarDelete = await _avatarDeleteService
+                .DeleteInternalAsync(entity.Avatar);
+
+            if (!avatarDelete.IsSuccess)
+                Result<bool>.Fail(avatarDelete.Error);
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public override async Task InvalidateCache(
+        User entity)
+    {
+        await _userInvalid.InvalidateDeleteAsync(
+            UserCacheMapper.ToInfo(entity));
     }
 }

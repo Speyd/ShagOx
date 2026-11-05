@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Baskets;
 public static class BasketAttributeCache
@@ -9,21 +10,25 @@ public static class BasketAttributeCache
 
     public static string ByAttributeDefenition(
         long attributeId,
-        string language)
-           => $"{Prefix}:{language}:attribute-defenition:{attributeId}";
+        string language,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:{language}:status{status}:attribute-defenition:{attributeId}";
 
     public static string ByAttributeDefenitionPattern(
-        long attributeId)
-           => $"{Prefix}:*attribute-defenition:{attributeId}";
+        long attributeId,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:*status{status}:attribute-defenition:{attributeId}";
 
     public static string ByCategory(
         long categoryId,
         string language,
         int page,
-        int pageSize)
-           => $"{Prefix}:{language}:category:{categoryId}:page:{page}:size:{pageSize}";
+        int pageSize,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:{language}:status{status}:category:{categoryId}:page:{page}:size:{pageSize}";
 
     public static string ByCategoryPattern(
-        long categoryId)
-           => $"{Prefix}:*category:{categoryId}:page:*";
+        long categoryId,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:*status{status}:category:{categoryId}:page:*";
 }

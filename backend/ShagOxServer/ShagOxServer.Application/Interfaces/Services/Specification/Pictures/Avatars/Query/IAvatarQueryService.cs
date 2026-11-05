@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -10,5 +11,6 @@ public interface IAvatarQueryService
 {
     Task<Result<AvatarDto>> GetByUserIdAsync(
         long userId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

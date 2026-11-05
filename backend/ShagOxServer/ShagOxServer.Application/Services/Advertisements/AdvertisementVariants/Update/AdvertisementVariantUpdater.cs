@@ -1,6 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Domain.Entities.Advertisements;
-using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Update;
 public static class AdvertisementVariantUpdater

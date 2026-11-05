@@ -10,7 +10,9 @@ using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Del
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -23,7 +25,7 @@ public class StatusTranslationUpdateService
     private readonly IRepository<StatusTranslation> _statusRepository;
     private readonly StatusTranslationValidator _statusTranslationValidator;
 
-    private readonly StatusInvalidationService _transInvalid;
+    private readonly StatusTranslationInvalidationService _transInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusTranslationDeleteService> _logger;
@@ -32,7 +34,7 @@ public class StatusTranslationUpdateService
         IRepository<StatusTranslation> statusRepository,
         StatusTranslationValidator statusTranslationValidator,
         StatusValidator statusValidator,
-        StatusInvalidationService transInvalid,
+        StatusTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusTranslationDeleteService> logger
     ) 
@@ -109,8 +111,8 @@ public class StatusTranslationUpdateService
 
         }
 
-        await _transInvalid
-           .InvalidateUpdateAsync(statusTranslationId);
+        await _transInvalid.InvalidateUpdateAsync(
+            BaseTranslationCacheMapper.ToInfo(status.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

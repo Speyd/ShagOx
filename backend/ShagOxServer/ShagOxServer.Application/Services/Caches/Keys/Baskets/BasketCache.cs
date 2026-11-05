@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Baskets;
 public static class BasketCache
@@ -9,10 +10,12 @@ public static class BasketCache
 
     public static string ByUser(
        long userId,
-       string language)
-            => $"{Prefix}:{language}:user:{userId}";
+       string language,
+        EntityStatus status = EntityStatus.Active)
+            => $"{Prefix}:{language}:status{status}:user:{userId}";
 
     public static string ByUserPattern(
-        long userId)
-           => $"{Prefix}:*user:{userId}";
+        long userId,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:*status{status}:user:{userId}";
 }

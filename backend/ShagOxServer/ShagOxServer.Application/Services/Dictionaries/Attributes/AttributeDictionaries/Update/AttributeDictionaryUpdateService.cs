@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Mappers;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -95,8 +96,8 @@ public class AttributeDictionaryUpdateService
                 EntityErrorResources.AttributeDictionaryUpdateFailed);
         }
 
-        await _dictInvalid
-            .InvalidateUpdateAsync(dictionaryId);
+        await _dictInvalid.InvalidateUpdateAsync(
+            AttributeDictionaryCacheMapper.ToInfo(dictionary.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

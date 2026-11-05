@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 
@@ -9,9 +10,11 @@ public partial interface IBasketItemQueryRepository
 {
     Task<List<BasketItemCacheInfo>> GetCacheInfosByBasketAsync(
         long basketId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<List<BasketItemCacheInfo>> GetCacheInfosByAdvertisementVariantAsync(
         long advertisementVariantId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

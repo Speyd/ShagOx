@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Advertisements.Statuses.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -105,8 +106,8 @@ public class StatusUpdateService
                      .Fail(EntityErrorResources.AdvertStatusUpdateFailed);
         }
 
-        await _statusInvalid
-            .InvalidateUpdateAsync(statusId);
+        await _statusInvalid.InvalidateUpdateAsync(
+            StatusCacheMapper.ToInfo(status.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

@@ -21,6 +21,7 @@ public static class AdvertisementMapper
         return new AdvertisementDto
         (
             x.Id,
+            x.EntityStatus,
             x.Title,
             x.Description,
             status,
@@ -38,20 +39,4 @@ public static class AdvertisementMapper
             x.CreatedAt
         );
     }
-
-    //internal static List<AdvertisementVariantDto> VariantToDto(
-    //    Advertisement x, 
-    //    Dictionary<long, List<AttributeDto>> variants)
-    //{
-    //    return x.Variants.Select(variant =>
-    //    {
-    //        variants.TryGetValue(
-    //            variant.Id,
-    //            out var attributes);
-
-    //        return AdvertisementVariantMapper.ToDto(
-    //            variant,
-    //            attributes ?? []);
-    //    }).ToList();
-    //}
 }

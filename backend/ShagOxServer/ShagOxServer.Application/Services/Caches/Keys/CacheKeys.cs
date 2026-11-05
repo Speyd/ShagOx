@@ -1,4 +1,7 @@
 using ShagOxServer.Application.Common.Helpers;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Advertisements;
+using System.Net.NetworkInformation;
 
 namespace ShagOxServer.Application.Services.Caches.Keys;
 public static class CacheKeys
@@ -20,11 +23,13 @@ public static class CacheKeys
     #region Entity
 
     public static string Entity<TEntity>(
-        long id)
-        => $"{Prefix<TEntity>()}:{id}";
+        long id,
+        EntityStatus status = EntityStatus.Active)
+        => $"{Prefix<TEntity>()}:{id}:status:{status}";
 
-    public static string EntityPattern<TEntity>()
-        => $"{Prefix<TEntity>()}:*";
+    public static string EntityPattern<TEntity>(
+        EntityStatus status = EntityStatus.Active)
+        => $"{Prefix<TEntity>()}:*status:{status}";
 
     #endregion
 
@@ -33,11 +38,13 @@ public static class CacheKeys
 
     public static string EntityPaged<TEntity>(
         int page,
-        int pageSize)
-        => $"{Prefix<TEntity>()}:paged:page:{page}:size:{pageSize}";
+        int pageSize,
+        EntityStatus status = EntityStatus.Active)
+        => $"{Prefix<TEntity>()}:status:{status}:paged:page:{page}:size:{pageSize}";
 
-    public static string EntityPagedPattern<TEntity>()
-        => $"{Prefix<TEntity>()}:paged:*";
+    public static string EntityPagedPattern<TEntity>(
+        EntityStatus status = EntityStatus.Active)
+        => $"{Prefix<TEntity>()}:status:{status}:paged:*";
 
     #endregion
 
@@ -46,16 +53,19 @@ public static class CacheKeys
 
     public static string EntityLanguage<TEntity>(
         long id,
-        string language)
-        => $"{LanguagePrefix<TEntity>()}:{language}:entity:{id}";
+        string language,
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:entity:{id}";
 
     public static string EntityLanguagePattern<TEntity>(
-        long id)
-        => $"{LanguagePrefix<TEntity>()}*:entity:{id}";
+        long id,
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:*:entity:{id}";
 
     public static string EntityLanguagePattern<TEntity>(
-        string language)
-        => $"{LanguagePrefix<TEntity>()}:{language}:entity:*";
+        string language,
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:entity:*";
 
     #endregion
 
@@ -63,15 +73,18 @@ public static class CacheKeys
     #region Language
 
     public static string Language<TEntity>(
-        string language)
-        => $"{LanguagePrefix<TEntity>()}:{language}";
-
-    public static string LanguagePattern<TEntity>()
-        => $"{LanguagePrefix<TEntity>()}:*";
+        string language,
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}";
 
     public static string LanguagePattern<TEntity>(
-        string language)
-        => $"{LanguagePrefix<TEntity>()}:{language}*";
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:*";
+
+    public static string LanguagePattern<TEntity>(
+        string language,
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}*";
 
     #endregion
 
@@ -81,15 +94,18 @@ public static class CacheKeys
     public static string EntityLanguagePaged<TEntity>(
         string language,
         int page,
-        int pageSize)
-        => $"{LanguagePrefix<TEntity>()}:{language}:paged:page:{page}:size:{pageSize}";
-
-    public static string EntityLanguagePagedPattern<TEntity>()
-        => $"{LanguagePrefix<TEntity>()}:*:paged:page:*";
+        int pageSize,
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:paged:page:{page}:size:{pageSize}";
 
     public static string EntityLanguagePagedPattern<TEntity>(
-        string language)
-        => $"{LanguagePrefix<TEntity>()}:{language}:paged:*";
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:*:paged:page:*";
+
+    public static string EntityLanguagePagedPattern<TEntity>(
+        string language,
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:paged:*";
 
     #endregion
 
@@ -100,7 +116,8 @@ public static class CacheKeys
         TFilter filter,
         int page,
         int pageSize,
-        string? language = null)
+        string? language = null,
+        EntityStatus status = EntityStatus.Active)
     {
         var hash = CacheKeyHelper.GetSearchHash(
             filter,
@@ -108,14 +125,15 @@ public static class CacheKeys
             pageSize);
 
         return language is null
-            ? $"{Prefix<TEntity>()}:search:{hash}"
-            : $"{LanguagePrefix<TEntity>()}:{language}:search:{hash}";
+            ? $"{Prefix<TEntity>()}:status:{status}:search:{hash}"
+            : $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:search:{hash}";
     }
 
     public static string BySearch<TEntity, TFilter>(
         TFilter filter,
         int page,
-        int pageSize)
+        int pageSize,
+        EntityStatus status = EntityStatus.Active)
     {
         return BuildSearchKey<TEntity, TFilter>(
             filter,
@@ -123,8 +141,9 @@ public static class CacheKeys
             pageSize);
     }
 
-    public static string SearchPattern<TEntity>()
-        => $"{Prefix<TEntity>()}:search:*";
+    public static string SearchPattern<TEntity>(
+        EntityStatus status = EntityStatus.Active)
+        => $"{Prefix<TEntity>()}:status:{EntityStatus.Active}:search:*";
 
     #endregion
 
@@ -135,21 +154,25 @@ public static class CacheKeys
         TFilter filter,
         string language,
         int page,
-        int pageSize)
+        int pageSize,
+        EntityStatus status = EntityStatus.Active)
     {
         return BuildSearchKey<TEntity, TFilter>(
             filter,
             page,
             pageSize,
-            language);
+            language,
+            status);
     }
 
-    public static string LanguageSearchPattern<TEntity>()
-        => $"{LanguagePrefix<TEntity>()}*:search:*";
+    public static string LanguageSearchPattern<TEntity>(
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:*:search:*";
 
     public static string LanguageSearchPattern<TEntity>(
-        string language)
-        => $"{LanguagePrefix<TEntity>()}:{language}:search:*";
+        string language,
+        EntityStatus status = EntityStatus.Active)
+        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:search:*";
 
     #endregion
 }

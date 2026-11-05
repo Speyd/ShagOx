@@ -8,13 +8,15 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Delete;
-public class AdvertisementDeleteService 
-    : IAdvertisementDeleteService
+public class AdvertisementDeleteService
+    : BaseDeleteService<Advertisement>
+    , IAdvertisementDeleteService
 {
     private readonly IRepository<Advertisement> _advertRepository;
     private readonly AdvertisementValidator _advertValidator;
@@ -34,7 +36,9 @@ public class AdvertisementDeleteService
         IPictureLoaderService loaderService,
         AdvertisementInvalidationService advertInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<AdvertisementDeleteService> logger)
+        ILogger<AdvertisementDeleteService> logger
+    )
+        : base(advertValidator, unitOfWork, logger)
     {
         _advertRepository = advertRepository;
         _advertValidator = advertValidator;
@@ -93,8 +97,7 @@ public class AdvertisementDeleteService
             "Advertisement deleted successfully. Id: {Id}",
             advert.Value!.Id);
 
-        await _advertInvalid.InvalidateDeleteAsync(
-                AdvertisementCacheMapper.ToInfo(advert.Value!));
+        await InvalidateCache(advert.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -102,5 +105,32 @@ public class AdvertisementDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task<Result<bool>> SoftBodyDeleteAsync(
+       Advertisement entity)
+    {
+        var body = await base.SoftBodyDeleteAsync(entity);
+
+        if (!body.IsSuccess)
+            Result<bool>.Fail(body.Error);
+
+        foreach (var image in entity.Pictures)
+        {
+            var imageDelete = await _imageDeleteService
+                .SoftDeleteAsync(image.Id);
+
+            if (!imageDelete.IsSuccess)
+                Result<bool>.Fail(imageDelete.Error);
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public override async Task InvalidateCache(
+        Advertisement entity)
+    {
+        await _advertInvalid.InvalidateDeleteAsync(
+            AdvertisementCacheMapper.ToInfo(entity));
     }
 }

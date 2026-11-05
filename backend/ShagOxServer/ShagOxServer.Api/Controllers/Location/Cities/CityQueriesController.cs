@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Domain.Filters.Location.Cities;

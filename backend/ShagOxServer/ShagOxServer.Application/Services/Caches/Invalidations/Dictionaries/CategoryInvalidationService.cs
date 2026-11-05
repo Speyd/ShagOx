@@ -1,9 +1,10 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
@@ -13,6 +14,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Transl
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 public class CategoryInvalidationService
@@ -55,10 +57,12 @@ public class CategoryInvalidationService
        CategoryCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
-             LanguageSearchPattern<Category>());
+             LanguageSearchPattern<Category>(
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-           EntityLanguagePagedPattern<Category>());
+           EntityLanguagePagedPattern<Category>(
+                entityInfo.Status));
     }
 
     public async Task InvalidateDeleteAsync(
@@ -127,16 +131,26 @@ public class CategoryInvalidationService
         CategoryCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityLanguagePattern<Category>(entityInfo.Id));
+            EntityLanguagePattern<Category>(entityInfo.Id,
+                entityInfo.Status));
 
+        await InvalidatePatternAsync(entityInfo);
+    }
+
+    private async Task InvalidatePatternAsync(
+        CategoryCacheInfo entityInfo)
+    {
         await _cache.RemoveByPatternAsync(CategoryCache.
-            ByProductTypePattern(entityInfo.ProductTypeId));
+            ByProductTypePattern(entityInfo.ProductTypeId,
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityLanguagePagedPattern<Category>());
+             LanguageSearchPattern<Category>(
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-             LanguageSearchPattern<Category>());
+           EntityLanguagePagedPattern<Category>(
+                entityInfo.Status));
     }
 
     private async Task<List<AttributeDefinitionCacheInfo>> 

@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies;
 public class CurrencyExistsRepository
@@ -17,27 +20,33 @@ public class CurrencyExistsRepository
 
     public async Task<bool> ExistsByCodeAsync(
         string code,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.Currencies
+            .WithStatusFilter(status)
             .AnyAsync(c => c.Code == code,
                 cancellationToken);
     }
 
     public async Task<bool> ExistsBySymbolAsync(
         string symbol,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.Currencies
+            .WithStatusFilter(status)
             .AnyAsync(c => c.Symbol == symbol,
                 cancellationToken);
     }
 
     public async Task<bool> ExistsByNameAsync(
         string name,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.Currencies
+            .WithStatusFilter(status)
             .AnyAsync(c => c.Name == name,
                 cancellationToken);
     }

@@ -1,6 +1,9 @@
-﻿namespace ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
+using ShagOxServer.Domain.Base.Enum;
+
+namespace ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 public sealed record FavoriteCacheInfo
 (
     long Id,
-    long UserId
+    long UserId,
+    EntityStatus Status = EntityStatus.Active
 );

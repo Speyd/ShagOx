@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.Attri
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Mapping;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -58,13 +59,15 @@ public class AttributeDictionaryValueQueryService
         GetByDictionaryAsync(
         long dictionaryId, 
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = AttributeDictionaryValueCache.ByDictionary(
            dictionaryId,
            _language.Language,
            pagination.Page,
-           pagination.PageSize);
+           pagination.PageSize,
+           status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -72,7 +75,7 @@ public class AttributeDictionaryValueQueryService
             {
                 var values = await _dictionaryDictQueryRepository
                     .GetByDictionaryAsync(dictionaryId, pagination,
-                        cancellationToken);
+                        cancellationToken, status);
 
                 return await values.ToResultPagedAsync(
                     ApplyMapperAsync);

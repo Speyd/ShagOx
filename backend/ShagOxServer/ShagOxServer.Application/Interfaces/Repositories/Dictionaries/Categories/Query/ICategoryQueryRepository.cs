@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -10,5 +11,6 @@ public partial interface ICategoryQueryRepository
     Task<PagedResult<Category>> GetByProductTypeAsync(
         long productTypeId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

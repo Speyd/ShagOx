@@ -1,18 +1,21 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Advertisements.Statuses.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
-using ShagOxServer.Application.Services.Caches.Advertisements;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using System.Net.NetworkInformation;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Delete;
 public class StatusDeleteService
-    : IStatusDeleteService
+    : BaseDeleteService<Status>
+    , IStatusDeleteService
 {
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
@@ -28,7 +31,9 @@ public class StatusDeleteService
         StatusValidator statusValidator,
         StatusInvalidationService statusInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<StatusDeleteService> logger)
+        ILogger<StatusDeleteService> logger
+    )
+        : base(statusValidator, unitOfWork, logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
@@ -68,8 +73,7 @@ public class StatusDeleteService
                      .Fail(EntityErrorResources.AdvertStatusDeleteFailed);
         }
 
-        await _statusInvalid
-            .InvalidateDeleteAsync(id);
+        await InvalidateCache(status.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -77,5 +81,12 @@ public class StatusDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        Status entity)
+    {
+        await _statusInvalid.InvalidateDeleteAsync(
+           StatusCacheMapper.ToInfo(entity));
     }
 }

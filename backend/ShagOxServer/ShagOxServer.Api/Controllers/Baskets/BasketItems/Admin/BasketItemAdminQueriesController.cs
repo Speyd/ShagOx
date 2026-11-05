@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Api.Controllers.Base;
+using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -14,7 +15,7 @@ namespace ShagOxServer.Api.Controllers.Baskets.BasketItems.Admin;
 [Route("api/admin/basket-items")]
 [Authorize(Roles = "Admin")]
 public class BasketItemAdminQueriesController
-    : BaseQueryController<BasketItemDto,
+    : BaseAdminQueryController<BasketItemDto,
         BasketItemSearchFilter>
 {
     private readonly IBasketItemQueryService _itemQueryService;
@@ -34,10 +35,12 @@ public class BasketItemAdminQueriesController
     public async Task<IActionResult> GetByBasket(
         [FromRoute] long id,
         [FromQuery] PaginationParams pagination,
+        [FromQuery] EntityStatus status,
         CancellationToken cancellationToken)
     {
         var result = await _itemQueryService
-            .GetByBasketAsync(id, pagination);
+            .GetByBasketAsync(id, pagination,
+                cancellationToken, status);
 
         return result.ToActionResult();
     }
@@ -46,10 +49,12 @@ public class BasketItemAdminQueriesController
     public async Task<IActionResult> GetByAdvertisement(
         [FromRoute] long id,
         [FromQuery] PaginationParams pagination,
+        [FromQuery] EntityStatus status,
         CancellationToken cancellationToken)
     {
         var result = await _itemQueryService
-            .GetByAdvertisementVariantAsync(id, pagination);
+            .GetByAdvertisementVariantAsync(id, pagination,
+                cancellationToken, status);
 
         return result.ToActionResult();
     }
@@ -58,10 +63,12 @@ public class BasketItemAdminQueriesController
     public async Task<IActionResult> GetPaged(
         [FromRoute] long id,
         [FromQuery] PaginationParams pagination,
+        [FromQuery] EntityStatus status,
         CancellationToken cancellationToken)
     {
         var result = await _itemQueryService
-            .GetPagedAsync(id, pagination);
+            .GetPagedAsync(id, pagination,
+                cancellationToken, status);
 
         return result.ToActionResult();
     }

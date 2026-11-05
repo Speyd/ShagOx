@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Location;
 public class CityConfiguration 
@@ -18,8 +19,9 @@ public class CityConfiguration
                .HasForeignKey(x => x.RegionId)
                .OnDelete(DeleteBehavior.Restrict);
 
+
         builder.HasIndex(x => x.RegionId);
-        builder.HasIndex(x => x.Code)
-            .IsUnique();
+
+        builder.HasUniqueActiveIndex(x => x.Code);
     }
 }

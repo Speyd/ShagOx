@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Verifications;
-using ShagOxServer.Domain.Entities.Verifications.Enum;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Verifications;
 public class VerificationCodeConfiguration
@@ -35,7 +34,7 @@ public class VerificationCodeConfiguration
             .HasMaxLength(500);
 
 
-    builder.HasOne(x => x.User)
+        builder.HasOne(x => x.User)
             .WithMany()
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);

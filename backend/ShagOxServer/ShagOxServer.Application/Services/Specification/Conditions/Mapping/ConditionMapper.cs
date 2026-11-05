@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Specification.Conditions.Query;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Mapping;
@@ -10,6 +11,7 @@ public static class ConditionMapper
     {
         return new ConditionDto(
             condition.Id,
+            condition.EntityStatus,
             condition.Code,
             label
         );

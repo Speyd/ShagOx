@@ -76,10 +76,10 @@ public class AdvertisementInvalidationService
     {
         await InvalidateAsync(entityInfo);
 
-        foreach (var variantId in entityInfo.Variants)
+        foreach (var variantInfo in entityInfo.Variants)
         {
             await _variantInvalid
-                .InvalidateDeleteAsync(variantId);
+                .InvalidateDeleteAsync(variantInfo);
         }
 
         var favoriteInfos = await GetFavoriteInfos(entityInfo.Id);
@@ -159,15 +159,18 @@ public class AdvertisementInvalidationService
         AdvertisementCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-            .EntityLanguagePattern<Advertisement>(entityInfo.Id));
+            .EntityLanguagePattern<Advertisement>(entityInfo.Id,
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(AdvertisementCache
-            .BySellerPattern(entityInfo.SellerId));
+            .BySellerPattern(entityInfo.SellerId,
+                entityInfo.Status));
 
         if (entityInfo.BuyerId.HasValue)
         {
             await _cache.RemoveByPatternAsync(AdvertisementCache
-                .ByBuyerPattern(entityInfo.BuyerId.Value));
+                .ByBuyerPattern(entityInfo.BuyerId.Value, 
+                    entityInfo.Status));
         }
     }
 

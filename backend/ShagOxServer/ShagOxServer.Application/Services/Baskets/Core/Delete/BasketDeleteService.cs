@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Baskets.Core.Mapping;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
@@ -12,7 +13,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.Core.Delete;
 public class BasketDeleteService
-    : IBasketDeleteService
+    : BaseDeleteService<Basket>
+    , IBasketDeleteService
 {
     private readonly IRepository<Basket> _basketRepository;
     private readonly BasketValidator _basketValidator;
@@ -29,7 +31,9 @@ public class BasketDeleteService
         BasketValidator basketValidator,
         BasketInvalidationService basketInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<BasketDeleteService> logger)
+        ILogger<BasketDeleteService> logger
+    )
+        : base(basketValidator, unitOfWork, logger)
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;
@@ -69,8 +73,7 @@ public class BasketDeleteService
                 .Fail(EntityErrorResources.BasketDeleteFailed);
         }
 
-        await _basketInvalid.InvalidateDeleteAsync(
-            BasketCacheMapper.ToInfo(basket.Value!));
+        await InvalidateCache(basket.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -78,5 +81,12 @@ public class BasketDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        Basket entity)
+    {
+        await _basketInvalid.InvalidateDeleteAsync(
+            BasketCacheMapper.ToInfo(entity));
     }
 }

@@ -12,6 +12,7 @@ public static class AdvertisementVariantMapper
         return new AdvertisementVariantDto
         (
             x.Id,
+            x.EntityStatus,
             x.AdvertisementId,
             x.Price,
             x.PreviousPrice,

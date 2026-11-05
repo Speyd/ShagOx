@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -12,23 +13,23 @@ public interface IAdvertisementQueryService
     Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
         long userId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<Result<PagedResult<AdvertisementShortDto>>> GetShortPagedAsync(
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         long userId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
         AdvertisementSearchFilter filter,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
-
-    //Task<List<AdvertisementAttributeFilterOptionDto>> GetAttributeFilterOptionsAsync(
-    //    long categoryId,
-    //    CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

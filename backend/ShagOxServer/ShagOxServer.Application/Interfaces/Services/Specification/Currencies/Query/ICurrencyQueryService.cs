@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -10,9 +11,11 @@ public interface ICurrencyQueryService
 {
     Task<Result<CurrencyDto>> GetByCodeAsync(
         string code,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 
     Task<Result<CurrencyDto>> GetBySymbolAsync(
         string symbol,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

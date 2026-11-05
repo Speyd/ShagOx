@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDefinitions.Extensions;
 
@@ -13,12 +15,14 @@ public partial class AttributeDefinitionQueryRepository
 {
     public async Task<List<AttributeDefinitionCacheInfo>>
         GetCacheInfosByAttributeDictionaryAsync(
-       long dictionaryId,
-       CancellationToken cancellationToken = default)
+        long dictionaryId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
         return await _db.AttributeDefinitions
+            .WithStatusFilter(status)
             .Where(x => x.DictionaryId == dictionaryId)
-            .SelectCacheInfo()
+            .SelectCacheInfo(status)
             .ToListAsync(cancellationToken);
     }
 }

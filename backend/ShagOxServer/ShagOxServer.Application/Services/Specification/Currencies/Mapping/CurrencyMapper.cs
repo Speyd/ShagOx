@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Mapping;
@@ -10,6 +10,7 @@ public static class CurrencyMapper
         return new CurrencyDto
         (
             x.Id,
+            x.EntityStatus,
             x.Code,
             x.Symbol,
             x.Name

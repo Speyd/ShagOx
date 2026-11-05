@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
 
@@ -30,7 +31,7 @@ public class CategoryConfiguration
 
         builder.HasIndex(x => x.ProductTypeId);
 
-        builder.HasIndex(x => new { x.ProductTypeId, x.Code })
-             .IsUnique();
+        builder.HasUniqueActiveIndex(x => 
+            new { x.ProductTypeId, x.Code });
     }
 }

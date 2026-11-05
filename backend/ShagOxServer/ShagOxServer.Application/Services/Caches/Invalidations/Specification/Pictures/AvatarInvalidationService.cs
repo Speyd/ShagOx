@@ -43,9 +43,11 @@ public class AvatarInvalidationService
         PictureCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
-            .Entity<Avatar>(entityInfo.Id));
+            .Entity<Avatar>(entityInfo.Id,
+                entityInfo.Status));
 
         await _cache.RemoveAsync(AvatarCache
-           .ByUser(entityInfo.OwnerId));
+           .ByUser(entityInfo.OwnerId,
+                entityInfo.Status));
     }
 }

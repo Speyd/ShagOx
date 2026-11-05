@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Cache;
 using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
@@ -6,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 public class RoleInvalidationService
@@ -30,11 +32,7 @@ public class RoleInvalidationService
     public async Task InvalidateCreateAsync(
         RoleCacheInfo entityInfo)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             SearchPattern<Role>());
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             EntityPagedPattern<Role>());
+        await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
@@ -79,12 +77,28 @@ public class RoleInvalidationService
         var id = entityInfo.Id;
 
         await _cache.RemoveAsync(CacheKeys.
-             Entity<Role>(id));
+             Entity<Role>(id,
+                entityInfo.Status));
 
         await _cache.RemoveAsync(RoleCache.
-           ByName(entityInfo.Name));
+           ByName(entityInfo.Name,
+                entityInfo.Status));
 
-        await InvalidateUserRoleAsync(id);
+        await InvalidatePatternAsync(entityInfo);
+    }
+
+    private async Task InvalidatePatternAsync(
+        RoleCacheInfo entityInfo)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+            SearchPattern<Role>(
+               entityInfo.Status));
+
+        await _cache.RemoveByPatternAsync(CacheKeys.
+             EntityPagedPattern<Role>(
+                entityInfo.Status));
+
+        await InvalidateUserRoleAsync(entityInfo);
     }
 
     private async Task<List<UserCacheInfo>> GetUserInfos(
@@ -95,18 +109,22 @@ public class RoleInvalidationService
     }
 
     private async Task InvalidateUserRoleAsync(
-        long entityId)
+        RoleCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(
-                UserRoleCache.UsersByRolePattern(entityId));
+                UserRoleCache.UsersByRolePattern(entityInfo.Id,
+                entityInfo.Status));
 
         await _cache.RemoveAsync(
-            UserRoleCache.UserIdsByRole(entityId));
+            UserRoleCache.UserIdsByRole(entityInfo.Id,
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityPagedPattern<Role>());
+            EntityPagedPattern<Role>(
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-             SearchPattern<Role>());
+             SearchPattern<Role>(
+                entityInfo.Status));
     }
 }

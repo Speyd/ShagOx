@@ -1,4 +1,5 @@
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -8,12 +9,15 @@ public interface ICacheKeyService<TEntity, TFilter>
     where TFilter : BaseFilter
 {
     public string GetCacheKey(
-        long id);
+        long id,
+        EntityStatus status = EntityStatus.Active);
 
     public string GetPagedCacheKey(
-        PaginationParams pagination);
+        PaginationParams pagination,
+        EntityStatus status = EntityStatus.Active);
 
     public string GetSearchCacheKey(
         TFilter filter,
-        PaginationParams pagination);
+        PaginationParams pagination,
+        EntityStatus status = EntityStatus.Active);
 }

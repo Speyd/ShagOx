@@ -1,0 +1,21 @@
+using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Filters.Advertisements;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+
+namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
+public partial interface IFavoriteQueryRepository
+    : ISearchRepository<Favorite, FavoriteSearchFilter>
+{
+    Task<PagedResult<Favorite>> GetByUserAsync(
+        long usderId,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
+    Task<int> CountByAdvertisementAsync(
+        long advertisementId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+}

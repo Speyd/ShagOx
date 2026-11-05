@@ -1,15 +1,16 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Favorites.Create;
+using ShagOxServer.Application.DTOs.Advertisements.Favorites.Create;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Create;
 public static class FavoriteCreater
 {
     public static Favorite Create(
-        FavoriteCreateRequest request)
+        FavoriteCreateRequest request,
+        long ownerId)
     {
         return new Favorite
         {
-            UserId = request.UserId,
+            OwnerId = ownerId,
             AdvertisementId = request.AdvertisementId,
         };
     }

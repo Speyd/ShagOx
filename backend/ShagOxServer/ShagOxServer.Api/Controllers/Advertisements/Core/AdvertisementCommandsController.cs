@@ -63,20 +63,16 @@ public class AdvertisementCommandsController
         return result.ToActionResult();
     }
 
-
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(
         [FromRoute] long id)
     {
-        var claim = User
-            .FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
         var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)
-            return forbidden;
 
+            return forbidden;
         var result = await _deleteService
-            .DeleteAsync(id);
+            .SoftDeleteAsync(id);
 
         return result.ToActionResult();
     }

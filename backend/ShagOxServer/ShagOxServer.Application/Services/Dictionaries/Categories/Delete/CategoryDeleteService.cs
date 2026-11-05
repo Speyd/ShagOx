@@ -1,18 +1,21 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
-public class CategoryDeleteService 
-    : ICategoryDeleteService
+public class CategoryDeleteService
+    : BaseDeleteService<Category>
+    , ICategoryDeleteService
 {
     private readonly IRepository<Category> _categoryRepository;
     private readonly CategoryValidator _categoryValidator;
@@ -28,7 +31,9 @@ public class CategoryDeleteService
         CategoryValidator categoryValidator,
         CategoryInvalidationService categoryInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<CategoryDeleteService> logger)
+        ILogger<CategoryDeleteService> logger
+    )
+        : base(categoryValidator, unitOfWork, logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
@@ -68,8 +73,7 @@ public class CategoryDeleteService
                 .Fail(EntityErrorResources.CategoryDeleteFailed);
         }
 
-        await _categoryInvalid.InvalidateDeleteAsync(
-            CategoryCacheMapper.ToInfo(category.Value!));
+        await InvalidateCache(category.Value!);
 
         return Result<DeleteResponse>.Success(
             new DeleteResponse(
@@ -77,5 +81,12 @@ public class CategoryDeleteService
                 DateTime.UtcNow
             )
       );
+    }
+
+    public override async Task InvalidateCache(
+        Category entity)
+    {
+        await _categoryInvalid.InvalidateDeleteAsync(
+            CategoryCacheMapper.ToInfo(entity));
     }
 }

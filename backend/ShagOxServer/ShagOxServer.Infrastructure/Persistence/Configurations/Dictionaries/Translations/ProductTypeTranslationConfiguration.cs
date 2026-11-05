@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries.Translations;
 public class ProductTypeTranslationConfiguration
@@ -23,8 +24,8 @@ public class ProductTypeTranslationConfiguration
             .OnDelete(DeleteBehavior.Cascade);
 
 
-        builder.HasIndex(x => new { x.TranslatableId, x.Language })
-            .IsUnique();
+        builder.HasUniqueActiveIndex(x => 
+            new { x.TranslatableId, x.Language });
 
         builder.HasIndex(x => x.Name);
 

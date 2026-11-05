@@ -10,6 +10,7 @@ public static class CategoryMapper
     {
         return new CategoryDto(
             category.Id,
+            category.EntityStatus,
             category.Code,
             category.ProductTypeId,
             label

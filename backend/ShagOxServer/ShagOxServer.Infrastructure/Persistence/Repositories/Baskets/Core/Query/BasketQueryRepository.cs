@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.Core;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
@@ -21,10 +24,12 @@ public partial class BasketQueryRepository
 
     public async Task<Basket?> GetByUserAsync(
         long userId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         return await _db.Baskets
             .WithIncludes()
+            .WithStatusFilter(status)
             .FirstOrDefaultAsync(c =>
                 c.OwnerId == userId,
                 cancellationToken);
@@ -32,9 +37,11 @@ public partial class BasketQueryRepository
 
     public async Task<long?> GetIdByUserAsync(
         long userId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         var basketId =  await _db.Baskets
+            .WithStatusFilter(status)
             .FirstOrDefaultAsync(c =>
                 c.OwnerId == userId,
                 cancellationToken);
@@ -44,9 +51,11 @@ public partial class BasketQueryRepository
 
     public async Task<long?> GetUserIdByBasketAsync(
         long basketId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         var basket = await _db.Baskets
+            .WithStatusFilter(status)
             .FirstOrDefaultAsync(c => 
                 c.Id == basketId,
                 cancellationToken);

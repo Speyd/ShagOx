@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -12,20 +13,29 @@ public partial interface IAttributeDictionaryValueQueryRepository
     Task<PagedResult<AttributeDictionaryValue>> GetByDictionaryAsync(
         long dictionaryId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<PagedResult<AttributeDictionaryValue>> GetByDictionariesAsync(
         List<long?> dictionaryId,
         PaginationParams pagination,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
+    Task<List<AttributeDictionaryValue>> GetByIdsAsync(
+        IEnumerable<long> ids,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<AttributeDictionaryValue?> GetAsync(
         string dictionaryCode,
         long valueId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<AttributeDictionaryValue?> GetAsync(
         long dictionaryId,
         long valueId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

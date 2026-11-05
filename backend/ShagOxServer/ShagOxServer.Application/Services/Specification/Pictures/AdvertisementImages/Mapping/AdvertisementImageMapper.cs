@@ -9,6 +9,7 @@ public static class AdvertisementImageMapper
     {
         return new AdvertisementImageDto(
             image.Id,
+            image.EntityStatus,
             image.Url,
             image.PublicId,
             image.Order,

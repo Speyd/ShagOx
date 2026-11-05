@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Quer
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Specification;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -43,9 +44,12 @@ public class CurrencyQueryService
 
     public async Task<Result<CurrencyDto>> GetByCodeAsync(
         string code,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
-        var cacheKey = CurrencyCache.ByCode(code);
+        var cacheKey = CurrencyCache.ByCode(
+            code,
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
@@ -63,16 +67,20 @@ public class CurrencyQueryService
 
     public async Task<Result<CurrencyDto>> GetBySymbolAsync(
         string symbol,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
     {
-        var cacheKey = CurrencyCache.BySymbol(symbol);
+        var cacheKey = CurrencyCache.BySymbol(
+            symbol,
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
             async () =>
             {
                 var currency = await _currencyRepository
-                    .GetBySymbolAsync(symbol, cancellationToken);
+                    .GetBySymbolAsync(symbol, 
+                        cancellationToken, status);
 
                 return await currency.ToResultAsync(
                     ApplyMapperAsync);

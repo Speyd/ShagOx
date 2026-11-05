@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using Twilio.TwiML.Voice;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 public class QueryRepository<TEntity>
@@ -19,26 +19,30 @@ public class QueryRepository<TEntity>
 
     public virtual async Task<TEntity?> GetByIdAsync(
         long id,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         IQueryable<TEntity> query = _db.Set<TEntity>();
 
         query = ApplyIncludes(query);
 
         return await query
+            .WithStatusFilter(status)
             .FirstOrDefaultAsync(x => x.Id == id, 
                 cancellationToken);
     }
 
     public virtual async Task<TEntity?> GetByIdIncludeAsync(
         long id,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         IQueryable<TEntity> query = _db.Set<TEntity>();
 
         query = ApplyIncludes(query);
 
         return await query
+            .WithStatusFilter(status)
             .FirstOrDefaultAsync(
                 x => x.Id == id,
                 cancellationToken);
@@ -46,13 +50,15 @@ public class QueryRepository<TEntity>
 
     public virtual async Task<PagedResult<TEntity>> GetPagedAsync(
         PaginationParams pagination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         IQueryable<TEntity> query = _db.Set<TEntity>();
            
         query = ApplyIncludes(query);
 
         return await query
+            .WithStatusFilter(status)
             .ToPagedResultAsync(pagination,
                 (x => x.Id),
                 cancellationToken);

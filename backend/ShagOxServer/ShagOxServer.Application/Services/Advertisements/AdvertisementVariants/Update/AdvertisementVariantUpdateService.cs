@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
@@ -63,8 +64,6 @@ public class AdvertisementVariantUpdateService
             }
 
             await _unitOfWork.CommitAsync();
-
-            await _variantInvalid.InvalidateUpdateAsync(valueId);
 
             return result;
         }
@@ -130,6 +129,9 @@ public class AdvertisementVariantUpdateService
         }
 
         _variantRepository.Update(variant.Value!);
+
+        await _variantInvalid.InvalidateUpdateAsync(
+            AdvertisementVariantCacheMapper.ToInfo(variant.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

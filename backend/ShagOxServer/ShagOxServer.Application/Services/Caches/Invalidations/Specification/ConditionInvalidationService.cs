@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
+using ShagOxServer.Application.DTOs.Specification.Conditions.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -11,7 +12,7 @@ using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 public class ConditionInvalidationService
-    : ICacheInvalidationService<Condition, long>
+    : ICacheInvalidationService<Condition, ConditionCacheInfo>
 {
 
     private readonly IAdvertisementQueryRepository _advertRepository;
@@ -40,23 +41,19 @@ public class ConditionInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-       long entityId)
+       ConditionCacheInfo entityInfo)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys.
-              LanguageSearchPattern<Condition>());
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-           EntityLanguagePagedPattern<Condition>());
+        await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        long entityId)
+        ConditionCacheInfo entityInfo)
     {
-        await InvalidateAsync(entityId);
+        await InvalidateAsync(entityInfo);
 
 
         var advertInfos =
-            await GetAdvertisementInfos(entityId);
+            await GetAdvertisementInfos(entityInfo.Id);
 
         foreach (var advertInfo in advertInfos)
         {
@@ -65,7 +62,7 @@ public class ConditionInvalidationService
         }
 
         var transInfos =
-           await GetTranslationInfos(entityId);
+           await GetTranslationInfos(entityInfo.Id);
 
         foreach (var transInfo in transInfos)
         {
@@ -75,13 +72,13 @@ public class ConditionInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        long entityId)
+        ConditionCacheInfo entityInfo)
     {
-        await InvalidateAsync(entityId);
+        await InvalidateAsync(entityInfo);
 
 
         var advertInfos =
-           await GetAdvertisementInfos(entityId);
+           await GetAdvertisementInfos(entityInfo.Id);
 
         foreach (var advertInfo in advertInfos)
         {
@@ -91,16 +88,25 @@ public class ConditionInvalidationService
     }
 
     private async Task InvalidateAsync(
-        long entityId)
+        ConditionCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-            .EntityLanguagePattern<Condition>(entityId));
+            .EntityLanguagePattern<Condition>(entityInfo.Id,
+                entityInfo.Status));
+
+        await InvalidatePatternAsync(entityInfo);
+    }
+
+    private async Task InvalidatePatternAsync(
+        ConditionCacheInfo entityInfo)
+    {
+        await _cache.RemoveByPatternAsync(CacheKeys.
+           EntityLanguagePagedPattern<Condition>(
+                entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-           EntityLanguagePagedPattern<Condition>());
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             LanguageSearchPattern<Condition>());
+             LanguageSearchPattern<Condition>(
+                entityInfo.Status));
     }
 
     private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(

@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -13,10 +14,12 @@ public partial interface ICommentQueryRepository<TEntity, TFilter>
     Task<PagedResult<TEntity>> GetByOwnerAsync(
         long ownerId,
         PaginationParams paginationParams,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 
     Task<PagedResult<TEntity>> GetByCommentableAsync(
         long commentableId,
         PaginationParams paginationParams,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

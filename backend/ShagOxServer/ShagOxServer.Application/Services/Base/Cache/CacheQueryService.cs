@@ -1,6 +1,7 @@
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Services.Base.Cache;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
@@ -12,31 +13,35 @@ public abstract partial class CacheService<TDto, TEntity, TFilter>
     where TFilter : BaseFilter
 {
     public virtual async Task<TDto?> GetByCache(
-        long id)
+        long id,
+        EntityStatus status = EntityStatus.Active)
     {
         var cache = await _cache.GetAsync<TDto>(
-            GetCacheKey(id));
+            GetCacheKey(id, status));
 
         return cache;
     }
 
     public virtual async Task<PagedResult<TDto>?> GetByPagedCache(
-        PaginationParams pagination)
+        PaginationParams pagination,
+        EntityStatus status = EntityStatus.Active)
     {
         var cache = await _cache.GetAsync<PagedResult<TDto>>(
-            GetPagedCacheKey(pagination));
+            GetPagedCacheKey(pagination, status));
 
         return cache;
     }
 
     public virtual async Task<PagedResult<TDto>?> GetBySearchCache(
         TFilter filter,
-        PaginationParams pagination)
+        PaginationParams pagination,
+        EntityStatus status = EntityStatus.Active)
     {
         return await _cache.GetAsync<PagedResult<TDto>>(
             GetSearchCacheKey(
                 filter,
-                pagination)
+                pagination,
+                status)
         );
     }
 }

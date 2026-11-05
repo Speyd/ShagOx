@@ -1,9 +1,11 @@
-﻿using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Domain.Base.Enum;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 public sealed record StatusDto
 (
     long Id,
+    EntityStatus EntityStatus,
     string Code,
-    string? Lable
-) : BaseDto(Id);
+    string? Label
+) : BaseDto(Id, EntityStatus);

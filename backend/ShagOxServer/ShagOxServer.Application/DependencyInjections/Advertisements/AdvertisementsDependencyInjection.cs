@@ -10,7 +10,7 @@ using ShagOxServer.Application.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.DependencyInjections.Advertisements;

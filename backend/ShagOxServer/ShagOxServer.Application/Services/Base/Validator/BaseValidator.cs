@@ -4,22 +4,26 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Base;
+namespace ShagOxServer.Application.Services.Base.Validator;
 public abstract class BaseValidator<TEntity>
     where TEntity : BaseEntity
 {
+    protected readonly IRepository<TEntity> _repository;
     protected readonly IQueryRepository<TEntity> _objectRepository;
     protected readonly IExistsRepository<TEntity> _objectExistsRepository;
     protected readonly IDataCacheService _cache;
 
 
     public BaseValidator(
+        IRepository<TEntity> repository,
         IQueryRepository<TEntity> objectRepository,
         IExistsRepository<TEntity> objectExistsRepository,
         IDataCacheService cache)
     {
+        _repository = repository;
         _objectRepository = objectRepository;
         _objectExistsRepository = objectExistsRepository;
         _cache = cache;
@@ -27,10 +31,12 @@ public abstract class BaseValidator<TEntity>
 
 
     public async Task<Result<TEntity>> GetByIdAsync(
-        long entityId)
+        long entityId,
+        CancellationToken cancellationToken = default,
+        EntityStatus findStatus = EntityStatus.ActiveAndHidden)
     {
         var entity = await _objectRepository
-            .GetByIdAsync(entityId);
+            .GetByIdAsync(entityId, cancellationToken, findStatus);
 
         if (entity is null)
         {
@@ -40,12 +46,31 @@ public abstract class BaseValidator<TEntity>
 
         return Result<TEntity>.Success(entity);
     }
+    public async Task<Result<TEntity>> GetByIdWithAttachAsync(
+        long entityId,
+        CancellationToken cancellationToken = default,
+        EntityStatus findStatus = EntityStatus.ActiveAndHidden)
+    {
+        var entity = await _repository
+            .GetByIdAsync(entityId, cancellationToken, findStatus);
 
+        if (entity is null)
+        {
+            return Result<TEntity>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
+        }
+
+        return Result<TEntity>.Success(entity);
+    }
+    
     public async Task<Result<TEntity>> GetByIdIncludeAsync(
-        long entityId)
+        long entityId,
+        CancellationToken cancellationToken = default,
+        EntityStatus findStatus = EntityStatus.ActiveAndHidden)
     {
         var entity = await _objectRepository
-            .GetByIdIncludeAsync(entityId);
+            .GetByIdIncludeAsync(entityId, 
+                cancellationToken, findStatus);
 
         if (entity is null)
         {
@@ -57,17 +82,19 @@ public abstract class BaseValidator<TEntity>
     }
 
     public async Task<Result<bool>> ExistsByIdAsync(
-        long entityId)
+        long entityId,
+        CancellationToken cancellationToken = default,
+        EntityStatus findStatus = EntityStatus.ActiveAndHidden)
     {
         var cache = await _cache.GetAsync<TEntity>(
-            CacheKeys.Entity<TEntity>(entityId));
+            CacheKeys.Entity<TEntity>(entityId, findStatus));
 
         if (cache is not null)
             return Result<bool>.Success(true);
 
 
         if (!await _objectExistsRepository
-            .ExistsByIdAsync(entityId))
+            .ExistsByIdAsync(entityId, cancellationToken, findStatus))
         {
             return Result<bool>.NotFound(
                 EntityNameExtensions.GetLocalizedName<TEntity>());
@@ -77,17 +104,19 @@ public abstract class BaseValidator<TEntity>
     }
 
     public async Task<Result<bool>> NotExistsByIdAsync(
-        long entityId)
+        long entityId,
+        CancellationToken cancellationToken = default,
+        EntityStatus findStatus = EntityStatus.ActiveAndHidden)
     {
         var cache = await _cache.GetAsync<TEntity>(
-           CacheKeys.Entity<TEntity>(entityId));
+           CacheKeys.Entity<TEntity>(entityId, findStatus));
 
         if (cache is null)
             return Result<bool>.Success(true);
 
 
         if (await _objectExistsRepository
-            .ExistsByIdAsync(entityId))
+            .ExistsByIdAsync(entityId, cancellationToken, findStatus))
         {
             return Result<bool>.AlreadyExists(
                 EntityNameExtensions.GetLocalizedName<TEntity>());

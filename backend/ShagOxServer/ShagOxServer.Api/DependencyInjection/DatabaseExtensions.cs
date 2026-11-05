@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Common.Settings.Db;
 using ShagOxServer.Domain.Entities.Db;
-using ShagOxServer.Infrastructure.Persistence.DbContexts;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
 namespace ShagOxServer.Api.DependencyInjection;
@@ -19,7 +18,14 @@ public static class DatabaseExtensions
 
 
         services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(config.GetConnectionString("PrimaryConnection")));
+             options.UseNpgsql(
+                 config.GetConnectionString("PrimaryConnection"),
+                 npgsql => npgsql.UseQuerySplittingBehavior(
+                     QuerySplittingBehavior.SplitQuery
+                 )
+             )
+         );
+
 
         var connectionSection = config
             .GetSection("ConnectionStrings:ReplicaConnections");

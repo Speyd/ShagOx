@@ -49,9 +49,11 @@ public class UserDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
-        var user = await _userValidator.GetByIdAsync(id);
+        var user = await _userValidator
+            .GetByIdAsync(id, cancellationToken);
         if (!user.IsSuccess)
             return Result<DeleteResponse>.Fail(user.Error);
 
@@ -93,9 +95,10 @@ public class UserDeleteService
     }
 
     public override async Task<Result<bool>> SoftBodyDeleteAsync(
-       User entity)
+       User entity,
+        CancellationToken cancellationToken = default)
     {
-        var body = await base.SoftBodyDeleteAsync(entity);
+        var body = await base.SoftBodyDeleteAsync(entity, cancellationToken);
 
         if (!body.IsSuccess)
             Result<bool>.Fail(body.Error);
@@ -103,7 +106,7 @@ public class UserDeleteService
         if (entity.Avatar is not null)
         {
             var avatarDelete = await _avatarDeleteService
-                .DeleteInternalAsync(entity.Avatar);
+                .DeleteInternalAsync(entity.Avatar, cancellationToken);
 
             if (!avatarDelete.IsSuccess)
                 Result<bool>.Fail(avatarDelete.Error);

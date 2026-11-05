@@ -7,9 +7,11 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Update;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
@@ -17,7 +19,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
-    : IPictureUpdateService<TPicture, TRequest>,
+    : BaseUpdateService<TPicture>,
+    IPictureUpdateService<TPicture, TRequest>,
     IPictureCache<TPicture>
     where TOwner : BaseEntity
     where TPicture : BasePicture
@@ -38,12 +41,14 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
     public PictureUpdateService(
         IRepository<TPicture> pictureRepository,
         PictureValidator pictureLoadValidator,
+        IPictureDeleteService<TPicture> pictureDeleteService,
         BaseValidator<TPicture> pictureValidator,
         BaseValidator<TOwner> ownerValidator,
         IUnitOfWork unitOfWork,
         ILogger<PictureUpdateService<TOwner, 
             TPicture, TRequest>> logger
     )
+        : base(pictureDeleteService, pictureValidator, logger, unitOfWork)
     {
         _pictureRepository = pictureRepository;
         _pictureLoadValidator = pictureLoadValidator;
@@ -64,7 +69,8 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
 
     protected async Task<Result<bool>> ValidateOwnerAsync(
        TPicture picture,
-       TRequest request)
+       TRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.OwnerId is null ||
             picture.OwnerId == request.OwnerId)
@@ -73,17 +79,18 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
         }
 
         var existsValidator = await _ownerValidator
-            .ExistsByIdAsync(request.OwnerId.Value);
+            .ExistsByIdAsync(request.OwnerId.Value, cancellationToken);
 
         return existsValidator;
     }
 
     public virtual async Task<Result<PictureUpdateResponse>> UpdateAsync(
         long pictureId,
-        TRequest request)
+        TRequest request,
+        CancellationToken cancellationToken = default)
     {
         var picture = await _pictureValidator
-            .GetByIdAsync(pictureId);
+            .GetByIdAsync(pictureId, cancellationToken);
 
         if (!picture.IsSuccess)
         {
@@ -97,7 +104,8 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
         {
             var result = await UpdateInternalAsync(
                 picture.Value!,
-                request);
+                request,
+                cancellationToken);
 
             if (!result.IsSuccess)
             {
@@ -141,7 +149,8 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
 
     public virtual async Task<Result<PictureUpdateResponse>> UpdateInternalAsync(
         TPicture picture,
-        TRequest request)
+        TRequest request,
+        CancellationToken cancellationToken = default)
     {
         var oldPictureId = picture.PublicId;
         var oldPictureUrl = picture.PublicId;
@@ -151,7 +160,7 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
         {
 
             var responseLoadRes = await _pictureLoadValidator
-                .PictureUploadValidator(request.File);
+                .PictureUploadValidator(request.File, cancellationToken);
 
             if (!responseLoadRes.IsSuccess)
             {

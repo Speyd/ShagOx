@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Translations;
@@ -11,11 +12,12 @@ public class StatusTranslationValidator
         StatusTranslation>
 {
     public StatusTranslationValidator(
+        IRepository<StatusTranslation> repository,
         IQueryRepository<StatusTranslation> statusRepository,
         IStatusTranslationExistsRepository statusExistsRepository,
         IDataCacheService cache
     ) 
-        : base(statusRepository, statusExistsRepository, cache)
+        : base(repository, statusRepository, statusExistsRepository, cache)
     {
     }
 }

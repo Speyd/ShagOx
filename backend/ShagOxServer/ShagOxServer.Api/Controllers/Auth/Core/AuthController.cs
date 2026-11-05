@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Api.Controllers.Api;
@@ -6,6 +6,7 @@ using ShagOxServer.Application.Common.Settings.Systems;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Services.Auth;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Auth.Core;
@@ -21,11 +22,11 @@ public class AuthController
     public AuthController(
         IRegisterService registerService,
         ILoginService loginService,
-
         IOptions<JwtSettings> jwtSettings,
-        ILogger<ApiCookieController> logger
+        ILogger<ApiCookieController> logger,
+        IUserContext userContext
     )
-    : base(jwtSettings, logger)
+        : base(jwtSettings, logger, userContext)
     {
         _registerService = registerService;
         _loginService = loginService;

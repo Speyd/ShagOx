@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Baskets.Core;
@@ -16,7 +17,10 @@ public class BasketQueriesController
 
 
     public BasketQueriesController(
-        IBasketQueryService queryService)
+        IBasketQueryService queryService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _queryService = queryService;
     }

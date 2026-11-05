@@ -4,13 +4,14 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Baskets.BasketItems;
 [ApiController]
 [Route("api/basket-items")]
-//[Authorize]
+[Authorize]
 public class BasketItemQueriesController
     : ApiOwnerExistsController
 {
@@ -20,8 +21,10 @@ public class BasketItemQueriesController
     public BasketItemQueriesController(
         IBasketItemQueryService queryService,
         IBasketExistsRepository basketExistsService,
-        IUserAdminQueryService userQueryService
-    ) : base(basketExistsService, userQueryService)
+        IUserAdminQueryService userQueryService,
+        IUserContext userContext
+    ) 
+        : base(basketExistsService, userQueryService, userContext)
     {
         _queryService = queryService;
     }

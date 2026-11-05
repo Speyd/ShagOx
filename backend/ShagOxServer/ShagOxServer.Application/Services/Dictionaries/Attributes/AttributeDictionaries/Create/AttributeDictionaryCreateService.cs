@@ -40,10 +40,11 @@ public class AttributeDictionaryCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        AttributeDictionaryCreateRequest request)
+        AttributeDictionaryCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var codeExists = await _dictionaryValidator
-            .NotExistsByCodeAsync(request.Code);
+            .NotExistsByCodeAsync(request.Code, cancellationToken);
 
         if (!codeExists.IsSuccess)
             return Result<CreateResponse>.Fail(codeExists.Error);

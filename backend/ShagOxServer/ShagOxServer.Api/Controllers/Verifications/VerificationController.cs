@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Verifications.Create;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -15,7 +16,10 @@ public class VerificationController
 
 
     public VerificationController(
-        IVerificationService verificationService)
+        IVerificationService verificationService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _verificationService = verificationService;
     }

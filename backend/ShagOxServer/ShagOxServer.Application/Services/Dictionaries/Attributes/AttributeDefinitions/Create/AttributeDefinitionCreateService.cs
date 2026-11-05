@@ -46,17 +46,19 @@ public class AttributeDefinitionCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        AttributeDefinitionCreateRequest request)
+        AttributeDefinitionCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var categoryExists = await _categoryValidator
-            .ExistsByIdAsync(request.CategoryId);
+            .ExistsByIdAsync(request.CategoryId, cancellationToken);
 
         if (!categoryExists.IsSuccess)
             return Result<CreateResponse>.Fail(categoryExists.Error);
 
 
         var keyExists = await _attributeValidator
-            .NotExistsByKeyAsync(request.Key, request.CategoryId);
+            .NotExistsByKeyAsync(request.Key, 
+                request.CategoryId, cancellationToken);
 
         if (!keyExists.IsSuccess)
             return Result<CreateResponse>.Fail(keyExists.Error);

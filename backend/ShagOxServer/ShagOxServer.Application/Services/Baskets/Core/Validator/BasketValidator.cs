@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -14,21 +14,23 @@ public class BasketValidator
     private readonly IBasketExistsRepository _basketExistsRepository;
 
     public BasketValidator(
+        IRepository<Basket> repository,
         IQueryRepository<Basket> basketRepository,
         IBasketExistsRepository basketExistsRepository,
         IDataCacheService cache
     ) 
-        : base(basketRepository, basketExistsRepository, cache)
+        : base(repository, basketRepository, basketExistsRepository, cache)
     {
         _basketExistsRepository = basketExistsRepository;
     }
 
 
     public async Task<Result<bool>> ExistsByUserAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         if (!await _basketExistsRepository
-                .ExistsByUserAsync(userId))
+                .ExistsByUserAsync(userId, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.Basket);
@@ -38,10 +40,11 @@ public class BasketValidator
     }
 
     public async Task<Result<bool>> NotExistsByUserAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         if (await _basketExistsRepository
-                .ExistsByUserAsync(userId))
+                .ExistsByUserAsync(userId, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Basket);

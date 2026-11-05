@@ -17,10 +17,11 @@ public class PictureValidator
     }
 
     public async Task<Result<PictureLoaderUploadResponse>> PictureUploadValidator(
-       IFormFile file)
+       IFormFile file, 
+       CancellationToken cancellationToken = default)
     {
         var response = await _loaderService
-            .UploadAsync(file);
+            .UploadAsync(file, cancellationToken);
 
         if (!response.IsSuccess || response.Value is null)
         {

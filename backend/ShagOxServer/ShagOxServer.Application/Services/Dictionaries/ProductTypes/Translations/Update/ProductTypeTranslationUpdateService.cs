@@ -4,11 +4,13 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
+using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Delete;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -32,11 +34,17 @@ public class ProductTypeTranslationUpdateService
     public ProductTypeTranslationUpdateService(
         IRepository<ProductTypeTranslation> typeRepository,
         ProductTypeTranslationValidator typeTranslationValidator,
+        IProductTypeTranslationDeleteService typeTranslationDeleteService,
         ProductTypeValidator typeValidator,
         CategoryTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeTranslationUpdateService> logger
-    ) : base(typeValidator, typeTranslationValidator)
+    ) 
+        : base(typeValidator,
+            typeTranslationDeleteService,
+            typeTranslationValidator,
+            logger,
+            unitOfWork)
     {
         _typeRepository = typeRepository;
         _typeTranslationValidator = typeTranslationValidator;
@@ -48,17 +56,20 @@ public class ProductTypeTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long typeTranslationId,
-        ProductTypeTranslationUpdateRequest request)
+        ProductTypeTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var productType = await _typeTranslationValidator
-            .GetByIdAsync(typeTranslationId);
+            .GetByIdAsync(typeTranslationId, cancellationToken);
 
         if (!productType.IsSuccess)
             return Result<UpdateResponse>.Fail(productType.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(productType.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            productType.Value!, 
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

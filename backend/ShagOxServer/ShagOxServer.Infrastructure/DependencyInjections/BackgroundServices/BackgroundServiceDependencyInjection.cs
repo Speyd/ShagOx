@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Api.BackgroundServices;
-using ShagOxServer.Infrastructure.BackgroundServices;
+using ShagOxServer.Infrastructure.BackgroundServices.Auth;
+using ShagOxServer.Infrastructure.BackgroundServices.Db;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
 public static class BackgroundServiceDependencyInjection

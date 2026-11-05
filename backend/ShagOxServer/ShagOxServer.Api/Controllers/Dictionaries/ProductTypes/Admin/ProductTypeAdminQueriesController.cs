@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Query;
 using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes;
 
@@ -15,9 +16,10 @@ public class ProductTypeAdminQueriesController
        ProductTypeSearchFilter>
 {
     public ProductTypeAdminQueriesController(
-        IProductTypeQueryService queryService
+        IProductTypeQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 }

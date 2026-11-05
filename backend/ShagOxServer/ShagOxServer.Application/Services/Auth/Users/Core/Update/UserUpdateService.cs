@@ -8,21 +8,23 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Update;
 public class UserUpdateService 
-    : IUserUpdateService
+    : BaseUpdateService<User>,
+    IUserUpdateService
 {
     private readonly IRepository<User> _userRepository;
     private readonly UserValidator _userValidator;
@@ -42,12 +44,15 @@ public class UserUpdateService
     public UserUpdateService(
         IRepository<User> userRepository,
         UserValidator userValidator,
+        IUserDeleteService userDeleteService,
         CityValidator cityValidator,
         IAvatarUpdateService avatarUploadService,
         IAvatarCreateService avatarCreateService,
         UserInvalidationService userInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<UserUpdateService> logger)
+        ILogger<UserUpdateService> logger
+    )
+        : base(userDeleteService, userValidator, logger, unitOfWork)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
@@ -62,10 +67,11 @@ public class UserUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long userId,
-        UserUpdateRequest request)
+        UserUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var user = await _userValidator
-            .GetByIdWithIncludesAsync(userId);
+            .GetByIdIncludeAsync(userId, cancellationToken);
         if (!user.IsSuccess)
             return Result<UpdateResponse>.Fail(user.Error);
 
@@ -77,7 +83,8 @@ public class UserUpdateService
 
 
         var validation = await
-            ValidateUpdatesAsync(user.Value!, normalizedRequest);
+            ValidateUpdatesAsync(user.Value!, 
+                normalizedRequest, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -102,7 +109,7 @@ public class UserUpdateService
             _userRepository.Update(user.Value!);
 
             var avatarResult = await UpdateAvatarAsync(user.Value!,
-                normalizedRequest.Avatar);
+                normalizedRequest.Avatar, cancellationToken);
 
             avatarResponse = avatarResult.Value;
 
@@ -168,13 +175,15 @@ public class UserUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         User user,
-        UserUpdateRequest request)
+        UserUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.CityId.HasValue &&
            request.CityId != user.CityId)
         {
             var cityExists = await _cityValidator
-                .ExistsByIdAsync(request.CityId.Value);
+                .ExistsByIdAsync(request.CityId.Value,
+                    cancellationToken);
 
             if (!cityExists.IsSuccess)
                 return Result<bool>.Fail(cityExists.Error);
@@ -184,7 +193,8 @@ public class UserUpdateService
             request.UserName != user.UserName)
         {
             var userNameExists = await _userValidator
-                .NotExistsByUserNameAsync(request.UserName);
+                .NotExistsByUserNameAsync(request.UserName, 
+                    cancellationToken);
 
             if (!userNameExists.IsSuccess)
                 return Result<bool>.Fail(userNameExists.Error);
@@ -195,7 +205,8 @@ public class UserUpdateService
 
     private async Task<Result<PictureUpdateResponse?>> UpdateAvatarAsync(
         User user,
-        IFormFile? avatarFile)
+        IFormFile? avatarFile,
+        CancellationToken cancellationToken = default)
     {
         if (avatarFile is null) 
         {
@@ -210,7 +221,7 @@ public class UserUpdateService
                 avatarFile);
 
             var createResult = await _avatarCreateService
-                .CreateInternalAsync(request);
+                .CreateInternalAsync(request, cancellationToken);
 
             if (!createResult.IsSuccess)
             {
@@ -225,7 +236,8 @@ public class UserUpdateService
             user.Avatar,
             new PictureUpdateRequest(
                 user.Id,
-                avatarFile));
+                avatarFile),
+            cancellationToken);
 
         if (!result.IsSuccess)
             return Result<PictureUpdateResponse?>

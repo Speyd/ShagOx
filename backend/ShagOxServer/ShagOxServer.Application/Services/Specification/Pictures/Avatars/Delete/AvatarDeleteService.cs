@@ -39,11 +39,12 @@ public class AvatarDeleteService
 
 
     public override async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            return await base.DeleteAsync(id);
+            return await base.DeleteAsync(id, cancellationToken);
         }
         catch
         {
@@ -53,12 +54,13 @@ public class AvatarDeleteService
         }
     }
     public override async Task<Result<DeleteResponse>> DeleteRecordAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
 
         try
         {
-            return await base.DeleteRecordAsync(id);
+            return await base.DeleteRecordAsync(id, cancellationToken);
         }
         catch
         {

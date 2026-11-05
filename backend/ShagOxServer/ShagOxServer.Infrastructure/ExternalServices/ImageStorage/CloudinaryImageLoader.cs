@@ -1,4 +1,4 @@
-﻿using CloudinaryDotNet;
+using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using ShagOxServer.Application.DTOs.Common.ImageLoaders.Delete;
@@ -7,7 +7,8 @@ using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Infrastructure.ExternalServices.ImageStorage;
-public class CloudinaryImageLoader : IPictureLoaderService
+public class CloudinaryImageLoader 
+    : IPictureLoaderService
 {
     private readonly Cloudinary _cloudinary;
 
@@ -42,7 +43,8 @@ public class CloudinaryImageLoader : IPictureLoaderService
     }
 
     public async Task<Result<PictureLoaderUploadResponse>> UploadAsync(
-        IFormFile file)
+        IFormFile file,
+        CancellationToken cancellationToken = default)
     {
         await using var stream = file.OpenReadStream();
 
@@ -54,7 +56,8 @@ public class CloudinaryImageLoader : IPictureLoaderService
             Folder = "ShagOx"
         };
 
-        var result = await _cloudinary.UploadAsync(uploadParams);
+        var result = await _cloudinary
+            .UploadAsync(uploadParams, cancellationToken);
 
         if (result.Error != null)
         {

@@ -33,33 +33,39 @@ public class AdvertisementCreateValidator
 
     public async Task<Result<bool>> ValidateAsync(
        AdvertisementCreateRequest request,
-       long ownerId)
+       long ownerId,
+       CancellationToken cancellationToken = default)
     {
         var user = await _userValidator
-            .ExistsByIdAsync(ownerId);
+            .ExistsByIdAsync(ownerId, 
+                cancellationToken);
 
         var status = await _statusValidator
-            .ExistsByIdAsync(request.StatusId);
+            .ExistsByIdAsync(request.StatusId, 
+                cancellationToken);
 
         if (!status.IsSuccess)
             return status;
 
         var currency = await _currencyValidator
-            .ExistsByIdAsync(request.CurrencyId);
+            .ExistsByIdAsync(request.CurrencyId, 
+                cancellationToken);
 
         if (!currency.IsSuccess)
             return currency;
 
 
         var condition = await _conditionValidator
-            .ExistsByIdAsync(request.ConditionId);
+            .ExistsByIdAsync(request.ConditionId, 
+                cancellationToken);
 
         if (!condition.IsSuccess)
             return condition;
 
 
         var category = await _categoryValidator
-            .ExistsByIdAsync(request.CategoryId);
+            .ExistsByIdAsync(request.CategoryId, 
+                cancellationToken);
 
         if (!category.IsSuccess)
             return category;

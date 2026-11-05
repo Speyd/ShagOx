@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Create;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Update;
+using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Create;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Statuses.Translations.Admin;
@@ -24,7 +27,10 @@ public class StatusTranslationAdminCommandsController
     public StatusTranslationAdminCommandsController(
         IStatusTranslationCreateService createService,
         IStatusTranslationUpdateService updateService,
-        IStatusTranslationDeleteService deleteService)
+        IStatusTranslationDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;
@@ -48,6 +54,19 @@ public class StatusTranslationAdminCommandsController
     {
         var result = await _updateService
             .UpdateAsync(id, request);
+
+        return result.ToActionResult();
+    }
+
+    [HttpPatch("{id:long}/status")]
+    public async Task<IActionResult> ChangeStatus(
+            [FromRoute] long id,
+            [FromBody] ChangeStatusRequest request,
+            CancellationToken cancellationToken = default)
+    {
+        var result = await _updateService
+            .ChangeStatusAsync(id, request,
+                cancellationToken);
 
         return result.ToActionResult();
     }

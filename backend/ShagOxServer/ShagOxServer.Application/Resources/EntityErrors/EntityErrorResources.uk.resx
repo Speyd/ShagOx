@@ -417,4 +417,10 @@
   <data name="SoftDeleteFailed" xml:space="preserve">
     <value>Не вдалося видалити запис.</value>
   </data>
+  <data name="InvalidStatusValue" xml:space="preserve">
+    <value>Вказано недійсне значення статусу.</value>
+  </data>
+  <data name="StatusChangeFailed" xml:space="preserve">
+    <value>Під час зміни статусу сталася непередбачена помилка.</value>
+  </data>
 </root>

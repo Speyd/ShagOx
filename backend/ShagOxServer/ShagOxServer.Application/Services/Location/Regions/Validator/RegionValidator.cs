@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,32 +15,41 @@ public class RegionValidator
 
 
     public RegionValidator(
+        IRepository<Region> repository,
         IQueryRepository<Region> regionRepository,
         IRegionExistsRepository regionExistsRepository,
         IDataCacheService cache
     ) 
-        : base(regionRepository, regionExistsRepository, cache)
+        : base(repository, regionRepository, regionExistsRepository, cache)
     {
         _regionExistsRepository = regionExistsRepository;
     }
 
 
     public async Task<Result<bool>> ExistsByCodeAsync(
-       string name)
+        string name,
+        CancellationToken cancellationToken = default)
     {
-        if (!await _regionExistsRepository.ExistsByCodeAsync(name))
+        if (!await _regionExistsRepository
+            .ExistsByCodeAsync(name, cancellationToken))
+        {
             return Result<bool>.NotFound(
                 EntityNamesResources.Region);
+        }
 
         return Result<bool>.Success(true);
     }
 
     public async Task<Result<bool>> NotExistsByCodeAsync(
-       string name)
+       string name,
+       CancellationToken cancellationToken = default)
     {
-        if (await _regionExistsRepository.ExistsByCodeAsync(name))
+        if (await _regionExistsRepository
+                .ExistsByCodeAsync(name, cancellationToken))
+        {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Region);
+        }
 
         return Result<bool>.Success(true);
     }

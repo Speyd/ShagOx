@@ -8,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.AdvertisementVariants;
@@ -31,9 +32,10 @@ public class AdvertisementVariantCommandsController
         IAdvertisementVariantDeleteService deleteService,
         IAdvertisementVariantExistsRepository existsVariantRepository,
         IAdvertisementVariantExistsRepository existsAdvertRepository,
-        IUserAdminQueryService userQueryService
+        IUserAdminQueryService userQueryService,
+        IUserContext userContext
     )
-        : base(existsVariantRepository, userQueryService)
+        : base(existsVariantRepository, userQueryService, userContext)
     {
         _createService = createService;
         _updateService = updateService;

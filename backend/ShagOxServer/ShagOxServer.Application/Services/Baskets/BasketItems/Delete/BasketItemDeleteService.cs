@@ -46,10 +46,11 @@ public class BasketItemDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var item = await _itemValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!item.IsSuccess)
             return Result<DeleteResponse>.Fail(item.Error);

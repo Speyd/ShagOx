@@ -10,5 +10,6 @@ public interface IPictureOrderCreateService<TPicture, TRequest>
     where TRequest : PictureCreateRequest
 {
     Task<Result<PicturesCreateResponse>> CreateAsync(
-        PicturesCreateRequest request);
+        PicturesCreateRequest request,
+        CancellationToken cancellationToken = default);
 }

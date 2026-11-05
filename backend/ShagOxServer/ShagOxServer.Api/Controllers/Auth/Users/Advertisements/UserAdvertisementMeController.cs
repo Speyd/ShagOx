@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -20,7 +21,10 @@ public class UserAdvertisementMeController
 
     public UserAdvertisementMeController(
         IAdvertisementQueryService queryService,
-        IUserQueryService queryUserService)
+        IUserQueryService queryUserService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _queryService = queryService;
         _queryUserService = queryUserService;

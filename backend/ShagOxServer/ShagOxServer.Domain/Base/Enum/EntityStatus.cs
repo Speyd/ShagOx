@@ -4,5 +4,6 @@ public enum EntityStatus
     Active = 0,
     Hidden = 1,
     Deleted = 2,
-    All = 3
+    ActiveAndHidden = 3,
+    All = 4
 }

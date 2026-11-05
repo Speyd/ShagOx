@@ -43,10 +43,11 @@ public class ReviewRepliCommentDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var comment = await _commentValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!comment.IsSuccess)
             return Result<DeleteResponse>.Fail(comment.Error);

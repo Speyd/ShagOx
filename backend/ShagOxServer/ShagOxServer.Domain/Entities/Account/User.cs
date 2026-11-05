@@ -2,8 +2,8 @@ using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
-using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Domain.Entities.Account;
@@ -27,6 +27,9 @@ public class User
 
     public bool EmailConfirmed { get; set; } = false;
     public bool PhoneConfirmed { get; set; } = false;
+
+    public long? CurrencyId { get; set; }
+    public Currency? Currency { get; set; } = null;
 
     public long? AvatarId { get; set; }
     public Avatar? Avatar { get; set; } = null;

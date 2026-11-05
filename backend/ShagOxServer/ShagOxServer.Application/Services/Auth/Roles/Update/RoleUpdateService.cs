@@ -4,18 +4,20 @@ using ShagOxServer.Application.DTOs.Auth.Roles.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Update;
 public class RoleUpdateService 
-    : IRoleUpdateService
+    : BaseUpdateService<Role>,
+    IRoleUpdateService
 {
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;
@@ -29,9 +31,12 @@ public class RoleUpdateService
     public RoleUpdateService(
         IRepository<Role> roleRepository,
         RoleValidator roleValidator,
+        IRoleDeleteService roleDeleteService,
         RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<RoleUpdateService> logger)
+        ILogger<RoleUpdateService> logger
+    )
+        : base(roleDeleteService, roleValidator, logger, unitOfWork)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
@@ -43,14 +48,17 @@ public class RoleUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long roleId,
-        RoleUpdateRequest request)
+        RoleUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var role = await _roleValidator.GetByIdAsync(roleId);
+        var role = await _roleValidator
+            .GetByIdAsync(roleId, cancellationToken);
         if (!role.IsSuccess)
             return Result<UpdateResponse>.Fail(role.Error);
 
         var validation = await
-             ValidateUpdatesAsync(role.Value!, request);
+             ValidateUpdatesAsync(role.Value!, 
+                request, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -108,13 +116,14 @@ public class RoleUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         Role role,
-        RoleUpdateRequest request)
+        RoleUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Name is not null &&
            request.Name != role.Name)
         {
             var nameValidator = await _roleValidator.
-                NotExistsByNameAsync(request.Name);
+                NotExistsByNameAsync(request.Name, cancellationToken);
 
             if (!nameValidator.IsSuccess)
                 return Result<bool>.Fail(nameValidator.Error);

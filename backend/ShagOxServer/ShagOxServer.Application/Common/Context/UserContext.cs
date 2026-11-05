@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using System.Security.Claims;
 
@@ -13,7 +13,18 @@ public class UserContext
         _http = http;
     }
 
-    public long UserId =>
-        long.Parse(_http.HttpContext!.User
-            .FindFirst(ClaimTypes.NameIdentifier)!.Value);
+    public long UserId
+    {
+        get
+        {
+            var userId = _http.HttpContext?.User
+                .FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!long.TryParse(userId, out var id))
+                throw new UnauthorizedAccessException(
+                    "User ID not found in claims.");
+
+            return id;
+        }
+    }
 }

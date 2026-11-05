@@ -4,9 +4,11 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.Core.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Baskets.Core.Mapping;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
@@ -15,7 +17,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.Core.Update;
 public class BasketUpdateService
-    : IBasketUpdateService
+    : BaseUpdateService<Basket>,
+    IBasketUpdateService
 {
     private readonly IRepository<Basket> _basketRepository;
     private readonly BasketValidator _basketValidator;
@@ -31,10 +34,13 @@ public class BasketUpdateService
     public BasketUpdateService(
         IRepository<Basket> basketRepository,
         BasketValidator basketValidator,
+        IBasketDeleteService basketDeleteService,
         BasketInvalidationService basketInvalid,
         UserValidator userValidator,
         IUnitOfWork unitOfWork,
-        ILogger<BasketUpdateService> logger)
+        ILogger<BasketUpdateService> logger
+    )
+        : base(basketDeleteService, basketValidator, logger, unitOfWork)
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;
@@ -47,15 +53,16 @@ public class BasketUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long basketId,
-        BasketUpdateRequest request)
+        BasketUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var basket = await _basketValidator
-            .GetByIdAsync(basketId);
+            .GetByIdAsync(basketId, cancellationToken);
         if (!basket.IsSuccess)
             return Result<UpdateResponse>.Fail(basket.Error);
 
         var validation = await
-             ValidateUpdatesAsync(request);
+             ValidateUpdatesAsync(request, cancellationToken);
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
@@ -111,20 +118,23 @@ public class BasketUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        BasketUpdateRequest request)
+        BasketUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (!request.OwnerId.HasValue)
             return Result<bool>.Success(true);
 
         var userExists = await _userValidator
-            .ExistsByIdAsync(request.OwnerId.Value);
+            .ExistsByIdAsync(request.OwnerId.Value, 
+                cancellationToken);
 
         if (!userExists.IsSuccess)
             return Result<bool>.Fail(userExists.Error);
 
 
         var basketUserExists = await _basketValidator
-            .NotExistsByUserAsync(request.OwnerId.Value);
+            .NotExistsByUserAsync(request.OwnerId.Value,
+                cancellationToken);
 
         if (!basketUserExists.IsSuccess)
             return Result<bool>.Fail(basketUserExists.Error);

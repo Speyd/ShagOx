@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -16,11 +16,12 @@ public class AttributeDictionaryValueValidator
 
 
     public AttributeDictionaryValueValidator(
+        IRepository<AttributeDictionaryValue> repository,
         IQueryRepository<AttributeDictionaryValue> valueRepository,
         IAttributeDictionaryValueExistsRepository valueExistsRepository,
         IDataCacheService cache
     ) 
-        : base(valueRepository, valueExistsRepository, cache)
+        : base(repository, valueRepository, valueExistsRepository, cache)
     {
         _valueExistsRepository = valueExistsRepository;
     }
@@ -28,10 +29,11 @@ public class AttributeDictionaryValueValidator
 
     public async Task<Result<bool>> ExistsAsync(
         long dictionaryId,
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         if (!await _valueExistsRepository
-            .ExistsAsync(dictionaryId, code))
+            .ExistsAsync(dictionaryId, code, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.AttributeDictionaryValue);
@@ -42,10 +44,11 @@ public class AttributeDictionaryValueValidator
 
     public async Task<Result<bool>> NotExistsAsync(
         long dictionaryId,
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         if (await _valueExistsRepository
-            .ExistsAsync(dictionaryId, code))
+            .ExistsAsync(dictionaryId, code, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.AttributeDictionaryValue);

@@ -43,9 +43,11 @@ public class ConditionDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
-        var condition = await _conditionValidator.GetByIdAsync(id);
+        var condition = await _conditionValidator
+            .GetByIdAsync(id, cancellationToken);
         if (!condition.IsSuccess)
             return Result<DeleteResponse>.Fail(condition.Error);
 

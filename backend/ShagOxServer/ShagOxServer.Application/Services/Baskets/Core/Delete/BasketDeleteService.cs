@@ -44,10 +44,11 @@ public class BasketDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var basket = await _basketValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!basket.IsSuccess)
             return Result<DeleteResponse>.Fail(basket.Error);

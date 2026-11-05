@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
@@ -12,7 +13,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
 public class StatusTranslationDeleteService
-    : IStatusTranslationDeleteService
+    : BaseDeleteService<StatusTranslation>,
+    IStatusTranslationDeleteService
 {
     private readonly IRepository<StatusTranslation> _statusRepository;
     private readonly StatusTranslationValidator _statusValidator;
@@ -27,7 +29,9 @@ public class StatusTranslationDeleteService
         StatusTranslationValidator statusValidator,
         StatusTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<StatusTranslationDeleteService> logger)
+        ILogger<StatusTranslationDeleteService> logger
+    )
+        : base(statusValidator, unitOfWork, logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
@@ -38,10 +42,11 @@ public class StatusTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var status = await _statusValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!status.IsSuccess)
             return Result<DeleteResponse>.Fail(status.Error);
@@ -67,8 +72,7 @@ public class StatusTranslationDeleteService
                 .Fail(EntityErrorResources.AdvertStatusTranslationDeleteFailed);
         }
 
-        await _transInvalid.InvalidateDeleteAsync(
-            BaseTranslationCacheMapper.ToInfo(status.Value!));
+        await InvalidateCache(status.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -76,5 +80,12 @@ public class StatusTranslationDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        StatusTranslation entity)
+    {
+        await _transInvalid.InvalidateDeleteAsync(
+            BaseTranslationCacheMapper.ToInfo(entity));
     }
 }

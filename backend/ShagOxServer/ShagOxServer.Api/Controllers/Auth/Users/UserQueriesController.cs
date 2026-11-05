@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -20,9 +21,10 @@ public class UserQueriesController
 
 
     public UserQueriesController(
-        IUserQueryService queryService
+        IUserQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
         _userQueryService = queryService;
     }

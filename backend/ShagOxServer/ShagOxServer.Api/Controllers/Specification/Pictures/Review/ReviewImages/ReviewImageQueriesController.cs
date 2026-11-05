@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Review.ReviewImages.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Query;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Review;
 
@@ -13,9 +14,10 @@ public class ReviewImageQueriesController
         ReviewImageSearchFilter>
 {
     public ReviewImageQueriesController(
-        IReviewImageQueryService queryService
+        IReviewImageQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 }

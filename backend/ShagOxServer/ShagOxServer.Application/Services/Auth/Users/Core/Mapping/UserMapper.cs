@@ -1,9 +1,12 @@
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.DTOs.Location.Cities.Query;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;
+using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
@@ -22,6 +25,7 @@ public static class UserMapper
             user.Bio,
             user.Phone,
             user.Email,
+            MapCurrency(user.Currency),
             MapAvatar(user.Avatar),
             city,
             MapRoles(user.UserRoles),
@@ -52,5 +56,13 @@ public static class UserMapper
         return avatar is null
             ? null
             : AvatarMapper.ToDto(avatar);
+    }
+
+    private static CurrencyDto? MapCurrency(
+        Currency? currency)
+    {
+        return currency is null
+            ? null
+            : CurrencyMapper.ToDto(currency);
     }
 }

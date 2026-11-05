@@ -15,6 +15,16 @@ public class Advertisement
     public string Description { get; set; } = "";
 
     /// <summary>
+    /// Current product price in the specified currency.
+    /// </summary>
+    public decimal? Price { get; set; } = null;
+    /// <summary>
+    /// Previous product price used for displaying discounts and price changes.
+    /// </summary>
+    public decimal? PreviousPrice { get; set; } = null;
+
+
+    /// <summary>
     /// Popularity score used for ranking products in search results and recommendations.
     /// </summary>
     public int Popularity { get; set; } = 0;

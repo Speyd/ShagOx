@@ -1,7 +1,9 @@
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -18,11 +20,12 @@ public abstract class BaseTranslationValidator<TEntity, TTranslation>
 
 
     public BaseTranslationValidator(
+        IRepository<TTranslation> repository,
         IQueryRepository<TTranslation> entityRepository,
         ITranslationExistsRepository<TEntity, TTranslation> translationExistsRepository,
         IDataCacheService cache
     )
-        : base(entityRepository, 
+        : base(repository, entityRepository, 
             translationExistsRepository, 
             cache)
     {
@@ -31,10 +34,11 @@ public abstract class BaseTranslationValidator<TEntity, TTranslation>
 
     public async Task<Result<bool>> ExistsAsync(
         long objectId,
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         if (!await _translationExistsRepository
-                .ExistsAsync(objectId, language))
+                .ExistsAsync(objectId, language, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNameExtensions.GetLocalizedName<TEntity>());
@@ -45,10 +49,11 @@ public abstract class BaseTranslationValidator<TEntity, TTranslation>
 
     public async Task<Result<bool>> NotExistsAsync(
         long cityId,
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         if (await _translationExistsRepository
-            .ExistsAsync(cityId, language))
+            .ExistsAsync(cityId, language, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNameExtensions.GetLocalizedName<TEntity>());
@@ -58,10 +63,11 @@ public abstract class BaseTranslationValidator<TEntity, TTranslation>
     }
 
     public async Task<Result<bool>> ExistsByLanguageAsync(
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         if (!await _translationExistsRepository
-                .ExistsByLanguageAsync(language))
+                .ExistsByLanguageAsync(language, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNameExtensions.GetLocalizedName<TEntity>());
@@ -71,10 +77,11 @@ public abstract class BaseTranslationValidator<TEntity, TTranslation>
     }
 
     public async Task<Result<bool>> NotExistsByLanguageAsync(
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         if (await _translationExistsRepository
-                .ExistsByLanguageAsync(language))
+                .ExistsByLanguageAsync(language, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNameExtensions.GetLocalizedName<TEntity>());
@@ -85,10 +92,12 @@ public abstract class BaseTranslationValidator<TEntity, TTranslation>
 
     public async Task<Result<bool>> ExistsByIdentificatorAsync(
         string identificator,
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         if (!await _translationExistsRepository
-                .ExistsByIdentificatorAsync(identificator, language))
+                .ExistsByIdentificatorAsync(identificator, 
+                    language, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNameExtensions.GetLocalizedName<TEntity>());
@@ -99,10 +108,12 @@ public abstract class BaseTranslationValidator<TEntity, TTranslation>
 
     public async Task<Result<bool>> NotExistsByIdentificatorAsync(
         string identificator, 
-        string language)
+        string language,
+        CancellationToken cancellationToken = default)
     {
         if (await _translationExistsRepository
-                .ExistsByIdentificatorAsync(identificator, language))
+                .ExistsByIdentificatorAsync(identificator,
+                    language, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNameExtensions.GetLocalizedName<TEntity>());

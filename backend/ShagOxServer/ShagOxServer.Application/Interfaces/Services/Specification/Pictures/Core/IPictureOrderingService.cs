@@ -12,11 +12,13 @@ public interface IPictureOrderingService<TOwner, TPicture>
 {
     Task<Result<PictureSyncResponce<TPicture>>> SyncPicturesAsync(
         long ownerId,
-        List<OwnerPictureOrderUpdateRequest>? request);
+        List<OwnerPictureOrderUpdateRequest>? request,
+        CancellationToken cancellationToken = default);
 
     Task<Result<PictureSyncResponce<TPicture>>> SyncPicturesAsync(
         TOwner advertisement,
-        List<OwnerPictureOrderUpdateRequest>? request);
+        List<OwnerPictureOrderUpdateRequest>? request,
+        CancellationToken cancellationToken = default);
 
     Task DeletePicturesByPublicIdAsync(
         List<string> publicIds);

@@ -5,6 +5,7 @@ using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Filters.Auth.Roles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -23,9 +24,10 @@ public class RoleQueriesController
 
     public RoleQueriesController(
         IRoleQueryService queryService,
-        IUserRoleQueryService queryUserRoleService
+        IUserRoleQueryService queryUserRoleService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
         _queryUserRoleService = queryUserRoleService;
     }

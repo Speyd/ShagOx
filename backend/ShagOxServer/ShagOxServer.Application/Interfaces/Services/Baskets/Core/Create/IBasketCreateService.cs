@@ -12,5 +12,6 @@ public interface IBasketCreateService
 {
     Task<Result<CreateResponse>> CreateInternalAsync(
         BasketCreateRequest request,
-        long ownerId);
+        long ownerId,
+        CancellationToken cancellationToken = default);
 }

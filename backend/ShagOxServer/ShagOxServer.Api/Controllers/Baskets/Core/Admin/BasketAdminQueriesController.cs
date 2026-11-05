@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Baskets.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Filters.Baskets.Core;
 
 namespace ShagOxServer.Api.Controllers.Baskets.Core.Admin;
@@ -15,9 +16,10 @@ public class BasketAdminQueriesController
         BasketSearchFilter>
 {
     public BasketAdminQueriesController(
-        IBasketQueryService queryService
+        IBasketQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 }

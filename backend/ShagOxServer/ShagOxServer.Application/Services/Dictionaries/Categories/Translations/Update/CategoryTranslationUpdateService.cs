@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
@@ -34,9 +35,14 @@ public class CategoryTranslationUpdateService
         CategoryTranslationValidator categoryTranslationValidator,
         CategoryValidator categoryValidator,
         CategoryTranslationInvalidationService transInvalid,
+        ICategoryTranslationDeleteService categoryTranslationDeleteService,
         IUnitOfWork unitOfWork,
         ILogger<CategoryTranslationUpdateService> logger
-    ) : base(categoryValidator, categoryTranslationValidator)
+    ) : base(categoryValidator, 
+            categoryTranslationDeleteService,
+            categoryTranslationValidator,
+            logger,
+            unitOfWork)
     {
         _categoryRepository = categoryRepository;
         _categoryTranslationValidator = categoryTranslationValidator;
@@ -48,17 +54,20 @@ public class CategoryTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long categoryTranslationId,
-        CategoryTranslationUpdateRequest request)
+        CategoryTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var category = await _categoryTranslationValidator
-            .GetByIdAsync(categoryTranslationId);
+            .GetByIdAsync(categoryTranslationId, cancellationToken);
 
         if (!category.IsSuccess)
             return Result<UpdateResponse>.Fail(category.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(category.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            category.Value!,
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

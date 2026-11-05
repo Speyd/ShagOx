@@ -18,7 +18,7 @@ public static class EntityStatusExtensions
         this IQueryable<TEntity> query)
         where TEntity : BaseEntity
     {
-        return query.IgnoreQueryFilters()
+        return query
             .Where(x => x.EntityStatus == EntityStatus.Deleted);
     }
 
@@ -26,7 +26,7 @@ public static class EntityStatusExtensions
         this IQueryable<TEntity> query)
         where TEntity : BaseEntity
     {
-        return query.IgnoreQueryFilters();
+        return query;
     }
 
     public static IQueryable<TEntity> WithStatusFilter<TEntity>(
@@ -44,6 +44,10 @@ public static class EntityStatusExtensions
 
             EntityStatus.Deleted =>
                 query.Where(x => x.EntityStatus == EntityStatus.Deleted),
+
+            EntityStatus.ActiveAndHidden =>
+                query.Where(x => x.EntityStatus == EntityStatus.Active ||
+                    x.EntityStatus == EntityStatus.Hidden),
 
             EntityStatus.All => query,
 

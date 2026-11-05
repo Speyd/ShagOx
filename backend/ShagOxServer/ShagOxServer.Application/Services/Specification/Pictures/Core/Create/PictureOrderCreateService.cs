@@ -5,7 +5,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Create;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
@@ -42,7 +42,8 @@ public abstract class PictureOrderCreateService<TOwner, TPicture, TRequest>
         int order);
 
     public virtual async Task<Result<PicturesCreateResponse>> CreateAsync(
-        PicturesCreateRequest request)
+        PicturesCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var uploadedPictures = new List<string>();
 

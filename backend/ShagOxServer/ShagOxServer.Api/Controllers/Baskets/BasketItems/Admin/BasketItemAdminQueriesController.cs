@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -22,9 +23,10 @@ public class BasketItemAdminQueriesController
 
 
     public BasketItemAdminQueriesController(
-        IBasketItemQueryService queryService
-    ) 
-        : base(queryService)
+        IBasketItemQueryService queryService,
+        IUserContext userContext
+    )
+        : base(queryService, userContext)
     {
         _itemQueryService = queryService;
     }

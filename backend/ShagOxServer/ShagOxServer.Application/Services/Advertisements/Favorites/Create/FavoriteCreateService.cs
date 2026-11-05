@@ -47,17 +47,18 @@ public class FavoriteCreateService
 
     public async Task<Result<CreateResponse>> CreateAsync(
         FavoriteCreateRequest request,
-        long ownerId)
+        long ownerId,
+        CancellationToken cancellationToken = default)
     {
         var validationUser = await _userValidator
-            .ExistsByIdAsync(ownerId);
+            .ExistsByIdAsync(ownerId, cancellationToken);
 
         if (!validationUser.IsSuccess)
             return Result<CreateResponse>.Fail(validationUser.Error);
 
 
         var validationAdvert = await _advertValidator.ExistsByIdAsync(
-            request.AdvertisementId);
+            request.AdvertisementId, cancellationToken);
 
         if (!validationAdvert.IsSuccess)
             return Result<CreateResponse>.Fail(validationAdvert.Error);

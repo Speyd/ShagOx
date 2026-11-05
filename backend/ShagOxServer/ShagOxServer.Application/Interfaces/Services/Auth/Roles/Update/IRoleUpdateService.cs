@@ -1,9 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles.Update;
+using ShagOxServer.Application.DTOs.Auth.Roles.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Update;
 
 namespace ShagOxServer.Application.Interfaces.Services.Auth.Roles.Update;
 public interface IRoleUpdateService
-    : IUpdateService<UpdateResponse, RoleUpdateRequest>
+    : IUpdateService<UpdateResponse, RoleUpdateRequest>,
+    IEntityStatusUpdateService
 {
 }

@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Domain.Base.Enum;
 using System.Text.Json;
 
@@ -10,6 +11,7 @@ public sealed record AdvertisementVariantShortDto
     long AdvertisementId,
     decimal Price,
     decimal PreviousPrice,
+    ConvertedPricesDto PriceConversion,
     int Stock,
     JsonDocument Attributes
 ) : BaseDto(Id, EntityStatus);

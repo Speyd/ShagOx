@@ -3,7 +3,9 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
+using ShagOxServer.Application.Services.Base.Validator;
+using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
@@ -24,6 +26,7 @@ public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
     public PictureOrderUpdateService(
         IRepository<TPicture> pictureRepository,
         PictureValidator pictureLoadValidator,
+        IPictureDeleteService<TPicture> pictureDeleteService,
         BaseValidator<TPicture> pictureValidator,
         BaseValidator<TOwner> ownerValidator,
         IUnitOfWork unitOfWork,
@@ -32,6 +35,7 @@ public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
     )
         : base(pictureRepository,
             pictureLoadValidator,
+            pictureDeleteService,
             pictureValidator, 
             ownerValidator, 
             unitOfWork, 
@@ -70,7 +74,8 @@ public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
 
     public override async Task<Result<PictureUpdateResponse>> UpdateInternalAsync(
         TPicture entity,
-        TRequest request)
+        TRequest request,
+        CancellationToken cancellationToken = default)
     {
         var newOrder = await GetNewOrder(entity.Id, request);
 

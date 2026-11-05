@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Cities.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -45,20 +45,23 @@ public class CityCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        CityCreateRequest request)
+        CityCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var region = await _regionValidator
-            .ExistsByIdAsync(request.RegionId);
+            .ExistsByIdAsync(request.RegionId, cancellationToken);
 
         if (!region.IsSuccess)
-            Result<CreateResponse>.Fail(region.Error);
+            return Result<CreateResponse>.Fail(region.Error);
 
 
-        var validatorName = await _cityValidator
-            .NotExistsAsync(request.RegionId, request.Code);
+        var validatorName = await _cityValidator.NotExistsAsync(
+            request.RegionId, 
+            request.Code, 
+            cancellationToken);
 
         if (!validatorName.IsSuccess)
-            Result<CreateResponse>.Fail(validatorName.Error);
+            return Result<CreateResponse>.Fail(validatorName.Error);
 
 
         var city = CityCreater.Create(request);

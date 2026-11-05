@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -41,10 +41,12 @@ public class CategoryTranslationCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        CategoryTranslationCreateRequest request)
+        CategoryTranslationCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var codeValidation = await _categoryValidator
-            .NotExistsAsync(request.TranslatableId, request.Language);
+            .NotExistsAsync(request.TranslatableId,
+                request.Language, cancellationToken);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

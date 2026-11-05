@@ -17,22 +17,30 @@ public class AdvertisementConfiguration
                .IsRequired()
                .HasColumnType("text");
 
+        builder.Property(x => x.Price)
+            .HasPrecision(18, 2)
+            .HasDefaultValue(null);
+
+        builder.Property(x => x.PreviousPrice)
+            .HasPrecision(18, 2)
+            .HasDefaultValue(null);
+
         builder.Property(x => x.Attributes)
             .HasColumnType("jsonb")
             .IsRequired();
 
         builder.HasOne(x => x.Currency)
-            .WithMany(x => x.AdvertisementsByCurrency)
+            .WithMany(x => x.Advertisements)
             .HasForeignKey(x => x.CurrencyId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Condition)
-            .WithMany(x => x.AdvertisementsByCondition)
+            .WithMany(x => x.Advertisements)
             .HasForeignKey(x => x.ConditionId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Category)
-            .WithMany(x => x.AdvertisementsByCategory)
+            .WithMany(x => x.Advertisements)
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -47,7 +55,7 @@ public class AdvertisementConfiguration
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Status)
-              .WithMany(x => x.AdvertisementsByStatus)
+              .WithMany(x => x.Advertisements)
               .HasForeignKey(x => x.StatusId)
               .OnDelete(DeleteBehavior.Restrict);
 

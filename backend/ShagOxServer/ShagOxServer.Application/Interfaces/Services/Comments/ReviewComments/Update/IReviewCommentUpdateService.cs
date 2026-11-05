@@ -1,10 +1,11 @@
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Comments.ReviewComments.Update;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Update;
 
 namespace ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Update;
 public interface IReviewCommentUpdateService
     : IUpdateService<UpdateResponse, 
-        ReviewCommentUpdateRequest>
+        ReviewCommentUpdateRequest>,
+    IEntityStatusUpdateService
 {
 }

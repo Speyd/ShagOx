@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,21 +15,23 @@ public class StatusValidator
 
 
     public StatusValidator(
+        IRepository<Status> repository,
         IQueryRepository<Status> statusRepository,
         IStatusExistsRepository statusExistsRepository,
         IDataCacheService cache
     ) 
-        : base(statusRepository, statusExistsRepository, cache)
+        : base(repository, statusRepository, statusExistsRepository, cache)
     {
         _statusExistsRepository = statusExistsRepository;
     }
 
 
     public async Task<Result<bool>> ExistsByCodeAsync(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         if (!await _statusExistsRepository
-            .ExistsByCodeAsync(code))
+            .ExistsByCodeAsync(code, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.Status);
@@ -39,10 +41,11 @@ public class StatusValidator
     }
 
     public async Task<Result<bool>> NotExistsByCodeAsync(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         if (await _statusExistsRepository
-            .ExistsByCodeAsync(code))
+            .ExistsByCodeAsync(code, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Status);

@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Query;
 using ShagOxServer.Domain.Filters.Specification.Pictures.AdvertisementImages;
 
-namespace ShagOxServer.Api.Controllers.Specification.Pictures.AdvertisementImages;
+namespace ShagOxServer.Api.Controllers.Specification.Pictures.AdvertisementImages.Admin;
 
 [ApiController]
 [Route("api/admin/advertisement-images")]
@@ -15,9 +16,10 @@ public class AdvertisementImageAdminQueriesController
         AdvertisementImageSearchFilter>
 {
     public AdvertisementImageAdminQueriesController(
-        IAdvertisementImageQueryService queryService
+        IAdvertisementImageQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 }

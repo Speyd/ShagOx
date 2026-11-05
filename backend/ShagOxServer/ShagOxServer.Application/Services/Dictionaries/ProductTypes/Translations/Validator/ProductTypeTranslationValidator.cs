@@ -12,11 +12,12 @@ public class ProductTypeTranslationValidator
         ProductTypeTranslation>
 {
     public ProductTypeTranslationValidator(
+        IRepository<ProductTypeTranslation> repository,
         IQueryRepository<ProductTypeTranslation> typeRepository,
         IProductTypeTranslationExistsRepository typeExistsRepository,
         IDataCacheService cache
     ) 
-        : base(typeRepository, typeExistsRepository, cache)
+        : base(repository, typeRepository, typeExistsRepository, cache)
     {
     }
 }

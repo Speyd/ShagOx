@@ -4,8 +4,10 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Specification.Conditions.Mapping;
 using ShagOxServer.Application.Services.Specification.Conditions.Validator;
@@ -14,7 +16,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Conditions.Update;
 public class ConditionUpdateService 
-    : IConditionUpdateService
+    : BaseUpdateService<Condition>,
+    IConditionUpdateService
 {
     private readonly IRepository<Condition> _conditionRepository;
     private readonly ConditionValidator _conditionValidator;
@@ -28,9 +31,12 @@ public class ConditionUpdateService
     public ConditionUpdateService(
         IRepository<Condition> conditionRepository,
         ConditionValidator conditionValidator,
+        IConditionDeleteService conditionDeleteService,
         ConditionInvalidationService conditionInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<ConditionUpdateService> logger)
+        ILogger<ConditionUpdateService> logger
+    )
+        : base(conditionDeleteService, conditionValidator, logger, unitOfWork)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
@@ -42,17 +48,20 @@ public class ConditionUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long conditionId, 
-        ConditionUpdateRequest request)
+        ConditionUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var condition = await _conditionValidator
-            .GetByIdAsync(conditionId);
+            .GetByIdAsync(conditionId, cancellationToken);
 
         if (!condition.IsSuccess)
             return Result<UpdateResponse>.Fail(condition.Error );
 
 
-        var validation = await
-             ValidateUpdatesAsync(condition.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            condition.Value!, 
+            request, 
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -111,16 +120,17 @@ public class ConditionUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         Condition сondition,
-        ConditionUpdateRequest request)
+        ConditionUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Code is not null &&
             request.Code != сondition.Code)
         {
             var nameValidation = await _conditionValidator
-                .NotExistsByCodeAsync(request.Code);
+                .NotExistsByCodeAsync(request.Code, cancellationToken);
 
             if (!nameValidation.IsSuccess)
-                Result<CreateResponse>.Fail(nameValidation.Error);
+                return Result<bool>.Fail(nameValidation.Error);
         }
 
         return Result<bool>.Success(true);

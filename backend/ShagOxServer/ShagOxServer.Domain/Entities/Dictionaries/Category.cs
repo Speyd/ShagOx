@@ -16,7 +16,7 @@ public class Category
     public ICollection<AttributeDefinition> Attributes { get; set; }
         = [];
 
-    public ICollection<Advertisement> AdvertisementsByCategory { get; set; }
+    public ICollection<Advertisement> Advertisements { get; set; }
        = [];
 
     public List<CategoryTranslation> Translations { get; set; }

@@ -11,11 +11,13 @@ public class CityTranslationValidator
     : BaseTranslationValidator<City, CityTranslation>
 {
     public CityTranslationValidator(
+        IRepository<CityTranslation> repository,
         IQueryRepository<CityTranslation> cityRepository,
         ICityTranslationExistsRepository cityTranslationExistsRepository,
         IDataCacheService cache
     ) 
-        : base(cityRepository, 
+        : base(repository, 
+            cityRepository, 
             cityTranslationExistsRepository, 
             cache)
     {

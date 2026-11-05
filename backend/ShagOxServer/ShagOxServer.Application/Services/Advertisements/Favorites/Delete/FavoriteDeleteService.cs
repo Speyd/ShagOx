@@ -43,10 +43,11 @@ public class FavoriteDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var favorite = await _favoriteValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!favorite.IsSuccess)
             return Result<DeleteResponse>.Fail(favorite.Error);

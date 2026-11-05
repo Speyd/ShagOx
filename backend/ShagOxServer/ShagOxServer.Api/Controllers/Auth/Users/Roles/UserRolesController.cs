@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -19,7 +21,10 @@ public class UserRolesController
 
     public UserRolesController(
         IUserQueryService queryService,
-        IRoleQueryService roleService)
+        IRoleQueryService roleService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _userService = queryService;
         _roleService = roleService;
@@ -44,11 +49,12 @@ public class UserRolesController
     public async Task<IActionResult> GetUserRoles(
         [FromRoute] long userId,
         [FromQuery] PaginationParams pagination,
+        [FromQuery] EntityStatus status,
         CancellationToken cancellationToken)
     {
         var result = await _roleService
             .GetByUserAsync(userId, pagination,
-                cancellationToken);
+                cancellationToken, status);
 
         return result.ToActionResult();
     }

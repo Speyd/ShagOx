@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -45,16 +45,18 @@ public class AttributeDictionaryValueCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        AttributeDictionaryValueCreateRequest request)
+        AttributeDictionaryValueCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var dictionaryExists = await _dictionaryValidator
-            .ExistsByIdAsync(request.DictionaryId);
+            .ExistsByIdAsync(request.DictionaryId, cancellationToken);
 
         if (!dictionaryExists.IsSuccess)
             return Result<CreateResponse>.Fail(dictionaryExists.Error);
 
         var valueExists = await _valueValidator
-            .NotExistsAsync(request.DictionaryId, request.Code);
+            .NotExistsAsync(request.DictionaryId, 
+                request.Code, cancellationToken);
 
         if (!valueExists.IsSuccess)
             return Result<CreateResponse>.Fail(valueExists.Error);

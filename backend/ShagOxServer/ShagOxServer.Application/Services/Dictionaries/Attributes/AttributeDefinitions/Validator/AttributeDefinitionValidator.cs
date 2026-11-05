@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,22 +15,24 @@ public class AttributeDefinitionValidator
 
 
     public AttributeDefinitionValidator(
+        IRepository<AttributeDefinition> repository,
         IQueryRepository<AttributeDefinition> attributeRepository,
         IAttributeDefinitionExistsRepository attributeExistsRepository,
         IDataCacheService cache
     ) 
-        : base(attributeRepository, attributeExistsRepository, cache)
+        : base(repository, attributeRepository, attributeExistsRepository, cache)
     {
         _attributeExistsRepository = attributeExistsRepository;
     }
 
 
     public async Task<Result<bool>> ExistsByKeyAsync(
-      string key,
-      long categoryId)
+        string key,
+        long categoryId,
+        CancellationToken cancellationToken = default)
     {
         if (!await _attributeExistsRepository
-            .ExistsByCategoryAsync(key, categoryId))
+            .ExistsByCategoryAsync(key, categoryId, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.AttributeDefinition);
@@ -40,11 +42,12 @@ public class AttributeDefinitionValidator
     }
 
     public async Task<Result<bool>> NotExistsByKeyAsync(
-      string key,
-      long categoryId)
+         string key,
+        long categoryId,
+        CancellationToken cancellationToken = default)
     {
         if (await _attributeExistsRepository
-            .ExistsByCategoryAsync(key, categoryId))
+            .ExistsByCategoryAsync(key, categoryId, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.AttributeDefinition);

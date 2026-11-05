@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,22 +15,25 @@ public class CategoryValidator
 
 
     public CategoryValidator(
+        IRepository<Category> repository,
         IQueryRepository<Category> categoryRepository,
         ICategoryExistsRepository categoryExistsRepository,
         IDataCacheService cache
     ) 
-        : base(categoryRepository, categoryExistsRepository, cache)
+        : base(repository, categoryRepository, categoryExistsRepository, cache)
     {
         _categoryExistsRepository = categoryExistsRepository;
     }
 
 
     public async Task<Result<bool>> ExistsAsync(
-       string categoryName,
-       long productTypeId)
+        string categoryName,
+        long productTypeId,
+        CancellationToken cancellationToken = default)
     {
         if (!await _categoryExistsRepository.
-                ExistsAsync(categoryName, productTypeId))
+                ExistsAsync(categoryName,
+                    productTypeId, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.Category);
@@ -40,11 +43,13 @@ public class CategoryValidator
     }
 
     public async Task<Result<bool>> NotExistsAsync(
-       string categoryCode,
-       long productTypeId)
+        string categoryCode,
+        long productTypeId,
+        CancellationToken cancellationToken = default)
     {
         if (await _categoryExistsRepository.
-                ExistsAsync(categoryCode, productTypeId))
+                ExistsAsync(categoryCode,
+                    productTypeId, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Category);
@@ -54,10 +59,11 @@ public class CategoryValidator
     }
 
     public async Task<Result<bool>> ExistsByCodeAsync(
-       string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         if (!await _categoryExistsRepository
-            .ExistsByCodeAsync(code))
+            .ExistsByCodeAsync(code, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.Category);
@@ -67,10 +73,11 @@ public class CategoryValidator
     }
 
     public async Task<Result<bool>> NotExistsByCodeAsync(
-       string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         if (await _categoryExistsRepository
-            .ExistsByCodeAsync(code))
+            .ExistsByCodeAsync(code, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Category);
@@ -80,10 +87,11 @@ public class CategoryValidator
     }
 
     public async Task<Result<bool>> ExistsByProductAsync(
-       long productTypeId)
+        long productTypeId,
+        CancellationToken cancellationToken = default)
     {
         if (!await _categoryExistsRepository
-            .ExistsByProductTypeAsync(productTypeId))
+            .ExistsByProductTypeAsync(productTypeId, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.Category);
@@ -93,10 +101,11 @@ public class CategoryValidator
     }
 
     public async Task<Result<bool>> NotExistsByProductAsync(
-       long productTypeId)
+        long productTypeId,
+        CancellationToken cancellationToken = default)
     {
         if (await _categoryExistsRepository
-            .ExistsByProductTypeAsync(productTypeId))
+            .ExistsByProductTypeAsync(productTypeId, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Category);

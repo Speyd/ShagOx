@@ -4,11 +4,13 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
+using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Delete;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -33,11 +35,17 @@ public class AttributeDictionaryValueTranslationUpdateService
     public AttributeDictionaryValueTranslationUpdateService(
         IRepository<AttributeDictionaryValueTranslation> attributeRepository,
         AttributeDictionaryValueTranslationValidator attributeTranslationValidator,
+        IAttributeDictionaryValueTranslationDeleteService transDeleteService,
         AttributeDictionaryValueTranslationInvalidationService transInvalid,
         AttributeDictionaryValueValidator attributeValidator,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryValueTranslationUpdateService> logger
-    ) : base(attributeValidator, attributeTranslationValidator)
+    ) 
+        : base(attributeValidator, 
+            transDeleteService, 
+            attributeTranslationValidator,
+            logger,
+            unitOfWork)
     {
         _attributeRepository = attributeRepository;
         _attributeTranslationValidator = attributeTranslationValidator;
@@ -49,17 +57,20 @@ public class AttributeDictionaryValueTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long attributeTranslationId,
-        AttributeDictionaryValueTranslationUpdateRequest request)
+        AttributeDictionaryValueTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var attribute = await _attributeTranslationValidator
-            .GetByIdAsync(attributeTranslationId);
+            .GetByIdAsync(attributeTranslationId, cancellationToken);
 
         if (!attribute.IsSuccess)
             return Result<UpdateResponse>.Fail(attribute.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(attribute.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            attribute.Value!, 
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

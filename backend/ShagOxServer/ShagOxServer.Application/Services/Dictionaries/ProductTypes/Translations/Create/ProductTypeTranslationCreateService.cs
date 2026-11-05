@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -42,10 +42,13 @@ public class ProductTypeTranslationCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        ProductTypeTranslationCreateRequest request)
+        ProductTypeTranslationCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var codeValidation = await _typeValidator
-            .NotExistsAsync(request.TranslatableId, request.Language);
+        var codeValidation = await _typeValidator.NotExistsAsync(
+            request.TranslatableId, 
+            request.Language, 
+            cancellationToken);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

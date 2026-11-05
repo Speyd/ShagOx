@@ -12,11 +12,12 @@ public class RegionTranslationValidator
         RegionTranslation>
 {
     public RegionTranslationValidator(
+        IRepository<RegionTranslation> repository,
         IQueryRepository<RegionTranslation> regionRepository,
         IRegionTranslationExistsRepository regionExistsRepository,
         IDataCacheService cache
     ) 
-        : base(regionRepository, regionExistsRepository, cache)
+        : base(repository, regionRepository, regionExistsRepository, cache)
     {
     }
 }

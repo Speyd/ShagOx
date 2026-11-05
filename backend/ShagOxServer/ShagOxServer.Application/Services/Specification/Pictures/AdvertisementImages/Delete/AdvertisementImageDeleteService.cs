@@ -8,9 +8,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictu
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -41,11 +39,12 @@ public class AdvertisementImageDeleteService
 
 
     public override async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            return await base.DeleteAsync(id);
+            return await base.DeleteAsync(id, cancellationToken);
         }
         catch
         {
@@ -55,12 +54,13 @@ public class AdvertisementImageDeleteService
         }
     }
     public override async Task<Result<DeleteResponse>> DeleteRecordAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
        
         try
         {
-            return await base.DeleteRecordAsync(id);
+            return await base.DeleteRecordAsync(id, cancellationToken);
         }
         catch
         {

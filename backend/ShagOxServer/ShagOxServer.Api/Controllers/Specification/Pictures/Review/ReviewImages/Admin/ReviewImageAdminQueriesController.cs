@@ -2,22 +2,24 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Review.ReviewImages.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Query;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Review;
 
-namespace ShagOxServer.Api.Controllers.Specification.Pictures.Review.ReviewImages;
+namespace ShagOxServer.Api.Controllers.Specification.Pictures.Review.ReviewImages.Admin;
 
 [ApiController]
 [Route("api/admin/review-images")]
 [Authorize(Roles = "Admin")]
-public class ReviewImageQueriesAdminController
+public class ReviewImageAdminQueriesController
     : BaseAdminQueryController<ReviewImageDto,
         ReviewImageSearchFilter>
 {
-    public ReviewImageQueriesAdminController(
-        IReviewImageQueryService queryService
+    public ReviewImageAdminQueriesController(
+        IReviewImageQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 }

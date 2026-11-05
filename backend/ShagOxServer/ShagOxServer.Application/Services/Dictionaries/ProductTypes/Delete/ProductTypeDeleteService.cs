@@ -43,10 +43,11 @@ public class ProductTypeDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var productType = await _productTypeValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!productType.IsSuccess)
             return Result<DeleteResponse>.Fail(productType.Error);

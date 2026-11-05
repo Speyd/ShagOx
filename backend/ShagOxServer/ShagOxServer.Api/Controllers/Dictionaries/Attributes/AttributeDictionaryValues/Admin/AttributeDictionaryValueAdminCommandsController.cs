@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Update;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Dictionaries.Attributes.AttributeDictionaryValues.Admin;
@@ -23,8 +26,10 @@ public class AttributeDictionaryValueAdminCommandsController
     public AttributeDictionaryValueAdminCommandsController(
         IAttributeDictionaryValueCreateService createService,
         IAttributeDictionaryValueUpdateService updateService,
-        IAttributeDictionaryValueDeleteService deleteService
-        )
+        IAttributeDictionaryValueDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;
@@ -53,6 +58,18 @@ public class AttributeDictionaryValueAdminCommandsController
         return result.ToActionResult();
     }
 
+    [HttpPatch("{id:long}/status")]
+    public async Task<IActionResult> ChangeStatus(
+        [FromRoute] long id,
+        [FromBody] ChangeStatusRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _updateService
+            .ChangeStatusAsync(id, request,
+                cancellationToken);
+
+        return result.ToActionResult();
+    }
 
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(

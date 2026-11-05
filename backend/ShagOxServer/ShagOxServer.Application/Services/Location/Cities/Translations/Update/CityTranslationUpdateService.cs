@@ -4,11 +4,13 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Cities.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
+using ShagOxServer.Application.Services.Location.Cities.Translations.Delete;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -32,11 +34,17 @@ public class CityTranslationUpdateService
     public CityTranslationUpdateService(
         IRepository<CityTranslation> cityRepository,
         CityTranslationValidator cityTranslationValidator,
+        ICityTranslationDeleteService cityTranslationDeleteService,
         CityValidator cityValidator,
         CityTranslationInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityTranslationUpdateService> logger
-        ) : base(cityValidator, cityTranslationValidator)
+    ) 
+        : base(cityValidator, 
+            cityTranslationDeleteService,
+            cityTranslationValidator,
+            logger,
+            unitOfWork)
     {
         _cityRepository = cityRepository;
         _cityInvalid = cityInvalid;
@@ -47,17 +55,20 @@ public class CityTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long cityTranslationId,
-        CityTranslationUpdateRequest request)
+        CityTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var city = await _translationValidator
-            .GetByIdAsync(cityTranslationId);
+            .GetByIdAsync(cityTranslationId, cancellationToken);
 
         if (!city.IsSuccess)
             return Result<UpdateResponse>.Fail(city.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(city.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            city.Value!, 
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

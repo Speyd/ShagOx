@@ -16,7 +16,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Advertisements.Core.Delete;
 public class AdvertisementDeleteService
     : BaseDeleteService<Advertisement>
-    , IAdvertisementDeleteService
+    ,IAdvertisementDeleteService
 {
     private readonly IRepository<Advertisement> _advertRepository;
     private readonly AdvertisementValidator _advertValidator;
@@ -51,10 +51,11 @@ public class AdvertisementDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var advert = await _advertValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!advert.IsSuccess)
             return Result<DeleteResponse>.Fail(advert.Error);
@@ -68,7 +69,7 @@ public class AdvertisementDeleteService
             foreach (var image in advert.Value!.Pictures)
             {
                 await _imageDeleteService
-                    .DeleteRecordAsync(image.Id);
+                    .DeleteRecordAsync(image.Id, cancellationToken);
             }
 
             await _unitOfWork.CommitAsync();
@@ -108,9 +109,11 @@ public class AdvertisementDeleteService
     }
 
     public override async Task<Result<bool>> SoftBodyDeleteAsync(
-       Advertisement entity)
+        Advertisement entity,
+        CancellationToken cancellationToken = default)
     {
-        var body = await base.SoftBodyDeleteAsync(entity);
+        var body = await base.SoftBodyDeleteAsync(entity,
+            cancellationToken);
 
         if (!body.IsSuccess)
             Result<bool>.Fail(body.Error);
@@ -118,7 +121,7 @@ public class AdvertisementDeleteService
         foreach (var image in entity.Pictures)
         {
             var imageDelete = await _imageDeleteService
-                .SoftDeleteAsync(image.Id);
+                .SoftDeleteAsync(image.Id, cancellationToken);
 
             if (!imageDelete.IsSuccess)
                 Result<bool>.Fail(imageDelete.Error);

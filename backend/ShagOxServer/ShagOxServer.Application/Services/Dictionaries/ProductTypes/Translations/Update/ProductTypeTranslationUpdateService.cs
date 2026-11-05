@@ -56,17 +56,20 @@ public class ProductTypeTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long typeTranslationId,
-        ProductTypeTranslationUpdateRequest request)
+        ProductTypeTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var productType = await _typeTranslationValidator
-            .GetByIdAsync(typeTranslationId);
+            .GetByIdAsync(typeTranslationId, cancellationToken);
 
         if (!productType.IsSuccess)
             return Result<UpdateResponse>.Fail(productType.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(productType.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            productType.Value!, 
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

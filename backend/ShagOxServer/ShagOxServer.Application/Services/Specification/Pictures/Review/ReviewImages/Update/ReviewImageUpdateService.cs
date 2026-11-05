@@ -51,11 +51,13 @@ public class ReviewImageUpdateService
 
     public override async Task<Result<PictureUpdateResponse>> UpdateAsync(
         long imageId,
-        PictureOrderUpdateRequest request)
+        PictureOrderUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            return await base.UpdateAsync(imageId, request);
+            return await base.UpdateAsync(imageId, 
+                request, cancellationToken);
         }
         catch
         {

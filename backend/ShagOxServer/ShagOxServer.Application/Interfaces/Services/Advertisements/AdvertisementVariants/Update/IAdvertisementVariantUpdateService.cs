@@ -11,5 +11,6 @@ public interface IAdvertisementVariantUpdateService
 {
     Task<Result<UpdateResponse>> UpdateInternalAsync(
         long valueId,
-        AdvertisementVariantUpdateRequest request);
+        AdvertisementVariantUpdateRequest request,
+        CancellationToken cancellationToken = default);
 }

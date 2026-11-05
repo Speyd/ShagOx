@@ -26,10 +26,11 @@ public class BasketValidator
 
 
     public async Task<Result<bool>> ExistsByUserAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         if (!await _basketExistsRepository
-                .ExistsByUserAsync(userId))
+                .ExistsByUserAsync(userId, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.Basket);
@@ -39,10 +40,11 @@ public class BasketValidator
     }
 
     public async Task<Result<bool>> NotExistsByUserAsync(
-        long userId)
+        long userId,
+        CancellationToken cancellationToken = default)
     {
         if (await _basketExistsRepository
-                .ExistsByUserAsync(userId))
+                .ExistsByUserAsync(userId, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Basket);

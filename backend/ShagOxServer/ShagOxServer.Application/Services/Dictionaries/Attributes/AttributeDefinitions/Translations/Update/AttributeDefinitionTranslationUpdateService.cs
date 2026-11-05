@@ -59,17 +59,19 @@ public class AttributeDefinitionTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long attributeTranslationId,
-        AttributeDefinitionTranslationUpdateRequest request)
+        AttributeDefinitionTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var attributeTrans = await _attributeTranslationValidator
-            .GetByIdAsync(attributeTranslationId);
+            .GetByIdAsync(attributeTranslationId, cancellationToken);
 
         if (!attributeTrans.IsSuccess)
             return Result<UpdateResponse>.Fail(attributeTrans.Error);
 
 
         var validation = await
-             ValidateUpdatesAsync(attributeTrans.Value!, request);
+             ValidateUpdatesAsync(attributeTrans.Value!,
+                request, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

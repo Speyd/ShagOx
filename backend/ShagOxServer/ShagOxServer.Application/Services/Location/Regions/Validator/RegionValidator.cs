@@ -27,21 +27,29 @@ public class RegionValidator
 
 
     public async Task<Result<bool>> ExistsByCodeAsync(
-       string name)
+        string name,
+        CancellationToken cancellationToken = default)
     {
-        if (!await _regionExistsRepository.ExistsByCodeAsync(name))
+        if (!await _regionExistsRepository
+            .ExistsByCodeAsync(name, cancellationToken))
+        {
             return Result<bool>.NotFound(
                 EntityNamesResources.Region);
+        }
 
         return Result<bool>.Success(true);
     }
 
     public async Task<Result<bool>> NotExistsByCodeAsync(
-       string name)
+       string name,
+       CancellationToken cancellationToken = default)
     {
-        if (await _regionExistsRepository.ExistsByCodeAsync(name))
+        if (await _regionExistsRepository
+                .ExistsByCodeAsync(name, cancellationToken))
+        {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Region);
+        }
 
         return Result<bool>.Success(true);
     }

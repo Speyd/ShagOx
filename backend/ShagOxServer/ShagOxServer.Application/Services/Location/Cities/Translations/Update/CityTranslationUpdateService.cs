@@ -55,17 +55,20 @@ public class CityTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long cityTranslationId,
-        CityTranslationUpdateRequest request)
+        CityTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var city = await _translationValidator
-            .GetByIdAsync(cityTranslationId);
+            .GetByIdAsync(cityTranslationId, cancellationToken);
 
         if (!city.IsSuccess)
             return Result<UpdateResponse>.Fail(city.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(city.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            city.Value!, 
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

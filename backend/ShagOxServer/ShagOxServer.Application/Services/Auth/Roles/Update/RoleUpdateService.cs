@@ -48,14 +48,17 @@ public class RoleUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long roleId,
-        RoleUpdateRequest request)
+        RoleUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var role = await _roleValidator.GetByIdAsync(roleId);
+        var role = await _roleValidator
+            .GetByIdAsync(roleId, cancellationToken);
         if (!role.IsSuccess)
             return Result<UpdateResponse>.Fail(role.Error);
 
         var validation = await
-             ValidateUpdatesAsync(role.Value!, request);
+             ValidateUpdatesAsync(role.Value!, 
+                request, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -113,13 +116,14 @@ public class RoleUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         Role role,
-        RoleUpdateRequest request)
+        RoleUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Name is not null &&
            request.Name != role.Name)
         {
             var nameValidator = await _roleValidator.
-                NotExistsByNameAsync(request.Name);
+                NotExistsByNameAsync(request.Name, cancellationToken);
 
             if (!nameValidator.IsSuccess)
                 return Result<bool>.Fail(nameValidator.Error);

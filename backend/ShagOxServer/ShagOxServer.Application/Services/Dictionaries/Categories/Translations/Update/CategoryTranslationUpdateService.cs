@@ -54,17 +54,20 @@ public class CategoryTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long categoryTranslationId,
-        CategoryTranslationUpdateRequest request)
+        CategoryTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var category = await _categoryTranslationValidator
-            .GetByIdAsync(categoryTranslationId);
+            .GetByIdAsync(categoryTranslationId, cancellationToken);
 
         if (!category.IsSuccess)
             return Result<UpdateResponse>.Fail(category.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(category.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            category.Value!,
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

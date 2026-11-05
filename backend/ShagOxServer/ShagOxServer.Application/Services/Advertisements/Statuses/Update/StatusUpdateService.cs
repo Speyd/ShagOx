@@ -48,10 +48,11 @@ public class StatusUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long statusId,
-        StatusUpdateRequest request)
+        StatusUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var status = await _statusValidator.
-            GetByIdAsync(statusId);
+            GetByIdAsync(statusId, cancellationToken);
         if (!status.IsSuccess)
         {
             return Result<UpdateResponse>
@@ -59,7 +60,8 @@ public class StatusUpdateService
         }
 
         var validation = await
-             ValidateUpdatesAsync(status.Value!, request);
+             ValidateUpdatesAsync(status.Value!, 
+                request, cancellationToken);
 
         if (!validation.IsSuccess)
         {
@@ -119,13 +121,14 @@ public class StatusUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         Status status,
-        StatusUpdateRequest request)
+        StatusUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Code is not null &&
            request.Code != status.Code)
         {
             var validator = await _statusValidator
-                .NotExistsByCodeAsync(request.Code);
+                .NotExistsByCodeAsync(request.Code, cancellationToken);
 
             if (!validator.IsSuccess)
                 return Result<bool>.Fail(validator.Error);

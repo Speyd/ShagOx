@@ -73,15 +73,16 @@ public partial class AdvertisementUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long advertId,
-        AdvertisementUpdateRequest request)
+        AdvertisementUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var advert = await _validator
-            .GetByIdWithIncludeAsync(advertId);
+            .GetByIdIncludeAsync(advertId, cancellationToken);
         if (!advert.IsSuccess)
             return Result<UpdateResponse>.Fail(advert.Error);
 
         var validation = await _validatorUpdate
-            .ValidateUpdateConflictsAsync(request);
+            .ValidateUpdateConflictsAsync(request, cancellationToken);
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error!);
 
@@ -104,7 +105,8 @@ public partial class AdvertisementUpdateService
 
             var imagesResult = await _executor.SyncAsync(
                 advert.Value!,
-                request.Pictures
+                request.Pictures,
+                cancellationToken
             );
 
             if (!imagesResult.IsSuccess)
@@ -114,7 +116,7 @@ public partial class AdvertisementUpdateService
             }
 
             var updateResult = await UpdateVariantsAsync(
-                variantsResult.Value);
+                variantsResult.Value, cancellationToken);
 
              if (!updateResult.IsSuccess)
              {

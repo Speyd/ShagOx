@@ -26,11 +26,12 @@ public class ConditionValidator
     }
 
     public async Task<Result<bool>> ExistsByNameAsync(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
 
         if (!await _conditionExistsRepository
-            .ExistsByCodeAsync(code))
+            .ExistsByCodeAsync(code, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.Condition);
@@ -40,10 +41,11 @@ public class ConditionValidator
     }
 
     public async Task<Result<bool>> NotExistsByCodeAsync(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         if (await _conditionExistsRepository
-            .ExistsByCodeAsync(code))
+            .ExistsByCodeAsync(code, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Condition);

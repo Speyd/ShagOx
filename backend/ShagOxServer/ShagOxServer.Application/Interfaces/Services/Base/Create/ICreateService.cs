@@ -4,5 +4,6 @@ namespace ShagOxServer.Application.Interfaces.Services.Base.Create;
 public interface ICreateService<TResponse, TRequest>
 {
     Task<Result<TResponse>> CreateAsync(
-        TRequest request);
+        TRequest request,
+        CancellationToken cancellationToken = default);
 }

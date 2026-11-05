@@ -44,10 +44,11 @@ public class CategoryTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var category = await _categoryValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!category.IsSuccess)
             return Result<DeleteResponse>.Fail(category.Error);

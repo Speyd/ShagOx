@@ -5,5 +5,6 @@ public interface IUpdateService<TResponse, TRequest>
 {
     Task<Result<TResponse>> UpdateAsync(
         long id,
-        TRequest request);
+        TRequest request,
+        CancellationToken cancellationToken = default);
 }

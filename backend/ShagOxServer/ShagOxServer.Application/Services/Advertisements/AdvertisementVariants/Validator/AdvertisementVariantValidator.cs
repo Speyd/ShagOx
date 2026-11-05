@@ -55,10 +55,11 @@ public class AdvertisementVariantValidator
 
     public async Task<Result<bool>> NotExistsAsync(
        long advertisementId,
-       JsonDocument attributes)
+       JsonDocument attributes,
+       CancellationToken cancellationToken = default)
     {
         if (await _variantExistsRepository
-                .ExistsAsync(advertisementId, attributes))
+                .ExistsAsync(advertisementId, attributes, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.AdvertisementVariant);
@@ -68,11 +69,12 @@ public class AdvertisementVariantValidator
     }
 
     public async Task<Result<bool>> ValidateVariantAttributesAsync(
-         long advertId,
-         JsonDocument attributes)
+        long advertId,
+        JsonDocument attributes,
+        CancellationToken cancellationToken = default)
     {
         var advert = await _advertValidator
-            .GetByIdAsync(advertId);
+            .GetByIdAsync(advertId, cancellationToken);
 
         if (!advert.IsSuccess)
             return Result<bool>.Fail(advert.Error);
@@ -83,7 +85,8 @@ public class AdvertisementVariantValidator
             .ToList();
 
         var result = await _attributeRepository
-            .GetByKeysAsync(advert.Value!.CategoryId, keys);
+            .GetByKeysAsync(advert.Value!.CategoryId, 
+                keys, cancellationToken);
 
         if (result is null)
         {

@@ -74,7 +74,8 @@ public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
 
     public override async Task<Result<PictureUpdateResponse>> UpdateInternalAsync(
         TPicture entity,
-        TRequest request)
+        TRequest request,
+        CancellationToken cancellationToken = default)
     {
         var newOrder = await GetNewOrder(entity.Id, request);
 

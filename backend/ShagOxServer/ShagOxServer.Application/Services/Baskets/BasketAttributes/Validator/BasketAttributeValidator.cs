@@ -29,10 +29,12 @@ public class BasketAttributeValidator
 
     public async Task<Result<bool>> ExistsAsync(
         AttributeDefinition attribute,
-        int order)
+        int order,
+        CancellationToken cancellationToken = default)
     {
         if (!await _attributeExistsRepository
-            .ExistsAsync(attribute.CategoryId, attribute.Id, order))
+            .ExistsAsync(attribute.CategoryId, 
+                attribute.Id, order, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.BasketAttribute);
@@ -43,10 +45,12 @@ public class BasketAttributeValidator
 
     public async Task<Result<bool>> NotExistsAsync(
         AttributeDefinition attribute,
-        int order)
+        int order,
+        CancellationToken cancellationToken = default)
     {
         if (await _attributeExistsRepository
-                .ExistsAsync(attribute.CategoryId, attribute.Id, order))
+                .ExistsAsync(attribute.CategoryId, 
+                    attribute.Id, order, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.BasketAttribute);

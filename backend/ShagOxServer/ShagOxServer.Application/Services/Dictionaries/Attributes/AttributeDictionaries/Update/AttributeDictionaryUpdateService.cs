@@ -46,14 +46,19 @@ public class AttributeDictionaryUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long dictionaryId,
-        AttributeDictionaryUpdateRequest request)
+        AttributeDictionaryUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var dictionary = await _dictionaryValidator
-            .GetByIdAsync(dictionaryId);
+            .GetByIdAsync(dictionaryId, cancellationToken);
         if (!dictionary.IsSuccess)
             return Result<UpdateResponse>.Fail(dictionary.Error);
 
-        var validation = await ValidateUpdatesAsync(request);
+        var validation = await ValidateUpdatesAsync(
+            request, 
+            cancellationToken
+        );
+
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
@@ -109,12 +114,13 @@ public class AttributeDictionaryUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        AttributeDictionaryUpdateRequest request)
+        AttributeDictionaryUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if(request.Code is not null)
         {
             var codeExists = await _dictionaryValidator
-                .NotExistsByCodeAsync(request.Code);
+                .NotExistsByCodeAsync(request.Code, cancellationToken);
 
             if(!codeExists.IsSuccess)
                 return Result<bool>.Fail(codeExists.Error);

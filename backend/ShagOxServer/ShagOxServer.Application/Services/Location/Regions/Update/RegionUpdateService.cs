@@ -48,14 +48,18 @@ public class RegionUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long regionId,
-        RegionUpdateRequest request)
+        RegionUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var region = await _regionValidator.GetByIdAsync(regionId);
+        var region = await _regionValidator
+            .GetByIdAsync(regionId, cancellationToken);
         if (!region.IsSuccess)
             return Result<UpdateResponse>.Fail(region.Error);
 
-        var validation = await
-             ValidateUpdatesAsync(region.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            region.Value!, 
+            request, 
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -114,13 +118,14 @@ public class RegionUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         Region region,
-        RegionUpdateRequest request)
+        RegionUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Code is not null &&
              request.Code != region.Code)
         {
             var codeValidation = await _regionValidator
-                .NotExistsByCodeAsync(request.Code);
+                .NotExistsByCodeAsync(request.Code, cancellationToken);
 
             if (!codeValidation.IsSuccess)
                 return Result<bool>.Fail(codeValidation.Error);

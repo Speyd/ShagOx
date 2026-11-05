@@ -49,17 +49,20 @@ public class CurrencyUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long currencyId,
-        CurrencyUpdateRequest request)
+        CurrencyUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var currency = await _currencyValidator
-            .GetByIdAsync(currencyId);
+            .GetByIdAsync(currencyId, cancellationToken);
 
         if (!currency.IsSuccess)
             return Result<UpdateResponse>.Fail(currency.Error);
 
 
-        var validation = await 
-            ValidateUpdatesAsync(currency.Value!, request);
+        var validation = await  ValidateUpdatesAsync(
+            currency.Value!, 
+            request, 
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -120,13 +123,14 @@ public class CurrencyUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         Currency currency,
-        CurrencyUpdateRequest request)
+        CurrencyUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Code is not null &&
             request.Code != currency.Code)
         {
             var result = await _currencyValidator
-                .NotExistsByCodeValidator(request.Code);
+                .NotExistsByCodeValidator(request.Code, cancellationToken);
 
             if (!result.IsSuccess)
                 return Result<bool>.Fail(result.Error!);
@@ -136,7 +140,7 @@ public class CurrencyUpdateService
             request.Name != currency.Name)
         {
             var result = await _currencyValidator
-                .NotExistsByNameValidator(request.Name);
+                .NotExistsByNameValidator(request.Name, cancellationToken);
 
             if (!result.IsSuccess)
                 return Result<bool>.Fail(result.Error!);

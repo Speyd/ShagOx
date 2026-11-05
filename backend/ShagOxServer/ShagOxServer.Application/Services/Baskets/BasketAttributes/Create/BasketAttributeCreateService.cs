@@ -47,10 +47,11 @@ public class BasketAttributeCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        BasketAttributeCreateRequest request)
+        BasketAttributeCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var attributeDefinition = await _attributeValidator
-            .GetByIdAsync(request.AttributeDefinitionId);
+            .GetByIdAsync(request.AttributeDefinitionId, cancellationToken);
 
         if (!attributeDefinition.IsSuccess)
         {
@@ -59,7 +60,8 @@ public class BasketAttributeCreateService
         }
 
         var attributeExists = await _basketAttributeValidator
-            .NotExistsAsync(attributeDefinition.Value!, request.Order);
+            .NotExistsAsync(attributeDefinition.Value!,
+                request.Order, cancellationToken);
 
         if (!attributeExists.IsSuccess)
         {

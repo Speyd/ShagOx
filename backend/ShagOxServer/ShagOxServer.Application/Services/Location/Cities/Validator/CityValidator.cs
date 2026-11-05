@@ -27,9 +27,11 @@ public class CityValidator
 
     public async Task<Result<bool>> ExistsAsync(
        long regionId,
-       string cityName)
+       string cityName,
+        CancellationToken cancellationToken = default)
     {
-        if (!await _cityExistsRepository.ExistsAsync(regionId, cityName))
+        if (!await _cityExistsRepository.ExistsAsync(
+                regionId, cityName, cancellationToken))
             return Result<bool>.NotFound(
                 EntityNamesResources.City);
 
@@ -37,10 +39,12 @@ public class CityValidator
     }
 
     public async Task<Result<bool>> NotExistsAsync(
-       long regionId,
-       string cityName)
+        long regionId,
+        string cityName,
+        CancellationToken cancellationToken = default)
     {
-        if (await _cityExistsRepository.ExistsAsync(regionId, cityName))
+        if (await _cityExistsRepository.ExistsAsync(
+                regionId, cityName, cancellationToken))
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.City);
 

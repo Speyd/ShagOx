@@ -44,10 +44,11 @@ public class RegionTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var region = await _regionValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!region.IsSuccess)
             return Result<DeleteResponse>.Fail(region.Error);

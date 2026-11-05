@@ -45,11 +45,13 @@ public partial class AdvertisementImageCreateService
 
 
     public override async Task<Result<PictureCreateResponse>> CreateAsync(
-        PictureOrderCreateRequest request)
+        PictureOrderCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            return await base.CreateAsync(request);
+            return await base
+                .CreateAsync(request, cancellationToken);
         }
         catch
         {
@@ -59,11 +61,13 @@ public partial class AdvertisementImageCreateService
     }
 
     public override async Task<Result<PictureCreateResponse>> CreateInternalAsync(
-       PictureOrderCreateRequest request)
+        PictureOrderCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            return await base.CreateInternalAsync(request);
+            return await base
+                .CreateInternalAsync(request, cancellationToken);
         }
         catch
         {
@@ -73,11 +77,13 @@ public partial class AdvertisementImageCreateService
     }
 
     public override async Task<Result<PicturesCreateResponse>> CreateAsync(
-        PicturesCreateRequest request)
+        PicturesCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            return await base.CreateAsync(request);
+            return await base
+                .CreateAsync(request, cancellationToken);
         }
         catch
         {

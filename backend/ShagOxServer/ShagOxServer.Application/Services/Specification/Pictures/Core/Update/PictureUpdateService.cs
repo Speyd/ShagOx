@@ -69,7 +69,8 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
 
     protected async Task<Result<bool>> ValidateOwnerAsync(
        TPicture picture,
-       TRequest request)
+       TRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.OwnerId is null ||
             picture.OwnerId == request.OwnerId)
@@ -78,17 +79,18 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
         }
 
         var existsValidator = await _ownerValidator
-            .ExistsByIdAsync(request.OwnerId.Value);
+            .ExistsByIdAsync(request.OwnerId.Value, cancellationToken);
 
         return existsValidator;
     }
 
     public virtual async Task<Result<PictureUpdateResponse>> UpdateAsync(
         long pictureId,
-        TRequest request)
+        TRequest request,
+        CancellationToken cancellationToken = default)
     {
         var picture = await _pictureValidator
-            .GetByIdAsync(pictureId);
+            .GetByIdAsync(pictureId, cancellationToken);
 
         if (!picture.IsSuccess)
         {
@@ -102,7 +104,8 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
         {
             var result = await UpdateInternalAsync(
                 picture.Value!,
-                request);
+                request,
+                cancellationToken);
 
             if (!result.IsSuccess)
             {
@@ -146,7 +149,8 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
 
     public virtual async Task<Result<PictureUpdateResponse>> UpdateInternalAsync(
         TPicture picture,
-        TRequest request)
+        TRequest request,
+        CancellationToken cancellationToken = default)
     {
         var oldPictureId = picture.PublicId;
         var oldPictureUrl = picture.PublicId;
@@ -156,7 +160,7 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
         {
 
             var responseLoadRes = await _pictureLoadValidator
-                .PictureUploadValidator(request.File);
+                .PictureUploadValidator(request.File, cancellationToken);
 
             if (!responseLoadRes.IsSuccess)
             {

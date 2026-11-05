@@ -43,10 +43,11 @@ public class RoleDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var role = await _roleValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!role.IsSuccess)
             return Result<DeleteResponse>.Fail(role.Error);

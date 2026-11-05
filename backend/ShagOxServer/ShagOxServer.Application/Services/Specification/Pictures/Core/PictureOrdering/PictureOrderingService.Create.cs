@@ -11,7 +11,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
     private async Task<Result<bool>> CreatePictureAsync(
         TOwner owner,
         OwnerPictureOrderUpdateRequest pictureRequest,
-        List<PictureCreateResponse> loadedPictures)
+        List<PictureCreateResponse> loadedPictures,
+        CancellationToken cancellationToken = default)
     {
         var result = await _pictureCreateService
             .CreateInternalAsync(
@@ -19,7 +20,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
                     pictureRequest.File!,
                     owner.Id,
                     pictureRequest.Order
-            ));
+            ), cancellationToken);
 
         if (!result.IsSuccess)
         {

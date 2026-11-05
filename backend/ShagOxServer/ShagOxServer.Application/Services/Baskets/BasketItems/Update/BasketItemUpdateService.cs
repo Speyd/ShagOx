@@ -51,10 +51,11 @@ public class BasketItemUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long itemId,
-        BasketItemUpdateRequest request)
+        BasketItemUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var item = await _itemValidator
-            .GetByIdWithIncludesAsync(itemId);
+            .GetByIdIncludeAsync(itemId, cancellationToken);
 
         if (!item.IsSuccess)
             return Result<UpdateResponse>.Fail(item.Error);

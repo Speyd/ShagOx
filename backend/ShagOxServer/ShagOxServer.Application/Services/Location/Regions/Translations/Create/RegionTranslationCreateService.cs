@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -41,10 +41,13 @@ public class RegionTranslationCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        RegionTranslationCreateRequest request)
+        RegionTranslationCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var codeValidation = await _regionValidator
-            .NotExistsAsync(request.TranslatableId, request.Language);
+        var codeValidation = await _regionValidator.NotExistsAsync(
+            request.TranslatableId, 
+            request.Language,
+            cancellationToken);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

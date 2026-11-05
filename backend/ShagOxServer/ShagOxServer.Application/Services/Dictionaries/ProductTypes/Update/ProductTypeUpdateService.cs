@@ -49,17 +49,20 @@ public class ProductTypeUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long productTypeId,
-        ProductTypeUpdateRequest request)
+        ProductTypeUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var productType = await _productTypeValidator
-            .GetByIdAsync(productTypeId);
+            .GetByIdAsync(productTypeId, cancellationToken);
 
         if (!productType.IsSuccess)
             return Result<UpdateResponse>.Fail(productType.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(productType.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            productType.Value!, 
+            request, 
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -118,13 +121,14 @@ public class ProductTypeUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         ProductType productType,
-        ProductTypeUpdateRequest request)
+        ProductTypeUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Code is not null &&
              request.Code != productType.Code)
         {
             var nameValidator = await _productTypeValidator
-                .NotExistsByCodeAsync(request.Code);
+                .NotExistsByCodeAsync(request.Code, cancellationToken);
 
             if (!nameValidator.IsSuccess)
                 return Result<bool>.Fail(nameValidator.Error);

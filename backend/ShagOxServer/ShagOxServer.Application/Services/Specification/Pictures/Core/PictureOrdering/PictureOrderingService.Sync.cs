@@ -11,10 +11,11 @@ public partial class PictureOrderingService<TOwner, TPicture>
 {
     public async Task<Result<PictureSyncResponce<TPicture>>> SyncPicturesAsync(
         long ownerId,
-        List<OwnerPictureOrderUpdateRequest>? request)
+        List<OwnerPictureOrderUpdateRequest>? request,
+        CancellationToken cancellationToken = default)
     {
         var owner = await _ownerValidator
-            .GetByIdAsync(ownerId);
+            .GetByIdAsync(ownerId, cancellationToken);
 
         if (!owner.IsSuccess)
         {
@@ -24,12 +25,14 @@ public partial class PictureOrderingService<TOwner, TPicture>
 
         return await SyncPicturesAsync(
             owner.Value!,
-            request);
+            request,
+            cancellationToken);
     }
 
     public async Task<Result<PictureSyncResponce<TPicture>>> SyncPicturesAsync(
         TOwner owner,
-        List<OwnerPictureOrderUpdateRequest>? request)
+        List<OwnerPictureOrderUpdateRequest>? request,
+        CancellationToken cancellationToken = default)
     {
         var loadedPictures = new List<PictureCreateResponse>();
         var deletePublicIds = new List<string>();
@@ -62,7 +65,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
                     picture,
                     loadedPictures,
                     deletePublicIds,
-                    updatePictures
+                    updatePictures,
+                    cancellationToken
                  );
             }
 
@@ -101,7 +105,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
         OwnerPictureOrderUpdateRequest picture,
         List<PictureCreateResponse> loadedPicture,
         List<string> deletePublicIds,
-        Dictionary<TPicture, PictureUpdateResponse> updatePicture)
+        Dictionary<TPicture, PictureUpdateResponse> updatePicture,
+        CancellationToken cancellationToken = default)
     {
         var getImage = owner.Pictures.FirstOrDefault(
             x => x.Id == picture.Id);
@@ -114,7 +119,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
             result = await DeletePictureAsync(
                picture,
                getImage,
-               deletePublicIds);
+               deletePublicIds,
+               cancellationToken);
         }
 
         if (picture.Id is null &&
@@ -124,7 +130,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
             result = await CreatePictureAsync(
                 owner,
                 picture,
-                loadedPicture);
+                loadedPicture,
+                cancellationToken);
         }
 
         if (picture.Id is not null)
@@ -132,7 +139,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
             var updateResult = await UpdateImage(
                 owner.Id,
                 picture,
-                getImage);
+                getImage,
+                cancellationToken);
 
             if (updateResult.IsSuccess)
             {

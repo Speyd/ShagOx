@@ -28,7 +28,7 @@ public class AttributeDefinitionTranslationDeleteService
     public AttributeDefinitionTranslationDeleteService(
         IRepository<AttributeDefinitionTranslation> attributeRepository,
         AttributeDefinitionTranslationValidator attributeValidator,
-         AttributeDefinitionTranslationInvalidationService transInvalid,
+        AttributeDefinitionTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionTranslationDeleteService> logger
     )
@@ -43,10 +43,11 @@ public class AttributeDefinitionTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var attributeTrans = await _attributeValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!attributeTrans.IsSuccess)
             return Result<DeleteResponse>.Fail(attributeTrans.Error);

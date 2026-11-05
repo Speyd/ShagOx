@@ -14,5 +14,6 @@ public interface IPictureCreateService<TPicture, TRequest>
     where TRequest : PictureCreateRequest
 {
     Task<Result<PictureCreateResponse>> CreateInternalAsync(
-        TRequest request);
+        TRequest request,
+        CancellationToken cancellationToken = default);
 }

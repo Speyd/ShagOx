@@ -29,25 +29,12 @@ public class UserValidator
         _userExistsRepository = userExistsRepository;
     }
 
-
-    public async Task<Result<User>> GetByIdWithIncludesAsync(
-        long userId)
-    {
-        var user = await _userQueryRepository
-            .GetByIdIncludeAsync(userId);
-
-        if (user is null)
-            return Result<User>.NotFound(
-                EntityNamesResources.User);
-
-        return Result<User>.Success(user);
-    }
-
     public async Task<Result<bool>> ExistsByPhoneAsync(
-      string phone)
+      string phone,
+        CancellationToken cancellationToken = default)
     {
         if (!await _userExistsRepository
-                .ExistsByPhoneAsync(phone))
+                .ExistsByPhoneAsync(phone, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.User);
@@ -57,10 +44,11 @@ public class UserValidator
     }
 
     public async Task<Result<bool>> NotExistsByPhoneAsync(
-       string phone)
+       string phone,
+        CancellationToken cancellationToken = default)
     {
         if (await _userExistsRepository
-                .ExistsByPhoneAsync(phone))
+                .ExistsByPhoneAsync(phone, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.User);
@@ -70,10 +58,11 @@ public class UserValidator
     }
 
     public async Task<Result<bool>> ExistsByEmailAsync(
-      string email)
+      string email,
+        CancellationToken cancellationToken = default)
     {
         if (!await _userExistsRepository
-                .ExistsByEmailAsync(email))
+                .ExistsByEmailAsync(email, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.User);
@@ -83,10 +72,11 @@ public class UserValidator
     }
 
     public async Task<Result<bool>> NotExistsByEmailAsync(
-       string email)
+       string email,
+        CancellationToken cancellationToken = default)
     {
         if (await _userExistsRepository
-            .ExistsByEmailAsync(email))
+            .ExistsByEmailAsync(email, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.User);
@@ -96,10 +86,11 @@ public class UserValidator
     }
 
     public async Task<Result<bool>> ExistsByUserNameAsync(
-      string userName)
+      string userName,
+        CancellationToken cancellationToken = default)
     {
         if (!await _userExistsRepository
-                .ExistsByUserNameAsync(userName))
+                .ExistsByUserNameAsync(userName, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.User);
@@ -109,10 +100,11 @@ public class UserValidator
     }
 
     public async Task<Result<bool>> NotExistsByUserNameAsync(
-       string userName)
+       string userName,
+        CancellationToken cancellationToken = default)
     {
         if (await _userExistsRepository
-            .ExistsByUserNameAsync(userName))
+            .ExistsByUserNameAsync(userName, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.User);

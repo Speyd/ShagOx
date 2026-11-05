@@ -55,10 +55,11 @@ public abstract class PictureCreateService<TOwner, TPicture, TRequest>
         TPicture picture);
 
     public virtual async Task<Result<PictureCreateResponse>> CreateAsync(
-        TRequest request)
+        TRequest request,
+        CancellationToken cancellationToken = default)
     {
         var ownerValid = await _ownerValidator
-            .ExistsByIdAsync(request.OwnerId);
+            .ExistsByIdAsync(request.OwnerId, cancellationToken);
 
         if (!ownerValid.IsSuccess)
         {
@@ -69,7 +70,7 @@ public abstract class PictureCreateService<TOwner, TPicture, TRequest>
         await _unitOfWork.BeginTransactionAsync();
 
         var resultLoaderValid = await _pictureValidator
-           .PictureUploadValidator(request.File);
+           .PictureUploadValidator(request.File, cancellationToken);
 
         try
         {
@@ -115,10 +116,11 @@ public abstract class PictureCreateService<TOwner, TPicture, TRequest>
     }
 
     public virtual async Task<Result<PictureCreateResponse>> CreateInternalAsync(
-       TRequest request)
+       TRequest request,
+        CancellationToken cancellationToken = default)
     {
         var resultLoaderValid = await _pictureValidator
-            .PictureUploadValidator(request.File);
+            .PictureUploadValidator(request.File, cancellationToken);
 
         try
         {

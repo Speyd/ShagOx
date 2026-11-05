@@ -53,14 +53,19 @@ public class AttributeDictionaryValueUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long valueId,
-        AttributeDictionaryValueUpdateRequest request)
+        AttributeDictionaryValueUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var value = await _valueValidator
-            .GetByIdAsync(valueId);
+            .GetByIdAsync(valueId, cancellationToken);
         if (!value.IsSuccess)
             return Result<UpdateResponse>.Fail(value.Error);
 
-        var validation = await ValidateUpdatesAsync(value.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            value.Value!, 
+            request, 
+            cancellationToken);
+
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
@@ -120,7 +125,8 @@ public class AttributeDictionaryValueUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         AttributeDictionaryValue value,
-        AttributeDictionaryValueUpdateRequest request)
+        AttributeDictionaryValueUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var code = request.Code ?? value.Code;
         var dictionaryId = request.DictionaryId ?? value.DictionaryId;
@@ -128,7 +134,7 @@ public class AttributeDictionaryValueUpdateService
         if(dictionaryId != value.DictionaryId)
         {
             var dictionaryExists = await _dictionaryValidator
-                .ExistsByIdAsync(dictionaryId);
+                .ExistsByIdAsync(dictionaryId, cancellationToken);
 
             if (!dictionaryExists.IsSuccess)
                 return Result<bool>.Fail(dictionaryExists.Error);
@@ -138,7 +144,7 @@ public class AttributeDictionaryValueUpdateService
             dictionaryId != value.DictionaryId)
         {
             var valueExists = await _valueValidator
-                .NotExistsAsync(dictionaryId, code);
+                .NotExistsAsync(dictionaryId, code, cancellationToken);
 
             if (!valueExists.IsSuccess)
                 return Result<bool>.Fail(valueExists.Error);

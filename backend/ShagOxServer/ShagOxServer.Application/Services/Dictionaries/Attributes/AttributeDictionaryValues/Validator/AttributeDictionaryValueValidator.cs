@@ -29,10 +29,11 @@ public class AttributeDictionaryValueValidator
 
     public async Task<Result<bool>> ExistsAsync(
         long dictionaryId,
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         if (!await _valueExistsRepository
-            .ExistsAsync(dictionaryId, code))
+            .ExistsAsync(dictionaryId, code, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.AttributeDictionaryValue);
@@ -43,10 +44,11 @@ public class AttributeDictionaryValueValidator
 
     public async Task<Result<bool>> NotExistsAsync(
         long dictionaryId,
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
         if (await _valueExistsRepository
-            .ExistsAsync(dictionaryId, code))
+            .ExistsAsync(dictionaryId, code, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.AttributeDictionaryValue);

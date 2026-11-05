@@ -27,11 +27,12 @@ public class AttributeDefinitionValidator
 
 
     public async Task<Result<bool>> ExistsByKeyAsync(
-      string key,
-      long categoryId)
+        string key,
+        long categoryId,
+        CancellationToken cancellationToken = default)
     {
         if (!await _attributeExistsRepository
-            .ExistsByCategoryAsync(key, categoryId))
+            .ExistsByCategoryAsync(key, categoryId, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.AttributeDefinition);
@@ -41,11 +42,12 @@ public class AttributeDefinitionValidator
     }
 
     public async Task<Result<bool>> NotExistsByKeyAsync(
-      string key,
-      long categoryId)
+         string key,
+        long categoryId,
+        CancellationToken cancellationToken = default)
     {
         if (await _attributeExistsRepository
-            .ExistsByCategoryAsync(key, categoryId))
+            .ExistsByCategoryAsync(key, categoryId, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.AttributeDefinition);

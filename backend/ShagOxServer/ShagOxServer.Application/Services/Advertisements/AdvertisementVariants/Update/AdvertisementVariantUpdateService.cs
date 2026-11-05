@@ -56,7 +56,8 @@ public partial class AdvertisementVariantUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long valueId,
-        AdvertisementVariantUpdateRequest request)
+        AdvertisementVariantUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         await _unitOfWork.BeginTransactionAsync();
 
@@ -103,10 +104,11 @@ public partial class AdvertisementVariantUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateInternalAsync(
         long variantId,
-        AdvertisementVariantUpdateRequest request)
+        AdvertisementVariantUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var variant = await _variantValidator
-            .GetByIdAsync(variantId);
+            .GetByIdAsync(variantId, cancellationToken);
 
         if (!variant.IsSuccess)
         {
@@ -116,7 +118,8 @@ public partial class AdvertisementVariantUpdateService
 
         var validation = await ValidateUpdateConflictsAsync(
             variant.Value!,
-            request);
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
         {

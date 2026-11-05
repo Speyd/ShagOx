@@ -29,35 +29,40 @@ public class AdvertisementUpdateValidator
 
 
     public Task<Result<bool>> ValidateUpdateConflictsAsync(
-        AdvertisementUpdateRequest request)
+        AdvertisementUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         return ValidateReferencesAsync(
             request.BuyerId,
             request.CurrencyId,
             request.ConditionId,
-            request.CategoryId);
+            request.CategoryId,
+            cancellationToken);
     }
 
     public Task<Result<bool>> ValidateUpdateConflictsAsync(
-        Advertisement advert)
+        Advertisement advert,
+        CancellationToken cancellationToken = default)
     {
         return ValidateReferencesAsync(
             advert.BuyerId,
             advert.CurrencyId,
             advert.ConditionId,
-            advert.CategoryId);
+            advert.CategoryId,
+            cancellationToken);
     }
 
     private async Task<Result<bool>> ValidateReferencesAsync(
         long? buyerId,
         long? currencyId,
         long? conditionId,
-        long? categoryId)
+        long? categoryId,
+        CancellationToken cancellationToken = default)
     {
         if (buyerId.HasValue)
         {
             var result = await _userValidator
-                .ExistsByIdAsync(buyerId.Value);
+                .ExistsByIdAsync(buyerId.Value, cancellationToken);
             if (!result.IsSuccess)
                 return result;
         }
@@ -65,7 +70,7 @@ public class AdvertisementUpdateValidator
         if (currencyId.HasValue)
         {
             var result = await _currencyValidator
-                .ExistsByIdAsync(currencyId.Value);
+                .ExistsByIdAsync(currencyId.Value, cancellationToken);
             if (!result.IsSuccess)
                 return result;
         }
@@ -73,7 +78,7 @@ public class AdvertisementUpdateValidator
         if (conditionId.HasValue)
         {
             var result = await _conditionValidator
-                .ExistsByIdAsync(conditionId.Value);
+                .ExistsByIdAsync(conditionId.Value, cancellationToken);
             if (!result.IsSuccess)
                 return result;
         }
@@ -81,7 +86,7 @@ public class AdvertisementUpdateValidator
         if (categoryId.HasValue)
         {
             var result = await _categoryValidator
-                .ExistsByIdAsync(categoryId.Value);
+                .ExistsByIdAsync(categoryId.Value, cancellationToken);
             if (!result.IsSuccess)
                 return result;
         }

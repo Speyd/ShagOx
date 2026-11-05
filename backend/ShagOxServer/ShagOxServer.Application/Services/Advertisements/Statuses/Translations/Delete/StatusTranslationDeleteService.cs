@@ -42,10 +42,11 @@ public class StatusTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var status = await _statusValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!status.IsSuccess)
             return Result<DeleteResponse>.Fail(status.Error);

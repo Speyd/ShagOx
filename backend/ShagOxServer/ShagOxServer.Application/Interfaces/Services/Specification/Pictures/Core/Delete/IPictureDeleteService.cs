@@ -10,8 +10,10 @@ public interface IPictureDeleteService<TEntity>
     where TEntity : BasePicture
 {
     Task<Result<DeleteResponse>> DeleteInternalAsync(
-        TEntity entity);
+        TEntity entity,
+        CancellationToken cancellationToken = default);
 
     Task<Result<DeleteResponse>> DeleteRecordAsync(
-        long id);
+        long id,
+        CancellationToken cancellationToken = default);
 }

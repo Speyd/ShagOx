@@ -52,9 +52,11 @@ public class CityUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long cityId, 
-        CityUpdateRequest request)
+        CityUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var city = await _cityValidator.GetByIdAsync(cityId);
+        var city = await _cityValidator
+            .GetByIdAsync(cityId, cancellationToken);
         if (!city.IsSuccess)
             return Result<UpdateResponse>.Fail(city.Error);
 
@@ -70,8 +72,10 @@ public class CityUpdateService
             ));
         }
 
-        var validation = await
-             ValidateUpdatesAsync(changeValidator.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            changeValidator.Value!, 
+            request, 
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -131,11 +135,13 @@ public class CityUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         (long regionId, string name) changeValidator,
-        CityUpdateRequest request)
+        CityUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var existsValidator = await _cityValidator.NotExistsAsync(
             changeValidator.regionId,
-            changeValidator.name
+            changeValidator.name,
+            cancellationToken
         );
 
         return existsValidator;

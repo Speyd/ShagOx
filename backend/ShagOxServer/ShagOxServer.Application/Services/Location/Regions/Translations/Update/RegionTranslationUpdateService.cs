@@ -55,17 +55,20 @@ public class RegionTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long regionTranslationId,
-        RegionTranslationUpdateRequest request)
+        RegionTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var region = await _regionTranslationValidator
-            .GetByIdAsync(regionTranslationId);
+            .GetByIdAsync(regionTranslationId, cancellationToken);
 
         if (!region.IsSuccess)
             return Result<UpdateResponse>.Fail(region.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(region.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            region.Value!, 
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

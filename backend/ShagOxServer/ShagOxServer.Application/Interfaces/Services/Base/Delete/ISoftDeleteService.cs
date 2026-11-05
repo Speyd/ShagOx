@@ -7,11 +7,14 @@ public interface ISoftDeleteService<TEntity, TResponse>
     where TEntity : BaseEntity
 {
     Task<Result<TResponse>> SoftDeleteAsync(
-       long id);
+       long id,
+        CancellationToken cancellationToken = default);
 
     Task<Result<TResponse>> SoftDeleteRecordAsync(
-       TEntity entity);
+       TEntity entity,
+        CancellationToken cancellationToken = default);
 
     Task<Result<TResponse>> SoftDeleteInternalAsync(
-        TEntity entity);
+        TEntity entity,
+        CancellationToken cancellationToken = default);
 }

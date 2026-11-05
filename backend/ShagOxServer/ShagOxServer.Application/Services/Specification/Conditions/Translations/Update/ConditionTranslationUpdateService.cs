@@ -57,17 +57,20 @@ public class ConditionTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long conditionTranslationId,
-        ConditionTranslationUpdateRequest request)
+        ConditionTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var condition = await _conditionTranslationValidator
-            .GetByIdAsync(conditionTranslationId);
+            .GetByIdAsync(conditionTranslationId, cancellationToken);
 
         if (!condition.IsSuccess)
             return Result<UpdateResponse>.Fail(condition.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(condition.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            condition.Value!,
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

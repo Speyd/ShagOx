@@ -53,15 +53,16 @@ public class BasketUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long basketId,
-        BasketUpdateRequest request)
+        BasketUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var basket = await _basketValidator
-            .GetByIdAsync(basketId);
+            .GetByIdAsync(basketId, cancellationToken);
         if (!basket.IsSuccess)
             return Result<UpdateResponse>.Fail(basket.Error);
 
         var validation = await
-             ValidateUpdatesAsync(request);
+             ValidateUpdatesAsync(request, cancellationToken);
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
@@ -117,20 +118,23 @@ public class BasketUpdateService
     }
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
-        BasketUpdateRequest request)
+        BasketUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (!request.OwnerId.HasValue)
             return Result<bool>.Success(true);
 
         var userExists = await _userValidator
-            .ExistsByIdAsync(request.OwnerId.Value);
+            .ExistsByIdAsync(request.OwnerId.Value, 
+                cancellationToken);
 
         if (!userExists.IsSuccess)
             return Result<bool>.Fail(userExists.Error);
 
 
         var basketUserExists = await _basketValidator
-            .NotExistsByUserAsync(request.OwnerId.Value);
+            .NotExistsByUserAsync(request.OwnerId.Value,
+                cancellationToken);
 
         if (!basketUserExists.IsSuccess)
             return Result<bool>.Fail(basketUserExists.Error);

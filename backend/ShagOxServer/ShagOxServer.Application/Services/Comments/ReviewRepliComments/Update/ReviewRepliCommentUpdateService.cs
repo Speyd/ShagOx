@@ -57,10 +57,11 @@ public class ReviewRepliCommentUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long commentId,
-        ReviewRepliCommentUpdateRequest request)
+        ReviewRepliCommentUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var comment = await _commitValidator
-            .GetByIdAsync(commentId);
+            .GetByIdAsync(commentId, cancellationToken);
         if (!comment.IsSuccess)
             return Result<UpdateResponse>.Fail(comment.Error);
 
@@ -83,7 +84,8 @@ public class ReviewRepliCommentUpdateService
 
             var imagesResult = await _executor.SyncAsync(
                 comment.Value!,
-                request.Pictures
+                request.Pictures,
+                cancellationToken
             );
 
             if (!imagesResult.IsSuccess)

@@ -44,10 +44,11 @@ public class CityTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var city = await _cityValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!city.IsSuccess)
             return Result<DeleteResponse>.Fail(city.Error);

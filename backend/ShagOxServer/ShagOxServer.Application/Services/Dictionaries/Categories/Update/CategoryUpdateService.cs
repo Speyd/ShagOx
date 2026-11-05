@@ -52,9 +52,12 @@ public class CategoryUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long categoryId,
-        CategoryUpdateRequest request)
+        CategoryUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var category = await _categoryValidator.GetByIdAsync(categoryId);
+        var category = await _categoryValidator
+            .GetByIdAsync(categoryId, cancellationToken);
+
         if(!category.IsSuccess)
             return Result<UpdateResponse>.Fail(category.Error);
 
@@ -71,8 +74,10 @@ public class CategoryUpdateService
         }
 
 
-        var validation = await
-             ValidateUpdatesAsync(changeValidator.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            changeValidator.Value!, 
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -130,12 +135,14 @@ public class CategoryUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         (string name, long productTypeId) changeValidator,
-        CategoryUpdateRequest request)
+        CategoryUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var existsValidator = await _categoryValidator.NotExistsAsync(
-          changeValidator.name,
-          changeValidator.productTypeId
-       );
+            changeValidator.name,
+            changeValidator.productTypeId,
+            cancellationToken
+        );
 
         return existsValidator;
     }

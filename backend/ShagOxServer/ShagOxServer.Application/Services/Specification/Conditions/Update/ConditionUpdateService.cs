@@ -48,17 +48,20 @@ public class ConditionUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long conditionId, 
-        ConditionUpdateRequest request)
+        ConditionUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var condition = await _conditionValidator
-            .GetByIdAsync(conditionId);
+            .GetByIdAsync(conditionId, cancellationToken);
 
         if (!condition.IsSuccess)
             return Result<UpdateResponse>.Fail(condition.Error );
 
 
-        var validation = await
-             ValidateUpdatesAsync(condition.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            condition.Value!, 
+            request, 
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -117,16 +120,17 @@ public class ConditionUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         Condition сondition,
-        ConditionUpdateRequest request)
+        ConditionUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Code is not null &&
             request.Code != сondition.Code)
         {
             var nameValidation = await _conditionValidator
-                .NotExistsByCodeAsync(request.Code);
+                .NotExistsByCodeAsync(request.Code, cancellationToken);
 
             if (!nameValidation.IsSuccess)
-                Result<CreateResponse>.Fail(nameValidation.Error);
+                return Result<bool>.Fail(nameValidation.Error);
         }
 
         return Result<bool>.Success(true);

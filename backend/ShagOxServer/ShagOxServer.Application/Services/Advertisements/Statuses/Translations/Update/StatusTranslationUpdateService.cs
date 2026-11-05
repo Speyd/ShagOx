@@ -50,17 +50,19 @@ public class StatusTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long statusTranslationId,
-        StatusTranslationUpdateRequest request)
+        StatusTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var status = await _statusTranslationValidator
-            .GetByIdAsync(statusTranslationId);
+            .GetByIdAsync(statusTranslationId, cancellationToken);
 
         if (!status.IsSuccess)
             return Result<UpdateResponse>.Fail(status.Error);
 
 
         var validation = await
-             ValidateUpdatesAsync(status.Value!, request);
+             ValidateUpdatesAsync(status.Value!, 
+                request, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

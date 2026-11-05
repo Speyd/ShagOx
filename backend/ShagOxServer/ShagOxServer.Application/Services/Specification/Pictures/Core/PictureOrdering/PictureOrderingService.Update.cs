@@ -11,7 +11,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
     private async Task<Result<PictureUpdateResponse?>> UpdateImage(
         long ownerId,
         OwnerPictureOrderUpdateRequest picture,
-        TPicture? getPicture)
+        TPicture? getPicture,
+        CancellationToken cancellationToken = default)
     {
         if (getPicture is null)
         {
@@ -26,7 +27,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
         );
 
         var result = await _pictureUpdateService
-            .UpdateInternalAsync(getPicture, request);
+            .UpdateInternalAsync(getPicture, request, cancellationToken);
 
         return result!;
     }

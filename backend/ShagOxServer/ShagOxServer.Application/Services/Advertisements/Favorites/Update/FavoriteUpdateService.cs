@@ -52,13 +52,16 @@ public class FavoriteUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long favoriteId,
-        FavoriteUpdateRequest request)
+        FavoriteUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var favorite = await _favoriteValidator.GetByIdAsync(favoriteId);
+        var favorite = await _favoriteValidator
+            .GetByIdAsync(favoriteId, cancellationToken);
         if (!favorite.IsSuccess)
             return Result<UpdateResponse>.Fail(favorite.Error);
 
-        var validator = await _favoriteUpdateValidator.ValidateAsync(request);
+        var validator = await _favoriteUpdateValidator
+            .ValidateAsync(request, cancellationToken);
         if(!validator.IsSuccess)
             return Result<UpdateResponse>.Fail(validator.Error);
 

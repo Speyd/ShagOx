@@ -13,7 +13,8 @@ public interface IPictureUpdateService<TEntity, TRequest>
 {
     Task<Result<PictureUpdateResponse>> UpdateInternalAsync(
         TEntity entity,
-        TRequest request);
+        TRequest request,
+        CancellationToken cancellationToken = default);
 
     Task RollbackAsync(
         TEntity entity,

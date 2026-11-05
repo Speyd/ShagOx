@@ -59,10 +59,11 @@ public class BasketAttributeUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long attributeId,
-        BasketAttributeUpdateRequest request)
+        BasketAttributeUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var attribute = await _attributeValidator
-            .GetByIdIncludeAsync(attributeId);
+            .GetByIdIncludeAsync(attributeId, cancellationToken);
 
         if (!attribute.IsSuccess)
             return Result<UpdateResponse>.Fail(attribute.Error);
@@ -81,7 +82,8 @@ public class BasketAttributeUpdateService
         }
 
         var validation = await
-             ValidateUpdatesAsync(changeValidator.Value!, request);
+             ValidateUpdatesAsync(changeValidator.Value!, 
+                request, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -145,16 +147,19 @@ public class BasketAttributeUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         (int order, long attributeDefinitionId) changeValidator,
-        BasketAttributeUpdateRequest request)
+        BasketAttributeUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var attributeDef = await _attributeDefinitionValidator
-            .GetByIdAsync(changeValidator.attributeDefinitionId);
+            .GetByIdAsync(changeValidator.attributeDefinitionId, 
+                cancellationToken);
 
         if (!attributeDef.IsSuccess)
             return Result<bool>.Fail(attributeDef.Error);
 
         var existsValidator = await _attributeValidator
-            .NotExistsAsync(attributeDef.Value!, changeValidator.order);
+            .NotExistsAsync(attributeDef.Value!,
+                changeValidator.order, cancellationToken);
 
         return existsValidator;
     }

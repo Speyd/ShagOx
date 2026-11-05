@@ -51,12 +51,14 @@ public class AvatarUpdateService
 
     public override async Task<Result<PictureUpdateResponse>> UpdateAsync(
         long avatarId,
-        PictureUpdateRequest request)
+        PictureUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         try
         {
 
-            return await base.UpdateAsync(avatarId, request);
+            return await base.UpdateAsync(avatarId, 
+                request, cancellationToken);
         }
         catch
         {

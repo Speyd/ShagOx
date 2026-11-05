@@ -52,10 +52,11 @@ public class AttributeDefinitionUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long attributeId,
-        AttributeDefinitionUpdateRequest request)
+        AttributeDefinitionUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var attribute = await _attributeValidator
-            .GetByIdAsync(attributeId);
+            .GetByIdAsync(attributeId, cancellationToken);
         if (!attribute.IsSuccess)
             return Result<UpdateResponse>.Fail(attribute.Error);
 
@@ -72,7 +73,8 @@ public class AttributeDefinitionUpdateService
         }
 
         var validation = await
-             ValidateUpdatesAsync(changeValidator.Value!, request);
+             ValidateUpdatesAsync(changeValidator.Value!,
+                request, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -131,12 +133,14 @@ public class AttributeDefinitionUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         (string key, long categoryId) changeValidator,
-        AttributeDefinitionUpdateRequest request)
+        AttributeDefinitionUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var existsValidator = await _attributeValidator
             .NotExistsByKeyAsync(
                 changeValidator.key,
-                changeValidator.categoryId
+                changeValidator.categoryId,
+                cancellationToken
         );
 
         if (!existsValidator.IsSuccess)

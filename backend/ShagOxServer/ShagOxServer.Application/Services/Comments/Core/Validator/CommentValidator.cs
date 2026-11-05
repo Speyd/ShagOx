@@ -23,16 +23,17 @@ public class CommentValidator<TCommentable>
 
     public async Task<Result<bool>> ValidateCommentAsync(
         long userId, 
-        long commentableId)
+        long commentableId,
+        CancellationToken cancellationToken = default)
     {
         var resultUser = await _userValidator
-            .ExistsByIdAsync(userId);
+            .ExistsByIdAsync(userId, cancellationToken);
 
         if (!resultUser.IsSuccess)
             return resultUser;
 
         var resultCommentable = await _commentableValidator
-            .ExistsByIdAsync(userId);
+            .ExistsByIdAsync(commentableId, cancellationToken);
 
         if (!resultCommentable.IsSuccess)
             return resultCommentable;

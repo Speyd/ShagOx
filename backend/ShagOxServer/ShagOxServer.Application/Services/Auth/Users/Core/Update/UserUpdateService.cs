@@ -67,10 +67,11 @@ public class UserUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long userId,
-        UserUpdateRequest request)
+        UserUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var user = await _userValidator
-            .GetByIdWithIncludesAsync(userId);
+            .GetByIdIncludeAsync(userId, cancellationToken);
         if (!user.IsSuccess)
             return Result<UpdateResponse>.Fail(user.Error);
 
@@ -82,7 +83,8 @@ public class UserUpdateService
 
 
         var validation = await
-            ValidateUpdatesAsync(user.Value!, normalizedRequest);
+            ValidateUpdatesAsync(user.Value!, 
+                normalizedRequest, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -107,7 +109,7 @@ public class UserUpdateService
             _userRepository.Update(user.Value!);
 
             var avatarResult = await UpdateAvatarAsync(user.Value!,
-                normalizedRequest.Avatar);
+                normalizedRequest.Avatar, cancellationToken);
 
             avatarResponse = avatarResult.Value;
 
@@ -173,13 +175,15 @@ public class UserUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         User user,
-        UserUpdateRequest request)
+        UserUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.CityId.HasValue &&
            request.CityId != user.CityId)
         {
             var cityExists = await _cityValidator
-                .ExistsByIdAsync(request.CityId.Value);
+                .ExistsByIdAsync(request.CityId.Value,
+                    cancellationToken);
 
             if (!cityExists.IsSuccess)
                 return Result<bool>.Fail(cityExists.Error);
@@ -189,7 +193,8 @@ public class UserUpdateService
             request.UserName != user.UserName)
         {
             var userNameExists = await _userValidator
-                .NotExistsByUserNameAsync(request.UserName);
+                .NotExistsByUserNameAsync(request.UserName, 
+                    cancellationToken);
 
             if (!userNameExists.IsSuccess)
                 return Result<bool>.Fail(userNameExists.Error);
@@ -200,7 +205,8 @@ public class UserUpdateService
 
     private async Task<Result<PictureUpdateResponse?>> UpdateAvatarAsync(
         User user,
-        IFormFile? avatarFile)
+        IFormFile? avatarFile,
+        CancellationToken cancellationToken = default)
     {
         if (avatarFile is null) 
         {
@@ -215,7 +221,7 @@ public class UserUpdateService
                 avatarFile);
 
             var createResult = await _avatarCreateService
-                .CreateInternalAsync(request);
+                .CreateInternalAsync(request, cancellationToken);
 
             if (!createResult.IsSuccess)
             {
@@ -230,7 +236,8 @@ public class UserUpdateService
             user.Avatar,
             new PictureUpdateRequest(
                 user.Id,
-                avatarFile));
+                avatarFile),
+            cancellationToken);
 
         if (!result.IsSuccess)
             return Result<PictureUpdateResponse?>

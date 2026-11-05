@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -41,10 +41,12 @@ public class AttributeDictionaryValueTranslationCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        AttributeDictionaryValueTranslationCreateRequest request)
+        AttributeDictionaryValueTranslationCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var codeValidation = await _attributeValidator
-            .NotExistsAsync(request.TranslatableId, request.Language);
+            .NotExistsAsync(request.TranslatableId, 
+                request.Language, cancellationToken);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

@@ -44,10 +44,11 @@ public class AdvertisementVariantDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var variant = await _variantValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!variant.IsSuccess)
             return Result<DeleteResponse>

@@ -35,7 +35,8 @@ public abstract class BaseUpdateService<TEntity>
 
 
     protected virtual async Task<Result<bool>> ValidateUpdateConflictsAsync(
-        TEntity entity)
+        TEntity entity,
+        CancellationToken cancellationToken = default)
     {
         return Result<bool>.Success(true);
     }

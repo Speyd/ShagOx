@@ -27,45 +27,58 @@ public class CurrencyValidator
 
 
     public async Task<Result<bool>> ExistsByCodeValidator(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
-        if (!await _existsRepository.ExistsByCodeAsync(code))
+        if (!await _existsRepository
+                .ExistsByCodeAsync(code, cancellationToken))
+        {
             return Result<bool>.NotFound(
                 EntityNamesResources.Currency);
+        }
 
         return Result<bool>.Success(true);
     }
 
 
     public async Task<Result<bool>> NotExistsByCodeValidator(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
-        Console.WriteLine(await _existsRepository.ExistsByCodeAsync(code));
-
-        if (await _existsRepository.ExistsByCodeAsync(code))
+        if (await _existsRepository
+            .ExistsByCodeAsync(code, cancellationToken))
+        {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Currency);
+        }
 
         return Result<bool>.Success(true);
     }
 
     public async Task<Result<bool>> ExistsByNameValidator(
-        string name)
+        string name,
+        CancellationToken cancellationToken = default)
     {
-        if (!await _existsRepository.ExistsByNameAsync(name))
+        if (!await _existsRepository
+                .ExistsByNameAsync(name, cancellationToken))
+        {
             return Result<bool>.NotFound(
                 EntityNamesResources.Currency);
+        }
 
         return Result<bool>.Success(true);
     }
 
     public async Task<Result<bool>> NotExistsByNameValidator(
-        string name)
+        string name,
+        CancellationToken cancellationToken = default)
     {
-        Console.WriteLine(await _existsRepository.ExistsByNameAsync(name));
-        if (await _existsRepository.ExistsByNameAsync(name))
+        if (await _existsRepository
+                .ExistsByNameAsync(name, cancellationToken))
+        {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Currency);
+        }
 
         return Result<bool>.Success(true);
     }

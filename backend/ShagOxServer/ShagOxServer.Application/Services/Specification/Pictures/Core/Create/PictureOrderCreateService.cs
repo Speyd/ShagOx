@@ -42,7 +42,8 @@ public abstract class PictureOrderCreateService<TOwner, TPicture, TRequest>
         int order);
 
     public virtual async Task<Result<PicturesCreateResponse>> CreateAsync(
-        PicturesCreateRequest request)
+        PicturesCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var uploadedPictures = new List<string>();
 

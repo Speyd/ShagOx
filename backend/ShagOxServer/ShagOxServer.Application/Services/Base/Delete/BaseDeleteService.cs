@@ -34,9 +34,11 @@ public abstract class BaseDeleteService<TEntity>
         TEntity entity);
 
     public virtual async Task<Result<DeleteResponse>> SoftDeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
-        var entity = await _queryRepository.GetByIdIncludeAsync(id);
+        var entity = await _queryRepository
+            .GetByIdIncludeAsync(id, cancellationToken);
 
         if (!entity.IsSuccess)
             return Result<DeleteResponse>.Fail(entity.Error);
@@ -47,17 +49,20 @@ public abstract class BaseDeleteService<TEntity>
                 EntityNameExtensions.GetLocalizedName<TEntity>());
         }
 
-        return await SoftDeleteInternalAsync(entity.Value);
+        return await SoftDeleteInternalAsync(entity.Value, 
+            cancellationToken);
     }
 
     public virtual async Task<Result<DeleteResponse>> SoftDeleteInternalAsync(
-        TEntity entity)
+        TEntity entity,
+        CancellationToken cancellationToken = default)
     {
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            var body = await SoftBodyDeleteAsync(entity);
+            var body = await SoftBodyDeleteAsync(entity, 
+                    cancellationToken);
 
             if (!body.IsSuccess)
             {
@@ -88,11 +93,13 @@ public abstract class BaseDeleteService<TEntity>
     }
 
     public virtual async Task<Result<DeleteResponse>> SoftDeleteRecordAsync(
-       TEntity entity)
+       TEntity entity,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            var body = await SoftBodyDeleteAsync(entity);
+            var body = await SoftBodyDeleteAsync(entity, 
+                cancellationToken);
 
             if (!body.IsSuccess)
                 return Result<DeleteResponse>.Fail(body.Error);
@@ -118,7 +125,8 @@ public abstract class BaseDeleteService<TEntity>
     }
 
     public virtual async Task<Result<bool>> SoftBodyDeleteAsync(
-        TEntity entity)
+        TEntity entity,
+        CancellationToken cancellationToken = default)
     {
         entity.EntityStatus = EntityStatus.Deleted;
         entity.DeletedAt = DateTime.UtcNow;

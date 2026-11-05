@@ -12,7 +12,8 @@ public partial class AdvertisementVariantUpdateService
 {
     private async Task<Result<bool>> ValidateUpdateConflictsAsync(
         AdvertisementVariant variant,
-        AdvertisementVariantUpdateRequest request)
+        AdvertisementVariantUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var attributes = request.Attributes ?? variant.Attributes;
         var advertId = request.AdvertisementId ?? variant.AdvertisementId;
@@ -20,7 +21,7 @@ public partial class AdvertisementVariantUpdateService
         if (advertId != variant.AdvertisementId)
         {
             var advertExists = await _advertValidator
-                .ExistsByIdAsync(advertId);
+                .ExistsByIdAsync(advertId, cancellationToken);
 
             if (!advertExists.IsSuccess)
                 return Result<bool>.Fail(advertExists.Error);
@@ -30,7 +31,7 @@ public partial class AdvertisementVariantUpdateService
             advertId != variant.AdvertisementId)
         {
             var variantExists = await _variantValidator
-                .NotExistsAsync(advertId, attributes);
+                .NotExistsAsync(advertId, attributes, cancellationToken);
 
             if (!variantExists.IsSuccess)
                 return Result<bool>.Fail(variantExists.Error);
@@ -56,11 +57,13 @@ public partial class AdvertisementVariantUpdateService
     }
 
     protected override async Task<Result<bool>> ValidateUpdateConflictsAsync(
-        AdvertisementVariant variant)
+        AdvertisementVariant variant,
+        CancellationToken cancellationToken = default)
     {
        var variantExists = await _variantValidator
             .NotExistsAsync(variant.AdvertisementId,
-                variant.Attributes);
+                variant.Attributes,
+                cancellationToken);
 
        if (!variantExists.IsSuccess)
         return Result<bool>.Fail(variantExists.Error);

@@ -78,12 +78,10 @@ public class ReviewCommentInvalidationService
         CommentCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys.
-             Entity<ReviewComment>(entityInfo.Id,
-                entityInfo.Status));
+             Entity<ReviewComment>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(ReviewCommentCache.
-             ByAdvertisementPattern(entityInfo.CommentableEntityId,
-                entityInfo.Status));
+             ByAdvertisementPattern(entityInfo.CommentableEntityId));
     }
 
     private async Task<List<PictureCacheInfo>> GetImageInfos(

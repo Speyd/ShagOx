@@ -49,7 +49,6 @@ public class FavoriteInvalidationService
         FavoriteCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(
-           FavoriteCache.ByUserPattern(entityInfo.UserId,
-               entityInfo.Status));
+           FavoriteCache.ByUserPattern(entityInfo.UserId));
     }
 }

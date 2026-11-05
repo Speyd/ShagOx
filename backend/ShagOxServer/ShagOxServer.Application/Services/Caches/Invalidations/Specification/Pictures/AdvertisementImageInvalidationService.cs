@@ -42,7 +42,6 @@ public class AdvertisementImageInvalidationService
         PictureCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
-            .Entity<AdvertisementImage>(entityInfo.Id,
-                entityInfo.Status));
+            .Entity<AdvertisementImage>(entityInfo.Id));
     }
 }

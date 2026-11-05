@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
@@ -39,5 +38,17 @@ public partial class CurrencyQueryRepository
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(c => c.Symbol == symbol,
                 cancellationToken);
+    }
+
+    public async Task<Currency?> GetByUserAsync(
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Users
+            .WithStatusFilter(status)
+            .Where(u => u.Id == userId)
+            .Select(u => u.Currency)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

@@ -42,8 +42,7 @@ public class BasketAttributeInvalidationService
         BasketAttributeCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-           .EntityLanguagePattern<BasketAttribute>(entityInfo.Id,
-                entityInfo.Status));
+           .EntityLanguagePattern<BasketAttribute>(entityInfo.Id));
 
         await InvalidatePatternAsync(entityInfo);
     }
@@ -60,11 +59,9 @@ public class BasketAttributeInvalidationService
                 entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(BasketAttributeCache
-           .ByCategoryPattern(entityInfo.CategoryId,
-                entityInfo.Status));
+           .ByCategoryPattern(entityInfo.CategoryId));
 
         await _cache.RemoveByPatternAsync(BasketAttributeCache
-           .ByAttributeDefenitionPattern(entityInfo.AttributeDefinitionId,
-                entityInfo.Status));
+           .ByAttributeDefenitionPattern(entityInfo.AttributeDefinitionId));
     }
 }

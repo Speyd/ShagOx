@@ -77,12 +77,10 @@ public class RoleInvalidationService
         var id = entityInfo.Id;
 
         await _cache.RemoveAsync(CacheKeys.
-             Entity<Role>(id,
-                entityInfo.Status));
+             Entity<Role>(id));
 
         await _cache.RemoveAsync(RoleCache.
-           ByName(entityInfo.Name,
-                entityInfo.Status));
+            ByNamePattern(entityInfo.Name));
 
         await InvalidatePatternAsync(entityInfo);
     }
@@ -91,12 +89,10 @@ public class RoleInvalidationService
         RoleCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
-            SearchPattern<Role>(
-               entityInfo.Status));
+            SearchPattern<Role>(entityInfo.Status));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
-             EntityPagedPattern<Role>(
-                entityInfo.Status));
+             EntityPagedPattern<Role>(entityInfo.Status));
 
         await InvalidateUserRoleAsync(entityInfo);
     }
@@ -111,20 +107,10 @@ public class RoleInvalidationService
     private async Task InvalidateUserRoleAsync(
         RoleCacheInfo entityInfo)
     {
-        await _cache.RemoveByPatternAsync(
-                UserRoleCache.UsersByRolePattern(entityInfo.Id,
-                entityInfo.Status));
+        await _cache.RemoveByPatternAsync(UserRoleCache
+            .UsersByRolePattern(entityInfo.Id));
 
-        await _cache.RemoveAsync(
-            UserRoleCache.UserIdsByRole(entityInfo.Id,
-                entityInfo.Status));
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityPagedPattern<Role>(
-                entityInfo.Status));
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             SearchPattern<Role>(
-                entityInfo.Status));
+        await _cache.RemoveAsync(UserRoleCache
+            .UserIdsByRole(entityInfo.Id));
     }
 }

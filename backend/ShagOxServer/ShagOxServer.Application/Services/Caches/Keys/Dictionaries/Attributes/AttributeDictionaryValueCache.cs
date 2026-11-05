@@ -13,10 +13,14 @@ public static class AttributeDictionaryValueCache
        int page,
        int pageSize,
         EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:{language}:status{status}:dictionary:{dictionaryId}:page:{page}:size:{pageSize}";
+           => $"{Prefix}:{language}:status:{status}:dictionary:{dictionaryId}:page:{page}:size:{pageSize}";
 
     public static string ByDictionaryPattern(
        long dictionaryId,
-        EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:*status{status}:dictionary:{dictionaryId}:page:*";
+        EntityStatus status)
+           => $"{Prefix}:*:status{status}:dictionary:{dictionaryId}:page:*";
+
+    public static string ByDictionaryPattern(
+      long dictionaryId)
+          => $"{Prefix}:*:dictionary:{dictionaryId}:page:*";
 }

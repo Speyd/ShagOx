@@ -79,8 +79,8 @@ public class AttributeDictionaryInvalidationService
         AttributeDictionaryCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityLanguagePagedPattern<AttributeDictionary>(
-                entityInfo.Status));
+            EntityLanguagePattern<AttributeDictionary>(
+                entityInfo.Id));
 
         await InvalidatePatternAsync(entityInfo);
     }

@@ -16,6 +16,10 @@ public static class UserCache
 
     public static string ByContactPattern(
         string contact,
-        EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:*:status{status}:contact:{contact}";
+        EntityStatus status)
+            => $"{Prefix}:*:status:{status}:contact:{contact}";
+
+    public static string ByContactPattern(
+        string contact)
+            => $"{Prefix}:*:contact:{contact}";
 }

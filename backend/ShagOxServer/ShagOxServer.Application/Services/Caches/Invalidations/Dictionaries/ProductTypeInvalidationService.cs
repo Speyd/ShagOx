@@ -90,8 +90,7 @@ public class ProductTypeInvalidationService
         ProductTypeCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
-            EntityLanguagePattern<ProductType>(entityInfo.Id,
-                entityInfo.Status));
+            EntityLanguagePattern<ProductType>(entityInfo.Id));
 
         await InvalidatePatternAsync(entityInfo);
     }

@@ -1,4 +1,3 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
@@ -7,7 +6,6 @@ using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;
-using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
@@ -61,12 +59,10 @@ public class BasketInvalidationService
         BasketCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-           .EntityLanguagePattern<Basket>(entityInfo.Id,
-                entityInfo.Status));
+           .EntityLanguagePattern<Basket>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(BasketCache
-          .ByUserPattern(entityInfo.UserId,
-                entityInfo.Status));
+          .ByUserPattern(entityInfo.UserId));
     }
 
     private async Task<List<BasketItemCacheInfo>> GetBasketItemInfos(

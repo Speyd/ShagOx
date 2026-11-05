@@ -13,10 +13,14 @@ public static class ReviewCommentCache
         int page,
         int pageSize,
         EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:status{status}:advertisement:{advertId}:page:{page}:size:{pageSize}";
+           => $"{Prefix}:status:{status}:advertisement:{advertId}:page:{page}:size:{pageSize}";
 
     public static string ByAdvertisementPattern(
        long advertId,
-        EntityStatus status = EntityStatus.Active)
-        => $"{Prefix}:status{status}:advertisement:{advertId}:*";
+        EntityStatus status)
+        => $"{Prefix}:status:{status}:advertisement:{advertId}:*";
+
+    public static string ByAdvertisementPattern(
+       long advertId)
+        => $"{Prefix}:*:advertisement:{advertId}:*";
 }

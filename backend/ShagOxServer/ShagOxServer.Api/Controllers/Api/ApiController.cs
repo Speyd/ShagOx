@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 
 namespace ShagOxServer.Api.Controllers.Api;
 public abstract class ApiController 
     : ControllerBase
 {
-    protected long UserId =>
-        long.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+    protected readonly IUserContext UserContext;
+
+    protected long? UserId => UserContext.UserId;
+
+    protected ApiController(IUserContext userContext)
+    {
+        UserContext = userContext;
+    }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Auth.Users;
@@ -30,7 +31,10 @@ public class UserCommandsController
         IChangeEmailService emailService,
         IChangePhoneService phoneService,
         IChangePasswordService passwordService,
-        IResetPasswordService resetPasswordService)
+        IResetPasswordService resetPasswordService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _updateService = updateService;
         _emailService = emailService;
@@ -60,7 +64,7 @@ public class UserCommandsController
         [FromForm] UserUpdateRequest request)
     {
         var result = await _updateService
-            .UpdateAsync(UserId, request);
+            .UpdateAsync(UserId!.Value, request);
 
         return result.ToActionResult();
     }
@@ -71,7 +75,7 @@ public class UserCommandsController
         [FromBody] ChangeEmailRequest request)
     {
         var result = await _emailService
-            .ChangeEmail(UserId, request);
+            .ChangeEmail(UserId!.Value, request);
 
         return result.ToActionResult();
     }
@@ -82,7 +86,7 @@ public class UserCommandsController
         [FromBody] ChangePhoneRequest request)
     {
         var result = await _phoneService
-            .ChangePhone(UserId, request);
+            .ChangePhone(UserId!.Value, request);
 
         return result.ToActionResult();
     }
@@ -93,7 +97,7 @@ public class UserCommandsController
         [FromBody] ChangePasswordRequest request)
     {
         var result = await _passwordService
-            .ChangePassword(UserId, request);
+            .ChangePassword(UserId!.Value, request);
 
         return result.ToActionResult();
     }

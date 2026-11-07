@@ -9,7 +9,7 @@ public class Condition
 {
     public string Code { get; set; } = "";
 
-    public ICollection<Advertisement> AdvertisementsByCondition { get; set; }
+    public ICollection<Advertisement> Advertisements { get; set; }
         = [];
 
     public ICollection<ConditionTranslation> Translations { get; set; }

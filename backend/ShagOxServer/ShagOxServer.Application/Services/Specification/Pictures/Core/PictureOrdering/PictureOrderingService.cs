@@ -6,7 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Update;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.Domain.Entities.Specification.Pictures;

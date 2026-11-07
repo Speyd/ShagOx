@@ -43,10 +43,11 @@ public class BasketAttributeDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var attribute = await _attributeValidator
-            .GetByIdIncludeAsync(id);
+            .GetByIdIncludeAsync(id, cancellationToken);
 
         if (!attribute.IsSuccess)
             return Result<DeleteResponse>.Fail(attribute.Error);

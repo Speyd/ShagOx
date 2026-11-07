@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Auth.Roles.Create;
 using ShagOxServer.Application.DTOs.Auth.Roles.Update;
+using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Create;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Update;
-using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Auth.Roles;
 
@@ -24,7 +27,10 @@ public class RoleCommandsController
     public RoleCommandsController(
         IRoleCreateService createService,
         IRoleUpdateService updateService,
-        IRoleDeleteService deleteService)
+        IRoleDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;
@@ -47,6 +53,19 @@ public class RoleCommandsController
     {
         var result = await _updateService
             .UpdateAsync(id, request);
+
+        return result.ToActionResult();
+    }
+
+    [HttpPatch("{id:long}/status")]
+    public async Task<IActionResult> ChangeStatus(
+        [FromRoute] long id,
+        [FromBody] ChangeStatusRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _updateService
+            .ChangeStatusAsync(id, request,
+                cancellationToken);
 
         return result.ToActionResult();
     }

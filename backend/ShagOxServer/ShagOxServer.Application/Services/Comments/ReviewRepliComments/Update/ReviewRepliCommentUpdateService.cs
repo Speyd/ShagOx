@@ -4,8 +4,10 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Comments.ReviewRepliComments.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
@@ -16,7 +18,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewRepliComments.Update;
 public class ReviewRepliCommentUpdateService
-    : IReviewRepliCommentUpdateService
+    : BaseUpdateService<ReviewRepliComment>,
+    IReviewRepliCommentUpdateService
 {
     private readonly IRepository<ReviewRepliComment> _commitRepository;
     private readonly ReviewRepliCommentValidator _commitValidator;
@@ -34,11 +37,14 @@ public class ReviewRepliCommentUpdateService
     public ReviewRepliCommentUpdateService(
         IRepository<ReviewRepliComment> commitRepository,
         ReviewRepliCommentValidator commitValidator,
+        IReviewRepliCommentDeleteService commitDeleteService,
         ReviewRepliCommentInvalidationService commInvalid,
         PictureOrderSyncExecutor<ReviewRepliComment,
-            ReviewRepliImage> executor,
+        ReviewRepliImage> executor,
         IUnitOfWork unitOfWork,
-        ILogger<ReviewRepliCommentUpdateService> logger)
+        ILogger<ReviewRepliCommentUpdateService> logger
+    )
+        : base(commitDeleteService, commitValidator, logger, unitOfWork)
     {
         _commitRepository = commitRepository;
         _commitValidator = commitValidator;
@@ -51,10 +57,11 @@ public class ReviewRepliCommentUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long commentId,
-        ReviewRepliCommentUpdateRequest request)
+        ReviewRepliCommentUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var comment = await _commitValidator
-            .GetByIdAsync(commentId);
+            .GetByIdAsync(commentId, cancellationToken);
         if (!comment.IsSuccess)
             return Result<UpdateResponse>.Fail(comment.Error);
 
@@ -77,7 +84,8 @@ public class ReviewRepliCommentUpdateService
 
             var imagesResult = await _executor.SyncAsync(
                 comment.Value!,
-                request.Pictures
+                request.Pictures,
+                cancellationToken
             );
 
             if (!imagesResult.IsSuccess)

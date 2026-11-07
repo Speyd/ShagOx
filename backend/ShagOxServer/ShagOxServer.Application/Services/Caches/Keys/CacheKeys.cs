@@ -55,17 +55,21 @@ public static class CacheKeys
         long id,
         string language,
         EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:entity:{id}";
+        => $"{LanguagePrefix<TEntity>()}:{language}:status:{status}:entity:{id}";
 
     public static string EntityLanguagePattern<TEntity>(
         long id,
         EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:*:entity:{id}";
+        => $"{LanguagePrefix<TEntity>()}:*:status:{status}:entity:{id}";
 
     public static string EntityLanguagePattern<TEntity>(
         string language,
-        EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:entity:*";
+        EntityStatus status)
+        => $"{LanguagePrefix<TEntity>()}:{language}:status:{status}:entity:*";
+
+    public static string EntityLanguagePattern<TEntity>(
+        string language)
+        => $"{LanguagePrefix<TEntity>()}:{language}:*";
 
     #endregion
 
@@ -74,17 +78,16 @@ public static class CacheKeys
 
     public static string Language<TEntity>(
         string language,
-        EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}";
+        EntityStatus status)
+        => $"{LanguagePrefix<TEntity>()}:{language}:status:{status}";
 
     public static string LanguagePattern<TEntity>(
         EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:*";
+        => $"{LanguagePrefix<TEntity>()}:*:status:{status}";
 
     public static string LanguagePattern<TEntity>(
-        string language,
-        EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}*";
+        string language)
+        => $"{LanguagePrefix<TEntity>()}:{language}:*";
 
     #endregion
 
@@ -96,16 +99,20 @@ public static class CacheKeys
         int page,
         int pageSize,
         EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:paged:page:{page}:size:{pageSize}";
+        => $"{LanguagePrefix<TEntity>()}:{language}:status:{status}:paged:page:{page}:size:{pageSize}";
 
     public static string EntityLanguagePagedPattern<TEntity>(
         EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:*:paged:page:*";
+        => $"{LanguagePrefix<TEntity>()}:*:status:{status}:paged:page:*";
 
     public static string EntityLanguagePagedPattern<TEntity>(
         string language,
-        EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:paged:*";
+        EntityStatus status)
+        => $"{LanguagePrefix<TEntity>()}:{language}:status:{status}:paged:*";
+
+    public static string EntityLanguagePagedPattern<TEntity>(
+        string language)
+        => $"{LanguagePrefix<TEntity>()}:{language}:*";
 
     #endregion
 
@@ -126,7 +133,7 @@ public static class CacheKeys
 
         return language is null
             ? $"{Prefix<TEntity>()}:status:{status}:search:{hash}"
-            : $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:search:{hash}";
+            : $"{LanguagePrefix<TEntity>()}:{language}:status:{status}:search:{hash}";
     }
 
     public static string BySearch<TEntity, TFilter>(
@@ -171,8 +178,12 @@ public static class CacheKeys
 
     public static string LanguageSearchPattern<TEntity>(
         string language,
-        EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:{language}:search:*";
+        EntityStatus status)
+        => $"{LanguagePrefix<TEntity>()}:{language}:status:{status}:search:*";
+
+    public static string LanguageSearchPattern<TEntity>(
+        string language)
+        => $"{LanguagePrefix<TEntity>()}:{language}:status:*:search:*";
 
     #endregion
 }

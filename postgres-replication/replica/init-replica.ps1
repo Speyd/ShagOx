@@ -2,9 +2,7 @@ $ErrorActionPreference = "Stop"
 
 Write-Host "=== PostgreSQL Replica Initialization ==="
 
-# ============================================================
-# Paths
-# ============================================================
+
 
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 
@@ -31,9 +29,7 @@ $composeArgs = @(
     "-f", $composeFile
 )
 
-# ============================================================
-# Environment
-# ============================================================
+
 
 function Get-EnvValue {
     param (
@@ -60,9 +56,7 @@ $replicatorUser = Get-EnvValue "REPLICATOR_USER"
 $replicatorPassword = Get-EnvValue "REPLICATOR_PASSWORD"
 
 
-# ============================================================
-# Replicas
-# ============================================================
+
 
 $network = "postgres-replication_postgres-network"
 

@@ -14,10 +14,14 @@ public static class CityCache
        int page,
        int pageSize,
         EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:{language}:status{status}:region:{regionId}:page:{page}:size:{pageSize}";
+           => $"{Prefix}:{language}:status:{status}:region:{regionId}:page:{page}:size:{pageSize}";
 
     public static string ByRegionPattern(
        long regionId,
-        EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:*status{status}:region:{regionId}:page:*";
+        EntityStatus status)
+           => $"{Prefix}:*:status{status}:region:{regionId}:page:*";
+
+    public static string ByRegionPattern(
+       long regionId)
+           => $"{Prefix}:*:region:{regionId}:page:*";
 }

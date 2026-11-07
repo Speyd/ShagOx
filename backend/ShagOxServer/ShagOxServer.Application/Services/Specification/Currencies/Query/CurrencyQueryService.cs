@@ -88,4 +88,27 @@ public class CurrencyQueryService
             _settings.KeyExpiration
         );
     }
+
+    public async Task<Result<Currency?>> GetByUserAsync(
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+        var cacheKey = CurrencyCache.ByUser(
+            userId,
+            status);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var currency = await _currencyRepository
+                    .GetByUserAsync(userId,
+                        cancellationToken, status);
+
+                return Result<Currency?>.Success(currency);
+            },
+            _settings.KeyExpiration
+        );
+    }
 }

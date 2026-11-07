@@ -48,12 +48,14 @@ public class ReviewCommentCreateService
 
     public async Task<Result<CreateResponse>> CreateAsync(
         ReviewCommentCreateRequest request,
-        long ownerId)
+        long ownerId,
+        CancellationToken cancellationToken = default)
     {
         var exists = await _commentValidator
             .ValidateCommentAsync(
                 ownerId, 
-                request.CommentableEntityId
+                request.CommentableEntityId,
+                cancellationToken
         );
 
         if (!exists.IsSuccess)
@@ -77,7 +79,7 @@ public class ReviewCommentCreateService
                    new PicturesCreateRequest(
                        request.CommentableEntityId,
                        request.Pictures
-                   )
+                   ), cancellationToken
            );
 
             if (!imagesResult.IsSuccess)

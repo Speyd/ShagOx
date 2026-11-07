@@ -1,5 +1,7 @@
+using Npgsql;
 using Serilog;
 using ShagOxServer.Api.DependencyInjection;
+using ShagOxServer.Api.DependencyInjection.Currencies;
 using ShagOxServer.Api.DependencyInjection.Environments;
 using ShagOxServer.Application.DependencyInjections.Base;
 using ShagOxServer.Infrastructure.DependencyInjections.Base;
@@ -24,6 +26,7 @@ try
         .AddLanguageProvider()
         .AddSerilogConfiguration(builder.Configuration)  
         .AddJWT(builder.Configuration)
+        .AddCurrency(builder.Configuration)
         .AddCloudinary(builder.Configuration)
         .AddSettingsConfiguration(builder.Configuration)
         .AddFrontendPolicy()

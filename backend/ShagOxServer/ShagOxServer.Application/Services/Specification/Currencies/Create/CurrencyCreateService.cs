@@ -40,17 +40,18 @@ public class CurrencyCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        CurrencyCreateRequest request)
+        CurrencyCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var code = await _currencyValidator
-            .NotExistsByCodeValidator(request.Code);
+            .NotExistsByCodeValidator(request.Code, cancellationToken);
 
         if (!code.IsSuccess)
             return Result<CreateResponse>.Fail(code.Error);
 
 
         var name = await _currencyValidator
-            .NotExistsByNameValidator(request.Name);
+            .NotExistsByNameValidator(request.Name, cancellationToken);
 
         if (!name.IsSuccess)
             return Result<CreateResponse>.Fail(code.Error);

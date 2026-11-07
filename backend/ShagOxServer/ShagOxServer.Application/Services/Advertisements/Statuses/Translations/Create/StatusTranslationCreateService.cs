@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -41,10 +41,12 @@ public class StatusTranslationCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        StatusTranslationCreateRequest request)
+        StatusTranslationCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var codeValidation = await _statusValidator
-            .NotExistsAsync(request.TranslatableId, request.Language);
+            .NotExistsAsync(request.TranslatableId, 
+                request.Language, cancellationToken);
 
         if (!codeValidation.IsSuccess)
             return Result<CreateResponse>.Fail(codeValidation.Error);

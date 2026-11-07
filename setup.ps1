@@ -1,5 +1,9 @@
 $ErrorActionPreference = "Stop"
 
+$env:OPENSSL_CONF = ""
+
+$env:OPENSSL_CONF = $null
+
 Write-Host "=== Checking OpenSSL ==="
 
 if (-not (Get-Command openssl -ErrorAction SilentlyContinue)) {
@@ -30,9 +34,54 @@ Write-Host "=== Starting infrastructure (Redis) ==="
 Push-Location infrastructure\my_redis\init
 try {
     .\init.ps1
+    if (-not $?){
+        throw "Redis initialization failed."
+    }
 }
 finally {
     Pop-Location
 }
 
-Write-Host "=== Redis started ==="
+Write-Host "=== Starting PostgreSQL replication ==="
+
+Push-Location postgres-replication\replica
+try {
+    .\init-replica.ps1
+    if (-not $?){
+        throw "PostgreSQL replication initialization failed."
+    }
+}
+finally {
+    Pop-Location
+}
+
+Write-Host "=== Starting PgBiuncer user list ==="
+
+Push-Location postgres-replication\pgbouncer\script
+try {
+    .\generate-pgbouncer-userlist.ps1
+    if (-not $?){
+        throw "PgBouncer user list initialization failed."
+    }
+}
+finally {
+    Pop-Location
+}
+
+Write-Host "=== Starting PgBouncer ==="
+
+Push-Location postgres-replication
+try {
+    docker compose up -d --build pgbouncer
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "PgBouncer container startup failed."
+    }
+
+    Write-Host "PgBouncer started successfully."
+}
+finally {
+    Pop-Location
+}
+
+Write-Host "=== Server started ==="

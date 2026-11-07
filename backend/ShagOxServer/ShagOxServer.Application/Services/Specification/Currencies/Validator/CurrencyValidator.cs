@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,56 +15,70 @@ public class CurrencyValidator
 
 
     public CurrencyValidator(
-        IQueryRepository<Currency> repository,
+        IRepository<Currency> repository,
+        IQueryRepository<Currency> queryRepository,
         ICurrencyExistsRepository existsRepository,
         IDataCacheService cache
     ) 
-        : base(repository, existsRepository, cache)
+        : base(repository, queryRepository, existsRepository, cache)
     {
         _existsRepository = existsRepository;
     }
 
 
     public async Task<Result<bool>> ExistsByCodeValidator(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
-        if (!await _existsRepository.ExistsByCodeAsync(code))
+        if (!await _existsRepository
+                .ExistsByCodeAsync(code, cancellationToken))
+        {
             return Result<bool>.NotFound(
                 EntityNamesResources.Currency);
+        }
 
         return Result<bool>.Success(true);
     }
 
 
     public async Task<Result<bool>> NotExistsByCodeValidator(
-        string code)
+        string code,
+        CancellationToken cancellationToken = default)
     {
-        Console.WriteLine(await _existsRepository.ExistsByCodeAsync(code));
-
-        if (await _existsRepository.ExistsByCodeAsync(code))
+        if (await _existsRepository
+            .ExistsByCodeAsync(code, cancellationToken))
+        {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Currency);
+        }
 
         return Result<bool>.Success(true);
     }
 
     public async Task<Result<bool>> ExistsByNameValidator(
-        string name)
+        string name,
+        CancellationToken cancellationToken = default)
     {
-        if (!await _existsRepository.ExistsByNameAsync(name))
+        if (!await _existsRepository
+                .ExistsByNameAsync(name, cancellationToken))
+        {
             return Result<bool>.NotFound(
                 EntityNamesResources.Currency);
+        }
 
         return Result<bool>.Success(true);
     }
 
     public async Task<Result<bool>> NotExistsByNameValidator(
-        string name)
+        string name,
+        CancellationToken cancellationToken = default)
     {
-        Console.WriteLine(await _existsRepository.ExistsByNameAsync(name));
-        if (await _existsRepository.ExistsByNameAsync(name))
+        if (await _existsRepository
+                .ExistsByNameAsync(name, cancellationToken))
+        {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.Currency);
+        }
 
         return Result<bool>.Success(true);
     }

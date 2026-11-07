@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Update;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Dictionaries.ProductTypes.Admin;
@@ -24,8 +27,10 @@ public class ProductTypeAdminCommandsController
     public ProductTypeAdminCommandsController(
         IProductTypeCreateService createService,
         IProductTypeUpdateService updateService,
-        IProductTypeDeleteService deleteService
-        )
+        IProductTypeDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;
@@ -54,6 +59,18 @@ public class ProductTypeAdminCommandsController
         return result.ToActionResult();
     }
 
+    [HttpPatch("{id:long}/status")]
+    public async Task<IActionResult> ChangeStatus(
+        [FromRoute] long id,
+        [FromBody] ChangeStatusRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _updateService
+            .ChangeStatusAsync(id, request,
+                cancellationToken);
+
+        return result.ToActionResult();
+    }
 
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(

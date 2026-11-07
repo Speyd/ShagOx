@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -21,7 +22,10 @@ public abstract class BaseAdminQueryController<TDto, TFilter>
 
 
     protected BaseAdminQueryController(
-       IQueryOperations<TDto, TFilter> queryService)
+        IQueryOperations<TDto, TFilter> queryService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _queryService = queryService;
     }

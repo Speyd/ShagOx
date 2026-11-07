@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Baskets.Core;
@@ -17,7 +18,10 @@ public class BasketCommandsController
 
 
     public BasketCommandsController(
-        IBasketCreateService createService)
+        IBasketCreateService createService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
     }
@@ -29,7 +33,7 @@ public class BasketCommandsController
         var request = new BasketCreateRequest();
 
         var result = await _createService
-            .CreateAsync(request, UserId);
+            .CreateAsync(request, UserId!.Value);
 
         return result.ToActionResult();
     }

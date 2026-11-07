@@ -4,14 +4,13 @@ using ShagOxServer.Application.DTOs.Advertisements.Statuses.Translations.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
@@ -28,17 +27,18 @@ public class StatusTranslationUpdateService
     private readonly StatusTranslationInvalidationService _transInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<StatusTranslationDeleteService> _logger;
+    private readonly ILogger<StatusTranslationUpdateService> _logger;
 
     public StatusTranslationUpdateService(
         IRepository<StatusTranslation> statusRepository,
+        IStatusTranslationDeleteService deleteService,
         StatusTranslationValidator statusTranslationValidator,
         StatusValidator statusValidator,
         StatusTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<StatusTranslationDeleteService> logger
+        ILogger<StatusTranslationUpdateService> logger
     ) 
-        : base(statusValidator, statusTranslationValidator)
+        : base(statusValidator, deleteService, statusTranslationValidator, logger, unitOfWork)
     {
         _statusRepository = statusRepository;
         _statusTranslationValidator = statusTranslationValidator;
@@ -50,17 +50,19 @@ public class StatusTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long statusTranslationId,
-        StatusTranslationUpdateRequest request)
+        StatusTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var status = await _statusTranslationValidator
-            .GetByIdAsync(statusTranslationId);
+            .GetByIdAsync(statusTranslationId, cancellationToken);
 
         if (!status.IsSuccess)
             return Result<UpdateResponse>.Fail(status.Error);
 
 
         var validation = await
-             ValidateUpdatesAsync(status.Value!, request);
+             ValidateUpdatesAsync(status.Value!, 
+                request, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);

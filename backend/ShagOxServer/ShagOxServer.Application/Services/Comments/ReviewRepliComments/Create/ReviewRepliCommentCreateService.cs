@@ -52,11 +52,13 @@ public class ReviewRepliCommentCreateService
 
     public async Task<Result<CreateResponse>> CreateAsync(
         ReviewRepliCommentCreateRequest request,
-        long ownerId)
+        long ownerId,
+        CancellationToken cancellationToken = default)
     {
         var exists = await ValidationAsync(
-                request, 
-                ownerId
+            request, 
+            ownerId,
+            cancellationToken
         );
 
         if (!exists.IsSuccess)
@@ -119,12 +121,14 @@ public class ReviewRepliCommentCreateService
 
     public async Task<Result<bool>> ValidationAsync(
         ReviewRepliCommentCreateRequest request,
-        long ownerId)
+        long ownerId,
+        CancellationToken cancellationToken = default)
     {
         var existsComment = await _commentValidator
-           .ValidateCommentAsync(
-               ownerId,
-               request.CommentableEntityId
+            .ValidateCommentAsync(
+                 ownerId,
+                request.CommentableEntityId,
+                cancellationToken
         );
 
         if (!existsComment.IsSuccess)
@@ -136,7 +140,8 @@ public class ReviewRepliCommentCreateService
         if (request.RepliId.HasValue)
         {
             var existsRepli = await _repliValidator
-               .ExistsByIdAsync(request.RepliId.Value);
+               .ExistsByIdAsync(request.RepliId.Value,
+                cancellationToken);
 
             if (!existsRepli.IsSuccess)
             {

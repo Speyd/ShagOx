@@ -1,7 +1,9 @@
 using ShagOxServer.Application.Common.Settings.Auth;
+using ShagOxServer.Application.Common.Settings.Currencies;
 using ShagOxServer.Application.Common.Settings.Systems.BackgroundServices;
 using ShagOxServer.Application.Common.Settings.Systems.Middleware;
 using ShagOxServer.Application.Common.Settings.Verifivations;
+using ShagOxServer.Infrastructure.BackgroundServices.Currencies;
 
 namespace ShagOxServer.Api.DependencyInjection;
 public static class SettingsConfigurationExtensions

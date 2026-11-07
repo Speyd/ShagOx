@@ -11,5 +11,6 @@ public interface IAdvertisementVariantCreateService
         >
 {
     Task<Result<CreateResponse>> CreateInternalAsync(
-       AdvertisementVariantCreateRequest request);
+       AdvertisementVariantCreateRequest request,
+        CancellationToken cancellationToken = default);
 }

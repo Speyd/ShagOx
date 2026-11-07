@@ -44,13 +44,15 @@ public class AdvertisementVariantCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        AdvertisementVariantCreateRequest request)
+        AdvertisementVariantCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            var result = await CreateInternalAsync(request);
+            var result = await CreateInternalAsync(
+                request, cancellationToken);
 
             if (!result.IsSuccess)
             {
@@ -78,12 +80,14 @@ public class AdvertisementVariantCreateService
     }
 
     public async Task<Result<CreateResponse>> CreateInternalAsync(
-        AdvertisementVariantCreateRequest request)
+        AdvertisementVariantCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var variantValidation = await _variantValidator
             .NotExistsAsync(
                 request.AdvertisementId,
-                request.Attributes);
+                request.Attributes,
+                cancellationToken);
 
         if (!variantValidation.IsSuccess)
         {
@@ -94,7 +98,8 @@ public class AdvertisementVariantCreateService
         var isVariantExists = await _variantValidator
             .ValidateVariantAttributesAsync(
                 request.AdvertisementId,
-                request.Attributes);
+                request.Attributes,
+                cancellationToken);
 
         if (!isVariantExists.IsSuccess)
         {

@@ -16,4 +16,15 @@ public static class CurrencyMapper
             x.Name
         );
     }
+
+    public static CurrencyShortDto ToShortDto(
+       Currency x)
+    {
+        return new CurrencyShortDto
+        (
+            x.Code,
+            x.Symbol,
+            x.Name
+        );
+    }
 }

@@ -18,9 +18,11 @@ $allContainers = @(
     "postgres-replica-1"
     "postgres-replica-2"
     "postgres-replica-3"
+    "pgbouncer"
     "postgres-replication"
     "redis-init"
     "redis"
+    "user-redis"
     "my_redis"
 )
 
@@ -124,15 +126,29 @@ Write-Host ""
 Write-Host "=== Removing containers ===" -ForegroundColor Cyan
 
 foreach ($name in $containersToRemove) {
-    & docker container rm --force $name 2>$null
 
-    if ($LASTEXITCODE -eq 0) {
-        Write-Host "Removed container: $name" -ForegroundColor Green
+    # Check whether container exists
+    $existingContainer = @(
+        & docker container ls -a --format "{{.Names}}" 2>$null
+    )
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to list Docker containers."
     }
-    else {
-        Write-Host "Skipped missing or unavailable container: $name" `
-            -ForegroundColor DarkGray
+
+    if ($name -notin $existingContainer) {
+        Write-Host "Container not found: $name" -ForegroundColor DarkGray
+        continue
     }
+
+    # Remove existing container
+    & docker container rm --force $name
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to remove container: $name"
+    }
+
+    Write-Host "Removed container: $name" -ForegroundColor Green
 }
 
 # ============================================================

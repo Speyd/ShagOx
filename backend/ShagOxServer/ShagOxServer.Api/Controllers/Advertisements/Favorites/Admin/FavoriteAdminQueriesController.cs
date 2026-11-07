@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -22,9 +23,10 @@ public class FavoriteAdminQueriesController
 
 
     public FavoriteAdminQueriesController(
-        IFavoriteQueryService queryService
+        IFavoriteQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
         _favoriteQueryService = queryService;
     }

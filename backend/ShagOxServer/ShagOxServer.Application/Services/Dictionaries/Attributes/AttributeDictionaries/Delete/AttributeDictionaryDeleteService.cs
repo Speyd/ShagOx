@@ -43,10 +43,11 @@ public class AttributeDictionaryDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var dictionary = await _dictionaryValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!dictionary.IsSuccess)
             return Result<DeleteResponse>.Fail(dictionary.Error);

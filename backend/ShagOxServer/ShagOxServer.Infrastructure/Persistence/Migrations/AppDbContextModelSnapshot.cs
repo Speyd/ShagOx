@@ -72,6 +72,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long?>("CityId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("CurrencyId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -128,6 +131,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("CityId")
                         .HasDatabaseName("IX_Users_CityId");
 
+                    b.HasIndex("CurrencyId")
+                        .HasDatabaseName("IX_Users_CurrencyId");
+
                     b.HasIndex("Email")
                         .IsUnique()
                         .HasDatabaseName("IX_Users_Email")
@@ -141,7 +147,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("UserName")
                         .IsUnique()
                         .HasDatabaseName("IX_Users_UserName")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Users");
                 });
@@ -219,6 +225,14 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<int>("Popularity")
                         .HasColumnType("integer");
+
+                    b.Property<decimal?>("PreviousPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal?>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<DateTime?>("SoldAt")
                         .HasColumnType("timestamp with time zone");
@@ -346,7 +360,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId", "AdvertisementId")
                         .IsUnique()
                         .HasDatabaseName("IX_Favorites_OwnerId_AdvertisementId")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Favorites");
                 });
@@ -378,7 +392,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Statuses_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Statuses");
                 });
@@ -428,7 +442,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_StatusTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("StatusTranslations");
                 });
@@ -458,7 +472,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId")
                         .IsUnique()
                         .HasDatabaseName("IX_Baskets_OwnerId")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Baskets");
                 });
@@ -491,7 +505,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("AttributeDefinitionId")
                         .IsUnique()
                         .HasDatabaseName("IX_BasketAttributes_AttributeDefinitionId")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("BasketAttributes");
                 });
@@ -532,7 +546,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("BasketId", "AdvertisementVariantId")
                         .IsUnique()
                         .HasDatabaseName("IX_BasketItems_BasketId_AdvertisementVariantId")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("BasketItems");
                 });
@@ -707,7 +721,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("CategoryId", "Key")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDefinitions_CategoryId_Key")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AttributeDefinitions");
                 });
@@ -739,7 +753,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDictionaries_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AttributeDictionaries");
                 });
@@ -777,7 +791,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("DictionaryId", "Code")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDictionaryValues_DictionaryId_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AttributeDictionaryValues");
                 });
@@ -823,7 +837,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDefinitionTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AttributeDefinitionTranslations");
                 });
@@ -869,7 +883,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDictionaryValueTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AttributeDictionaryValueTranslations");
                 });
@@ -907,7 +921,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("ProductTypeId", "Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Categories_ProductTypeId_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Categories");
                 });
@@ -943,7 +957,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_ProductTypes_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ProductTypes");
                 });
@@ -989,7 +1003,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_CategoryTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("CategoryTranslations");
                 });
@@ -1035,7 +1049,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_ProductTypeTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ProductTypeTranslations");
                 });
@@ -1070,7 +1084,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Cities_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.HasIndex("RegionId")
                         .HasDatabaseName("IX_Cities_RegionId");
@@ -1105,7 +1119,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Regions_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Regions");
                 });
@@ -1151,7 +1165,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_CityTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("CityTranslations");
                 });
@@ -1197,7 +1211,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("TranslatableId", "Language")
                         .IsUnique()
                         .HasDatabaseName("IX_RegionTranslations_TranslatableId_Language")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("RegionTranslations");
                 });
@@ -1229,7 +1243,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Conditions_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Conditions");
                 });
@@ -1271,7 +1285,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Currencies_Code")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Currencies");
                 });
@@ -1313,7 +1327,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
                         .HasDatabaseName("IX_AdvertisementImages_OwnerId_Order")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("AdvertisementImages");
                 });
@@ -1352,7 +1366,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId")
                         .IsUnique()
                         .HasDatabaseName("IX_Avatars_OwnerId")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("Avatars");
                 });
@@ -1394,7 +1408,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
                         .HasDatabaseName("IX_ReviewImages_OwnerId_Order")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ReviewImages");
                 });
@@ -1436,7 +1450,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
                         .HasDatabaseName("IX_ReviewRepliImages_OwnerId_Order")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ReviewRepliImages");
                 });
@@ -1479,7 +1493,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("Language", "Name")
                         .IsUnique()
                         .HasDatabaseName("IX_ConditionTranslations_Language_Name")
-                        .HasFilter("\"EntityStatus\" = 'Active'");
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ConditionTranslations");
                 });
@@ -1548,7 +1562,15 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .HasConstraintName("FK_Users_Cities_CityId");
 
+                    b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
+                        .WithMany("Users")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Users_Currencies_CurrencyId");
+
                     b.Navigation("City");
+
+                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.UserRole", b =>
@@ -1581,21 +1603,21 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasConstraintName("FK_Advertisements_Users_BuyerId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Category", "Category")
-                        .WithMany("AdvertisementsByCategory")
+                        .WithMany("Advertisements")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Advertisements_Categories_CategoryId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Condition", "Condition")
-                        .WithMany("AdvertisementsByCondition")
+                        .WithMany("Advertisements")
                         .HasForeignKey("ConditionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Advertisements_Conditions_ConditionId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
-                        .WithMany("AdvertisementsByCurrency")
+                        .WithMany("Advertisements")
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -1609,7 +1631,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasConstraintName("FK_Advertisements_Users_OwnerId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Status", "Status")
-                        .WithMany("AdvertisementsByStatus")
+                        .WithMany("Advertisements")
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -2007,7 +2029,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Status", b =>
                 {
-                    b.Navigation("AdvertisementsByStatus");
+                    b.Navigation("Advertisements");
 
                     b.Navigation("Translations");
                 });
@@ -2052,7 +2074,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Category", b =>
                 {
-                    b.Navigation("AdvertisementsByCategory");
+                    b.Navigation("Advertisements");
 
                     b.Navigation("Attributes");
 
@@ -2082,14 +2104,16 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>
                 {
-                    b.Navigation("AdvertisementsByCondition");
+                    b.Navigation("Advertisements");
 
                     b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Currency", b =>
                 {
-                    b.Navigation("AdvertisementsByCurrency");
+                    b.Navigation("Advertisements");
+
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

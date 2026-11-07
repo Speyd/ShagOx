@@ -12,10 +12,14 @@ public static class BasketCache
        long userId,
        string language,
         EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:{language}:status{status}:user:{userId}";
+            => $"{Prefix}:{language}:status:{status}:user:{userId}";
 
     public static string ByUserPattern(
         long userId,
-        EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:*status{status}:user:{userId}";
+        EntityStatus status)
+           => $"{Prefix}:*:status:{status}:user:{userId}";
+
+    public static string ByUserPattern(
+        long userId)
+           => $"{Prefix}:*:user:{userId}";
 }

@@ -4,9 +4,12 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
+using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Delete;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -14,7 +17,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.ProductTypes.Update;
 public class ProductTypeUpdateService 
-    : IProductTypeUpdateService
+    : BaseUpdateService<ProductType>,
+    IProductTypeUpdateService
 {
     private readonly IRepository<ProductType> _productTypeRepository;
     private readonly ProductTypeValidator _productTypeValidator;
@@ -29,8 +33,11 @@ public class ProductTypeUpdateService
         IRepository<ProductType> productTypeRepository,
         ProductTypeValidator productTypeValidator,
         ProductTypeInvalidationService productInvalid,
+        IProductTypeDeleteService productDeleteService,
         IUnitOfWork unitOfWork,
-        ILogger<ProductTypeUpdateService> logger)
+        ILogger<ProductTypeUpdateService> logger
+    )
+        : base(productDeleteService, productTypeValidator, logger, unitOfWork)
     {
         _productTypeRepository = productTypeRepository;
         _productTypeValidator = productTypeValidator;
@@ -42,17 +49,20 @@ public class ProductTypeUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long productTypeId,
-        ProductTypeUpdateRequest request)
+        ProductTypeUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var productType = await _productTypeValidator
-            .GetByIdAsync(productTypeId);
+            .GetByIdAsync(productTypeId, cancellationToken);
 
         if (!productType.IsSuccess)
             return Result<UpdateResponse>.Fail(productType.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(productType.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            productType.Value!, 
+            request, 
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -111,13 +121,14 @@ public class ProductTypeUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         ProductType productType,
-        ProductTypeUpdateRequest request)
+        ProductTypeUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Code is not null &&
              request.Code != productType.Code)
         {
             var nameValidator = await _productTypeValidator
-                .NotExistsByCodeAsync(request.Code);
+                .NotExistsByCodeAsync(request.Code, cancellationToken);
 
             if (!nameValidator.IsSuccess)
                 return Result<bool>.Fail(nameValidator.Error);

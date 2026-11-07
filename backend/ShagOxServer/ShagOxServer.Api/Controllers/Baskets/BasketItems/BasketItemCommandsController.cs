@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Baskets.BasketItems;
@@ -31,8 +32,10 @@ public class BasketItemCommandsController
         IBasketItemDeleteService deleteService,
         IBasketItemExistsRepository basketItemExistsService,
         IBasketExistsRepository basketExistsService,
-        IUserAdminQueryService userQueryService
-    ) : base(basketItemExistsService, userQueryService)
+        IUserAdminQueryService userQueryService,
+        IUserContext userContext
+    ) 
+        : base(basketItemExistsService, userQueryService, userContext)
     {
         _createService = createService;
         _updateService = updateService;
@@ -46,7 +49,7 @@ public class BasketItemCommandsController
         [FromBody] BasketItemCreateRequest request)
     {
         var IsOwner = await _basketExistsService
-            .IsOwnerAsync(request.BasketId, UserId);
+            .IsOwnerAsync(request.BasketId, UserId!.Value);
         if (!IsOwner)
             return Forbid();
 

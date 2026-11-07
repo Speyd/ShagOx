@@ -13,12 +13,16 @@ public static class BasketItemCache
         int page,
         int pageSize,
         EntityStatus status = EntityStatus.Active)
-             => $"{Prefix}:{language}:advertisement-variant:{variantId}:page:{page}:size:{pageSize}";
+             => $"{Prefix}:{language}:status:{status}:advertisement-variant:{variantId}:page:{page}:size:{pageSize}";
 
     public static string ByAdvertisementVariantPattern(
         long variantId,
-        EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:*status{status}:advertisement-variant:{variantId}:page:*";
+        EntityStatus status)
+           => $"{Prefix}:*:status:{status}:advertisement-variant:{variantId}:page:*";
+
+    public static string ByAdvertisementVariantPattern(
+        long variantId)
+           => $"{Prefix}:*:advertisement-variant:{variantId}:page:*";
 
 
     public static string ByBasket(
@@ -27,10 +31,14 @@ public static class BasketItemCache
         int page,
         int pageSize,
         EntityStatus status = EntityStatus.Active)
-             => $"{Prefix}:{language}:status{status}:basket:{basketId}:page:{page}:size:{pageSize}";
+             => $"{Prefix}:{language}:status:{status}:basket:{basketId}:page:{page}:size:{pageSize}";
 
     public static string ByBasketPattern(
         long basketId,
-        EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:*status{status}:basket:{basketId}:page:*";
+        EntityStatus status)
+           => $"{Prefix}:*:status:{status}:basket:{basketId}:page:*";
+
+    public static string ByBasketPattern(
+        long basketId)
+           => $"{Prefix}:*:basket:{basketId}:page:*";
 }

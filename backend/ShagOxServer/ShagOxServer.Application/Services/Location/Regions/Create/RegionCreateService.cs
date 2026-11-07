@@ -40,10 +40,11 @@ public class RegionCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        RegionCreateRequest request)
+        RegionCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var validation = await _regionValidator
-            .NotExistsByCodeAsync(request.Code);
+            .NotExistsByCodeAsync(request.Code, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<CreateResponse>.Fail(validation.Error);

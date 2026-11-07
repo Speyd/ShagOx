@@ -1,4 +1,5 @@
 using DotNetEnv;
+using ShagOxServer.Api.DependencyInjection.Environments.Db;
 using ShagOxServer.Application.Common.Settings.Db.Postgres;
 using ShagOxServer.SharedKernel.Configuration;
 
@@ -15,7 +16,7 @@ public partial class EnvironmentExtensions
         var settings = PostgresSettingsLoader.Load();
 
         builder.Configuration["ConnectionStrings:PrimaryConnection"] =
-            BuildPostgresConnectionString(
+            PostgresConnectionStringBuilder.Build(
                 settings.User,
                 settings.Password,
                 settings.Database,
@@ -26,7 +27,7 @@ public partial class EnvironmentExtensions
         {
             var replica = settings.Replicas[i];
 
-            var connectionString = BuildPostgresConnectionString(
+            var connectionString = PostgresConnectionStringBuilder.Build(
                 settings.User,
                 settings.Password,
                 settings.Database,
@@ -41,21 +42,5 @@ public partial class EnvironmentExtensions
                 $"Postgres:ReplicaContainers:{i}"] =
                 replica.ContainerName;
         }
-    }
-
-    private static string BuildPostgresConnectionString(
-        string user,
-        string password,
-        string database,
-        string host,
-        string port)
-    {
-        return
-            $"Host={host};" +
-            $"Port={port};" +
-            $"Database={database};" +
-            $"Username={user};" +
-            $"Password={password};" +
-            $"SSL Mode=Disable";
     }
 }

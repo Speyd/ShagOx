@@ -13,10 +13,14 @@ public static class FavoriteCache
         int page,
         int pageSize,
         EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:status{status}:user:{userId}:page:{page}:size:{pageSize}";
+            => $"{Prefix}:status:{status}:user:{userId}:page:{page}:size:{pageSize}";
 
     public static string ByUserPattern(
         long userId,
-        EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:status{status}:user:{userId}:page:*";
+        EntityStatus status)
+            => $"{Prefix}:status:{status}:user:{userId}:page:*";
+
+    public static string ByUserPattern(
+        long userId)
+            => $"{Prefix}:*:user:{userId}:page:*";
 }

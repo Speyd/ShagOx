@@ -1,9 +1,10 @@
-﻿using ShagOxServer.Application.DTOs.Base.Responses;
+using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Update;
-using ShagOxServer.Application.Interfaces.Services.Base;
+using ShagOxServer.Application.Interfaces.Services.Base.Update;
 
 namespace ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
 public interface IConditionUpdateService
-    : IUpdateService<UpdateResponse, ConditionUpdateRequest>
+    : IUpdateService<UpdateResponse, ConditionUpdateRequest>,
+    IEntityStatusUpdateService
 {
 }

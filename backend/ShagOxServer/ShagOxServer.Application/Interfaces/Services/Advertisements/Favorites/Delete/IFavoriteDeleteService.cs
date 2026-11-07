@@ -1,9 +1,10 @@
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Services.Base.Delete;
+using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
 public interface IFavoriteDeleteService
     : IDeleteService<DeleteResponse>,
-    ISoftDeleteService<DeleteResponse>
+    ISoftDeleteService<Favorite, DeleteResponse>
 {
 }

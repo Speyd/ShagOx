@@ -29,11 +29,13 @@ public class PictureOrderSyncExecutor<TOwner, TPicture>
 
     public async Task<Result<PictureSyncResponce<TPicture>>> SyncAsync(
         TOwner owner,
-        List<OwnerPictureOrderUpdateRequest>? pictures)
+        List<OwnerPictureOrderUpdateRequest>? pictures,
+        CancellationToken cancellationToken = default)
     {
         var result = await _pictureOrder.SyncPicturesAsync(
             owner.Id,
-            pictures);
+            pictures,
+            cancellationToken);
 
         if (!result.IsSuccess)
         {

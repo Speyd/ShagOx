@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Review.ReviewRepliImages.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Query;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Review;
 
-namespace ShagOxServer.Api.Controllers.Specification.Pictures.Review.ReviewRepliImages;
+namespace ShagOxServer.Api.Controllers.Specification.Pictures.Review.ReviewRepliImages.Admin;
 
 [ApiController]
 [Route("api/admin/review-repli-images")]
@@ -15,9 +16,10 @@ public class ReviewRepliImageAdminQueriesController
         ReviewRepliImageSearchFilter>
 {
     public ReviewRepliImageAdminQueriesController(
-        IReviewRepliImageQueryService queryService
+        IReviewRepliImageQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 }

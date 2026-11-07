@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Verifications;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Domain.Filters.Verifications.VerificationCodes;
 
@@ -16,9 +17,10 @@ public class VerificationCodeQueriesController
         VerificationCodeSearchFilter>
 {
     public VerificationCodeQueriesController(
-        IVerificationCodeQueryService queryService
+        IVerificationCodeQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 }

@@ -57,10 +57,11 @@ public partial class AdvertisementCreateService
 
     public async Task<Result<CreateResponse>> CreateAsync(
         AdvertisementCreateRequest request,
-        long ownerId)
+        long ownerId,
+        CancellationToken cancellationToken = default)
     {
         var validation = await _advertCreateValidator
-            .ValidateAsync(request, ownerId);
+            .ValidateAsync(request, ownerId, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<CreateResponse>.Fail(validation.Error);

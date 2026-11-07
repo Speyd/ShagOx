@@ -12,11 +12,13 @@ public class AttributeDefinitionTranslationValidator
         AttributeDefinitionTranslation>
 {
     public AttributeDefinitionTranslationValidator(
+        IRepository<AttributeDefinitionTranslation> repository,
         IQueryRepository<AttributeDefinitionTranslation> attributeRepository,
         IAttributeDefinitionTranslationExistsRepository attributeExistsRepository,
         IDataCacheService cache
     ) 
-        : base(attributeRepository, 
+        : base(repository, 
+            attributeRepository, 
             attributeExistsRepository, 
             cache)
     {

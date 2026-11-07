@@ -4,8 +4,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
-using ShagOxServer.Application.Services.Base;
 using ShagOxServer.Application.Services.Base.Delete;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -43,10 +43,11 @@ public abstract class PictureDeleteService<TPicture>
 
 
     public virtual async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var picture = await _pictureBaseValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!picture.IsSuccess)
             return Result<DeleteResponse>.Fail(picture.Error);
@@ -55,7 +56,8 @@ public abstract class PictureDeleteService<TPicture>
 
         try
         {
-            var result = await DeleteInternalAsync(picture.Value!);
+            var result = await DeleteInternalAsync(picture.Value!,
+                cancellationToken);
 
             if (!result.IsSuccess)
             {
@@ -84,7 +86,8 @@ public abstract class PictureDeleteService<TPicture>
     }
 
     public virtual async Task<Result<DeleteResponse>> DeleteInternalAsync(
-        TPicture picture)
+        TPicture picture,
+        CancellationToken cancellationToken = default)
     {
         _pictureRepository.Delete(picture);
 
@@ -106,10 +109,11 @@ public abstract class PictureDeleteService<TPicture>
     }
 
     public virtual async Task<Result<DeleteResponse>> DeleteRecordAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var picture = await _pictureBaseValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!picture.IsSuccess)
             return Result<DeleteResponse>.Fail(picture.Error);

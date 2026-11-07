@@ -40,10 +40,11 @@ public class StatusCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        StatusCreateRequest request)
+        StatusCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var codeValidation = await _statusValidator
-            .NotExistsByCodeAsync(request.Code);
+            .NotExistsByCodeAsync(request.Code, cancellationToken);
 
         if (!codeValidation.IsSuccess)
         {

@@ -1,5 +1,4 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
-using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
@@ -89,8 +88,7 @@ public class StatusInvalidationService
         StatusCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
-             EntityLanguagePattern<Status>(entityInfo.Id, 
-                entityInfo.Status));
+             EntityLanguagePattern<Status>(entityInfo.Id));
 
         await InvalidatePatternAsync(entityInfo);
     }

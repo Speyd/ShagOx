@@ -7,7 +7,7 @@ using ShagOxServer.Application.Common.Settings.Systems.BackgroundServices;
 using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
-namespace ShagOxServer.Infrastructure.BackgroundServices;
+namespace ShagOxServer.Infrastructure.BackgroundServices.Auth;
 public class PendingUserCleanupService
     : BackgroundService
 {

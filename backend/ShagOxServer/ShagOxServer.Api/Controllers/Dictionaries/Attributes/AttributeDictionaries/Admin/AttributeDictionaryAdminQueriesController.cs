@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaries.Query;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDictionaries;
 
@@ -15,9 +16,10 @@ public class AttributeDictionaryAdminQueriesController
         AttributeDictionarySearchFilter>
 {
     public AttributeDictionaryAdminQueriesController(
-        IAttributeDictionaryQueryService queryService
+        IAttributeDictionaryQueryService queryService,
+        IUserContext userContext
     )
-        : base(queryService)
+        : base(queryService, userContext)
     {
     }
 }

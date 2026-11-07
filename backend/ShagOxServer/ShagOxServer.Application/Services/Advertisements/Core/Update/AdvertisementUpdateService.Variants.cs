@@ -56,7 +56,8 @@ public partial class AdvertisementUpdateService
     }
 
     private async Task<Result<bool>> UpdateVariantsAsync(
-        Dictionary<long, AdvertisementVariantUpdateRequest>? variants)
+        Dictionary<long, AdvertisementVariantUpdateRequest>? variants,
+        CancellationToken cancellationToken = default)
     {
         if (variants is null)
             return Result<bool>.Success(true);
@@ -66,7 +67,8 @@ public partial class AdvertisementUpdateService
             var updateResult = await _variantUpdateService
                 .UpdateInternalAsync(
                     variant.Key,
-                    variant.Value
+                    variant.Value,
+                    cancellationToken
                 );
 
             if (!updateResult.IsSuccess)

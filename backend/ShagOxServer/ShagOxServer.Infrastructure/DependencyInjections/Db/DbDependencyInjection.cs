@@ -1,4 +1,3 @@
-using Docker.DotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Db;
@@ -27,7 +26,13 @@ public static class DbDependencyInjection
                     "No healthy PostgreSQL replicas available.");
             }
 
-            options.UseNpgsql(replica.ConnectionString);
+            options
+                .UseNpgsql(
+                    replica.ConnectionString,
+                    npgsql => npgsql.UseQuerySplittingBehavior(
+                        QuerySplittingBehavior.SplitQuery
+                    )
+                );
         });
 
         return services;

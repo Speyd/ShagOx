@@ -41,15 +41,12 @@ public class BasketItemInvalidationService
         BasketItemCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-           .EntityLanguagePattern<BasketItem>(entityInfo.Id,
-                entityInfo.Status));
+           .EntityLanguagePattern<BasketItem>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(BasketItemCache
-          .ByBasketPattern(entityInfo.BasketId,
-                entityInfo.Status));
+          .ByBasketPattern(entityInfo.BasketId));
 
         await _cache.RemoveByPatternAsync(BasketItemCache
-          .ByAdvertisementVariantPattern(entityInfo.AdvertVariantId,
-                entityInfo.Status));
+          .ByAdvertisementVariantPattern(entityInfo.AdvertVariantId));
     }
 }

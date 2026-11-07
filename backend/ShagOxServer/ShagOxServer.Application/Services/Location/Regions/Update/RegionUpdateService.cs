@@ -4,18 +4,20 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Location.Regions.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
 using ShagOxServer.Application.Services.Location.Regions.Mapping;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
-using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Update;
 public class RegionUpdateService 
-    : IRegionUpdateService
+    : BaseUpdateService<Region>,
+    IRegionUpdateService
 {
     private readonly IRepository<Region> _regionRepository;
     private readonly RegionValidator _regionValidator;
@@ -29,9 +31,12 @@ public class RegionUpdateService
     public RegionUpdateService(
         IRepository<Region> regionRepository,
         RegionValidator regionValidator,
+        IRegionDeleteService regionDeleteService,
         RegionInvalidationService regionInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<RegionUpdateService> logger)
+        ILogger<RegionUpdateService> logger
+    )
+        : base(regionDeleteService, regionValidator, logger, unitOfWork)
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;
@@ -43,14 +48,18 @@ public class RegionUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long regionId,
-        RegionUpdateRequest request)
+        RegionUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var region = await _regionValidator.GetByIdAsync(regionId);
+        var region = await _regionValidator
+            .GetByIdAsync(regionId, cancellationToken);
         if (!region.IsSuccess)
             return Result<UpdateResponse>.Fail(region.Error);
 
-        var validation = await
-             ValidateUpdatesAsync(region.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            region.Value!, 
+            request, 
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -109,13 +118,14 @@ public class RegionUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         Region region,
-        RegionUpdateRequest request)
+        RegionUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Code is not null &&
              request.Code != region.Code)
         {
             var codeValidation = await _regionValidator
-                .NotExistsByCodeAsync(request.Code);
+                .NotExistsByCodeAsync(request.Code, cancellationToken);
 
             if (!codeValidation.IsSuccess)
                 return Result<bool>.Fail(codeValidation.Error);

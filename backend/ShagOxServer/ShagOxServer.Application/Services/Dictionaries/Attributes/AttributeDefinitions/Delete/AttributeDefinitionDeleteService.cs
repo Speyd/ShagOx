@@ -43,10 +43,11 @@ public class AttributeDefinitionDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var attribute = await _attributeValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!attribute.IsSuccess)
             return Result<DeleteResponse>.Fail(attribute.Error);

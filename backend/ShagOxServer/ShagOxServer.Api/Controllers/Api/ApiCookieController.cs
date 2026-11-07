@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Systems;
 using ShagOxServer.Application.DTOs.Auth.Login;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
@@ -16,7 +17,10 @@ public abstract class ApiCookieController
 
     public ApiCookieController(
         IOptions<CookieSettings> jwtSettings,
-        ILogger<ApiCookieController> logger)
+        ILogger<ApiCookieController> logger,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _cookieSettings = jwtSettings.Value;
         _logger = logger;

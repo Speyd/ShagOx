@@ -11,5 +11,13 @@ public static class ReviewRepliImageCache
     public static string ByReviewRepliComment(
        long commentId,
         EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:status{status}:review-repli-comment:{commentId}";
+           => $"{Prefix}:status:{status}:review-repli-comment:{commentId}";
+
+    public static string ByReviewRepliCommentPattern(
+       long commentId)
+           => $"{Prefix}:*:review-repli-comment:{commentId}";
+
+    public static string ByReviewRepliCommentPattern(
+        EntityStatus status)
+           => $"{Prefix}:status:{status}:*";
 }

@@ -92,8 +92,7 @@ public class RegionInvalidationService
         RegionCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-            .EntityLanguagePattern<Region>(entityInfo.Id,
-                entityInfo.Status));
+            .EntityLanguagePattern<Region>(entityInfo.Id));
 
         await InvalidatePatternAsync(entityInfo);
     }

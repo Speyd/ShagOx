@@ -6,12 +6,14 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
 public interface IPictureDeleteService<TEntity>
     : IDeleteService<DeleteResponse>,
-    ISoftDeleteService<DeleteResponse>
+    ISoftDeleteService<TEntity, DeleteResponse>
     where TEntity : BasePicture
 {
     Task<Result<DeleteResponse>> DeleteInternalAsync(
-        TEntity entity);
+        TEntity entity,
+        CancellationToken cancellationToken = default);
 
     Task<Result<DeleteResponse>> DeleteRecordAsync(
-        long id);
+        long id,
+        CancellationToken cancellationToken = default);
 }

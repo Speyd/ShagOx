@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -53,20 +53,22 @@ public class BasketItemCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        BasketItemCreateRequest request)
+        BasketItemCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var basketExists = await _basketValidator
-            .ExistsByIdAsync(request.BasketId);
+            .ExistsByIdAsync(request.BasketId, cancellationToken);
         if (!basketExists.IsSuccess)
             return Result<CreateResponse>.Fail(basketExists.Error);
 
         var variant = await _advertValidator
-            .GetByIdAsync(request.AdvertisementVariantId);
+            .GetByIdAsync(request.AdvertisementVariantId, cancellationToken);
         if (!variant.IsSuccess)
             return Result<CreateResponse>.Fail(variant.Error);
 
         var itemExists = await _itemValidator
-           .NotExistsAsync(request.AdvertisementVariantId, request.BasketId);
+           .NotExistsAsync(request.AdvertisementVariantId,
+                request.BasketId, cancellationToken);
         if (!itemExists.IsSuccess)
             return Result<CreateResponse>.Fail(itemExists.Error);
 

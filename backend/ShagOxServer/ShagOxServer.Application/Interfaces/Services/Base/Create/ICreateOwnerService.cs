@@ -5,5 +5,6 @@ public interface ICreateOwnerService<TResponse, TRequest>
 {
     Task<Result<TResponse>> CreateAsync(
         TRequest request,
-        long ownerId);
+        long ownerId,
+        CancellationToken cancellationToken = default);
 }

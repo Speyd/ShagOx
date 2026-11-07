@@ -11,7 +11,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
     private async Task<Result<bool>> DeletePictureAsync(
         OwnerPictureOrderUpdateRequest picture,
         TPicture? getPicture,
-        List<string> deletePublicIds)
+        List<string> deletePublicIds,
+        CancellationToken cancellationToken = default)
     {
         if (getPicture is null)
         {
@@ -21,7 +22,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
         }
 
         var result = await _pictureDeleteService
-            .DeleteRecordAsync(picture.Id!.Value);
+            .DeleteRecordAsync(picture.Id!.Value, cancellationToken);
 
         if (!result.IsSuccess)
         {

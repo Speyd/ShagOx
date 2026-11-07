@@ -1,11 +1,12 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
@@ -21,13 +22,14 @@ public class AdvertisementVariantValidator
 
 
     public AdvertisementVariantValidator(
+        IRepository<AdvertisementVariant> repository,
         IQueryRepository<AdvertisementVariant> variantRepository,
         IAdvertisementVariantExistsRepository variantExistsRepository,
         IAttributeDefinitionQueryRepository attributeRepository,
         AdvertisementValidator advertValidator,
         IDataCacheService cache
     ) 
-        : base(variantRepository,
+        : base(repository, variantRepository,
             variantExistsRepository, 
             cache)
     {
@@ -53,10 +55,11 @@ public class AdvertisementVariantValidator
 
     public async Task<Result<bool>> NotExistsAsync(
        long advertisementId,
-       JsonDocument attributes)
+       JsonDocument attributes,
+       CancellationToken cancellationToken = default)
     {
         if (await _variantExistsRepository
-                .ExistsAsync(advertisementId, attributes))
+                .ExistsAsync(advertisementId, attributes, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.AdvertisementVariant);
@@ -66,11 +69,12 @@ public class AdvertisementVariantValidator
     }
 
     public async Task<Result<bool>> ValidateVariantAttributesAsync(
-         long advertId,
-         JsonDocument attributes)
+        long advertId,
+        JsonDocument attributes,
+        CancellationToken cancellationToken = default)
     {
         var advert = await _advertValidator
-            .GetByIdAsync(advertId);
+            .GetByIdAsync(advertId, cancellationToken);
 
         if (!advert.IsSuccess)
             return Result<bool>.Fail(advert.Error);
@@ -81,7 +85,8 @@ public class AdvertisementVariantValidator
             .ToList();
 
         var result = await _attributeRepository
-            .GetByKeysAsync(advert.Value!.CategoryId, keys);
+            .GetByKeysAsync(advert.Value!.CategoryId, 
+                keys, cancellationToken);
 
         if (result is null)
         {

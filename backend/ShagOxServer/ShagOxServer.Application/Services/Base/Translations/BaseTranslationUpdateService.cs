@@ -1,9 +1,16 @@
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Requests.Translations;
+using ShagOxServer.Application.DTOs.Base.Responses;
+using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Services.Base.Delete;
+using ShagOxServer.Application.Services.Base.Update;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base.Translations;
 public abstract class BaseTranslationUpdateService<TObject, TTranslation>
+    : BaseUpdateService<TTranslation>
     where TObject : BaseEntity
     where TTranslation : BaseTranslation<TObject>
 {
@@ -13,8 +20,12 @@ public abstract class BaseTranslationUpdateService<TObject, TTranslation>
 
     public BaseTranslationUpdateService(
         BaseValidator<TObject> objectValidator,
-        BaseTranslationValidator<TObject, TTranslation> translationValidator
-        )
+        ISoftDeleteService<TTranslation, DeleteResponse> deleteService,
+        BaseTranslationValidator<TObject, TTranslation> translationValidator,
+        ILogger<BaseTranslationUpdateService<TObject, TTranslation>> logger,
+        IUnitOfWork unitOfWork
+    )
+        : base(deleteService, translationValidator, logger, unitOfWork)
     {
         _objectValidator = objectValidator;
         _translationValidator = translationValidator;
@@ -22,13 +33,15 @@ public abstract class BaseTranslationUpdateService<TObject, TTranslation>
 
     protected async Task<Result<bool>> ValidateUpdatesAsync(
         TTranslation translation,
-        TranslationUpdateRequest request)
+        TranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.TranslatableId is not null &&
            request.TranslatableId != translation.TranslatableId)
         {
             var validator = await _objectValidator
-                .ExistsByIdAsync(request.TranslatableId.Value);
+                .ExistsByIdAsync(request.TranslatableId.Value,
+                    cancellationToken);
 
             if (!validator.IsSuccess)
                 return Result<bool>.Fail(validator.Error);
@@ -43,7 +56,8 @@ public abstract class BaseTranslationUpdateService<TObject, TTranslation>
                 var validator = await _translationValidator
                     .ExistsAsync(
                         request.TranslatableId ?? translation.TranslatableId,
-                        request.Language);
+                        request.Language,
+                        cancellationToken);
 
                 if (!validator.IsSuccess)
                     return Result<bool>.Fail(validator.Error);

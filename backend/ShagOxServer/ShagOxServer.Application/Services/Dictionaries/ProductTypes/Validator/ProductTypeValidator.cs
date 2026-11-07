@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Base;
+using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -15,21 +15,23 @@ public class ProductTypeValidator
 
 
     public ProductTypeValidator(
+        IRepository<ProductType> repository,
         IQueryRepository<ProductType> productTypeRepository,
         IProductTypeExistsRepository productTypeExistsRepository,
         IDataCacheService cache
     ) 
-        : base(productTypeRepository, productTypeExistsRepository, cache)
+        : base(repository, productTypeRepository, productTypeExistsRepository, cache)
     {
         _productTypeExistsRepository = productTypeExistsRepository;
     }
 
 
     public async Task<Result<bool>> ExistsByCodeAsync(
-       string code)
+       string code,
+       CancellationToken cancellationToken = default)
     {
         if (!await _productTypeExistsRepository
-            .ExistsByCodeAsync(code))
+            .ExistsByCodeAsync(code, cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.ProductType);
@@ -39,11 +41,12 @@ public class ProductTypeValidator
     }
 
     public async Task<Result<bool>> NotExistsByCodeAsync(
-       string code)
+       string code,
+       CancellationToken cancellationToken = default)
     {
 
         if (await _productTypeExistsRepository
-            .ExistsByCodeAsync(code))
+            .ExistsByCodeAsync(code, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.ProductType);

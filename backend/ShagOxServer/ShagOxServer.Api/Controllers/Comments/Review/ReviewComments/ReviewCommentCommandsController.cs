@@ -8,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Create;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Delete;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Comments.Review.ReviewComments;
@@ -28,9 +29,10 @@ public class ReviewCommentCommandsController
         IReviewCommentUpdateService updateService,
         IReviewCommentDeleteService deleteService,
         IReviewCommentExistsRepository existsCommentRepository,
-        IUserAdminQueryService userQueryService
+        IUserAdminQueryService userQueryService,
+        IUserContext userContext
     )
-        : base(existsCommentRepository, userQueryService)
+        : base(existsCommentRepository, userQueryService, userContext)
     {
         _createService = createService;
         _updateService = updateService;
@@ -43,7 +45,7 @@ public class ReviewCommentCommandsController
         ReviewCommentCreateRequest request)
     {
         var result = await _createService
-            .CreateAsync(request, UserId);
+            .CreateAsync(request, UserId!.Value);
 
         return result.ToActionResult();
     }

@@ -4,9 +4,12 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Location.Regions.Translations.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
+using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
+using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
@@ -21,6 +24,8 @@ public class RegionTranslationUpdateService
     private readonly IRepository<RegionTranslation> _regionRepository;
     private readonly RegionTranslationValidator _regionTranslationValidator;
 
+    private readonly RegionTranslationInvalidationService _trnsInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RegionTranslationUpdateService> _logger;
 
@@ -28,13 +33,21 @@ public class RegionTranslationUpdateService
     public RegionTranslationUpdateService(
         IRepository<RegionTranslation> regionRepository,
         RegionTranslationValidator regionTranslationValidator,
+        IRegionTranslationDeleteService regionTranslationDeleteService,
+        RegionTranslationInvalidationService trnsInvalid,
         RegionValidator regionValidator,
         IUnitOfWork unitOfWork,
         ILogger<RegionTranslationUpdateService> logger
-    ) : base(regionValidator, regionTranslationValidator)
+    ) 
+        : base(regionValidator,
+            regionTranslationDeleteService,
+            regionTranslationValidator,
+            logger,
+            unitOfWork)
     {
         _regionRepository = regionRepository;
         _regionTranslationValidator = regionTranslationValidator;
+        _trnsInvalid = trnsInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -42,17 +55,20 @@ public class RegionTranslationUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long regionTranslationId,
-        RegionTranslationUpdateRequest request)
+        RegionTranslationUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var region = await _regionTranslationValidator
-            .GetByIdAsync(regionTranslationId);
+            .GetByIdAsync(regionTranslationId, cancellationToken);
 
         if (!region.IsSuccess)
             return Result<UpdateResponse>.Fail(region.Error);
 
 
-        var validation = await
-             ValidateUpdatesAsync(region.Value!, request);
+        var validation = await ValidateUpdatesAsync(
+            region.Value!, 
+            request,
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -101,6 +117,9 @@ public class RegionTranslationUpdateService
             return Result<UpdateResponse>
                    .Fail(EntityErrorResources.RegionTranslationUpdateFailed);
         }
+
+        await _trnsInvalid.InvalidateCreateAsync(
+            BaseTranslationCacheMapper.ToInfo(region.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

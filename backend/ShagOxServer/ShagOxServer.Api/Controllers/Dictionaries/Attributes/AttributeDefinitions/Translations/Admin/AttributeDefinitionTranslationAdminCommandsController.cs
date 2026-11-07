@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Translations.Create;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Create;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 
@@ -25,7 +28,10 @@ public class AttributeDefinitionTranslationAdminCommandsController
     public AttributeDefinitionTranslationAdminCommandsController(
         IAttributeDefinitionTranslationCreateService createService,
         IAttributeDefinitionTranslationUpdateService updateService,
-        IAttributeDefinitionTranslationDeleteService deleteService)
+        IAttributeDefinitionTranslationDeleteService deleteService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _createService = createService;
         _updateService = updateService;
@@ -49,6 +55,19 @@ public class AttributeDefinitionTranslationAdminCommandsController
     {
         var result = await _updateService
             .UpdateAsync(id, request);
+
+        return result.ToActionResult();
+    }
+
+    [HttpPatch("{id:long}/status")]
+    public async Task<IActionResult> ChangeStatus(
+        [FromRoute] long id,
+        [FromBody] ChangeStatusRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _updateService
+            .ChangeStatusAsync(id, request,
+                cancellationToken);
 
         return result.ToActionResult();
     }

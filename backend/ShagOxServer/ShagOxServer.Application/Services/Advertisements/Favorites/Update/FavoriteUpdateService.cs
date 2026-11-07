@@ -4,18 +4,21 @@ using ShagOxServer.Application.DTOs.Advertisements.Favorites.Update;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Update;
 public class FavoriteUpdateService 
-    : IFavoriteUpdateService
+    : BaseUpdateService<Favorite>,
+    IFavoriteUpdateService
 {
     private readonly IRepository<Favorite> _favoriteRepository;
     private readonly FavoriteValidator _favoriteValidator;
@@ -29,11 +32,14 @@ public class FavoriteUpdateService
 
     public FavoriteUpdateService(
         IRepository<Favorite> favoriteRepository,
+        IFavoriteDeleteService deleteService,
         FavoriteValidator favoriteValidator,
         FavoriteUpdateValidator favoriteUpdateValidator,
         FavoriteInvalidationService favoriteInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<FavoriteUpdateService> logger)
+        ILogger<FavoriteUpdateService> logger
+    )
+        : base(deleteService, favoriteValidator, logger, unitOfWork)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;
@@ -46,13 +52,16 @@ public class FavoriteUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long favoriteId,
-        FavoriteUpdateRequest request)
+        FavoriteUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var favorite = await _favoriteValidator.GetByIdAsync(favoriteId);
+        var favorite = await _favoriteValidator
+            .GetByIdAsync(favoriteId, cancellationToken);
         if (!favorite.IsSuccess)
             return Result<UpdateResponse>.Fail(favorite.Error);
 
-        var validator = await _favoriteUpdateValidator.ValidateAsync(request);
+        var validator = await _favoriteUpdateValidator
+            .ValidateAsync(request, cancellationToken);
         if(!validator.IsSuccess)
             return Result<UpdateResponse>.Fail(validator.Error);
 

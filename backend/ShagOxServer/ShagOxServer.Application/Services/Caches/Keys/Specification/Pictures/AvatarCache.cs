@@ -11,5 +11,13 @@ public static class AvatarCache
     public static string ByUser(
        long userId,
         EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:status{status}:user:{userId}";
+           => $"{Prefix}:status:{status}:user:{userId}";
+
+    public static string ByUserPattern(
+       long userId)
+           => $"{Prefix}:*:user:{userId}";
+
+    public static string ByUserPattern(
+        EntityStatus status)
+           => $"{Prefix}:status:{status}:*";
 }

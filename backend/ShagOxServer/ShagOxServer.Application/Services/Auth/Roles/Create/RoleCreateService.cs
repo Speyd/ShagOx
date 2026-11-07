@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Roles.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -40,10 +40,11 @@ public class RoleCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        RoleCreateRequest request)
+        RoleCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var validation = await _roleValidator
-            .NotExistsByNameAsync(request.Name);
+            .NotExistsByNameAsync(request.Name, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<CreateResponse>.Fail(validation.Error);

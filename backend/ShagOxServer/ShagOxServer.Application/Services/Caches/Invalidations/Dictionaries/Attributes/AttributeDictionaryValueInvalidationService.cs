@@ -73,8 +73,7 @@ public class AttributeDictionaryValueInvalidationService
     {
         await _cache.RemoveByPatternAsync(CacheKeys
             .EntityLanguagePattern<AttributeDictionaryValue>(
-                entityInfo.Id,
-                entityInfo.Status));
+                entityInfo.Id));
 
         await InvalidatePatternAsync(entityInfo);
     }
@@ -83,8 +82,7 @@ public class AttributeDictionaryValueInvalidationService
         AttributeDictionaryValueCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(AttributeDictionaryValueCache
-            .ByDictionaryPattern(entityInfo.DictionaryId,
-                entityInfo.Status));
+            .ByDictionaryPattern(entityInfo.DictionaryId));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePagedPattern<AttributeDictionaryValue>(

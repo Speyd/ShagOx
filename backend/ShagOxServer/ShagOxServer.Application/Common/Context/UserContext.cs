@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using System.Security.Claims;
 
@@ -13,7 +13,14 @@ public class UserContext
         _http = http;
     }
 
-    public long UserId =>
-        long.Parse(_http.HttpContext!.User
-            .FindFirst(ClaimTypes.NameIdentifier)!.Value);
+    public long? UserId
+    {
+        get
+        {
+            var value = _http.HttpContext?.User
+                .FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return long.TryParse(value, out var id) ? id : null;
+        }
+    }
 }

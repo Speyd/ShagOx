@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Special;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
-using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 
 namespace ShagOxServer.Api.Controllers.Api;
 public abstract class ApiOwnerExistsController
@@ -15,7 +12,10 @@ public abstract class ApiOwnerExistsController
 
     public ApiOwnerExistsController(
         IExistsOwnerRepository ownerRepository,
-        IUserAdminQueryService userQueryService)
+        IUserAdminQueryService userQueryService,
+        IUserContext userContext
+    )
+        : base(userContext)
     {
         _ownerRepository = ownerRepository;
         _userQueryService = userQueryService;
@@ -27,7 +27,7 @@ public abstract class ApiOwnerExistsController
         var isOwner = await _ownerRepository
             .IsOwnerAsync(
                 entityId,
-                UserId);
+                UserId!.Value);
 
         if (!isOwner)
             return Forbid();

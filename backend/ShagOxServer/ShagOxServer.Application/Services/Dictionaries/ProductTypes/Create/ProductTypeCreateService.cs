@@ -41,13 +41,14 @@ public class ProductTypeCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-       ProductTypeCreateRequest request)
+       ProductTypeCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var exists = await _validator
-            .NotExistsByCodeAsync(request.Code);
+            .NotExistsByCodeAsync(request.Code, cancellationToken);
 
         if (!exists.IsSuccess)
-            Result<CreateResponse>.Fail(exists.Error);
+            return Result<CreateResponse>.Fail(exists.Error);
 
 
         var productType = ProductTypeCreater.Create(request);

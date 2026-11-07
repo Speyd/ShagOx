@@ -1,18 +1,21 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
+using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Delete;
 public class CategoryTranslationDeleteService
-    : ICategoryTranslationDeleteService
+    : BaseDeleteService<CategoryTranslation>,
+        ICategoryTranslationDeleteService
 {
     private readonly IRepository<CategoryTranslation> _categoryRepository;
     private readonly CategoryTranslationValidator _categoryValidator;
@@ -28,7 +31,9 @@ public class CategoryTranslationDeleteService
         CategoryTranslationValidator categoryValidator,
         CategoryTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<CategoryTranslationDeleteService> logger)
+        ILogger<CategoryTranslationDeleteService> logger
+    )
+        : base(categoryValidator, unitOfWork, logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
@@ -39,10 +44,11 @@ public class CategoryTranslationDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
         var category = await _categoryValidator
-            .GetByIdAsync(id);
+            .GetByIdAsync(id, cancellationToken);
 
         if (!category.IsSuccess)
             return Result<DeleteResponse>.Fail(category.Error);
@@ -68,8 +74,7 @@ public class CategoryTranslationDeleteService
                 .Fail(EntityErrorResources.CategoryTranslationDeleteFailed);
         }
 
-        await _transInvalid.InvalidateDeleteAsync(
-            BaseTranslationCacheMapper.ToInfo(category.Value!));
+        await InvalidateCache(category.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -77,5 +82,12 @@ public class CategoryTranslationDeleteService
                DateTime.UtcNow
            )
        );
+    }
+
+    public override async Task InvalidateCache(
+        CategoryTranslation entity)
+    {
+        await _transInvalid.InvalidateDeleteAsync(
+            BaseTranslationCacheMapper.ToInfo(entity));
     }
 }

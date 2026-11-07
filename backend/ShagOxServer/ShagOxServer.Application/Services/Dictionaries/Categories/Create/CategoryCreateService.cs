@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -45,17 +45,19 @@ public class CategoryCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        CategoryCreateRequest request)
+        CategoryCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var typeValidator = await _productTypeValidator
-           .ExistsByIdAsync(request.ProductTypeId);
+           .ExistsByIdAsync(request.ProductTypeId, cancellationToken);
 
         if (!typeValidator.IsSuccess)
             Result<CreateResponse>.Fail(typeValidator.Error);
 
 
         var nameValidator = await _categoryValidator
-            .NotExistsAsync(request.Code, request.ProductTypeId);
+            .NotExistsAsync(request.Code, 
+                request.ProductTypeId, cancellationToken);
 
         if (!nameValidator.IsSuccess)
             Result<CreateResponse>.Fail(nameValidator.Error);  

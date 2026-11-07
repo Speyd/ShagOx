@@ -40,10 +40,11 @@ public class ConditionCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        ConditionCreateRequest request)
+        ConditionCreateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var validationName = await _conditionValidator
-            .NotExistsByCodeAsync(request.Code);
+            .NotExistsByCodeAsync(request.Code, cancellationToken);
 
         if(!validationName.IsSuccess)
             Result<CreateResponse>.Fail(validationName.Error);

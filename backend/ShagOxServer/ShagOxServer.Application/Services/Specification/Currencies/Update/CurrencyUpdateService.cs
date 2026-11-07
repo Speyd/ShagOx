@@ -4,9 +4,12 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Update;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
+using ShagOxServer.Application.Services.Specification.Currencies.Delete;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Specification;
@@ -14,7 +17,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Currencies.Update;
 public class CurrencyUpdateService 
-    : ICurrencyUpdateService
+    : BaseUpdateService<Currency>,
+    ICurrencyUpdateService
 {
     private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyValidator _currencyValidator;
@@ -28,9 +32,12 @@ public class CurrencyUpdateService
     public CurrencyUpdateService(
         IRepository<Currency> currencyRepository,
         CurrencyValidator currencyValidator,
+        ICurrencyDeleteService currencyDeleteService,
         CurrencyInvalidationService currencyInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<CurrencyUpdateService> logger)
+        ILogger<CurrencyUpdateService> logger
+    )
+        : base(currencyDeleteService, currencyValidator, logger, unitOfWork)
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;
@@ -42,17 +49,20 @@ public class CurrencyUpdateService
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long currencyId,
-        CurrencyUpdateRequest request)
+        CurrencyUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         var currency = await _currencyValidator
-            .GetByIdAsync(currencyId);
+            .GetByIdAsync(currencyId, cancellationToken);
 
         if (!currency.IsSuccess)
             return Result<UpdateResponse>.Fail(currency.Error);
 
 
-        var validation = await 
-            ValidateUpdatesAsync(currency.Value!, request);
+        var validation = await  ValidateUpdatesAsync(
+            currency.Value!, 
+            request, 
+            cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
@@ -113,13 +123,14 @@ public class CurrencyUpdateService
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         Currency currency,
-        CurrencyUpdateRequest request)
+        CurrencyUpdateRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (request.Code is not null &&
             request.Code != currency.Code)
         {
             var result = await _currencyValidator
-                .NotExistsByCodeValidator(request.Code);
+                .NotExistsByCodeValidator(request.Code, cancellationToken);
 
             if (!result.IsSuccess)
                 return Result<bool>.Fail(result.Error!);
@@ -129,7 +140,7 @@ public class CurrencyUpdateService
             request.Name != currency.Name)
         {
             var result = await _currencyValidator
-                .NotExistsByNameValidator(request.Name);
+                .NotExistsByNameValidator(request.Name, cancellationToken);
 
             if (!result.IsSuccess)
                 return Result<bool>.Fail(result.Error!);

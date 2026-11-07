@@ -1,6 +1,7 @@
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Location.Cities.Query;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;
 using ShagOxServer.Domain.Base.Enum;
 
@@ -15,6 +16,7 @@ public sealed record UserDto
     string? Bio,
     string? Phone,
     string? Email,
+    CurrencyDto? Currency,
     AvatarDto? Avatar,
     CityDto? City,
     List<RoleDto> Roles,

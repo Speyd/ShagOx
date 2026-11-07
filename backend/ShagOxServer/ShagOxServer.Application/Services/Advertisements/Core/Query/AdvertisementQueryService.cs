@@ -2,12 +2,14 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
@@ -21,7 +23,6 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Query;
-
 public class AdvertisementQueryService 
     : BaseLocalizedQueryService<
         AdvertisementDto, 
@@ -33,6 +34,8 @@ public class AdvertisementQueryService
     private readonly IAdvertisementVariantQueryService _variantService;
     private readonly IAttributeValueService _attributeProcessor;
 
+    protected readonly IPriceConversionService _priceConversion;
+
     private readonly ICategoryQueryService _categoryService;
     private readonly IStatusQueryService _statusService;
 
@@ -40,10 +43,12 @@ public class AdvertisementQueryService
 
     protected override bool CacheByPaged => false;
 
+
     public AdvertisementQueryService(
         IAdvertisementQueryRepository advertisementRepository,
         IAdvertisementVariantQueryService variantService,
         IAttributeValueService attributeProcessor,
+        IPriceConversionService priceConversion,
         ICategoryQueryService categoryService,
         IDataCacheService cacheService,
         IStatusQueryService statusService,
@@ -58,9 +63,11 @@ public class AdvertisementQueryService
         _advertisementRepository = advertisementRepository;
         _variantService = variantService;
         _attributeProcessor = attributeProcessor;
+        _priceConversion = priceConversion;
         _categoryService = categoryService;
         _statusService = statusService;
     }
+
 
     public override async Task<AdvertisementDto> ApplyMapperAsync(
         Advertisement entity)
@@ -85,12 +92,16 @@ public class AdvertisementQueryService
                 entity.CategoryId
             );
 
+        var convertedPrices = await ConvertPricesAsync(entity);
+
+
         return AdvertisementMapper.ToDto(
             entity,
             variants,
             categoryDto,
             statusDto,
-            attributeDto.Value!);
+            attributeDto.Value!,
+            convertedPrices);
     }
 
     public async Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
@@ -157,9 +168,17 @@ public class AdvertisementQueryService
         var adverts = await _advertisementRepository
             .GetPagedAsync(pagination, 
                 cancellationToken, status);
-                
-        return adverts.ToResultPaged(
-            AdvertisementShortMapper.ToDto);
+
+        return await adverts.ToResultPagedAsync(async advert =>
+        {
+            var convertedPrices = await ConvertPricesAsync(
+                advert,
+                cancellationToken);
+
+            return AdvertisementShortMapper.ToDto(
+                advert,
+                convertedPrices);
+        });
     }
 
     public async Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
@@ -172,7 +191,31 @@ public class AdvertisementQueryService
             .ShortSearchAsync(filter, pagination, 
                 cancellationToken, status);
 
-        return adverts.ToResultPaged(
-            AdvertisementShortMapper.ToDto);
+        return await adverts.ToResultPagedAsync(async advert =>
+        {
+            var convertedPrices = await ConvertPricesAsync(
+                advert,
+                cancellationToken);
+
+            return AdvertisementShortMapper.ToDto(
+                advert,
+                convertedPrices);
+        });
+    }
+
+    public async Task<ConvertedPricesDto> ConvertPricesAsync(
+        Advertisement advert,
+        CancellationToken cancellationToken = default)
+    {
+        var price = advert.Price ??
+            advert.Variants.FirstOrDefault()?.Price;
+
+        var previousPrice = advert.PreviousPrice ??
+            advert.Variants.FirstOrDefault()?.PreviousPrice;
+
+        return await _priceConversion.ConvertPricesAsync(
+            price, 
+            previousPrice, 
+            advert.Currency);
     }
 }

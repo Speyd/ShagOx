@@ -6,7 +6,7 @@ using ShagOxServer.Application.Common.Settings.Db;
 using ShagOxServer.Domain.Entities.Db;
 using ShagOxServer.Infrastructure.Monitoring;
 
-namespace ShagOxServer.Infrastructure.BackgroundServices;
+namespace ShagOxServer.Infrastructure.BackgroundServices.Db;
 public class ReplicaHealthCheckeService
     : BackgroundService
 {

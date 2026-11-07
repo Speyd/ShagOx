@@ -43,9 +43,11 @@ public class CurrencyDeleteService
 
 
     public async Task<Result<DeleteResponse>> DeleteAsync(
-        long id)
+        long id,
+        CancellationToken cancellationToken = default)
     {
-        var currency = await _currencyValidator.GetByIdAsync(id);
+        var currency = await _currencyValidator
+            .GetByIdAsync(id, cancellationToken);
         if (!currency.IsSuccess)
             return Result<DeleteResponse>.Fail(currency.Error);
 

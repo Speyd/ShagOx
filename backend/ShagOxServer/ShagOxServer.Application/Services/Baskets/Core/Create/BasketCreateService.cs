@@ -46,13 +46,15 @@ public class BasketCreateService
 
     public async Task<Result<CreateResponse>> CreateAsync(
         BasketCreateRequest request, 
-        long ownerId)
+        long ownerId,
+        CancellationToken cancellationToken = default)
     {
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            var result = await CreateInternalAsync(request, ownerId);
+            var result = await CreateInternalAsync(request,
+                ownerId, cancellationToken);
 
             if (!result.IsSuccess)
             {
@@ -81,10 +83,11 @@ public class BasketCreateService
 
     public async Task<Result<CreateResponse>> CreateInternalAsync(
         BasketCreateRequest request,
-        long ownerId)
+        long ownerId,
+        CancellationToken cancellationToken = default)
     {
         var userExists = await _userValidator
-            .ExistsByIdAsync(ownerId);
+            .ExistsByIdAsync(ownerId, cancellationToken);
 
         if (!userExists.IsSuccess)
         {
@@ -93,7 +96,7 @@ public class BasketCreateService
         }
 
         var basketUserExists = await _basketValidator
-            .NotExistsByUserAsync(ownerId);
+            .NotExistsByUserAsync(ownerId, cancellationToken);
 
         if (!basketUserExists.IsSuccess)
         {

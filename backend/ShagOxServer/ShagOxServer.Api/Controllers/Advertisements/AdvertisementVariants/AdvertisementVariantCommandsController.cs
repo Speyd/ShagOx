@@ -48,7 +48,7 @@ public class AdvertisementVariantCommandsController
         AdvertisementVariantCreateRequest request)
     {
         if(!await _existsAdvertRepository
-            .IsOwnerAsync(request.AdvertisementId, UserId))
+            .IsOwnerAsync(request.AdvertisementId, UserId!.Value))
         {
             return Forbid();
         }

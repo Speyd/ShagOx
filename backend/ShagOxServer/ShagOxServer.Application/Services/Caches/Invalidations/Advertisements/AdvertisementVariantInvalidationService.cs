@@ -39,7 +39,6 @@ public class AdvertisementVariantInvalidationService
        AdvertisementVariantCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
-            .Entity<AdvertisementVariant>(entityInfo.Id,
-                entityInfo.Status));
+            .Entity<AdvertisementVariant>(entityInfo.Id));
     }
 }

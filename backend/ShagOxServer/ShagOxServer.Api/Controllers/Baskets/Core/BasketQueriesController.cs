@@ -31,7 +31,7 @@ public class BasketQueriesController
         CancellationToken cancellationToken)
     {
         var result = await _queryService
-            .GetByUserAsync(UserId, cancellationToken);
+            .GetByUserAsync(UserId!.Value, cancellationToken);
 
         return result.ToActionResult();
     }

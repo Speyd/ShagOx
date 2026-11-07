@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+sed \
+  -e "s|\$POSTGRES_PRIMARY_CONTAINER|$POSTGRES_PRIMARY_CONTAINER|g" \
+  -e "s|\$POSTGRES_REPLICA_1_CONTAINER|$POSTGRES_REPLICA_1_CONTAINER|g" \
+  -e "s|\$POSTGRES_REPLICA_2_CONTAINER|$POSTGRES_REPLICA_2_CONTAINER|g" \
+  -e "s|\$POSTGRES_REPLICA_3_CONTAINER|$POSTGRES_REPLICA_3_CONTAINER|g" \
+  -e "s|\$POSTGRES_DOCKER_PORT|$POSTGRES_DOCKER_PORT|g" \
+  -e "s|\$POSTGRES_DB|$POSTGRES_DB|g" \
+  -e "s|\$PGBOUNCER_PORT|$PGBOUNCER_PORT|g" \
+  -e "s|\$PGBOUNCER_USER|$PGBOUNCER_USER|g" \
+  -e "s|\$PGBOUNCER_PASSWORD|$PGBOUNCER_PASSWORD|g" \
+  /etc/pgbouncer/pgbouncer.ini.template > /etc/pgbouncer/pgbouncer.ini
+
+exec pgbouncer /etc/pgbouncer/pgbouncer.ini

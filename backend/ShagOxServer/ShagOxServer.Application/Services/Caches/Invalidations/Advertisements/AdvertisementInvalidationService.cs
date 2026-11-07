@@ -159,18 +159,15 @@ public class AdvertisementInvalidationService
         AdvertisementCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-            .EntityLanguagePattern<Advertisement>(entityInfo.Id,
-                entityInfo.Status));
+            .EntityLanguagePattern<Advertisement>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(AdvertisementCache
-            .BySellerPattern(entityInfo.SellerId,
-                entityInfo.Status));
+            .BySellerPattern(entityInfo.SellerId));
 
         if (entityInfo.BuyerId.HasValue)
         {
             await _cache.RemoveByPatternAsync(AdvertisementCache
-                .ByBuyerPattern(entityInfo.BuyerId.Value, 
-                    entityInfo.Status));
+                .ByBuyerPattern(entityInfo.BuyerId.Value));
         }
     }
 

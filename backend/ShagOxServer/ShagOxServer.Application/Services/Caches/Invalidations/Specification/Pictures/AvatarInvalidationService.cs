@@ -1,8 +1,6 @@
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
-using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Specification.Pictures;
 using ShagOxServer.Domain.Entities.Specification;
@@ -43,11 +41,9 @@ public class AvatarInvalidationService
         PictureCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
-            .Entity<Avatar>(entityInfo.Id,
-                entityInfo.Status));
+            .Entity<Avatar>(entityInfo.Id));
 
         await _cache.RemoveAsync(AvatarCache
-           .ByUser(entityInfo.OwnerId,
-                entityInfo.Status));
+           .ByUser(entityInfo.OwnerId));
     }
 }

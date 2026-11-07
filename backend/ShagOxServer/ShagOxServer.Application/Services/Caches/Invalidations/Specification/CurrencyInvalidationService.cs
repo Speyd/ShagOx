@@ -71,16 +71,13 @@ public class CurrencyInvalidationService
         CurrencyCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
-            .Entity<Currency>(entityInfo.Id,
-                entityInfo.Status));
+            .Entity<Currency>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(CurrencyCache
-           .ByCode(entityInfo.Code,
-                entityInfo.Status));
+           .ByCode(entityInfo.Code));
 
         await _cache.RemoveByPatternAsync(CurrencyCache
-          .BySymbol(entityInfo.Symbol,
-                entityInfo.Status));
+          .BySymbol(entityInfo.Symbol));
 
         await InvalidatePatternAsync(entityInfo);
     }

@@ -95,8 +95,7 @@ public class CityInvalidationService
         CityCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-            .EntityLanguagePattern<City>(entityInfo.Id,
-                entityInfo.Status));
+            .EntityLanguagePattern<City>(entityInfo.Id));
 
         await InvalidatePatternAsync(entityInfo);
     }
@@ -105,8 +104,7 @@ public class CityInvalidationService
         CityCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CityCache
-            .ByRegionPattern(entityInfo.RegionId,
-                entityInfo.Status));
+            .ByRegionPattern(entityInfo.RegionId));
 
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePagedPattern<City>(

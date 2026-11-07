@@ -1,3 +1,4 @@
+using Npgsql;
 using Serilog;
 using ShagOxServer.Api.DependencyInjection;
 using ShagOxServer.Api.DependencyInjection.Currencies;

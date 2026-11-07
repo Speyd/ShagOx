@@ -1,7 +1,7 @@
 services:
   postgres-primary:
     image: postgres:17
-    container_name: postgres-primary
+    container_name: ${POSTGRES_PRIMARY_CONTAINER}
     restart: unless-stopped
 
     environment:
@@ -11,6 +11,9 @@ services:
 
       REPLICATOR_USER: ${REPLICATOR_USER}
       REPLICATOR_PASSWORD: ${REPLICATOR_PASSWORD}
+
+      PGBOUNCER_USER: ${PGBOUNCER_USER}
+      PGBOUNCER_PASSWORD: ${PGBOUNCER_PASSWORD}
 
     ports:
       - "${POSTGRES_PRIMARY_PORT}:5432"
@@ -45,7 +48,7 @@ services:
 
   postgres-replica-1:
     image: postgres:17
-    container_name: postgres-replica-1
+    container_name: ${POSTGRES_REPLICA_1_CONTAINER}
     restart: unless-stopped
 
     environment:
@@ -68,7 +71,7 @@ services:
 
   postgres-replica-2:
     image: postgres:17
-    container_name: postgres-replica-2
+    container_name: ${POSTGRES_REPLICA_2_CONTAINER}
     restart: unless-stopped
 
     environment:
@@ -91,7 +94,7 @@ services:
 
   postgres-replica-3:
     image: postgres:17
-    container_name: postgres-replica-3
+    container_name: ${POSTGRES_REPLICA_3_CONTAINER}
     restart: unless-stopped
 
     environment:
@@ -108,6 +111,45 @@ services:
     depends_on:
       postgres-primary:
         condition: service_healthy
+
+    networks:
+      - postgres-network
+
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: ${PGBOUNCER_CONTAINER}
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_PRIMARY_CONTAINER: ${POSTGRES_PRIMARY_CONTAINER}
+      POSTGRES_REPLICA_1_CONTAINER: ${POSTGRES_REPLICA_1_CONTAINER}
+      POSTGRES_REPLICA_2_CONTAINER: ${POSTGRES_REPLICA_2_CONTAINER}
+      POSTGRES_REPLICA_3_CONTAINER: ${POSTGRES_REPLICA_3_CONTAINER}
+      POSTGRES_DOCKER_PORT: ${POSTGRES_DOCKER_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGBOUNCER_PORT: ${PGBOUNCER_PORT}
+      PGBOUNCER_USER: ${PGBOUNCER_USER}
+      PGBOUNCER_PASSWORD: ${PGBOUNCER_PASSWORD}
+
+    ports:
+      - "${PGBOUNCER_PORT:-6432}:6432"
+
+    volumes:
+      - ./pgbouncer/pgbouncer.ini.template:/etc/pgbouncer/pgbouncer.ini.template:ro
+      - ./pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt:ro
+      - ./pgbouncer/entrypoint.sh:/entrypoint-custom.sh:ro
+
+    entrypoint: ["/bin/sh", "/entrypoint-custom.sh"]
+
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+      postgres-replica-1:
+        condition: service_started
+      postgres-replica-2:
+        condition: service_started
+      postgres-replica-3:
+        condition: service_started
 
     networks:
       - postgres-network

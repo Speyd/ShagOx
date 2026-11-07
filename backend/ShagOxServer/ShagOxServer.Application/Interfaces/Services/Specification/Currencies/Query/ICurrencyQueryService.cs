@@ -18,4 +18,9 @@ public interface ICurrencyQueryService
         string symbol,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
+
+    Task<Result<Currency?>> GetByUserAsync(
+       long userId,
+       CancellationToken cancellationToken = default,
+       EntityStatus status = EntityStatus.Active);
 }

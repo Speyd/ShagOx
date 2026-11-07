@@ -13,18 +13,14 @@ public class UserContext
         _http = http;
     }
 
-    public long UserId
+    public long? UserId
     {
         get
         {
-            var userId = _http.HttpContext?.User
+            var value = _http.HttpContext?.User
                 .FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (!long.TryParse(userId, out var id))
-                throw new UnauthorizedAccessException(
-                    "User ID not found in claims.");
-
-            return id;
+            return long.TryParse(value, out var id) ? id : null;
         }
     }
 }

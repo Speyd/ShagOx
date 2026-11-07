@@ -91,8 +91,7 @@ public class ConditionInvalidationService
         ConditionCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-            .EntityLanguagePattern<Condition>(entityInfo.Id,
-                entityInfo.Status));
+            .EntityLanguagePattern<Condition>(entityInfo.Id));
 
         await InvalidatePatternAsync(entityInfo);
     }

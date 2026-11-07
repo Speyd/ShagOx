@@ -64,7 +64,7 @@ public class UserCommandsController
         [FromForm] UserUpdateRequest request)
     {
         var result = await _updateService
-            .UpdateAsync(UserId, request);
+            .UpdateAsync(UserId!.Value, request);
 
         return result.ToActionResult();
     }
@@ -75,7 +75,7 @@ public class UserCommandsController
         [FromBody] ChangeEmailRequest request)
     {
         var result = await _emailService
-            .ChangeEmail(UserId, request);
+            .ChangeEmail(UserId!.Value, request);
 
         return result.ToActionResult();
     }
@@ -86,7 +86,7 @@ public class UserCommandsController
         [FromBody] ChangePhoneRequest request)
     {
         var result = await _phoneService
-            .ChangePhone(UserId, request);
+            .ChangePhone(UserId!.Value, request);
 
         return result.ToActionResult();
     }
@@ -97,7 +97,7 @@ public class UserCommandsController
         [FromBody] ChangePasswordRequest request)
     {
         var result = await _passwordService
-            .ChangePassword(UserId, request);
+            .ChangePassword(UserId!.Value, request);
 
         return result.ToActionResult();
     }

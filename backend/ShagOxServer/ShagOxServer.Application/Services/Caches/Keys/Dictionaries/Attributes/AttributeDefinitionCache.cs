@@ -11,10 +11,14 @@ public static class AttributeDefinitionCache
      long categoryId,
      string language,
         EntityStatus status = EntityStatus.Active)
-         => $"{Prefix}:{language}:status{status}:category:{categoryId}";
+         => $"{Prefix}:{language}:status:{status}:category:{categoryId}";
 
     public static string ValueByCategoryPattern(
        long categoryId,
-        EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:status{status}:*category:{categoryId}";
+        EntityStatus status)
+           => $"{Prefix}:*:status:{status}:category:{categoryId}";
+
+    public static string ValueByCategoryPattern(
+       long categoryId)
+           => $"{Prefix}:*:category:{categoryId}";
 }

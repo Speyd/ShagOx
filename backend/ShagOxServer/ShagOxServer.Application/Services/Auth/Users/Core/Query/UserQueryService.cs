@@ -101,7 +101,7 @@ public class UserQueryService
         EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = GetCacheKey(
-            _context.UserId,
+            _context.UserId!.Value,
             status);
 
         return await _cache.GetOrCreateAsync(
@@ -109,7 +109,7 @@ public class UserQueryService
             async () =>
             {
                 var user = await _userQueryRepository
-                    .GetByIdIncludeAsync(_context.UserId,
+                    .GetByIdIncludeAsync(_context.UserId!.Value,
                         cancellationToken, status);
 
                 return await user.ToResultAsync(ApplyMapperAsync);
@@ -124,7 +124,7 @@ public class UserQueryService
         EntityStatus status = EntityStatus.Active)
     {
         var cacheKey = UserRoleCache.RolesByUser(
-            _context.UserId,
+            _context.UserId!.Value,
             pagination.Page,
             pagination.PageSize,
             status);
@@ -134,7 +134,7 @@ public class UserQueryService
             async () =>
             {
                 var roles = await _roleQueryRepository
-                    .GetByUserAsync(_context.UserId, pagination,
+                    .GetByUserAsync(_context.UserId!.Value, pagination,
                         cancellationToken, status);
 
                 return roles.ToResultPaged(RoleMapper.ToDto);

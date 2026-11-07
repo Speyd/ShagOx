@@ -45,7 +45,7 @@ public class FavoriteQueriesController
         CancellationToken cancellationToken)
     {
         var result = await _queryService
-            .GetByUserAsync(UserId, pagination,
+            .GetByUserAsync(UserId!.Value, pagination,
                 cancellationToken);
 
         return result.ToActionResult();

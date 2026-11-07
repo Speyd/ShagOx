@@ -13,12 +13,16 @@ public static class ReviewRepliCommentCache
        int page,
        int pageSize,
         EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:status{status}:review-comment:{commentId}:page:{page}:size:{pageSize}";
+           => $"{Prefix}:status:{status}:review-comment:{commentId}:page:{page}:size:{pageSize}";
 
     public static string ByReviewCommentPattern(
        long commentId,
-        EntityStatus status = EntityStatus.Active)
-        => $"{Prefix}:status{status}:review-comment:{commentId}:*";
+        EntityStatus status)
+        => $"{Prefix}:status:{status}:review-comment:{commentId}:*";
+
+    public static string ByReviewCommentPattern(
+       long commentId)
+        => $"{Prefix}:*:review-comment:{commentId}:*";
 
 
     public static string ByReviewRepliComment(
@@ -26,10 +30,14 @@ public static class ReviewRepliCommentCache
        int page,
        int pageSize,
         EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:status{status}:review-repli-comment:{commentId}:page:{page}:size:{pageSize}";
+           => $"{Prefix}:status:{status}:review-repli-comment:{commentId}:page:{page}:size:{pageSize}";
 
     public static string ByReviewRepliCommentPattern(
        long commentId,
-        EntityStatus status = EntityStatus.Active)
-        => $"{Prefix}:status{status}:review-repli-comment:{commentId}:*";
+        EntityStatus status)
+        => $"{Prefix}:status:{status}:review-repli-comment:{commentId}:*";
+
+    public static string ByReviewRepliCommentPattern(
+       long commentId)
+        => $"{Prefix}:*:review-repli-comment:{commentId}:*";
 }

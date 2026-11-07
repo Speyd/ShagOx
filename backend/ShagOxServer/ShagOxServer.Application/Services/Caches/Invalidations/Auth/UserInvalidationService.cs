@@ -14,6 +14,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
+using ShagOxServer.Application.Services.Caches.Keys.Specification;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
@@ -127,8 +128,10 @@ public class UserInvalidationService
         UserCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
-             EntityLanguagePattern<User>(entityInfo.Id,
-                entityInfo.Status));
+             EntityLanguagePattern<User>(entityInfo.Id));
+
+        await _cache.RemoveByPatternAsync(CurrencyCache.
+            ByUser(entityInfo.Id));
 
         await InvalidateContactAsync(entityInfo);
 
@@ -139,12 +142,10 @@ public class UserInvalidationService
         UserCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(
-            UserRoleCache.RolesByUserPattern(entityInfo.Id,
-                entityInfo.Status));
+            UserRoleCache.RolesByUserPattern(entityInfo.Id));
 
         await _cache.RemoveAsync(
-            UserRoleCache.RoleIdsByUser(entityInfo.Id,
-                entityInfo.Status));
+            UserRoleCache.RoleIdsByUser(entityInfo.Id));
     }
 
     private async Task InvalidateContactAsync(
@@ -153,20 +154,17 @@ public class UserInvalidationService
         if (!string.IsNullOrEmpty(entityInfo.Phone))
         {
             await _cache.RemoveAsync(UserCache.
-                ByContactPattern(entityInfo.Phone,
-                entityInfo.Status));
+                ByContactPattern(entityInfo.Phone));
         }
 
         if (!string.IsNullOrEmpty(entityInfo.Email))
         {
             await _cache.RemoveAsync(UserCache.
-                ByContactPattern(entityInfo.Email,
-                entityInfo.Status));
+                ByContactPattern(entityInfo.Email));
         }
 
         await _cache.RemoveAsync(UserCache.
-            ByContactPattern(entityInfo.UserName,
-                entityInfo.Status));
+            ByContactPattern(entityInfo.UserName));
     }
 
     private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(

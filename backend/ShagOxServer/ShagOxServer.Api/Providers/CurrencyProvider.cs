@@ -1,6 +1,6 @@
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification;
 
@@ -8,15 +8,15 @@ namespace ShagOxServer.Api.Providers;
 public class CurrencyProvider
     : ICurrencyProvider
 {
-    private readonly IUserQueryRepository _userRepository;
+    private readonly ICurrencyQueryService _currencyService;
     private readonly IUserContext _userContext;
 
 
     public CurrencyProvider(
-        IUserQueryRepository userRepository,
+        ICurrencyQueryService currencyService,
         IUserContext userContext)
     {
-        _userRepository = userRepository;
+        _currencyService = currencyService;
         _userContext = userContext;
     }
 
@@ -24,10 +24,13 @@ public class CurrencyProvider
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
     {
-        var user = await _userRepository
-            .GetByIdAsync(_userContext.UserId, 
+        if (!_userContext.UserId.HasValue)
+            return null;
+
+        var result = await _currencyService
+            .GetByUserAsync(_userContext.UserId.Value, 
                 cancellationToken, status);
 
-        return user?.Currency;
+        return result.Value;
     }
 }

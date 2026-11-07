@@ -12,12 +12,16 @@ public static class BasketAttributeCache
         long attributeId,
         string language,
         EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:{language}:status{status}:attribute-defenition:{attributeId}";
+           => $"{Prefix}:{language}:status:{status}:attribute-defenition:{attributeId}";
 
     public static string ByAttributeDefenitionPattern(
         long attributeId,
-        EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:*status{status}:attribute-defenition:{attributeId}";
+        EntityStatus status)
+           => $"{Prefix}:*:status:{status}:attribute-defenition:{attributeId}";
+
+    public static string ByAttributeDefenitionPattern(
+        long attributeId)
+           => $"{Prefix}:*:attribute-defenition:{attributeId}";
 
     public static string ByCategory(
         long categoryId,
@@ -25,10 +29,14 @@ public static class BasketAttributeCache
         int page,
         int pageSize,
         EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:{language}:status{status}:category:{categoryId}:page:{page}:size:{pageSize}";
+           => $"{Prefix}:{language}:status:{status}:category:{categoryId}:page:{page}:size:{pageSize}";
 
     public static string ByCategoryPattern(
         long categoryId,
-        EntityStatus status = EntityStatus.Active)
+        EntityStatus status)
            => $"{Prefix}:*status{status}:category:{categoryId}:page:*";
+
+    public static string ByCategoryPattern(
+        long categoryId)
+           => $"{Prefix}:*:category:{categoryId}:page:*";
 }

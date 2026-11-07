@@ -13,17 +13,21 @@ public static class UserRoleCache
         int page,
         int pageSize,
         EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:roles:status{status}:user:{userId}:page:{page}:size:{pageSize}";
+            => $"{Prefix}:roles:status:{status}:user:{userId}:page:{page}:size:{pageSize}";
 
     public static string RolesByUserPattern(
         long userId,
-        EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:roles:status{status}:user:{userId}:page:*";
+        EntityStatus status)
+            => $"{Prefix}:roles:status:{status}:user:{userId}:page:*";
+
+    public static string RolesByUserPattern(
+        long userId)
+            => $"{Prefix}:roles:*:user:{userId}:page:*";
 
     public static string RoleIdsByUser(
         long userId,
         EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:role-ids:status{status}:user:{userId}";
+            => $"{Prefix}:role-ids:status:{status}:user:{userId}";
 
 
     public static string UsersByRole(
@@ -31,15 +35,19 @@ public static class UserRoleCache
         int page,
         int pageSize,
         EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:users:status{status}:role:{roleId}:page:{page}:size:{pageSize}";
+            => $"{Prefix}:users:status:{status}:role:{roleId}:page:{page}:size:{pageSize}";
 
     public static string UsersByRolePattern(
         long roleId,
-        EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:users:status{status}:role:{roleId}:page:*";
+        EntityStatus status)
+            => $"{Prefix}:users:status:{status}:role:{roleId}:page:*";
+
+    public static string UsersByRolePattern(
+        long roleId)
+            => $"{Prefix}:users:*:role:{roleId}:page:*";
 
     public static string UserIdsByRole(
         long roleId,
         EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:role-ids:status{status}:role:{roleId}";
+            => $"{Prefix}:role-ids:status:{status}:role:{roleId}";
 }

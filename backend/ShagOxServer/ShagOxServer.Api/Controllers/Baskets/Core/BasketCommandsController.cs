@@ -33,7 +33,7 @@ public class BasketCommandsController
         var request = new BasketCreateRequest();
 
         var result = await _createService
-            .CreateAsync(request, UserId);
+            .CreateAsync(request, UserId!.Value);
 
         return result.ToActionResult();
     }

@@ -45,7 +45,7 @@ public class ReviewRepliCommentCommandsController
         ReviewRepliCommentCreateRequest request)
     {
         var result = await _createService
-            .CreateAsync(request, UserId);
+            .CreateAsync(request, UserId!.Value);
 
         return result.ToActionResult();
     }

@@ -7,7 +7,8 @@ public static partial class EnvironmentExtensions
         this IHostApplicationBuilder builder)
     {
         LoadRedisEnvironment(builder);
-        LoadPostgresEnvironment(builder);
+        LoadPgBouncerEnvironment(builder);
+        //LoadPostgresEnvironment(builder);
         LoadJwtEnvironment(builder);
     }
 

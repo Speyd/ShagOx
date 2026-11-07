@@ -27,7 +27,7 @@ public abstract class ApiOwnerExistsController
         var isOwner = await _ownerRepository
             .IsOwnerAsync(
                 entityId,
-                UserId);
+                UserId!.Value);
 
         if (!isOwner)
             return Forbid();

@@ -1,5 +1,5 @@
-﻿namespace ShagOxServer.Application.Interfaces.Services.Common.Context;
+namespace ShagOxServer.Application.Interfaces.Services.Common.Context;
 public interface IUserContext
 {
-    long UserId { get; }
+    long? UserId { get; }
 }

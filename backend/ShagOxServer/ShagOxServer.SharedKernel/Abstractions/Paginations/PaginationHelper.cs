@@ -33,9 +33,6 @@ public static class PaginationHelper
 
         var firstItems = await query.Take(20).ToListAsync();
 
-        Console.WriteLine($"Count: {totalCount}");
-        Console.WriteLine($"First items: {firstItems.Count}");
-
         var items = await query
             .WithPagination(pagination,
                 orderBy, descending)

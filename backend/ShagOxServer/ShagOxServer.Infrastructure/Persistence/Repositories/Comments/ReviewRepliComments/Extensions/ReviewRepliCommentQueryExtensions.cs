@@ -9,6 +9,8 @@ public static class ReviewRepliCommentQueryExtensions
     {
         return query
             .Include(x => x.Owner)
+                .ThenInclude(o => o.Avatar)
+            .Include(x => x.Pictures)
             .Include(x => x.Replies);
     }
 }

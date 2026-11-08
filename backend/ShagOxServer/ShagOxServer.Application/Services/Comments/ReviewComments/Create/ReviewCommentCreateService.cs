@@ -7,6 +7,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.Validations;
+using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
@@ -51,6 +53,17 @@ public class ReviewCommentCreateService
         long ownerId,
         CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(request.Text))
+        {
+            return Result<CreateResponse>
+                .Fail(ValidationResources.CommentTextRequired);
+        }
+
+        var grade = ReviewGrade.Validate(request.Grade);
+
+        if (!grade.IsSuccess)
+            return Result<CreateResponse>.Fail(grade.Error);
+
         var exists = await _commentValidator
             .ValidateCommentAsync(
                 ownerId, 
@@ -73,6 +86,8 @@ public class ReviewCommentCreateService
         {
             _commentRepository.Add(comment);
 
+            // Id відгуку потрібен, щоб прив'язати до нього фото
+            await _unitOfWork.SaveChangesAsync();
 
             var imagesResult = await _imageCreateService
                .CreateAsync(

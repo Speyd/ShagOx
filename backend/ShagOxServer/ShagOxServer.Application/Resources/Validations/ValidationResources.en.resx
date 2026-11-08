@@ -144,4 +144,10 @@
   <data name="UnsupportedAttributeType" xml:space="preserve">
     <value>Unsupported attribute type: {0}.</value>
   </data>
+  <data name="ReviewGradeOutOfRange" xml:space="preserve">
+    <value>Grade must be between {0} and {1}.</value>
+  </data>
+  <data name="CommentTextRequired" xml:space="preserve">
+    <value>Comment text is required.</value>
+  </data>
 </root>

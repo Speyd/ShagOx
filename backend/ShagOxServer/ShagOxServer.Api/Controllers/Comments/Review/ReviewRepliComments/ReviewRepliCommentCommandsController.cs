@@ -42,7 +42,7 @@ public class ReviewRepliCommentCommandsController
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        ReviewRepliCommentCreateRequest request)
+        [FromForm] ReviewRepliCommentCreateRequest request)
     {
         var result = await _createService
             .CreateAsync(request, UserId!.Value);

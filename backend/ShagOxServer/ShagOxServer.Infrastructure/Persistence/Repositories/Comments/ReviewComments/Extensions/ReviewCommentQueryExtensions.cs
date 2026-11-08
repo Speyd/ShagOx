@@ -8,6 +8,9 @@ public static class ReviewCommentQueryExtensions
        this IQueryable<ReviewComment> query)
     {
         return query
-            .Include(x => x.Owner);
+            .Include(x => x.Owner)
+                .ThenInclude(o => o.Avatar)
+            .Include(x => x.Pictures)
+            .Include(x => x.Replies);
     }
 }

@@ -60,6 +60,14 @@ public class ReviewCommentUpdateService
         ReviewCommentUpdateRequest request,
         CancellationToken cancellationToken = default)
     {
+        if (request.Grade.HasValue)
+        {
+            var grade = ReviewGrade.Validate(request.Grade.Value);
+
+            if (!grade.IsSuccess)
+                return Result<UpdateResponse>.Fail(grade.Error);
+        }
+
         var comment = await _commitValidator
             .GetByIdAsync(commentId, cancellationToken);
         if (!comment.IsSuccess)

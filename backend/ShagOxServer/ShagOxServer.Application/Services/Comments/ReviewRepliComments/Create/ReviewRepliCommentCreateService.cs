@@ -16,6 +16,7 @@ using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewRepliComments.Create;
+
 public class ReviewRepliCommentCreateService
     : IReviewRepliCommentCreateService
 {
@@ -56,7 +57,7 @@ public class ReviewRepliCommentCreateService
         CancellationToken cancellationToken = default)
     {
         var exists = await ValidationAsync(
-            request, 
+            request,
             ownerId,
             cancellationToken
         );

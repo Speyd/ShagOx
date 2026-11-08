@@ -12,6 +12,7 @@ public static class ReviewRepliCommentCreater
         {
             OwnerId = userId,
             CommentableEntityId = request.CommentableEntityId,
+            ParentReplyId = request.RepliId,
             Text = request.Text,
             CreatedAt = DateTime.UtcNow
         };

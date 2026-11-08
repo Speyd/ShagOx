@@ -38,6 +38,17 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         TEntity entity);
 
 
+    public virtual async Task<Result<long>> GetCountAsync(
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+
+        var count = await _queryRepository
+           .GetCountAsync(cancellationToken, status);
+
+        return Result<long>.Success(count);
+    }
+
     public virtual async Task<Result<TDto>> GetByIdAsync(
         long id,
         CancellationToken cancellationToken = default,

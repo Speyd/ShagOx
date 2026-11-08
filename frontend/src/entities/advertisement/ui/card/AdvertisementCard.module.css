@@ -90,26 +90,6 @@
   margin-top: 4px;
 }
 
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.ratingStar {
-  width: 16px;
-  height: 16px;
-  color: #fea945;
-  fill: #fea945;
-  flex-shrink: 0;
-}
-
-.ratingText,
-.ratingCount {
-  font-size: 12px !important;
-  color: #64748b;
-}
-
 .inStock {
   font-size: 12px !important;
   font-weight: 600 !important;
@@ -144,6 +124,12 @@
   height: 16px;
 }
 
+.variantPickerContainer{
+  margin-top: 8px;
+  margin-bottom: 8px;
+  height: 2dvh;
+}
+
 @media (max-width: 479px) {
   .card {
     padding: 8px;
@@ -172,16 +158,6 @@
     height: 26px;
   }
 
-  .ratingStar {
-    width: 12px;
-    height: 12px;
-  }
-
-  .ratingText,
-  .ratingCount {
-    font-size: 10px !important;
-  }
-
   .inStock,
   .outOfStock {
     font-size: 10px !important;
@@ -203,4 +179,16 @@
     width: 13px;
     height: 13px;
   }
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.oldPrice {
+  font-size: 13px;
+  color: #94a3b8;
+  text-decoration: line-through;
 }

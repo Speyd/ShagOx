@@ -1,11 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  getAttributeDictionaryValues,
-  type CategoryAttributeValueResponse,
-} from "../../api/api";
+import { getAttributeDictionaryValues } from "../../api/api";
 
 export function useGetAttributeDictionaryValues(categoryId?: number) {
-  return useQuery<CategoryAttributeValueResponse[]>({
+  return useQuery({
     queryKey: ["category-attribute-values", categoryId],
     queryFn: () => getAttributeDictionaryValues(categoryId),
     enabled: Boolean(categoryId),

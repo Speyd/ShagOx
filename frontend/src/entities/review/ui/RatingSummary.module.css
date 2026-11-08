@@ -1,0 +1,66 @@
+.compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.compactStar {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: #fea945;
+  fill: #fea945;
+}
+
+.compactStarEmpty {
+  color: #cbd5e1;
+  fill: none;
+}
+
+.compactValue {
+  font-weight: 600;
+  color: var(--color-base);
+}
+
+.compactCount {
+  color: #64748b;
+}
+
+.full {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.fullValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-base);
+}
+
+.reviewsLink {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 15px;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.reviewsLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .compact {
+    font-size: 10px;
+  }
+
+  .compactStar {
+    width: 12px;
+    height: 12px;
+  }
+}

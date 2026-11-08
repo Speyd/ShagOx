@@ -1,5 +1,6 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getCatalogAdvertisements, type CatalogParams } from "../../api/api";
+import { getCatalogAdvertisements } from "../../api/api";
+import type { CatalogParams } from "../types";
 
 export function useGetCatalogAdvertisements(params: CatalogParams) {
   return useQuery({

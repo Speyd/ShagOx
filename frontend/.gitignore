@@ -24,3 +24,4 @@ eslint_output.json
 *.njsproj
 *.sln
 *.sw?
+*.md

@@ -1,165 +1,79 @@
-import styles from "./CatalogFilters.module.css";
-import {
-  Text,
-  Checkbox,
-  Stack,
-  NumberInput,
-  Group,
-  Accordion,
-} from "@mantine/core";
-import { Sliders } from "lucide-react";
+import { Accordion, Text } from "@mantine/core";
+import { SlidersHorizontal } from "lucide-react";
+import type { CatalogFilters as CatalogFiltersState } from "@/features/catalog";
 import Button from "@/shared/ui/buttons/button";
-import {
-  priceRangeSchema,
-  type PriceRange,
-} from "../../model/priceRangeSchema";
-import type { AttributeInfo } from "@/entities/advertisement/api/api";
+import { ActiveFilters } from "./filters/ActiveFilters";
+import { OptionsFilter } from "./filters/OptionsFilter";
+import { PriceFilter } from "./filters/PriceFilter";
+import { RangeFilter } from "./filters/RangeFilter";
+import styles from "./CatalogFilters.module.css";
 
-type CatalogFiltersProps = {
-  definitions: AttributeInfo[];
-  optionsByDefinition: Record<number, { value: string; label: string }[]>;
-  selectedValues: Record<number, string[]>;
-  onSelectValue: (definitionId: number, values: string[]) => void;
-  priceRange: PriceRange;
-  onPriceChange: (priceRange: PriceRange) => void;
-  onReset: () => void;
-};
+const OPENED_BY_DEFAULT = 5;
 
-export function CatalogFilters({
-  definitions,
-  optionsByDefinition,
-  selectedValues,
-  onSelectValue,
-  priceRange,
-  onPriceChange,
-  onReset,
-}: CatalogFiltersProps) {
-  const filterableDefinitions = definitions.filter(
-    (def) => optionsByDefinition[def.id]?.length > 0,
-  );
+export function CatalogFilters({ filters }: { filters: CatalogFiltersState }) {
+  const { groups, priceBounds, state, activeCount } = filters;
 
-  const validationResult = priceRangeSchema.safeParse(priceRange);
-  const errorMessage = !validationResult.success
-    ? validationResult.error.issues[0]?.message
-    : null;
+  if (!priceBounds && groups.length === 0) return null;
 
-  if (filterableDefinitions.length === 0) {
-    return null;
-  }
-
-  const defaultOpenedValues = [
-    "price",
-    ...filterableDefinitions.map((def) => String(def.id)),
-  ];
+  const opened = ["price", ...groups.slice(0, OPENED_BY_DEFAULT).map((g) => g.key)];
 
   return (
     <section aria-label="Фільтри" className={styles.catalogFilters}>
       <div className={styles.header}>
-        <Sliders size={18} />
+        <SlidersHorizontal size={18} />
         <Text fw={700} fz={16}>
           Фільтри
         </Text>
+        {activeCount > 0 && <span className={styles.badge}>{activeCount}</span>}
       </div>
 
-      <Accordion
-        multiple
-        defaultValue={defaultOpenedValues}
-        variant="separated"
-        radius="md"
-        chevronPosition="right"
-        className={styles.accordion}
-      >
-        <Accordion.Item value="price" className={styles.accordionItem}>
-          <Accordion.Control className={styles.accordionControl}>
-            <Text fw={600} fz={14}>
-              Ціна (грн)
-            </Text>
-          </Accordion.Control>
-          <Accordion.Panel>
-            <Group grow align="flex-start" gap="xs">
-              <NumberInput
-                placeholder="Від"
-                min={0}
-                allowNegative={false}
-                value={priceRange.min}
-                onChange={(val) =>
-                  onPriceChange({
-                    ...priceRange,
-                    min: val === "" ? "" : Number(val),
-                  })
-                }
-                clampBehavior="strict"
-                size="sm"
-              />
-              <NumberInput
-                placeholder="До"
-                min={0}
-                allowNegative={false}
-                value={priceRange.max}
-                onChange={(val) =>
-                  onPriceChange({
-                    ...priceRange,
-                    max: val === "" ? "" : Number(val),
-                  })
-                }
-                clampBehavior="strict"
-                error={!!errorMessage}
-                size="sm"
-              />
-            </Group>
-            {errorMessage && (
-              <Text c="red" fz={12} mt={6}>
-                {errorMessage}
+      <ActiveFilters filters={filters} />
+
+      <Accordion multiple defaultValue={opened} variant="separated" radius="md" className={styles.accordion}>
+        {priceBounds && (
+          <Accordion.Item value="price" className={styles.accordionItem}>
+            <Accordion.Control className={styles.accordionControl}>
+              <Text fw={600} fz={14}>
+                Ціна, ₴
               </Text>
-            )}
-          </Accordion.Panel>
-        </Accordion.Item>
+            </Accordion.Control>
+            <Accordion.Panel>
+              <PriceFilter bounds={priceBounds} value={state.price} onChange={filters.setPrice} />
+            </Accordion.Panel>
+          </Accordion.Item>
+        )}
 
-        {filterableDefinitions.map((definition) => {
-          const options = optionsByDefinition[definition.id] ?? [];
-          const currentValues = selectedValues[definition.id] ?? [];
-
-          return (
-            <Accordion.Item
-              key={definition.id}
-              value={String(definition.id)}
-              className={styles.accordionItem}
-            >
-              <Accordion.Control className={styles.accordionControl}>
-                <Text fw={600} fz={14}>
-                  {definition.lable || definition.key}
-                </Text>
-              </Accordion.Control>
-              <Accordion.Panel>
-                <Checkbox.Group
-                  value={currentValues}
-                  onChange={(values) => onSelectValue(definition.id, values)}
-                >
-                  <Stack gap="sm">
-                    {options.map((option) => (
-                      <Checkbox
-                        key={option.value}
-                        value={option.value}
-                        label={option.label}
-                        size="sm"
-                        className={styles.checkboxOption}
-                      />
-                    ))}
-                  </Stack>
-                </Checkbox.Group>
-              </Accordion.Panel>
-            </Accordion.Item>
-          );
-        })}
+        {groups.map((group) => (
+          <Accordion.Item key={group.key} value={group.key} className={styles.accordionItem}>
+            <Accordion.Control className={styles.accordionControl}>
+              <Text fw={600} fz={14}>
+                {group.label}
+              </Text>
+            </Accordion.Control>
+            <Accordion.Panel>
+              {group.kind === "options" ? (
+                <OptionsFilter
+                  group={group}
+                  value={state.options[group.key] ?? []}
+                  onChange={(values) => filters.setOptions(group.key, values)}
+                />
+              ) : (
+                <RangeFilter
+                  group={group}
+                  value={state.ranges[group.key]}
+                  onChange={(range) => filters.setRange(group.key, range)}
+                />
+              )}
+            </Accordion.Panel>
+          </Accordion.Item>
+        ))}
       </Accordion>
 
-      <Button
-        variant="outline"
-        onClick={onReset}
-        className={styles.resetButton}
-      >
-        Очистити фільтри
-      </Button>
+      {activeCount > 0 && (
+        <Button variant="outline" onClick={filters.reset} className={styles.resetButton}>
+          Скинути фільтри
+        </Button>
+      )}
     </section>
   );
 }

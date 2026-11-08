@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Text } from "@mantine/core";
 
@@ -16,12 +16,11 @@ export type AdvertisementsGridProps = {
   categoryId?: number;
   isLoadingCategory?: boolean;
   searchQuery?: string;
-  attributeFilters: {
+  filters: {
     attributes: Record<string, unknown[]>;
-    variantAttributes: Record<string, unknown>;
+    minPrice?: number;
+    maxPrice?: number;
   };
-  minPrice?: number;
-  maxPrice?: number;
   hasActiveFilters: boolean;
   onResetFilters: () => void;
 };
@@ -30,26 +29,21 @@ export function AdvertisementsGrid({
   categoryId,
   isLoadingCategory,
   searchQuery = "",
-  attributeFilters,
-  minPrice,
-  maxPrice,
+  filters,
   hasActiveFilters,
   onResetFilters,
 }: AdvertisementsGridProps) {
-  const [page, setPage] = useState(1);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setPage(1);
-  }, [categoryId, minPrice, maxPrice, attributeFilters, searchQuery]);
+  const queryKey = JSON.stringify({ categoryId, searchQuery, filters });
+  const [pageState, setPageState] = useState({ queryKey, page: 1 });
+  const page = pageState.queryKey === queryKey ? pageState.page : 1;
+  const setPage = (next: number) => setPageState({ queryKey, page: next });
 
   const { data, isLoading, isError } = useGetCatalogAdvertisements({
     categoryId,
-    minPrice,
-    maxPrice,
     search: searchQuery,
     page,
-    ...attributeFilters,
+    ...filters,
   });
 
   const handlePageChange = (newPage: number) => {

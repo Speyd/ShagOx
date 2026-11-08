@@ -29,10 +29,16 @@
   min-width: 0;
 }
 
+.button {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease; 
+}
+
 @media (max-width: 479px) {
   .featuredAdvertisementsGrid {
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 8px; 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
   .featuredAdvertisements {

@@ -95,7 +95,12 @@ export function FeaturedAdvertisements() {
               </Text>
             )}
           </div>
-          <Button variant="subtle" size="sm" onClick={handleClearSearch}>
+          <Button
+            variant="subtle"
+            size="sm"
+            className={styles.button}
+            onClick={handleClearSearch}
+          >
             Очистити пошук
           </Button>
         </div>

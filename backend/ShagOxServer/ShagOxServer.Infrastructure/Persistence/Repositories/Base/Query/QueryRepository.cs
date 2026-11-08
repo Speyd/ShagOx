@@ -17,6 +17,16 @@ public class QueryRepository<TEntity>
     {
     }
 
+
+    public virtual async Task<long> GetCountAsync(
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Set<TEntity>()
+            .WithStatusFilter(status)
+            .LongCountAsync(cancellationToken);
+    }
+
     public virtual async Task<TEntity?> GetByIdAsync(
         long id,
         CancellationToken cancellationToken = default,

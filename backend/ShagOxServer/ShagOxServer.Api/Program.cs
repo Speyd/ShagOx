@@ -34,6 +34,7 @@ try
         .AddSwaggerDocumentation()
         .AddApplication()
         .AddInfrastructure()
+        .AddDevelopmentEmailFallback(builder.Configuration, builder.Environment)
         .AddHttpContextAccessor();
 
 

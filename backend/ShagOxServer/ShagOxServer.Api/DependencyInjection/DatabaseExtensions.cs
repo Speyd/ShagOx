@@ -26,7 +26,6 @@ public static class DatabaseExtensions
              )
          );
 
-
         var connectionSection = config
             .GetSection("ConnectionStrings:ReplicaConnections");
 

@@ -37,4 +37,8 @@ public interface IAdvertisementQueryService
     Task<ConvertedPricesDto> ConvertPricesAsync(
         Advertisement advert,
         CancellationToken cancellationToken = default);
+
+    Task<Result<AdvertisementFacetsDto>> GetFacetsAsync(
+        long categoryId,
+        CancellationToken cancellationToken = default);
 }

@@ -218,4 +218,14 @@ public class AdvertisementQueryService
             previousPrice, 
             advert.Currency);
     }
+
+    public async Task<Result<AdvertisementFacetsDto>> GetFacetsAsync(
+        long categoryId,
+        CancellationToken cancellationToken = default)
+    {
+        var facets = await _advertisementRepository
+            .GetFacetsAsync(categoryId, cancellationToken);
+
+        return Result<AdvertisementFacetsDto>.Success(facets);
+    }
 }

@@ -22,6 +22,12 @@ public interface IQueryTranslationRepository<TEntity, TTranslation>
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
+    Task<TTranslation?> GetByTranslatableIdAsync(
+        long translatableId,
+        string language,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<List<BaseTranslationCacheInfo>> GetCacheInfosByTranslatableAsync(
         long translatableId,
         CancellationToken cancellationToken = default,

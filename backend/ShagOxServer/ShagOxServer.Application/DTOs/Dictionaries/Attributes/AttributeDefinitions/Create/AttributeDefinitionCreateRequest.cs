@@ -10,5 +10,6 @@ public sealed record AttributeDefinitionCreateRequest
     decimal? Min,
     decimal? Max,
     bool IsVariant,
-    bool Multiple
+    bool Multiple,
+    long? DictionaryId = null
 );

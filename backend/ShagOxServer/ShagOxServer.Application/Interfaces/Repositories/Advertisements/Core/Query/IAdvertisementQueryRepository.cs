@@ -32,4 +32,8 @@ public partial interface IAdvertisementQueryRepository
        PaginationParams pagination,
        CancellationToken cancellationToken = default,
        EntityStatus? status = null);
+
+    Task<AdvertisementFacetsDto> GetFacetsAsync(
+        long categoryId,
+        CancellationToken cancellationToken = default);
 }

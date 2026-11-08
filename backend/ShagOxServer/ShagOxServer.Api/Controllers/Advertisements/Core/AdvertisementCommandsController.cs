@@ -17,7 +17,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Core;
 [ApiController]
 [Route("api/advertisements")]
 [Authorize]
-public class AdvertisementCommandsController 
+public class AdvertisementCommandsController
     : ApiOwnerExistsController
 {
     private readonly IAdvertisementCreateService _createService;
@@ -32,18 +32,16 @@ public class AdvertisementCommandsController
         IAdvertisementExistsRepository existsAdvertRepository,
         IUserAdminQueryService userQueryService,
         IUserContext userContext
-    ) 
+    )
         : base(existsAdvertRepository, userQueryService, userContext)
     {
         _createService = createService;
         _updateService = updateService;
         _deleteService = deleteService;
     }
-
-    
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromForm] AdvertisementCreateRequest request)
+            [FromForm] AdvertisementCreateRequest request)
     {
         var result = await _createService
             .CreateAsync(request, UserId!.Value);

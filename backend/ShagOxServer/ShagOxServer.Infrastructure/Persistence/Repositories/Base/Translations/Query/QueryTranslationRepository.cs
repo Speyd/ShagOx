@@ -41,6 +41,19 @@ public class QueryTranslationRepository<TEntity, TTranslator>
                 x.Language == language, cancellationToken);
     }
 
+    public virtual async Task<TTranslator?> GetByTranslatableIdAsync(
+        long translatableId,
+        string language,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Set<TTranslator>()
+            .WithStatusFilter(status)
+            .FirstOrDefaultAsync(x =>
+                x.TranslatableId == translatableId && x.Language == language,
+                cancellationToken);
+    }
+
     public virtual async Task<PagedResult<TTranslator>> GetPagedAsync(
         PaginationParams pagination,
         string language,

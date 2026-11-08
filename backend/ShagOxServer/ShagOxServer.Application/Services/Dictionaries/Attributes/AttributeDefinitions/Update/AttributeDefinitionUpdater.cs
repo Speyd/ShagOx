@@ -58,6 +58,12 @@ public static class AttributeDefinitionUpdater
             countUpdated++;
         }
 
+        if (request.DictionaryId.HasValue)
+        {
+            attribute.DictionaryId = request.DictionaryId.Value;
+            countUpdated++;
+        }
+
         return countUpdated;
     }
 }

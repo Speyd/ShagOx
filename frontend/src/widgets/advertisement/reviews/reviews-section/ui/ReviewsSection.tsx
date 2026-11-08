@@ -1,220 +1,156 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Skeleton, Text, UnstyledButton } from "@mantine/core";
+import { Star } from "lucide-react";
+import clsx from "clsx";
 import {
-  Tabs,
-  Text,
-  Checkbox,
-  Avatar,
-  Rating,
-  Button,
-  UnstyledButton,
-} from "@mantine/core";
-import { ChevronUp, ThumbsUp, ThumbsDown, Star } from "lucide-react";
+  useGetMyReview,
+  useGetReviews,
+  useGetReviewStats,
+  type Review,
+} from "@/entities/review";
+import { useAuthStore } from "@/features/auth";
+import { ReviewFormModal, useDeleteReview } from "@/features/review/manage-review";
+import { confirmDelete } from "@/shared/lib/confirmDelete";
+import { ReviewCard } from "./ReviewCard";
 import styles from "./ReviewsSection.module.css";
 
-// Тестові дані
-interface Review {
-  id: string;
-  authorName: string;
-  authorAvatar: string;
-  rating: number;
-  text: string;
-  date: string;
-  likes: number;
-  dislikes: number;
-  hasMedia: boolean;
-}
+type ReviewsSectionProps = {
+  advertisementId: number;
+  sellerId?: number;
+};
 
-const MOCK_REVIEWS: Review[] = [
-  {
-    id: "1",
-    authorName: "Darrell Steward",
-    authorAvatar:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png",
-    rating: 5,
-    text: "This is amazing product I have.",
-    date: "July 2, 2020 03:29 PM",
-    likes: 128,
-    dislikes: 0,
-    hasMedia: true,
-  },
-  {
-    id: "2",
-    authorName: "Darlene Robertson",
-    authorAvatar:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png",
-    rating: 5,
-    text: "This is amazing product I have.",
-    date: "July 2, 2020 1:04 PM",
-    likes: 82,
-    dislikes: 0,
-    hasMedia: false,
-  },
-  {
-    id: "3",
-    authorName: "Kathryn Murphy",
-    authorAvatar:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
-    rating: 5,
-    text: "This is amazing product I have.",
-    date: "June 26, 2020 10:03 PM",
-    likes: 9,
-    dislikes: 0,
-    hasMedia: true,
-  },
-  {
-    id: "4",
-    authorName: "Ronald Richards",
-    authorAvatar:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-4.png",
-    rating: 4,
-    text: "This is amazing product I have.",
-    date: "July 7, 2020 10:14 AM",
-    likes: 124,
-    dislikes: 0,
-    hasMedia: false,
-  },
-];
+export default function ReviewsSection({ advertisementId, sellerId }: ReviewsSectionProps) {
+  const navigate = useNavigate();
+  // Користувача кладе в стор App (через useMe). Окремий useMe тут для гостя
+  // перезапитував би 401 і перемонтовував застосунок по колу.
+  const me = useAuthStore((state) => state.user);
+  const [grade, setGrade] = useState<number>();
+  const [modal, setModal] = useState<{ review: Review | null } | null>(null);
 
-export default function ReviewsSection() {
-  const [activeTab, setActiveTab] = useState<string | null>("all");
-  const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
-  const [isRatingOpen, setIsRatingOpen] = useState(true);
+  const { data: stats } = useGetReviewStats(advertisementId);
+  const { data: myReview } = useGetMyReview(advertisementId, me?.id);
+  const reviews = useGetReviews(advertisementId, grade);
+  const deleteReview = useDeleteReview(advertisementId);
 
-  // Фільтрація відгуків
-  const filteredReviews = MOCK_REVIEWS.filter((review) => {
-    // Фільтр за табами
-    if (activeTab === "media" && !review.hasMedia) return false;
-    if (activeTab === "text" && !review.text) return false;
+  const items = reviews.data?.pages.flatMap((page) => page.items) ?? [];
+  const isSeller = me?.id === sellerId;
 
-    // Фільтр за чекбоксами оцінок
-    if (
-      selectedRatings.length > 0 &&
-      !selectedRatings.includes(review.rating)
-    ) {
-      return false;
-    }
+  const handleDelete = (review: Review) =>
+    confirmDelete({
+      title: "Видалити відгук",
+      message: "Ви дійсно бажаєте видалити свій відгук? Цю дію неможливо скасувати.",
+      onConfirm: () => deleteReview.mutate(review.id),
+    });
 
-    return true;
-  });
-
-  const toggleRatingFilter = (rating: number) => {
-    setSelectedRatings((prev) =>
-      prev.includes(rating)
-        ? prev.filter((r) => r !== rating)
-        : [...prev, rating],
+  const renderAction = () => {
+    if (!me)
+      return (
+        <Button variant="light" onClick={() => navigate("/authentication")}>
+          Увійдіть, щоб залишити відгук
+        </Button>
+      );
+    if (isSeller) return null;
+    if (myReview)
+      return (
+        <Button variant="light" onClick={() => setModal({ review: myReview })}>
+          Редагувати мій відгук
+        </Button>
+      );
+    return (
+      <Button bg="var(--color-base)" onClick={() => setModal({ review: null })}>
+        Написати відгук
+      </Button>
     );
   };
 
+  const renderList = () => {
+    if (reviews.isLoading)
+      return Array.from({ length: 3 }, (_, i) => (
+        <Skeleton key={i} height={110} radius="md" />
+      ));
+
+    if (reviews.isError)
+      return <Text c="red">Не вдалося завантажити відгуки.</Text>;
+
+    if (items.length === 0)
+      return (
+        <Text c="dimmed">
+          {grade
+            ? "Відгуків з такою оцінкою немає."
+            : "Відгуків ще немає. Будьте першим, хто поділиться враженнями!"}
+        </Text>
+      );
+
+    return items.map((review) => (
+      <ReviewCard
+        key={review.id}
+        review={review}
+        advertisementId={advertisementId}
+        sellerId={sellerId}
+        currentUserId={me?.id}
+        onEdit={(r) => setModal({ review: r })}
+        onDelete={handleDelete}
+      />
+    ));
+  };
+
+  const filters = [
+    { value: undefined, label: "Усі", count: stats.total },
+    ...stats.distribution.map((d) => ({ value: d.grade, label: String(d.grade), count: d.count })),
+  ];
+
   return (
     <div className={styles.container}>
-      {/* Ліва частина — Фільтр */}
       <aside className={styles.filterSidebar}>
         <Text fw={700} size="lg" c="#0f172a">
-          Фільтр відгуків
+          Фільтр за оцінкою
         </Text>
-
-        <hr className={styles.divider} />
-
-        <div>
-          <UnstyledButton
-            className={styles.filterHeader}
-            onClick={() => setIsRatingOpen(!isRatingOpen)}
-            w="100%"
-          >
-            <Text fw={600} size="sm" c="#475569">
-              Оцінка
-            </Text>
-            <ChevronUp
-              size={16}
-              style={{
-                transform: isRatingOpen ? "rotate(0deg)" : "rotate(180deg)",
-                transition: "transform 0.2s ease",
-              }}
-            />
-          </UnstyledButton>
-
-          {isRatingOpen && (
-            <div className={styles.filterList} style={{ marginTop: 12 }}>
-              {[5, 4, 3, 2, 1].map((stars) => (
-                <Checkbox
-                  key={stars}
-                  checked={selectedRatings.includes(stars)}
-                  onChange={() => toggleRatingFilter(stars)}
-                  label={
-                    <span className={styles.ratingLabel}>
-                      <Star size={14} fill="#fea945" color="#fea945" />
-                      <Text size="sm" c="#334155">
-                        {stars}
-                      </Text>
-                    </span>
-                  }
-                />
-              ))}
-            </div>
-          )}
+        <div className={styles.filterList}>
+          {filters.map((filter) => (
+            <UnstyledButton
+              key={filter.label}
+              className={clsx(styles.filterItem, grade === filter.value && styles.filterActive)}
+              onClick={() => setGrade(filter.value)}
+              disabled={filter.value !== undefined && filter.count === 0}
+            >
+              <span className={styles.ratingLabel}>
+                {filter.value && <Star size={14} fill="#fea945" color="#fea945" />}
+                {filter.label}
+              </span>
+              <span className={styles.filterCount}>{filter.count}</span>
+            </UnstyledButton>
+          ))}
         </div>
-
-        <hr className={styles.divider} />
       </aside>
 
-      {/* Права частина — Список відгуків */}
       <main className={styles.reviewsContent}>
-        <Text fw={700} size="xl" c="#0f172a">
-          Відгуки покупців
-        </Text>
+        <div className={styles.contentHeader}>
+          <Text fw={700} size="xl" c="#0f172a">
+            Відгуки покупців
+          </Text>
+          {renderAction()}
+        </div>
 
-        <Tabs value={activeTab} onChange={setActiveTab} variant="outline">
-          <Tabs.List className={styles.tabsList}>
-            <Tabs.Tab value="all">Всі відгуки</Tabs.Tab>
-            <Tabs.Tab value="media">З фото та відео</Tabs.Tab>
-            <Tabs.Tab value="text">З описом</Tabs.Tab>
-          </Tabs.List>
+        <div className={styles.reviewsList}>{renderList()}</div>
 
-          <Tabs.Panel value={activeTab || "all"} pt={20}>
-            <div className={styles.reviewsList}>
-              {filteredReviews.map((review) => (
-                <div key={review.id} className={styles.reviewCard}>
-                  <div className={styles.cardHeader}>
-                    <Rating value={review.rating} readOnly color="#fea945" />
-                  </div>
-
-                  <div className={styles.cardBody}>
-                    <Text fw={600} size="sm" c="#0f172a">
-                      {review.text}
-                    </Text>
-                    <Text size="xs" c="#94a3b8">
-                      {review.date}
-                    </Text>
-                  </div>
-
-                  <div className={styles.cardFooter}>
-                    <div className={styles.author}>
-                      <Avatar src={review.authorAvatar} radius="xl" size="sm" />
-                      <Text fw={500} size="sm" c="#334155">
-                        {review.authorName}
-                      </Text>
-                    </div>
-
-                    <div className={styles.actions}>
-                      <Button
-                        variant="default"
-                        size="xs"
-                        leftSection={<ThumbsUp size={14} />}
-                        radius="md"
-                      >
-                        {review.likes > 0 && review.likes}
-                      </Button>
-                      <Button variant="default" size="xs" radius="md" px={8}>
-                        <ThumbsDown size={14} />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Tabs.Panel>
-        </Tabs>
+        {reviews.hasNextPage && (
+          <Button
+            variant="default"
+            onClick={() => reviews.fetchNextPage()}
+            loading={reviews.isFetchingNextPage}
+          >
+            Показати ще
+          </Button>
+        )}
       </main>
+
+      <ReviewFormModal
+        advertisementId={advertisementId}
+        review={modal?.review}
+        opened={modal !== null}
+        onClose={() => setModal(null)}
+      />
     </div>
   );
 }

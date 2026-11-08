@@ -4,7 +4,6 @@ import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGet
 import Container from "@/shared/ui/layout/container";
 import Breadcrumbs from "@/shared/ui/navigation/breadcrumbs";
 import { ImageGallery } from "@/shared/ui/data-display/image-gallery";
-import AdvertisementInfo from "@/widgets/advertisement/advertisement-info";
 import ReviewsBlock from "@/widgets/advertisement/reviews/reviews-block";
 import ReviewsSection from "@/widgets/advertisement/reviews/reviews-section";
 import AdvertisementSlider from "@/widgets/advertisement/advertisement-slider/ui/AdvertisementSlider";
@@ -12,8 +11,9 @@ import { useGetAdvertisements } from "@/entities/advertisement/model/hooks/useGe
 import { useEffect } from "react";
 import { useRecentlyViewedStore } from "@/features/recently-viewed/ui/useRecentlyViewedStore.ts";
 import AdvertisementDetailsSkeleton from "@/widgets/advertisement/advertisement-detail-skeleton/ui/AdvertisementDetailsSkeleton";
+import { AdvertisementInfo } from "@/widgets/advertisement/advertisement-info";
 
-export default function AdvertisementPage() {
+export function AdvertisementPage() {
   const { id } = useParams<{ id: string }>();
 
   const addProduct = useRecentlyViewedStore((state) => state.addProduct);
@@ -53,13 +53,19 @@ export default function AdvertisementPage() {
               images={advertisement.pictures?.map((image) => image.url) || []}
             />
             <div className={styles.infoColumn}>
-              <AdvertisementInfo advertisement={advertisement} />
+              <AdvertisementInfo
+                key={advertisement.id}
+                advertisement={advertisement}
+              />
             </div>
           </section>
 
           <section className={styles.bottomSection}>
-            <ReviewsBlock />
-            <ReviewsSection />
+            <ReviewsBlock advertisementId={advertisement.id} />
+            <ReviewsSection
+              advertisementId={advertisement.id}
+              sellerId={advertisement.seller?.id}
+            />
             <AdvertisementSlider
               items={advertisements?.items || []}
               title="Вам також може сподобатись"

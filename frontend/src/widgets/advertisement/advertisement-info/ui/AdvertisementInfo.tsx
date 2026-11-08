@@ -1,136 +1,68 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Text } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import styles from "./AdvertisementInfo.module.css";
-import { Star } from "lucide-react";
-import { Link } from "react-router-dom";
 import Price from "@/shared/ui/data-display/price";
-import {
-  type Advertisement,
-  type AdvertisementVariant,
-  getVariantAttributeDisplayValue,
-} from "@/shared/lib/types/advertisements";
+import type { Advertisement, AdvertisementVariant } from "@/shared/lib/types/advertisements";
 import CountBlock from "@/shared/ui/data-display/count-block";
 import Button from "@/shared/ui/buttons/button";
 import { useBasketAction } from "@/features/basket/model/hooks/useBasketAction";
-import { useCompareStore } from "@/entities/compare/model/compareStore";
+import { RatingSummary } from "@/entities/review";
+import { VariantPicker } from "@/entities/advertisement/ui/variant-picker";
+import { getDefaultVariant } from "@/entities/advertisement/lib/variants";
+import { formatAttribute } from "@/entities/advertisement/lib/attributes";
+import { MAX_COMPARE_PER_CATEGORY, useCompareStore, useIsInCompare } from "@/entities/compare";
 
 type AdvertisementInfoProps = {
   advertisement: Advertisement;
 };
 
-export default function AdvertisementInfo({
-  advertisement,
-}: AdvertisementInfoProps) {
-  const compareList = useCompareStore((state) => state.compareList);
-  const addAdvertisement = useCompareStore((state) => state.addAdvertisement);
-  const removeAdvertisement = useCompareStore(
-    (state) => state.removeAdvertisement,
+const LOW_STOCK = 20;
+
+const scrollToReviews = () =>
+  document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+export function AdvertisementInfo({ advertisement }: AdvertisementInfoProps) {
+  const navigate = useNavigate();
+  const isInCompare = useIsInCompare(advertisement.id);
+  const addToCompare = useCompareStore((state) => state.add);
+  const removeFromCompare = useCompareStore((state) => state.remove);
+
+  const [variant, setVariant] = useState<AdvertisementVariant | undefined>(() =>
+    getDefaultVariant(advertisement.variants ?? []),
   );
-
-  const isInCompare = useMemo(
-    () => compareList.some((item) => item.id === advertisement.id),
-    [compareList, advertisement.id],
-  );
-
-  const handleCompareClick = () => {
-    if (isInCompare) {
-      removeAdvertisement(advertisement.id);
-    } else {
-      addAdvertisement(advertisement);
-    }
-  };
-
-  const isColorValue = (value: string) => /^#([0-9A-F]{3}){1,2}$/i.test(value);
-
-  const availableAttributes = useMemo(() => {
-    const map = new Map<string, { label: string; values: string[] }>();
-
-    advertisement.variants?.forEach((variant) => {
-      variant.attributes.forEach((attr) => {
-        const key = attr.attribute.key;
-        if (key === "brand") return;
-
-        const displayLabel = attr.attribute.label || key;
-        const valText = getVariantAttributeDisplayValue(attr);
-
-        if (!valText) return;
-
-        if (!map.has(key)) {
-          map.set(key, { label: displayLabel, values: [] });
-        }
-
-        const group = map.get(key)!;
-        if (!group.values.includes(valText)) {
-          group.values.push(valText);
-        }
-      });
-    });
-
-    return Array.from(map.entries()).filter(
-      ([_, group]) => group.values.length > 0,
-    );
-  }, [advertisement.variants]);
-
-  const [selectedAttributes, setSelectedAttributes] = useState<
-    Record<string, string>
-  >(() => {
-    const initial: Record<string, string> = {};
-    const firstVariant = advertisement.variants?.[0];
-    if (firstVariant) {
-      firstVariant.attributes.forEach((attr) => {
-        const key = attr.attribute.key;
-        if (key !== "brand") {
-          initial[key] = getVariantAttributeDisplayValue(attr);
-        }
-      });
-    }
-    return initial;
-  });
-
   const [quantity, setQuantity] = useState(1);
 
-  const selectedVariant: AdvertisementVariant | undefined = useMemo(() => {
-    if (!advertisement.variants?.length) return undefined;
+  const stock = variant?.stock ?? 0;
+  const price = variant?.price ?? 0;
+  const previousPrice = variant?.previousPrice ?? 0;
+  const symbol = advertisement.currency.symbol;
+  const discount = previousPrice > price ? Math.round((1 - price / previousPrice) * 100) : 0;
 
-    const matched = advertisement.variants.find((variant) =>
-      variant.attributes.every((attr) => {
-        const key = attr.attribute.key;
-        if (key === "brand") return true;
-        const val = getVariantAttributeDisplayValue(attr);
-        return selectedAttributes[key] === val;
-      }),
-    );
+  const { handleAdd, isLoading } = useBasketAction(variant?.id, quantity, stock);
 
-    return matched || advertisement.variants[0];
-  }, [advertisement.variants, selectedAttributes]);
-
-  const handleSelectAttribute = (key: string, value: string) => {
-    setSelectedAttributes((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+  const handleSelectVariant = (next: AdvertisementVariant) => {
+    setVariant(next);
     setQuantity(1);
   };
 
-  const isOptionAvailable = (key: string, value: string) => {
-    const testState = { ...selectedAttributes, [key]: value };
+  const handleCompareClick = () => {
+    if (isInCompare) {
+      removeFromCompare(advertisement.id);
+      return;
+    }
 
-    return advertisement.variants?.some((variant) =>
-      Object.entries(testState).every(([k, v]) => {
-        const attr = variant.attributes.find((a) => a.attribute.key === k);
-        return !attr || getVariantAttributeDisplayValue(attr) === v;
-      }),
-    );
+    const added = addToCompare({ id: advertisement.id, categoryId: advertisement.category.id });
+    if (!added) {
+      toast.error(`Можна порівнювати до ${MAX_COMPARE_PER_CATEGORY} товарів однієї категорії`);
+      return;
+    }
+
+    toast.success("Товар додано до порівняння", {
+      action: { label: "Перейти", onClick: () => navigate("/compare") },
+    });
   };
-
-  const stock = selectedVariant?.stock ?? 0;
-  const currentPrice = selectedVariant?.price ?? 0;
-
-  const { handleAdd, isLoading } = useBasketAction(
-    selectedVariant?.id,
-    quantity,
-    stock,
-  );
 
   return (
     <div className={styles.wrapper}>
@@ -142,86 +74,29 @@ export default function AdvertisementInfo({
         {advertisement.description}
       </Text>
 
-      <div className={styles.ratingContainer}>
-        <div className={styles.rating}>
-          {[...Array(5)].map((_, index) => (
-            <Star
-              key={index}
-              size={30}
-              fill="var(--color-base)"
-              color="var(--color-base)"
-            />
-          ))}
-          <Link
-            to="/reviews"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <Text fz={15} c="var(--color-primary)">
-              (367)
-            </Text>
-          </Link>
-        </div>
+      <RatingSummary advertisementId={advertisement.id} size="lg" onReviewsClick={scrollToReviews} />
+
+      <div className="divider" />
+
+      <div className={styles.priceBlock}>
+        <Price price={price} currency={symbol} />
+        {discount > 0 && (
+          <>
+            <span className={styles.oldPrice}>
+              {previousPrice.toLocaleString("uk-UA")} {symbol}
+            </span>
+            <span className={styles.discount}>−{discount}%</span>
+          </>
+        )}
       </div>
 
       <div className="divider" />
 
-      <Price price={currentPrice} currency={advertisement.currency.symbol} />
-
-      <div className="divider" />
-
-      {availableAttributes.length > 0 && (
-        <div className={styles.variantsSection}>
-          {availableAttributes.map(([key, group]) => (
-            <div key={key} className={styles.variantGroup}>
-              <Text fw={500} fz={15} className={styles.variantTitle}>
-                {group.label}:
-              </Text>
-              <div className={styles.variantChips}>
-                {group.values.map((value) => {
-                  const isSelected = selectedAttributes[key] === value;
-                  const isColor = key === "color" || isColorValue(value);
-
-                  if (isColor) {
-                    return (
-                      <button
-                        key={value}
-                        type="button"
-                        aria-label={`Color ${value}`}
-                        disabled={!isOptionAvailable(key, value)}
-                        className={`${styles.colorSwatch} ${
-                          isSelected ? styles.colorSwatchActive : ""
-                        }`}
-                        onClick={() => handleSelectAttribute(key, value)}
-                      >
-                        <span
-                          className={styles.colorInner}
-                          style={{ backgroundColor: value }}
-                        />
-                      </button>
-                    );
-                  }
-
-                  return (
-                    <button
-                      key={value}
-                      type="button"
-                      disabled={!isOptionAvailable(key, value)}
-                      className={`${styles.chip} ${
-                        isSelected ? styles.chipActive : ""
-                      }`}
-                      onClick={() => handleSelectAttribute(key, value)}
-                    >
-                      {value}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="divider" />
-            </div>
-          ))}
-        </div>
-      )}
+      <VariantPicker
+        variants={advertisement.variants ?? []}
+        selected={variant}
+        onSelect={handleSelectVariant}
+      />
 
       {advertisement.attributes?.length > 0 && (
         <>
@@ -233,7 +108,7 @@ export default function AdvertisementInfo({
                   {attr.attribute.label || attr.attribute.key}:
                 </Text>
                 <Text fw={600} fz={17}>
-                  {getVariantAttributeDisplayValue(attr)}
+                  {formatAttribute(attr)}
                 </Text>
               </div>
             ))}
@@ -245,11 +120,17 @@ export default function AdvertisementInfo({
 
       <div className={styles.countContainer}>
         <CountBlock value={quantity} onChange={setQuantity} max={stock} />
-        {stock <= 20 && stock > 0 && (
-          <Text fz={14} fw={400}>
-            Залишилось всього <b>{stock} штук!</b>
-            <br /> встигни придбати
+        {stock === 0 ? (
+          <Text fz={14} fw={600} c="red">
+            Немає в наявності
           </Text>
+        ) : (
+          stock <= LOW_STOCK && (
+            <Text fz={14} fw={400}>
+              Залишилось всього <b>{stock} шт.</b>
+              <br /> встигни придбати
+            </Text>
+          )
         )}
       </div>
 
@@ -257,7 +138,7 @@ export default function AdvertisementInfo({
         <Button
           className={styles.actionButton}
           onClick={handleAdd}
-          disabled={isLoading || stock === 0 || !selectedVariant}
+          disabled={isLoading || stock === 0 || !variant}
         >
           {isLoading ? "Додаємо..." : "Купити"}
         </Button>

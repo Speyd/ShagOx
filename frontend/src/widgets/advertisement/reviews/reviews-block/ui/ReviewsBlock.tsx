@@ -1,97 +1,69 @@
+import { Rating, Skeleton, Text } from "@mantine/core";
 import { Star } from "lucide-react";
+import { pluralizeReviews, useGetReviewStats } from "@/entities/review";
 import styles from "./ReviewsBlock.module.css";
-import { Text } from "@mantine/core";
-
-type RatingItem = {
-  stars: number;
-  count: number;
-};
 
 type ReviewsBlockProps = {
-  averageRating?: number;
-  totalUsersText?: string;
-  ratings?: RatingItem[];
+  advertisementId: number;
 };
 
-const DEFAULT_RATINGS: RatingItem[] = [
-  { stars: 5.0, count: 2823 },
-  { stars: 4.0, count: 38 },
-  { stars: 3.0, count: 4 },
-  { stars: 2.0, count: 0 },
-  { stars: 1.0, count: 0 },
-];
-
-export default function ReviewsBlock({
-  averageRating = 4.5,
-  totalUsersText = "1.25 тис користувачів",
-  ratings = DEFAULT_RATINGS,
-}: ReviewsBlockProps) {
-  const totalCount = ratings.reduce((acc, item) => acc + item.count, 0);
-
-  const circlePercentage = (averageRating / 5) * 100;
+export default function ReviewsBlock({ advertisementId }: ReviewsBlockProps) {
+  const { data: stats, isLoading } = useGetReviewStats(advertisementId);
+  const average = Math.round(stats.average * 10) / 10;
 
   return (
-    <div className={styles.container}>
+    <div id="reviews" className={styles.container}>
       <Text fz={24} fw={600}>
         Відгуки
       </Text>
-      <div className={styles.content}>
-        <div className={styles.summary}>
-          <div
-            className={styles.circle}
-            style={{
-              background: `conic-gradient(#f59e0b ${circlePercentage}%, #e5e7eb 0%)`,
-            }}
-          >
-            <div className={styles.circleInner}>
-              <span className={styles.score}>{averageRating}</span>
+
+      {isLoading ? (
+        <Skeleton height={120} mt="md" radius="md" />
+      ) : (
+        <div className={styles.content}>
+          <div className={styles.summary}>
+            <div
+              className={styles.circle}
+              style={{
+                background: `conic-gradient(#f59e0b ${(average / 5) * 100}%, #e5e7eb 0%)`,
+              }}
+            >
+              <div className={styles.circleInner}>
+                <span className={styles.score}>{average.toFixed(1)}</span>
+              </div>
+            </div>
+
+            <div className={styles.starsMeta}>
+              <Rating value={average} fractions={10} readOnly color="#fea945" />
+              <span className={styles.usersCount}>
+                {stats.total > 0 ? pluralizeReviews(stats.total) : "Ще немає відгуків"}
+              </span>
             </div>
           </div>
 
-          <div className={styles.starsMeta}>
-            <div className={styles.starsRow}>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Star
-                  key={index}
-                  className={styles.starIcon}
-                  fill="#fea945"
-                  color="#fea945"
-                  size={20}
-                />
-              ))}
-            </div>
-            <span className={styles.usersCount}>{totalUsersText}</span>
-          </div>
-        </div>
-
-        <div className={styles.barsList}>
-          {ratings.map((item) => {
-            const percentage =
-              totalCount > 0 ? (item.count / totalCount) * 100 : 0;
-
-            return (
-              <div key={item.stars} className={styles.barRow}>
+          <div className={styles.barsList}>
+            {stats.distribution.map(({ grade, count }) => (
+              <div key={grade} className={styles.barRow}>
                 <div className={styles.starLabel}>
-                  <Text fw={400} fz={15}>
-                    {item.stars.toFixed(1)}
-                  </Text>
-
+                  <Text fz={15}>{grade.toFixed(1)}</Text>
                   <Star size={20} fill="#fea945" color="#fea945" />
                 </div>
 
                 <div className={styles.progressTrack}>
                   <div
                     className={styles.progressFill}
-                    style={{ width: `${percentage}%` }}
+                    style={{
+                      width: `${stats.total ? (count / stats.total) * 100 : 0}%`,
+                    }}
                   />
                 </div>
 
-                <span className={styles.countLabel}>{item.count}</span>
+                <span className={styles.countLabel}>{count}</span>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

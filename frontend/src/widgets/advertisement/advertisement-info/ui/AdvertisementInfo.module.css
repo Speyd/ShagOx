@@ -4,18 +4,6 @@
   gap: 30px;
 }
 
-.ratingContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
 .properties {
   display: flex;
   flex-direction: column;
@@ -47,76 +35,23 @@
   font-weight: 600;
 }
 
-.variantsSection {
+.priceBlock {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  align-items: baseline;
+  gap: 12px;
 }
 
-.variantGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.oldPrice {
+  font-size: 18px;
+  color: #94a3b8;
+  text-decoration: line-through;
 }
 
-.variantTitle {
-  color: var(--color-text-secondary, #666);
-}
-
-.variantChips {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-}
-
-.chip {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--color-border, #e0e0e0);
-  background-color: var(--color-bg, #fff);
-  cursor: pointer;
+.discount {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #fee2e2;
   font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.chip:hover {
-  border-color: var(--color-primary, #000);
-}
-
-.chipActive {
-  border-color: var(--color-primary, #000);
-  background-color: var(--color-primary, #000);
-  color: #fff;
-}
-
-.colorSwatch {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  background: transparent;
-  padding: 2px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.colorSwatch:hover {
-  transform: scale(1.1);
-}
-
-.colorSwatchActive {
-  border-color: var(--color-primary, #000);
-}
-
-.colorInner {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  display: block;
+  font-weight: 600;
+  color: #dc2626;
 }

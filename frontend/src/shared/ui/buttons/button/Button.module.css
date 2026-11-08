@@ -45,3 +45,46 @@
     transform: rotate(360deg);
   }
 }
+.button {
+  gap: 8px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.md {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.sm {
+  padding: 7px 14px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.light {
+  background-color: var(--bg-base);
+  color: var(--color-primary);
+}
+
+.light:hover {
+  background-color: #e3edfb;
+}
+
+.ghost {
+  background-color: transparent;
+  color: var(--text-base);
+}
+
+.ghost:hover {
+  background-color: var(--bg-base);
+}
+
+.danger {
+  background-color: #dc2626;
+  color: #fff;
+}
+
+.danger:hover {
+  background-color: #b91c1c;
+}

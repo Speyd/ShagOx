@@ -304,7 +304,6 @@ export default function SearchInput() {
                 </div>
               ) : (
                 <>
-                  {/* Category Suggestion */}
                   {matchingCategories.length > 0 && (
                     <div className={styles.categorySuggestions}>
                       {matchingCategories.map((cat) => (

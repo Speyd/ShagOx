@@ -31,6 +31,18 @@ public abstract class BaseAdminQueryController<TDto, TFilter>
     }
 
 
+    [HttpGet("count")]
+    public virtual async Task<IActionResult> GetCount(
+        [FromQuery] EntityStatus status,
+        CancellationToken cancellationToken = default)
+    {
+
+        var result = await _queryService
+            .GetCountAsync(cancellationToken, status);
+        
+        return result.ToActionResult();
+    }
+
     [HttpGet("{id:long}")]
     public virtual async Task<IActionResult> GetById(
        [FromRoute] long id,

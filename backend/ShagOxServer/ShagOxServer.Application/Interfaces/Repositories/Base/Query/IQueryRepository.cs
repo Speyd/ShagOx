@@ -6,6 +6,10 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 public interface IQueryRepository<TEntity>
     where TEntity : BaseEntity
 {
+    Task<long> GetCountAsync(
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<TEntity?> GetByIdAsync(
         long id,
         CancellationToken cancellationToken = default,

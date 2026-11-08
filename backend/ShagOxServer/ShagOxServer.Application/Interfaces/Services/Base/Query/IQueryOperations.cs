@@ -9,6 +9,10 @@ public interface IQueryOperations<TDto, TFilter>
     where TDto : BaseDto
     where TFilter : BaseFilter
 {
+    Task<Result<long>> GetCountAsync(
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
     Task<Result<TDto>> GetByIdAsync(
         long id,
         CancellationToken cancellationToken = default,

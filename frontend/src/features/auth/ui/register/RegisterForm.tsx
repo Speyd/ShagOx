@@ -2,8 +2,8 @@ import Input from "@/shared/ui/data-display/inputs/input";
 import Button from "@/shared/ui/buttons/button";
 import styles from "./RegisterForm.module.css";
 import { useState } from "react";
-import axios from "axios";
 import { useForm } from "react-hook-form";
+import { getErrorMessage } from "@/shared/api/getErrorMessage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   registerSchema,
@@ -50,41 +50,23 @@ export default function RegisterForm() {
         response.phoneVerificationRequired ||
         response.emailVerificationRequired
       ) {
-        // Визначаємо, що саме ввів користувач
-        const isInputEmail = isEmail(data.emailOrPhone);
+        const contact = response.emailOrPhone || data.emailOrPhone.trim();
+        const isInputEmail = isEmail(contact);
 
         navigate("/authentication/verify", {
           state: {
             userId: response.id,
-            // Якщо це email — передаємо його в email, phone залишаємо undefined (і навпаки)
-            email: isInputEmail
-              ? response.emailOrPhone || data.emailOrPhone
-              : undefined,
-            phone: !isInputEmail
-              ? response.emailOrPhone || data.emailOrPhone
-              : undefined,
+            email: isInputEmail ? contact : undefined,
+            phone: isInputEmail ? undefined : contact,
+            userName: data.userName,
             password: data.password,
           },
         });
       } else {
-        navigate("/authentication/login");
+        navigate("/authentication");
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const responseData = error.response?.data;
-        if (typeof responseData === "string") {
-          setServerError(responseData);
-        } else if (responseData && typeof responseData === "object") {
-          const msg =
-            (responseData as { message?: string }).message ||
-            (responseData as { detail?: string }).detail ||
-            (responseData as { error?: string }).error ||
-            "Помилка при реєстрації.";
-          setServerError(msg);
-        } else {
-          setServerError("Помилка при реєстрації.");
-        }
-      }
+      setServerError(getErrorMessage(error, "Помилка при реєстрації."));
     }
   };
 

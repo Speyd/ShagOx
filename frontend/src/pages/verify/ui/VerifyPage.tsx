@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import VerifyForm from "@/features/auth/ui/verify/VerifyForm";
 import styles from "./VerifyPage.module.css";
 import heroAuthBg from "@/shared/assets/images/hero-auth.png";
@@ -7,6 +7,7 @@ type LocationState = {
   userId?: number;
   phone?: string;
   email?: string;
+  userName?: string;
   password?: string;
 };
 
@@ -14,7 +15,9 @@ export default function VerifyPage() {
   const location = useLocation();
   const state = location.state as LocationState | null;
 
-  const userId = state?.userId;
+  if (state?.userId == null) {
+    return <Navigate to="/authentication" replace />;
+  }
 
   return (
     <div
@@ -22,10 +25,11 @@ export default function VerifyPage() {
       style={{ backgroundImage: `url(${heroAuthBg})` }}
     >
       <VerifyForm
-        userId={userId}
-        email={state?.email}
-        phone={state?.phone}
-        password={state?.password}
+        userId={state.userId}
+        email={state.email}
+        phone={state.phone}
+        userName={state.userName}
+        password={state.password}
       />
     </div>
   );

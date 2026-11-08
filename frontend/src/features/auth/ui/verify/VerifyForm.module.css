@@ -21,7 +21,7 @@
   gap: 16px;
 }
 
-.submitBtn{
+.submitBtn {
   width: 100%;
 }
 .description {
@@ -72,3 +72,7 @@
   gap: 5px;
 }
 
+.resendBtn {
+  padding: 8px 12px;
+  font-size: 14px;
+}

@@ -6,14 +6,14 @@ import {
   type LoginFormData,
 } from "../../model/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { getErrorMessage } from "@/shared/api/getErrorMessage";
 import { Link, useNavigate } from "react-router-dom";
-import { useLogin } from "../../model/hooks/useLogin";
 import { ArrowRight, Eye, EyeOff, LockIcon, Mail } from "lucide-react";
 
 import { Text } from "@mantine/core";
 import Input from "@/shared/ui/data-display/inputs/input";
 import Button from "@/shared/ui/buttons/button";
+import { useLogin } from "../../model/hooks/useLogin";
 
 export default function LoginForm() {
   const [serverError, setServerError] = useState("");
@@ -38,27 +38,7 @@ export default function LoginForm() {
       await loginMutation.mutateAsync(data);
       navigate("/");
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const responseData = error.response?.data;
-        if (typeof responseData === "string") {
-          setServerError(responseData);
-        } else if (responseData && typeof responseData === "object") {
-          const msg =
-            (
-              responseData as {
-                message?: string;
-                detail?: string;
-                error?: string;
-              }
-            ).message ||
-            (responseData as { detail?: string }).detail ||
-            (responseData as { error?: string }).error ||
-            "Невірний логін або пароль.";
-          setServerError(msg);
-        } else {
-          setServerError("Невірний логін або пароль.");
-        }
-      }
+      setServerError(getErrorMessage(error, "Невірний логін або пароль."));
     }
   };
 

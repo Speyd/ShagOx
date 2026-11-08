@@ -8,11 +8,14 @@ import Button from "@/shared/ui/buttons/button";
 import { useVerify } from "@/features/auth/model/hooks/useVerify";
 import { toast } from "sonner";
 import { useLogin } from "../../model/hooks/useLogin";
+import { useRegister } from "../../model/hooks/useRegister";
+import { getErrorMessage } from "@/shared/api/getErrorMessage";
 
 type VerifyFormProps = {
   email?: string;
   phone?: string;
   password?: string;
+  userName?: string;
   userId?: number;
   onVerifySuccess?: () => void;
 };
@@ -22,12 +25,14 @@ export default function VerifyForm({
   phone,
   userId,
   password,
+  userName,
   onVerifySuccess,
 }: VerifyFormProps) {
   const [code, setCode] = useState<string[]>(Array(6).fill(""));
   const [resendTimer, setResendTimer] = useState(60);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const loginMutation = useLogin();
+  const registerMutation = useRegister();
 
   const navigate = useNavigate();
 
@@ -83,40 +88,60 @@ export default function VerifyForm({
       return;
     }
 
-    try {
-      if (userId != null) {
+    if (userId != null) {
+      try {
         await verify({ userId, code: fullCode });
-      } else if (email) {
-        // Потік відновлення пароля: викликаємо відповідний хук/ендпоінт
-        // await confirmResetPassword({ email, code: fullCode });
+      } catch {
+        setCode(Array(6).fill(""));
+        inputRefs.current[0]?.focus();
+        return;
       }
+    }
 
-      const loginIdentifier = email ?? phone;
-      if (password && loginIdentifier) {
+    const loginIdentifier = email ?? phone;
+    if (password && loginIdentifier) {
+      try {
         await loginMutation.mutateAsync({
           emailOrPhoneOrUserName: loginIdentifier,
           password,
         });
+      } catch (error) {
+        toast.error(
+          getErrorMessage(error, "Не вдалося увійти. Спробуйте увійти вручну."),
+        );
+        navigate("/authentication", { replace: true });
+        return;
       }
+    }
 
-      if (onVerifySuccess) {
-        onVerifySuccess();
-      } else {
-        navigate("/", { replace: true });
-      }
-    } catch (err) {
-      console.error("Помилка підтвердження", err);
+    if (onVerifySuccess) {
+      onVerifySuccess();
+    } else {
+      navigate("/", { replace: true });
     }
   };
 
   const handleResendCode = async () => {
     if (resendTimer > 0) return;
+
+    const contact = email ?? phone;
+    if (!contact || !userName || !password) {
+      toast.error("Не вдалося надіслати код повторно. Пройдіть реєстрацію ще раз.");
+      navigate("/authentication", { replace: true });
+      return;
+    }
+
     try {
+      await registerMutation.mutateAsync({
+        emailOrPhone: contact,
+        userName,
+        password,
+      });
       setResendTimer(60);
       setCode(Array(6).fill(""));
       inputRefs.current[0]?.focus();
-    } catch (err) {
-      console.error("Не вдалося відправити код повторно", err);
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Не вдалося надіслати код повторно."));
     }
   };
 
@@ -198,7 +223,11 @@ export default function VerifyForm({
         ) : (
           <Button
             onClick={handleResendCode}
-            disabled={isPending || loginMutation.isPending}
+            variant="outline"
+            className={styles.resendBtn}
+            disabled={
+              isPending || loginMutation.isPending || registerMutation.isPending
+            }
           >
             Надіслати код повторно
           </Button>

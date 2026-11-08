@@ -18,9 +18,5 @@ export function useLogin() {
       setUser(user);
       toast.success("Ви успішно увійшли!");
     },
-
-    onError: () => {
-      toast.error("Помилка серверу.");
-    },
   });
 }

@@ -1,171 +1,164 @@
-import { useRef, type ChangeEvent, type DragEvent } from "react";
-import { UploadCloud, Image as ImageIcon, X } from "lucide-react";
+import { useEffect, useRef, type DragEvent } from "react";
+import { Image as ImageIcon, UploadCloud, X } from "lucide-react";
+import { useFormContext, useWatch } from "react-hook-form";
 import { toast } from "sonner";
+import clsx from "clsx";
+import { MAX_PHOTOS, type AdvertisementFormValues } from "../../model/schema";
 import type { ImageFileItem } from "../../model/types";
+import FormCard from "../shared/FormCard";
 import styles from "../CreateAdvertisementForm.module.css";
 
-type PhotosSectionProps = {
-  images: ImageFileItem[];
-  setImages: React.Dispatch<React.SetStateAction<ImageFileItem[]>>;
-  error?: string;
-};
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/webp"];
+const MIN_SLOTS = 4;
 
-const MAX_PHOTOS = 10;
-const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+export default function PhotosSection() {
+  const {
+    control,
+    getValues,
+    setValue,
+    formState: { errors, isSubmitted },
+  } = useFormContext<AdvertisementFormValues>();
+  const images = useWatch({ control, name: "images" });
+  const inputRef = useRef<HTMLInputElement>(null);
 
-export default function PhotosSection({
-  images,
-  setImages,
-  error,
-}: PhotosSectionProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  // Звільняємо object URL прев'ю, коли форма зникає
+  useEffect(
+    () => () =>
+      getValues("images").forEach((img) => URL.revokeObjectURL(img.previewUrl)),
+    [getValues],
+  );
 
-  const handleFiles = (files: FileList | File[]) => {
-    const fileArray = Array.from(files);
-    const validNewImages: ImageFileItem[] = [];
+  const updateImages = (next: ImageFileItem[]) =>
+    setValue("images", next, { shouldValidate: isSubmitted });
 
-    for (const file of fileArray) {
-      if (!file.type.startsWith("image/")) {
-        toast.error(`Файл "${file.name}" не є зображенням.`);
-        continue;
-      }
+  const addFiles = (files: FileList | null) => {
+    if (!files) return;
 
-      if (file.size > MAX_FILE_SIZE_BYTES) {
-        toast.error(`Файл "${file.name}" перевищує максимальний розмір 10 МБ.`);
-        continue;
-      }
+    const current = getValues("images");
+    const added: ImageFileItem[] = [];
 
-      if (images.length + validNewImages.length >= MAX_PHOTOS) {
+    for (const file of Array.from(files)) {
+      if (current.length + added.length >= MAX_PHOTOS) {
         toast.error(`Максимальна кількість фотографій: ${MAX_PHOTOS}`);
         break;
       }
-
-      const previewUrl = URL.createObjectURL(file);
-      validNewImages.push({
-        id: `${file.name}-${Date.now()}-${Math.random()}`,
+      if (!ACCEPTED_TYPES.includes(file.type)) {
+        toast.error(`Файл «${file.name}» має бути PNG, JPG або WEBP`);
+        continue;
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error(`Файл «${file.name}» більший за 10 МБ`);
+        continue;
+      }
+      added.push({
+        id: crypto.randomUUID(),
         file,
-        previewUrl,
+        previewUrl: URL.createObjectURL(file),
       });
     }
 
-    if (validNewImages.length > 0) {
-      setImages((prev) => [...prev, ...validNewImages]);
-    }
+    if (added.length > 0) updateImages([...current, ...added]);
   };
 
-  const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      handleFiles(e.target.files);
-    }
-    e.target.value = "";
+  const removeImage = (image: ImageFileItem) => {
+    URL.revokeObjectURL(image.previewUrl);
+    updateImages(images.filter((img) => img.id !== image.id));
   };
 
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.dataTransfer.files) {
-      handleFiles(e.dataTransfer.files);
-    }
+  const makeMain = (image: ImageFileItem) =>
+    updateImages([image, ...images.filter((img) => img.id !== image.id)]);
+
+  const openFileDialog = () => inputRef.current?.click();
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    addFiles(event.dataTransfer.files);
   };
 
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  const handleRemoveImage = (idToRemove: string) => {
-    setImages((prev) => {
-      const item = prev.find((img) => img.id === idToRemove);
-      if (item) {
-        URL.revokeObjectURL(item.previewUrl);
-      }
-      return prev.filter((img) => img.id !== idToRemove);
-    });
-  };
-
-  // Ensure at least 4 slots for preview display (matching design)
-  const displaySlots = Array.from({ length: Math.max(4, images.length) }, (_, i) => images[i] ?? null);
+  const emptySlots = Math.max(MIN_SLOTS - images.length, 0);
+  const error = errors.images?.message;
 
   return (
-    <div className={styles.card}>
-      <h3 className={styles.cardTitle}>
-        Фото товару <span className={styles.requiredStar}>*</span>
-      </h3>
-      <p className={styles.cardSubtitle}>
-        Додайте якісні фото товару. Перше фото буде основним.
-      </p>
-
-      {/* Hidden file input */}
+    <FormCard
+      title="Фото товару"
+      subtitle="Перше фото буде головним. Натисніть на фото, щоб зробити його головним."
+      required
+    >
       <input
-        ref={fileInputRef}
+        ref={inputRef}
         type="file"
         multiple
-        accept="image/png,image/jpeg,image/webp,image/jpg"
-        onChange={handleFileInputChange}
+        accept={ACCEPTED_TYPES.join(",")}
         className={styles.hiddenInput}
+        onChange={(event) => {
+          addFiles(event.target.files);
+          event.target.value = "";
+        }}
       />
 
-      {/* Dropzone */}
       <div
-        className={`${styles.dropzone} ${error ? styles.dropzoneError : ""}`}
+        role="button"
+        tabIndex={0}
+        className={clsx(styles.dropzone, error && styles.dropzoneError)}
+        onClick={openFileDialog}
+        onKeyDown={(event) => event.key === "Enter" && openFileDialog()}
+        onDragOver={(event) => event.preventDefault()}
         onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        onClick={() => fileInputRef.current?.click()}
       >
         <div className={styles.uploadIconCircle}>
-          <UploadCloud size={28} className={styles.uploadIcon} />
+          <UploadCloud size={28} />
         </div>
         <p className={styles.uploadMainText}>
-          <span className={styles.uploadLink}>Завантажити фото</span> або перетягніть файл сюди
+          <span className={styles.uploadLink}>Завантажити фото</span> або
+          перетягніть файли сюди
         </p>
-        <span className={styles.uploadSubText}>PNG, JPG до 10MB</span>
+        <span className={styles.uploadSubText}>
+          PNG, JPG, WEBP до 10 МБ · {images.length}/{MAX_PHOTOS}
+        </span>
+      </div>
+
+      <div className={styles.thumbnailGrid}>
+        {images.map((image, index) => (
+          <div
+            key={image.id}
+            className={styles.thumbnail}
+            onClick={() => makeMain(image)}
+            title={index === 0 ? "Головне фото" : "Зробити головним"}
+          >
+            <img
+              src={image.previewUrl}
+              alt={`Фото ${index + 1}`}
+              className={styles.thumbnailImage}
+            />
+            {index === 0 && <span className={styles.mainBadge}>Головне</span>}
+            <button
+              type="button"
+              className={styles.removeImageBtn}
+              aria-label="Видалити фото"
+              onClick={(event) => {
+                event.stopPropagation();
+                removeImage(image);
+              }}
+            >
+              <X size={13} />
+            </button>
+          </div>
+        ))}
+
+        {Array.from({ length: emptySlots }, (_, i) => (
+          <div
+            key={`empty-${i}`}
+            className={styles.thumbnailEmpty}
+            onClick={openFileDialog}
+            title="Додати фото"
+          >
+            <ImageIcon size={20} />
+          </div>
+        ))}
       </div>
 
       {error && <p className={styles.errorMessage}>{error}</p>}
-
-      {/* 4 Thumbnails slots below dropzone */}
-      <div className={styles.thumbnailGrid}>
-        {displaySlots.map((item, index) => {
-          if (item) {
-            return (
-              <div key={item.id} className={styles.thumbnailSlotFilled}>
-                <img
-                  src={item.previewUrl}
-                  alt={`Фото ${index + 1}`}
-                  className={styles.thumbnailImage}
-                />
-                {index === 0 && (
-                  <span className={styles.mainBadge}>Головне</span>
-                )}
-                <button
-                  type="button"
-                  className={styles.removeImageBtn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveImage(item.id);
-                  }}
-                  title="Видалити фото"
-                  aria-label="Видалити фото"
-                >
-                  <X size={13} />
-                </button>
-              </div>
-            );
-          }
-
-          return (
-            <div
-              key={`empty-${index}`}
-              className={styles.thumbnailSlotEmpty}
-              onClick={() => fileInputRef.current?.click()}
-              title="Додати фото"
-            >
-              <ImageIcon size={20} className={styles.placeholderIcon} />
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    </FormCard>
   );
 }
-

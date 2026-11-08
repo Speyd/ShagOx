@@ -1,370 +1,135 @@
-import { useState, useRef } from "react";
+import { useMemo } from "react";
+import { Select, SimpleGrid, Textarea, TextInput } from "@mantine/core";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
+import { useGetCategories } from "@/entities/advertisement/model/hooks/useGetCategories";
+import { createVariantRow } from "../../lib/variants";
 import {
-  TextInput,
-  Select,
-  NumberInput,
-  Textarea,
-  Group,
-  Badge,
-  ActionIcon,
-  Button,
-} from "@mantine/core";
-import {
-  Bold,
-  Italic,
-  Underline,
-  Strikethrough,
-  List,
-  ListOrdered,
-  Link2,
-  Plus,
-  X,
-} from "lucide-react";
-import type { Control } from "react-hook-form";
-import { Controller } from "react-hook-form";
-import type { CreateAdvertisementFormData } from "../../model/types";
+  DESCRIPTION_MAX,
+  TITLE_MAX,
+  type AdvertisementFormValues,
+} from "../../model/schema";
+import type { SelectOption } from "../../model/types";
+import FormCard from "../shared/FormCard";
+import { fieldProps } from "../shared/fieldProps";
 import styles from "../CreateAdvertisementForm.module.css";
-import type { CreateAdvertisementSchema } from "../../model/schemas/createAdvertisementSchema";
 
 type MainInfoSectionProps = {
-  control: Control<CreateAdvertisementSchema>;
-  titleValue?: string;
-  descriptionValue?: string;
-  hashtagsValue?: string[];
-  categories: { value: string; label: string }[];
-  isLoadingCategories?: boolean;
-  errors: Partial<
-    Record<keyof CreateAdvertisementFormData, { message?: string }>
-  >;
-  setValue: (field: keyof CreateAdvertisementFormData, value: unknown) => void;
+  conditionOptions: SelectOption[];
 };
 
 export default function MainInfoSection({
-  control,
-  titleValue = "",
-  descriptionValue = "",
-  hashtagsValue = [],
-  categories,
-  isLoadingCategories,
-  errors,
-  setValue,
+  conditionOptions,
 }: MainInfoSectionProps) {
-  const [hashtagInputOpen, setHashtagInputOpen] = useState(false);
-  const [newHashtag, setNewHashtag] = useState("");
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const { control, getValues, setValue, clearErrors } =
+    useFormContext<AdvertisementFormValues>();
+  const [title, description] = useWatch({
+    control,
+    name: ["title", "description"],
+  });
 
-  const handleApplyFormatting = (prefix: string, suffix = "") => {
-    const textarea = textareaRef.current;
-    if (!textarea) return;
+  const { data: categories = [], isLoading: isLoadingCategories } =
+    useGetCategories();
+  const categoryOptions = useMemo(
+    () => categories.map((c) => ({ value: String(c.id), label: c.label })),
+    [categories],
+  );
 
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selected = descriptionValue.substring(start, end);
-    const replacement = `${prefix}${selected || "текст"}${suffix}`;
-    const nextText =
-      descriptionValue.substring(0, start) +
-      replacement +
-      descriptionValue.substring(end);
-
-    setValue("description", nextText);
-
-    setTimeout(() => {
-      textarea.focus();
-      textarea.setSelectionRange(
-        start + prefix.length,
-        start + prefix.length + (selected.length || 5),
-      );
-    }, 0);
-  };
-
-  const handleAddHashtag = () => {
-    const clean = newHashtag.trim().replace(/^#+/, "");
-    if (!clean) return;
-    if (!hashtagsValue.includes(clean)) {
-      setValue("hashtags", [...hashtagsValue, clean]);
-    }
-    setNewHashtag("");
-    setHashtagInputOpen(false);
-  };
-
-  const handleRemoveHashtag = (tagToRemove: string) => {
-    setValue(
-      "hashtags",
-      hashtagsValue.filter((t) => t !== tagToRemove),
-    );
+  /** Атрибути належать категорії, тому при її зміні скидаються (ціна зберігається). */
+  const resetCategoryData = () => {
+    const [firstRow] = getValues("variants");
+    setValue("attributes", {});
+    setValue("variantOptions", {});
+    setValue("variants", [createVariantRow({}, firstRow)]);
+    clearErrors(["attributes", "variantOptions", "variants"]);
   };
 
   return (
-    <div className={styles.card}>
-      <h3 className={styles.cardTitle}>Основна інформація</h3>
+    <FormCard title="Основна інформація">
+      <div className={styles.stack}>
+        <Controller
+          control={control}
+          name="title"
+          render={({ field, fieldState }) => (
+            <TextInput
+              {...fieldProps}
+              {...field}
+              label="Назва товару"
+              withAsterisk
+              placeholder="Наприклад: iPhone 15 Pro 256GB"
+              description={`${title.length}/${TITLE_MAX}`}
+              maxLength={TITLE_MAX}
+              error={fieldState.error?.message}
+            />
+          )}
+        />
 
-      <div className={styles.fieldsContainer}>
-        {/* Title */}
-        <div className={styles.field}>
-          <div className={styles.fieldLabelRow}>
-            <label className={styles.fieldLabel}>
-              Назва товару <span className={styles.requiredStar}>*</span>
-            </label>
-            <span
-              className={`${styles.charCounter} ${
-                (titleValue?.length || 0) > 120 ? styles.charCounterLimit : ""
-              }`}
-            >
-              {(titleValue || "").length}/120
-            </span>
-          </div>
+        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
           <Controller
-            name="title"
             control={control}
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                placeholder="Введіть назву товару"
-                size="md"
-                maxLength={120}
-                error={errors.title?.message}
-              />
-            )}
-          />
-        </div>
-
-        {/* Category */}
-        <div className={styles.field}>
-          <label className={styles.fieldLabel}>
-            Категорія <span className={styles.requiredStar}>*</span>
-          </label>
-          <Controller
             name="categoryId"
-            control={control}
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <Select
+                {...fieldProps}
+                ref={field.ref}
+                label="Категорія"
+                withAsterisk
                 placeholder="Оберіть категорію"
-                data={categories}
-                size="md"
-                searchable
-                clearable
-                nothingFoundMessage="Категорій не знайдено"
+                data={categoryOptions}
                 disabled={isLoadingCategories}
-                value={field.value ?? null}
-                onChange={(val) => field.onChange(val ?? "")}
-                error={errors.categoryId?.message}
+                searchable
+                nothingFoundMessage="Категорій не знайдено"
+                value={field.value}
+                onChange={(value) => {
+                  if (value === field.value) return;
+                  field.onChange(value);
+                  resetCategoryData();
+                }}
+                onBlur={field.onBlur}
+                error={fieldState.error?.message}
               />
             )}
           />
-        </div>
 
-        {/* Price and Stock */}
-        <Group grow align="flex-start" gap="md">
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              Ціна <span className={styles.requiredStar}>*</span>
-            </label>
-            <Controller
-              name="price"
-              control={control}
-              render={({ field }) => (
-                <NumberInput
-                  placeholder="Введіть ціну"
-                  size="md"
-                  min={1}
-                  clampBehavior="strict"
-                  allowNegative={false}
-                  rightSection={<span className={styles.unitText}>₴</span>}
-                  value={field.value === "" ? "" : field.value}
-                  onChange={(val) => field.onChange(val)}
-                  error={errors.price?.message}
-                />
-              )}
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              Кількість <span className={styles.requiredStar}>*</span>
-            </label>
-            <Controller
-              name="stock"
-              control={control}
-              render={({ field }) => (
-                <NumberInput
-                  placeholder="Введіть кількість"
-                  size="md"
-                  min={1}
-                  clampBehavior="strict"
-                  allowNegative={false}
-                  allowDecimal={false}
-                  rightSection={<span className={styles.unitText}>шт.</span>}
-                  value={field.value === "" ? "" : field.value}
-                  onChange={(val) => field.onChange(val)}
-                  error={errors.stock?.message}
-                />
-              )}
-            />
-          </div>
-        </Group>
-
-        {/* Description */}
-        <div className={styles.field}>
-          <div className={styles.fieldLabelRow}>
-            <label className={styles.fieldLabel}>
-              Опис товару <span className={styles.requiredStar}>*</span>
-            </label>
-            <span className={styles.charCounter}>
-              {(descriptionValue || "").length}/2000
-            </span>
-          </div>
-
-          <div className={styles.editorWrapper}>
-            <div className={styles.editorToolbar}>
-              <button
-                type="button"
-                className={styles.toolbarBtn}
-                onClick={() => handleApplyFormatting("**", "**")}
-                title="Жирний"
-              >
-                <Bold size={15} />
-              </button>
-              <button
-                type="button"
-                className={styles.toolbarBtn}
-                onClick={() => handleApplyFormatting("*", "*")}
-                title="Курсив"
-              >
-                <Italic size={15} />
-              </button>
-              <button
-                type="button"
-                className={styles.toolbarBtn}
-                onClick={() => handleApplyFormatting("<u>", "</u>")}
-                title="Підкреслення"
-              >
-                <Underline size={15} />
-              </button>
-              <button
-                type="button"
-                className={styles.toolbarBtn}
-                onClick={() => handleApplyFormatting("~~", "~~")}
-                title="Закреслення"
-              >
-                <Strikethrough size={15} />
-              </button>
-              <div className={styles.toolbarDivider} />
-              <button
-                type="button"
-                className={styles.toolbarBtn}
-                onClick={() => handleApplyFormatting("\n- ")}
-                title="Маркований список"
-              >
-                <List size={15} />
-              </button>
-              <button
-                type="button"
-                className={styles.toolbarBtn}
-                onClick={() => handleApplyFormatting("\n1. ")}
-                title="Нумерований список"
-              >
-                <ListOrdered size={15} />
-              </button>
-              <button
-                type="button"
-                className={styles.toolbarBtn}
-                onClick={() => handleApplyFormatting("[", "](https://)")}
-                title="Посилання"
-              >
-                <Link2 size={15} />
-              </button>
-            </div>
-
-            <Controller
-              name="description"
-              control={control}
-              render={({ field }) => (
-                <Textarea
-                  placeholder="Опишіть ваш товар, його особливості, переваги..."
-                  minRows={5}
-                  maxRows={12}
-                  autosize
-                  maxLength={2000}
-                  className={styles.editorTextarea}
-                  {...field}
-                  ref={(elem) => {
-                    field.ref(elem);
-                    textareaRef.current = elem;
-                  }}
-                  error={errors.description?.message}
-                />
-              )}
-            />
-          </div>
-        </div>
-
-        {/* Hashtags */}
-        <div className={styles.field}>
-          <label className={styles.fieldLabel}>Хештег</label>
-
-          <div className={styles.hashtagsWrapper}>
-            {(hashtagsValue || []).map((tag) => (
-              <Badge
-                key={tag}
-                variant="light"
-                size="lg"
-                color="blue"
-                rightSection={
-                  <ActionIcon
-                    size="xs"
-                    color="blue"
-                    radius="xl"
-                    variant="transparent"
-                    onClick={() => handleRemoveHashtag(tag)}
-                  >
-                    <X size={12} />
-                  </ActionIcon>
-                }
-              >
-                #{tag}
-              </Badge>
-            ))}
-
-            {hashtagInputOpen ? (
-              <Group gap="xs">
-                <TextInput
-                  placeholder="Введіть хештег"
-                  size="sm"
-                  value={newHashtag}
-                  onChange={(e) => setNewHashtag(e.currentTarget.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddHashtag();
-                    }
-                  }}
-                  autoFocus
-                />
-                <Button size="sm" variant="filled" onClick={handleAddHashtag}>
-                  Ок
-                </Button>
-                <Button
-                  size="sm"
-                  variant="subtle"
-                  onClick={() => setHashtagInputOpen(false)}
-                >
-                  Скасувати
-                </Button>
-              </Group>
-            ) : (
-              <Button
-                variant="light"
-                size="sm"
-                leftSection={<Plus size={14} />}
-                onClick={() => setHashtagInputOpen(true)}
-                className={styles.addHashtagButton}
-              >
-                Додати хештег
-              </Button>
+          <Controller
+            control={control}
+            name="conditionId"
+            render={({ field, fieldState }) => (
+              <Select
+                {...fieldProps}
+                ref={field.ref}
+                label="Стан товару"
+                withAsterisk
+                placeholder="Оберіть стан"
+                data={conditionOptions}
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                error={fieldState.error?.message}
+              />
             )}
-          </div>
-        </div>
+          />
+        </SimpleGrid>
+
+        <Controller
+          control={control}
+          name="description"
+          render={({ field, fieldState }) => (
+            <Textarea
+              {...fieldProps}
+              {...field}
+              label="Опис товару"
+              withAsterisk
+              placeholder="Опишіть товар, його особливості, комплектацію, переваги..."
+              description={`${description.length}/${DESCRIPTION_MAX}`}
+              maxLength={DESCRIPTION_MAX}
+              autosize
+              minRows={5}
+              maxRows={12}
+              error={fieldState.error?.message}
+            />
+          )}
+        />
       </div>
-    </div>
+    </FormCard>
   );
 }

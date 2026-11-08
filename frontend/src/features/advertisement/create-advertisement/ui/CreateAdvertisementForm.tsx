@@ -1,100 +1,69 @@
-import { useState, useMemo } from "react";
-import type { CreateAdvertisementSchema } from "../model/schemas/createAdvertisementSchema";
-import { createAdvertisementSchema } from "../model/schemas/createAdvertisementSchema";
-import type { ImageFileItem } from "../model/types";
-import { useGetCategories } from "@/entities/advertisement/model/hooks/useGetCategories";
+import { FormProvider } from "react-hook-form";
+import { toast } from "sonner";
+import { toCreatePayload } from "../lib/toCreatePayload";
+import { useAdvertisementForm } from "../model/hooks/useAdvertisementForm";
+import type { CreateAdvertisementPayload } from "../model/types";
+import AttributesSection from "./sections/AttributesSection";
 import MainInfoSection from "./sections/MainInfoSection";
-import CategoryAttributesSection from "./sections/CategoryAttributesSection";
 import PhotosSection from "./sections/PhotosSection";
-import AdditionalInfoSection from "./sections/AdditionalInfoSection";
-import { useForm, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import VariantsSection from "./sections/VariantsSection";
 import styles from "./CreateAdvertisementForm.module.css";
 
 type CreateAdvertisementFormProps = {
-  onSubmit: (data: CreateAdvertisementSchema, images: ImageFileItem[]) => void;
-  isLoading?: boolean;
+  formId: string;
+  onSubmit: (payload: CreateAdvertisementPayload) => void;
 };
 
 export default function CreateAdvertisementForm({
+  formId,
   onSubmit,
 }: CreateAdvertisementFormProps) {
-  const [images, setImages] = useState<ImageFileItem[]>([]);
-  const [imagesError, setImagesError] = useState<string>("");
+  const { form, category, lookups, categoryId } = useAdvertisementForm();
 
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<CreateAdvertisementSchema>({
-    resolver: zodResolver(createAdvertisementSchema),
-    defaultValues: {
-      title: "",
-      categoryId: "",
-      price: "" as unknown as number,
-      stock: "" as unknown as number,
-      description: "",
-      hashtags: [],
-      brand: "",
-      conditionId: "",
-      tags: "",
-      attributes: {},
-      variantAttributes: {},
+  const handleSubmit = form.handleSubmit(
+    (values) => {
+      if (!lookups.publishStatusId) {
+        toast.error("Не вдалося завантажити довідники. Оновіть сторінку.");
+        return;
+      }
+      onSubmit(
+        toCreatePayload(values, category.definitions, lookups.publishStatusId),
+      );
     },
-  });
-
-  const titleValue = useWatch({ control, name: "title" }) || "";
-  const descriptionValue = useWatch({ control, name: "description" }) || "";
-  const hashtagsValue = useWatch({ control, name: "hashtags" }) || [];
-
-  const { data: categories = [], isLoading: isLoadingCategories } =
-    useGetCategories();
-
-  const categoryOptions = useMemo(
-    () =>
-      categories.map((cat) => ({
-        value: String(cat.id),
-        label: cat.label,
-      })),
-    [categories],
+    () => toast.error("Перевірте правильність заповнення полів"),
   );
 
-  const handleFormSubmit = handleSubmit((data) => {
-    if (images.length < 1) {
-      setImagesError("Додайте хоча б 1 фотографію товару");
-      return;
-    }
-    setImagesError("");
-    onSubmit(data, images);
-  });
-
   return (
-    <form onSubmit={handleFormSubmit} className={styles.form}>
-      <div className={styles.leftColumn}>
-        <MainInfoSection
-          control={control}
-          titleValue={titleValue}
-          descriptionValue={descriptionValue}
-          hashtagsValue={hashtagsValue}
-          categories={categoryOptions}
-          isLoadingCategories={isLoadingCategories}
-          errors={errors}
-          setValue={setValue}
-        />
+    <FormProvider {...form}>
+      <form
+        id={formId}
+        onSubmit={handleSubmit}
+        className={styles.form}
+        noValidate
+      >
+        <div className={styles.column}>
+          <MainInfoSection conditionOptions={lookups.conditionOptions} />
 
-        <CategoryAttributesSection control={control} />
-      </div>
+          <AttributesSection
+            hasCategory={Boolean(categoryId)}
+            isLoading={category.isLoading}
+            isError={category.isError}
+            attributes={category.productAttributes}
+            optionsByKey={category.optionsByKey}
+          />
 
-      <div className={styles.rightColumn}>
-        <PhotosSection
-          images={images}
-          setImages={setImages}
-          error={imagesError}
-        />
+          <VariantsSection
+            variantAttributes={category.variantAttributes}
+            optionsByKey={category.optionsByKey}
+            currencyOptions={lookups.currencyOptions}
+            currencySymbols={lookups.currencySymbols}
+          />
+        </div>
 
-        <AdditionalInfoSection control={control} />
-      </div>
-    </form>
+        <div className={styles.column}>
+          <PhotosSection />
+        </div>
+      </form>
+    </FormProvider>
   );
 }

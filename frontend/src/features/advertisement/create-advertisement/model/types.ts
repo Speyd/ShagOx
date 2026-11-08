@@ -1,30 +1,4 @@
-export type ConditionOption = {
-  id: number;
-  label: string;
-  code: string;
-};
-
-export const CONDITIONS: ConditionOption[] = [
-  { id: 0, label: "Новий", code: "new" },
-  { id: 1, label: "Вживаний (як новий)", code: "used_like_new" },
-  { id: 2, label: "Вживаний (добрий стан)", code: "used_good" },
-  { id: 3, label: "Вживаний (задовільний стан)", code: "used_fair" },
-  { id: 4, label: "На запчастини / несправний", code: "for_parts" },
-];
-
-export type CreateAdvertisementFormData = {
-  title: string;
-  categoryId: string; // string for Mantine Select, parsed to number
-  price: number | "";
-  stock: number | "";
-  description: string;
-  hashtags: string[];
-  brand: string;
-  conditionId: string; // string for Mantine Select, parsed to number
-  tags: string;
-  attributes: Record<string, unknown>;
-  variantAttributes: Record<string, unknown>;
-};
+export type SelectOption = { value: string; label: string };
 
 export type ImageFileItem = {
   id: string;
@@ -32,22 +6,55 @@ export type ImageFileItem = {
   previewUrl: string;
 };
 
+/** Значення атрибута у формі (до перетворення у формат API). */
+export type AttributeFormValue = string | number | string[] | null | undefined;
+
+/** Рядок таблиці варіантів: одна комбінація значень варіантних атрибутів. */
+export type VariantRow = {
+  key: string;
+  options: Record<string, string>;
+  price: number | "";
+  previousPrice: number | "";
+  stock: number | "";
+};
+
+// ---- API ----
+
+type ApiScalar = string | number | boolean;
+export type ApiAttributeValue = ApiScalar | ApiScalar[];
+export type ApiAttributes = Record<string, ApiAttributeValue>;
+
 export type CreateAdvertisementPayload = {
   title: string;
   description: string;
-  popularity: number;
-  currencyId: number;
-  conditionId: number;
   categoryId: number;
+  conditionId: number;
+  currencyId: number;
   statusId: number;
   pictures: File[];
-  attributes: Record<string, unknown>;
-  variants: {
-    advertisementId: number;
+  attributes: ApiAttributes;
+  variants: Array<{
     price: number;
     previousPrice: number;
     stock: number;
-    attributes: Record<string, unknown>;
-  }[];
+    attributes: ApiAttributes;
+  }>;
 };
 
+export type CreateAdvertisementResponse = {
+  id: number;
+  createdAt: string;
+};
+
+export type LookupDto = {
+  id: number;
+  code: string;
+  label?: string | null;
+};
+
+export type CurrencyDto = {
+  id: number;
+  code: string;
+  symbol: string;
+  name: string;
+};

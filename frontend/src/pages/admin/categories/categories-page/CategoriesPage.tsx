@@ -1,142 +1,80 @@
-import { useGetAdminCategories } from "@/entities/category/model/useGetAdminCategories";
-import type { ColumnDef } from "@tanstack/react-table";
-import {
-  ActionIcon,
-  Group,
-  Pagination,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-} from "@mantine/core";
-import DataTable from "@/shared/ui/data-display/data-table";
 import { useState } from "react";
-import { Pencil, Search, Trash2 } from "lucide-react";
-import type { Category } from "@/shared/lib/types/category";
-import styles from "./CategoriesPage.module.css";
 import { useNavigate } from "react-router-dom";
+import { Badge, Stack, Text, TextInput } from "@mantine/core";
+import { Search } from "lucide-react";
+import type { ColumnDef } from "@tanstack/react-table";
+import type { Category } from "@/shared/lib/types/category";
+import { useGetAdminCategories } from "@/entities/category/model/useGetAdminCategories";
 import { useDeleteCategory } from "@/features/admin/category/delete-category/model/hooks/useDeleteCategory";
-import { modals } from "@mantine/modals";
+import DataTable from "@/shared/ui/data-display/data-table";
+import { AdminPageHeader } from "@/widgets/admin/page-header";
+import { RowActions } from "@/widgets/admin/row-actions";
+import AppPagination from "@/shared/ui/navigation/pagination";
+import { CategoriesPageSkeleton } from "./CategoriesPageSkeleton";
 
-export default function CategoriesPage() {
+const PAGE_SIZE = 10;
+
+export function CategoriesPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const pageSize = 10;
   const navigate = useNavigate();
-  const { data, isLoading } = useGetAdminCategories(page, pageSize);
+  const { data, isLoading } = useGetAdminCategories(page, PAGE_SIZE);
   const deleteMutation = useDeleteCategory();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!data) return <div>No data</div>;
-
-  const handleDelete = (id: number) => {
-    modals.openConfirmModal({
-      title: "Delete category",
-      centered: true,
-
-      children: (
-        <Text size="sm">
-          Are you sure you want to delete this category?
-          <br />
-          This action cannot be undone.
-        </Text>
-      ),
-
-      labels: {
-        confirm: "Delete",
-        cancel: "Cancel",
-      },
-
-      confirmProps: {
-        color: "red",
-      },
-
-      onConfirm: () => {
-        deleteMutation.mutate(id);
-      },
-    });
-  };
 
   const columns: ColumnDef<Category>[] = [
     {
-      accessorKey: "name",
-      header: "Name",
-      cell: ({ row }) => <Text fw={600}>{row.original.name}</Text>,
+      accessorKey: "id",
+      header: "ID",
+      cell: ({ row }) => <Text c="dimmed">#{row.original.id}</Text>,
     },
-
     {
-      accessorKey: "productType.name",
-      header: "Product Type",
-      cell: ({ row }) => (
-        <Stack gap={2}>
-          <Text fw={600}>{row.original.productType.name}</Text>
-        </Stack>
-      ),
+      accessorKey: "lable",
+      header: "Назва",
+      cell: ({ row }) => <Text fw={600}>{row.original.label}</Text>,
     },
-
+    {
+      id: "productType",
+      accessorFn: (category) => category.productType.label,
+      header: "Тип товару",
+      cell: ({ row }) => <Badge variant="light">{row.original.label}</Badge>,
+    },
     {
       id: "actions",
-      header: "Actions",
+      header: "",
       cell: ({ row }) => (
-        <Group gap="xs" wrap="nowrap">
-          <ActionIcon
-            variant="light"
-            color="blue"
-            radius="md"
-            size="lg"
-            onClick={() =>
-              navigate(`/admin/update-category/${row.original.id}`)
-            }
-          >
-            <Pencil size={16} />
-          </ActionIcon>
-
-          <ActionIcon
-            variant="light"
-            color="red"
-            radius="md"
-            size="lg"
-            onClick={() => handleDelete(row.original.id)}
-          >
-            <Trash2 size={16} />
-          </ActionIcon>
-        </Group>
+        <RowActions
+          deleteTitle="Видалити категорію"
+          onEdit={() => navigate(`/admin/update-category/${row.original.id}`)}
+          onDelete={() => deleteMutation.mutate(row.original.id)}
+        />
       ),
     },
   ];
 
   return (
-    <Stack gap="lg" className={styles.categoriesPage}>
-      <Group justify="space-between" align="center">
-        <div>
-          <Title order={2}>Categories</Title>
-          <Text c="dimmed">Manage marketplace categories</Text>
-        </div>
-      </Group>
+    <Stack gap="lg">
+      <AdminPageHeader
+        title="Категорії"
+        description="Керування категоріями товарів"
+      />
 
-      {isLoading ? (
-        <Text>Loading...</Text>
+      <TextInput
+        value={search}
+        onChange={(e) => setSearch(e.currentTarget.value)}
+        placeholder="Пошук на сторінці..."
+        leftSection={<Search size={16} />}
+      />
+
+      {isLoading || !data ? (
+        <CategoriesPageSkeleton />
       ) : (
         <>
-          <TextInput
-            value={search}
-            onChange={(e) => setSearch(e.currentTarget.value)}
-            placeholder="Search..."
-            leftSection={<Search size={16} />}
-          />
-
           <DataTable data={data.items} columns={columns} search={search} />
-
-          <Group justify="center">
-            <Pagination
-              value={page}
-              onChange={setPage}
-              total={data.totalPages}
-            />
-          </Group>
+          <AppPagination
+            page={page}
+            onPageChange={setPage}
+            totalPages={Math.ceil(data.totalCount / PAGE_SIZE)}
+          />
         </>
       )}
     </Stack>

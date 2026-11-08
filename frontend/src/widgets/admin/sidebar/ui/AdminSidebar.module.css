@@ -2,39 +2,109 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 200px;
-  height: 100vh;
-  background-color: #f0f0f0;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 272px;
+  height: 100%;
+  padding: 22px 14px 18px;
+  background-color: #ffffff;
+  border-right: 1px solid var(--color-border);
 }
 
-.list {
-  flex: 1;
-
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.link {
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
+.logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 0 10px;
   text-decoration: none;
-  color: inherit;
-  transition: background-color 0.2s ease-in-out;
+}
+
+.logoImage {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.logoText {
+  font-family: var(--font-logo);
+  font-size: 20px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background-color: var(--color-base);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sectionTitle {
+  padding: 0 12px 6px;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #94a3b8;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--text-base);
+  text-decoration: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .link:hover {
-  background-color: #ffffff;
-  outline: none;
+  background-color: var(--bg-base);
+  color: var(--color-base);
 }
 
-.active {
-  background-color: #ffffff;
+.active,
+.active:hover {
+  background-color: var(--color-base);
+  color: #ffffff;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.back:hover {
+  background-color: var(--bg-base);
 }

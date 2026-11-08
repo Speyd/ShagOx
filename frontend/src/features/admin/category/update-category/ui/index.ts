@@ -1,0 +1,1 @@
+export { AdminUpdateCategoryForm } from "./AdminUpdateCategoryForm";

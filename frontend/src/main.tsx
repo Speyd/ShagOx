@@ -6,6 +6,7 @@ import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
 import "@mantine/core/styles.css";
+import "@mantine/charts/styles.css";
 
 const queryClient = new QueryClient();
 

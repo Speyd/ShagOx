@@ -1,16 +1,27 @@
+import { lazy } from "react";
 import HomePage from "@/pages/home";
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 import NotFoundPage from "@/pages/not-found";
-import AdvertisementPage from "@/pages/advertisement/advertisement-page";
 import UserUpdateAdvertisementPage from "@/pages/advertisement/update-advertisement-page";
-import AdminAdvertisementPage from "@/pages/admin/advertisements/update-advertisement-page";
 import { AdminLayout, MainLayout } from "../layouts";
-import DashboardPage from "@/pages/admin/dashboard/dashboard-page/DashboardPage";
-import UsersPage from "@/pages/admin/users/users-page/UsersPage";
-import AdvertisementsPage from "@/pages/admin/advertisements/advertisements-page";
-import CategoriesPage from "@/pages/admin/categories/categories-page/CategoriesPage";
-import UpdateUserPage from "@/pages/admin/users/update-user-page/UpdateUserPage";
-import UpdateCategoriesPage from "@/pages/admin/categories/update-categories-page/UpdateCategoriesPage";
+const DashboardPage = lazy(() => import("@/pages/admin/dashboard/DashboardPage"));
+const AdvertisementsPage = lazy(() => import("@/pages/admin/advertisements/AdvertisementsPage"));
+const AdvertisementCreatePage = lazy(() => import("@/pages/admin/advertisements/AdvertisementCreatePage"));
+const AdvertisementEditPage = lazy(() => import("@/pages/admin/advertisements/AdvertisementEditPage"));
+const UsersPage = lazy(() => import("@/pages/admin/users/UsersPage"));
+const UserEditPage = lazy(() => import("@/pages/admin/users/UserEditPage"));
+const ReviewsPage = lazy(() => import("@/pages/admin/reviews/ReviewsPage"));
+const ProductTypesPage = lazy(() => import("@/pages/admin/product-types/ProductTypesPage"));
+const CategoriesPage = lazy(() => import("@/pages/admin/categories/CategoriesPage"));
+const CategoryDetailsPage = lazy(() => import("@/pages/admin/categories/CategoryDetailsPage"));
+const DictionariesPage = lazy(() => import("@/pages/admin/dictionaries/DictionariesPage"));
+const DictionaryDetailsPage = lazy(() => import("@/pages/admin/dictionaries/DictionaryDetailsPage"));
+const ConditionsPage = lazy(() => import("@/pages/admin/conditions/ConditionsPage"));
+const StatusesPage = lazy(() => import("@/pages/admin/statuses/StatusesPage"));
+const CurrenciesPage = lazy(() => import("@/pages/admin/currencies/CurrenciesPage"));
+const RegionsPage = lazy(() => import("@/pages/admin/regions/RegionsPage"));
+const CitiesPage = lazy(() => import("@/pages/admin/cities/CitiesPage"));
+const RolesPage = lazy(() => import("@/pages/admin/roles/RolesPage"));
 
 import { GeneralTab } from "@/widgets/profile/profile-general";
 import { FavoritesTab } from "@/widgets/profile/profile-favorites";
@@ -47,59 +58,80 @@ import ComparisonPage from "@/pages/compare";
 import AboutPage from "@/pages/info/about";
 import WarrantyPage from "@/pages/info/warranty/WarrantyPage";
 import PrivacyPolicyPage from "@/pages/info/privacy-policy/PrivacyPolicyPage";
+import { AdvertisementPage } from "@/pages/advertisement/advertisement-page";
+import { AdminRoute, ProtectedRoute, PublicRoute } from "./routes";
 
 export default function Router() {
   return (
     <Routes>
-      {/* Публічні / Авторизаційні сторінки без обгортки PublicRoute */}
-      <Route path="/authentication" element={<AuthPage />} />
-      <Route path="/authentication/verify" element={<VerifyPage />} />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/category-selection" element={<CategorySelectionPage />} />
-
-      {/* Адмінка без AdminRoute */}
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="users" element={<UsersPage />} />
-        <Route path="advertisements" element={<AdvertisementsPage />} />
-        <Route
-          path="update-advertisement/:id"
-          element={<AdminAdvertisementPage />}
-        />
-        <Route path="update-user/:id" element={<UpdateUserPage />} />
-        <Route path="categories" element={<CategoriesPage />} />
-        <Route path="update-category/:id" element={<UpdateCategoriesPage />} />
+      <Route element={<PublicRoute />}>
+        <Route path="/authentication" element={<AuthPage />} />
+        <Route path="/authentication/verify" element={<VerifyPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       </Route>
 
-      {/* Основна частина сайту без ProtectedRoute */}
+      <Route element={<AdminRoute />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<DashboardPage />} />
+          <Route path="advertisements" element={<AdvertisementsPage />} />
+          <Route path="advertisements/new" element={<AdvertisementCreatePage />} />
+          <Route path="advertisements/:id" element={<AdvertisementEditPage />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="users/:id" element={<UserEditPage />} />
+          <Route path="reviews" element={<ReviewsPage />} />
+          <Route path="product-types" element={<ProductTypesPage />} />
+          <Route path="categories" element={<CategoriesPage />} />
+          <Route path="categories/:id" element={<CategoryDetailsPage />} />
+          <Route path="dictionaries" element={<DictionariesPage />} />
+          <Route path="dictionaries/:id" element={<DictionaryDetailsPage />} />
+          <Route path="conditions" element={<ConditionsPage />} />
+          <Route path="statuses" element={<StatusesPage />} />
+          <Route path="currencies" element={<CurrenciesPage />} />
+          <Route path="regions" element={<RegionsPage />} />
+          <Route path="cities" element={<CitiesPage />} />
+          <Route path="roles" element={<RolesPage />} />
+          <Route path="*" element={<Navigate to="/admin" replace />} />
+        </Route>
+      </Route>
+
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
-
-        <Route
-          path="/create-advertisement"
-          element={<CreateAdvertisementPage />}
-        />
-
+        <Route path="/category-selection" element={<CategorySelectionPage />} />
         <Route path="/compare" element={<ComparisonPage />} />
+        <Route path="/basket" element={<BasketPage />} />
 
-        {/* Профіль користувача */}
-        <Route path="/profile" element={<ProfileLayout />}>
-          <Route index element={<GeneralTab />} />
-          <Route path="favorites" element={<FavoritesTab />} />
-          <Route path="orders" element={<OrdersTab />} />
-          <Route path="statistics" element={<StatisticsTab />} />
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/create-advertisement"
+            element={<CreateAdvertisementPage />}
+          />
+          <Route
+            path="/update-advertisement/:id"
+            element={<UserUpdateAdvertisementPage />}
+          />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+
+          <Route path="/profile" element={<ProfileLayout />}>
+            <Route index element={<GeneralTab />} />
+            <Route path="favorites" element={<FavoritesTab />} />
+            <Route path="orders" element={<OrdersTab />} />
+            <Route path="statistics" element={<StatisticsTab />} />
+          </Route>
+
+          <Route path="/notifications" element={<NotificationsLayout />}>
+            <Route index element={<NotificationsGeneral />} />
+            <Route path="videos" element={<NotificationsVideos />} />
+            <Route path="orders" element={<NotificationsOrders />} />
+            <Route path="comments" element={<NotificationsComments />} />
+            <Route path="discounts" element={<NotificationsDiscounts />} />
+          </Route>
+          <Route
+            path="/notifications/settings"
+            element={<NotificationSettingsPage />}
+          />
         </Route>
 
-        {/* Сповіщення */}
-        <Route path="/notifications" element={<NotificationsLayout />}>
-          <Route index element={<NotificationsGeneral />} />
-          <Route path="videos" element={<NotificationsVideos />} />
-          <Route path="orders" element={<NotificationsOrders />} />
-          <Route path="comments" element={<NotificationsComments />} />
-          <Route path="discounts" element={<NotificationsDiscounts />} />
-        </Route>
-
-        {/* Каталог */}
         <Route path="/catalog" element={<CatalogLayout />}>
           <Route index element={<CatalogMainPage />} />
           <Route
@@ -112,20 +144,6 @@ export default function Router() {
           />
         </Route>
 
-        {/* Раніше захищені сторінки */}
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/basket" element={<BasketPage />} />
-        <Route
-          path="/update-advertisement/:id"
-          element={<UserUpdateAdvertisementPage />}
-        />
-
-        {/* Інші інформаційні сторінки */}
-        <Route
-          path="/notifications/settings"
-          element={<NotificationSettingsPage />}
-        />
         <Route path="/support" element={<SupportPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/warranty" element={<WarrantyPage />} />

@@ -8,6 +8,8 @@ import type { UpdateAdvertisementRequestDto } from "@/features/admin/advertiseme
 
 import styles from "./UpdateAdvertisementPage.module.css";
 import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
+import { AdminPageHeader } from "@/widgets/admin/page-header";
+import { Loader } from "@mantine/core";
 
 export default function UpdateAdvertisementPage() {
   const { id } = useParams();
@@ -53,16 +55,17 @@ export default function UpdateAdvertisementPage() {
     navigate("/admin/advertisements");
   }
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader mx="auto" display="block" />;
 
-  if (!advertisement) return <p>Advertisement not found</p>;
+  if (!advertisement) return <p>Оголошення не знайдено</p>;
 
   return (
     <div className={styles.updateAdvertisementPage}>
-      <div className={styles.title}>
-        <h2>Змінити оголошення</h2>
-        <p>Заповніть всі поля для зміни оголошення</p>
-      </div>
+      <AdminPageHeader
+        title="Редагування оголошення"
+        description={advertisement.title}
+        backTo="/admin/advertisements"
+      />
 
       <AdvertisementForm
         key={advertisement.id}
@@ -71,7 +74,7 @@ export default function UpdateAdvertisementPage() {
           description: advertisement.description,
           price: getAdvertisementPrice(advertisement),
         }}
-        defaultImages={advertisement.images.map((image) => ({
+        defaultImages={advertisement.pictures.map((image) => ({
           id: image.id.toString(),
           imageId: image.id,
           url: image.url,

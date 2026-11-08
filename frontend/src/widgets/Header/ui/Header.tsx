@@ -6,6 +6,7 @@ import {
   LayoutGrid,
   Menu,
   Scale,
+  ShieldCheck,
   ShoppingBag,
   User,
 } from "lucide-react";
@@ -19,6 +20,8 @@ import NavigationDrawer from "./NavigationDrawer";
 import CartDrawer from "./BasketDrawer";
 import Button from "@/shared/ui/buttons/button";
 import { CitySelector } from "@/entities/city";
+import { useAuthStore } from "@/features/auth";
+import { hasRole } from "@/shared/lib/auth";
 
 
 interface ActionItem {
@@ -50,6 +53,7 @@ export default function Header() {
 
   const location = useLocation();
   const isFavoritesActive = location.pathname.startsWith("/profile/favorites");
+  const isAdmin = useAuthStore((state) => hasRole(state.user, "Admin"));
 
   return (
     <header
@@ -115,6 +119,13 @@ export default function Header() {
             <SearchInput />
 
             <div className={styles.headerActions}>
+              {isAdmin && (
+                <Link to="/admin" className={styles.iconContainer}>
+                  <ShieldCheck className="icon iconLarge" />
+                  <Text className={styles.iconContainerText}>Адмінка</Text>
+                </Link>
+              )}
+
               {ACTION_ITEMS.map((item) => {
                 const Icon = item.icon;
                 const isFavorite = item.id === "favorites";

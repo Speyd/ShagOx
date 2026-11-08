@@ -1,182 +1,146 @@
-import type { Advertisement } from "@/shared/lib/types/advertisements";
-import DataTable from "@/shared/ui/data-display/data-table";
-import type { ColumnDef } from "@tanstack/react-table";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  ActionIcon,
-  Avatar,
   Badge,
   Group,
-  Pagination,
+  Image,
   Stack,
   Text,
   TextInput,
-  Title,
 } from "@mantine/core";
-import { Pencil, Search, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { modals } from "@mantine/modals";
-import { useAdminDeleteAdvertisement } from "@/features/admin/advertisement/delete-advertisement/model/hooks/useAdminDeleteAdvertisement";
-import { useGetAdminAdvertisements } from "@/entities/advertisement/model/hooks/useGetAdminAdvertisements";
+import { Search } from "lucide-react";
+import type { ColumnDef } from "@tanstack/react-table";
+import type { Advertisement } from "@/shared/lib/types/advertisements";
 import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
+import { useGetAdminAdvertisements } from "@/entities/advertisement/model/hooks/useGetAdminAdvertisements";
+import { useAdminDeleteAdvertisement } from "@/features/admin/advertisement/delete-advertisement/model/hooks/useAdminDeleteAdvertisement";
+import DataTable from "@/shared/ui/data-display/data-table";
+import { AdminPageHeader } from "@/widgets/admin/page-header";
+import { RowActions } from "@/widgets/admin/row-actions";
+import styles from "./AdvertisementsPage.module.css";
+import AppPagination from "@/shared/ui/navigation/pagination";
+import { AdvertisementsPageSkeleton } from "./AdvertisementsPageSkeleton";
+
+const PAGE_SIZE = 10;
 
 export default function AdvertisementsPage() {
   const [page, setPage] = useState(1);
-
-  const pageSize = 10;
-
-  const { data, isLoading } = useGetAdminAdvertisements(page, pageSize);
-
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const { data, isLoading } = useGetAdminAdvertisements(page, PAGE_SIZE);
   const deleteMutation = useAdminDeleteAdvertisement();
-
-  if (!data) return <div>No data</div>;
-
-  const handleDelete = (id: number) => {
-    modals.openConfirmModal({
-      title: "Delete advertisement",
-      centered: true,
-
-      children: (
-        <Text size="sm">
-          Are you sure you want to delete this advertisement?
-          <br />
-          This action cannot be undone.
-        </Text>
-      ),
-
-      labels: {
-        confirm: "Delete",
-        cancel: "Cancel",
-      },
-
-      confirmProps: {
-        color: "red",
-      },
-
-      onConfirm: () => {
-        deleteMutation.mutate(id);
-      },
-    });
-  };
 
   const columns: ColumnDef<Advertisement>[] = [
     {
-      id: "image",
-      header: "Image",
-      cell: ({ row }) => (
-        <Avatar src={row.original.images?.[0]?.url} radius="md" size={56} />
-      ),
-    },
-
-    {
       accessorKey: "title",
-      header: "Title",
-      cell: ({ row }) => (
-        <Stack gap={2}>
-          <Text fw={600}>{row.original.title}</Text>
+      header: "Оголошення",
+      cell: ({ row: { original: ad } }) => (
+        <Group wrap="nowrap">
+          <div className={styles.imageContainer}>
+            <Image
+              src={ad.pictures?.[0]?.url}
+              alt={ad.title || "Ad preview"}
+              fit="contain"
+              w="100%"
+              h="100%"
+            />
+          </div>
 
-          <Text size="sm" c="dimmed" lineClamp={1}>
-            {row.original.description}
-          </Text>
-        </Stack>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              textDecoration: "none",
+              color: "black",
+            }}
+          >
+            <Text
+              fw={600}
+              component={Link}
+              to={`/advertisement/${ad.id}`}
+              target="_blank"
+              style={{ maxWidth: "200px", color: "inherit" }}
+            >
+              {ad.title}
+            </Text>
+            <Text size="sm" c="dimmed" lineClamp={1}>
+              {ad.description}
+            </Text>
+          </div>
+        </Group>
       ),
     },
-
     {
       id: "seller",
-      header: "Seller",
-      cell: ({ row }) => (
-        <Text fw={500}>{row.original.seller?.name ?? "Unknown seller"}</Text>
-      ),
+      accessorFn: (ad) => ad.seller?.userName,
+      header: "Продавець",
+      cell: ({ row }) =>
+        row.original.seller ? `@${row.original.seller.userName}` : "—",
     },
-
     {
       id: "price",
-      header: "Price",
+      header: "Ціна",
       cell: ({ row }) => (
-        <Text fw={700} c="blue">
-          {row.original.currency?.symbol ?? ""}
+        <Text fw={700} c="var(--color-primary)">
+          {row.original.currency?.symbol}
           {getAdvertisementPrice(row.original)}
         </Text>
       ),
     },
-
     {
       id: "status",
-      header: "Status",
-      cell: ({ row }) =>
-        row.original.soldAt ? (
-          <Badge color="red" variant="light">
-            Sold
-          </Badge>
-        ) : (
-          <Badge color="green" variant="light">
-            Active
-          </Badge>
-        ),
+      header: "Статус",
+      cell: ({ row }) => (
+        <Badge color={row.original.soldAt ? "red" : "green"} variant="light">
+          {row.original.soldAt ? "Продано" : "Активне"}
+        </Badge>
+      ),
     },
-
+    {
+      id: "created",
+      header: "Створено",
+      cell: ({ row }) =>
+        new Date(row.original.createdAt).toLocaleDateString("uk-UA"),
+    },
     {
       id: "actions",
-      header: "Actions",
+      header: "",
       cell: ({ row }) => (
-        <Group gap="xs" wrap="nowrap">
-          <ActionIcon
-            variant="light"
-            color="blue"
-            radius="md"
-            size="lg"
-            onClick={() =>
-              navigate(`/admin/update-advertisement/${row.original.id}`)
-            }
-          >
-            <Pencil size={16} />
-          </ActionIcon>
-
-          <ActionIcon
-            variant="light"
-            color="red"
-            radius="md"
-            size="lg"
-            onClick={() => handleDelete(row.original.id)}
-          >
-            <Trash2 size={16} />
-          </ActionIcon>
-        </Group>
+        <RowActions
+          deleteTitle="Видалити оголошення"
+          onEdit={() =>
+            navigate(`/admin/update-advertisement/${row.original.id}`)
+          }
+          onDelete={() => deleteMutation.mutate(row.original.id)}
+        />
       ),
     },
   ];
+
   return (
     <Stack gap="lg">
-      <Group justify="space-between" align="center">
-        <div>
-          <Title order={2}>Advertisements</Title>
-          <Text c="dimmed">Manage marketplace advertisements</Text>
-        </div>
-      </Group>
+      <AdminPageHeader
+        title="Оголошення"
+        description="Керування оголошеннями маркетплейсу"
+      />
 
       <TextInput
         value={search}
         onChange={(e) => setSearch(e.currentTarget.value)}
-        placeholder="Search..."
+        placeholder="Пошук на сторінці..."
         leftSection={<Search size={16} />}
       />
 
-      {isLoading ? (
-        <Text>Loading...</Text>
+      {isLoading || !data ? (
+        <AdvertisementsPageSkeleton />
       ) : (
         <>
           <DataTable data={data.items} columns={columns} search={search} />
-
-          <Group justify="center">
-            <Pagination
-              value={page}
-              onChange={setPage}
-              total={data.totalPages}
-            />
-          </Group>
+          <AppPagination
+            page={page}
+            onPageChange={setPage}
+            totalPages={Math.ceil(data.totalCount / PAGE_SIZE)}
+          />
         </>
       )}
     </Stack>

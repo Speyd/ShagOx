@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -14,27 +13,20 @@ import {
 
 import { useGetAdminCategory } from "@/entities/category/model/useGetAdminCategory";
 import { useAdminUpdateCategory } from "../model/hooks/useAdminUpdateCategory";
+import {
+  updateCategorySchema,
+  type UpdateCategoryFormValues,
+} from "../model/schemas/schema";
 
 type AdminUpdateCategoryFormProps = {
   categoryId: number;
 };
 
-const updateCategorySchema = z.object({
-  name: z
-    .string()
-    .min(1, "Введіть назву категорії")
-    .max(100, "Назва не може бути довшою за 100 символів"),
-
-  productTypeId: z.number(),
-});
-
-type UpdateCategoryFormValues = z.infer<typeof updateCategorySchema>;
-
-export default function AdminUpdateCategoryForm({
+export function AdminUpdateCategoryForm({
   categoryId,
 }: AdminUpdateCategoryFormProps) {
   const {
-    data: category,
+    category,
     isLoading: isCategoryLoading,
     isError: isCategoryError,
   } = useGetAdminCategory(categoryId);
@@ -54,8 +46,8 @@ export default function AdminUpdateCategoryForm({
     if (!category) return;
 
     reset({
-      name: category.name,
-      productTypeId: category.productType.id,
+      name: category.label,
+      productTypeId: category.productTypeId,
     });
   }, [category, reset]);
 
@@ -95,7 +87,7 @@ export default function AdminUpdateCategoryForm({
 
           <TextInput
             label="Тип товару"
-            value={category.productType.name}
+            value={category.productType?.label ?? `Тип #${category.productTypeId}`}
             disabled
           />
 

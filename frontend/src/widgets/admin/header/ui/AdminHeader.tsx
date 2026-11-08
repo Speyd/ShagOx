@@ -1,58 +1,72 @@
-import { LogOut, ShieldCheck } from "lucide-react";
-import styles from "./AdminHeader.module.css";
+import { LogOut, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useLogout } from "@/features/auth/model/hooks/useLogout";
-import { Button } from "@mantine/core";
-import { useAuthStore } from "@/features/auth";
+import { ActionIcon, Avatar, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useAuthStore } from "@/features/auth";
+import { useLogout } from "@/features/auth/model/hooks/useLogout";
 import ConfirmModal from "@/shared/ui/feedback/confirm-modal";
+import styles from "./AdminHeader.module.css";
 
-export default function AdminHeader() {
+type AdminHeaderProps = {
+  onMenuClick: () => void;
+};
+
+export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
   const user = useAuthStore((state) => state.user);
-  const navigate = useNavigate();
   const logoutStore = useAuthStore((state) => state.logout);
   const logoutMutation = useLogout();
-  const [
-    logoutModalOpened,
-    { open: openLogoutModal, close: closeLogoutModal },
-  ] = useDisclosure(false);
+  const navigate = useNavigate();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
       onSuccess: () => {
         logoutStore();
+        close();
         navigate("/", { replace: true });
-        closeLogoutModal();
       },
     });
   };
 
   return (
     <header className={styles.header}>
-      <div className={styles.left}>
-        <ShieldCheck size={24} color="#2563eb" />
-
-        <div>
-          <h1 className={styles.title}>Admin Panel</h1>
-          <p className={styles.subtitle}>Manage marketplace content</p>
-        </div>
-      </div>
+      <button
+        type="button"
+        className={styles.menuButton}
+        onClick={onMenuClick}
+        aria-label="Відкрити меню"
+      >
+        <Menu size={24} />
+      </button>
 
       <div className={styles.right}>
         <div className={styles.user}>
-          <span className={styles.name}>{user?.userName}</span>
-          <span className={styles.role}>Administrator</span>
+          <Avatar color="blue" radius="xl">
+            {user?.userName?.[0]?.toUpperCase()}
+          </Avatar>
+          <div className={styles.userInfo}>
+            <span className={styles.name}>{user?.userName}</span>
+            <span className={styles.role}>Адміністратор</span>
+          </div>
         </div>
 
-        <Button onClick={openLogoutModal}>
-          <LogOut size={18} />
-          Logout
-        </Button>
+        <Tooltip label="Вийти">
+          <ActionIcon
+            variant="light"
+            color="red"
+            size="lg"
+            radius="md"
+            onClick={open}
+            aria-label="Вийти"
+          >
+            <LogOut size={18} />
+          </ActionIcon>
+        </Tooltip>
       </div>
 
       <ConfirmModal
-        opened={logoutModalOpened}
-        onClose={closeLogoutModal}
+        opened={opened}
+        onClose={close}
         onConfirm={handleLogout}
         title="Вихід з акаунту"
         message="Ви впевнені, що хочете вийти з акаунту?"

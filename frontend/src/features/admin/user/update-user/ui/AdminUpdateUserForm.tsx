@@ -1,259 +1,203 @@
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useMemo, useRef, useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Avatar,
-  Button,
-  Group,
-  Paper,
-  Select,
-  SimpleGrid,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-  Divider,
-  Box,
-} from "@mantine/core";
-import { useGetUser } from "@/entities/user/model/hooks/useGetUser";
-import { useGetAdminCities } from "@/entities/city/model/hooks/useGetAdminCities";
-import {
-  adminUpdateUserSchema,
-  type UpdateUserDto,
-} from "../model/schemas/schema";
+import { Avatar, Select, Text } from "@mantine/core";
+import { Camera } from "lucide-react";
+import type { User } from "@/shared/lib/types/user";
+import type { AdminCity } from "@/shared/lib/types/admin";
+import { useAdminOptions } from "@/shared/api/crudHooks";
+import Button from "@/shared/ui/buttons/button";
+import { FormField, TextAreaField, TextField } from "@/shared/ui/form";
+import { adminUpdateUserSchema, type UpdateUserDto } from "../model/schemas/schema";
 import useAdminUpdateUser from "../model/hooks/useAdminUpdateUser";
 import AvatarCropModal from "./AvatarCropModal";
-import type { User } from "@/shared/lib/types/user";
+import styles from "./AdminUpdateUserForm.module.css";
 
 type AdminUpdateUserFormProps = {
-  id: number;
+  user: User;
 };
 
-export default function AdminUpdateUserForm({ id }: AdminUpdateUserFormProps) {
-  const { data: user, isLoading } = useGetUser(id);
-
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (!user) {
-    return <Text>User not found</Text>;
-  }
-
-  return <AdminUpdateUserFormContent id={id} user={user} />;
-}
-
-function AdminUpdateUserFormContent({ id, user }: { id: number; user: User }) {
-  const [cropModalOpened, setCropModalOpened] = useState(false);
-
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
+export default function AdminUpdateUserForm({ user }: AdminUpdateUserFormProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [cropImage, setCropImage] = useState<string | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
     user.avatar?.url ?? null,
   );
 
-  const { data: cities } = useGetAdminCities(1, 1000);
-
+  const { data: cities = [] } = useAdminOptions<AdminCity>("/admin/cities");
   const mutation = useAdminUpdateUser();
 
-  const cityOptions =
-    cities?.items.map((city) => ({
-      value: String(city.id),
-      label: city.name,
-    })) ?? [];
+  const cityOptions = useMemo(
+    () =>
+      cities.map((city) => ({
+        value: String(city.id),
+        label: city.label || city.code,
+      })),
+    [cities],
+  );
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors, isDirty },
   } = useForm<UpdateUserDto>({
     resolver: zodResolver(adminUpdateUserSchema),
-
     defaultValues: {
       firstName: user.firstName ?? "",
       lastName: user.lastName ?? "",
       userName: user.userName ?? "",
       bio: user.bio ?? "",
-      phone: user.phone ?? "",
-      email: user.email ?? "",
       avatar: null,
-      cityId: user.city?.id ?? null,
+      cityId: user.city?.id ? String(user.city.id) : null,
     },
   });
 
-  const onSubmit = async (data: UpdateUserDto) => {
+  const bio = useWatch({ control, name: "bio" });
+
+  const onSubmit = handleSubmit(async (data) => {
     await mutation.mutateAsync({
-      id,
-      data,
+      id: user.id,
+      data: { ...data, cityId: data.cityId ? Number(data.cityId) : null },
     });
-  };
+    reset({ ...data, avatar: null });
+  });
 
   return (
-    <Paper withBorder radius="lg" p="xl">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack gap="xl" maw={900}>
-          <div>
-            <Title order={3}>Редагування користувача</Title>
+    <form onSubmit={onSubmit} className={styles.form} noValidate>
+      <Controller
+        name="avatar"
+        control={control}
+        render={({ field }) => (
+          <section className={styles.avatarRow}>
+            <button
+              type="button"
+              className={styles.avatarButton}
+              onClick={() => fileInputRef.current?.click()}
+              aria-label="Змінити аватар"
+            >
+              <Avatar src={avatarPreview} size={96} radius={48} color="blue">
+                {user.userName?.[0]?.toUpperCase()}
+              </Avatar>
+              <span className={styles.avatarOverlay}>
+                <Camera size={20} />
+              </span>
+            </button>
 
-            <Text c="dimmed" size="sm" mt={4}>
-              Змініть інформацію про користувача
-            </Text>
-          </div>
+            <div>
+              <Text fw={700} c="var(--color-base)">
+                Аватар
+              </Text>
+              <Text size="sm" c="dimmed">
+                JPG, PNG або WEBP. Зображення буде обрізано до кола.
+              </Text>
+              <Button
+                size="sm"
+                variant="light"
+                className={styles.avatarAction}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Завантажити нове фото
+              </Button>
+            </div>
 
-          <SimpleGrid
-            cols={{
-              base: 1,
-              sm: 2,
-            }}
-            spacing="md"
-          >
-            <TextInput
-              label="Ім'я"
-              placeholder="Введіть ім'я"
-              {...register("firstName")}
-              error={errors.firstName?.message}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              hidden
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (file) setCropImage(URL.createObjectURL(file));
+                event.target.value = "";
+              }}
             />
 
-            <TextInput
-              label="Прізвище"
-              placeholder="Введіть прізвище"
-              {...register("lastName")}
-              error={errors.lastName?.message}
+            <AvatarCropModal
+              opened={Boolean(cropImage)}
+              image={cropImage}
+              onClose={() => setCropImage(null)}
+              onCropComplete={(file) => {
+                field.onChange(file);
+                setAvatarPreview(URL.createObjectURL(file));
+              }}
             />
+          </section>
+        )}
+      />
 
-            <TextInput
-              label="Нікнейм"
-              placeholder="Введіть нікнейм"
-              {...register("userName")}
-              error={errors.userName?.message}
-            />
+      <div className={styles.grid}>
+        <FormField label="Ім'я" htmlFor="firstName" error={errors.firstName?.message}>
+          <TextField id="firstName" {...register("firstName")} invalid={Boolean(errors.firstName)} />
+        </FormField>
 
-            <TextInput
-              label="Email"
-              placeholder="example@gmail.com"
-              {...register("email")}
-              error={errors.email?.message}
-            />
+        <FormField label="Прізвище" htmlFor="lastName" error={errors.lastName?.message}>
+          <TextField id="lastName" {...register("lastName")} invalid={Boolean(errors.lastName)} />
+        </FormField>
 
-            <TextInput
-              label="Телефон"
-              placeholder="+380..."
-              {...register("phone")}
-              error={errors.phone?.message}
-            />
+        <FormField
+          label="Нікнейм"
+          htmlFor="userName"
+          required
+          error={errors.userName?.message}
+        >
+          <TextField id="userName" {...register("userName")} invalid={Boolean(errors.userName)} />
+        </FormField>
 
-            <TextInput
-              label="Біо"
-              placeholder="Розкажіть про себе..."
-              {...register("bio")}
-              error={errors.bio?.message}
-            />
-          </SimpleGrid>
+        <Controller
+          name="cityId"
+          control={control}
+          render={({ field }) => (
+            <FormField label="Місто">
+              <Select
+                data={cityOptions}
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="Оберіть місто"
+                searchable
+                clearable
+                nothingFoundMessage="Місто не знайдено"
+                radius="md"
+              />
+            </FormField>
+          )}
+        />
 
-          <Controller
-            name="avatar"
-            control={control}
-            render={({ field, fieldState }) => (
-              <Stack gap="sm">
-                <Group align="center">
-                  <Avatar src={avatarPreview} size={96} radius="xl" />
+        <FormField label="Email" hint="Змінюється лише користувачем через підтвердження">
+          <TextField value={user.email ?? "—"} disabled readOnly />
+        </FormField>
 
-                  <Stack gap={4}>
-                    <Text fw={500}>Аватар користувача</Text>
+        <FormField label="Телефон" hint="Змінюється лише користувачем через підтвердження">
+          <TextField value={user.phone ?? "—"} disabled readOnly />
+        </FormField>
 
-                    <Text size="xs" c="dimmed">
-                      JPG, PNG або WEBP
-                    </Text>
+        <FormField
+          label="Про себе"
+          htmlFor="bio"
+          className={styles.full}
+          hint={`${bio?.length ?? 0}/500`}
+          error={errors.bio?.message}
+        >
+          <TextAreaField id="bio" rows={4} maxLength={500} {...register("bio")} />
+        </FormField>
+      </div>
 
-                    <Button
-                      size="xs"
-                      variant="light"
-                      onClick={() => {
-                        document.getElementById("avatar-input")?.click();
-                      }}
-                    >
-                      Змінити аватар
-                    </Button>
-                  </Stack>
-                </Group>
-
-                <input
-                  id="avatar-input"
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  hidden
-                  onChange={(event) => {
-                    const file = event.target.files?.[0];
-
-                    if (!file) return;
-
-                    const imageUrl = URL.createObjectURL(file);
-
-                    setSelectedImage(imageUrl);
-                    setCropModalOpened(true);
-
-                    event.target.value = "";
-                  }}
-                />
-
-                {fieldState.error?.message && (
-                  <Text size="xs" c="red">
-                    {fieldState.error.message}
-                  </Text>
-                )}
-
-                <AvatarCropModal
-                  opened={cropModalOpened}
-                  image={selectedImage}
-                  onClose={() => {
-                    setCropModalOpened(false);
-                    setSelectedImage(null);
-                  }}
-                  onCropComplete={(croppedFile) => {
-                    field.onChange(croppedFile);
-
-                    const previewUrl = URL.createObjectURL(croppedFile);
-                    setAvatarPreview(previewUrl);
-
-                    setSelectedImage(null);
-                  }}
-                />
-              </Stack>
-            )}
-          />
-
-          <Box maw={450}>
-            <Controller
-              name="cityId"
-              control={control}
-              render={({ field, fieldState }) => (
-                <Select
-                  label="Місто"
-                  placeholder="Оберіть місто"
-                  searchable
-                  clearable
-                  nothingFoundMessage="Місто не знайдено"
-                  data={cityOptions}
-                  value={field.value !== null ? String(field.value) : null}
-                  onChange={(value) => {
-                    field.onChange(value ? Number(value) : null);
-                  }}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
-          </Box>
-
-          <Divider />
-
-          <Group justify="flex-end">
-            <Button type="submit" loading={isSubmitting}>
-              Зберегти зміни
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </Paper>
+      <footer className={styles.footer}>
+        <Button
+          variant="ghost"
+          disabled={!isDirty || mutation.isPending}
+          onClick={() => {
+            reset();
+            setAvatarPreview(user.avatar?.url ?? null);
+          }}
+        >
+          Скинути
+        </Button>
+        <Button type="submit" loading={mutation.isPending} disabled={!isDirty}>
+          Зберегти зміни
+        </Button>
+      </footer>
+    </form>
   );
 }

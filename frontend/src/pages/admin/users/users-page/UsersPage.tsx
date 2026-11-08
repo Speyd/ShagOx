@@ -1,94 +1,77 @@
-import { useGetUsers } from "@/entities/user/model/hooks/useGetUsers";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ActionIcon,
   Avatar,
   Badge,
   Group,
-  Pagination,
   Stack,
   Text,
   TextInput,
-  Title,
 } from "@mantine/core";
-import { Pencil, Search, Trash2 } from "lucide-react";
+import { Search } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { User } from "@/shared/lib/types/user";
+import { useGetUsers } from "@/entities/user/model/hooks/useGetUsers";
+import { useAdminDeleteUser } from "@/features/admin/user/delete-user";
 import DataTable from "@/shared/ui/data-display/data-table";
+import { AdminPageHeader } from "@/widgets/admin/page-header";
+import { RowActions } from "@/widgets/admin/row-actions";
+import AppPagination from "@/shared/ui/navigation/pagination";
+import { UsersPageSkeleton } from "./UsersPageSkeleton";
 
-export default function UsersPage() {
+const PAGE_SIZE = 10;
+
+export function UsersPage() {
   const [page, setPage] = useState(1);
-
-  const pageSize = 10;
-
-  const { data, isLoading } = useGetUsers(page, pageSize);
-
-  console.log(data);
-
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
-
-  if (isLoading) return <Text>Loading...</Text>;
-  if (!data) return <Text>No data</Text>;
-
-  const handleDelete = (id: number) => {
-    console.log(id);
-  };
+  const { data, isLoading } = useGetUsers(page, PAGE_SIZE);
+  const deleteMutation = useAdminDeleteUser();
 
   const columns: ColumnDef<User>[] = [
     {
-      id: "avatar",
-      header: "Avatar",
-      cell: ({ row }) => (
-        <Avatar src={row.original.avatar?.url} radius="md" size={56}>
-          {row.original.firstName?.[0] ?? row.original.userName[0]}
-        </Avatar>
-      ),
-    },
-    {
-      accessorKey: "name",
-      header: "User",
-      cell: ({ row }) => (
-        <Stack gap={2}>
-          <Text fw={600}>
-            {row.original.firstName}
-            {row.original.lastName && ` ${row.original.lastName}`}
-            {!row.original.firstName &&
-              !row.original.lastName &&
-              `@${row.original.userName}`}
-          </Text>
-
-          <Text size="sm" c="dimmed">
-            {row.original.phone}
-          </Text>
-        </Stack>
+      id: "user",
+      accessorFn: (user) =>
+        `${user.userName} ${user.firstName ?? ""} ${user.lastName ?? ""}`,
+      header: "Користувач",
+      cell: ({ row: { original: user } }) => (
+        <Group wrap="nowrap">
+          <Avatar src={user.avatar?.url} radius="xl">
+            {user.userName[0]?.toUpperCase()}
+          </Avatar>
+          <div>
+            <Text fw={600}>
+              {[user.firstName, user.lastName].filter(Boolean).join(" ") ||
+                `@${user.userName}`}
+            </Text>
+            <Text size="sm" c="dimmed">
+              {user.phone}
+            </Text>
+          </div>
+        </Group>
       ),
     },
     {
       accessorKey: "email",
       header: "Email",
-      cell: ({ row }) => <Text>{row.original.email ?? "-"}</Text>,
+      cell: ({ row }) => row.original.email ?? "—",
     },
     {
       id: "city",
-      header: "City",
-      cell: ({ row }) => (
-        <Stack gap={0}>
-          <Text>{row.original.city.name}</Text>
-          <Text size="xs" c="dimmed">
-            {row.original.city.region.name}
-          </Text>
-        </Stack>
-      ),
+      header: "Місто",
+      cell: ({ row }) => row.original.city?.name ?? "—",
     },
     {
-      id: "role",
-      header: "Role",
+      id: "roles",
+      header: "Роль",
       cell: ({ row }) => (
         <Group gap={4}>
           {row.original.roles.map((role) => (
-            <Badge key={role.id} variant="light">
+            <Badge
+              key={role.id}
+              variant="light"
+              color={role.name === "Admin" ? "red" : "blue"}
+            >
               {role.name}
             </Badge>
           ))}
@@ -96,79 +79,48 @@ export default function UsersPage() {
       ),
     },
     {
-      id: "lastSeen",
-      header: "Last seen",
-      cell: ({ row }) => (
-        <Text>{new Date(row.original.lastSeenAt).toLocaleString("uk-UA")}</Text>
-      ),
-    },
-    {
       id: "registered",
-      header: "Registered",
-      cell: ({ row }) => (
-        <Text>
-          {new Date(row.original.registeredAt).toLocaleDateString("uk-UA")}
-        </Text>
-      ),
+      header: "Реєстрація",
+      cell: ({ row }) =>
+        new Date(row.original.registeredAt).toLocaleDateString("uk-UA"),
     },
     {
       id: "actions",
-      header: "Actions",
+      header: "",
       cell: ({ row }) => (
-        <Group gap="xs" wrap="nowrap">
-          <ActionIcon
-            variant="light"
-            color="blue"
-            radius="md"
-            size="lg"
-            onClick={() => navigate(`/admin/update-user/${row.original.id}`)}
-          >
-            <Pencil size={16} />
-          </ActionIcon>
-
-          <ActionIcon
-            variant="light"
-            color="red"
-            radius="md"
-            size="lg"
-            onClick={() => handleDelete(row.original.id)}
-          >
-            <Trash2 size={16} />
-          </ActionIcon>
-        </Group>
+        <RowActions
+          deleteTitle="Видалити користувача"
+          onEdit={() => navigate(`/admin/update-user/${row.original.id}`)}
+          onDelete={() => deleteMutation.mutate(row.original.id)}
+        />
       ),
     },
   ];
 
   return (
     <Stack gap="lg">
-      <Group justify="space-between" align="center">
-        <div>
-          <Title order={2}>Users</Title>
-          <Text c="dimmed">Manage users</Text>
-        </div>
-      </Group>
+      <AdminPageHeader
+        title="Користувачі"
+        description="Керування користувачами маркетплейсу"
+      />
 
       <TextInput
         value={search}
         onChange={(e) => setSearch(e.currentTarget.value)}
-        placeholder="Search..."
+        placeholder="Пошук на сторінці..."
         leftSection={<Search size={16} />}
       />
 
-      {isLoading ? (
-        <Text>Loading...</Text>
+      {isLoading || !data ? (
+        <UsersPageSkeleton />
       ) : (
         <>
           <DataTable data={data.items} columns={columns} search={search} />
-
-          <Group justify="center">
-            <Pagination
-              value={page}
-              onChange={setPage}
-              total={data.totalPages}
-            />
-          </Group>
+          <AppPagination
+            page={page}
+            onPageChange={setPage}
+            totalPages={Math.ceil(data.totalCount / PAGE_SIZE)}
+          />
         </>
       )}
     </Stack>

@@ -4,9 +4,9 @@ using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Map
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping;
-public class AdvertisementCatalogMapper
+public class AdvertisementRatingMapper
 {
-    public static AdvertisementCatalogDto ToDto(
+    public static AdvertisementRatingDto ToDto(
         AdvertisementCatalogQueryDto x,
         ConvertedPricesDto priceConversion)
     {
@@ -16,7 +16,7 @@ public class AdvertisementCatalogMapper
             .OrderBy(i => i.Order)
             .FirstOrDefault();
 
-        return new AdvertisementCatalogDto
+        return new AdvertisementRatingDto
         (
             advert.Id,
             advert.Title,

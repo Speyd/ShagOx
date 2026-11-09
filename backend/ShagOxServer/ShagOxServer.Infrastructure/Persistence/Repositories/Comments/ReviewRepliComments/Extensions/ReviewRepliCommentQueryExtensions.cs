@@ -10,6 +10,7 @@ public static class ReviewRepliCommentQueryExtensions
         return query
             .AsSplitQuery()
             .Include(x => x.Owner)
+                .ThenInclude(x => x.Avatar)
             .Include(x => x.Replies);
     }
 }

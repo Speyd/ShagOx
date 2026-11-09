@@ -22,6 +22,11 @@ public interface IAdvertisementQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
+    Task<Result<PagedResult<AdvertisementRatingDto>>> GetCatalogPagedAsync(
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
     Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         long userId,
         PaginationParams pagination,
@@ -34,7 +39,7 @@ public interface IAdvertisementQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
-    Task<Result<PagedResult<AdvertisementCatalogDto>>> CatalogSearchAsync(
+    Task<Result<PagedResult<AdvertisementRatingDto>>> CatalogSearchAsync(
         AdvertisementSearchFilter filter,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,

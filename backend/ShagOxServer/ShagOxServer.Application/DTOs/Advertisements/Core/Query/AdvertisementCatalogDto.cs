@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 using System.Text.Json;

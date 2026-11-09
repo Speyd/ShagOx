@@ -97,26 +97,48 @@ public partial class AdvertisementQueryRepository
     }
 
     public async Task<PagedResult<AdvertisementCatalogQueryDto>> CatalogSearchAsync(
-        AdvertisementSearchFilter filter,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+    AdvertisementSearchFilter filter,
+    PaginationParams pagination,
+    CancellationToken cancellationToken = default,
+    EntityStatus? status = null)
     {
-        return await _db.Advertisements
+        var query = _db.Advertisements
             .ShortWithIncludes()
             .WithStatusFilter(status)
             .Filter(filter)
-            .OrderByDescending(x => x.Popularity)
-            .Select(x => new AdvertisementCatalogQueryDto
-            (
-                x,
-                x.ReviewComments.Count(),
-                (float?)x.ReviewComments
-                    .Average(r => (double?)r.Grade) ?? 0f
-            ))
-            .ToPagedResultAsync(
-                pagination,
-                x => x.Advertisement.Id,
+            .OrderByDescending(x => x.Popularity);
+
+        var result = await query.ToPagedResultAsync(
+            pagination,
+            x => x.Id,
+            cancellationToken);
+
+        var ids = result.Items.Select(x => x.Id).ToList();
+
+        var reviews = await _db.ReviewComments
+            .Where(r => ids.Contains(r.CommentableEntityId))
+            .GroupBy(r => r.CommentableEntityId)
+            .Select(g => new
+            {
+                AdvertisementId = g.Key,
+                Count = g.Count(),
+                Average = g.Average(r => (double?)r.Grade) ?? 0
+            })
+            .ToDictionaryAsync(
+                x => x.AdvertisementId,
                 cancellationToken);
+
+        return new PagedResult<AdvertisementCatalogQueryDto>(
+            result.Items.Select(x =>
+            {
+                reviews.TryGetValue(x.Id, out var review);
+
+                return new AdvertisementCatalogQueryDto(
+                    x,
+                    review?.Count ?? 0,
+                    (float)(review?.Average ?? 0));
+            }).ToList(),
+            result.TotalCount,
+            new PaginationParams(result.Page, result.PageSize));
     }
 }

@@ -11,22 +11,16 @@ public static class FavoriteQueryExtensions
     {
         return query
             .AsSplitQuery()
-            .Include(x => x.Owner)
-                .ThenInclude(a => a.City)
-                    .ThenInclude(c => c.Region)
+
             .Include(x => x.Owner)
                 .ThenInclude(a => a.UserRoles)
-            .Include(x => x.Advertisement)
-                .ThenInclude(a => a.Category)
-                    .ThenInclude(c => c.ProductType)
+            .Include(x => x.Owner)
+                .ThenInclude(a => a.Avatar)
+            .Include(x => x.Owner)
+                .ThenInclude(a => a.Currency)
+
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Currency)
-            .Include(x => x.Advertisement)
-                .ThenInclude(a => a.Owner)
-            .Include(x => x.Advertisement)
-                .ThenInclude(a => a.Buyer)
-            .Include(x => x.Advertisement)
-                .ThenInclude(a => a.Condition)
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Pictures);
     }

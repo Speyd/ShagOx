@@ -14,6 +14,7 @@ public interface IQueryRepository<TEntity>
         long id,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
+
     Task<TEntity?> GetByIdAsync(
         long id,
         CancellationToken cancellationToken = default,

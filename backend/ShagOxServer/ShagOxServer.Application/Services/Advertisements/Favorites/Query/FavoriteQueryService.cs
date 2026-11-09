@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
@@ -30,6 +31,7 @@ public class FavoriteQueryService
     private readonly IUserQueryService _userService;
 
     protected readonly IAdvertisementQueryService _advertService;
+    protected readonly IStatusQueryService _statusService;
 
     protected override bool CacheBySearch => false;
 
@@ -40,6 +42,7 @@ public class FavoriteQueryService
         IFavoriteQueryRepository favoriteRepository,
         IUserQueryService userService,
         IAdvertisementQueryService advertService,
+        IStatusQueryService statusService,
         IDataCacheService cacheService,
         IOptions<CacheSettings> settings
     )
@@ -48,6 +51,7 @@ public class FavoriteQueryService
         _favoriteRepository = favoriteRepository;
         _userService = userService;
         _advertService = advertService;
+        _statusService = statusService;
     }
 
 
@@ -60,10 +64,14 @@ public class FavoriteQueryService
         var converts = await _advertService.ConvertPricesAsync(
            entity.Advertisement);
 
+        var statusDto = await _statusService
+            .ApplyMapperAsync(entity.Advertisement.Status);
+
         return FavoriteMapper.ToDto(
             entity,
             userDto,
-            converts);
+            converts,
+            statusDto);
     }
 
     public async Task<Result<int>> CountByAdvertisementAsync(

@@ -12,6 +12,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
+using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Query;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Advertisements;
@@ -34,10 +35,12 @@ public class AdvertisementQueryService
     private readonly IAdvertisementVariantQueryService _variantService;
     private readonly IAttributeValueService _attributeProcessor;
 
+
     protected readonly IPriceConversionService _priceConversion;
 
     private readonly ICategoryQueryService _categoryService;
     private readonly IStatusQueryService _statusService;
+    private readonly IConditionQueryService _conditionService;
 
     protected override bool CacheBySearch => false;
 
@@ -52,6 +55,7 @@ public class AdvertisementQueryService
         ICategoryQueryService categoryService,
         IDataCacheService cacheService,
         IStatusQueryService statusService,
+        IConditionQueryService conditionService,
         IOptions<CacheSettings> settings,
         ILanguageProvider language
     )
@@ -66,6 +70,7 @@ public class AdvertisementQueryService
         _priceConversion = priceConversion;
         _categoryService = categoryService;
         _statusService = statusService;
+        _conditionService = conditionService;
     }
 
 
@@ -86,6 +91,9 @@ public class AdvertisementQueryService
         var statusDto = await _statusService
             .ApplyMapperAsync(entity.Status);
 
+        var conditionDto = await _conditionService
+           .ApplyMapperAsync(entity.Condition);
+
         var attributeDto = await _attributeProcessor
             .GetAttributesAsync(
                 entity.Attributes,
@@ -101,7 +109,8 @@ public class AdvertisementQueryService
             categoryDto,
             statusDto,
             attributeDto.Value!,
-            convertedPrices);
+            convertedPrices,
+            conditionDto);
     }
 
     public async Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
@@ -175,9 +184,13 @@ public class AdvertisementQueryService
                 advert,
                 cancellationToken);
 
+            var statusDto = await _statusService
+                .ApplyMapperAsync(advert.Status);
+
             return AdvertisementShortMapper.ToDto(
                 advert,
-                convertedPrices);
+                convertedPrices,
+                statusDto);
         });
     }
 
@@ -197,9 +210,13 @@ public class AdvertisementQueryService
                 advert,
                 cancellationToken);
 
+            var statusDto = await _statusService
+                .ApplyMapperAsync(advert.Status);
+
             return AdvertisementShortMapper.ToDto(
                 advert,
-                convertedPrices);
+                convertedPrices,
+                statusDto);
         });
     }
 

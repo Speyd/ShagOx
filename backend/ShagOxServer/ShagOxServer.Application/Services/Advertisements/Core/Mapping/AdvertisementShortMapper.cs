@@ -1,8 +1,6 @@
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.DTOs.Common.Currencies;
-using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
-using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -12,7 +10,8 @@ public static class AdvertisementShortMapper
 {
     public static AdvertisementShortDto ToDto(
         Advertisement x,
-        ConvertedPricesDto priceConversion)
+        ConvertedPricesDto priceConversion,
+        StatusDto statusDto)
     {
         return new AdvertisementShortDto
         (
@@ -27,6 +26,7 @@ public static class AdvertisementShortMapper
             x.CategoryId,
             x.OwnerId,
             x.BuyerId,
+            statusDto,
             x.Pictures
                 .OrderBy(i => i.Order)
                 .Select(AdvertisementImageMapper.ToDto)

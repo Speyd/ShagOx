@@ -9,7 +9,9 @@ public static class AttributeDictionaryValueQueryExtensions
     public static IQueryable<AttributeDictionaryValue> WithIncludes(
         this IQueryable<AttributeDictionaryValue> query)
     {
-        return query.Include(x => x.Dictionary);
+        return query
+            .AsSplitQuery()
+            .Include(x => x.Dictionary);
     }
 
     public static IQueryable<AttributeDictionaryValueCacheInfo> SelectCacheInfo(

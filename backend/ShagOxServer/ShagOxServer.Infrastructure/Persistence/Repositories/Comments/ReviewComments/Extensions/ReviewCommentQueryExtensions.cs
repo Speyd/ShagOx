@@ -11,6 +11,7 @@ public static class ReviewCommentQueryExtensions
             .Include(x => x.Owner)
                 .ThenInclude(o => o.Avatar)
             .Include(x => x.Pictures)
+            .AsSplitQuery()
             .Include(x => x.Replies);
     }
 }

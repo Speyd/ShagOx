@@ -1,14 +1,17 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
+using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;
@@ -35,7 +38,9 @@ public class BasketItemQueryService
     private readonly IBasketQueryRepository _basketQueryRepository;
 
     private readonly IAdvertisementQueryService _advertisementService;
+    private readonly IStatusQueryService _statusService;
     private readonly IBasketAttributeExistsRepository _attributeRepository;
+
 
 
     protected override bool CacheBySearch => false;
@@ -48,6 +53,7 @@ public class BasketItemQueryService
         IBasketItemQueryRepository itemQueryRepository,
         IBasketQueryRepository basketQueryRepository,
         IAdvertisementQueryService advertisementService,
+        IStatusQueryService statusService,
         IBasketAttributeExistsRepository attributeRepository,
         IDataCacheService cacheService,
         IOptions<CacheSettings> settings,
@@ -57,6 +63,7 @@ public class BasketItemQueryService
     {
         _itemQueryRepository = itemQueryRepository;
         _basketQueryRepository = basketQueryRepository;
+        _statusService = statusService;
         _advertisementService = advertisementService;
         _attributeRepository = attributeRepository;
     }
@@ -68,8 +75,16 @@ public class BasketItemQueryService
         await PrepareAttributesForMappingAsync(
             entity.AdvertisementVariant);
 
-        var advertDto = await _advertisementService
-            .ApplyMapperAsync(entity.AdvertisementVariant.Advertisement);
+
+        var advert = entity.AdvertisementVariant.Advertisement;
+        var converts = await _advertisementService
+            .ConvertPricesAsync(advert);
+
+        var statusDto = await _statusService
+            .ApplyMapperAsync(advert.Status);
+
+        var advertDto = AdvertisementShortMapper
+            .ToDto(advert, converts, statusDto);
 
         return BasketItemMapper.ToDto(entity, advertDto);
     }

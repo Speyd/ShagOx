@@ -69,7 +69,7 @@ public class ReviewCommentUpdateService
         }
 
         var comment = await _commitValidator
-            .GetByIdAsync(commentId, cancellationToken);
+            .GetByIdIncludeAsync(commentId, cancellationToken);
         if (!comment.IsSuccess)
             return Result<UpdateResponse>.Fail(comment.Error);
 

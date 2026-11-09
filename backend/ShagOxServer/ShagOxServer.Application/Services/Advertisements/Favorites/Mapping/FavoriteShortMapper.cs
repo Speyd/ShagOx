@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
@@ -9,7 +10,8 @@ public static class FavoriteShortMapper
 {
     public static FavoriteShortDto ToDto(
         Favorite x,
-        ConvertedPricesDto priceConversion)
+        ConvertedPricesDto priceConversion,
+        StatusDto statusDto)
     {
         return new FavoriteShortDto
         (
@@ -18,7 +20,8 @@ public static class FavoriteShortMapper
             UserShortMapper.ToDto(x.Owner),
             AdvertisementShortMapper.ToDto(
                 x.Advertisement,
-                priceConversion)
+                priceConversion,
+                statusDto)
         );
     }
 }

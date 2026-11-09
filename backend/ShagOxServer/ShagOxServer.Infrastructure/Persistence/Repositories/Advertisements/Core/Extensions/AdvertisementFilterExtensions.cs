@@ -34,14 +34,20 @@ public static class AdvertisementFilterExtensions
                 .OrderByDescending(x => x.Popularity);
         }
 
-        if (filter.MinPrice.HasValue)
+        if (filter.MinPrice.HasValue || filter.MaxPrice.HasValue)
         {
-            query = query.Where(x => x.Variants.Any(v => v.Price >= filter.MinPrice.Value));
-        }
-
-        if (filter.MaxPrice.HasValue)
-        {
-            query = query.Where(x => x.Variants.Any(v => v.Price <= filter.MaxPrice.Value));
+            query = query.Where(x =>
+                (
+                    x.Price.HasValue &&
+                    (!filter.MinPrice.HasValue || x.Price.Value >= filter.MinPrice.Value) &&
+                    (!filter.MaxPrice.HasValue || x.Price.Value <= filter.MaxPrice.Value)
+                )
+                ||
+                x.Variants.Any(v =>
+                    (!filter.MinPrice.HasValue || v.Price >= filter.MinPrice.Value) &&
+                    (!filter.MaxPrice.HasValue || v.Price <= filter.MaxPrice.Value)
+                )
+            );
         }
 
         query = query.FilterByAttributes(filter.Attributes);
@@ -79,7 +85,7 @@ public static class AdvertisementFilterExtensions
 
         return query;
     }
-
+    
     private static IEnumerable<string> ContainmentCandidates(string key, JsonElement value)
     {
         yield return JsonSerializer.Serialize(new Dictionary<string, JsonElement> { [key] = value });

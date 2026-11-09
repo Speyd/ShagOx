@@ -9,7 +9,6 @@ public static class BasketQueryExtensions
     {
         return query
             .AsSplitQuery()
-
             .Include(x => x.BasketItems)
                 .ThenInclude(x => x.AdvertisementVariant)
                     .ThenInclude(x => x.Advertisement)

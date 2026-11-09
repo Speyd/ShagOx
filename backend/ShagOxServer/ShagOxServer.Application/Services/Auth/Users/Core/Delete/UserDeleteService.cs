@@ -53,7 +53,7 @@ public class UserDeleteService
         CancellationToken cancellationToken = default)
     {
         var user = await _userValidator
-            .GetByIdAsync(id, cancellationToken);
+            .GetByIdIncludeAsync(id, cancellationToken);
         if (!user.IsSuccess)
             return Result<DeleteResponse>.Fail(user.Error);
 

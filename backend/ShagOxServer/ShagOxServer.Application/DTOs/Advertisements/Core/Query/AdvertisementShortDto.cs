@@ -1,7 +1,7 @@
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Common.Currencies;
-using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 using ShagOxServer.Domain.Base.Enum;
 using System.Text.Json;
@@ -20,6 +20,7 @@ public sealed record AdvertisementShortDto
     long CategoryId,
     long SellerId,
     long? BuyerId,
+    StatusDto Status,
     AdvertisementImageDto? Image,
     JsonDocument Attributes,
     List<AdvertisementVariantShortDto> Variants,

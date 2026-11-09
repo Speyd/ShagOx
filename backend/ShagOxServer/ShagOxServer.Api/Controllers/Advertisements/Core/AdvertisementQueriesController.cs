@@ -41,6 +41,7 @@ public class AdvertisementQueriesController
         return result.ToActionResult();
     }
 
+
     [HttpGet("seller{userId:long}")]
     public async Task<IActionResult> GetBySeller(
         [FromRoute] long userId,
@@ -90,6 +91,21 @@ public class AdvertisementQueriesController
 
         var result = await _advertQueryService
             .ShortSearchAsync(filter, pagination,
+                cancellationToken);
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet("catalog-search")]
+    public async Task<IActionResult> CatalogSearch(
+        [FromQuery] AdvertisementSearchFilter filter,
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
+    {
+        filter = AdvertisementSearchFilter.Create(filter);
+
+        var result = await _advertQueryService
+            .CatalogSearchAsync(filter, pagination,
                 cancellationToken);
 
         return result.ToActionResult();

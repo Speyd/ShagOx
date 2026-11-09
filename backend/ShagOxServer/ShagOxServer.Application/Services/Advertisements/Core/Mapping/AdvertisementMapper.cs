@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
-using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
+using ShagOxServer.Application.DTOs.Specification.Conditions.Query;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
@@ -19,7 +19,8 @@ public static class AdvertisementMapper
         CategoryDto category,
         StatusDto status,
         List<AttributeDto> attributes,
-        ConvertedPricesDto priceConversion)
+        ConvertedPricesDto priceConversion,
+        ConditionDto conditionDto)
     {
         return new AdvertisementDto
         (
@@ -33,6 +34,7 @@ public static class AdvertisementMapper
             status,
             CurrencyMapper.ToDto(x.Currency),
             category,
+            conditionDto,
             UserShortMapper.ToDto(x.Owner),
             (x.Buyer is not null ? UserShortMapper.ToDto(x.Buyer) : null),
             x.Pictures

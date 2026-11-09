@@ -7,7 +7,7 @@ public static class BasketItemMapper
 {
     public static BasketItemDto ToDto(
         BasketItem item,
-        AdvertisementDto advert)
+        AdvertisementShortDto advert)
     {
         return new BasketItemDto(
             item.Id,

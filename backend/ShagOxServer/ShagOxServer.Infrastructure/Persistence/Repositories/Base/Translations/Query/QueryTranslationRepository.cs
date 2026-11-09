@@ -3,7 +3,6 @@ using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -64,12 +63,13 @@ public class QueryTranslationRepository<TEntity, TTranslator>
 
         query = ApplyIncludes(query);
 
-        return await _db.Set<TTranslator>()
+        return await query
+            .AsNoTracking()
             .WithStatusFilter(status)
-           .Where(x => EF.Property<string>(
+            .Where(x => EF.Property<string>(
                     x,
                     nameof(BaseTranslation<TTranslator>.Language)) == language)
-           .ToPagedResultAsync(
+            .ToPagedResultAsync(
                 pagination,
                 (x => x.Id),
                 cancellationToken);

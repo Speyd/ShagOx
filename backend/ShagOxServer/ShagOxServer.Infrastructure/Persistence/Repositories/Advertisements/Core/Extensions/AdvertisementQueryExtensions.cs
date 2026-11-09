@@ -11,6 +11,7 @@ public static class AdvertisementQueryExtensions
         this IQueryable<Advertisement> query)
     {
         return query
+            .AsSplitQuery()
             .Include(x => x.Variants)
             .Include(x => x.Status)
             .Include(x => x.Currency)
@@ -25,8 +26,10 @@ public static class AdvertisementQueryExtensions
         this IQueryable<Advertisement> query)
     {
         return query
+            .AsSplitQuery()
             .Include(x => x.Variants)
-            .Include(x => x.Pictures);
+            .Include(x => x.Pictures)
+            .Include(x => x.Currency);
     }
 
     public static IQueryable<AdvertisementCacheInfo> SelectCacheInfo(

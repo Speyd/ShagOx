@@ -47,7 +47,7 @@ public abstract class BaseUpdateService<TEntity>
         CancellationToken cancellationToken = default)
     {
         var entityResult = await _validator
-            .GetByIdWithAttachAsync(entityId, 
+            .GetByIdAsync(entityId, 
                 cancellationToken, request.FindStatus);
 
         if (!entityResult.IsSuccess || entityResult.Value is null)

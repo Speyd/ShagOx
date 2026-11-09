@@ -194,6 +194,27 @@ public class AdvertisementQueryService
         });
     }
 
+    public async Task<Result<PagedResult<AdvertisementRatingDto>>> GetCatalogPagedAsync(
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+        var adverts = await _advertisementRepository
+            .GetCatalogPagedAsync(pagination,
+                cancellationToken, status);
+
+        return await adverts.ToResultPagedAsync(async advert =>
+        {
+            var convertedPrices = await ConvertPricesAsync(
+                advert.Advertisement,
+                cancellationToken);
+
+            return AdvertisementRatingMapper.ToDto(
+                advert,
+                convertedPrices);
+        });
+    }
+
     public async Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
         AdvertisementSearchFilter filter,
         PaginationParams pagination,
@@ -220,7 +241,7 @@ public class AdvertisementQueryService
         });
     }
 
-    public async Task<Result<PagedResult<AdvertisementCatalogDto>>> CatalogSearchAsync(
+    public async Task<Result<PagedResult<AdvertisementRatingDto>>> CatalogSearchAsync(
         AdvertisementSearchFilter filter,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
@@ -236,7 +257,7 @@ public class AdvertisementQueryService
                 advertDto.Advertisement,
                 cancellationToken);
 
-            return AdvertisementCatalogMapper.ToDto(
+            return AdvertisementRatingMapper.ToDto(
                 advertDto,
                 convertedPrices);
         });

@@ -4,7 +4,6 @@ using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
-using Twilio.TwiML.Voice;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 public partial interface IAdvertisementQueryRepository
@@ -23,6 +22,11 @@ public partial interface IAdvertisementQueryRepository
 
     Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
         long userId,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
+    Task<PagedResult<AdvertisementCatalogQueryDto>> GetCatalogPagedAsync(
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);

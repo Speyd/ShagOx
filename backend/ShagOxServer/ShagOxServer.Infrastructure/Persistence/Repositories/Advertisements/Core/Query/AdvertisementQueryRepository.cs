@@ -96,11 +96,26 @@ public partial class AdvertisementQueryRepository
                 cancellationToken);
     }
 
+
+    public async Task<PagedResult<AdvertisementCatalogQueryDto>> GetCatalogPagedAsync(
+     PaginationParams pagination,
+     CancellationToken cancellationToken = default,
+     EntityStatus? status = null)
+    {
+        var query = _db.Advertisements
+            .ShortWithIncludes()
+            .WithStatusFilter(status)
+            .OrderByDescending(x => x.Popularity);
+
+        return await GetCatalogResultAsync(
+            query, pagination, cancellationToken);
+    }
+
     public async Task<PagedResult<AdvertisementCatalogQueryDto>> CatalogSearchAsync(
-    AdvertisementSearchFilter filter,
-    PaginationParams pagination,
-    CancellationToken cancellationToken = default,
-    EntityStatus? status = null)
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         var query = _db.Advertisements
             .ShortWithIncludes()
@@ -108,6 +123,15 @@ public partial class AdvertisementQueryRepository
             .Filter(filter)
             .OrderByDescending(x => x.Popularity);
 
+        return await GetCatalogResultAsync(
+            query, pagination, cancellationToken);
+    }
+
+    private async Task<PagedResult<AdvertisementCatalogQueryDto>> GetCatalogResultAsync(
+        IQueryable<Advertisement> query,
+        PaginationParams pagination,
+        CancellationToken cancellationToken)
+    {
         var result = await query.ToPagedResultAsync(
             pagination,
             x => x.Id,
@@ -128,16 +152,18 @@ public partial class AdvertisementQueryRepository
                 x => x.AdvertisementId,
                 cancellationToken);
 
-        return new PagedResult<AdvertisementCatalogQueryDto>(
-            result.Items.Select(x =>
-            {
-                reviews.TryGetValue(x.Id, out var review);
+        var items = result.Items.Select(x =>
+        {
+            reviews.TryGetValue(x.Id, out var review);
 
-                return new AdvertisementCatalogQueryDto(
-                    x,
-                    review?.Count ?? 0,
-                    (float)(review?.Average ?? 0));
-            }).ToList(),
+            return new AdvertisementCatalogQueryDto(
+                x,
+                review?.Count ?? 0,
+                (float)(review?.Average ?? 0));
+        }).ToList();
+
+        return new PagedResult<AdvertisementCatalogQueryDto>(
+            items,
             result.TotalCount,
             new PaginationParams(result.Page, result.PageSize));
     }

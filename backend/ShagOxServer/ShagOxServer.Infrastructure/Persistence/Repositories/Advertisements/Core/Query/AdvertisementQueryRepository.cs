@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -92,6 +93,30 @@ public partial class AdvertisementQueryRepository
             .OrderByDescending(x => x.Popularity)
             .ToPagedResultAsync(pagination,
                 (x => x.Id),
+                cancellationToken);
+    }
+
+    public async Task<PagedResult<AdvertisementCatalogQueryDto>> CatalogSearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Advertisements
+            .ShortWithIncludes()
+            .WithStatusFilter(status)
+            .Filter(filter)
+            .OrderByDescending(x => x.Popularity)
+            .Select(x => new AdvertisementCatalogQueryDto
+            (
+                x,
+                x.ReviewComments.Count(),
+                (float?)x.ReviewComments
+                    .Average(r => (double?)r.Grade) ?? 0f
+            ))
+            .ToPagedResultAsync(
+                pagination,
+                x => x.Advertisement.Id,
                 cancellationToken);
     }
 }

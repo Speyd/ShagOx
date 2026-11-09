@@ -8,6 +8,7 @@ public static class ReviewCommentQueryExtensions
        this IQueryable<ReviewComment> query)
     {
         return query
+            .AsSplitQuery()
             .Include(x => x.Owner);
     }
 }

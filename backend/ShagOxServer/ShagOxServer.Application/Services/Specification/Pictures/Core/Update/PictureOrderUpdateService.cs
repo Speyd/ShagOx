@@ -56,7 +56,7 @@ public abstract class PictureOrderUpdateService<TOwner, TPicture, TRequest>
             request.Order is not null)
         {
             var owner = await _ownerValidator
-                .GetByIdAsync(request.OwnerId.Value);
+                .GetByIdIncludeAsync(request.OwnerId.Value);
 
             var orderExists = owner.Value!.Pictures.Any(x =>
                 x.Id != pictureId &&

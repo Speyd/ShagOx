@@ -28,8 +28,14 @@ public partial interface IAdvertisementQueryRepository
         EntityStatus? status = null);
 
     Task<PagedResult<Advertisement>> ShortSearchAsync(
-       AdvertisementSearchFilter filter,
-       PaginationParams pagination,
-       CancellationToken cancellationToken = default,
-       EntityStatus? status = null);
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
+    Task<PagedResult<AdvertisementCatalogQueryDto>> CatalogSearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

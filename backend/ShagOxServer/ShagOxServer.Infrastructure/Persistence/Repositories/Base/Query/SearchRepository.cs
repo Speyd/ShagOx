@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
@@ -31,6 +32,7 @@ public class SearchRepository<TEntity, TFilter>
         query = ApplyFilter(query, filter);
 
         return await query
+            .AsNoTracking()
             .WithStatusFilter(status)
             .ToPagedResultAsync(pagination,
                 (x => x.Id),

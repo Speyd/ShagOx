@@ -46,7 +46,7 @@ public partial class CurrencyQueryRepository
         EntityStatus? status = null)
     {
         return await _db.Users
-            .WithStatusFilter(status)
+            .AsNoTracking()
             .Where(u => u.Id == userId)
             .Select(u => u.Currency)
             .FirstOrDefaultAsync(cancellationToken);

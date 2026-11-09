@@ -27,6 +27,20 @@ public class QueryRepository<TEntity>
             .LongCountAsync(cancellationToken);
     }
 
+    public virtual async Task<TEntity?> GetByIdNoTrackingAsync(
+        long id,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        IQueryable<TEntity> query = _db.Set<TEntity>();
+
+        return await query
+            .AsNoTracking()
+            .WithStatusFilter(status)
+            .FirstOrDefaultAsync(x => x.Id == id,
+                cancellationToken);
+    }
+
     public virtual async Task<TEntity?> GetByIdAsync(
         long id,
         CancellationToken cancellationToken = default,
@@ -34,9 +48,8 @@ public class QueryRepository<TEntity>
     {
         IQueryable<TEntity> query = _db.Set<TEntity>();
 
-        query = ApplyIncludes(query);
-
         return await query
+            .AsNoTracking()
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(x => x.Id == id, 
                 cancellationToken);
@@ -68,6 +81,7 @@ public class QueryRepository<TEntity>
         query = ApplyIncludes(query);
 
         return await query
+            .AsNoTracking()
             .WithStatusFilter(status)
             .ToPagedResultAsync(pagination,
                 (x => x.Id),

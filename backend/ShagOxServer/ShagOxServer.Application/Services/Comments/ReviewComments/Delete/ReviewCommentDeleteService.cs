@@ -3,6 +3,8 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Delete;
+using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
@@ -21,6 +23,9 @@ public class ReviewCommentDeleteService
 
     private readonly ReviewCommentInvalidationService _commInvalid;
 
+    private readonly IAdvertisementImageDeleteService _imageDeleteService;
+    private readonly IPictureLoaderService _loaderService;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ReviewCommentDeleteService> _logger;
 
@@ -29,6 +34,8 @@ public class ReviewCommentDeleteService
         IRepository<ReviewComment> commentRepository,
         ReviewCommentValidator commentValidator,
         ReviewCommentInvalidationService commInvalid,
+        IAdvertisementImageDeleteService imageDeleteService,
+        IPictureLoaderService loaderService,
         IUnitOfWork unitOfWork,
         ILogger<ReviewCommentDeleteService> logger
     )
@@ -37,6 +44,8 @@ public class ReviewCommentDeleteService
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
         _commInvalid = commInvalid;
+        _imageDeleteService = imageDeleteService;
+        _loaderService = loaderService;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -56,9 +65,22 @@ public class ReviewCommentDeleteService
 
         try
         {
+
             _commentRepository.Delete(comment.Value!);
 
+            foreach (var image in comment.Value!.Pictures)
+            {
+                await _imageDeleteService
+                    .DeleteRecordAsync(image.Id, cancellationToken);
+            }
+
             await _unitOfWork.CommitAsync();
+
+            foreach (var image in comment.Value!.Pictures)
+            {
+                await _loaderService
+                    .DeleteAsync(image.PublicId);
+            }
         }
         catch (Exception ex)
         {

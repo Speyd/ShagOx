@@ -32,37 +32,10 @@ public static class AdvertisementShortMapper
                 .Select(AdvertisementImageMapper.ToDto)
                 .FirstOrDefault(),
             x.Attributes,
-            ToVariantShortDto(priceConversion, x.Variants),
+            AdvertisementVariantShortMapper
+                .ToVariantShortDto(priceConversion, x.Variants),
             x.SoldAt,
             x.CreatedAt
         );
-    }
-
-    public static List<AdvertisementVariantShortDto> ToVariantShortDto(
-        ConvertedPricesDto priceConversion,
-        ICollection<AdvertisementVariant> variants)
-    {
-        var result = new List<AdvertisementVariantShortDto>();
-
-        foreach(var x in variants)
-        {
-            var converts = new ConvertedPricesDto(
-                priceConversion.Price with
-                {
-                    ConvertPrice = x.Price * 
-                        priceConversion.Price.Coefficient
-                },
-                priceConversion.PreviousPrice with
-                {
-                    ConvertPrice = x.PreviousPrice * 
-                        priceConversion.PreviousPrice.Coefficient
-                }
-            );
-
-            result.Add(AdvertisementVariantShortMapper
-                .ToDto(x, converts));
-        }
-
-        return result;
     }
 }

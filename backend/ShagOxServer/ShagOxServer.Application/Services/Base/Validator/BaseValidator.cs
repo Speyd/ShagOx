@@ -46,7 +46,7 @@ public abstract class BaseValidator<TEntity>
 
         return Result<TEntity>.Success(entity);
     }
-    public async Task<Result<TEntity>> GetByIdWithAttachAsync(
+    public async Task<Result<TEntity>> GetByIdAttachAsync(
         long entityId,
         CancellationToken cancellationToken = default,
         EntityStatus findStatus = EntityStatus.ActiveAndHidden)

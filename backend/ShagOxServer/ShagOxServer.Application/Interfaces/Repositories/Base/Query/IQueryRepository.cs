@@ -10,6 +10,10 @@ public interface IQueryRepository<TEntity>
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
+    Task<TEntity?> GetByIdNoTrackingAsync(
+        long id,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
     Task<TEntity?> GetByIdAsync(
         long id,
         CancellationToken cancellationToken = default,

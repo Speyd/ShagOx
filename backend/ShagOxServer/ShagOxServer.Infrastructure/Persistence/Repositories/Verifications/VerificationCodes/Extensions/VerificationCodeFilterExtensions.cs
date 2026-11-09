@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Entities.Verifications;
+using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Filters.Verifications.VerificationCodes;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Verifications.VerificationCodes.Extensions;

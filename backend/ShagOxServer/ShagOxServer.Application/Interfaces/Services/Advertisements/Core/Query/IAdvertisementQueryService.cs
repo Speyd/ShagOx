@@ -34,6 +34,12 @@ public interface IAdvertisementQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
+    Task<Result<PagedResult<AdvertisementCatalogDto>>> CatalogSearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
     Task<ConvertedPricesDto> ConvertPricesAsync(
         Advertisement advert,
         CancellationToken cancellationToken = default);

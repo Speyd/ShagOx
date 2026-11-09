@@ -10,6 +10,7 @@ public static class FavoriteQueryExtensions
         this IQueryable<Favorite> query)
     {
         return query
+            .AsSplitQuery()
             .Include(x => x.Owner)
                 .ThenInclude(a => a.City)
                     .ThenInclude(c => c.Region)

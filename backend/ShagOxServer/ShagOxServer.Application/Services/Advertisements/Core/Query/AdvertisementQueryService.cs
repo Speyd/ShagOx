@@ -203,6 +203,28 @@ public class AdvertisementQueryService
         });
     }
 
+    public async Task<Result<PagedResult<AdvertisementCatalogDto>>> CatalogSearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+        var advertsDto = await _advertisementRepository
+            .CatalogSearchAsync(filter, pagination,
+                cancellationToken, status);
+
+        return await advertsDto.ToResultPagedAsync(async advertDto =>
+        {
+            var convertedPrices = await ConvertPricesAsync(
+                advertDto.Advertisement,
+                cancellationToken);
+
+            return AdvertisementCatalogMapper.ToDto(
+                advertDto,
+                convertedPrices);
+        });
+    }
+
     public async Task<ConvertedPricesDto> ConvertPricesAsync(
         Advertisement advert,
         CancellationToken cancellationToken = default)

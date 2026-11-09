@@ -11,6 +11,7 @@ public static class UserRoleQueryExtensions
         this IQueryable<Role> query)
     {
         return query
+            .AsSplitQuery()
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.User);
     }
@@ -19,6 +20,7 @@ public static class UserRoleQueryExtensions
         this IQueryable<User> query)
     {
         return query
+            .AsSplitQuery()
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role);
     }

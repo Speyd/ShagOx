@@ -8,6 +8,7 @@ public static class AdvertisementVariantQueryExtensions
         this IQueryable<AdvertisementVariant> query)
     {
         return query
+            .AsSplitQuery()
             .Include(x => x.Advertisement)
                 .ThenInclude(x => x.Currency);
     }

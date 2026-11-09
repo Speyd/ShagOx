@@ -3,6 +3,7 @@ using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using Twilio.TwiML.Voice;
 
 namespace ShagOxServer.Application.Interfaces.Services.Base.Query;
 public interface IQueryOperations<TDto, TFilter>

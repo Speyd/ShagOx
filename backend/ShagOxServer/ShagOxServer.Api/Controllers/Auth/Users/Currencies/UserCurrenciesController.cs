@@ -58,7 +58,7 @@ public class UserCurrenciesController
         CancellationToken cancellationToken)
     {
         var user = await _userService
-            .GetByIdAsync(userId,
+            .GetByIdIncludeAsync(userId,
                 cancellationToken, status);
 
         if (user is null)

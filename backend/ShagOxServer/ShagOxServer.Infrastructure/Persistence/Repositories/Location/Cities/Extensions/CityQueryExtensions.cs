@@ -10,7 +10,8 @@ public static class CityQueryExtensions
        this IQueryable<City> query)
     {
         return query
-           .Include(x => x.Region);
+            .AsSplitQuery()
+            .Include(x => x.Region);
     }
 
     public static IQueryable<CityCacheInfo> SelectCacheInfo(

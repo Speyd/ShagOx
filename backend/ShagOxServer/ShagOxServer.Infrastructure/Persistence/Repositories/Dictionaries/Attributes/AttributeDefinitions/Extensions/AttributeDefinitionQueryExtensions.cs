@@ -9,7 +9,9 @@ public static class AttributeDefinitionQueryExtensions
     public static IQueryable<AttributeDefinition> WithIncludes(
         this IQueryable<AttributeDefinition> query)
     {
-        return query.Include(x => x.Category);
+        return query
+            .AsSplitQuery()
+            .Include(x => x.Category);
     }
 
     public static IQueryable<AttributeDefinitionCacheInfo> SelectCacheInfo(

@@ -55,7 +55,7 @@ public class AdvertisementDeleteService
         CancellationToken cancellationToken = default)
     {
         var advert = await _advertValidator
-            .GetByIdAsync(id, cancellationToken);
+            .GetByIdIncludeAsync(id, cancellationToken);
 
         if (!advert.IsSuccess)
             return Result<DeleteResponse>.Fail(advert.Error);

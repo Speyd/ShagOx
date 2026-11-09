@@ -10,10 +10,11 @@ public static class CategoryQueryExtensions
        this IQueryable<Category> query)
     {
         return query
-           .Include(x => x.ProductType)
-               .ThenInclude(x => x.Translations)
-           .Include(x => x.Attributes)
-           .Include(x => x.Advertisements);
+            .AsSplitQuery()
+            .Include(x => x.ProductType)
+                .ThenInclude(x => x.Translations)
+            .Include(x => x.Attributes)
+            .Include(x => x.Advertisements);
     }
 
     public static IQueryable<CategoryCacheInfo> SelectCacheInfo(

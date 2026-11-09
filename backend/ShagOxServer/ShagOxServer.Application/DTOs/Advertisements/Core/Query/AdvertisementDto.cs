@@ -1,3 +1,4 @@
+using CloudinaryDotNet;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
@@ -5,6 +6,7 @@ using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
+using ShagOxServer.Application.DTOs.Specification.Conditions.Query;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 using ShagOxServer.Domain.Base.Enum;
@@ -22,6 +24,7 @@ public sealed record AdvertisementDto
     StatusDto Status,
     CurrencyDto Currency,
     CategoryDto Category,
+    ConditionDto Condition,
     UserShortDto Seller,
     UserShortDto? Buyer,
     List<AdvertisementImageDto> Pictures,

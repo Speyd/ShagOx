@@ -17,27 +17,7 @@ public static class BasketItemQueryExtensions
 
             .Include(x => x.AdvertisementVariant)
                 .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Owner)
-
-            .Include(x => x.AdvertisementVariant)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Category)
-
-            .Include(x => x.AdvertisementVariant)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Currency)
-
-            .Include(x => x.AdvertisementVariant)
-                .ThenInclude(x => x.Advertisement)
                     .ThenInclude(x => x.Status)
-
-            .Include(x => x.AdvertisementVariant)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Condition)
-
-            .Include(x => x.AdvertisementVariant)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Buyer)
 
             .Include(x => x.Basket);
     }

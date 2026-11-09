@@ -9,6 +9,7 @@ public static class AvatarQueryExtensions
       this IQueryable<Avatar> query)
     {
         return query
-           .Include(x => x.Owner);
+            .AsSplitQuery()
+            .Include(x => x.Owner);
     }
 }

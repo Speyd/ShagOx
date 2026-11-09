@@ -35,7 +35,7 @@ public class FavoriteUpdateValidator
             return Result<bool>.Success(true);
 
         var advert = await _advertisementValidator
-            .GetByIdAsync(advertisementId.Value, cancellationToken);
+            .ExistsByIdAsync(advertisementId.Value, cancellationToken);
 
         if (!advert.IsSuccess)
             return Result<bool>.NotFound(

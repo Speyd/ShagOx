@@ -10,6 +10,7 @@ public static class UserQueryExtensions
         this IQueryable<User> query)
     {
         return query
+            .AsSplitQuery()
             .Include(x => x.Avatar)
             .Include(x => x.Currency)
             .Include(x => x.City)

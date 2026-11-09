@@ -9,6 +9,7 @@ public static class AdvertisementImageQueryExtensions
       this IQueryable<AdvertisementImage> query)
     {
         return query
-           .Include(x => x.Owner);
+            .AsSplitQuery()
+            .Include(x => x.Owner);
     }
 }

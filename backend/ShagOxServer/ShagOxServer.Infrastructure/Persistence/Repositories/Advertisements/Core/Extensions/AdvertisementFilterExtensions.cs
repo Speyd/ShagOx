@@ -34,14 +34,20 @@ public static class AdvertisementFilterExtensions
                 .OrderByDescending(x => x.Popularity);
         }
 
-        if (filter.MinPrice.HasValue)
+        if (filter.MinPrice.HasValue || filter.MaxPrice.HasValue)
         {
-            query = query.Where(x => x.Variants.Any(v => v.Price >= filter.MinPrice.Value));
-        }
-
-        if (filter.MaxPrice.HasValue)
-        {
-            query = query.Where(x => x.Variants.Any(v => v.Price <= filter.MaxPrice.Value));
+            query = query.Where(x =>
+                (
+                    x.Price.HasValue &&
+                    (!filter.MinPrice.HasValue || x.Price.Value >= filter.MinPrice.Value) &&
+                    (!filter.MaxPrice.HasValue || x.Price.Value <= filter.MaxPrice.Value)
+                )
+                ||
+                x.Variants.Any(v =>
+                    (!filter.MinPrice.HasValue || v.Price >= filter.MinPrice.Value) &&
+                    (!filter.MaxPrice.HasValue || v.Price <= filter.MaxPrice.Value)
+                )
+            );
         }
 
         if (!string.IsNullOrWhiteSpace(filter.Attributes))
@@ -59,38 +65,4 @@ public static class AdvertisementFilterExtensions
 
         return query;
     }
-
-    //private static IQueryable<Advertisement> ApplyAttributeFilters(
-    //    IQueryable<Advertisement> query,
-    //    string filtersJson,
-    //    bool isVariant)
-    //{
-    //    using var document = JsonDocument.Parse(filtersJson);
-
-    //    foreach (var property in document.RootElement.EnumerateObject())
-    //    {
-    //        var values = property.Value.ValueKind == JsonValueKind.Array
-    //            ? property.Value.EnumerateArray().ToArray()
-    //            : [property.Value];
-
-    //        query = query.Where(ad =>
-    //            isVariant
-    //                ? ad.Variants.Any(v =>
-    //                    values.Any(value =>
-    //                        EF.Functions.JsonContains(
-    //                            v.Attributes,
-    //                            JsonSerializer.Serialize(new Dictionary<string, JsonElement>
-    //                            {
-    //                                [property.Name] = value
-    //                            }))))
-    //                : EF.Functions.JsonContains(
-    //                    ad.Attributes,
-    //                    JsonSerializer.Serialize(new Dictionary<string, JsonElement>
-    //                    {
-    //                        [property.Name] = values[0]
-    //                    })));
-    //    }
-
-    //    return query;
-    //}
 }

@@ -18,7 +18,6 @@ import { useBasketDrawer } from "@/features/basket/model/useBasketDrawer";
 import {
   getBasketItemPrice,
   getBasketItemStock,
-  getBasketItemVariant,
 } from "@/features/basket/model/types";
 import {
   formatAttributeValue,
@@ -51,7 +50,6 @@ export default function BasketItem({
   } = useToggleBasketFavorite(advertisement?.id);
 
   const price = getBasketItemPrice(item);
-  const variant = getBasketItemVariant(item);
   const stock = getBasketItemStock(item);
   const attributes = new Map<string, string>();
 
@@ -60,7 +58,7 @@ export default function BasketItem({
     if (text) attributes.set(key, text);
   });
 
-  const currencySymbol = item.advertisement?.currency?.symbol ?? "";
+  const currencySymbol = advertisement.priceConversion.price.from.symbol;
 
   const handleAdvertisementClick = () => {
     closeBasket();

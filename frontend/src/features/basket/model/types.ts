@@ -1,4 +1,4 @@
-import type { Advertisement } from "@/shared/lib/types/advertisements";
+import type { ShortAdvertisement } from "@/shared/lib/types/advertisements";
 
 export type BasketItemCreateRequest = {
   basketId: number;
@@ -14,11 +14,9 @@ export type BasketItem = {
   id: number;
   basketId: number;
   advertisementVariantId: number;
-  advertisement: BasketAdvertisement;
+  advertisement: ShortAdvertisement;
   quantity: number;
 };
-
-export type BasketAdvertisement = Advertisement;
 
 export type Basket = {
   id: number;

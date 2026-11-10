@@ -29,8 +29,6 @@ public static class PaginationHelper
         var totalCount = await query
             .CountAsync(cancellationToken);
 
-        var firstItems = await query.Take(20).ToListAsync();
-
         var items = await query
             .WithPagination(pagination,
                 orderBy, descending)

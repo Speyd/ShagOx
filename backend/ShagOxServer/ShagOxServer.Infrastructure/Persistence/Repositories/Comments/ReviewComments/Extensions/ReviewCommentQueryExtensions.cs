@@ -8,10 +8,10 @@ public static class ReviewCommentQueryExtensions
        this IQueryable<ReviewComment> query)
     {
         return query
+            .AsSplitQuery()
             .Include(x => x.Owner)
                 .ThenInclude(o => o.Avatar)
             .Include(x => x.Pictures)
-            .AsSplitQuery()
             .Include(x => x.Replies);
     }
 }

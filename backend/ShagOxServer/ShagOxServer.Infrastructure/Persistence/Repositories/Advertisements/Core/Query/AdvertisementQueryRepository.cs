@@ -20,6 +20,7 @@ public partial class AdvertisementQueryRepository
         : base(db)
     { }
 
+
     public async Task<List<Advertisement>> GetByIdsAsync(
         List<long> ids,
         CancellationToken cancellationToken = default,
@@ -47,12 +48,74 @@ public partial class AdvertisementQueryRepository
                 (x => x.Id),
                 cancellationToken);
     }
+    public async Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
+        long userId,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Advertisements
+            .WithIncludes()
+            .WithStatusFilter(status)
+            .Where(x => x.BuyerId == userId)
+            .OrderByDescending(x => x.Popularity)
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
+                cancellationToken);
+    }
+
+    public override async Task<PagedResult<Advertisement>> SearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Advertisements
+            .WithIncludes()
+            .WithStatusFilter(status)
+            .Filter(filter)
+            .OrderByDescending(x => x.Popularity)
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
+                cancellationToken);
+    }
+
+    public async Task<PagedResult<Advertisement>> ShortSearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Advertisements
+            .ShortWithIncludes()
+            .WithStatusFilter(status)
+            .Filter(filter)
+            .OrderByDescending(x => x.Popularity)
+            .ToPagedResultAsync(pagination,
+                (x => x.Id),
+                cancellationToken);
+    }
+
+
+    public async Task<PagedResult<AdvertisementCatalogQueryDto>> GetCatalogPagedAsync(
+     PaginationParams pagination,
+     CancellationToken cancellationToken = default,
+     EntityStatus? status = null)
+    {
+        var query = _db.Advertisements
+            .ShortWithIncludes()
+            .WithStatusFilter(status)
+            .OrderByDescending(x => x.Popularity);
+
+        return await GetCatalogResultAsync(
+            query, pagination, cancellationToken);
+    }
 
     public async Task<PagedResult<AdvertisementCatalogQueryDto>> CatalogSearchAsync(
-    AdvertisementSearchFilter filter,
-    PaginationParams pagination,
-    CancellationToken cancellationToken = default,
-    EntityStatus? status = null)
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         var query = _db.Advertisements
             .ShortWithIncludes()
@@ -60,6 +123,15 @@ public partial class AdvertisementQueryRepository
             .Filter(filter)
             .OrderByDescending(x => x.Popularity);
 
+        return await GetCatalogResultAsync(
+            query, pagination, cancellationToken);
+    }
+
+    private async Task<PagedResult<AdvertisementCatalogQueryDto>> GetCatalogResultAsync(
+        IQueryable<Advertisement> query,
+        PaginationParams pagination,
+        CancellationToken cancellationToken)
+    {
         var result = await query.ToPagedResultAsync(
             pagination,
             x => x.Id,
@@ -80,16 +152,18 @@ public partial class AdvertisementQueryRepository
                 x => x.AdvertisementId,
                 cancellationToken);
 
-        return new PagedResult<AdvertisementCatalogQueryDto>(
-            result.Items.Select(x =>
-            {
-                reviews.TryGetValue(x.Id, out var review);
+        var items = result.Items.Select(x =>
+        {
+            reviews.TryGetValue(x.Id, out var review);
 
-                return new AdvertisementCatalogQueryDto(
-                    x,
-                    review?.Count ?? 0,
-                    (float)(review?.Average ?? 0));
-            }).ToList(),
+            return new AdvertisementCatalogQueryDto(
+                x,
+                review?.Count ?? 0,
+                (float)(review?.Average ?? 0));
+        }).ToList();
+
+        return new PagedResult<AdvertisementCatalogQueryDto>(
+            items,
             result.TotalCount,
             new PaginationParams(result.Page, result.PageSize));
     }

@@ -41,6 +41,18 @@ public class AdvertisementQueriesController
         return result.ToActionResult();
     }
 
+    [HttpGet("catalog")]
+    public async Task<IActionResult> GetCatalogPaged(
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
+    {
+        var result = await _advertQueryService
+            .GetCatalogPagedAsync(pagination,
+                cancellationToken);
+
+        return result.ToActionResult();
+    }
+
 
     [HttpGet("seller{userId:long}")]
     public async Task<IActionResult> GetBySeller(

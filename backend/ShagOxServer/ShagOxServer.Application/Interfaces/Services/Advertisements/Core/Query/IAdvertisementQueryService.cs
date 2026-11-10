@@ -16,8 +16,30 @@ public interface IAdvertisementQueryService
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
-        
-    Task<Result<PagedResult<AdvertisementCatalogDto>>> CatalogSearchAsync(
+
+    Task<Result<PagedResult<AdvertisementShortDto>>> GetShortPagedAsync(
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
+    Task<Result<PagedResult<AdvertisementRatingDto>>> GetCatalogPagedAsync(
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
+    Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
+        long userId,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
+    Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
+        AdvertisementSearchFilter filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
+    Task<Result<PagedResult<AdvertisementRatingDto>>> CatalogSearchAsync(
         AdvertisementSearchFilter filter,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
@@ -25,5 +47,9 @@ public interface IAdvertisementQueryService
 
     Task<ConvertedPricesDto> ConvertPricesAsync(
         Advertisement advert,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<AdvertisementFacetsDto>> GetFacetsAsync(
+        long categoryId,
         CancellationToken cancellationToken = default);
 }

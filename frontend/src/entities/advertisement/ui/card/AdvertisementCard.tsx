@@ -19,19 +19,20 @@ type AdvertisementCardProps = Advertisement | CatalogAdvertisement;
 export function AdvertisementCard(props: AdvertisementCardProps) {
   const rating =
     "reviewCount" in props
-      ? { count: props.reviewCount, average: props.averageRating }
+      ? { count: props.reviewCount, average: props.averageRatings }
       : undefined;
   const [variant, setVariant] = useState(() =>
     getDefaultVariant(props.variants ?? []),
   );
   const { handleAdd, isInBasket, isLoading } = useBasketAction(variant?.id);
 
-  const cover = "pictures" in props ? props.pictures[0] : props.image;
+  const cover = "pictures" in props ? props.pictures[0] : props.picture;
   const imageUrl = cover?.url || "/placeholder-image.png";
   const href = `/advertisement/${props.id}`;
   const price = variant?.price ?? 0;
   const previousPrice = variant?.previousPrice ?? 0;
   const inStock = (variant?.stock ?? 0) > 0;
+  const currencySymbol = props.priceConversion?.price.from.symbol;
 
   return (
     <div className={styles.card}>
@@ -75,11 +76,11 @@ export function AdvertisementCard(props: AdvertisementCardProps) {
         </div>
 
         <div className={styles.priceRow}>
-          <Price price={price} currency={props.currency?.symbol} />
+          <Price price={price} currency={currencySymbol} />
           {previousPrice > price && (
             <span className={styles.oldPrice}>
               {previousPrice.toLocaleString("uk-UA")}{" "}
-              {props.currency?.symbol ?? "₴"}
+              {currencySymbol ?? "₴"}
             </span>
           )}
         </div>

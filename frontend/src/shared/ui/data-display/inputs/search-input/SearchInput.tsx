@@ -341,9 +341,9 @@ export default function SearchInput() {
 
                       <div className={styles.productsList}>
                         {suggestions.map((item) => {
-                          const imageUrl = item.image?.url;
+                          const imageUrl = item.picture?.url;
                           const price = getAdvertisementPrice(item);
-                          const inStock = (item.stock ?? 0) > 0;
+                          const inStock = item.variants.some((variant) => variant.stock > 0);
 
                           return (
                             <Link

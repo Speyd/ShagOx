@@ -33,7 +33,7 @@ export default function BasketItemsList({
         <BasketCartItem
           key={item.id}
           item={item}
-          imageUrl={item.advertisement.image?.url}
+          imageUrl={item.advertisement.picture?.url}
           isSelected={selectedIds?.has(item.id)}
           onToggle={isSelectable ? () => onToggleItem?.(item.id) : undefined}
           showCheckbox={isSelectable}

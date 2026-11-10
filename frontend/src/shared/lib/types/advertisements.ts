@@ -75,6 +75,7 @@ export type Advertisement = {
     code: string;
     lable: string | null;
   };
+  priceConversion: ConvertedPrices | null;
   currency: Currency;
   category: Category;
   seller: UserSeller;
@@ -108,7 +109,7 @@ export type ShortAdvertisement = {
   sellerId: number;
   buyerId: number | null;
   status: Status;
-  image: AdvertisementImage | null;
+  picture: AdvertisementImage | null;
   attributes: Record<string, unknown>;
   variants: ShortAdvertisementVariant[];
   soldAt: string | null;
@@ -119,18 +120,16 @@ export type CatalogAdvertisement = {
   id: number;
   title: string;
   description: string;
-  price: number;
-  previousPrice: number;
-  stock: number;
-  priceConversion?: ConvertedPrices;
-  currency?: CurrencyShort;
+  price: number | null;
+  previousPrice: number | null;
+  priceConversion: ConvertedPrices;
   currencyId: number;
   categoryId: number;
-  image: AdvertisementImage | null;
+  picture: AdvertisementImage | null;
   attributes: VariantAttribute[];
   variants: AdvertisementVariant[];
   reviewCount: number;
-  averageRating: number;
+  averageRatings: number;
 };
 
 export type ConvertedPrices = {
@@ -188,20 +187,4 @@ export function getAdvertisementPrice(
   advertisement: Pick<Advertisement, "variants">,
 ): number {
   return advertisement.variants[0]?.price ?? 0;
-}
-
-export function getAdvertisementStock(
-  advertisement: Pick<Advertisement, "variants">,
-): number {
-  return advertisement.variants[0]?.stock ?? 0;
-}
-
-export function getVariantAttributeDisplayValue(
-  attr: VariantAttribute,
-): string {
-  const valObj = attr.values[0];
-  if (!valObj) return "";
-  if (valObj.label) return valObj.label;
-  if (valObj.value) return valObj.value;
-  return valObj.code;
 }

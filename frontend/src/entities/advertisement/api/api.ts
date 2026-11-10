@@ -1,8 +1,10 @@
 import { api } from "@/shared/api/api";
-import type { Advertisement } from "@/shared/lib/types/advertisements";
+import type {
+  Advertisement,
+  CatalogAdvertisement,
+} from "@/shared/lib/types/advertisements";
 import type { PaginatedResponse } from "@/shared/lib/types/paginatedResponse";
 import type {
-  ApiAdvertisement,
   ApiCategoryItem,
   ApiProductTypeItem,
   CategoryFacets,
@@ -12,30 +14,9 @@ import type {
   ProductTypeItem,
 } from "../model/types";
 
-function normalizeAdvertisement(
-  advertisement: ApiAdvertisement,
-): Advertisement {
-  const variants = advertisement.variants ?? [];
-  const firstVariant = variants[0];
-
-  const normalized = {
-    ...advertisement,
-    attributes: advertisement.attributes ?? {},
-    price: advertisement.price ?? firstVariant?.price ?? 0,
-    previousPrice:
-      advertisement.previousPrice ?? firstVariant?.previousPrice ?? 0,
-    stock:
-      advertisement.stock ??
-      variants.reduce((total, variant) => total + (variant.stock ?? 0), 0),
-    properties: advertisement.properties ?? advertisement.attributes ?? {},
-  };
-
-  return normalized as unknown as Advertisement;
-}
-
 export async function getCatalogAdvertisements(
   params: CatalogParams = {},
-): Promise<PaginatedResponse<Advertisement>> {
+): Promise<PaginatedResponse<CatalogAdvertisement>> {
   const search = params.search?.trim();
   const categoryId = params.categoryId ?? params.categoryIds?.[0];
 
@@ -48,9 +29,11 @@ export async function getCatalogAdvertisements(
     Object.keys(params.attributes ?? {}).length > 0 ||
     Object.keys(params.variantAttributes ?? {}).length > 0;
 
-  const endpoint = hasFilters ? "/advertisements/search" : "/advertisements";
+  const endpoint = hasFilters
+    ? "/advertisements/catalog-search"
+    : "/advertisements/catalog";
 
-  const response = await api.get<PaginatedResponse<ApiAdvertisement>>(
+  const response = await api.get<PaginatedResponse<CatalogAdvertisement>>(
     endpoint,
     {
       params: {
@@ -71,15 +54,12 @@ export async function getCatalogAdvertisements(
     },
   );
 
-  return {
-    ...response.data,
-    items: response.data.items.map(normalizeAdvertisement),
-  };
+  return response.data;
 }
 
-export async function getAdvertisement(id: number) {
-  const response = await api.get<ApiAdvertisement>(`/advertisements/${id}`);
-  return normalizeAdvertisement(response.data);
+export async function getAdvertisement(id: number): Promise<Advertisement> {
+  const response = await api.get<Advertisement>(`/advertisements/${id}`);
+  return response.data;
 }
 
 export async function getCategories(
@@ -136,13 +116,14 @@ export async function getAttributeDictionaryValues(
   if (!categoryId) return [];
   const response = await api.get<CategoryAttributeValueResponse[]>(
     `/attribute-values/category/${categoryId}`,
-    // pageSize обмежує кількість значень у кожному словнику
     { params: { page: 1, pageSize: 200 } },
   );
   return response.data.filter((item) => item.attribute != null);
 }
 
-export async function getCategoryFacets(categoryId: number): Promise<CategoryFacets> {
+export async function getCategoryFacets(
+  categoryId: number,
+): Promise<CategoryFacets> {
   const { data } = await api.get<CategoryFacets>("/advertisements/facets", {
     params: { categoryId },
   });
@@ -153,7 +134,7 @@ export async function getAdvertisements(params?: {
   page?: number;
   pageSize?: number;
 }): Promise<PaginatedResponse<Advertisement>> {
-  const response = await api.get<PaginatedResponse<ApiAdvertisement>>(
+  const response = await api.get<PaginatedResponse<Advertisement>>(
     "/advertisements",
     {
       params: {
@@ -163,10 +144,7 @@ export async function getAdvertisements(params?: {
     },
   );
 
-  return {
-    ...response.data,
-    items: response.data.items.map(normalizeAdvertisement),
-  };
+  return response.data;
 }
 
 export async function getAdminAdvertisements(

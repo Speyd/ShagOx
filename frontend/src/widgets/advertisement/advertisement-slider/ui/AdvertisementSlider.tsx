@@ -4,12 +4,15 @@ import { Text, UnstyledButton } from "@mantine/core";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { EmblaCarouselType } from "embla-carousel";
 import styles from "./AdvertisementSlider.module.css";
-import type { Advertisement } from "@/shared/lib/types/advertisements";
+import type {
+  Advertisement,
+  CatalogAdvertisement,
+} from "@/shared/lib/types/advertisements";
 import { AdvertisementCard } from "@/entities/advertisement";
 
 interface AdvertisementSliderProps {
   title: string;
-  items: Advertisement[];
+  items: (Advertisement | CatalogAdvertisement)[];
   isLoading?: boolean;
 }
 

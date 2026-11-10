@@ -1,9 +1,4 @@
-export type Category = {
-  id: number;
-  code: string;
-  productTypeId: number;
-  lable: string;
-};
+import type { Category } from "./category";
 
 export type Currency = {
   id: number;
@@ -89,6 +84,77 @@ export type Advertisement = {
   variants: AdvertisementVariant[];
   soldAt: string | null;
   createdAt: string;
+};
+
+export type ShortAdvertisementVariant = {
+  id: number;
+  advertisementId: number;
+  price: number;
+  previousPrice: number;
+  priceConversion: ConvertedPrices;
+  stock: number;
+  attributes: Record<string, unknown>;
+};
+
+export type ShortAdvertisement = {
+  id: number;
+  title: string;
+  description: string;
+  price: number | null;
+  previousPrice: number | null;
+  priceConversion: ConvertedPrices;
+  currencyId: number;
+  categoryId: number;
+  sellerId: number;
+  buyerId: number | null;
+  status: Status;
+  image: AdvertisementImage | null;
+  attributes: Record<string, unknown>;
+  variants: ShortAdvertisementVariant[];
+  soldAt: string | null;
+  createdAt: string;
+};
+
+export type CatalogAdvertisement = {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  previousPrice: number;
+  stock: number;
+  priceConversion?: ConvertedPrices;
+  currency?: CurrencyShort;
+  currencyId: number;
+  categoryId: number;
+  image: AdvertisementImage | null;
+  attributes: VariantAttribute[];
+  variants: AdvertisementVariant[];
+  reviewCount: number;
+  averageRating: number;
+};
+
+export type ConvertedPrices = {
+  price: CurrencyConvert;
+  previousPrice: CurrencyConvert;
+};
+
+export type CurrencyConvert = {
+  from: CurrencyShort;
+  to: CurrencyShort | null;
+  convertPrice: number | null;
+  coefficient: number;
+};
+
+export type CurrencyShort = {
+  code: string;
+  symbol: string;
+  name: string;
+};
+
+export type Status = {
+  id: number;
+  code: string;
+  label: string | null;
 };
 
 export function formatAttributeValue(value: unknown): string {

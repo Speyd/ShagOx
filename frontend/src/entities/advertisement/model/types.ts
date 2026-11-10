@@ -1,20 +1,3 @@
-import type {
-  Advertisement,
-  AdvertisementVariant,
-} from "@/shared/lib/types/advertisements";
-
-export type ApiAdvertisement = Omit<
-  Advertisement,
-  "attributes" | "variants"
-> & {
-  price?: number;
-  previousPrice?: number;
-  stock?: number;
-  properties?: Record<string, unknown>;
-  attributes?: Record<string, unknown>;
-  variants?: AdvertisementVariant[];
-};
-
 export type CatalogParams = {
   page?: number;
   pageSize?: number;

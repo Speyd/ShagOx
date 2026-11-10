@@ -46,7 +46,7 @@ function AdminUpdateAdvertisementFormContent({
   const mutation = useUpdateAdvertisement();
 
   const [images, setImages] = useState<ImageItem[]>(() =>
-    advertisement.images.map((image) => ({
+    advertisement.pictures.map((image) => ({
       id: String(image.id),
       url: image.url,
       imageId: image.id,

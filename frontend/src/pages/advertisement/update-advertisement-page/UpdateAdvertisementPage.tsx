@@ -40,12 +40,12 @@ export default function UpdateAdvertisementPage() {
 
     const imagesChanged =
       deletedImageIds.length > 0 ||
-      images.length !== advertisement.images.length ||
+      images.length !== advertisement.pictures.length ||
       images.some(
         (image, index) =>
           image.file != null ||
           image.imageId == null ||
-          image.imageId !== advertisement.images[index]?.id,
+          image.imageId !== advertisement.pictures[index]?.id,
       );
 
     const dto: UpdateAdvertisementRequestDto = {
@@ -107,7 +107,7 @@ export default function UpdateAdvertisementPage() {
           description: advertisement.description,
           price: getAdvertisementPrice(advertisement),
         }}
-        defaultImages={advertisement.images.map((image) => ({
+        defaultImages={advertisement.pictures.map((image) => ({
           id: image.id.toString(),
           imageId: image.id,
           url: image.url,

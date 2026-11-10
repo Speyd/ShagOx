@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Infrastructure.DependencyInjections.Admin;
 using ShagOxServer.Infrastructure.DependencyInjections.Advertisements;
 using ShagOxServer.Infrastructure.DependencyInjections.Auth;
 using ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
@@ -34,6 +35,7 @@ public static class DependencyInjection
             .AddLocationInfrastructure()
             .AddCommentsInfrastructure()
             .AddAdvertisementsInfrastructure()
+            .AddAdminInfrastructure()
             .AddUnitOfWorkInfrastructure()
             .AddSpecificationInfrastructure()
             .AddDictionariesInfrastructure()

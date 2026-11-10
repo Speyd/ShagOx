@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Admin;
 using ShagOxServer.Application.DependencyInjections.Advertisements;
 using ShagOxServer.Application.DependencyInjections.Auth;
 using ShagOxServer.Application.DependencyInjections.Baskets;
@@ -27,6 +28,7 @@ public static class DependencyInjection
             .AddLocationApplication()
             .AddCommentsApplication()
             .AddAdvertisementsApplication()
+            .AddAdminApplication()
             .AddDictionariesApplication()
             .AddSpecificationApplication()
             .AddCommonApplication()

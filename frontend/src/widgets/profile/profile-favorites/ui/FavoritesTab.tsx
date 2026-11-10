@@ -4,7 +4,9 @@ import { useOutletContext } from "react-router-dom";
 import type { ProfileContextType } from "@/app/layouts/ProfileLayout";
 import styles from "./FavoritesTab.module.css";
 import { ChevronDown } from "lucide-react";
+import { useQueries } from "@tanstack/react-query";
 import { useGetFavorites } from "@/features/favorites/model/hooks/useGetFavorites";
+import { getAdvertisement } from "@/entities/advertisement/api/api";
 
 import AppPagination from "@/shared/ui/navigation/pagination";
 import { EmptyState } from "@/shared/ui/data-display/empty-state/EmptyState";
@@ -37,7 +39,7 @@ export default function FavoritesTab() {
     setPage(1);
   };
 
-  const advertisements = [...(favorites?.items ?? [])].sort((left, right) => {
+  const sortedFavorites = [...(favorites?.items ?? [])].sort((left, right) => {
     if (sort === "oldest") {
       return (
         new Date(left.advertisement.createdAt).getTime() -
@@ -53,7 +55,21 @@ export default function FavoritesTab() {
     );
   });
 
-  if (isLoading) {
+  const advertisementQueries = useQueries({
+    queries: sortedFavorites.map(({ advertisement }) => ({
+      queryKey: ["advertisement", advertisement.id],
+      queryFn: () => getAdvertisement(advertisement.id),
+    })),
+  });
+
+  const advertisements = advertisementQueries.flatMap((query) =>
+    query.data ? [query.data] : [],
+  );
+  const isAdvertisementsLoading = advertisementQueries.some(
+    (query) => query.isLoading,
+  );
+
+  if (isLoading || isAdvertisementsLoading) {
     return (
       <section className={styles.favoritesAdvertisements}>
         <div className={styles.advertisementsGrid}>
@@ -86,7 +102,7 @@ export default function FavoritesTab() {
 
       {advertisements.length > 0 ? (
         <div className={styles.advertisementsGrid}>
-          {advertisements.map(({ advertisement }) => (
+          {advertisements.map((advertisement) => (
             <AdvertisementCard key={advertisement.id} {...advertisement} />
           ))}
         </div>

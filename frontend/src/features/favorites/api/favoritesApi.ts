@@ -1,7 +1,6 @@
 import { api } from "@/shared/api/api";
 import type { Favorite, FavoriteCreateRequest } from "../model/types";
 import type { PaginatedResponse } from "@/shared/lib/types/paginatedResponse";
-import { getAdvertisement } from "@/entities/advertisement/api/api";
 
 export async function getFavorites(
   page = 1,
@@ -11,17 +10,7 @@ export async function getFavorites(
     params: { page, pageSize },
   });
 
-  const items = await Promise.all(
-    response.data.items.map(async (favorite) => ({
-      ...favorite,
-      advertisement: await getAdvertisement(favorite.advertisement.id),
-    })),
-  );
-
-  return {
-    ...response.data,
-    items,
-  };
+  return response.data;
 }
 
 export async function addToFavorites(request: FavoriteCreateRequest) {

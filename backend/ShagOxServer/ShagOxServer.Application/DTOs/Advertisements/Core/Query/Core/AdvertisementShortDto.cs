@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Core;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Common.Currencies;
@@ -6,7 +6,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Q
 using ShagOxServer.Domain.Base.Enum;
 using System.Text.Json;
 
-namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
+namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 public sealed record AdvertisementShortDto
 (
     long Id,

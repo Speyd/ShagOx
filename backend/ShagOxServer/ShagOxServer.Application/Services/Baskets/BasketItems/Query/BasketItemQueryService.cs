@@ -11,7 +11,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
+using ShagOxServer.Application.Services.Advertisements.Core.Mapping.Core;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;

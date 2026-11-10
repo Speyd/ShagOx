@@ -8,7 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
+using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping.Cache;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Base.Update;

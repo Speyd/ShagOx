@@ -1,10 +1,10 @@
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Common.Currencies;
+using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Domain.Base.Enum;
-using System.Text.Json;
 
-namespace ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
-public sealed record AdvertisementVariantShortDto
+namespace ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Core;
+public sealed record AdvertisementVariantDto
 (
     long Id,
     EntityStatus EntityStatus,
@@ -13,5 +13,5 @@ public sealed record AdvertisementVariantShortDto
     decimal PreviousPrice,
     ConvertedPricesDto PriceConversion,
     int Stock,
-    JsonDocument Attributes
+    List<AttributeDto> Attributes
 ) : BaseDto(Id, EntityStatus);

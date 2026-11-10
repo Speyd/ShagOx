@@ -5,7 +5,10 @@ public sealed record AdvertisementCatalogQueryDto
 (
     Advertisement Advertisement,
 
-    int ReviewCount,
+    long ReviewCount,
+    float AverageRating,
 
-    float AverageRating
+    bool IsFavorite,
+
+    bool IsInBasket
 );

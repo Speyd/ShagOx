@@ -2,7 +2,7 @@ using ShagOxServer.Application.DTOs.Advertisements.Favorites.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.DTOs.Common.Currencies;
-using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
+using ShagOxServer.Application.Services.Advertisements.Core.Mapping.Core;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;

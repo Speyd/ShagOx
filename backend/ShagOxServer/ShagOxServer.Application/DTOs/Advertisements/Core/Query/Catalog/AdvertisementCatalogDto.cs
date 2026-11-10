@@ -1,10 +1,10 @@
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Catalog;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 
-namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
-public sealed record AdvertisementRatingDto
+namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
+public sealed record AdvertisementCatalogDto
 (
     long Id,
     string Title,
@@ -16,7 +16,9 @@ public sealed record AdvertisementRatingDto
     long CategoryId,
     AdvertisementImageDto? Picture,
     List<AttributeDto> Attributes,
-    List<AdvertisementVariantDto> Variants,
+    List<AdvertisementVariantCatalogDto> Variants,
     long ReviewCount,
-    float AverageRatings
+    float AverageRatings,
+    bool IsFavorite,
+    bool IsInBasket
 );

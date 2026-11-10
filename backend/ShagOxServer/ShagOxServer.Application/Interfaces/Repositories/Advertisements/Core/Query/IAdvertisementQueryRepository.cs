@@ -27,6 +27,7 @@ public partial interface IAdvertisementQueryRepository
         EntityStatus? status = null);
 
     Task<PagedResult<AdvertisementCatalogQueryDto>> GetCatalogPagedAsync(
+        long? userId,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
@@ -38,6 +39,7 @@ public partial interface IAdvertisementQueryRepository
         EntityStatus? status = null);
 
     Task<PagedResult<AdvertisementCatalogQueryDto>> CatalogSearchAsync(
+        long? userId,
         AdvertisementSearchFilter filter,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,

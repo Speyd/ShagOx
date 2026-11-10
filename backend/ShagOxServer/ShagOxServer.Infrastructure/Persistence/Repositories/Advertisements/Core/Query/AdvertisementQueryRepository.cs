@@ -43,9 +43,8 @@ public partial class AdvertisementQueryRepository
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.OwnerId == userId)
-            .OrderByDescending(x => x.Popularity)
             .ToPagedResultAsync(pagination,
-                (x => x.Id),
+                (x => x.Popularity),
                 cancellationToken);
     }
     public async Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
@@ -58,9 +57,8 @@ public partial class AdvertisementQueryRepository
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.BuyerId == userId)
-            .OrderByDescending(x => x.Popularity)
             .ToPagedResultAsync(pagination,
-                (x => x.Id),
+                (x => x.Popularity),
                 cancellationToken);
     }
 
@@ -74,9 +72,8 @@ public partial class AdvertisementQueryRepository
             .WithIncludes()
             .WithStatusFilter(status)
             .Filter(filter)
-            .OrderByDescending(x => x.Popularity)
             .ToPagedResultAsync(pagination,
-                (x => x.Id),
+                (x => x.Popularity),
                 cancellationToken);
     }
 
@@ -90,29 +87,33 @@ public partial class AdvertisementQueryRepository
             .ShortWithIncludes()
             .WithStatusFilter(status)
             .Filter(filter)
-            .OrderByDescending(x => x.Popularity)
             .ToPagedResultAsync(pagination,
-                (x => x.Id),
+                (x => x.Popularity),
                 cancellationToken);
     }
 
 
     public async Task<PagedResult<AdvertisementCatalogQueryDto>> GetCatalogPagedAsync(
-     PaginationParams pagination,
-     CancellationToken cancellationToken = default,
-     EntityStatus? status = null)
+        long? userId,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
     {
         var query = _db.Advertisements
             .AsNoTracking()
             .ShortWithIncludes()
-            .WithStatusFilter(status)
-            .OrderByDescending(x => x.Popularity);
+            .WithStatusFilter(status);
 
         return await GetCatalogResultAsync(
-            query, pagination, cancellationToken);
+            userId,
+            query, 
+            pagination, 
+            cancellationToken
+        );
     }
 
     public async Task<PagedResult<AdvertisementCatalogQueryDto>> CatalogSearchAsync(
+        long? userId,
         AdvertisementSearchFilter filter,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
@@ -122,38 +123,50 @@ public partial class AdvertisementQueryRepository
             .AsNoTracking()
             .ShortWithIncludes()
             .WithStatusFilter(status)
-            .Filter(filter)
-            .OrderByDescending(x => x.Popularity);
+            .Filter(filter);
 
         return await GetCatalogResultAsync(
-            query, pagination, cancellationToken);
+            userId,
+            query, 
+            pagination, 
+            cancellationToken
+        );
     }
 
     private async Task<PagedResult<AdvertisementCatalogQueryDto>> GetCatalogResultAsync(
+        long? userId,
         IQueryable<Advertisement> query,
         PaginationParams pagination,
         CancellationToken cancellationToken)
     {
         var result = await query.ToPagedResultAsync(
             pagination,
-            x => x.Id,
+            x => x.Popularity,
             cancellationToken);
 
         var ids = result.Items.Select(x => x.Id).ToList();
 
-        var reviews = await _db.ReviewComments
-            .AsNoTracking()
-            .Where(r => ids.Contains(r.CommentableEntityId))
-            .GroupBy(r => r.CommentableEntityId)
-            .Select(g => new
-            {
-                AdvertisementId = g.Key,
-                Count = g.Count(),
-                Average = g.Average(r => (double?)r.Grade) ?? 0
-            })
-            .ToDictionaryAsync(
-                x => x.AdvertisementId,
-                cancellationToken);
+        if (ids.Count == 0)
+        {
+            return new PagedResult<AdvertisementCatalogQueryDto>(
+                [],
+                result.TotalCount,
+                new PaginationParams(result.Page, result.PageSize));
+        }
+
+        var reviews = await GetReviewsByAdvertisementIdsAsync(
+            ids,
+            cancellationToken);
+
+        var favorites = await GetFavoritesByAdvertisementIdsAsync(
+            userId,
+            ids,
+            cancellationToken);
+
+        var baskets = await GetBasketsByAdvertisementIdsAsync(
+            userId,
+            ids,
+            cancellationToken);
 
         var items = result.Items.Select(x =>
         {
@@ -161,8 +174,10 @@ public partial class AdvertisementQueryRepository
 
             return new AdvertisementCatalogQueryDto(
                 x,
-                review?.Count ?? 0,
-                (float)(review?.Average ?? 0));
+                review.Count,
+                (float)(review.Average),
+                favorites.Contains(x.Id),
+                baskets.Contains(x.Id));             
         }).ToList();
 
         return new PagedResult<AdvertisementCatalogQueryDto>(

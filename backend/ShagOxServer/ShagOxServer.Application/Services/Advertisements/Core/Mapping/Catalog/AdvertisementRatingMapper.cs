@@ -1,17 +1,16 @@
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Catalog;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
-using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 
-namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping;
+namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping.Catalog;
 public class AdvertisementRatingMapper
 {
-    public static AdvertisementRatingDto ToDto(
+    public static AdvertisementCatalogDto ToDto(
         AdvertisementCatalogQueryDto x,
         ConvertedPricesDto priceConversion,
-        List<AdvertisementVariantDto> variants,
+        List<AdvertisementVariantCatalogDto> variants,
         List<AttributeDto> attributes)
     {
         var advert = x.Advertisement;
@@ -20,7 +19,7 @@ public class AdvertisementRatingMapper
             .OrderBy(i => i.Order)
             .FirstOrDefault();
 
-        return new AdvertisementRatingDto
+        return new AdvertisementCatalogDto
         (
             advert.Id,
             advert.Title,
@@ -35,7 +34,9 @@ public class AdvertisementRatingMapper
             attributes,
             variants,
             x.ReviewCount,
-            x.AverageRating
+            x.AverageRating,
+            x.IsFavorite,
+            x.IsInBasket
         ); 
     }
 }

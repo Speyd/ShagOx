@@ -57,7 +57,7 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
         if (!CacheById)
         {
             var entity = await _queryRepository
-                .GetByIdIncludeAsync(id, 
+                .GetByIdAsync(id, 
                     cancellationToken, 
                     status);
 

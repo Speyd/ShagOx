@@ -6,7 +6,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Q
 using ShagOxServer.Domain.Base.Enum;
 using System.Text.Json;
 
-namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
 public sealed record AdvertisementShortDto
 (
     long Id,
@@ -21,7 +21,7 @@ public sealed record AdvertisementShortDto
     long SellerId,
     long? BuyerId,
     StatusDto Status,
-    AdvertisementImageDto? Image,
+    AdvertisementImageDto? Picture,
     JsonDocument Attributes,
     List<AdvertisementVariantShortDto> Variants,
     DateTime? SoldAt,

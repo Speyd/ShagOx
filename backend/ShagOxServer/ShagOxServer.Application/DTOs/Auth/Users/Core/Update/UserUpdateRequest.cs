@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 public sealed record UserUpdateRequest
@@ -8,5 +8,6 @@ public sealed record UserUpdateRequest
     string? UserName,
     string? Bio,
     IFormFile? Avatar,
-    long? CityId
+    long? CityId,
+    long? CurrencyId
 );

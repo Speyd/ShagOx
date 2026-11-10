@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
@@ -103,6 +103,7 @@ public partial class AdvertisementQueryRepository
      EntityStatus? status = null)
     {
         var query = _db.Advertisements
+            .AsNoTracking()
             .ShortWithIncludes()
             .WithStatusFilter(status)
             .OrderByDescending(x => x.Popularity);
@@ -118,6 +119,7 @@ public partial class AdvertisementQueryRepository
         EntityStatus? status = null)
     {
         var query = _db.Advertisements
+            .AsNoTracking()
             .ShortWithIncludes()
             .WithStatusFilter(status)
             .Filter(filter)
@@ -140,6 +142,7 @@ public partial class AdvertisementQueryRepository
         var ids = result.Items.Select(x => x.Id).ToList();
 
         var reviews = await _db.ReviewComments
+            .AsNoTracking()
             .Where(r => ids.Contains(r.CommentableEntityId))
             .GroupBy(r => r.CommentableEntityId)
             .Select(g => new

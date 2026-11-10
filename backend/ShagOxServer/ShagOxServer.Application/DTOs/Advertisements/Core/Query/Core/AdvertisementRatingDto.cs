@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 
-namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 public sealed record AdvertisementRatingDto
 (
     long Id,
@@ -14,9 +14,9 @@ public sealed record AdvertisementRatingDto
     ConvertedPricesDto PriceConversion,
     long CurrencyId,
     long CategoryId,
-    AdvertisementImageDto? Image,
+    AdvertisementImageDto? Picture,
     List<AttributeDto> Attributes,
     List<AdvertisementVariantDto> Variants,
     long ReviewCount,
-    float AverageRating
+    float AverageRatings
 );

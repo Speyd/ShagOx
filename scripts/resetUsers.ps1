@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 
-$projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$projectRoot = Split-Path -Parent $PSScriptRoot
 
 $envFile = Join-Path $projectRoot ".env"
 $initDirectory = Join-Path $projectRoot "postgres-replication/primary/init"

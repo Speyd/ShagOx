@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
+using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
 using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Update;
@@ -42,6 +42,12 @@ public static class UserUpdater
         if (request.CityId.HasValue)
         {
             user.CityId = request.CityId.Value;
+            countUpdated++;
+        }
+
+        if (request.CurrencyId.HasValue)
+        {
+            user.CurrencyId = request.CurrencyId.Value;
             countUpdated++;
         }
 

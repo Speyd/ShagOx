@@ -11,7 +11,7 @@ using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
 using ShagOxServer.Domain.Base.Enum;
 
-namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+namespace ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 public sealed record AdvertisementDto
 (
     long Id,
@@ -20,7 +20,7 @@ public sealed record AdvertisementDto
     string Description,
     decimal? Price,
     decimal? PreviousPrice,
-    ConvertedPricesDto PriceConversion,
+    ConvertedPricesDto? PriceConversion,
     StatusDto Status,
     CurrencyDto Currency,
     CategoryDto Category,

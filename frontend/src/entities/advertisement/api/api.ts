@@ -18,16 +18,14 @@ export async function getCatalogAdvertisements(
   params: CatalogParams = {},
 ): Promise<PaginatedResponse<CatalogAdvertisement>> {
   const search = params.search?.trim();
-  const categoryId = params.categoryId ?? params.categoryIds?.[0];
+  const hasAttributes = Object.keys(params.attributes ?? {}).length > 0;
 
   const hasFilters =
     Boolean(search) ||
-    categoryId !== undefined ||
-    params.inStock !== undefined ||
+    params.categoryId !== undefined ||
     params.minPrice !== undefined ||
     params.maxPrice !== undefined ||
-    Object.keys(params.attributes ?? {}).length > 0 ||
-    Object.keys(params.variantAttributes ?? {}).length > 0;
+    hasAttributes;
 
   const endpoint = hasFilters
     ? "/advertisements/catalog-search"
@@ -40,15 +38,11 @@ export async function getCatalogAdvertisements(
         Page: params.page ?? 1,
         PageSize: params.pageSize ?? 20,
         Title: search || undefined,
-        CategoryId: categoryId,
-        InStock: params.inStock,
+        CategoryId: params.categoryId,
         MinPrice: params.minPrice,
         MaxPrice: params.maxPrice,
-        Attributes: Object.keys(params.attributes ?? {}).length
+        Attributes: hasAttributes
           ? JSON.stringify(params.attributes)
-          : undefined,
-        VariantAttributes: Object.keys(params.variantAttributes ?? {}).length
-          ? JSON.stringify(params.variantAttributes)
           : undefined,
       },
     },

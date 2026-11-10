@@ -3,16 +3,9 @@ export type CatalogParams = {
   pageSize?: number;
   search?: string;
   categoryId?: number;
-  categoryIds?: number[];
-  inStock?: boolean;
   minPrice?: number;
   maxPrice?: number;
-  memory?: string[];
-  colors?: string[];
   attributes?: Record<string, unknown>;
-  variantAttributes?: Record<string, unknown>;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
 };
 
 export type ProductTypeItem = {

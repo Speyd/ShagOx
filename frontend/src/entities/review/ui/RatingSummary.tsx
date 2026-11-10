@@ -3,16 +3,27 @@ import { Star } from "lucide-react";
 import clsx from "clsx";
 import { pluralizeReviews } from "../lib/format";
 import { useAdvertisementRating } from "../model/hooks";
+import type { ReviewRating } from "../model/types";
 import styles from "./RatingSummary.module.css";
 
 type RatingSummaryProps = {
   advertisementId: number;
+  rating?: ReviewRating;
   size?: "sm" | "lg";
   onReviewsClick?: () => void;
 };
 
-export function RatingSummary({ advertisementId, size = "sm", onReviewsClick }: RatingSummaryProps) {
-  const { data: rating, isLoading } = useAdvertisementRating(advertisementId);
+export function RatingSummary({
+  advertisementId,
+  rating: initialRating,
+  size = "sm",
+  onReviewsClick,
+}: RatingSummaryProps) {
+  const { data: fetchedRating, isLoading } = useAdvertisementRating(
+    advertisementId,
+    !initialRating,
+  );
+  const rating = initialRating ?? fetchedRating;
 
   if (isLoading) {
     return <Skeleton height={size === "lg" ? 28 : 16} width={size === "lg" ? 220 : 80} radius="sm" />;

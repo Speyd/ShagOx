@@ -57,11 +57,11 @@ export function useGetMyReview(advertisementId: number, userId?: number) {
   });
 }
 
-export function useAdvertisementRating(advertisementId: number) {
+export function useAdvertisementRating(advertisementId: number, enabled = true) {
   return useQuery({
     queryKey: reviewKeys.rating(advertisementId),
     queryFn: () => getAdvertisementRating(advertisementId),
-    enabled: advertisementId > 0,
+    enabled: enabled && advertisementId > 0,
     staleTime: 60_000,
   });
 }

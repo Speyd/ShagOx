@@ -21,11 +21,11 @@ export default function CheckoutPage() {
       return new Set<number>();
     }
   });
-  const items = useMemo(
-    () =>
-      (basket?.basketItems || []).filter((item) => selectedIds.has(item.id)),
-    [basket, selectedIds],
-  );
+  const items = useMemo(() => {
+    const basketItems = basket?.basketItems ?? [];
+    const selected = basketItems.filter((item) => selectedIds.has(item.id));
+    return selected.length > 0 ? selected : basketItems;
+  }, [basket, selectedIds]);
 
   if (isLoading) {
     return <div className={styles.loading}>Завантаження оформлення...</div>;

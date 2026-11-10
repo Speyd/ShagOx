@@ -39,7 +39,6 @@ const variantRowSchema = z
     },
   );
 
-/** Схема одного атрибута будується з його визначення (required, min, max, type). */
 const attributeSchema = <T extends AttributeFormValue>(
   definition: AttributeInfo,
 ) =>
@@ -56,11 +55,6 @@ const shapeOf = <T extends AttributeFormValue>(definitions: AttributeInfo[]) =>
     ]),
   );
 
-/**
- * Схема залежить від атрибутів обраної категорії:
- * - attributes: характеристики товару (isVariant = false);
- * - variantOptions: значення, з яких генеруються варіанти (isVariant = true).
- */
 export function createAdvertisementSchema(definitions: AttributeInfo[]) {
   const productAttributes = definitions.filter((d) => !d.isVariant);
   const variantAttributes = definitions.filter((d) => d.isVariant);

@@ -6,10 +6,8 @@ export type ImageFileItem = {
   previewUrl: string;
 };
 
-/** Значення атрибута у формі (до перетворення у формат API). */
 export type AttributeFormValue = string | number | string[] | null | undefined;
 
-/** Рядок таблиці варіантів: одна комбінація значень варіантних атрибутів. */
 export type VariantRow = {
   key: string;
   options: Record<string, string>;
@@ -17,8 +15,6 @@ export type VariantRow = {
   previousPrice: number | "";
   stock: number | "";
 };
-
-// ---- API ----
 
 type ApiScalar = string | number | boolean;
 export type ApiAttributeValue = ApiScalar | ApiScalar[];

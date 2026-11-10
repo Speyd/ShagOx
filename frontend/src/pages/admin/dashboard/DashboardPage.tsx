@@ -14,7 +14,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { formatDate } from "@/shared/lib/formatDate";
-import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
 import { AdminPageHeader } from "@/widgets/admin/page-header";
 import { useDashboardStats } from "./useDashboardStats";
 import styles from "./DashboardPage.module.css";
@@ -106,10 +105,13 @@ function Empty({ text }: { text: string }) {
   );
 }
 
-const plural = (n: number) => n.toLocaleString("uk-UA");
+const plural = (n = 0) => n.toLocaleString("uk-UA");
 
 export default function DashboardPage() {
-  const { stats, catalogCounts, isLoading } = useDashboardStats();
+  const { totals, charts, latestUsers, latestAds, topSellers, lowStock, isLoading } =
+    useDashboardStats();
+  const adsTotal = totals?.advertisements ?? 0;
+  const reviewsTotal = totals?.reviews ?? 0;
 
   return (
     <div className={styles.page}>
@@ -124,32 +126,32 @@ export default function DashboardPage() {
           icon={Users}
           to="/admin/users"
           loading={isLoading}
-          value={plural(stats.usersTotal)}
-          hint={`+${stats.usersLast30} за 30 днів`}
+          value={plural(totals?.users)}
+          hint={`+${totals?.usersLast30Days ?? 0} за 30 днів`}
         />
         <StatTile
           label="Оголошення"
           icon={Megaphone}
           to="/admin/advertisements"
           loading={isLoading}
-          value={plural(stats.adsTotal)}
-          hint={`+${stats.adsLast30} за 30 днів`}
+          value={plural(adsTotal)}
+          hint={`+${totals?.advertisementsLast30Days ?? 0} за 30 днів`}
         />
         <StatTile
           label="Товарів на складі"
           icon={Package}
           loading={isLoading}
-          value={plural(stats.totalStock)}
+          value={plural(totals?.totalStock)}
           hint="Сума залишків усіх варіантів"
         />
         <StatTile
           label="Продано"
           icon={ShoppingBag}
           loading={isLoading}
-          value={plural(stats.soldCount)}
+          value={plural(totals?.soldAdvertisements)}
           hint={
-            stats.adsTotal
-              ? `${Math.round((stats.soldCount / stats.adsTotal) * 100)}% оголошень`
+            adsTotal
+              ? `${Math.round(((totals?.soldAdvertisements ?? 0) / adsTotal) * 100)}% оголошень`
               : "—"
           }
         />
@@ -158,10 +160,10 @@ export default function DashboardPage() {
           icon={Star}
           to="/admin/reviews"
           loading={isLoading}
-          value={plural(stats.reviewsTotal)}
+          value={plural(reviewsTotal)}
           hint={
-            stats.reviewsTotal
-              ? `Середня оцінка ${stats.averageRating.toFixed(2)} з 5`
+            reviewsTotal
+              ? `Середня оцінка ${(totals?.averageRating ?? 0).toFixed(2)} з 5`
               : "Ще немає оцінок"
           }
         />
@@ -170,10 +172,10 @@ export default function DashboardPage() {
           icon={FolderTree}
           to="/admin/categories"
           loading={isLoading}
-          value={plural(stats.categoriesTotal)}
+          value={plural(totals?.categories)}
           hint={
-            catalogCounts
-              ? `${catalogCounts.productTypes} типів · ${catalogCounts.dictionaries} довідників`
+            totals
+              ? `${totals.productTypes} типів · ${totals.attributeDictionaries} довідників`
               : undefined
           }
         />
@@ -190,7 +192,7 @@ export default function DashboardPage() {
           ) : (
             <AreaChart
               h={280}
-              data={stats.growth}
+              data={charts.growth}
               dataKey="month"
               series={[
                 { name: "users", label: "Користувачі", color: SERIES_USERS },
@@ -213,12 +215,12 @@ export default function DashboardPage() {
         <Panel title="Оцінки відгуків" subtitle="Кількість відгуків за оцінкою" to="/admin/reviews">
           {isLoading ? (
             <Skeleton h={280} />
-          ) : stats.reviewsTotal === 0 ? (
+          ) : reviewsTotal === 0 ? (
             <Empty text="Відгуків ще немає" />
           ) : (
             <BarChart
               h={280}
-              data={stats.grades}
+              data={charts.grades}
               dataKey="grade"
               orientation="vertical"
               series={[{ name: "count", label: "Відгуків", color: SERIES_SINGLE }]}
@@ -241,12 +243,12 @@ export default function DashboardPage() {
         >
           {isLoading ? (
             <Skeleton h={300} />
-          ) : stats.adsByCategory.length === 0 ? (
+          ) : charts.adsByCategory.length === 0 ? (
             <Empty text="Оголошень ще немає" />
           ) : (
             <BarChart
-              h={Math.max(220, stats.adsByCategory.length * 38)}
-              data={stats.adsByCategory}
+              h={Math.max(220, charts.adsByCategory.length * 38)}
+              data={charts.adsByCategory}
               dataKey="category"
               orientation="vertical"
               series={[{ name: "count", label: "Оголошень", color: SERIES_SINGLE }]}
@@ -270,7 +272,7 @@ export default function DashboardPage() {
               <Link to="/admin/product-types" className={styles.listLink}>
                 Типи товарів
               </Link>
-              <Text fw={700}>{catalogCounts?.productTypes ?? "…"}</Text>
+              <Text fw={700}>{totals?.productTypes ?? "…"}</Text>
             </li>
             <li className={styles.listItem}>
               <span className={styles.listIcon}>
@@ -279,7 +281,7 @@ export default function DashboardPage() {
               <Link to="/admin/categories" className={styles.listLink}>
                 Категорії
               </Link>
-              <Text fw={700}>{stats.categoriesTotal}</Text>
+              <Text fw={700}>{totals?.categories ?? "…"}</Text>
             </li>
             <li className={styles.listItem}>
               <span className={styles.listIcon}>
@@ -288,7 +290,7 @@ export default function DashboardPage() {
               <Link to="/admin/dictionaries" className={styles.listLink}>
                 Довідники атрибутів
               </Link>
-              <Text fw={700}>{catalogCounts?.dictionaries ?? "…"}</Text>
+              <Text fw={700}>{totals?.attributeDictionaries ?? "…"}</Text>
             </li>
             <li className={styles.listItem}>
               <span className={styles.listIcon}>
@@ -297,18 +299,18 @@ export default function DashboardPage() {
               <Link to="/admin/cities" className={styles.listLink}>
                 Міста
               </Link>
-              <Text fw={700}>{catalogCounts?.cities ?? "…"}</Text>
+              <Text fw={700}>{totals?.cities ?? "…"}</Text>
             </li>
           </ul>
         </Panel>
 
         <Panel title="Нові користувачі" to="/admin/users">
-          {stats.latestUsers.length === 0 && !isLoading && <Empty text="Поки порожньо" />}
+          {latestUsers.length === 0 && !isLoading && <Empty text="Поки порожньо" />}
           <ul className={styles.list}>
-            {stats.latestUsers.map((user) => (
+            {latestUsers.map((user) => (
               <li key={user.id}>
                 <Link to={`/admin/users/${user.id}`} className={styles.entry}>
-                  <Avatar src={user.avatar?.url} radius="xl" size={36} color="blue">
+                  <Avatar src={user.avatarUrl} radius="xl" size={36} color="blue">
                     {user.userName?.[0]?.toUpperCase()}
                   </Avatar>
                   <div className={styles.grow}>
@@ -329,20 +331,20 @@ export default function DashboardPage() {
         </Panel>
 
         <Panel title="Нові оголошення" to="/admin/advertisements">
-          {stats.latestAds.length === 0 && !isLoading && <Empty text="Поки порожньо" />}
+          {latestAds.length === 0 && !isLoading && <Empty text="Поки порожньо" />}
           <ul className={styles.list}>
-            {stats.latestAds.map((ad) => (
+            {latestAds.map((ad) => (
               <li key={ad.id}>
                 <Link to={`/admin/advertisements/${ad.id}`} className={styles.entry}>
                   <span className={styles.thumb}>
-                    {ad.pictures?.[0]?.url && <img src={ad.pictures[0].url} alt="" />}
+                    {ad.pictureUrl && <img src={ad.pictureUrl} alt="" />}
                   </span>
                   <div className={styles.grow}>
                     <Text size="sm" fw={600} truncate c="var(--color-base)">
                       {ad.title}
                     </Text>
                     <Text size="xs" c="dimmed">
-                      {getAdvertisementPrice(ad).toLocaleString("uk-UA")} {ad.currency?.symbol}
+                      {(ad.price ?? 0).toLocaleString("uk-UA")} {ad.currencySymbol}
                     </Text>
                   </div>
                   {ad.soldAt && (
@@ -357,9 +359,9 @@ export default function DashboardPage() {
         </Panel>
 
         <Panel title="Топ продавців" subtitle="За кількістю оголошень">
-          {stats.topSellers.length === 0 && !isLoading && <Empty text="Поки порожньо" />}
+          {topSellers.length === 0 && !isLoading && <Empty text="Поки порожньо" />}
           <ol className={styles.list}>
-            {stats.topSellers.map(({ user, count }, index) => (
+            {topSellers.map((user, index) => (
               <li key={user.id}>
                 <Link to={`/admin/users/${user.id}`} className={styles.entry}>
                   <span className={styles.rank}>{index + 1}</span>
@@ -369,7 +371,7 @@ export default function DashboardPage() {
                     </Text>
                   </div>
                   <Text size="sm" fw={700}>
-                    {count}
+                    {user.advertisementsCount}
                   </Text>
                 </Link>
               </li>
@@ -378,26 +380,26 @@ export default function DashboardPage() {
         </Panel>
 
         <Panel title="Закінчуються на складі" subtitle="Залишок 2 шт. або менше" className={styles.full}>
-          {stats.outOfStock.length === 0 && !isLoading && (
+          {lowStock.length === 0 && !isLoading && (
             <Empty text="Усі товари в достатній кількості" />
           )}
           <ul className={styles.list}>
-            {stats.outOfStock.map(({ ad, stock }) => (
+            {lowStock.map((ad) => (
               <li key={ad.id}>
                 <Link to={`/admin/advertisements/${ad.id}`} className={styles.entry}>
                   <span className={styles.thumb}>
-                    {ad.pictures?.[0]?.url && <img src={ad.pictures[0].url} alt="" />}
+                    {ad.pictureUrl && <img src={ad.pictureUrl} alt="" />}
                   </span>
                   <div className={styles.grow}>
                     <Text size="sm" fw={600} truncate c="var(--color-base)">
                       {ad.title}
                     </Text>
                     <Text size="xs" c="dimmed">
-                      @{ad.seller?.userName}
+                      @{ad.sellerUserName}
                     </Text>
                   </div>
-                  <Badge color={stock === 0 ? "red" : "yellow"} variant="light">
-                    {stock === 0 ? "Немає в наявності" : `${stock} шт.`}
+                  <Badge color={ad.stock === 0 ? "red" : "yellow"} variant="light">
+                    {ad.stock === 0 ? "Немає в наявності" : `${ad.stock} шт.`}
                   </Badge>
                 </Link>
               </li>

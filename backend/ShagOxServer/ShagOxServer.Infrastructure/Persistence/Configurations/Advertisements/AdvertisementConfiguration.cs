@@ -25,6 +25,9 @@ public class AdvertisementConfiguration
             .HasPrecision(18, 2)
             .HasDefaultValue(null);
 
+        builder.Property(x => x.Stock)
+            .HasDefaultValue(null);
+
         builder.Property(x => x.Attributes)
             .HasColumnType("jsonb")
             .IsRequired();

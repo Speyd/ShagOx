@@ -8,7 +8,8 @@ public sealed record BasketItemDto
     long Id,
     EntityStatus EntityStatus,
     long BasketId,
-    long AdvertisementVariantId,
+    long AdvertisementId,
+    long? AdvertisementVariantId,
     int Quantity,
     AdvertisementShortDto Advertisement
 ) : BaseDto(Id, EntityStatus);

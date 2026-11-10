@@ -23,10 +23,4 @@ public interface IBasketItemQueryService
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
-
-    Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementVariantAsync(
-        long advertisementVariantId,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active);
 }

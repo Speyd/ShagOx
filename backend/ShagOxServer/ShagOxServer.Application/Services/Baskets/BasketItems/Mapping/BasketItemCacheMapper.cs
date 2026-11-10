@@ -12,6 +12,7 @@ public static class BasketItemCacheMapper
         return new BasketItemCacheInfo(
             item.Id,
             item.BasketId,
+            item.AdvertisementId,
             item.AdvertisementVariantId,
             status
         );

@@ -240,6 +240,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("StatusId")
                         .HasColumnType("bigint");
 
+                    b.Property<int>("Stock")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -518,7 +521,10 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("AdvertisementVariantId")
+                    b.Property<long>("AdvertisementId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("AdvertisementVariantId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("BasketId")
@@ -540,13 +546,21 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AdvertisementId")
+                        .HasDatabaseName("IX_BasketItems_AdvertisementId");
+
                     b.HasIndex("AdvertisementVariantId")
                         .HasDatabaseName("IX_BasketItems_AdvertisementVariantId");
+
+                    b.HasIndex("BasketId", "AdvertisementId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_BasketItems_BasketId_AdvertisementId")
+                        .HasFilter("(\"EntityStatus\" IN ('Active', 'Hidden')) AND (\"AdvertisementVariantId\" IS NULL)");
 
                     b.HasIndex("BasketId", "AdvertisementVariantId")
                         .IsUnique()
                         .HasDatabaseName("IX_BasketItems_BasketId_AdvertisementVariantId")
-                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+                        .HasFilter("(\"EntityStatus\" IN ('Active', 'Hidden')) AND (\"AdvertisementVariantId\" IS NOT NULL)");
 
                     b.ToTable("BasketItems");
                 });
@@ -1721,11 +1735,17 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketItem", b =>
                 {
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "Advertisement")
+                        .WithMany("BasketItems")
+                        .HasForeignKey("AdvertisementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_BasketItems_Advertisements_AdvertisementId");
+
                     b.HasOne("ShagOxServer.Domain.Entities.Advertisements.AdvertisementVariant", "AdvertisementVariant")
                         .WithMany("BasketItems")
                         .HasForeignKey("AdvertisementVariantId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("FK_BasketItems_AdvertisementVariants_AdvertisementVariantId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Baskets.Basket", "Basket")
@@ -1734,6 +1754,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_BasketItems_Baskets_BasketId");
+
+                    b.Navigation("Advertisement");
 
                     b.Navigation("AdvertisementVariant");
 
@@ -2013,6 +2035,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
                 {
+                    b.Navigation("BasketItems");
+
                     b.Navigation("Favorites");
 
                     b.Navigation("Pictures");

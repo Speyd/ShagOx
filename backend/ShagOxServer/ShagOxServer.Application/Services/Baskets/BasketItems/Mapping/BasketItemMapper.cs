@@ -13,6 +13,7 @@ public static class BasketItemMapper
             item.Id,
             item.EntityStatus,
             item.BasketId,
+            item.AdvertisementId,
             item.AdvertisementVariantId,
             item.Quantity,
             advert

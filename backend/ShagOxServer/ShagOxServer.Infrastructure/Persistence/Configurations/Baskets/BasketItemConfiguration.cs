@@ -19,12 +19,22 @@ public class BasketItemConfiguration
                .HasForeignKey(x => x.BasketId)
                .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(x => x.Advertisement)
+               .WithMany(x => x.BasketItems)
+               .HasForeignKey(x => x.AdvertisementId)
+               .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasOne(x => x.AdvertisementVariant)
                .WithMany(x => x.BasketItems)
                .HasForeignKey(x => x.AdvertisementVariantId)
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasUniqueActiveIndex(x => 
-                new { x.BasketId, x.AdvertisementVariantId });
+        builder.HasUniqueActiveIndex(
+            x => new { x.BasketId, x.AdvertisementId },
+            "\"AdvertisementVariantId\" IS NULL");
+
+        builder.HasUniqueActiveIndex(
+            x => new { x.BasketId, x.AdvertisementVariantId },
+            "\"AdvertisementVariantId\" IS NOT NULL");
     }
 }

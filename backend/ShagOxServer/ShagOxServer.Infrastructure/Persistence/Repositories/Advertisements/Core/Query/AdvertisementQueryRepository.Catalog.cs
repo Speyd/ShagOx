@@ -1,7 +1,5 @@
-using Docker.DotNet.Models;
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
-using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -62,28 +60,8 @@ public partial class AdvertisementQueryRepository
             .Where(x =>
                 x.Basket.OwnerId == userId &&
                 advertisementIds.Contains(
-                    x.AdvertisementVariant.AdvertisementId))
-            .Select(x => x.AdvertisementVariant.AdvertisementId)
+                    x.AdvertisementId))
+            .Select(x => x.AdvertisementId)
             .ToHashSetAsync(cancellationToken);
-    }
-
-    private async Task<(long Count, double Average)?>
-    GetReviewByAdvertisementIdAsync(
-        long advertisementId,
-        CancellationToken cancellationToken)
-    {
-        return await _db.ReviewComments
-            .AsNoTracking()
-            .Where(r => r.CommentableEntityId == advertisementId)
-            .GroupBy(r => r.CommentableEntityId)
-            .Select(g => new
-            {
-                Count = g.LongCount(),
-                Average = g.Average(r => (double?)r.Grade) ?? 0
-            })
-            .Select(x => new ValueTuple<long, double>(x.Count, x.Average))
-            .FirstOrDefaultAsync(cancellationToken) is var result
-                ? result == default ? null : result
-                : null;
     }
 }

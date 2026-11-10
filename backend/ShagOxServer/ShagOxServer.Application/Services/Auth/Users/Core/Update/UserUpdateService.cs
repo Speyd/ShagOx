@@ -18,6 +18,7 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
+using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -30,6 +31,7 @@ public class UserUpdateService
     private readonly UserValidator _userValidator;
 
     private readonly CityValidator _cityValidator;
+    private readonly CurrencyValidator _currencyValidator;
 
     private readonly IAvatarUpdateService _avatarUploadService;
     private readonly IAvatarCreateService _avatarCreateService;
@@ -46,6 +48,7 @@ public class UserUpdateService
         UserValidator userValidator,
         IUserDeleteService userDeleteService,
         CityValidator cityValidator,
+        CurrencyValidator currencyValidator,
         IAvatarUpdateService avatarUploadService,
         IAvatarCreateService avatarCreateService,
         UserInvalidationService userInvalid,
@@ -57,6 +60,7 @@ public class UserUpdateService
         _userRepository = userRepository;
         _userValidator = userValidator;
         _cityValidator = cityValidator;
+        _currencyValidator = currencyValidator;
         _avatarUploadService = avatarUploadService;
         _avatarCreateService = avatarCreateService;
         _userInvalid = userInvalid;
@@ -187,6 +191,17 @@ public class UserUpdateService
 
             if (!cityExists.IsSuccess)
                 return Result<bool>.Fail(cityExists.Error);
+        }
+
+        if (request.CurrencyId.HasValue &&
+           request.CurrencyId != user.CurrencyId)
+        {
+            var currencyExists = await _currencyValidator
+                .ExistsByIdAsync(request.CurrencyId.Value,
+                    cancellationToken);
+
+            if (!currencyExists.IsSuccess)
+                return Result<bool>.Fail(currencyExists.Error);
         }
 
         if (request.UserName is not null &&

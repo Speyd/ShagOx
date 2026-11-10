@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Domain.Base.Enum;

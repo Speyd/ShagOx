@@ -1,7 +1,8 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
-using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
@@ -22,6 +23,7 @@ using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using Twilio.TwiML.Voice;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Query;
 public class AdvertisementQueryService 
@@ -209,9 +211,25 @@ public class AdvertisementQueryService
                 advert.Advertisement,
                 cancellationToken);
 
+            var variants = new List<AdvertisementVariantDto>();
+
+            foreach (var variant in advert.Advertisement.Variants)
+            {
+                var variantDto = await _variantService.ApplyMapperAsync(variant);
+                variants.Add(variantDto);
+            }
+
+            var attributeDto = await _attributeProcessor
+                .GetAttributesAsync(
+                     advert.Advertisement.Attributes,
+                    advert.Advertisement.CategoryId
+                );
+
             return AdvertisementRatingMapper.ToDto(
                 advert,
-                convertedPrices);
+                convertedPrices,
+                variants,
+                attributeDto.Value!);
         });
     }
 
@@ -257,9 +275,25 @@ public class AdvertisementQueryService
                 advertDto.Advertisement,
                 cancellationToken);
 
+            var variants = new List<AdvertisementVariantDto>();
+
+            foreach (var variant in advertDto.Advertisement.Variants)
+            {
+                var variantDto = await _variantService.ApplyMapperAsync(variant);
+                variants.Add(variantDto);
+            }
+
+            var attributeDto = await _attributeProcessor
+                .GetAttributesAsync(
+                     advertDto.Advertisement.Attributes,
+                    advertDto.Advertisement.CategoryId
+                );
+
             return AdvertisementRatingMapper.ToDto(
                 advertDto,
-                convertedPrices);
+                convertedPrices,
+                variants,
+                attributeDto.Value!);
         });
     }
 

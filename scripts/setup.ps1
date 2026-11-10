@@ -4,6 +4,8 @@ $env:OPENSSL_CONF = ""
 
 $env:OPENSSL_CONF = $null
 
+$projectRoot = Split-Path -Parent $PSScriptRoot
+
 Write-Host "=== Checking OpenSSL ==="
 
 if (-not (Get-Command openssl -ErrorAction SilentlyContinue)) {
@@ -31,7 +33,7 @@ openssl version
 
 Write-Host "=== Starting infrastructure ==="
 
-Push-Location infrastructure\my_redis\init
+Push-Location (Join-Path $projectRoot "infrastructure\my_redis\init")
 try {
     .\init.ps1
     if (-not $?){
@@ -44,7 +46,7 @@ finally {
 
 Write-Host "=== Starting PostgreSQL replication ==="
 
-Push-Location postgres-replication\replica
+Push-Location (Join-Path $projectRoot "postgres-replication\replica")
 try {
     .\init-replica.ps1
     if (-not $?){
@@ -57,7 +59,7 @@ finally {
 
 Write-Host "=== Starting PgBiuncer user list ==="
 
-Push-Location postgres-replication\pgbouncer\script
+Push-Location (Join-Path $projectRoot "postgres-replication\pgbouncer\script")
 try {
     .\generate-pgbouncer-userlist.ps1
     if (-not $?){
@@ -70,7 +72,7 @@ finally {
 
 Write-Host "=== Starting PgBouncer ==="
 
-Push-Location postgres-replication
+Push-Location (Join-Path $projectRoot "postgres-replication")
 try {
     docker compose up -d --build pgbouncer
 

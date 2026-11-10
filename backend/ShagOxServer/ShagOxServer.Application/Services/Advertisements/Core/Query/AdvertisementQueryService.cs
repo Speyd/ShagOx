@@ -209,9 +209,25 @@ public class AdvertisementQueryService
                 advert.Advertisement,
                 cancellationToken);
 
+            var variants = new List<AdvertisementVariantDto>();
+
+            foreach (var variant in advert.Advertisement.Variants)
+            {
+                var variantDto = await _variantService.ApplyMapperAsync(variant);
+                variants.Add(variantDto);
+            }
+
+            var attributeDto = await _attributeProcessor
+                .GetAttributesAsync(
+                     advert.Advertisement.Attributes,
+                    advert.Advertisement.CategoryId
+                );
+
             return AdvertisementRatingMapper.ToDto(
                 advert,
-                convertedPrices);
+                convertedPrices,
+                variants,
+                attributeDto.Value!);
         });
     }
 
@@ -257,9 +273,25 @@ public class AdvertisementQueryService
                 advertDto.Advertisement,
                 cancellationToken);
 
+            var variants = new List<AdvertisementVariantDto>();
+
+            foreach (var variant in advertDto.Advertisement.Variants)
+            {
+                var variantDto = await _variantService.ApplyMapperAsync(variant);
+                variants.Add(variantDto);
+            }
+
+            var attributeDto = await _attributeProcessor
+                .GetAttributesAsync(
+                     advertDto.Advertisement.Attributes,
+                    advertDto.Advertisement.CategoryId
+                );
+
             return AdvertisementRatingMapper.ToDto(
                 advertDto,
-                convertedPrices);
+                convertedPrices,
+                variants,
+                attributeDto.Value!);
         });
     }
 

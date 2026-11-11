@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Deliveries.Translations;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Create;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Delete;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Query;
@@ -29,7 +30,7 @@ public static class DeliveryProviderDependencyInjection
 
         services.AddScoped<DeliveryProviderValidator>();
 
-        //services.AddStatusTranslationApplication();
+        services.AddDeliveryProviderTranslationApplication();
 
         return services;
     }

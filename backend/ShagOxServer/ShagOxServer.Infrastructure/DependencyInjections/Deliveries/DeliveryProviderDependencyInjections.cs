@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Deliveries.DeliveryProviders;
+using ShagOxServer.Infrastructure.DependencyInjections.Deliveries.Translations;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Deliveries.DeliveryProviders;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Deliveries.DeliveryProviders.Query;
 
@@ -15,7 +16,7 @@ public static class DeliveryProviderDependencyInjections
         services.AddScoped<IDeliveryProviderExistsRepository,
             DeliveryProviderExistsRepository>();
 
-        //services.AddCategoryTranslationInfrastructure();
+        services.AddDeliveryProviderTranslationInfrastructure();
 
         return services;
     }

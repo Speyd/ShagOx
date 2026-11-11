@@ -174,5 +174,12 @@
 		  <LastGenOutput>VerificationMapperResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="DTOs\Deliveries\DeliveryProviders\Translations\" />
+	  <Folder Include="Interfaces\Repositories\Deliveries\DeliveryProviders\Translations\" />
+	  <Folder Include="Interfaces\Services\Deliveries\DeliveryProviders\Translations\" />
+	  <Folder Include="Services\Deliveries\DeliveryProviders\Translations\" />
+	</ItemGroup>
 	
 </Project>

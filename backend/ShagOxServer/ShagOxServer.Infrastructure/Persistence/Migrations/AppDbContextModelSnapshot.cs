@@ -712,6 +712,52 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("DeliveryProviders");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Deliveries.Translations.DeliveryProviderTranslation", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<long>("TranslatableId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .HasDatabaseName("IX_DeliveryProviderTranslations_Name");
+
+                    b.HasIndex("Language", "Name")
+                        .HasDatabaseName("IX_DeliveryProviderTranslations_Language_Name");
+
+                    b.HasIndex("TranslatableId", "Language")
+                        .IsUnique()
+                        .HasDatabaseName("IX_DeliveryProviderTranslations_TranslatableId_Language")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.ToTable("DeliveryProviderTranslations");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
                 {
                     b.Property<long>("Id")
@@ -1844,6 +1890,18 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("ParentReply");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Deliveries.Translations.DeliveryProviderTranslation", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Deliveries.DeliveryProvider", "Translatable")
+                        .WithMany("Translations")
+                        .HasForeignKey("TranslatableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_DeliveryProviderTranslations_DeliveryProviders_TranslatableId");
+
+                    b.Navigation("Translatable");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Category", "Category")
@@ -2107,6 +2165,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Pictures");
 
                     b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Deliveries.DeliveryProvider", b =>
+                {
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>

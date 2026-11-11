@@ -26,4 +26,9 @@
     <ProjectReference Include="..\ShagOxServer.SharedKernel\ShagOxServer.SharedKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DependencyInjections\Deliveries\Translations\" />
+    <Folder Include="Persistence\Repositories\Deliveries\DeliveryProviders\Translations\" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Translations.Create;
+using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Translations.Query;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Create;
+using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Delete;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Query;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Validator;
 
@@ -17,8 +19,8 @@ public static class DeliveryProviderTranslationDependencyInjection
         services.AddScoped<IDeliveryProviderTranslationCreateService,
             DeliveryProviderTranslationCreateService>();
 
-        //services.AddScoped<IStatusTranslationDeleteService,
-        //    StatusTranslationDeleteService>();
+        services.AddScoped<IDeliveryProviderTranslationDeleteService,
+            DeliveryProviderTranslationDeleteService>();
 
         //services.AddScoped<IStatusTranslationUpdateService,
         //    StatusTranslationUpdateService>();

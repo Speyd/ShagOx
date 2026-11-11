@@ -1,6 +1,9 @@
+using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Deliveries.DeliveryProviders.Cache;
+using ShagOxServer.Application.Interfaces.Repositories.Deliveries.DeliveryProviders.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries.Translations;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Domain.Entities.Deliveries;
 
@@ -9,21 +12,21 @@ public class DeliveryProviderInvalidationService
     : ICacheInvalidationService<DeliveryProvider, 
         DeliveryProviderCacheInfo>
 {
-    //private readonly IStatusTranslationQueryRepository _transRepository;
+    private readonly IDeliveryProviderTranslationQueryRepository _transRepository;
 
-    //private readonly StatusTranslationInvalidationService _transInvalid;
+    private readonly DeliveryProviderTranslationInvalidationService _transInvalid;
 
     private readonly IDataCacheService _cache;
 
 
 
     public DeliveryProviderInvalidationService(
-        //IStatusTranslationQueryRepository transRepository,
-        //StatusTranslationInvalidationService transInvalid,
+        IDeliveryProviderTranslationQueryRepository transRepository,
+        DeliveryProviderTranslationInvalidationService transInvalid,
         IDataCacheService cache)
     {
-       // _transRepository = transRepository;
-        //_transInvalid = transInvalid;
+        _transRepository = transRepository;
+        _transInvalid = transInvalid;
         _cache = cache;
     }
 
@@ -37,14 +40,14 @@ public class DeliveryProviderInvalidationService
     {
         await InvalidateAsync(entityInfo);
 
-        //var translationInfos =
-        //    await GetTranslationInfos(entityInfo.Id);
+        var translationInfos =
+            await GetTranslationInfos(entityInfo.Id);
 
-        //foreach (var translationInfo in translationInfos)
-        //{
-        //    await _transInvalid
-        //        .InvalidateDeleteAsync(translationInfo);
-        //}
+        foreach (var translationInfo in translationInfos)
+        {
+            await _transInvalid
+                .InvalidateDeleteAsync(translationInfo);
+        }
     }
 
     public async Task InvalidateUpdateAsync(
@@ -74,10 +77,10 @@ public class DeliveryProviderInvalidationService
                 entityInfo.Status));
     }
 
-    //private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
-    //    long entityId)
-    //{
-    //    return await _transRepository
-    //        .GetCacheInfosByTranslatableAsync(entityId);
-    //}
+    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+        long entityId)
+    {
+        return await _transRepository
+            .GetCacheInfosByTranslatableAsync(entityId);
+    }
 }

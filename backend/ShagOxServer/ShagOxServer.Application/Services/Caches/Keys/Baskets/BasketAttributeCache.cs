@@ -34,7 +34,7 @@ public static class BasketAttributeCache
     public static string ByCategoryPattern(
         long categoryId,
         EntityStatus status)
-           => $"{Prefix}:*status{status}:category:{categoryId}:page:*";
+           => $"{Prefix}:*:status:{status}:category:{categoryId}:page:*";
 
     public static string ByCategoryPattern(
         long categoryId)

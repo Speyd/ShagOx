@@ -18,7 +18,7 @@ public static class CategoryCache
     public static string ByProductTypePattern(
        long productTypeId,
         EntityStatus status)
-           => $"{Prefix}:*:status{status}:product-type:{productTypeId}:page:*";
+           => $"{Prefix}:*:status:{status}:product-type:{productTypeId}:page:*";
 
     public static string ByProductTypePattern(
        long productTypeId)

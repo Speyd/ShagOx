@@ -5,6 +5,7 @@ using ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
 using ShagOxServer.Infrastructure.DependencyInjections.Baskets;
 using ShagOxServer.Infrastructure.DependencyInjections.Comments;
 using ShagOxServer.Infrastructure.DependencyInjections.Db;
+using ShagOxServer.Infrastructure.DependencyInjections.Deliveries;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
 using ShagOxServer.Infrastructure.DependencyInjections.ExternalServices;
 using ShagOxServer.Infrastructure.DependencyInjections.Location;
@@ -37,6 +38,7 @@ public static class DependencyInjection
             .AddUnitOfWorkInfrastructure()
             .AddSpecificationInfrastructure()
             .AddDictionariesInfrastructure()
+            .AddDeliveriesInfrastructure()
             .AddExternalServicesInfrastructure();
     }
 }

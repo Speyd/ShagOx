@@ -8,7 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Mapping;
 using ShagOxServer.Domain.Entities.Deliveries;
-using ShagOxServer.Domain.Filters.Deliveries.DeliveryProviders;
+using ShagOxServer.Domain.Filters.Deliveries;
 
 namespace ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Query;
 public class DeliveryProviderQueryService

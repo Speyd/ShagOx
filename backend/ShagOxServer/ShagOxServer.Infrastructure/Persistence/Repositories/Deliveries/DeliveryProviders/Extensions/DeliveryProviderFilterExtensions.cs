@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Deliveries;
-using ShagOxServer.Domain.Filters.Deliveries.DeliveryProviders;
+using ShagOxServer.Domain.Filters.Deliveries;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Deliveries.DeliveryProviders.Extensions;
 public static class DeliveryProviderFilterExtensions

@@ -1,6 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Deliveries.DeliveryProviders;
 using ShagOxServer.Domain.Entities.Deliveries;
-using ShagOxServer.Domain.Filters.Deliveries.DeliveryProviders;
+using ShagOxServer.Domain.Filters.Deliveries;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Deliveries.DeliveryProviders.Extensions;
 

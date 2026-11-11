@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Deliveries.DeliveryProviders;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Deliveries;
-using ShagOxServer.Domain.Filters.Deliveries.DeliveryProviders;
+using ShagOxServer.Domain.Filters.Deliveries;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;

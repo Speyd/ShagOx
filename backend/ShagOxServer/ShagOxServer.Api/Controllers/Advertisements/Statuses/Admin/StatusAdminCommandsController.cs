@@ -8,7 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Creat
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Update;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Statuses.Admin;

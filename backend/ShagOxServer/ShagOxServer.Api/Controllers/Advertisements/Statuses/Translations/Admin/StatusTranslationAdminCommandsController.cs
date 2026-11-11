@@ -8,7 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Trans
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Translations.Update;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Statuses.Translations.Admin;

@@ -1,7 +1,7 @@
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 
-namespace ShagOxServer.Domain.Entities.Comments;
+namespace ShagOxServer.Domain.Entities.Comments.Review;
 public class ReviewRepliComment
     : Comment<ReviewComment>,
     IHasPictures<ReviewRepliComment, ReviewRepliImage>

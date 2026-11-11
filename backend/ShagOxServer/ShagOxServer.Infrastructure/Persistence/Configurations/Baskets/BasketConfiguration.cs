@@ -4,7 +4,6 @@ using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Baskets;
-
 public class BasketConfiguration
     : IEntityTypeConfiguration<Basket>
 {

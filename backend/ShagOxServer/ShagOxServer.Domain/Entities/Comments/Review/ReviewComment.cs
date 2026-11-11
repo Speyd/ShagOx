@@ -2,7 +2,7 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 
-namespace ShagOxServer.Domain.Entities.Comments;
+namespace ShagOxServer.Domain.Entities.Comments.Review;
 public class ReviewComment
     : Comment<Advertisement>, 
     IHasPictures<ReviewComment, ReviewImage>

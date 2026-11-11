@@ -1,7 +1,7 @@
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.DTOs.Comments.ReviewComments.Query;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Mapping;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewComments.Mapping;
 public static class ReviewCommentMapper

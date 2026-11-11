@@ -565,7 +565,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("BasketItems");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.Review.ReviewComment", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -621,7 +621,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.Review.ReviewRepliComment", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -678,6 +678,38 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasDatabaseName("IX_ReviewRepliComments_ParentReplyId_CreatedAt");
 
                     b.ToTable("ReviewRepliComments");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Deliveries.DeliveryProvider", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("IX_DeliveryProviders_Code")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.ToTable("DeliveryProviders");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
@@ -1762,7 +1794,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Basket");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.Review.ReviewComment", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "CommentableEntity")
                         .WithMany("ReviewComments")
@@ -1783,9 +1815,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.Review.ReviewRepliComment", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewComment", "CommentableEntity")
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.Review.ReviewComment", "CommentableEntity")
                         .WithMany("Replies")
                         .HasForeignKey("CommentableEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1799,7 +1831,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_ReviewRepliComments_Users_OwnerId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", "ParentReply")
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.Review.ReviewRepliComment", "ParentReply")
                         .WithMany("Replies")
                         .HasForeignKey("ParentReplyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1966,7 +1998,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewImage", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewComment", "Owner")
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.Review.ReviewComment", "Owner")
                         .WithMany("Pictures")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1978,7 +2010,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewRepliImage", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", "Owner")
+                    b.HasOne("ShagOxServer.Domain.Entities.Comments.Review.ReviewRepliComment", "Owner")
                         .WithMany("Pictures")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2063,14 +2095,14 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("BasketItems");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewComment", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.Review.ReviewComment", b =>
                 {
                     b.Navigation("Pictures");
 
                     b.Navigation("Replies");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.ReviewRepliComment", b =>
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.Review.ReviewRepliComment", b =>
                 {
                     b.Navigation("Pictures");
 

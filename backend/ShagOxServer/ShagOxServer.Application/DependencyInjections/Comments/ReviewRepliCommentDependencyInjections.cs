@@ -10,7 +10,7 @@ using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Query;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Update;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Application.DependencyInjections.Comments;
 public static class ReviewRepliCommentDependencyInjections

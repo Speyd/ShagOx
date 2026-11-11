@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
@@ -8,7 +8,7 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
-public interface IAdvertisementQueryService
+public partial interface IAdvertisementQueryService
     : IQueryService<AdvertisementDto, Advertisement, AdvertisementSearchFilter>
 {
     Task<Result<PagedResult<AdvertisementDto>>> GetBySellerAsync(
@@ -17,30 +17,8 @@ public interface IAdvertisementQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
-    Task<Result<PagedResult<AdvertisementShortDto>>> GetShortPagedAsync(
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active);
-
-    Task<Result<PagedResult<AdvertisementRatingDto>>> GetCatalogPagedAsync(
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active);
-
     Task<Result<PagedResult<AdvertisementDto>>> GetPurchasedByUserAsync(
         long userId,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active);
-
-    Task<Result<PagedResult<AdvertisementShortDto>>> ShortSearchAsync(
-        AdvertisementSearchFilter filter,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active);
-
-    Task<Result<PagedResult<AdvertisementRatingDto>>> CatalogSearchAsync(
-        AdvertisementSearchFilter filter,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);

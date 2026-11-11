@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
 using ShagOxServer.Domain.Entities.Baskets;
 
@@ -13,6 +13,7 @@ public static class BasketItemMapper
             item.Id,
             item.EntityStatus,
             item.BasketId,
+            item.AdvertisementId,
             item.AdvertisementVariantId,
             item.Quantity,
             advert

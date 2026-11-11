@@ -28,7 +28,7 @@ public static class CacheKeys
         => $"{Prefix<TEntity>()}:{id}:status:{status}";
 
     public static string EntityPattern<TEntity>(
-        EntityStatus status = EntityStatus.Active)
+        EntityStatus status)
         => $"{Prefix<TEntity>()}:*status:{status}";
 
     #endregion

@@ -45,8 +45,5 @@ public class BasketItemInvalidationService
 
         await _cache.RemoveByPatternAsync(BasketItemCache
           .ByBasketPattern(entityInfo.BasketId));
-
-        await _cache.RemoveByPatternAsync(BasketItemCache
-          .ByAdvertisementVariantPattern(entityInfo.AdvertVariantId));
     }
 }

@@ -5,7 +5,6 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Baskets;
-using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
@@ -13,7 +12,6 @@ public class BasketItemValidator
     : BaseValidator<BasketItem>
 {
     private readonly IBasketItemExistsRepository _itemExistsRepository;
-    private readonly IBasketItemQueryRepository _itemQeuryRepository;
 
 
     public BasketItemValidator(
@@ -25,17 +23,19 @@ public class BasketItemValidator
         : base(repository, itemQeuryRepository, itemExistsRepository, cache)
     {
         _itemExistsRepository = itemExistsRepository;
-        _itemQeuryRepository = itemQeuryRepository;
     }
 
     public async Task<Result<bool>> ExistsAsync(
-        long advertisementVariantId,
+        long advertisementid,
+        long? advertisementVariantId,
         long basketId,
         CancellationToken cancellationToken = default)
     {
         if (!await _itemExistsRepository
-                .ExistsAsync(advertisementVariantId, 
-                    basketId, cancellationToken))
+                .ExistsAsync(
+                    advertisementVariantId ?? advertisementid, 
+                    basketId, 
+                    cancellationToken))
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.BasketItem);
@@ -45,13 +45,16 @@ public class BasketItemValidator
     }
 
     public async Task<Result<bool>> NotExistsAsync(
-        long advertisementVariantId,
+        long advertisementid,
+        long? advertisementVariantId,
         long basketId,
         CancellationToken cancellationToken = default)
     {
         if (await _itemExistsRepository
-                .ExistsAsync(advertisementVariantId,
-                    basketId, cancellationToken))
+                .ExistsAsync(
+                    advertisementVariantId ?? advertisementid,
+                    basketId, 
+                    cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.BasketItem);

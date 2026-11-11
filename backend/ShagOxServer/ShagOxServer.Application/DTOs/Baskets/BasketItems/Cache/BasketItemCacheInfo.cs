@@ -5,6 +5,7 @@ public sealed record BasketItemCacheInfo
 (
     long Id,
     long BasketId,
-    long AdvertVariantId,
+    long AdvertId,
+    long? AdvertVariantId,
     EntityStatus Status = EntityStatus.Active
 );

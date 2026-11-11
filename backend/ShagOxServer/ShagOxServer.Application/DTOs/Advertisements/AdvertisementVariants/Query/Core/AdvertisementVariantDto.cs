@@ -1,10 +1,9 @@
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
-using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Domain.Base.Enum;
 
-namespace ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+namespace ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Core;
 public sealed record AdvertisementVariantDto
 (
     long Id,

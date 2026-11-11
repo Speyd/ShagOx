@@ -1,5 +1,5 @@
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
-using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Core;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
@@ -10,7 +10,7 @@ using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
 
-namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping;
+namespace ShagOxServer.Application.Services.Advertisements.Core.Mapping.Core;
 public static class AdvertisementMapper
 {
     public static AdvertisementDto ToDto(

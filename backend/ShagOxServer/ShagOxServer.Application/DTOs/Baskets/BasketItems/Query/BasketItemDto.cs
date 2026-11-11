@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Domain.Base.Enum;
 
@@ -8,7 +8,8 @@ public sealed record BasketItemDto
     long Id,
     EntityStatus EntityStatus,
     long BasketId,
-    long AdvertisementVariantId,
+    long AdvertisementId,
+    long? AdvertisementVariantId,
     int Quantity,
     AdvertisementShortDto Advertisement
 ) : BaseDto(Id, EntityStatus);

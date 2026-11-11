@@ -241,6 +241,15 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Delivery provider translation.
+        /// </summary>
+        public static string DeliveryProviderTranslation {
+            get {
+                return ResourceManager.GetString("DeliveryProviderTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Favorite.
         /// </summary>
         public static string Favorite {

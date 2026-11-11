@@ -219,4 +219,7 @@
   <data name="DeliveryProvider" xml:space="preserve">
     <value> Versanddienstleister</value>
   </data>
+  <data name="DeliveryProviderTranslation" xml:space="preserve">
+    <value>Übersetzung des Versanddienstleisters</value>
+  </data>
 </root>

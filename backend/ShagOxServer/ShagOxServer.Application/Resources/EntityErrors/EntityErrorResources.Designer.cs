@@ -655,6 +655,33 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create delivery provider translation..
+        /// </summary>
+        internal static string DeliveryProviderTranslationCreateFailed {
+            get {
+                return ResourceManager.GetString("DeliveryProviderTranslationCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete delivery provider translation..
+        /// </summary>
+        internal static string DeliveryProviderTranslationDeleteFailed {
+            get {
+                return ResourceManager.GetString("DeliveryProviderTranslationDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update delivery provider translation..
+        /// </summary>
+        internal static string DeliveryProviderTranslationUpdateFailed {
+            get {
+                return ResourceManager.GetString("DeliveryProviderTranslationUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update delivery provider..
         /// </summary>
         internal static string DeliveryProviderUpdateFailed {

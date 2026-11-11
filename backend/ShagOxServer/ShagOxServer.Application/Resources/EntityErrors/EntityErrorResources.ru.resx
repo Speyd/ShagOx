@@ -432,4 +432,13 @@
   <data name="DeliveryProviderUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить службу доставки.</value>
   </data>
+  <data name="DeliveryProviderTranslationCreateFailed" xml:space="preserve">
+    <value>Не удалось создать перевод службы доставки.</value>
+  </data>
+  <data name="DeliveryProviderTranslationDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить перевод службы доставки.</value>
+  </data>
+  <data name="DeliveryProviderTranslationUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить перевод службы доставки.</value>
+  </data>
 </root>

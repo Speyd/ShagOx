@@ -432,4 +432,13 @@
   <data name="DeliveryProviderUpdateFailed" xml:space="preserve">
     <value>Versanddienstleister konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="DeliveryProviderTranslationCreateFailed" xml:space="preserve">
+    <value>Die Übersetzung des Versanddienstleisters konnte nicht erstellt werden.</value>
+  </data>
+  <data name="DeliveryProviderTranslationDeleteFailed" xml:space="preserve">
+    <value>Die Übersetzung des Versanddienstleisters konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="DeliveryProviderTranslationUpdateFailed" xml:space="preserve">
+    <value>Die Übersetzung des Versanddienstleisters konnte nicht aktualisiert werden.</value>
+  </data>
 </root>

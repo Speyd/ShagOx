@@ -432,4 +432,13 @@
   <data name="DeliveryProviderUpdateFailed" xml:space="preserve">
     <value>Failed to update delivery provider.</value>
   </data>
+  <data name="DeliveryProviderTranslationCreateFailed" xml:space="preserve">
+    <value>Failed to create delivery provider translation.</value>
+  </data>
+  <data name="DeliveryProviderTranslationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete delivery provider translation.</value>
+  </data>
+  <data name="DeliveryProviderTranslationUpdateFailed" xml:space="preserve">
+    <value>Failed to update delivery provider translation.</value>
+  </data>
 </root>

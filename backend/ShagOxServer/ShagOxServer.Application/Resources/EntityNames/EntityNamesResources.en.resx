@@ -216,4 +216,7 @@
   <data name="ReviewRepliImage" xml:space="preserve">
     <value>Review repli image</value>
   </data>
+  <data name="DeliveryProvider" xml:space="preserve">
+    <value>Delivery provider</value>
+  </data>
 </root>

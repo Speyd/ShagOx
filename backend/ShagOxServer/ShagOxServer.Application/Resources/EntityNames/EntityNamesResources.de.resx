@@ -216,4 +216,7 @@
   <data name="ReviewRepliImage" xml:space="preserve">
     <value>Bild der Antwort auf eine Bewertung</value>
   </data>
+  <data name="DeliveryProvider" xml:space="preserve">
+    <value> Versanddienstleister</value>
+  </data>
 </root>

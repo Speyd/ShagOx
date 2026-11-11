@@ -637,6 +637,33 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create delivery provider..
+        /// </summary>
+        internal static string DeliveryProviderCreateFailed {
+            get {
+                return ResourceManager.GetString("DeliveryProviderCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete delivery provider..
+        /// </summary>
+        internal static string DeliveryProviderDeleteFailed {
+            get {
+                return ResourceManager.GetString("DeliveryProviderDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update delivery provider..
+        /// </summary>
+        internal static string DeliveryProviderUpdateFailed {
+            get {
+                return ResourceManager.GetString("DeliveryProviderUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete image from the external service..
         /// </summary>
         internal static string ExternalImageDeleteFailed {

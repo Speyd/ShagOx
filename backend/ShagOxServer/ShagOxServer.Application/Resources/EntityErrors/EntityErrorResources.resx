@@ -423,4 +423,13 @@
   <data name="StatusChangeFailed" xml:space="preserve">
     <value>An unexpected error occurred while changing the status.</value>
   </data>
+  <data name="DeliveryProviderCreateFailed" xml:space="preserve">
+    <value>Failed to create delivery provider.</value>
+  </data>
+  <data name="DeliveryProviderDeleteFailed" xml:space="preserve">
+    <value>Failed to delete delivery provider.</value>
+  </data>
+  <data name="DeliveryProviderUpdateFailed" xml:space="preserve">
+    <value>Failed to update delivery provider.</value>
+  </data>
 </root>

@@ -423,4 +423,13 @@
   <data name="StatusChangeFailed" xml:space="preserve">
     <value>Під час зміни статусу сталася непередбачена помилка.</value>
   </data>
+  <data name="DeliveryProviderCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити службу доставки.</value>
+  </data>
+  <data name="DeliveryProviderDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити службу доставки.</value>
+  </data>
+  <data name="DeliveryProviderUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити службу доставки.</value>
+  </data>
 </root>

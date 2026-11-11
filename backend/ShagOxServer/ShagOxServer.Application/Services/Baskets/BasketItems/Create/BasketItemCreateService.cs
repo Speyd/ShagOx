@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
@@ -14,6 +15,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using Twilio.Rest.Verify.V2.Service;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketItems.Create;
 public class BasketItemCreateService
@@ -145,10 +147,13 @@ public class BasketItemCreateService
                 request.AdvertisementVariantId.Value,
                 cancellationToken);
 
-            if (!variantExists.IsSuccess)
+            if (!variantExists.IsSuccess || variantExists.Value is null)
                 return Result<int>.Fail(variantExists.Error);
 
             variant = variantExists.Value;
+
+            if (request.AdvertisementId != variant.AdvertisementId)
+                return Result<int>.NotFound(EntityNamesResources.Advertisement);
         }
 
         var itemExists = await _itemValidator.NotExistsAsync(

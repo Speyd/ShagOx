@@ -10,7 +10,6 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System.Net.NetworkInformation;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Delete;
 public class StatusDeleteService

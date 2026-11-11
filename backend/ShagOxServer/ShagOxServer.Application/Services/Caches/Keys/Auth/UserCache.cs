@@ -12,7 +12,7 @@ public static class UserCache
         string contact,
         string language,
         EntityStatus status = EntityStatus.Active)
-            => $"{Prefix}:{language}:status{status}:contact:{contact}";
+            => $"{Prefix}:{language}:status:{status}:contact:{contact}";
 
     public static string ByContactPattern(
         string contact,

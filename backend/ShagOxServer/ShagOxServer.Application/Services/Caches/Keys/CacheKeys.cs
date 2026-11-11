@@ -29,7 +29,7 @@ public static class CacheKeys
 
     public static string EntityPattern<TEntity>(
         EntityStatus status)
-        => $"{Prefix<TEntity>()}:*status:{status}";
+        => $"{Prefix<TEntity>()}:*:status:{status}";
 
     #endregion
 

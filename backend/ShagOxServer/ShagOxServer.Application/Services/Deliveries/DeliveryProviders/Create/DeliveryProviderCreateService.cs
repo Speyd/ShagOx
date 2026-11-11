@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries;
+using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Mapping;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -13,25 +15,25 @@ namespace ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Create;
 public class DeliveryProviderCreateService
     : IDeliveryProviderCreateService
 {
-    private readonly IRepository<DeliveryProvider> _statusRepository;
-    private readonly DeliveryProviderValidator _statusValidator;
+    private readonly IRepository<DeliveryProvider> _deliveryRepository;
+    private readonly DeliveryProviderValidator _deliveryValidator;
 
-    //private readonly StatusInvalidationService _statusInvalid;
+    private readonly DeliveryProviderInvalidationService _deliveryInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeliveryProviderCreateService> _logger;
 
 
     public DeliveryProviderCreateService(
-        IRepository<DeliveryProvider> statusRepository,
-        DeliveryProviderValidator statusValidator,
-        //StatusInvalidationService statusInvalid,
+        IRepository<DeliveryProvider> deliveryRepository,
+        DeliveryProviderValidator deliveryValidator,
+        DeliveryProviderInvalidationService deliveryInvalid,
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderCreateService> logger)
     {
-        _statusRepository = statusRepository;
-        _statusValidator = statusValidator;
-        //_statusInvalid = statusInvalid;
+        _deliveryRepository = deliveryRepository;
+        _deliveryValidator = deliveryValidator;
+        _deliveryInvalid = deliveryInvalid;
         _logger = logger;
         _unitOfWork = unitOfWork;
     }
@@ -41,7 +43,7 @@ public class DeliveryProviderCreateService
         DeliveryProviderCreateRequest request,
         CancellationToken cancellationToken = default)
     {
-        var codeValidation = await _statusValidator
+        var codeValidation = await _deliveryValidator
             .NotExistsByCodeAsync(request.Code, cancellationToken);
 
         if (!codeValidation.IsSuccess)
@@ -51,12 +53,12 @@ public class DeliveryProviderCreateService
         }
 
 
-        var status = DeliveryProviderCreater.Create(request);
+        var delivery = DeliveryProviderCreater.Create(request);
 
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            _statusRepository.Add(status);
+            _deliveryRepository.Add(delivery);
 
             await _unitOfWork.CommitAsync();
         }
@@ -73,12 +75,12 @@ public class DeliveryProviderCreateService
                     .Fail(EntityErrorResources.DeliveryProviderCreateFailed);
         }
 
-        //await _statusInvalid.InvalidateCreateAsync(
-        //    StatusCacheMapper.ToInfo(status));
+        await _deliveryInvalid.InvalidateCreateAsync(
+            DeliveryProviderCacheMapper.ToInfo(delivery));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(
-                status.Id,
+                delivery.Id,
                 DateTime.UtcNow
         ));
     }

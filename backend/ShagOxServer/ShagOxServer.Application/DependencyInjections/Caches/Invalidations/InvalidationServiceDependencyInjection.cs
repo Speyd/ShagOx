@@ -3,6 +3,7 @@ using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Adverti
 using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Auth;
 using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Comments;
+using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Deliveries;
 using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Location;
 using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Specification;
@@ -26,6 +27,8 @@ public static class InvalidationServiceDependencyInjection
         services.AddSpecificationInvalidationApplication();
 
         services.AddCommentsInvalidationApplication();
+
+        services.AddDeliveriesInvalidationApplication();
 
 
         return services;

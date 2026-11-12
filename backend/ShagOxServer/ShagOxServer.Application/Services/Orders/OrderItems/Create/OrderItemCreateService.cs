@@ -1,10 +1,15 @@
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Base.Responses;
+using Npgsql.Internal;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityNames;
+using ShagOxServer.Application.Resources.Order;
+using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
@@ -23,6 +28,10 @@ public class OrderItemCreateService
 
     private readonly OrderItemOrderInvalidationService _orderInvalidation;
 
+    private readonly ICurrencyConverter _converter;
+    private readonly ICurrencyProvider _currencyProvider;
+
+
     private readonly OrderItemInvalidationService _itemInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -32,6 +41,7 @@ public class OrderItemCreateService
     public OrderItemCreateService(
         IRepository<OrderItem> itemRepository,
         OrderItemValidator itemValidator,
+        ICurrencyConverter converter,
         AdvertisementVariantValidator advertVariantValidator,
         AdvertisementValidator advertValidator,
         OrderItemOrderInvalidationService orderInvalidation,
@@ -44,6 +54,7 @@ public class OrderItemCreateService
             advertValidator)
     {
         _itemRepository = itemRepository;
+        _converter = converter;
         _orderInvalidation = orderInvalidation;
         _itemInvalid = itemInvalid;
         _unitOfWork = unitOfWork;
@@ -51,7 +62,7 @@ public class OrderItemCreateService
     }
 
 
-    public async Task<Result<CreateResponse>> CreateAsync(
+    public async Task<Result<OrderItem>> CreateAsync(
         LineItemCreateRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -60,12 +71,49 @@ public class OrderItemCreateService
             cancellationToken);
 
         if (!validation.IsSuccess)
-            return Result<CreateResponse>.Fail(validation.Error);
+            return Result<OrderItem>.Fail(validation.Error);
 
-        var item = OrderItemCreater
-            .Create(request, validation.Value!.Stock);
+        var currency = await _currencyProvider
+            .GetCurrencyAsync();
+
+        if(currency is null)
+        {
+            return Result<OrderItem>.NotFound(
+                EntityNamesResources.User);
+        }
+
+
+        string code = "";
+        if (validation.Value!.Variant is not null)
+        {
+            validation.Value.Variant.Stock -= validation.Value!.Stock;
+            code = validation.Value.Variant.Advertisement.Currency.Code;
+        }
+        else if (validation.Value!.Advertisement is not null)
+        {
+            validation.Value.Advertisement.Stock -= validation.Value!.Stock;
+            code = validation.Value.Advertisement.Currency.Code;
+
+        }
+
+        var newPrice = _converter.Convert(
+                validation.Value!.Price,
+                code,
+                currency.Code);
+
+        if(!newPrice.ConvertedAmount.HasValue)
+        {
+            return Result<OrderItem>.Fail(
+                OrderResources.InvalidPrice);
+        }
+
+        var item = OrderItemCreater.Create(
+            request, 
+            newPrice.ConvertedAmount.Value);
 
         await _unitOfWork.BeginTransactionAsync();
+
+        
 
         try
         {
@@ -84,7 +132,7 @@ public class OrderItemCreateService
                 request.ParentId,
                 request.AdvertisementVariantId);
 
-            return Result<CreateResponse>
+            return Result<OrderItem>
                 .Fail(EntityErrorResources.OrderItemCreateFailed);
         }
 
@@ -104,10 +152,6 @@ public class OrderItemCreateService
         await _itemInvalid.InvalidateCreateAsync(
             caheInfo);
 
-        return Result<CreateResponse>.Success(
-            new CreateResponse(
-                item.Id,
-                DateTime.UtcNow
-        ));
+        return Result<OrderItem>.Success(item);
     }
 }

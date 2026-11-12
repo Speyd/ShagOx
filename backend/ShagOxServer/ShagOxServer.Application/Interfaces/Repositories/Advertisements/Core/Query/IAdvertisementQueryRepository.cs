@@ -9,6 +9,11 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Q
 public partial interface IAdvertisementQueryRepository
     : ISearchRepository<Advertisement, AdvertisementSearchFilter>
 {
+    Task<Advertisement?> GetByIdShortIncludeAsync(
+        long id,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<List<Advertisement>> GetByIdsAsync(
         List<long> ids,
         CancellationToken cancellationToken = default,

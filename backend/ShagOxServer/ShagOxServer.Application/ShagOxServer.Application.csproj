@@ -185,7 +185,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="DTOs\Orders\OrderItems\Create\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
 	</ItemGroup>
 	

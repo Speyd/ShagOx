@@ -126,8 +126,8 @@
   <data name="Basket" xml:space="preserve">
     <value>Кошик</value>
   </data>
-  <data name="BasketAttribute" xml:space="preserve">
-    <value>Атрибут кошика</value>
+  <data name="LineItemAttribute" xml:space="preserve">
+    <value>Атрибут позиції</value>
   </data>
   <data name="BasketItem" xml:space="preserve">
     <value>Елемент кошика</value>

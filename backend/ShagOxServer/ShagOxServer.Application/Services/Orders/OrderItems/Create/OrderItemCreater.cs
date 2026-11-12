@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.LineItems.Create;
+using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Domain.Entities.Orders;
 
 namespace ShagOxServer.Application.Services.Orders.OrderItems.Create;

@@ -1,4 +1,4 @@
-using ShagOxServer.Domain.Entities.LineItems;
+using ShagOxServer.Domain.Entities.LineItems.Core;
 
 namespace ShagOxServer.Domain.Entities.Baskets;
 public class BasketItem

@@ -207,14 +207,14 @@
   <data name="AvatarUpdateFailed" xml:space="preserve">
     <value>Der Avatar konnte nicht aktualisiert werden.</value>
   </data>
-  <data name="BasketAttributeCreateFailed" xml:space="preserve">
-    <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
+  <data name="LineItemAttributeCreateFailed" xml:space="preserve">
+    <value>Positionsattribut konnte nicht erstellt werden.</value>
   </data>
-  <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
+  <data name="LineItemAttributeDeleteFailed" xml:space="preserve">
+    <value>Positionsattribut konnte nicht gelöscht werden.</value>
   </data>
-  <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
+  <data name="LineItemAttributeUpdateFailed" xml:space="preserve">
+    <value>Positionsattribut konnte nicht aktualisiert werden.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Der Warenkorb konnte nicht erstellt werden.</value>

@@ -480,39 +480,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("Baskets");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketAttribute", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("AttributeDefinitionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("EntityStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("Active");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AttributeDefinitionId")
-                        .IsUnique()
-                        .HasDatabaseName("IX_BasketAttributes_AttributeDefinitionId")
-                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
-
-                    b.ToTable("BasketAttributes");
-                });
-
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketItem", b =>
                 {
                     b.Property<long>("Id")
@@ -1144,6 +1111,39 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("ProductTypeTranslations");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.LineItems.LineItemAttribute", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AttributeDefinitionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeDefinitionId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_LineItemAttributes_AttributeDefinitionId")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.ToTable("LineItemAttributes");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>
@@ -2030,18 +2030,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketAttribute", b =>
-                {
-                    b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", "AttributeDefinition")
-                        .WithOne("BasketAttribute")
-                        .HasForeignKey("ShagOxServer.Domain.Entities.Baskets.BasketAttribute", "AttributeDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_BasketAttributes_AttributeDefinitions_AttributeDefinitionId");
-
-                    b.Navigation("AttributeDefinition");
-                });
-
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.BasketItem", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "Advertisement")
@@ -2223,6 +2211,18 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasConstraintName("FK_ProductTypeTranslations_ProductTypes_TranslatableId");
 
                     b.Navigation("Translatable");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.LineItems.LineItemAttribute", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", "AttributeDefinition")
+                        .WithOne("BasketAttribute")
+                        .HasForeignKey("ShagOxServer.Domain.Entities.LineItems.LineItemAttribute", "AttributeDefinitionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_LineItemAttributes_AttributeDefinitions_AttributeDefinitionId");
+
+                    b.Navigation("AttributeDefinition");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Location.City", b =>

@@ -1,7 +1,8 @@
 using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
-using ShagOxServer.Application.DTOs.LineItems.Cache;
+using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;

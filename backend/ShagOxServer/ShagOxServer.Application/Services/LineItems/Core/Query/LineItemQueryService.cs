@@ -3,7 +3,6 @@ using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Items.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Keys.LineItems;
@@ -15,7 +14,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Services.LineItems.Core.Query;
-using ShagOxServer.Domain.Entities.LineItems;
+using ShagOxServer.Application.Interfaces.Repositories.LineItems.LineItemAttributes;
+using ShagOxServer.Domain.Entities.LineItems.Core;
 
 namespace ShagOxServer.Application.Services.LineItems.Core.Query;
 public abstract class LineItemQueryService<TDto, TEntity, TFilter>
@@ -27,12 +27,12 @@ public abstract class LineItemQueryService<TDto, TEntity, TFilter>
 {
     private readonly ILineItemQueryRepository<TEntity, TFilter> _itemQueryRepository;
 
-    private readonly IBasketAttributeExistsRepository _attributeRepository;
+    private readonly ILineItemAttributeExistsRepository _attributeRepository;
 
     
     public LineItemQueryService(
         ILineItemQueryRepository<TEntity, TFilter> itemQueryRepository,
-        IBasketAttributeExistsRepository attributeRepository,
+        ILineItemAttributeExistsRepository attributeRepository,
         IDataCacheService cacheService,
         IOptions<CacheSettings> settings,
         ILanguageProvider language

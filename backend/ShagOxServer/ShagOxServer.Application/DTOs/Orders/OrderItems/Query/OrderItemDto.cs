@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query.LineItems;
-using ShagOxServer.Application.DTOs.LineItems.Query;
+using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Domain.Base.Enum;
 
 namespace ShagOxServer.Application.DTOs.Orders.OrderItems.Query;

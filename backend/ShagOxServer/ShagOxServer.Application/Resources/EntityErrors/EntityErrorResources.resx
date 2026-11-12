@@ -207,14 +207,14 @@
   <data name="AvatarUpdateFailed" xml:space="preserve">
     <value>Failed to update avatar.</value>
   </data>
-  <data name="BasketAttributeCreateFailed" xml:space="preserve">
-    <value>Failed to create basket attribute.</value>
+  <data name="LineItemAttributeCreateFailed" xml:space="preserve">
+    <value>Failed to create line item attribute.</value>
   </data>
-  <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Failed to delete basket attribute.</value>
+  <data name="LineItemAttributeDeleteFailed" xml:space="preserve">
+    <value>Failed to delete line item attribute.</value>
   </data>
-  <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Failed to update attribute.</value>
+  <data name="LineItemAttributeUpdateFailed" xml:space="preserve">
+    <value>Failed to update line item attribute.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Failed to create basket.</value>

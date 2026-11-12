@@ -8,6 +8,7 @@ using ShagOxServer.Infrastructure.DependencyInjections.Db;
 using ShagOxServer.Infrastructure.DependencyInjections.Deliveries;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
 using ShagOxServer.Infrastructure.DependencyInjections.ExternalServices;
+using ShagOxServer.Infrastructure.DependencyInjections.LineItems;
 using ShagOxServer.Infrastructure.DependencyInjections.Location;
 using ShagOxServer.Infrastructure.DependencyInjections.Monitoring;
 using ShagOxServer.Infrastructure.DependencyInjections.Orders;
@@ -31,6 +32,7 @@ public static class DependencyInjection
             .AddVerificationInfrastructure()
             .AddBackgroundServiceInfrastructure()
             .AddBaseRepositoryInfrastructure()
+            .AddLineItemsInfrastructure()
             .AddBasketInfrastructure()
             .AddAuthInfrastructure()
             .AddLocationInfrastructure()

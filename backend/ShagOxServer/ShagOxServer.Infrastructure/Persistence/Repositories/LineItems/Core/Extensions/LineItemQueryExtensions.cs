@@ -1,6 +1,6 @@
-using ShagOxServer.Application.DTOs.LineItems.Cache;
+using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.LineItems;
+using ShagOxServer.Domain.Entities.LineItems.Core;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.LineItems.Core.Extensions;
 public static class LineItemQueryExtensions

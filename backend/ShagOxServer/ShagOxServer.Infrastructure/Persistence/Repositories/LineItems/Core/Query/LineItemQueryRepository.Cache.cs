@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.LineItems.Cache;
+using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Items.Query;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.LineItems;
+using ShagOxServer.Domain.Entities.LineItems.Core;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;

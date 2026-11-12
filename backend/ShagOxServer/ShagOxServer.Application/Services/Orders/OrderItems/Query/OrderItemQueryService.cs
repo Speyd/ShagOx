@@ -2,7 +2,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Orders.OrderItems.Query;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
+using ShagOxServer.Application.Interfaces.Repositories.LineItems.LineItemAttributes;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.OrderItems;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
@@ -44,7 +44,7 @@ public class OrderItemQueryService
         //IBasketQueryRepository basketQueryRepository,
         IAdvertisementQueryService advertisementService,
         IStatusQueryService statusService,
-        IBasketAttributeExistsRepository attributeRepository,
+        ILineItemAttributeExistsRepository attributeRepository,
         IDataCacheService cacheService,
         IOptions<CacheSettings> settings,
         ILanguageProvider language

@@ -1,5 +1,5 @@
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.LineItems;
+using ShagOxServer.Domain.Entities.LineItems.Core;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.LineItems;
 public static class LineItemsCache<TEntity>

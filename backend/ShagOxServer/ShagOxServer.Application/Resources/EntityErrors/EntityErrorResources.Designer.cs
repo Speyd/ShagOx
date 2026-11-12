@@ -358,33 +358,6 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to create basket attribute..
-        /// </summary>
-        internal static string BasketAttributeCreateFailed {
-            get {
-                return ResourceManager.GetString("BasketAttributeCreateFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to delete basket attribute..
-        /// </summary>
-        internal static string BasketAttributeDeleteFailed {
-            get {
-                return ResourceManager.GetString("BasketAttributeDeleteFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to update attribute..
-        /// </summary>
-        internal static string BasketAttributeUpdateFailed {
-            get {
-                return ResourceManager.GetString("BasketAttributeUpdateFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create basket..
         /// </summary>
         internal static string BasketCreateFailed {
@@ -750,6 +723,33 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         internal static string InvalidStatusValue {
             get {
                 return ResourceManager.GetString("InvalidStatusValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create line item attribute..
+        /// </summary>
+        internal static string LineItemAttributeCreateFailed {
+            get {
+                return ResourceManager.GetString("LineItemAttributeCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete line item attribute..
+        /// </summary>
+        internal static string LineItemAttributeDeleteFailed {
+            get {
+                return ResourceManager.GetString("LineItemAttributeDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update line item attribute..
+        /// </summary>
+        internal static string LineItemAttributeUpdateFailed {
+            get {
+                return ResourceManager.GetString("LineItemAttributeUpdateFailed", resourceCulture);
             }
         }
         

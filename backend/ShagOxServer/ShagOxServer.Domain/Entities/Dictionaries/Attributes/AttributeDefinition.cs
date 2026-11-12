@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
+using ShagOxServer.Domain.Entities.LineItems;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 public class AttributeDefinition 
@@ -23,7 +23,7 @@ public class AttributeDefinition
     public bool IsVariant { get; set; }
     public bool Multiple { get; set; }
 
-    public BasketAttribute? BasketAttribute { get; set; }
+    public LineItemAttribute? BasketAttribute { get; set; }
 
     public ICollection<AttributeDefinitionTranslation> Translations { get; set; }
        = [];

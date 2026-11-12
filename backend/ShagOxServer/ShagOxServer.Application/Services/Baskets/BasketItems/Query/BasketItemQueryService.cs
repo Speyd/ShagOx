@@ -2,9 +2,9 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
+using ShagOxServer.Application.Interfaces.Repositories.LineItems.LineItemAttributes;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
@@ -45,7 +45,7 @@ public class BasketItemQueryService
         IBasketQueryRepository basketQueryRepository,
         IAdvertisementQueryService advertisementService,
         IStatusQueryService statusService,
-        IBasketAttributeExistsRepository attributeRepository,
+        ILineItemAttributeExistsRepository attributeRepository,
         IDataCacheService cacheService,
         IOptions<CacheSettings> settings,
         ILanguageProvider language

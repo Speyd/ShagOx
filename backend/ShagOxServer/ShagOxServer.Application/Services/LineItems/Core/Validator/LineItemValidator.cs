@@ -4,7 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.LineItems.Core;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
 using ShagOxServer.Application.Services.Base.Validator;
-using ShagOxServer.Domain.Entities.LineItems;
+using ShagOxServer.Domain.Entities.LineItems.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.LineItems.Core.Validator;

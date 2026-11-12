@@ -1,12 +1,12 @@
-using ShagOxServer.Application.DTOs.LineItems.Create;
-using ShagOxServer.Application.DTOs.LineItems.Query;
+using ShagOxServer.Application.DTOs.LineItems.Core.Create;
+using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Order;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.LineItems.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.LineItems;
+using ShagOxServer.Domain.Entities.LineItems.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.LineItems.Core.Create;

@@ -142,15 +142,6 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Basket attribute.
-        /// </summary>
-        public static string BasketAttribute {
-            get {
-                return ResourceManager.GetString("BasketAttribute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Basket item.
         /// </summary>
         public static string BasketItem {
@@ -264,6 +255,15 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         public static string Image {
             get {
                 return ResourceManager.GetString("Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Line item attribute.
+        /// </summary>
+        public static string LineItemAttribute {
+            get {
+                return ResourceManager.GetString("LineItemAttribute", resourceCulture);
             }
         }
         

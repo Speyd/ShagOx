@@ -126,8 +126,8 @@
   <data name="Basket" xml:space="preserve">
     <value>Basket</value>
   </data>
-  <data name="BasketAttribute" xml:space="preserve">
-    <value>Basket attribute</value>
+  <data name="LineItemAttribute" xml:space="preserve">
+    <value>Line item attribute</value>
   </data>
   <data name="BasketItem" xml:space="preserve">
     <value>Basket item</value>

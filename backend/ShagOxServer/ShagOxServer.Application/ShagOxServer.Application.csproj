@@ -187,7 +187,6 @@
 	<ItemGroup>
 	  <Folder Include="DTOs\Orders\OrderItems\Create\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
-	  <Folder Include="Services\Orders\OrderItems\Delete\" />
 	</ItemGroup>
 	
 </Project>

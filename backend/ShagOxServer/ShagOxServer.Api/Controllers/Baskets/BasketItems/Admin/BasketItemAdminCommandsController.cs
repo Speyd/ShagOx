@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Update;
-using ShagOxServer.Application.DTOs.LineItems.Create;
+using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Update;

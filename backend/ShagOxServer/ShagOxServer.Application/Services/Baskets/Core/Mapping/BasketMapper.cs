@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Baskets.Core.Query;
-using ShagOxServer.Application.DTOs.LineItems.Query;
+using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.Core.Mapping;

@@ -126,8 +126,8 @@
   <data name="Basket" xml:space="preserve">
     <value>Корзина</value>
   </data>
-  <data name="BasketAttribute" xml:space="preserve">
-    <value>Атрибут корзины</value>
+  <data name="LineItemAttribute" xml:space="preserve">
+    <value>Атрибут позиции</value>
   </data>
   <data name="BasketItem" xml:space="preserve">
     <value>Элемент корзины</value>

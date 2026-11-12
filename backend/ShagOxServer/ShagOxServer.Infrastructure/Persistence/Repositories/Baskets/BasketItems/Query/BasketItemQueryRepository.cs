@@ -4,7 +4,6 @@ using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketAttributes.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.LineItems.Core.Query;

@@ -1,12 +1,12 @@
 using ShagOxServer.Application.DTOs.Base.Cache;
-using ShagOxServer.Application.DTOs.Baskets.BasketAttributes.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
+using ShagOxServer.Application.DTOs.LineItems.LineItemAttributes.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
-using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
+using ShagOxServer.Application.Services.Caches.Invalidations.LineItems;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -16,9 +16,9 @@ public class AttributeDefinitionInvalidationService
     : ICacheInvalidationService<AttributeDefinition, 
         AttributeDefinitionCacheInfo>
 {
-    private readonly IBasketAttributeQueryRepository _basketRepository;
+    private readonly ILineItemAttributeQueryRepository _basketRepository;
 
-    private readonly BasketAttributeInvalidationService _basketInvalid;
+    private readonly LineItemAttributeInvalidationService _basketInvalid;
 
     private readonly IAttributeDefinitionTranslationQueryRepository _transRepository;
 
@@ -29,8 +29,8 @@ public class AttributeDefinitionInvalidationService
 
 
     public AttributeDefinitionInvalidationService(
-        IBasketAttributeQueryRepository basketRepository,
-        BasketAttributeInvalidationService basketInvalid,
+        ILineItemAttributeQueryRepository basketRepository,
+        LineItemAttributeInvalidationService basketInvalid,
         IAttributeDefinitionTranslationQueryRepository transRepository,
         AttributeDefinitionTranslationInvalidationService transInvalid,
         IDataCacheService cache)
@@ -87,7 +87,7 @@ public class AttributeDefinitionInvalidationService
         if (basketAttributeInfo is not null)
         {
             await _basketInvalid
-                    .InvalidateUpdateAsync(basketAttributeInfo);
+                .InvalidateUpdateAsync(basketAttributeInfo);
         }
     }
 
@@ -115,7 +115,7 @@ public class AttributeDefinitionInvalidationService
              ValueByCategoryPattern(entityInfo.CategoryId));
     }
 
-    private async Task<BasketAttributeCacheInfo?> GetBasketAttributeInfos(
+    private async Task<LineItemAttributeCacheInfo?> GetBasketAttributeInfos(
         long entityId)
     {
         return await _basketRepository

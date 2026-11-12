@@ -1,4 +1,3 @@
-using ShagOxServer.Application.DTOs.LineItems.Query;
 using ShagOxServer.Application.DTOs.Orders.OrderItems.Query;
 using ShagOxServer.Application.Interfaces.Services.LineItems.Core.Query;
 using ShagOxServer.Domain.Entities.Orders;

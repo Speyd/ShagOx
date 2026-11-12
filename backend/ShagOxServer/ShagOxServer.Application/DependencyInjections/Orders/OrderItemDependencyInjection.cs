@@ -1,7 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
+using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Delete;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Query;
 using ShagOxServer.Application.Services.Orders.OrderItems.Create;
+using ShagOxServer.Application.Services.Orders.OrderItems.Delete;
 using ShagOxServer.Application.Services.Orders.OrderItems.Query;
 using ShagOxServer.Application.Services.Orders.OrderItems.Validator;
 
@@ -20,8 +22,8 @@ public static class OrderItemDependencyInjection
         //services.AddScoped<IBasketItemUpdateService,
         //    BasketItemUpdateService>();
 
-        //services.AddScoped<IBasketItemDeleteService,
-        //    BasketItemDeleteService>();
+        services.AddScoped<IOrderItemDeleteService,
+            OrderItemDeleteService>();
 
         services.AddScoped<OrderItemValidator>();
 

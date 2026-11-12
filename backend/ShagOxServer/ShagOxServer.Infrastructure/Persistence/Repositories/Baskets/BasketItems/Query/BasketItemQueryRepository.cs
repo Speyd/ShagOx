@@ -1,6 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;

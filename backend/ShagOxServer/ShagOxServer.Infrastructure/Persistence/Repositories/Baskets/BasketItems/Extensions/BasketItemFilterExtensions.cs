@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
@@ -15,19 +15,25 @@ public static class BasketItemFilterExtensions
         if (filter.BasketId.HasValue)
         {
             query = query.Where(u =>
-                    u.BasketId == filter.BasketId);
+                u.BasketId == filter.BasketId);
+        }
+
+        if (filter.AdvertisementId.HasValue)
+        {
+            query = query.Where(u =>
+                u.AdvertisementId == filter.AdvertisementId);
         }
 
         if (filter.AdvertisementVariantId.HasValue)
         {
             query = query.Where(u =>
-                    u.AdvertisementVariantId == filter.AdvertisementVariantId);
+                u.AdvertisementVariantId == filter.AdvertisementVariantId);
         }
 
         if (filter.Quantity.HasValue)
         {
             query = query.Where(u =>
-                    u.Quantity == filter.Quantity);
+                u.Quantity == filter.Quantity);
         }
 
         return query;

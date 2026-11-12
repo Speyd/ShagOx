@@ -5,7 +5,6 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Query;
-
 public partial class BasketItemQueryRepository
     : SearchRepository<BasketItem, BasketItemSearchFilter>,
       IBasketItemQueryRepository

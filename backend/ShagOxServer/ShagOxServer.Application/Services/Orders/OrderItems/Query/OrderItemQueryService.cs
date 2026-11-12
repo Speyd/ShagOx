@@ -3,11 +3,13 @@ using ShagOxServer.Application.Common.Settings.Caches;
 using ShagOxServer.Application.DTOs.Orders.OrderItems.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.LineItems.LineItemAttributes;
+using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.OrderItems;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Query;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping.Items;
 using ShagOxServer.Application.Services.LineItems.Core.Query;
 using ShagOxServer.Application.Services.Orders.OrderItems.Mapping;
@@ -27,7 +29,7 @@ public class OrderItemQueryService
     IOrderItemQueryService
 {
 
-    //private readonly IBasketQueryRepository _basketQueryRepository;
+    private readonly IOrderQueryRepository _orderQueryRepository;
 
     private readonly IAdvertisementQueryService _advertisementService;
     private readonly IStatusQueryService _statusService;
@@ -41,7 +43,7 @@ public class OrderItemQueryService
 
     public OrderItemQueryService(
         IOrderItemQueryRepository itemQueryRepository,
-        //IBasketQueryRepository basketQueryRepository,
+        IOrderQueryRepository orderQueryRepository,
         IAdvertisementQueryService advertisementService,
         IStatusQueryService statusService,
         ILineItemAttributeExistsRepository attributeRepository,
@@ -55,7 +57,7 @@ public class OrderItemQueryService
             settings,
             language)
     {
-        //_basketQueryRepository = basketQueryRepository;
+        _orderQueryRepository = orderQueryRepository;
         _statusService = statusService;
         _advertisementService = advertisementService;
     }
@@ -87,20 +89,19 @@ public class OrderItemQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
     {
-        //var basketId = await _basketQueryRepository
-        //    .GetIdByUserAsync(userId,
-        //        cancellationToken, status);
+        var orderId = await _orderQueryRepository
+            .GetIdByUserAsync(userId,
+                cancellationToken, status);
 
-        //if (!basketId.HasValue)
-        //{
-        //    return Result<PagedResult<LineItemDto>>
-        //        .NotFound(EntityNamesResources.Basket);
-        //}
+        if (!orderId.HasValue)
+        {
+            return Result<PagedResult<OrderItemDto>>
+                .NotFound(EntityNamesResources.Order);
+        }
 
 
         return await GetByParentAsync(
-            0,
-            //basketId.Value,
+            orderId.Value,
             pagination,
             cancellationToken,
             status

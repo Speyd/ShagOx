@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
 using ShagOxServer.Application.Services.LineItems.Core.Create;
 using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Application.Services.Orders.OrderItems.Validator;
@@ -20,9 +21,9 @@ public class OrderItemCreateService
 {
     private readonly IRepository<OrderItem> _itemRepository;
 
-    //private readonly BasketItemBasketInvalidationService _basketInvalidation;
+    private readonly OrderItemOrderInvalidationService _orderInvalidation;
 
-   // private readonly BasketItemInvalidationService _itemInvalid;
+    private readonly OrderItemInvalidationService _itemInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<OrderItemCreateService> _logger;
@@ -33,8 +34,8 @@ public class OrderItemCreateService
         OrderItemValidator itemValidator,
         AdvertisementVariantValidator advertVariantValidator,
         AdvertisementValidator advertValidator,
-        //BasketItemBasketInvalidationService basketInvalidation,
-        //BasketItemInvalidationService itemInvalid,
+        OrderItemOrderInvalidationService orderInvalidation,
+        OrderItemInvalidationService itemInvalid,
         IUnitOfWork unitOfWork,
         ILogger<OrderItemCreateService> logger
     )
@@ -43,8 +44,8 @@ public class OrderItemCreateService
             advertValidator)
     {
         _itemRepository = itemRepository;
-        //_basketInvalidation = basketInvalidation;
-        //_itemInvalid = itemInvalid;
+        _orderInvalidation = orderInvalidation;
+        _itemInvalid = itemInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -97,11 +98,11 @@ public class OrderItemCreateService
 
         var caheInfo = LineItemCacheMapper.ToInfo(item);
 
-        //await _basketInvalidation.InvalidateCreateAsync(
-        //    caheInfo);
+        await _orderInvalidation.InvalidateCreateAsync(
+            caheInfo);
 
-        //await _itemInvalid.InvalidateCreateAsync(
-        //    caheInfo);
+        await _itemInvalid.InvalidateCreateAsync(
+            caheInfo);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

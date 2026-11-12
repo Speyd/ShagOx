@@ -20,6 +20,20 @@ public partial class OrderQueryRepository
     { }
 
 
+    public async Task<long?> GetIdByUserAsync(
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        var basketId = await _db.Orders
+            .WithStatusFilter(status)
+            .FirstOrDefaultAsync(c =>
+                c.OwnerId == userId,
+                cancellationToken);
+
+        return basketId?.Id;
+    }
+
     public async Task<Order?> GetByDeliveryTrackingNumberAsync(
         string trackingNumber,
         CancellationToken cancellationToken = default,

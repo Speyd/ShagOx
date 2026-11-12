@@ -5,6 +5,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
+using ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
+using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Application.Services.Orders.OrderItems.Validator;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -17,8 +19,8 @@ public class OrderItemDeleteService
     private readonly IRepository<OrderItem> _itemRepository;
     private readonly OrderItemValidator _itemValidator;
 
-    //private readonly BasketItemInvalidationService _itemInvalidation;
-    //private readonly BasketItemBasketInvalidationService _basketInvalidation;
+    private readonly OrderItemInvalidationService _itemInvalidation;
+    private readonly OrderItemOrderInvalidationService _orderInvalidation;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<OrderItemDeleteService> _logger;
@@ -27,8 +29,8 @@ public class OrderItemDeleteService
     public OrderItemDeleteService(
         IRepository<OrderItem> itemRepository,
         OrderItemValidator itemValidator,
-        //BasketItemInvalidationService itemInvalidation,
-        //BasketItemBasketInvalidationService basketValidator,
+        OrderItemInvalidationService itemInvalidation,
+        OrderItemOrderInvalidationService orderValidator,
         IUnitOfWork unitOfWork,
         ILogger<OrderItemDeleteService> logger
     )
@@ -36,8 +38,8 @@ public class OrderItemDeleteService
     {
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;
-       //_itemInvalidation = itemInvalidation;
-        //_basketInvalidation = basketValidator;
+        _itemInvalidation = itemInvalidation;
+        _orderInvalidation = orderValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -91,13 +93,13 @@ public class OrderItemDeleteService
     public override async Task InvalidateCache(
         OrderItem entity)
     {
-        //var info = LineItemCacheMapper
-        //    .ToInfo(entity);
+        var info = LineItemCacheMapper
+            .ToInfo(entity);
 
-        //await _itemInvalidation
-        //    .InvalidateDeleteAsync(info);
+        await _itemInvalidation
+            .InvalidateDeleteAsync(info);
 
-        //await _basketInvalidation
-        //    .InvalidateDeleteAsync(info);
+        await _orderInvalidation
+            .InvalidateDeleteAsync(info);
     }
 }

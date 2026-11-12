@@ -7,6 +7,11 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
 public interface IOrderQueryRepository
     : ISearchRepository<Order, OrderSearchFilter>
 {
+    Task<long?> GetIdByUserAsync(
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<Order?> GetByOrderNumberAsync(
         string orderNumber,
         CancellationToken cancellationToken = default,

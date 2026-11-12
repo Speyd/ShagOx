@@ -4,6 +4,7 @@ namespace ShagOxServer.Domain.Entities.Orders;
 public class OrderItem
     : LineItem<Order>
 {
+    public decimal TotalWeight { get; set; }
     public decimal TotalPrice { get; set; }
 
     public decimal Price => Quantity > 0

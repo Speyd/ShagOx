@@ -1,10 +1,12 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Base.Special;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Orders;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
 public interface IOrderExistsRepository
-    : IExistsRepository<Order>
+    : IExistsRepository<Order>,
+    IExistsOwnerRepository
 {
     Task<bool> ExistsByOrderNumberAsync(
         string orderNumber,

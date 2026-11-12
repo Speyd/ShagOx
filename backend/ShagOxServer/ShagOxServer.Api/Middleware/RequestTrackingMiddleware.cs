@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Systems.Middleware;
+using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Caches.Keys.Security;
 using ShagOxServer.Domain.Entities.Security;
@@ -10,13 +10,13 @@ public sealed class RequestTrackingMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IUserCacheService _userCache;
-    private readonly RequestTrackingSettings _settings;
+    private readonly RequestTrackingOptions _settings;
 
 
     public RequestTrackingMiddleware(
         RequestDelegate next,
         IUserCacheService userCache,
-        IOptions<RequestTrackingSettings> settings)
+        IOptions<RequestTrackingOptions> settings)
     {
         _next = next;
         _userCache = userCache;

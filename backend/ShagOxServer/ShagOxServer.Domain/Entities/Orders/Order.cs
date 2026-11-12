@@ -28,6 +28,8 @@ public class Order
     public decimal DeliveryPrice { get; set; }
 
     public decimal TotalPrice { get; set; }
+    public decimal TotalWeight { get; set; }
+
 
     public long CurrencyId { get; set; }
     public Currency Currency { get; set; } = null!;

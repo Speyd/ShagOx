@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
@@ -25,7 +25,7 @@ public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
         ISearchRepository<TEntity, TFilter> localizedRepository,
         ILanguageProvider language,
         IDataCacheService cacheRepository,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> settings
     )
         : base(localizedRepository, cacheRepository, settings)
     {

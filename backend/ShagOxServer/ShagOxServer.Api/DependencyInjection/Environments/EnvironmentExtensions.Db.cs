@@ -1,6 +1,6 @@
 using DotNetEnv;
 using ShagOxServer.Api.DependencyInjection.Environments.Db;
-using ShagOxServer.Application.Common.Settings.Db.Postgres;
+using ShagOxServer.Application.Common.Options.Db.Postgres;
 using ShagOxServer.SharedKernel.Configuration;
 
 namespace ShagOxServer.Api.DependencyInjection.Environments;
@@ -13,7 +13,7 @@ public partial class EnvironmentExtensions
 
         Env.Load(envPath);
 
-        var settings = PostgresSettingsLoader.Load();
+        var settings = PostgresLoaderOptions.Load();
 
         builder.Configuration["ConnectionStrings:PrimaryConnection"] =
             PostgresConnectionStringBuilder.Build(

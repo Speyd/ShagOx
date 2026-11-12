@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Orders.OrderItems.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.LineItems.LineItemAttributes;
@@ -48,7 +48,7 @@ public class OrderItemQueryService
         IStatusQueryService statusService,
         ILineItemAttributeExistsRepository attributeRepository,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings,
+        IOptions<CacheOptions> settings,
         ILanguageProvider language
     )
         : base(itemQueryRepository,

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.LineItems.LineItemAttributes.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
@@ -34,7 +34,7 @@ public class LineItemAttributeQueryService
         ILineItemAttributeQueryRepository attributeQueryRepository,
         IAttributeDefinitionQueryService attributeService,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings,
+        IOptions<CacheOptions> settings,
         ILanguageProvider language
     )
         : base(attributeQueryRepository, language, cacheService, settings)

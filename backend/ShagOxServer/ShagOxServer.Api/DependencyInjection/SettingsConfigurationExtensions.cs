@@ -1,9 +1,7 @@
-using ShagOxServer.Application.Common.Settings.Auth;
-using ShagOxServer.Application.Common.Settings.Currencies;
-using ShagOxServer.Application.Common.Settings.Systems.BackgroundServices;
-using ShagOxServer.Application.Common.Settings.Systems.Middleware;
+using ShagOxServer.Application.Common.Options.Auth;
+using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
+using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Common.Settings.Verifivations;
-using ShagOxServer.Infrastructure.BackgroundServices.Currencies;
 
 namespace ShagOxServer.Api.DependencyInjection;
 public static class SettingsConfigurationExtensions
@@ -31,10 +29,10 @@ public static class SettingsConfigurationExtensions
 
         #region Cleanup Settings
 
-        services.Configure<UserCleanupSettings>(
+        services.Configure<UserCleanupOptions>(
             config.GetSection("UserCleanup"));
 
-        services.Configure<VerificationCodeCleanupSettings>(
+        services.Configure<VerificationCodeCleanupOptions>(
             config.GetSection("VerificationCodeCleanup"));
 
         #endregion
@@ -48,17 +46,17 @@ public static class SettingsConfigurationExtensions
 
         #region User Settings
 
-        services.Configure<UserNameSettings>(
+        services.Configure<UserNameOptions>(
             config.GetSection("UserNameGenerate"));
 
         #endregion
 
         #region Middleware
 
-        services.Configure<RequestTrackingSettings>(
+        services.Configure<RequestTrackingOptions>(
             config.GetSection("RequestTracking"));
 
-        services.Configure<UpdateLastSeenSettings>(
+        services.Configure<UpdateLastSeenOptions>(
             config.GetSection("UpdateLastSeen"));
 
         #endregion

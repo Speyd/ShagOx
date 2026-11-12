@@ -2,7 +2,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Npgsql;
-using ShagOxServer.Application.Common.Settings.Db;
+using ShagOxServer.Application.Common.Options.Db;
 using ShagOxServer.Domain.Entities.Db;
 using ShagOxServer.Infrastructure.Monitoring;
 
@@ -12,7 +12,7 @@ public class ReplicaHealthCheckeService
 {
     private readonly ILogger<ReplicaHealthCheckeService> _logger;
 
-    private readonly DatabaseHealthCheckSettings _setting;
+    private readonly DatabaseHealthCheckOptions _setting;
 
     private readonly IReadOnlyList<Replica> _replicas;
 
@@ -20,7 +20,7 @@ public class ReplicaHealthCheckeService
 
 
     public ReplicaHealthCheckeService(
-        IOptions<DatabaseHealthCheckSettings> setting,
+        IOptions<DatabaseHealthCheckOptions> setting,
         ILogger<ReplicaHealthCheckeService> logger,
         IReadOnlyList<Replica> replicas,
         DockerCpuReader dockerCpuReader)

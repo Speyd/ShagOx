@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Location.Cities.Translations.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -23,7 +23,7 @@ public class CityTranslationQueryService
     public CityTranslationQueryService(
         ICityTranslationQueryRepository cityRepository,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> settings
     )
         : base(cityRepository, cacheService, settings)
     {

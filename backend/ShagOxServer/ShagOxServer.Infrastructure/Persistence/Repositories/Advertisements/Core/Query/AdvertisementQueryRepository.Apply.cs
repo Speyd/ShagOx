@@ -5,7 +5,6 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.E
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Query;
-
 public partial class AdvertisementQueryRepository
     : SearchRepository<Advertisement, AdvertisementSearchFilter>,
       IAdvertisementQueryRepository

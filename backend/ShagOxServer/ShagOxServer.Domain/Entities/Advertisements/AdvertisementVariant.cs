@@ -21,6 +21,8 @@ public class AdvertisementVariant
 
     public int Stock { get; set; }
 
+    public decimal Weight { get; set; }
+
     public JsonDocument Attributes { get; set; } = null!;
 
     public ICollection<BasketItem> BasketItems { get; set; }

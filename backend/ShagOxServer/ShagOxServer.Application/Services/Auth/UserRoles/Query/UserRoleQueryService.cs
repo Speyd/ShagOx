@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
@@ -39,7 +39,7 @@ public class UserRoleQueryService
         IUserQueryService userService,
         IRoleQueryService roleService,
         IDataCacheService cache,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> settings
     )
         : base(userRoleQueryRepository, cache, settings)
     {

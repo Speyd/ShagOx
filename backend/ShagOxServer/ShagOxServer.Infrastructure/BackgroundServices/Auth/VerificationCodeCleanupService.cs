@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Systems.BackgroundServices;
+using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
 namespace ShagOxServer.Infrastructure.BackgroundServices.Auth;
@@ -14,12 +14,12 @@ public class VerificationCodeCleanupService
 
     private readonly ILogger<VerificationCodeCleanupService> _logger;
 
-    private readonly VerificationCodeCleanupSettings _setting;
+    private readonly VerificationCodeCleanupOptions _setting;
 
 
     public VerificationCodeCleanupService(
         IServiceScopeFactory scopeFactory,
-        IOptions<VerificationCodeCleanupSettings> setting,
+        IOptions<VerificationCodeCleanupOptions> setting,
         ILogger<VerificationCodeCleanupService> logger)
     {
         _scopeFactory = scopeFactory;

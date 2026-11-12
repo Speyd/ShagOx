@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
 using ShagOxServer.Domain.Entities.Account;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,9 +9,9 @@ using System.Text;
 
 public class JwtService : IJwtService
 {
-    private readonly JwtSettings _settings;
+    private readonly JwtOptions _settings;
 
-    public JwtService(IOptions<JwtSettings> options)
+    public JwtService(IOptions<JwtOptions> options)
     {
         _settings = options.Value;
     }

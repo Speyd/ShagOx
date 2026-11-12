@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Domain.Base;
@@ -13,7 +13,7 @@ public abstract partial class CacheService<TDto, TEntity, TFilter>
 {
     protected readonly IDataCacheService _cache;
 
-    protected readonly CacheSettings _settings;
+    protected readonly CacheOptions _settings;
 
     protected virtual bool CacheById => true;
 
@@ -24,7 +24,7 @@ public abstract partial class CacheService<TDto, TEntity, TFilter>
 
     public CacheService(
         IDataCacheService cache,
-        IOptions<CacheSettings> settings)
+        IOptions<CacheOptions> settings)
     {
         _cache = cache;
         _settings = settings.Value;

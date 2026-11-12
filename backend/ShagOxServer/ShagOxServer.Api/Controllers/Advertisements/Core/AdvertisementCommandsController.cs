@@ -10,7 +10,6 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
-using System.Security.Claims;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.Core;
 

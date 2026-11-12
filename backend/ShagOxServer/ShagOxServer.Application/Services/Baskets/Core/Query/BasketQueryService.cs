@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Baskets.Core.Query;
 using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Application.Interfaces.Providers;
@@ -37,7 +37,7 @@ public class BasketQueryService
         IBasketQueryRepository basketQueryRepository,
         IBasketItemQueryService basketItemService,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings,
+        IOptions<CacheOptions> settings,
         ILanguageProvider language
     )
         : base(basketQueryRepository, language, cacheService, settings)

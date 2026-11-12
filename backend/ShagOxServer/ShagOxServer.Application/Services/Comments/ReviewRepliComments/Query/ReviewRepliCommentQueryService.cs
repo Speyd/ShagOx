@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Comments.ReviewRepliComments.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -30,7 +30,7 @@ public class ReviewRepliCommentQueryService
         IAvatarQueryService avatarService,
         IReviewRepliCommentQueryRepository commentQueryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> settings
     )
         : base(commentQueryRepository, cacheService, settings)
     {

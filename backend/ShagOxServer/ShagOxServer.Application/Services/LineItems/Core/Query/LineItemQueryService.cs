@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Items.Query;
@@ -34,7 +34,7 @@ public abstract class LineItemQueryService<TDto, TEntity, TFilter>
         ILineItemQueryRepository<TEntity, TFilter> itemQueryRepository,
         ILineItemAttributeExistsRepository attributeRepository,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings,
+        IOptions<CacheOptions> settings,
         ILanguageProvider language
     )
         : base(itemQueryRepository, language, cacheService, settings)

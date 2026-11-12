@@ -1,65 +1,65 @@
+
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Baskets.Core.Create;
-using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Application.DTOs.Orders.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
-using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
-using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
+using ShagOxServer.Application.Interfaces.Services.Deliveries.Calculators;
+using ShagOxServer.Application.Interfaces.Services.Orders;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
-using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Application.Services.Baskets.BasketItems.Create;
-using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
-using ShagOxServer.Application.Services.Baskets.Core.Create;
-using ShagOxServer.Application.Services.Baskets.Core.Mapping;
-using ShagOxServer.Application.Services.Baskets.Core.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
-using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 using ShagOxServer.Application.Services.Caches.Invalidations.Orders;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
-using ShagOxServer.Application.Services.LineItems.Core.Create;
-using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Application.Services.Orders.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
-using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Create;
 
-public class OrderCreateService
-    : IOrderCreateService
+public class OrderCreateService : IOrderCreateService
 {
-    private readonly IRepository<Order> _basketRepository;
-    private readonly BasketValidator _basketValidator;
+    private readonly IRepository<Order> _orderRepository;
+
     private readonly UserValidator _userValidator;
     private readonly DeliveryProviderValidator _deliveryValidator;
     private readonly CurrencyValidator _currencyValidator;
+
+    private readonly IDeliveryPriceCalculator _deliveryCalculator;
     private readonly IOrderItemCreateService _orderItemCreateService;
-    private readonly OrderInvalidationService _basketInvalidation;
+    private readonly IOrderNumberGenerator _orderNumberGenerator;
+
+    private readonly OrderInvalidationService _orderInvalidation;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<OrderCreateService> _logger;
 
-
     public OrderCreateService(
-        IRepository<Order> basketRepository,
-        BasketValidator basketValidator,
+        IRepository<Order> orderRepository,
         UserValidator userValidator,
-        OrderInvalidationService basketInvalidation,
+        DeliveryProviderValidator deliveryValidator,
+        CurrencyValidator currencyValidator,
+        IDeliveryPriceCalculator deliveryCalculator,
+        IOrderItemCreateService orderItemCreateService,
+        OrderInvalidationService orderInvalidation,
+        IOrderNumberGenerator orderNumberGenerator,
         IUnitOfWork unitOfWork,
         ILogger<OrderCreateService> logger)
     {
-        _basketRepository = basketRepository;
-        _basketValidator = basketValidator;
+        _orderRepository = orderRepository;
+
         _userValidator = userValidator;
-        _basketInvalidation = basketInvalidation;
+        _deliveryValidator = deliveryValidator;
+        _currencyValidator = currencyValidator;
+
+        _deliveryCalculator = deliveryCalculator;
+        _orderItemCreateService = orderItemCreateService;
+        _orderNumberGenerator = orderNumberGenerator;
+
+        _orderInvalidation = orderInvalidation;
+
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -70,47 +70,52 @@ public class OrderCreateService
         long ownerId,
         CancellationToken cancellationToken = default)
     {
+        var validationResult = await ValidateOrderAsync(
+            ownerId,
+            request,
+            cancellationToken);
+
+        if (!validationResult.IsSuccess)
+        {
+            return Result<CreateResponse>
+                .Fail(validationResult.Error);
+        }
+
         await _unitOfWork.BeginTransactionAsync();
 
-        var basket = OrderCreater
-            .Create(ownerId, request);
-
-        _basketRepository.Add(basket);
-
-        await _unitOfWork.SaveChangesAsync();
-
-        decimal totalPrice = 0m;
-        foreach (var item in request.OrderItems)
+        try
         {
-            var itemResult = await _orderItemCreateService
-                .CreateAsync(item with
-                {
-                    ParentId = item.ParentId
-                });
+            var order = await CreateOrderEntityAsync(
+                ownerId,
+                request);
 
-            if (!itemResult.IsSuccess)
+            var itemsResult = await CreateOrderItemsAsync(
+                order,
+                request);
+
+            if (!itemsResult.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
 
                 return Result<CreateResponse>
-                    .Fail(itemResult.Error);
+                    .Fail(itemsResult.Error);
             }
 
-            totalPrice += itemResult.Value!.TotalPrice;
-        }
+            await CalculateOrderAmountsAsync(
+                order,
+                cancellationToken);
 
-        try
-        {
-            
+            order.OrderNumber = _orderNumberGenerator.Generate();
+
             await _unitOfWork.CommitAsync();
 
-            await _basketInvalidation.InvalidateCreateAsync(
-                OrderCacheMapper.ToInfo(basket));
+            await _orderInvalidation.InvalidateCreateAsync(
+                OrderCacheMapper.ToInfo(order));
 
             return Result<CreateResponse>.Success(
-               new CreateResponse(
-                   basket.Id,
-                   DateTime.UtcNow));
+                new CreateResponse(
+                    order.Id,
+                    DateTime.UtcNow));
         }
         catch (Exception ex)
         {
@@ -126,43 +131,90 @@ public class OrderCreateService
         }
     }
 
-    private async Task<Result<bool>> Validation(
+
+    private async Task<Result<bool>> ValidateOrderAsync(
         long ownerId,
         OrderCreateRequest request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
-        var userExists = await _userValidator
-           .ExistsByIdAsync(ownerId, cancellationToken);
+        var userResult = await _userValidator
+            .ExistsByIdAsync(ownerId, cancellationToken);
 
-        if (!userExists.IsSuccess)
+        if (!userResult.IsSuccess)
         {
-            return Result<bool>
-                .Fail(userExists.Error);
+            return Result<bool>.Fail(userResult.Error);
         }
-
 
         if (request.DeliveryProviderId.HasValue)
         {
-            var deliveryExists = await _deliveryValidator.ExistsByIdAsync(
-                request.DeliveryProviderId.Value, 
-                cancellationToken);
+            var deliveryResult = await _deliveryValidator
+                .ExistsByIdAsync(
+                    request.DeliveryProviderId.Value,
+                    cancellationToken);
 
-            if (!deliveryExists.IsSuccess)
+            if (!deliveryResult.IsSuccess)
             {
-                return Result<bool>
-                    .Fail(deliveryExists.Error);
+                return Result<bool>.Fail(deliveryResult.Error);
             }
         }
 
-        var currencyExists = await _currencyValidator
-            .ExistsByIdAsync(request.CurrencyId, cancellationToken);
+        var currencyResult = await _currencyValidator
+            .ExistsByIdAsync(
+                request.CurrencyId,
+                cancellationToken);
 
-        if (!currencyExists.IsSuccess)
+        if (!currencyResult.IsSuccess)
         {
-            return Result<bool>
-                .Fail(currencyExists.Error);
+            return Result<bool>.Fail(currencyResult.Error);
         }
 
         return Result<bool>.Success(true);
+    }
+
+    private async Task<Order> CreateOrderEntityAsync(
+        long ownerId,
+        OrderCreateRequest request)
+    {
+        var order = OrderCreater.Create(ownerId, request);
+
+        _orderRepository.Add(order);
+
+        await _unitOfWork.SaveChangesAsync();
+
+        return order;
+    }
+
+    private async Task<Result<bool>> CreateOrderItemsAsync(
+        Order order,
+        OrderCreateRequest request)
+    {
+        foreach (var item in request.OrderItems)
+        {
+            var itemResult = await _orderItemCreateService
+                .CreateAsync(item with
+                {
+                    ParentId = item.ParentId
+                });
+
+            if (!itemResult.IsSuccess)
+            {
+                return Result<bool>.Fail(itemResult.Error);
+            }
+
+            order.Subtotal += itemResult.Value!.TotalPrice;
+            order.TotalWeight += itemResult.Value.TotalWeight;
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    private async Task CalculateOrderAmountsAsync(
+        Order order,
+        CancellationToken cancellationToken)
+    {
+        order.DeliveryPrice = await _deliveryCalculator
+            .CalculateAsync(order, cancellationToken);
+
+        order.TotalPrice = order.Subtotal + order.DeliveryPrice;
     }
 }

@@ -1,17 +1,14 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Auth;
+using ShagOxServer.Application.Common.Options.Auth;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
-using ShagOxServer.Application.Services.Auth.Users.Roles;
-using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Auth.Externals;
 public partial class GoogleLoginService 

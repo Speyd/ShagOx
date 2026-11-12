@@ -11,6 +11,8 @@ public static class DeliveriesDependencyInjection
     {
         services.AddDeliveryProviderApplication();
 
+        services.AddDeliveryCalculatorsApplication();
+
         return services;
     }
 }

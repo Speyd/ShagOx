@@ -32,6 +32,9 @@ public static class DeliveryProviderDependencyInjection
 
         services.AddDeliveryProviderTranslationApplication();
 
+        services.AddDeliveryCalculatorsApplication();
+
+
         return services;
     }
 }

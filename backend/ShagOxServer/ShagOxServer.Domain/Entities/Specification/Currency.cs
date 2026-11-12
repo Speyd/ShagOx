@@ -1,6 +1,7 @@
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Orders;
 namespace ShagOxServer.Domain.Entities.Specification;
 
 public class Currency 
@@ -14,6 +15,9 @@ public class Currency
         = [];
 
     public ICollection<User> Users { get; set; }
+        = [];
+
+    public ICollection<Order> Orders { get; set; }
         = [];
 
     public override string ToString()

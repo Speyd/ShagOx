@@ -1,5 +1,6 @@
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.Orders;
 using System.Text.Json;
 
 namespace ShagOxServer.Domain.Entities.Advertisements;
@@ -23,6 +24,9 @@ public class AdvertisementVariant
     public JsonDocument Attributes { get; set; } = null!;
 
     public ICollection<BasketItem> BasketItems { get; set; }
+        = [];
+
+    public ICollection<OrderItem> OrderItems { get; set; }
         = [];
 
 

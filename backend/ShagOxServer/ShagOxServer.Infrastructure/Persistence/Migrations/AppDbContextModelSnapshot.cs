@@ -1308,6 +1308,237 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("RegionTranslations");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("CancelledAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime?>("ConfirmedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("CurrencyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeliveredAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeliveryAddress")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<string>("DeliveryPointAddress")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<string>("DeliveryPointExternalId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("DeliveryPointName")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("DeliveryPointNumber")
+                        .HasMaxLength(35)
+                        .HasColumnType("character varying(35)");
+
+                    b.Property<string>("DeliveryPointType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("DeliveryPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<long?>("DeliveryProviderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("DeliveryTrackingNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("DeliveryTrackingUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("DeliveryType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(254)
+                        .HasColumnType("character varying(254)");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<DateTime?>("EstimatedDeliveryAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(35)
+                        .HasColumnType("character varying(35)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(35)
+                        .HasColumnType("character varying(35)");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PaymentProvider")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PaymentTransactionId")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime?>("ShippedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId")
+                        .HasDatabaseName("IX_Order_CurrencyId");
+
+                    b.HasIndex("DeliveryProviderId")
+                        .HasDatabaseName("IX_Order_DeliveryProviderId");
+
+                    b.HasIndex("DeliveryType")
+                        .HasDatabaseName("IX_Order_DeliveryType");
+
+                    b.HasIndex("OrderNumber")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Order_OrderNumber")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.HasIndex("OrderStatus", "CreatedAt")
+                        .HasDatabaseName("IX_Order_OrderStatus_CreatedAt");
+
+                    b.HasIndex("OwnerId", "CreatedAt")
+                        .HasDatabaseName("IX_Order_OwnerId_CreatedAt");
+
+                    b.HasIndex("PaymentMethod", "PaymentStatus")
+                        .HasDatabaseName("IX_Order_PaymentMethod_PaymentStatus");
+
+                    b.HasIndex("PaymentProvider", "PaymentTransactionId")
+                        .HasDatabaseName("IX_Order_PaymentProvider_PaymentTransactionId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Orders.OrderItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AdvertisementId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("AdvertisementVariantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertisementId")
+                        .HasDatabaseName("IX_OrderItem_AdvertisementId");
+
+                    b.HasIndex("AdvertisementVariantId")
+                        .HasDatabaseName("IX_OrderItem_AdvertisementVariantId");
+
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("IX_OrderItem_OrderId");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_OrderItem_UserId");
+
+                    b.ToTable("OrderItem");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>
                 {
                     b.Property<long>("Id")
@@ -2030,6 +2261,69 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Translatable");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Orders.Order", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
+                        .WithMany("Orders")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Order_Currencies_CurrencyId");
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Deliveries.DeliveryProvider", "DeliveryProvider")
+                        .WithMany("Orders")
+                        .HasForeignKey("DeliveryProviderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Order_DeliveryProviders_DeliveryProviderId");
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                        .WithMany("Orders")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Order_Users_OwnerId");
+
+                    b.Navigation("Currency");
+
+                    b.Navigation("DeliveryProvider");
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Orders.OrderItem", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "Advertisement")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("AdvertisementId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_OrderItem_Advertisements_AdvertisementId");
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Advertisements.AdvertisementVariant", "AdvertisementVariant")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("AdvertisementVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_OrderItem_AdvertisementVariants_AdvertisementVariantId");
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Orders.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_OrderItem_Order_OrderId");
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_OrderItem_Users_UserId");
+
+                    b.Navigation("Advertisement");
+
+                    b.Navigation("AdvertisementVariant");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.AdvertisementImage", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Advertisements.Advertisement", "Owner")
@@ -2118,6 +2412,10 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Navigation("Favorites");
 
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("Orders");
+
                     b.Navigation("SoldAdvertisements");
 
                     b.Navigation("UserRoles");
@@ -2129,6 +2427,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Navigation("Favorites");
 
+                    b.Navigation("OrderItems");
+
                     b.Navigation("Pictures");
 
                     b.Navigation("ReviewComments");
@@ -2139,6 +2439,8 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.AdvertisementVariant", b =>
                 {
                     b.Navigation("BasketItems");
+
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Status", b =>
@@ -2169,6 +2471,8 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Deliveries.DeliveryProvider", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("Translations");
                 });
 
@@ -2221,6 +2525,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Translations");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>
                 {
                     b.Navigation("Advertisements");
@@ -2231,6 +2540,8 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Currency", b =>
                 {
                     b.Navigation("Advertisements");
+
+                    b.Navigation("Orders");
 
                     b.Navigation("Users");
                 });

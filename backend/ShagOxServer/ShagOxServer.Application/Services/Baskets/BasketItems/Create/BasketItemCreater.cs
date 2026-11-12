@@ -10,7 +10,8 @@ public static class BasketItemCreater
     {
         return new BasketItem
         {
-            ParentId = request.BasketId,
+            ParentId = request.ParentId,
+            AdvertisementId = request.AdvertisementId,
             AdvertisementVariantId = request.AdvertisementVariantId,
             Quantity = request.Quantity < 0? 0 : 
                 request.Quantity > stock ? stock :

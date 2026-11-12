@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.LineItems.Core;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Base.Items;
+using ShagOxServer.Domain.Entities.LineItems;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;

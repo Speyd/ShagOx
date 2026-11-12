@@ -1,3 +1,5 @@
+using ShagOxServer.Domain.Filters.LineItems.Core;
+
 namespace ShagOxServer.Domain.Filters.Baskets.BasketItems;
 public sealed record BasketItemSearchFilter
 (
@@ -5,4 +7,8 @@ public sealed record BasketItemSearchFilter
     long? AdvertisementId,
     long? AdvertisementVariantId,
     int? Quantity
-) : BaseFilter();
+) : LineItemSearchFilter(
+        BasketId, 
+        AdvertisementId, 
+        AdvertisementVariantId,
+        Quantity);

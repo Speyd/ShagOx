@@ -86,6 +86,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SmsTemplatesResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Order\OrderResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrderResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Validations\ValidationResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -157,6 +162,10 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>SmsTemplatesResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Order\OrderResources.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>OrderResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Validations\ValidationResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>ValidationResources.Designer.cs</LastGenOutput>
@@ -177,12 +186,9 @@
 
 	<ItemGroup>
 	  <Folder Include="DTOs\Orders\OrderItems\Create\" />
-	  <Folder Include="Interfaces\Services\Orders\OrderItems\Create\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Delete\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
-	  <Folder Include="Services\Orders\OrderItems\Create\" />
 	  <Folder Include="Services\Orders\OrderItems\Delete\" />
-	  <Folder Include="Services\Orders\OrderItems\Validator\" />
 	</ItemGroup>
 	
 </Project>

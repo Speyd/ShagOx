@@ -1,7 +1,7 @@
 namespace ShagOxServer.Application.DTOs.LineItems.Create;
 public sealed record LineItemCreateRequest
 (
-    long BasketId,
+    long ParentId,
     long AdvertisementId,
     long? AdvertisementVariantId,
     int Quantity

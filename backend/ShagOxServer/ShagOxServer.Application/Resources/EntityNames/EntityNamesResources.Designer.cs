@@ -268,6 +268,24 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Order.
+        /// </summary>
+        public static string Order {
+            get {
+                return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Order item.
+        /// </summary>
+        public static string OrderItem {
+            get {
+                return ResourceManager.GetString("OrderItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Product type.
         /// </summary>
         public static string ProductType {

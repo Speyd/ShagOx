@@ -1,7 +1,7 @@
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Base.Items;
+using ShagOxServer.Domain.Entities.LineItems;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;

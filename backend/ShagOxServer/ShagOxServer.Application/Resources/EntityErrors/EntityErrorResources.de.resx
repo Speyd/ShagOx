@@ -441,4 +441,22 @@
   <data name="DeliveryProviderTranslationUpdateFailed" xml:space="preserve">
     <value>Die Übersetzung des Versanddienstleisters konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="OrderItemCreateFailed" xml:space="preserve">
+    <value>Bestellposition konnte nicht erstellt werden.</value>
+  </data>
+  <data name="OrderItemDeleteFailed" xml:space="preserve">
+    <value>Bestellposition konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="OrderItemUpdateFailed" xml:space="preserve">
+    <value>Bestellposition konnte nicht aktualisiert werden.</value>
+  </data>
+  <data name="OrderCreateFailed" xml:space="preserve">
+    <value>Bestellung konnte nicht erstellt werden.</value>
+  </data>
+  <data name="OrderDeleteFailed" xml:space="preserve">
+    <value>Bestellung konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="OrderUpdateFailed" xml:space="preserve">
+    <value>Bestellung konnte nicht aktualisiert werden.</value>
+  </data>
 </root>

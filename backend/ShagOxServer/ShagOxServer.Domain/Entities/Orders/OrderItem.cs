@@ -1,4 +1,4 @@
-using ShagOxServer.Domain.Base.Items;
+using ShagOxServer.Domain.Entities.LineItems;
 
 namespace ShagOxServer.Domain.Entities.Orders;
 public class OrderItem

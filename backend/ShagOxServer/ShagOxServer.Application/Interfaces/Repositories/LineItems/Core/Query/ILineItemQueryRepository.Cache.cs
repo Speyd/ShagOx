@@ -2,7 +2,7 @@ using ShagOxServer.Application.DTOs.LineItems.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Base.Items;
+using ShagOxServer.Domain.Entities.LineItems;
 using ShagOxServer.Domain.Filters;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Base.Items.Query;

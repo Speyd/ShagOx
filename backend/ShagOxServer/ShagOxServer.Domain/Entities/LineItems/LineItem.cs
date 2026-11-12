@@ -1,6 +1,7 @@
+using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 
-namespace ShagOxServer.Domain.Base.Items;
+namespace ShagOxServer.Domain.Entities.LineItems;
 public abstract class LineItem
     : BaseEntity
 {

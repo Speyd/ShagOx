@@ -222,4 +222,10 @@
   <data name="DeliveryProviderTranslation" xml:space="preserve">
     <value>Перевод службы доставки</value>
   </data>
+  <data name="OrderItem" xml:space="preserve">
+    <value>Позиция заказа</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Заказ</value>
+  </data>
 </root>

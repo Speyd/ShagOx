@@ -1,3 +1,5 @@
+using ShagOxServer.Domain.Filters.LineItems.Core;
+
 namespace ShagOxServer.Domain.Filters.Orders.OrderItems;
 public sealed record OrderItemSearchFilter
 (
@@ -6,4 +8,8 @@ public sealed record OrderItemSearchFilter
     long? AdvertisementVariantId,
     int? Quantity,
     decimal? TotalPrice
-) : BaseFilter();
+) : LineItemSearchFilter(
+        OrderId,
+        AdvertisementId,
+        AdvertisementVariantId,
+        Quantity);

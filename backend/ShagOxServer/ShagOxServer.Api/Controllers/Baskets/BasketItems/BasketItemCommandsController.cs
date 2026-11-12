@@ -49,7 +49,7 @@ public class BasketItemCommandsController
         [FromBody] LineItemCreateRequest request)
     {
         var IsOwner = await _basketExistsService
-            .IsOwnerAsync(request.BasketId, UserId!.Value);
+            .IsOwnerAsync(request.ParentId, UserId!.Value);
         if (!IsOwner)
             return Forbid();
 

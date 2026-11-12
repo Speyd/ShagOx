@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.LineItems.Cache;
-using ShagOxServer.Domain.Base.Items;
+using ShagOxServer.Domain.Entities.LineItems;
 
 namespace ShagOxServer.Application.Services.LineItems.Core.Mapping;
 public static class LineItemCacheMapper

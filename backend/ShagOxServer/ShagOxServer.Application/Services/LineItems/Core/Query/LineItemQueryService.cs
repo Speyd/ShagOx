@@ -8,7 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Keys.LineItems;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Base.Items;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -16,6 +15,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text.Json;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 using ShagOxServer.Application.Interfaces.Services.LineItems.Core.Query;
+using ShagOxServer.Domain.Entities.LineItems;
 
 namespace ShagOxServer.Application.Services.LineItems.Core.Query;
 public abstract class LineItemQueryService<TDto, TEntity, TFilter>

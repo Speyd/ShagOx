@@ -754,6 +754,60 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create order..
+        /// </summary>
+        internal static string OrderCreateFailed {
+            get {
+                return ResourceManager.GetString("OrderCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete order..
+        /// </summary>
+        internal static string OrderDeleteFailed {
+            get {
+                return ResourceManager.GetString("OrderDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create order item..
+        /// </summary>
+        internal static string OrderItemCreateFailed {
+            get {
+                return ResourceManager.GetString("OrderItemCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete order item..
+        /// </summary>
+        internal static string OrderItemDeleteFailed {
+            get {
+                return ResourceManager.GetString("OrderItemDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на  Failed to update order item..
+        /// </summary>
+        internal static string OrderItemUpdateFailed {
+            get {
+                return ResourceManager.GetString("OrderItemUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update order..
+        /// </summary>
+        internal static string OrderUpdateFailed {
+            get {
+                return ResourceManager.GetString("OrderUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create product type..
         /// </summary>
         internal static string ProductTypeCreateFailed {

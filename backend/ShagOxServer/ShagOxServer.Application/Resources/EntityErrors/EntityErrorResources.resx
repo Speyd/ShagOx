@@ -441,4 +441,22 @@
   <data name="DeliveryProviderTranslationUpdateFailed" xml:space="preserve">
     <value>Failed to update delivery provider translation.</value>
   </data>
+  <data name="OrderItemCreateFailed" xml:space="preserve">
+    <value>Failed to create order item.</value>
+  </data>
+  <data name="OrderItemDeleteFailed" xml:space="preserve">
+    <value>Failed to delete order item.</value>
+  </data>
+  <data name="OrderItemUpdateFailed" xml:space="preserve">
+    <value> Failed to update order item.</value>
+  </data>
+  <data name="OrderCreateFailed" xml:space="preserve">
+    <value>Failed to create order.</value>
+  </data>
+  <data name="OrderDeleteFailed" xml:space="preserve">
+    <value>Failed to delete order.</value>
+  </data>
+  <data name="OrderUpdateFailed" xml:space="preserve">
+    <value>Failed to update order.</value>
+  </data>
 </root>

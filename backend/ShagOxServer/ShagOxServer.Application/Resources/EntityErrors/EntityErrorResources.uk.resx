@@ -441,4 +441,22 @@
   <data name="DeliveryProviderTranslationUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити переклад служби доставки.</value>
   </data>
+  <data name="OrderItemCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити позицію замовлення.</value>
+  </data>
+  <data name="OrderItemDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити позицію замовлення.</value>
+  </data>
+  <data name="OrderItemUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити позицію замовлення.</value>
+  </data>
+  <data name="OrderCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити замовлення.</value>
+  </data>
+  <data name="OrderDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити замовлення.</value>
+  </data>
+  <data name="OrderUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити замовлення.</value>
+  </data>
 </root>

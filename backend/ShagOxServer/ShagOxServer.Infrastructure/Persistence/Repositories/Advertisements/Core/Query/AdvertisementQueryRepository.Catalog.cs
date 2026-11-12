@@ -58,7 +58,7 @@ public partial class AdvertisementQueryRepository
         return await _db.BasketItems
             .AsNoTracking()
             .Where(x =>
-                x.Basket.OwnerId == userId &&
+                x.Parent.OwnerId == userId &&
                 advertisementIds.Contains(
                     x.AdvertisementId))
             .Select(x => x.AdvertisementId)

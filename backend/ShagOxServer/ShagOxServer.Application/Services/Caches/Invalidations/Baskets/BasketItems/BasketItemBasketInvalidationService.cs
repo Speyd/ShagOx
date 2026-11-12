@@ -1,12 +1,12 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
+using ShagOxServer.Application.DTOs.LineItems.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 public class BasketItemBasketInvalidationService
-    : ICacheInvalidationService<BasketItem, BasketItemCacheInfo>
+    : ICacheInvalidationService<BasketItem, LineItemCacheInfo>
 {
     private readonly IBasketQueryRepository _basketRepository;
     private readonly BasketInvalidationService _basketInvalid;
@@ -22,10 +22,10 @@ public class BasketItemBasketInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-       BasketItemCacheInfo entityInfo)
+       LineItemCacheInfo entityInfo)
     {
         var basketInfo = await GetBasketInfos(
-            entityInfo.BasketId);
+            entityInfo.ParentId);
 
         if (basketInfo is null)
             return;
@@ -35,10 +35,10 @@ public class BasketItemBasketInvalidationService
 
 
     public async Task InvalidateDeleteAsync(
-        BasketItemCacheInfo entityInfo)
+        LineItemCacheInfo entityInfo)
     {
         var basketInfo = await GetBasketInfos(
-             entityInfo.BasketId);
+             entityInfo.ParentId);
 
         if (basketInfo is null)
             return;
@@ -47,10 +47,10 @@ public class BasketItemBasketInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        BasketItemCacheInfo entityInfo)
+        LineItemCacheInfo entityInfo)
     {
         var basketInfo = await GetBasketInfos(
-             entityInfo.BasketId);
+             entityInfo.ParentId);
 
         if (basketInfo is null)
             return;

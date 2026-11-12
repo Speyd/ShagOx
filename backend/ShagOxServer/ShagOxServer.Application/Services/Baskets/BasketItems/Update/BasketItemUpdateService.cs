@@ -11,6 +11,7 @@ using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
+using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -117,7 +118,7 @@ public class BasketItemUpdateService
     private async Task ApplyInvalidation(
         BasketItem item)
     {
-        var info = BasketItemCacheMapper
+        var info = LineItemCacheMapper
             .ToInfo(item);
 
         await _itemInvalidation

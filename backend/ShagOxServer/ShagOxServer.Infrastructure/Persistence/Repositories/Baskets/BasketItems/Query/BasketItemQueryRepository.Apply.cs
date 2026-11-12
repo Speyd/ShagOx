@@ -3,10 +3,11 @@ using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.BasketItems;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.LineItems.Core.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Query;
 public partial class BasketItemQueryRepository
-    : SearchRepository<BasketItem, BasketItemSearchFilter>,
+    : LineItemQueryRepository<BasketItem, BasketItemSearchFilter>,
       IBasketItemQueryRepository
 {
     protected override IQueryable<BasketItem> ApplyIncludes(

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
-using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
+using ShagOxServer.Application.DTOs.LineItems.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
@@ -12,6 +12,7 @@ using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
+using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -60,7 +61,7 @@ public class BasketItemCreateService
 
 
     public async Task<Result<CreateResponse>> CreateAsync(
-        BasketItemCreateRequest request,
+        LineItemCreateRequest request,
         CancellationToken cancellationToken = default)
     {
         var validation = await ValidateAndGetStockAsync(
@@ -103,7 +104,7 @@ public class BasketItemCreateService
             request.BasketId,
             request.AdvertisementVariantId);
 
-        var caheInfo = BasketItemCacheMapper.ToInfo(item);
+        var caheInfo = LineItemCacheMapper.ToInfo(item);
 
         await _basketInvalidation.InvalidateCreateAsync(
             caheInfo);
@@ -119,7 +120,7 @@ public class BasketItemCreateService
     }
 
     private async Task<Result<int>> ValidateAndGetStockAsync(
-        BasketItemCreateRequest request,
+        LineItemCreateRequest request,
         CancellationToken cancellationToken = default)
     {
         var basketExists = await _basketValidator

@@ -33,7 +33,7 @@ public static class AdvertisementShortMapper
                 .FirstOrDefault(),
             x.Attributes,
             AdvertisementVariantShortMapper
-                .ToVariantShortDto(priceConversion, x.Variants),
+                .ToVariantsShortDto(priceConversion, x.Variants),
             x.SoldAt,
             x.CreatedAt
         );

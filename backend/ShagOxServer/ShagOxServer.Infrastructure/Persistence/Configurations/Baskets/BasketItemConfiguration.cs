@@ -14,9 +14,9 @@ public class BasketItemConfiguration
             .IsRequired()
             .HasDefaultValue(1);
 
-        builder.HasOne(x => x.Basket)
+        builder.HasOne(x => x.Parent)
                .WithMany(x => x.BasketItems)
-               .HasForeignKey(x => x.BasketId)
+               .HasForeignKey(x => x.ParentId)
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Advertisement)
@@ -30,11 +30,11 @@ public class BasketItemConfiguration
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasUniqueActiveIndex(
-            x => new { x.BasketId, x.AdvertisementId },
+            x => new { x.ParentId, x.AdvertisementId },
             "\"AdvertisementVariantId\" IS NULL");
 
         builder.HasUniqueActiveIndex(
-            x => new { x.BasketId, x.AdvertisementVariantId },
+            x => new { x.ParentId, x.AdvertisementVariantId },
             "\"AdvertisementVariantId\" IS NOT NULL");
     }
 }

@@ -1,12 +1,12 @@
 using ShagOxServer.Application.Interfaces.Repositories.Orders.OrderItems;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Filters.Orders.OrderItems;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
+using ShagOxServer.Infrastructure.Persistence.Repositories.LineItems.Core.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Orders.OrderItems.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Orders.OrderItems.Query;
 public partial class OrderItemQueryRepository
-    : SearchRepository<OrderItem, OrderItemSearchFilter>,
+    : LineItemQueryRepository<OrderItem, OrderItemSearchFilter>,
       IOrderItemQueryRepository
 {
     protected override IQueryable<OrderItem> ApplyIncludes(

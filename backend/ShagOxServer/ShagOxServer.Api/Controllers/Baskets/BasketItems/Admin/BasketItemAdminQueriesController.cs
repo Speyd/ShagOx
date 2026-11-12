@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
+using ShagOxServer.Application.DTOs.LineItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
@@ -41,7 +42,7 @@ public class BasketItemAdminQueriesController
         CancellationToken cancellationToken)
     {
         var result = await _itemQueryService
-            .GetByBasketAsync(id, pagination,
+            .GetByParentAsync(id, pagination,
                 cancellationToken, status);
 
         return result.ToActionResult();

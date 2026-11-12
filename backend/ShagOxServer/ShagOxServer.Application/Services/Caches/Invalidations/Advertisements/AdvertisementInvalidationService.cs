@@ -1,7 +1,7 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
-using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.DTOs.Comments.Core.Cache;
+using ShagOxServer.Application.DTOs.LineItems.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
@@ -178,7 +178,7 @@ public class AdvertisementInvalidationService
             .GetCacheInfosByAdvertisementAsync(entityId);
     }
 
-    private async Task<List<BasketItemCacheInfo>> GetBasketItemInfos(
+    private async Task<List<LineItemCacheInfo>> GetBasketItemInfos(
        long entityId)
     {
         return await _basketItemRepository

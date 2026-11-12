@@ -33,7 +33,8 @@ public class BasketItemValidator
     {
         if (!await _itemExistsRepository
                 .ExistsAsync(
-                    advertisementVariantId ?? advertisementid, 
+                    advertisementid,
+                    advertisementVariantId, 
                     basketId, 
                     cancellationToken))
         {
@@ -52,7 +53,7 @@ public class BasketItemValidator
     {
         if (await _itemExistsRepository
                 .ExistsAsync(
-                    advertisementVariantId ?? advertisementid,
+                    advertisementid, advertisementVariantId,
                     basketId, 
                     cancellationToken))
         {
@@ -69,7 +70,7 @@ public class BasketItemValidator
         CancellationToken cancellationToken = default)
     {
         if (!await _itemExistsRepository
-                .ExistsByBasketAsync(itemId, 
+                .ExistsByParentAsync(itemId, 
                     basketId, cancellationToken))
         {
             return Result<bool>.NotFound(
@@ -85,40 +86,8 @@ public class BasketItemValidator
         CancellationToken cancellationToken = default)
     {
         if (await _itemExistsRepository
-                .ExistsByBasketAsync(itemId, 
+                .ExistsByParentAsync(itemId, 
                     basketId, cancellationToken))
-        {
-            return Result<bool>.AlreadyExists(
-                EntityNamesResources.BasketItem);
-        }
-
-        return Result<bool>.Success(true);
-    }
-
-    public async Task<Result<bool>> ExistsByAdvertisementAsync(
-        long itemId,
-        long advertisementVariantId,
-        CancellationToken cancellationToken = default)
-    {
-        if (!await _itemExistsRepository
-                .ExistsByAdvertisementVariantAsync(itemId,
-                    advertisementVariantId, cancellationToken))
-        {
-            return Result<bool>.NotFound(
-                EntityNamesResources.BasketItem);
-        }
-
-        return Result<bool>.Success(true);
-    }
-
-    public async Task<Result<bool>> NotExistsByAdvertisementAsync(
-        long itemId,
-        long advertisementVariantId,
-        CancellationToken cancellationToken = default)
-    {
-        if (await _itemExistsRepository
-                .ExistsByAdvertisementVariantAsync(itemId,
-                    advertisementVariantId, cancellationToken))
         {
             return Result<bool>.AlreadyExists(
                 EntityNamesResources.BasketItem);

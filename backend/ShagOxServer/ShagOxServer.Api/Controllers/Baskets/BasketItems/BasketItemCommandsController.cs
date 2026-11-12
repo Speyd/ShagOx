@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Update;
+using ShagOxServer.Application.DTOs.LineItems.Create;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
@@ -46,7 +46,7 @@ public class BasketItemCommandsController
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] BasketItemCreateRequest request)
+        [FromBody] LineItemCreateRequest request)
     {
         var IsOwner = await _basketExistsService
             .IsOwnerAsync(request.BasketId, UserId!.Value);

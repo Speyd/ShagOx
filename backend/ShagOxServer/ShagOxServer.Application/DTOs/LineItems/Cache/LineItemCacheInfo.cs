@@ -1,10 +1,10 @@
 using ShagOxServer.Domain.Base.Enum;
 
-namespace ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
-public sealed record BasketItemCacheInfo
+namespace ShagOxServer.Application.DTOs.LineItems.Cache;
+public sealed record LineItemCacheInfo
 (
     long Id,
-    long BasketId,
+    long ParentId,
     long AdvertId,
     long? AdvertVariantId,
     EntityStatus Status = EntityStatus.Active

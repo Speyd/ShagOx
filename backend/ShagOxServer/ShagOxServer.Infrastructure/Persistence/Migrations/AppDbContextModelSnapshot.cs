@@ -527,9 +527,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long?>("AdvertisementVariantId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("BasketId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -538,6 +535,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text")
                         .HasDefaultValue("Active");
+
+                    b.Property<long>("ParentId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Quantity")
                         .ValueGeneratedOnAdd()
@@ -552,14 +552,14 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("AdvertisementVariantId")
                         .HasDatabaseName("IX_BasketItems_AdvertisementVariantId");
 
-                    b.HasIndex("BasketId", "AdvertisementId")
+                    b.HasIndex("ParentId", "AdvertisementId")
                         .IsUnique()
-                        .HasDatabaseName("IX_BasketItems_BasketId_AdvertisementId")
+                        .HasDatabaseName("IX_BasketItems_ParentId_AdvertisementId")
                         .HasFilter("(\"EntityStatus\" IN ('Active', 'Hidden')) AND (\"AdvertisementVariantId\" IS NULL)");
 
-                    b.HasIndex("BasketId", "AdvertisementVariantId")
+                    b.HasIndex("ParentId", "AdvertisementVariantId")
                         .IsUnique()
-                        .HasDatabaseName("IX_BasketItems_BasketId_AdvertisementVariantId")
+                        .HasDatabaseName("IX_BasketItems_ParentId_AdvertisementVariantId")
                         .HasFilter("(\"EntityStatus\" IN ('Active', 'Hidden')) AND (\"AdvertisementVariantId\" IS NOT NULL)");
 
                     b.ToTable("BasketItems");
@@ -1458,32 +1458,32 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CurrencyId")
-                        .HasDatabaseName("IX_Order_CurrencyId");
+                        .HasDatabaseName("IX_Orders_CurrencyId");
 
                     b.HasIndex("DeliveryProviderId")
-                        .HasDatabaseName("IX_Order_DeliveryProviderId");
+                        .HasDatabaseName("IX_Orders_DeliveryProviderId");
 
                     b.HasIndex("DeliveryType")
-                        .HasDatabaseName("IX_Order_DeliveryType");
+                        .HasDatabaseName("IX_Orders_DeliveryType");
 
                     b.HasIndex("OrderNumber")
                         .IsUnique()
-                        .HasDatabaseName("IX_Order_OrderNumber")
+                        .HasDatabaseName("IX_Orders_OrderNumber")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.HasIndex("OrderStatus", "CreatedAt")
-                        .HasDatabaseName("IX_Order_OrderStatus_CreatedAt");
+                        .HasDatabaseName("IX_Orders_OrderStatus_CreatedAt");
 
                     b.HasIndex("OwnerId", "CreatedAt")
-                        .HasDatabaseName("IX_Order_OwnerId_CreatedAt");
+                        .HasDatabaseName("IX_Orders_OwnerId_CreatedAt");
 
                     b.HasIndex("PaymentMethod", "PaymentStatus")
-                        .HasDatabaseName("IX_Order_PaymentMethod_PaymentStatus");
+                        .HasDatabaseName("IX_Orders_PaymentMethod_PaymentStatus");
 
                     b.HasIndex("PaymentProvider", "PaymentTransactionId")
-                        .HasDatabaseName("IX_Order_PaymentProvider_PaymentTransactionId");
+                        .HasDatabaseName("IX_Orders_PaymentProvider_PaymentTransactionId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Orders.OrderItem", b =>
@@ -1509,7 +1509,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasDefaultValue("Active");
 
-                    b.Property<long>("OrderId")
+                    b.Property<long>("ParentId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Quantity")
@@ -1525,18 +1525,18 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AdvertisementId")
-                        .HasDatabaseName("IX_OrderItem_AdvertisementId");
+                        .HasDatabaseName("IX_OrderItems_AdvertisementId");
 
                     b.HasIndex("AdvertisementVariantId")
-                        .HasDatabaseName("IX_OrderItem_AdvertisementVariantId");
+                        .HasDatabaseName("IX_OrderItems_AdvertisementVariantId");
 
-                    b.HasIndex("OrderId")
-                        .HasDatabaseName("IX_OrderItem_OrderId");
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("IX_OrderItems_ParentId");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("IX_OrderItem_UserId");
+                        .HasDatabaseName("IX_OrderItems_UserId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Condition", b =>
@@ -2057,18 +2057,18 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_BasketItems_AdvertisementVariants_AdvertisementVariantId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Baskets.Basket", "Basket")
+                    b.HasOne("ShagOxServer.Domain.Entities.Baskets.Basket", "Parent")
                         .WithMany("BasketItems")
-                        .HasForeignKey("BasketId")
+                        .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_BasketItems_Baskets_BasketId");
+                        .HasConstraintName("FK_BasketItems_Baskets_ParentId");
 
                     b.Navigation("Advertisement");
 
                     b.Navigation("AdvertisementVariant");
 
-                    b.Navigation("Basket");
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Comments.Review.ReviewComment", b =>
@@ -2268,20 +2268,20 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("FK_Order_Currencies_CurrencyId");
+                        .HasConstraintName("FK_Orders_Currencies_CurrencyId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Deliveries.DeliveryProvider", "DeliveryProvider")
                         .WithMany("Orders")
                         .HasForeignKey("DeliveryProviderId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("FK_Order_DeliveryProviders_DeliveryProviderId");
+                        .HasConstraintName("FK_Orders_DeliveryProviders_DeliveryProviderId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
                         .WithMany("Orders")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_Order_Users_OwnerId");
+                        .HasConstraintName("FK_Orders_Users_OwnerId");
 
                     b.Navigation("Currency");
 
@@ -2297,31 +2297,31 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasForeignKey("AdvertisementId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("FK_OrderItem_Advertisements_AdvertisementId");
+                        .HasConstraintName("FK_OrderItems_Advertisements_AdvertisementId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Advertisements.AdvertisementVariant", "AdvertisementVariant")
                         .WithMany("OrderItems")
                         .HasForeignKey("AdvertisementVariantId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("FK_OrderItem_AdvertisementVariants_AdvertisementVariantId");
+                        .HasConstraintName("FK_OrderItems_AdvertisementVariants_AdvertisementVariantId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Orders.Order", "Order")
+                    b.HasOne("ShagOxServer.Domain.Entities.Orders.Order", "Parent")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
+                        .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_OrderItem_Order_OrderId");
+                        .HasConstraintName("FK_OrderItems_Orders_ParentId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Account.User", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK_OrderItem_Users_UserId");
+                        .HasConstraintName("FK_OrderItems_Users_UserId");
 
                     b.Navigation("Advertisement");
 
                     b.Navigation("AdvertisementVariant");
 
-                    b.Navigation("Order");
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.AdvertisementImage", b =>

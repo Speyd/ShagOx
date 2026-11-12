@@ -4,14 +4,14 @@ using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Filters.Orders.OrderItems;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.LineItems.Core.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Orders.OrderItems.Extensions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Orders.OrderItems.Query;
 public partial class OrderItemQueryRepository
-    : SearchRepository<OrderItem, OrderItemSearchFilter>,
+    : LineItemQueryRepository<OrderItem, OrderItemSearchFilter>,
       IOrderItemQueryRepository
 {
     public OrderItemQueryRepository(
@@ -20,22 +20,7 @@ public partial class OrderItemQueryRepository
     {
     }
 
-    public async Task<PagedResult<OrderItem>> GetByOrderAsync(
-        long orderId,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
-    {
-        return await _db.OrderItems
-            .WithIncludes()
-            .WithStatusFilter(status)
-            .Where(x => x.OrderId == orderId)
-            .ToPagedResultAsync(pagination,
-                (x => x.Id),
-                cancellationToken);
-    }
-
-    public async Task<PagedResult<OrderItem>> GetPagedAsync(
+    public override async Task<PagedResult<OrderItem>> GetPagedAsync(
         long userId,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
@@ -44,7 +29,7 @@ public partial class OrderItemQueryRepository
         return await _db.OrderItems
             .WithIncludes()
             .WithStatusFilter(status)
-            .Where(x => x.Order.OwnerId == userId)
+            .Where(x => x.Parent.OwnerId == userId)
             .ToPagedResultAsync(pagination,
                 (x => x.Id),
                 cancellationToken);

@@ -174,5 +174,15 @@
 		  <LastGenOutput>VerificationMapperResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="DTOs\Orders\OrderItems\Create\" />
+	  <Folder Include="Interfaces\Services\Orders\OrderItems\Create\" />
+	  <Folder Include="Interfaces\Services\Orders\OrderItems\Delete\" />
+	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
+	  <Folder Include="Services\Orders\OrderItems\Create\" />
+	  <Folder Include="Services\Orders\OrderItems\Delete\" />
+	  <Folder Include="Services\Orders\OrderItems\Validator\" />
+	</ItemGroup>
 	
 </Project>

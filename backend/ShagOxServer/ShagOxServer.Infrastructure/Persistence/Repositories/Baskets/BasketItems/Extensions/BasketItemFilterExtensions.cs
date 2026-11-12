@@ -15,7 +15,7 @@ public static class BasketItemFilterExtensions
         if (filter.BasketId.HasValue)
         {
             query = query.Where(u =>
-                u.BasketId == filter.BasketId);
+                u.ParentId == filter.BasketId);
         }
 
         if (filter.AdvertisementId.HasValue)

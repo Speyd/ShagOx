@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.LineItems;
 using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
 using ShagOxServer.Domain.Entities.Baskets;
 
@@ -7,12 +7,12 @@ public static class BasketItemMapper
 {
     public static BasketItemDto ToDto(
         BasketItem item,
-        AdvertisementShortDto advert)
+        AdvertisementLineItemDto advert)
     {
         return new BasketItemDto(
             item.Id,
             item.EntityStatus,
-            item.BasketId,
+            item.ParentId,
             item.AdvertisementId,
             item.AdvertisementVariantId,
             item.Quantity,

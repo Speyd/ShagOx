@@ -1,5 +1,5 @@
-using ShagOxServer.Application.DTOs.Baskets.BasketItems.Cache;
 using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
+using ShagOxServer.Application.DTOs.LineItems.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
@@ -65,10 +65,10 @@ public class BasketInvalidationService
           .ByUserPattern(entityInfo.UserId));
     }
 
-    private async Task<List<BasketItemCacheInfo>> GetBasketItemInfos(
+    private async Task<List<LineItemCacheInfo>> GetBasketItemInfos(
         long basketId)
     {
         return await _itemRepository
-            .GetCacheInfosByBasketAsync(basketId);
+            .GetCacheInfosByParentAsync(basketId);
     }
 }

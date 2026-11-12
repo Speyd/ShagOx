@@ -15,7 +15,7 @@ public static class OrderItemFilterExtensions
         if (filter.OrderId.HasValue)
         {
             query = query.Where(u =>
-                u.OrderId == filter.OrderId);
+                u.ParentId == filter.OrderId);
         }
 
         if (filter.AdvertisementId.HasValue)

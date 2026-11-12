@@ -17,9 +17,9 @@ public class OrderItemConfiguration
             .IsRequired();
 
 
-        builder.HasOne(x => x.Order)
+        builder.HasOne(x => x.Parent)
             .WithMany(x => x.OrderItems)
-            .HasForeignKey(x => x.OrderId)
+            .HasForeignKey(x => x.ParentId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Advertisement)
@@ -33,7 +33,7 @@ public class OrderItemConfiguration
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        builder.HasIndex(x => x.OrderId);
+        builder.HasIndex(x => x.ParentId);
 
         builder.HasIndex(x => x.AdvertisementId);
 

@@ -1,4 +1,3 @@
-
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Orders.Core.Create;
@@ -14,7 +13,9 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Orders;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
 using ShagOxServer.Application.Services.Orders.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
+using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Create;
@@ -87,6 +88,8 @@ public class OrderCreateService : IOrderCreateService
         {
             var order = await CreateOrderEntityAsync(
                 ownerId,
+                validationResult.Value.Item2,
+                validationResult.Value.Item1,
                 request);
 
             var itemsResult = await CreateOrderItemsAsync(
@@ -105,7 +108,6 @@ public class OrderCreateService : IOrderCreateService
                 order,
                 cancellationToken);
 
-            order.OrderNumber = _orderNumberGenerator.Generate();
 
             await _unitOfWork.CommitAsync();
 
@@ -132,7 +134,7 @@ public class OrderCreateService : IOrderCreateService
     }
 
 
-    private async Task<Result<bool>> ValidateOrderAsync(
+    private async Task<Result<(Currency, DeliveryProvider?)>> ValidateOrderAsync(
         long ownerId,
         OrderCreateRequest request,
         CancellationToken cancellationToken)
@@ -142,42 +144,55 @@ public class OrderCreateService : IOrderCreateService
 
         if (!userResult.IsSuccess)
         {
-            return Result<bool>.Fail(userResult.Error);
+            return Result<(Currency, DeliveryProvider?)>.Fail(userResult.Error);
         }
 
+        DeliveryProvider? deliveryProvider = null;
         if (request.DeliveryProviderId.HasValue)
         {
             var deliveryResult = await _deliveryValidator
-                .ExistsByIdAsync(
+                .GetByIdAsync(
                     request.DeliveryProviderId.Value,
                     cancellationToken);
 
             if (!deliveryResult.IsSuccess)
             {
-                return Result<bool>.Fail(deliveryResult.Error);
+                return Result<(Currency, DeliveryProvider?)>.Fail(deliveryResult.Error);
             }
+
+            deliveryProvider = deliveryResult.Value;
         }
 
         var currencyResult = await _currencyValidator
-            .ExistsByIdAsync(
+            .GetByIdAsync(
                 request.CurrencyId,
                 cancellationToken);
 
-        if (!currencyResult.IsSuccess)
+        if (!currencyResult.IsSuccess ||
+            currencyResult.Value is null)
         {
-            return Result<bool>.Fail(currencyResult.Error);
+            return Result<(Currency, DeliveryProvider?)>
+                .Fail(currencyResult.Error);
         }
 
-        return Result<bool>.Success(true);
+        return Result<(Currency, DeliveryProvider?)>.Success(
+            (currencyResult!.Value, deliveryProvider));
     }
 
     private async Task<Order> CreateOrderEntityAsync(
         long ownerId,
+        DeliveryProvider? deliveryProvider,
+        Currency currency,
         OrderCreateRequest request)
     {
-        var order = OrderCreater.Create(ownerId, request);
+        var orderNumber = _orderNumberGenerator.Generate();
+
+        var order = OrderCreater.Create(ownerId, orderNumber, request);
 
         _orderRepository.Add(order);
+
+        order.DeliveryProvider = deliveryProvider;
+        order.Currency = currency;
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -188,12 +203,15 @@ public class OrderCreateService : IOrderCreateService
         Order order,
         OrderCreateRequest request)
     {
+        order.Subtotal = 0;
+        order.TotalWeight = 0;
+
         foreach (var item in request.OrderItems)
         {
             var itemResult = await _orderItemCreateService
-                .CreateAsync(item with
+                .CreateInternalAsync(item with
                 {
-                    ParentId = item.ParentId
+                    ParentId = order.Id
                 });
 
             if (!itemResult.IsSuccess)

@@ -21,6 +21,7 @@ public sealed record AdvertisementDto
     decimal? Price,
     decimal? PreviousPrice,
     ConvertedPricesDto? PriceConversion,
+    int? Stock,
     StatusDto Status,
     CurrencyDto Currency,
     CategoryDto Category,

@@ -240,13 +240,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("StatusId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Stock")
+                    b.Property<int?>("Stock")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
+
+                    b.Property<decimal?>("Weight")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.HasKey("Id");
 
@@ -323,6 +327,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
+
+                    b.Property<decimal>("Weight")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)")
+                        .HasDefaultValue(0m);
 
                     b.HasKey("Id");
 
@@ -1316,6 +1326,10 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("BuildingNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<DateTime?>("CancelledAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1338,9 +1352,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("DeliveredAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("DeliveryAddress")
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)");
+                    b.Property<string>("DeliveryCityExternalId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("DeliveryPointAddress")
                         .HasMaxLength(250)
@@ -1359,7 +1373,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("character varying(35)");
 
                     b.Property<string>("DeliveryPointType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<decimal>("DeliveryPrice")
@@ -1399,6 +1412,10 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(35)
                         .HasColumnType("character varying(35)");
+
+                    b.Property<string>("FlatNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -1444,11 +1461,19 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("ShippedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("StreetExternalId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<decimal>("Subtotal")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
                     b.Property<decimal>("TotalPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("TotalWeight")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
@@ -1518,6 +1543,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("TotalWeight")
+                        .HasColumnType("numeric");
 
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");

@@ -5,7 +5,6 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Advert
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Query;
-
 public partial class AdvertisementVariantQueryRepository
     : SearchRepository<AdvertisementVariant, AdvertisementVariantSearchFilter>,
       IAdvertisementVariantQueryRepository

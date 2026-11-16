@@ -4,32 +4,37 @@ using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Orders;
+
 public class OrderConfiguration
     : IEntityTypeConfiguration<Order>
 {
-    public void Configure(
-        EntityTypeBuilder<Order> builder)
+    public void Configure(EntityTypeBuilder<Order> builder)
     {
         builder.Property(x => x.OrderNumber)
-            .IsRequired()
-            .HasMaxLength(32);
+            .HasMaxLength(32)
+            .IsRequired();
 
         builder.Property(x => x.FirstName)
-            .IsRequired()
-            .HasMaxLength(35);
+            .HasMaxLength(35)
+            .IsRequired();
 
         builder.Property(x => x.LastName)
-            .IsRequired()
-            .HasMaxLength(35);
+            .HasMaxLength(35)
+            .IsRequired();
 
         builder.Property(x => x.Phone)
-            .HasMaxLength(20);
+            .HasMaxLength(20)
+            .IsRequired();
 
         builder.Property(x => x.Email)
-            .HasMaxLength(254);
+            .HasMaxLength(254)
+            .IsRequired();
 
         builder.Property(x => x.Comment)
-            .HasMaxLength(1000);
+            .HasMaxLength(1000)
+            .IsRequired(false);
+
+
 
         builder.Property(x => x.Subtotal)
             .HasPrecision(18, 2);
@@ -40,66 +45,109 @@ public class OrderConfiguration
         builder.Property(x => x.TotalPrice)
             .HasPrecision(18, 2);
 
+        builder.Property(x => x.TotalWeight)
+            .HasPrecision(18, 2);
+
+
+
         builder.Property(x => x.DeliveryType)
             .HasConversion<string>()
             .IsRequired();
 
+
+
+        builder.HasOne(x => x.DeliveryProvider)
+            .WithMany(x => x.Orders)
+            .HasForeignKey(x => x.DeliveryProviderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
+
+        builder.Property(x => x.DeliveryCityExternalId)
+            .HasMaxLength(100)
+            .IsRequired(false);
+
+
         builder.Property(x => x.DeliveryPointExternalId)
-            .HasMaxLength(100);
+            .HasMaxLength(100)
+            .IsRequired(false);
 
         builder.Property(x => x.DeliveryPointNumber)
-            .HasMaxLength(35);
+            .HasMaxLength(35)
+            .IsRequired(false);
 
         builder.Property(x => x.DeliveryPointName)
-            .HasMaxLength(150);
+            .HasMaxLength(150)
+            .IsRequired(false);
 
         builder.Property(x => x.DeliveryPointAddress)
-            .HasMaxLength(250);
+            .HasMaxLength(250)
+            .IsRequired(false);
 
         builder.Property(x => x.DeliveryPointType)
-           .HasConversion<string>()
-           .IsRequired();
+            .HasConversion<string>()
+            .IsRequired(false);
 
-        builder.Property(x => x.DeliveryAddress)
-            .HasMaxLength(250);
+
+
+        builder.Property(x => x.StreetExternalId)
+            .HasMaxLength(100)
+            .IsRequired(false);
+
+        builder.Property(x => x.BuildingNumber)
+            .HasMaxLength(50)
+            .IsRequired(false);
+
+        builder.Property(x => x.FlatNumber)
+            .HasMaxLength(20)
+            .IsRequired(false);
+
+
+
 
         builder.Property(x => x.DeliveryTrackingNumber)
-            .HasMaxLength(100);
+            .HasMaxLength(100)
+            .IsRequired(false);
 
         builder.Property(x => x.DeliveryTrackingUrl)
-            .HasMaxLength(2048);
+            .HasMaxLength(2048)
+            .IsRequired(false);
+
+
 
         builder.Property(x => x.PaymentMethod)
-           .HasConversion<string>()
-           .IsRequired();
+            .HasConversion<string>()
+            .IsRequired();
 
         builder.Property(x => x.PaymentStatus)
-           .HasConversion<string>()
-           .IsRequired();
+            .HasConversion<string>()
+            .IsRequired();
 
         builder.Property(x => x.PaymentTransactionId)
-            .HasMaxLength(255);
+            .HasMaxLength(255)
+            .IsRequired(false);
 
         builder.Property(x => x.PaymentProvider)
-            .HasMaxLength(100);
+            .HasMaxLength(100)
+            .IsRequired(false);
+
+
 
         builder.Property(x => x.OrderStatus)
-           .HasConversion<string>()
-           .IsRequired();
+            .HasConversion<string>()
+            .IsRequired();
+
+
 
         builder.Property(x => x.CreatedAt)
             .IsRequired();
+
 
 
         builder.HasOne(x => x.Owner)
             .WithMany(x => x.Orders)
             .HasForeignKey(x => x.OwnerId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(x => x.DeliveryProvider)
-            .WithMany(x => x.Orders)
-            .HasForeignKey(x => x.DeliveryProviderId)
-            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Currency)
             .WithMany(x => x.Orders)

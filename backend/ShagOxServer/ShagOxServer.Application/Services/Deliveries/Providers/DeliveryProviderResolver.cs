@@ -1,6 +1,6 @@
-using ShagOxServer.Application.Interfaces.Services.Deliveries.Calculators;
+using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers;
 
-namespace ShagOxServer.Application.Services.Deliveries.Calculators;
+namespace ShagOxServer.Application.Services.Deliveries.Providers;
 public class DeliveryProviderResolver
 {
     private readonly IReadOnlyDictionary<string, IDeliveryProviderClient>

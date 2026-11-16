@@ -40,8 +40,9 @@ public abstract class LineItemCreateService<TEntity>
 
         if (!request.AdvertisementVariantId.HasValue)
         {
-            var advertExists = await _advertValidator
-                .GetByIdShortIncludeAsync(request.AdvertisementId, cancellationToken);
+            var advertExists = await _advertValidator.GetByIdShortIncludeAsync(
+                request.AdvertisementId, 
+                cancellationToken);
 
             if (!advertExists.IsSuccess || advertExists.Value is null)
             {
@@ -57,6 +58,7 @@ public abstract class LineItemCreateService<TEntity>
                 request.AdvertisementVariantId.Value,
                 cancellationToken);
 
+           
             if (!variantExists.IsSuccess || variantExists.Value is null)
             {
                 return Result<LineItemDetails>
@@ -64,6 +66,7 @@ public abstract class LineItemCreateService<TEntity>
             }
 
             variant = variantExists.Value;
+
 
             if (request.AdvertisementId != variant.AdvertisementId)
             {
@@ -87,7 +90,7 @@ public abstract class LineItemCreateService<TEntity>
 
         var stock = variant?.Stock ?? advert!.Stock;
         var price = variant?.Price ?? advert!.Price;
-        var title = variant?.Advertisement.Title ?? advert!.Title;
+        var title = variant?.Advertisement?.Title ?? advert?.Title;
 
         if (price is null)
         {
@@ -98,7 +101,7 @@ public abstract class LineItemCreateService<TEntity>
                 );
         }
 
-        if (request.Quantity > stock)
+        if (!stock.HasValue || request.Quantity > stock)
         {
             return Result<LineItemDetails>
                 .Fail(string.Format(
@@ -108,6 +111,6 @@ public abstract class LineItemCreateService<TEntity>
         }
 
         return Result<LineItemDetails>.Success(
-            new LineItemDetails(stock, price, advert, variant));
+            new LineItemDetails(stock.Value, price, advert, variant));
     }
 }

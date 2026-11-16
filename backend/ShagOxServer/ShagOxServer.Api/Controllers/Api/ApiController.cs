@@ -7,7 +7,7 @@ public abstract class ApiController
 {
     protected readonly IUserContext UserContext;
 
-    protected long? UserId => UserContext.UserId;
+    protected long? UserId => 22;// UserContext.UserId;
 
     protected ApiController(IUserContext userContext)
     {

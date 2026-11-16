@@ -15,6 +15,12 @@ public partial class AdvertisementQueryRepository
         return query.WithIncludes();
     }
 
+    protected override IQueryable<Advertisement> ApplyShortIncludes(
+       IQueryable<Advertisement> query)
+    {
+        return query.ShortWithIncludes();
+    }
+
     public override IQueryable<Advertisement> ApplyFilter(
         IQueryable<Advertisement> query,
         AdvertisementSearchFilter filter)

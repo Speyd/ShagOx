@@ -24,11 +24,15 @@ public class CurrencyProvider
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
     {
-        if (!_userContext.UserId.HasValue)
-            return null;
+        //if (!_userContext.UserId.HasValue)
+        //    return null;
+
+        //var result = await _currencyService
+        //    .GetByUserAsync(_userContext.UserId.Value, 
+        //        cancellationToken, status);
 
         var result = await _currencyService
-            .GetByUserAsync(_userContext.UserId.Value, 
+            .GetByUserAsync(22,
                 cancellationToken, status);
 
         return result.Value;

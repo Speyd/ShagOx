@@ -1,7 +1,10 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
+using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
@@ -16,6 +19,7 @@ using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Application.Services.Orders.OrderItems.Validator;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Orders.OrderItems.Create;
 
@@ -31,6 +35,9 @@ public class OrderItemCreateService
     private readonly OrderItemOrderInvalidationService _orderInvalidation;
     private readonly OrderItemInvalidationService _itemInvalidation;
 
+    private readonly IAdvertisementCommandRepository _advertCommand;
+    private readonly IAdvertisementVariantCommandRepository _variantCommand;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<OrderItemCreateService> _logger;
 
@@ -41,7 +48,9 @@ public class OrderItemCreateService
         ICurrencyProvider currencyProvider,
         AdvertisementVariantValidator advertVariantValidator,
         AdvertisementValidator advertValidator,
-        OrderItemOrderInvalidationService orderInvalidation,
+        OrderItemOrderInvalidationService orderInvalidation, 
+        IAdvertisementCommandRepository advertCommand,
+        IAdvertisementVariantCommandRepository variantCommand,
         OrderItemInvalidationService itemInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<OrderItemCreateService> logger)
@@ -57,6 +66,9 @@ public class OrderItemCreateService
 
         _orderInvalidation = orderInvalidation;
         _itemInvalidation = itemInvalidation;
+
+        _advertCommand = advertCommand;
+        _variantCommand = variantCommand;
 
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -123,20 +135,21 @@ public class OrderItemCreateService
 
         var currency = await _currencyProvider.GetCurrencyAsync();
 
-        if (currency is null)
+        var (price, code) = await GetPriceAndCurrencyCode(details, request);
+
+        if(!price.HasValue)
         {
-            return Result<OrderItem>.NotFound(
-                EntityNamesResources.User);
+            return Result<OrderItem>
+                .Fail(OrderResources.InvalidPrice);
         }
 
-        var (price, code) = GetPriceAndCurrencyCode(details);
+        var convertedPrice = currency is null? price:
+            _converter.Convert(
+                price,
+                code,
+                currency.Code).ConvertedAmount;
 
-        var convertedPrice = _converter.Convert(
-            price,
-            code,
-            currency.Code);
-
-        if (!convertedPrice.ConvertedAmount.HasValue)
+        if (!convertedPrice.HasValue)
         {
             return Result<OrderItem>.Fail(
                 OrderResources.InvalidPrice);
@@ -144,44 +157,76 @@ public class OrderItemCreateService
 
         var item = OrderItemCreater.Create(
             request,
-            convertedPrice.ConvertedAmount.Value);
+            convertedPrice.Value);
 
-        item.TotalWeight = CalculateItemWeight(details);
+        item.TotalWeight = CalculateItemWeight(details, request);
 
         _itemRepository.Add(item);
+
+        _logger.LogInformation(
+    "Variant stock before save: {Stock}",
+    details.Variant?.Stock);
+        _unitOfWork.DebugTrackedEntities();
+        var affected = await _unitOfWork.SaveChangesAsync();
+        Console.WriteLine($"SaveChanges affected: {affected}");
+        _logger.LogInformation(
+            "Variant stock after save: {Stock}",
+            details.Variant?.Stock);
 
         return Result<OrderItem>.Success(item);
     }
 
-    private static (decimal Price, string CurrencyCode)
-        GetPriceAndCurrencyCode(dynamic details)
+    private async Task<(decimal? Price, string CurrencyCode)>
+        GetPriceAndCurrencyCode(
+            LineItemDetails details,
+            LineItemCreateRequest request)
     {
+        string currencyCode = "";
+
         if (details.Variant is not null)
         {
-            details.Variant.Stock -= details.Stock;
+            currencyCode = details.Variant.Advertisement.Currency.Code;
+
+            await _variantCommand.DecreaseStockAsync(
+                details.Variant.Id,
+                request.Quantity);
 
             return (
-                details.Price,
+                details.Price!.Value,
                 details.Variant.Advertisement.Currency.Code
             );
         }
+        else if (details.Advertisement is not null)
+        {
+            currencyCode = details.Advertisement.Currency.Code;
 
-        details.Advertisement.Stock -= details.Stock;
+            await _advertCommand.DecreaseStockAsync(
+                details.Advertisement.Id,
+                request.Quantity);
+        }
 
         return (
-            details.Price,
-            details.Advertisement.Currency.Code
+            null,
+            currencyCode
         );
     }
 
-    private static decimal CalculateItemWeight(dynamic details)
+    private static decimal CalculateItemWeight(
+        LineItemDetails details,
+            LineItemCreateRequest request)
     {
         if (details.Variant is not null)
         {
-            return details.Variant.Weight;
+            return details.Variant.Weight *
+                request.Quantity;
+        }
+        else if (details.Advertisement is not null)
+        {
+            return details.Advertisement.Weight!.Value *
+                request.Quantity;
         }
 
-        return details.Advertisement.Weight ?? 0;
+        return -1;
     }
 
     private async Task InvalidateItemCacheAsync(OrderItem item)

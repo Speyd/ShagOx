@@ -22,6 +22,7 @@ public static class AdvertisementShortMapper
             x.Price,
             x.PreviousPrice,
             priceConversion,
+            x.Stock,
             x.CurrencyId,
             x.CategoryId,
             x.OwnerId,

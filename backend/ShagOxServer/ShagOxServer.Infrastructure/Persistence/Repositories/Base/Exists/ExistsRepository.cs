@@ -7,7 +7,8 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 public class ExistsRepository<TEntity>
-    : RepositoryContext<TEntity>, IExistsRepository<TEntity>
+    : RepositoryContext<TEntity>, 
+    IExistsRepository<TEntity>
     where TEntity : BaseEntity
 {
     public ExistsRepository(AppDbContext db)

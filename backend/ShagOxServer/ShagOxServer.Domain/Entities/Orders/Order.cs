@@ -9,46 +9,54 @@ namespace ShagOxServer.Domain.Entities.Orders;
 public class Order
     : OwnedEntity<User>
 {
-    public string OrderNumber { get; set; } = null!;
+    public string OrderNumber { get; set; } = null!;//
 
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
+    public string FirstName { get; set; } = null!;//
+    public string LastName { get; set; } = null!;//
 
-    public string Phone { get; set; } = null!;
-    public string Email { get; set; } = null!;
+    public string Phone { get; set; } = null!;//
+    public string Email { get; set; } = null!;//
 
 
-    public ICollection<OrderItem> OrderItems { get; set; }
+    public ICollection<OrderItem> OrderItems { get; set; }//code
         = [];
 
-    public string? Comment { get; set; }
+    public string? Comment { get; set; }//
 
-    public decimal Subtotal { get; set; }
+    public decimal Subtotal { get; set; }//code
 
-    public decimal DeliveryPrice { get; set; }
+    public decimal DeliveryPrice { get; set; }//code
 
-    public decimal TotalPrice { get; set; }
-    public decimal TotalWeight { get; set; }
+    public decimal TotalPrice { get; set; }//code
+    public decimal TotalWeight { get; set; }//code
 
 
-    public long CurrencyId { get; set; }
+    public long CurrencyId { get; set; }//
     public Currency Currency { get; set; } = null!;
 
 
-    public DeliveryType DeliveryType { get; set; }
+    public DeliveryType DeliveryType { get; set; }//
 
-    public long? DeliveryProviderId { get; set; }
+    public long? DeliveryProviderId { get; set; }//
     public DeliveryProvider? DeliveryProvider { get; set; }
 
+    // City
+    public string? DeliveryCityExternalId { get; set; }//из фронта запрос на getCities в деливери и передается сюда
 
-    public string? DeliveryPointExternalId { get; set; }
-    public string? DeliveryPointNumber { get; set; }
-    public string? DeliveryPointName { get; set; }
-    public string? DeliveryPointAddress { get; set; }
-    public DeliveryPointType? DeliveryPointType { get; set; }
+    // Delivery point (warehouse / parcel locker)
+    public string? DeliveryPointExternalId { get; set; }// из фронта запрос на getCities в деливери и передается сюда
+    public string? DeliveryPointNumber { get; set; }// из фронта запрос на getCities в деливери и передается сюда
+    public string? DeliveryPointName { get; set; }// из фронта запрос на getCities в деливери и передается сюда
+    public string? DeliveryPointAddress { get; set; }// из фронта запрос на getCities в деливери и передается сюда
+
+    public DeliveryPointType? DeliveryPointType { get; set; }//
 
 
-    public string? DeliveryAddress { get; set; }
+
+    public string? StreetExternalId { get; set; }// из фронта запрос на getCities в деливери и передается сюда
+    public string? BuildingNumber { get; set; }//
+    public string? FlatNumber { get; set; }//
+
 
 
 
@@ -87,6 +95,7 @@ public class Order
     public DateTime? UpdatedAt { get; set; }
 
     public DateTime? CancelledAt { get; set; }
+
 
 
     public override string ToString()

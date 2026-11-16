@@ -9,12 +9,18 @@ public static class OrderCreater
 {
     public static Order Create(
         long ownerId,
+        string orderNumber,
         OrderCreateRequest request)
     {
         var now = DateTime.UtcNow;
+        var city = request.DeliveryCityDto;
+        var point = request.DeliveryPointDto;
+
 
         return new Order
         {
+            OrderNumber = orderNumber,
+
             OwnerId = ownerId,
             EntityStatus = EntityStatus.Active,
 
@@ -30,13 +36,13 @@ public static class OrderCreater
             DeliveryType = request.DeliveryType,
             DeliveryProviderId = request.DeliveryProviderId,
 
-            DeliveryPointExternalId = request.DeliveryPointExternalId,
-            DeliveryPointNumber = request.DeliveryPointNumber,
-            DeliveryPointName = request.DeliveryPointName,
-            DeliveryPointAddress = request.DeliveryPointAddress,
-            DeliveryPointType = request.DeliveryPointType,
+            DeliveryCityExternalId = city.ExternalId,
 
-            DeliveryAddress = request.DeliveryAddress,
+            DeliveryPointExternalId = point.ExternalId,
+            DeliveryPointNumber = point.Number,
+            DeliveryPointName = point.Name,
+            DeliveryPointAddress = point.Address,
+            DeliveryPointType = request.DeliveryPointType,
 
             PaymentMethod = request.PaymentMethod,
 

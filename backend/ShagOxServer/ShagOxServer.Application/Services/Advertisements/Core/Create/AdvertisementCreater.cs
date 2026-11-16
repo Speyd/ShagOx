@@ -15,6 +15,10 @@ public static class AdvertisementCreater
             Description = request.Description ?? "",
             Popularity = request.Popularity,
 
+            Price = request.Price,
+            PreviousPrice = request.PreviousPrice,
+            Stock = request.Stock,
+
             CurrencyId = request.CurrencyId,
             CategoryId = request.CategoryId,
             StatusId = request.StatusId,

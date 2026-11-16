@@ -9,11 +9,11 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Translations.Query;
-public class QueryTranslationRepository<TEntity, TTranslator>
-    : QueryRepository<TTranslator>, 
-    IQueryTranslationRepository<TEntity, TTranslator>
+public class QueryTranslationRepository<TEntity, Translation>
+    : QueryRepository<Translation>, 
+    IQueryTranslationRepository<TEntity, Translation>
     where TEntity: BaseTranslatable
-    where TTranslator : BaseTranslation<TEntity>
+    where Translation : BaseTranslation<TEntity>
 {
     public QueryTranslationRepository(
         ReplicaDbContext db)
@@ -21,13 +21,13 @@ public class QueryTranslationRepository<TEntity, TTranslator>
     {
     }
 
-    public virtual async Task<TTranslator?> GetByIdentificatorAsync(
+    public virtual async Task<Translation?> GetByIdentificatorAsync(
         string identificator,
         string language,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null)
     {
-        IQueryable<TTranslator> query = _db.Set<TTranslator>();
+        IQueryable<Translation> query = _db.Set<Translation>();
 
         query = ApplyIncludes(query);
 
@@ -40,13 +40,31 @@ public class QueryTranslationRepository<TEntity, TTranslator>
                 x.Language == language, cancellationToken);
     }
 
-    public virtual async Task<PagedResult<TTranslator>> GetPagedAsync(
+    public virtual async Task<Translation?> GetByIdentificatorAsync(
+        long translatableId,
+        string language,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        IQueryable<Translation> query = _db.Set<Translation>();
+
+        query = ApplyIncludes(query);
+
+        return await query
+            .WithStatusFilter(status)
+            .FirstOrDefaultAsync(x =>
+                x.TranslatableId == translatableId &&
+                x.Language == language, 
+                cancellationToken);
+    }
+
+    public virtual async Task<PagedResult<Translation>> GetPagedAsync(
         PaginationParams pagination,
         string language,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null)
     {
-        IQueryable<TTranslator> query = _db.Set<TTranslator>();
+        IQueryable<Translation> query = _db.Set<Translation>();
 
         query = ApplyIncludes(query);
 
@@ -55,15 +73,15 @@ public class QueryTranslationRepository<TEntity, TTranslator>
             .WithStatusFilter(status)
             .Where(x => EF.Property<string>(
                     x,
-                    nameof(BaseTranslation<TTranslator>.Language)) == language)
+                    nameof(BaseTranslation<Translation>.Language)) == language)
             .ToPagedResultAsync(
                 pagination,
                 (x => x.Id),
                 cancellationToken);
     }
 
-    protected virtual IQueryable<TTranslator> ApplyIdentificatorFilter(
-        IQueryable<TTranslator> query,
+    protected virtual IQueryable<Translation> ApplyIdentificatorFilter(
+        IQueryable<Translation> query,
         string identificator)
     {
         return query;
@@ -74,7 +92,7 @@ public class QueryTranslationRepository<TEntity, TTranslator>
         CancellationToken cancellationToken = default,
         EntityStatus? status = null)
     {
-        IQueryable<TTranslator> query = _db.Set<TTranslator>();
+        IQueryable<Translation> query = _db.Set<Translation>();
 
         return await query
             .WithStatusFilter(status)

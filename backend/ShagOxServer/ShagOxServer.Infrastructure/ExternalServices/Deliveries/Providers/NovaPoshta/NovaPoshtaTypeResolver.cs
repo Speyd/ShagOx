@@ -1,0 +1,111 @@
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Options.Deliveries.Providers;
+using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Query;
+using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Responses;
+using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers.NovaPoshta;
+using ShagOxServer.Domain.Entities.Deliveries.Enum;
+using System.Text;
+using System.Text.Json;
+
+namespace ShagOxServer.Infrastructure.ExternalServices.Deliveries.Providers.NovaPoshta;
+public class NovaPoshtaTypeResolver
+    : INovaPoshtaTypeResolver
+{
+    private readonly HttpClient _httpClient;
+    private readonly NovaPoshtaOptions _options;
+
+
+    public NovaPoshtaTypeResolver(
+        HttpClient httpClient,
+        IOptions<NovaPoshtaOptions> options)
+    {
+        _httpClient = httpClient;
+        _options = options.Value;
+    }
+
+
+    public async Task<IReadOnlyList<NovaPoshtaWarehouseTypeDto>> GetWarehouseTypesAsync(
+        CancellationToken cancellationToken)
+    {
+        var body = new
+        {
+            apiKey = _options.ApiKey,
+            modelName = "Address",
+            calledMethod = "getWarehouseTypes",
+            methodProperties = new { }
+        };
+
+        var json = JsonSerializer.Serialize(body);
+
+        using var response = await _httpClient.PostAsync(
+            "",
+            new StringContent(json, Encoding.UTF8, "application/json"),
+            cancellationToken);
+
+        var rawResponse = await response.Content.ReadAsStringAsync(cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException(
+                $"Nova Poshta returned {(int)response.StatusCode}: {rawResponse}");
+        }
+
+        var result = JsonSerializer.Deserialize<
+            NovaPoshtaResponse<NovaPoshtaWarehouseTypeDto>>(
+            rawResponse,
+            new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+        if (result?.Success != true)
+        {
+            throw new InvalidOperationException(
+                "Nova Poshta warehouse types search failed: " +
+                string.Join(", ", result?.Errors ?? []));
+        }
+
+        return result.Data ?? [];
+    }
+
+    public string GetWarehouseTypeRef(
+        DeliveryPointType type,
+        IReadOnlyList<NovaPoshtaWarehouseTypeDto> warehouseTypes)
+    {
+        var matches = type switch
+        {
+            DeliveryPointType.Branch => warehouseTypes
+                .Where(x =>
+                    x.DescriptionRu.Contains(
+                        "отделение",
+                        StringComparison.OrdinalIgnoreCase) ||
+                    x.Description.Contains(
+                        "відділення",
+                        StringComparison.OrdinalIgnoreCase))
+                .ToList(),
+
+            DeliveryPointType.ParcelLocker => warehouseTypes
+               .Where(x =>
+                   string.Equals(
+                       x.DescriptionRu?.Trim(),
+                       "Почтомат",
+                       StringComparison.OrdinalIgnoreCase))
+               .ToList(),
+
+            DeliveryPointType.ParcelShop => warehouseTypes
+                .Where(x =>
+                    x.Description.Contains(
+                        "до 10 кг",
+                        StringComparison.OrdinalIgnoreCase))
+                .ToList(),
+
+            _ => throw new ArgumentOutOfRangeException(
+                nameof(type), type, null)
+        };
+
+        return matches.FirstOrDefault()?.Ref
+            ?? throw new InvalidOperationException(
+                $"Nova Poshta warehouse type not found for {type}");
+    }
+
+}

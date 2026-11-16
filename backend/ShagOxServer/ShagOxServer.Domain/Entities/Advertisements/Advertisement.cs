@@ -28,7 +28,7 @@ public class Advertisement
     public decimal? Weight { get; set; } = null;
 
 
-    public int Stock { get; set; }
+    public int? Stock { get; set; }
 
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Infrastructure.DependencyInjections.Advertisement;
@@ -16,6 +16,9 @@ public static class AdvertisementsDependencyInjection
 
         services.AddScoped<IAdvertisementExistsRepository, 
             AdvertisementExistsRepository>();
+
+        services.AddScoped<IAdvertisementCommandRepository,
+            AdvertisementCommandRepository>();
 
 
         services.AddFavoriteInfrastructure();

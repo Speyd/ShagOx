@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ShagOxServer.Application.Interfaces.Services.Deliveries.Queries;
+using ShagOxServer.Application.Services.Deliveries;
 
 namespace ShagOxServer.Application.DependencyInjections.Deliveries;
 public static class DeliveriesDependencyInjection
@@ -9,6 +8,9 @@ public static class DeliveriesDependencyInjection
     public static IServiceCollection AddDeliveriesApplication(
         this IServiceCollection services)
     {
+        services.AddScoped<IDeliveryQueriesService,
+            DeliveryQueriesService>();
+
         services.AddDeliveryProviderApplication();
 
         services.AddDeliveryCalculatorsApplication();

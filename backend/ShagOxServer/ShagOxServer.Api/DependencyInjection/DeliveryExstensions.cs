@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Deliveries;
-using ShagOxServer.Application.Interfaces.Services.Deliveries.Calculators;
-using ShagOxServer.Application.Services.Deliveries.Providers.NovaPoshta;
+using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers;
+using ShagOxServer.Infrastructure.ExternalServices.Deliveries.Providers.NovaPoshta;
 
 namespace ShagOxServer.Api.DependencyInjection;
 public static class DeliveryExstensions
@@ -22,7 +22,7 @@ public static class DeliveryExstensions
 
         if (deliveryOptions.Providers.NovaPoshta.Enabled)
         {
-            services.AddHttpClient<NovaPoshtaDeliveryClient>(
+            services.AddHttpClient<NovaPoshtaApiClient>(
             (sp, client) =>
             {
                 var options = sp
@@ -39,6 +39,7 @@ public static class DeliveryExstensions
         }
 
         #endregion
+
         return services;
     }
 }

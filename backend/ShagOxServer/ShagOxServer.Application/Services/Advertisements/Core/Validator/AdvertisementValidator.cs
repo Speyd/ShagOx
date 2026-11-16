@@ -26,6 +26,7 @@ public class AdvertisementValidator
         _advertisementQueryRepository = advertisementQueryRepository;
     }
 
+
     public async Task<Result<Advertisement>> GetByIdShortIncludeAsync(
         long entityId,
         CancellationToken cancellationToken = default,

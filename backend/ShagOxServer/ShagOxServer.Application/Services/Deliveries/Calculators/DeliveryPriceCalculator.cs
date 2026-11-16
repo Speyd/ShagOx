@@ -1,6 +1,7 @@
-using ShagOxServer.Application.DTOs.Deliveries.Calculators;
+using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Request;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Calculators;
+using ShagOxServer.Application.Services.Deliveries.Providers;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
 using ShagOxServer.Domain.Entities.Orders;
 
@@ -37,46 +38,57 @@ public class DeliveryPriceCalculator
 
         var provider = _resolver.Resolve(providerCode);
 
-        var declaredValue = ConvertDeclaredValueAsync(
+        var declaredValue = ConvertDeclaredValue(
             order,
             provider.CurrencyCode);
 
         var request = CreateCalculationRequest(
             order,
-            declaredValue);
+            declaredValue.ConvertedAmount!.Value);
 
-        return await provider.CalculatePriceAsync(
+        var deliveryPrice = await provider.CalculatePriceAsync(
             request,
             cancellationToken);
+
+        return deliveryPrice / declaredValue.Coefficient;
     }
 
-    private decimal ConvertDeclaredValueAsync(
+    private (decimal? ConvertedAmount, decimal Coefficient) ConvertDeclaredValue(
         Order order,
         string targetCurrency)
     {
         if (order.Currency.Code == targetCurrency)
-            return order.Subtotal;
+            return (order.Subtotal, 1);
 
         var result = _converter.Convert(
             order.Subtotal,
             order.Currency.Code,
             targetCurrency);
 
-        return result.ConvertedAmount
-            ?? throw new InvalidOperationException(
+        if (!result.ConvertedAmount.HasValue) 
+        {
+            throw new InvalidOperationException(
                 "Failed to convert order subtotal.");
+        }
+
+        return result;
     }
 
     private static DeliveryCalculationRequest CreateCalculationRequest(
         Order order,
         decimal declaredValue)
     {
+        if(string.IsNullOrEmpty(order.DeliveryCityExternalId))
+        {
+            throw new InvalidOperationException(
+                "Failed to create delivery request.");
+        }
+
         return new DeliveryCalculationRequest(
             order.DeliveryType,
             order.DeliveryPointType,
+            order.DeliveryCityExternalId,
             order.DeliveryPointExternalId,
-            order.DeliveryAddress,
-            order.DeliveryPointExternalId!,
             order.TotalWeight,
             declaredValue
         );

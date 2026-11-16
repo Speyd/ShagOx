@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
@@ -23,7 +24,7 @@ public class AdvertisementVariantValidator
 
     public AdvertisementVariantValidator(
         IRepository<AdvertisementVariant> repository,
-        IQueryRepository<AdvertisementVariant> variantRepository,
+        IAdvertisementVariantQueryRepository variantRepository,
         IAdvertisementVariantExistsRepository variantExistsRepository,
         IAttributeDefinitionQueryRepository attributeRepository,
         AdvertisementValidator advertValidator,

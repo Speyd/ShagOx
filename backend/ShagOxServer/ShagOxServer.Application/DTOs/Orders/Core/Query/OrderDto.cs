@@ -30,7 +30,7 @@ public sealed record OrderDto
     string? DeliveryPointName,
     string? DeliveryPointAddress,
     DeliveryPointType? DeliveryPointType,
-    string? DeliveryAddress,
+    //string? DeliveryAddress,
     string? DeliveryTrackingNumber,
     string? DeliveryTrackingUrl,
     DateTime? ShippedAt,

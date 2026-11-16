@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Query;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
 using ShagOxServer.Domain.Entities.Orders.Enum;
@@ -14,11 +15,8 @@ public sealed record OrderCreateRequest
     long CurrencyId,
     DeliveryType DeliveryType,
     long? DeliveryProviderId,
-    string? DeliveryPointExternalId,
-    string? DeliveryPointNumber,
-    string? DeliveryPointName,
-    string? DeliveryPointAddress,
+    DeliveryCityDto DeliveryCityDto,
+    DeliveryPointDto DeliveryPointDto,
     DeliveryPointType? DeliveryPointType,
-    string? DeliveryAddress,
     PaymentMethod PaymentMethod
 );

@@ -34,7 +34,7 @@ public static class OrderMapper
             order.DeliveryPointName,
             order.DeliveryPointAddress,
             order.DeliveryPointType,
-            order.DeliveryAddress,
+           // order.DeliveryAddress,
             order.DeliveryTrackingNumber,
             order.DeliveryTrackingUrl,
             order.ShippedAt,

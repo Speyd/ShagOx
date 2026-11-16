@@ -1,10 +1,15 @@
+using CloudinaryDotNet;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Query;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Request;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Query;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Request;
+using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers.NovaPoshta;
 using ShagOxServer.Application.Resources.Delivery.Providers.NovaPoshta;
+using ShagOxServer.Application.Services.Caches.Keys.Deliveries.Providers.NovaPoshta;
 using ShagOxServer.Application.Services.Deliveries.Providers.NovaPoshta.Mapping;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -16,6 +21,9 @@ public class NovaPoshtaDeliveryClient
 {
     private readonly NovaPoshtaApiClient _apiClient;
     private readonly INovaPoshtaTypeResolver _typeResolve;
+    private readonly IDataCacheService _cacheService;
+    private readonly CacheOptions _cacheSettings;
+
 
     public string ProviderCode => "NOVA_POSHTA";
     public string CurrencyCode => "UAH";
@@ -23,10 +31,14 @@ public class NovaPoshtaDeliveryClient
 
     public NovaPoshtaDeliveryClient(
         NovaPoshtaApiClient apiClient,
-        INovaPoshtaTypeResolver typeResolve)
+        INovaPoshtaTypeResolver typeResolve,
+        IDataCacheService cacheService,
+        IOptions<CacheOptions> settings)
     {
         _apiClient = apiClient;
         _typeResolve = typeResolve;
+        _cacheService = cacheService;
+        _cacheSettings = settings.Value;
     }
 
 
@@ -73,32 +85,43 @@ public class NovaPoshtaDeliveryClient
         PaginationParams pagination,
         CancellationToken cancellationToken = default)
     {
-        var methodProperties = new Dictionary<string, object>
-        {
-            ["Page"] = pagination.Page.ToString(),
-            ["Limit"] = pagination.PageSize.ToString(),
-        };
+        var key = NovaPoshtaCache.CityBySearch(
+            search,
+            pagination.Page,
+            pagination.PageSize);
 
-        if (!string.IsNullOrWhiteSpace(search))
-            methodProperties["FindByString"] = search;
+        return await _cacheService.GetOrCreateAsync
+            (key,
+            async () =>
+            {
+                var methodProperties = new Dictionary<string, object>
+                {
+                    ["Page"] = pagination.Page.ToString(),
+                    ["Limit"] = pagination.PageSize.ToString(),
+                };
 
-        var result = await _apiClient.SendAsync<NovaPoshtaCityDto>(
-            "Address",
-            "getCities",
-            methodProperties,
-            cancellationToken);
+                if (!string.IsNullOrWhiteSpace(search))
+                    methodProperties["FindByString"] = search;
 
-        if (!result.IsSuccess)
-        {
-            return Result<IEnumerable<DeliveryCityDto>>
-                .Fail(result.Error);
-        }
+                var result = await _apiClient.SendAsync<NovaPoshtaCityDto>(
+                    "Address",
+                    "getCities",
+                    methodProperties,
+                    cancellationToken);
 
-        return Result<IEnumerable<DeliveryCityDto>>.Success(
-            (result.Value?.Data ?? [])
-                .Select(NovaPoshtaLocationMapper.MapCity)
-                .ToList()
-        );
+                if (!result.IsSuccess)
+                {
+                    return Result<IEnumerable<DeliveryCityDto>>
+                        .Fail(result.Error);
+                }
+
+                return Result<IEnumerable<DeliveryCityDto>>.Success(
+                    (result.Value?.Data ?? [])
+                        .Select(NovaPoshtaLocationMapper.MapCity)
+                        .ToList()
+                );
+            },
+            _cacheSettings.KeyExpiration);
     }
 
     public async Task<Result<IEnumerable<DeliveryStreetDto>>> GetStreetsAsync(
@@ -106,31 +129,43 @@ public class NovaPoshtaDeliveryClient
         PaginationParams pagination,
         CancellationToken cancellationToken = default)
     {
-        var methodProperties = new Dictionary<string, object>
-        {
-            ["CityRef"] = request.CityExternalId,
-            ["FindByString"] = request.Search,
-            ["Page"] = pagination.Page.ToString(),
-            ["Limit"] = pagination.PageSize.ToString(),
-        };
+        var key = NovaPoshtaCache.StreetBySearch(
+            request.CityExternalId,
+            request.Search,
+            pagination.Page,
+            pagination.PageSize);
 
-        var result = await _apiClient.SendAsync<NovaPoshtaStreetDto>(
-            "Address",
-            "getStreet",
-            methodProperties,
-            cancellationToken);
+        return await _cacheService.GetOrCreateAsync
+            (key,
+            async () =>
+            {
+                var methodProperties = new Dictionary<string, object>
+                {
+                    ["CityRef"] = request.CityExternalId,
+                    ["FindByString"] = request.Search,
+                    ["Page"] = pagination.Page.ToString(),
+                    ["Limit"] = pagination.PageSize.ToString(),
+                };
 
-        if (!result.IsSuccess)
-        {
-            return Result<IEnumerable<DeliveryStreetDto>>
-                .Fail(result.Error);
-        }
+                var result = await _apiClient.SendAsync<NovaPoshtaStreetDto>(
+                    "Address",
+                    "getStreet",
+                    methodProperties,
+                    cancellationToken);
 
-        return Result<IEnumerable<DeliveryStreetDto>>.Success(
-            (result.Value?.Data ?? [])
-                .Select(NovaPoshtaLocationMapper.MapStreet)
-                .ToList()
-        );
+                if (!result.IsSuccess)
+                {
+                    return Result<IEnumerable<DeliveryStreetDto>>
+                        .Fail(result.Error);
+                }
+
+                return Result<IEnumerable<DeliveryStreetDto>>.Success(
+                    (result.Value?.Data ?? [])
+                        .Select(NovaPoshtaLocationMapper.MapStreet)
+                        .ToList()
+                );
+            },
+            _cacheSettings.KeyExpiration);
     }
 
 
@@ -139,49 +174,62 @@ public class NovaPoshtaDeliveryClient
         PaginationParams pagination,
         CancellationToken cancellationToken)
     {
-        var warehouseTypes = await _typeResolve
+        var key = NovaPoshtaCache.PointBySearch(
+            request.CityExternalId,
+            request.Search,
+            request.DeliveryPointType,
+            pagination.Page,
+            pagination.PageSize);
+
+        return await _cacheService.GetOrCreateAsync
+            (key,
+            async () =>
+            {
+                var warehouseTypes = await _typeResolve
             .GetWarehouseTypesAsync(cancellationToken);
 
-        if(!warehouseTypes.IsSuccess ||
-            warehouseTypes.Value is null)
-        {
-            return Result<IEnumerable<DeliveryPointDto>>
-                .Fail(warehouseTypes.Error);
-        }
+                if (!warehouseTypes.IsSuccess ||
+                    warehouseTypes.Value is null)
+                {
+                    return Result<IEnumerable<DeliveryPointDto>>
+                        .Fail(warehouseTypes.Error);
+                }
 
-        var typeOfWarehouseRef = _typeResolve
-            .GetWarehouseTypeRef(
-                request.DeliveryPointType,
-                warehouseTypes.Value);
+                var typeOfWarehouseRef = _typeResolve
+                    .GetWarehouseTypeRef(
+                        request.DeliveryPointType,
+                        warehouseTypes.Value);
 
 
-        var methodProperties = new Dictionary<string, object>
-        {
-            ["CityRef"] = request.CityExternalId,
-            ["Page"] = pagination.Page.ToString(),
-            ["Limit"] = pagination.PageSize.ToString(),
-            ["TypeOfWarehouseRef"] = typeOfWarehouseRef
-        };
+                var methodProperties = new Dictionary<string, object>
+                {
+                    ["CityRef"] = request.CityExternalId,
+                    ["Page"] = pagination.Page.ToString(),
+                    ["Limit"] = pagination.PageSize.ToString(),
+                    ["TypeOfWarehouseRef"] = typeOfWarehouseRef
+                };
 
-        if (!string.IsNullOrWhiteSpace(request.Search))
-            methodProperties["FindByString"] = request.Search;
+                if (!string.IsNullOrWhiteSpace(request.Search))
+                    methodProperties["FindByString"] = request.Search;
 
-        var result = await _apiClient.SendAsync<NovaPoshtaWarehouseDto>(
-            "Address",
-            "getWarehouses",
-            methodProperties,
-            cancellationToken);
+                var result = await _apiClient.SendAsync<NovaPoshtaWarehouseDto>(
+                    "Address",
+                    "getWarehouses",
+                    methodProperties,
+                    cancellationToken);
 
-        if (!result.IsSuccess)
-        {
-            return Result<IEnumerable<DeliveryPointDto>>
-                .Fail(result.Error);
-        }
+                if (!result.IsSuccess)
+                {
+                    return Result<IEnumerable<DeliveryPointDto>>
+                        .Fail(result.Error);
+                }
 
-        return Result<IEnumerable<DeliveryPointDto>>.Success(
-            (result.Value?.Data ?? [])
-                .Select(NovaPoshtaLocationMapper.MapPoint)
-                .ToList()
-        );
+                return Result<IEnumerable<DeliveryPointDto>>.Success(
+                    (result.Value?.Data ?? [])
+                        .Select(NovaPoshtaLocationMapper.MapPoint)
+                        .ToList()
+                );
+            },
+            _cacheSettings.KeyExpiration);
     }
 }

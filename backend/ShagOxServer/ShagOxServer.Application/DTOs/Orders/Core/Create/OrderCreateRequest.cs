@@ -15,8 +15,11 @@ public sealed record OrderCreateRequest
     long CurrencyId,
     DeliveryType DeliveryType,
     long? DeliveryProviderId,
-    DeliveryCityDto DeliveryCityDto,
-    DeliveryPointDto DeliveryPointDto,
+    DeliveryPointDto? DeliveryPointDto,
+    DeliveryCityDto? RecipientCityDto,
+    DeliveryStreetDto? RecipientStreetDto,
+    string? RecipientBuildingNumber,
+    string? RecipientFlatNumber,
     DeliveryPointType? DeliveryPointType,
     PaymentMethod PaymentMethod
 );

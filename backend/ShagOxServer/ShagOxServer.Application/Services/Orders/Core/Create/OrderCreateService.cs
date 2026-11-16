@@ -104,9 +104,15 @@ public class OrderCreateService : IOrderCreateService
                     .Fail(itemsResult.Error);
             }
 
-            await CalculateOrderAmountsAsync(
+            var amountReult = await CalculateOrderAmountsAsync(
                 order,
                 cancellationToken);
+
+            if(!amountReult.IsSuccess)
+            {
+                return Result<CreateResponse>
+                    .Fail(amountReult.Error);
+            }    
 
 
             await _unitOfWork.CommitAsync();
@@ -226,13 +232,20 @@ public class OrderCreateService : IOrderCreateService
         return Result<bool>.Success(true);
     }
 
-    private async Task CalculateOrderAmountsAsync(
+    private async Task<Result<bool>> CalculateOrderAmountsAsync(
         Order order,
         CancellationToken cancellationToken)
     {
-        order.DeliveryPrice = await _deliveryCalculator
+        var price = await _deliveryCalculator
             .CalculateAsync(order, cancellationToken);
 
+        if (!price.IsSuccess)
+            Result<bool>.Fail(price.Error);
+
+        order.DeliveryPrice = price.Value;
+
         order.TotalPrice = order.Subtotal + order.DeliveryPrice;
+
+        return Result<bool>.Success(true);
     }
 }

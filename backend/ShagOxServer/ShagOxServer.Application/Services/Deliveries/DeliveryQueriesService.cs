@@ -33,8 +33,7 @@ public class DeliveryQueriesService
             pagination,
             cancellationToken);
 
-        return Result<IEnumerable<DeliveryCityDto>>
-            .Success(result);
+        return result;
     }
 
     public async Task<Result<IEnumerable<DeliveryStreetDto>>> GetStreetsAsync(
@@ -50,8 +49,7 @@ public class DeliveryQueriesService
             pagination,
             cancellationToken);
 
-        return Result<IEnumerable<DeliveryStreetDto>>
-            .Success(result);
+        return result;
     }
 
     public async Task<Result<IEnumerable<DeliveryPointDto>>> GetPointsAsync(
@@ -67,8 +65,7 @@ public class DeliveryQueriesService
             pagination,
             cancellationToken);
 
-        return Result<IEnumerable<DeliveryPointDto>>
-            .Success(result);
+        return result;
     }
 }
 

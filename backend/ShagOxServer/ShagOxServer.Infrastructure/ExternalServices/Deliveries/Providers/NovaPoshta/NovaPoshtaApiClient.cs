@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Deliveries.Providers;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Responses;
+using ShagOxServer.Application.Resources.Delivery.Providers.NovaPoshta;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text;
 using System.Text.Json;
 
@@ -23,7 +25,7 @@ public class NovaPoshtaApiClient
         _options = options.Value;
     }
 
-    public async Task<NovaPoshtaResponse<T>?> SendAsync<T>(
+    public async Task<Result<NovaPoshtaResponse<T>?>> SendAsync<T>(
         string modelName,
         string calledMethod,
         object methodProperties,
@@ -52,8 +54,11 @@ public class NovaPoshtaApiClient
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpRequestException(
-                $"Nova Poshta returned {(int)response.StatusCode}: {rawResponse}");
+            return Result<NovaPoshtaResponse<T>?>.Fail(
+                string.Format(
+                    NovaPoshtaErrorResources.HttpRequestFailed,
+                    (int)response.StatusCode, rawResponse
+                ));
         }
 
         var result = JsonSerializer.Deserialize<NovaPoshtaResponse<T>>(
@@ -62,11 +67,14 @@ public class NovaPoshtaApiClient
 
         if (result?.Success != true)
         {
-            throw new InvalidOperationException(
-                "Nova Poshta API error: " +
-                string.Join(", ", result?.Errors ?? []));
+            return Result<NovaPoshtaResponse<T>?>.Fail(
+                string.Format(
+                    NovaPoshtaErrorResources.ApiError,
+                     string.Join(", ", result?.Errors ?? [])
+                ));
         }
 
-        return result;
+        return Result<NovaPoshtaResponse<T>?>
+            .Success(result);
     }
 }

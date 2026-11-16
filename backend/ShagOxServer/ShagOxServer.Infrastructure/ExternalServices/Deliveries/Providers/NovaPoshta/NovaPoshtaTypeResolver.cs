@@ -3,7 +3,9 @@ using ShagOxServer.Application.Common.Options.Deliveries.Providers;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Query;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Responses;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers.NovaPoshta;
+using ShagOxServer.Application.Resources.Delivery.Providers.NovaPoshta;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text;
 using System.Text.Json;
 
@@ -24,7 +26,7 @@ public class NovaPoshtaTypeResolver
     }
 
 
-    public async Task<IReadOnlyList<NovaPoshtaWarehouseTypeDto>> GetWarehouseTypesAsync(
+    public async Task<Result<IReadOnlyList<NovaPoshtaWarehouseTypeDto>>> GetWarehouseTypesAsync(
         CancellationToken cancellationToken)
     {
         var body = new
@@ -46,8 +48,11 @@ public class NovaPoshtaTypeResolver
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpRequestException(
-                $"Nova Poshta returned {(int)response.StatusCode}: {rawResponse}");
+            return Result<IReadOnlyList<NovaPoshtaWarehouseTypeDto>>.Fail(
+                string.Format(
+                    NovaPoshtaErrorResources.HttpRequestFailed,
+                    (int)response.StatusCode, rawResponse
+                ));
         }
 
         var result = JsonSerializer.Deserialize<
@@ -60,12 +65,15 @@ public class NovaPoshtaTypeResolver
 
         if (result?.Success != true)
         {
-            throw new InvalidOperationException(
-                "Nova Poshta warehouse types search failed: " +
-                string.Join(", ", result?.Errors ?? []));
+            return Result<IReadOnlyList<NovaPoshtaWarehouseTypeDto>>.Fail(
+                string.Format(
+                    NovaPoshtaErrorResources.HttpRequestFailed,
+                    string.Join(", ", result?.Errors ?? [])
+                ));
         }
 
-        return result.Data ?? [];
+        return Result<IReadOnlyList<NovaPoshtaWarehouseTypeDto>>
+            .Success(result.Data ?? []);
     }
 
     public string GetWarehouseTypeRef(

@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Services.Deliveries.Calculators;
 using ShagOxServer.Application.Services.Deliveries.Providers;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
 using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Deliveries.Calculators;
 public class DeliveryPriceCalculator
@@ -22,19 +23,19 @@ public class DeliveryPriceCalculator
     }
 
 
-    public async Task<decimal> CalculateAsync(
+    public async Task<Result<decimal>> CalculateAsync(
         Order order,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(order);
 
         if (order.DeliveryType == DeliveryType.Pickup)
-            return 0m;
+            return Result<decimal>.Success(0m);
 
         var providerCode = order.DeliveryProvider?.Code;
 
         if (string.IsNullOrWhiteSpace(providerCode))
-            return 0m;
+            return Result<decimal>.Success(0m);
 
         var provider = _resolver.Resolve(providerCode);
 
@@ -50,7 +51,12 @@ public class DeliveryPriceCalculator
             request,
             cancellationToken);
 
-        return deliveryPrice / declaredValue.Coefficient;
+        if (!deliveryPrice.IsSuccess)
+            return Result<decimal>.Fail(deliveryPrice.Error);
+
+        var price = deliveryPrice.Value / declaredValue.Coefficient;
+
+        return Result<decimal>.Success(price);
     }
 
     private (decimal? ConvertedAmount, decimal Coefficient) ConvertDeclaredValue(
@@ -65,6 +71,7 @@ public class DeliveryPriceCalculator
             order.Currency.Code,
             targetCurrency);
 
+        //TODO: доделать ресурс
         if (!result.ConvertedAmount.HasValue) 
         {
             throw new InvalidOperationException(
@@ -78,7 +85,7 @@ public class DeliveryPriceCalculator
         Order order,
         decimal declaredValue)
     {
-        if(string.IsNullOrEmpty(order.DeliveryCityExternalId))
+        if(string.IsNullOrEmpty(order.RecipientCityExternalId))
         {
             throw new InvalidOperationException(
                 "Failed to create delivery request.");
@@ -87,7 +94,7 @@ public class DeliveryPriceCalculator
         return new DeliveryCalculationRequest(
             order.DeliveryType,
             order.DeliveryPointType,
-            order.DeliveryCityExternalId,
+            order.RecipientCityExternalId,
             order.DeliveryPointExternalId,
             order.TotalWeight,
             declaredValue

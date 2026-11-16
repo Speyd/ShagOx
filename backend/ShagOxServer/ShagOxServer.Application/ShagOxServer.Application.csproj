@@ -61,6 +61,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RegistrationAuthResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Delivery\Providers\NovaPoshta\NovaPoshtaErrorResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NovaPoshtaErrorResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Delivery\Providers\NovaPoshta\NovaPoshtaErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NovaPoshtaErrors.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\EntityErrors\EntityErrorResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -141,6 +151,14 @@
 		<EmbeddedResource Update="Resources\Auth\Registrations\RegistrationAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>RegistrationAuthResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Delivery\Providers\NovaPoshta\NovaPoshtaErrorResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>NovaPoshtaErrorResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Delivery\Providers\NovaPoshta\NovaPoshtaErrors.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>NovaPoshtaErrors.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\EntityErrors\EntityErrorResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>

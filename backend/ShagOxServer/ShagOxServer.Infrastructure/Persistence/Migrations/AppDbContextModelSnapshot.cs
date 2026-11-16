@@ -1326,10 +1326,6 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("BuildingNumber")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
                     b.Property<DateTime?>("CancelledAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1351,10 +1347,6 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<DateTime?>("DeliveredAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeliveryCityExternalId")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("DeliveryPointAddress")
                         .HasMaxLength(250)
@@ -1413,10 +1405,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(35)
                         .HasColumnType("character varying(35)");
 
-                    b.Property<string>("FlatNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(35)
@@ -1458,12 +1446,24 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
-                    b.Property<DateTime?>("ShippedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("RecipientBuildingNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                    b.Property<string>("StreetExternalId")
+                    b.Property<string>("RecipientCityExternalId")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<string>("RecipientFlatNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("RecipientStreetExternalId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("ShippedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Subtotal")
                         .HasPrecision(18, 2)

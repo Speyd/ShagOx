@@ -7,7 +7,7 @@ public sealed record DeliveryCalculationRequest
     DeliveryType DeliveryType,
     DeliveryPointType? DeliveryPointType,
     string RecipientCityExternalId,
-    string? RecipientWarehouseExternalId,
+    string? DeliveryPointExternalId,
     decimal Weight,
     decimal DeclaredValue,
     int SeatsAmount = 1

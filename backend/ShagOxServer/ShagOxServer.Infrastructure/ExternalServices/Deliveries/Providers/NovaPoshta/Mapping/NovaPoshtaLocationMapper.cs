@@ -14,6 +14,14 @@ public static class NovaPoshtaLocationMapper
             city.AreaDescription);
     }
 
+    public static DeliveryStreetDto MapStreet(
+        NovaPoshtaStreetDto city)
+    {
+        return new DeliveryStreetDto(
+            city.Ref,
+            city.Description);
+    }
+
     public static DeliveryPointDto MapPoint(
         NovaPoshtaWarehouseDto point)
     {

@@ -13,8 +13,9 @@ public static class OrderCreater
         OrderCreateRequest request)
     {
         var now = DateTime.UtcNow;
-        var city = request.DeliveryCityDto;
         var point = request.DeliveryPointDto;
+        var city = request.RecipientCityDto;
+        var street = request.RecipientStreetDto;
 
 
         return new Order
@@ -36,15 +37,19 @@ public static class OrderCreater
             DeliveryType = request.DeliveryType,
             DeliveryProviderId = request.DeliveryProviderId,
 
-            DeliveryCityExternalId = city.ExternalId,
+            RecipientCityExternalId = city?.ExternalId,
 
-            DeliveryPointExternalId = point.ExternalId,
-            DeliveryPointNumber = point.Number,
-            DeliveryPointName = point.Name,
-            DeliveryPointAddress = point.Address,
-            DeliveryPointType = request.DeliveryPointType,
+            DeliveryPointExternalId = point?.ExternalId,
+            DeliveryPointNumber = point?.Number,
+            DeliveryPointName = point?.Name,
+            DeliveryPointAddress = point?.Address,
+            DeliveryPointType = request?.DeliveryPointType,
 
-            PaymentMethod = request.PaymentMethod,
+            RecipientStreetExternalId = street?.ExternalId,
+            RecipientBuildingNumber = request?.RecipientBuildingNumber,
+            RecipientFlatNumber = request?.RecipientFlatNumber,
+
+            PaymentMethod = request!.PaymentMethod,
 
             PaymentStatus = PaymentStatus.Pending,
             OrderStatus = OrderStatus.Pending,

@@ -63,7 +63,7 @@ public class OrderConfiguration
 
 
 
-        builder.Property(x => x.DeliveryCityExternalId)
+        builder.Property(x => x.RecipientCityExternalId)
             .HasMaxLength(100)
             .IsRequired(false);
 
@@ -90,15 +90,15 @@ public class OrderConfiguration
 
 
 
-        builder.Property(x => x.StreetExternalId)
+        builder.Property(x => x.RecipientStreetExternalId)
             .HasMaxLength(100)
             .IsRequired(false);
 
-        builder.Property(x => x.BuildingNumber)
+        builder.Property(x => x.RecipientBuildingNumber)
             .HasMaxLength(50)
             .IsRequired(false);
 
-        builder.Property(x => x.FlatNumber)
+        builder.Property(x => x.RecipientFlatNumber)
             .HasMaxLength(20)
             .IsRequired(false);
 

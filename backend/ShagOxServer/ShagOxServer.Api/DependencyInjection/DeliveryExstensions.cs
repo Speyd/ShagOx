@@ -23,16 +23,18 @@ public static class DeliveryExstensions
         if (deliveryOptions.Providers.NovaPoshta.Enabled)
         {
             services.AddHttpClient<NovaPoshtaApiClient>(
-            (sp, client) =>
-            {
-                var options = sp
-                    .GetRequiredService<IOptions<DeliveryOptions>>()
-                    .Value
-                    .Providers
-                    .NovaPoshta;
+                (sp, client) =>
+                {
+                    var options = sp
+                        .GetRequiredService<IOptions<DeliveryOptions>>()
+                        .Value
+                        .Providers
+                        .NovaPoshta;
 
-                client.BaseAddress = new Uri(options.BaseUrl);
-            });
+                    client.BaseAddress = new Uri(options.BaseUrl);
+                });
+
+            services.AddScoped<NovaPoshtaDeliveryClient>();
 
             services.AddScoped<IDeliveryProviderClient>(sp =>
                 sp.GetRequiredService<NovaPoshtaDeliveryClient>());

@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Query;
+using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Request;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Request;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Queries;
 using ShagOxServer.Application.Services.Deliveries.Providers;
@@ -21,16 +22,35 @@ public class DeliveryQueriesService
 
     public async Task<Result<IEnumerable<DeliveryCityDto>>> GetCitiesAsync(
         string providerCode, 
-        string citySearch, 
+        string citySearch,
+        PaginationParams pagination,
         CancellationToken cancellationToken)
     {
         var delivaery = _resolver.Resolve(providerCode);
 
         var result = await delivaery.GetCitiesAsync(
             citySearch,
+            pagination,
             cancellationToken);
 
         return Result<IEnumerable<DeliveryCityDto>>
+            .Success(result);
+    }
+
+    public async Task<Result<IEnumerable<DeliveryStreetDto>>> GetStreetsAsync(
+        string providerCode,
+        DeliveryStreetSearchRequest request,
+        PaginationParams pagination,
+        CancellationToken cancellationToken)
+    {
+        var delivaery = _resolver.Resolve(providerCode);
+
+        var result = await delivaery.GetStreetsAsync(
+            request,
+            pagination,
+            cancellationToken);
+
+        return Result<IEnumerable<DeliveryStreetDto>>
             .Success(result);
     }
 

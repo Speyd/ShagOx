@@ -16,10 +16,12 @@ public interface IDeliveryProviderClient
 
     Task<IEnumerable<DeliveryCityDto>> GetCitiesAsync(
         string search,
+        PaginationParams pagination,
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<DeliveryStreetDto>> GetStreetsAsync(
         DeliveryStreetSearchRequest request,
+        PaginationParams pagination,
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<DeliveryPointDto>> GetPointsAsync(

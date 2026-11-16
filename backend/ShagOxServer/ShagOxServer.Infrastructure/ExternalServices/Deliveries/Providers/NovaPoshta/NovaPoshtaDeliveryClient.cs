@@ -64,9 +64,14 @@ public class NovaPoshtaDeliveryClient
 
     public async Task<IEnumerable<DeliveryCityDto>> GetCitiesAsync(
         string search,
+        PaginationParams pagination,
         CancellationToken cancellationToken = default)
     {
-        var methodProperties = new Dictionary<string, object>();
+        var methodProperties = new Dictionary<string, object>
+        {
+            ["Page"] = pagination.Page.ToString(),
+            ["Limit"] = pagination.PageSize.ToString(),
+        };
 
         if (!string.IsNullOrWhiteSpace(search))
             methodProperties["FindByString"] = search;
@@ -84,12 +89,15 @@ public class NovaPoshtaDeliveryClient
 
     public async Task<IEnumerable<DeliveryStreetDto>> GetStreetsAsync(
         DeliveryStreetSearchRequest request,
+        PaginationParams pagination,
         CancellationToken cancellationToken = default)
     {
         var methodProperties = new Dictionary<string, object>
         {
             ["CityRef"] = request.CityExternalId,
-            ["FindByString"] = request.Search
+            ["FindByString"] = request.Search,
+            ["Page"] = pagination.Page.ToString(),
+            ["Limit"] = pagination.PageSize.ToString(),
         };
 
         var result = await _apiClient.SendAsync<NovaPoshtaStreetDto>(
@@ -100,7 +108,7 @@ public class NovaPoshtaDeliveryClient
 
         return (result?.Data ?? [])
             .Select(x => new DeliveryStreetDto(
-                x.StreetExternalId,
+                x.Ref,
                 x.Description))
             .ToList();
     }

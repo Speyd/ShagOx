@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Request;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Request;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Queries;
@@ -31,11 +32,29 @@ public class DeliveriesQueriesController
     public async Task<IActionResult> GetCities(
         [FromQuery] string providerCode,
         [FromQuery] string citySearch,
+        [FromQuery] PaginationParams pagination,
         CancellationToken cancellationToken)
     {
         var result = await _deliveryQueriesService.GetCitiesAsync(
             providerCode,
             citySearch,
+            pagination,
+            cancellationToken);
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet("streets")]
+    public async Task<IActionResult> GetStreets(
+        string providerCode,
+        [FromQuery] DeliveryStreetSearchRequest request,
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
+    {
+        var result = await _deliveryQueriesService.GetStreetsAsync(
+            providerCode,
+            request,
+            pagination,
             cancellationToken);
 
         return result.ToActionResult();

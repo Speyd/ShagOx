@@ -26,25 +26,26 @@ export default function DeliveryTerms() {
             <Text fz={24} fw={600} className={styles.tableTitle}>
               Орієнтовні терміни
             </Text>
-
-            <Table className={styles.termsTable} unstyled>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>РЕГІОН</Table.Th>
-                  <Table.Th>СЛУЖБА ДОСТАВКИ</Table.Th>
-                  <Table.Th>ТЕРМІН</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {termsBlock.map((item, index) => (
-                  <Table.Tr key={index}>
-                    <Table.Td>{item.region}</Table.Td>
-                    <Table.Td>{item.deliveryService}</Table.Td>
-                    <Table.Td>{item.terms}</Table.Td>
+            <div className={styles.tableWrapper}>
+              <Table className={styles.termsTable} unstyled>
+                <Table.Thead>
+                  <Table.Tr>
+                    <Table.Th>РЕГІОН</Table.Th>
+                    <Table.Th>СЛУЖБА ДОСТАВКИ</Table.Th>
+                    <Table.Th>ТЕРМІН</Table.Th>
                   </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
+                </Table.Thead>
+                <Table.Tbody>
+                  {termsBlock.map((item, index) => (
+                    <Table.Tr key={index}>
+                      <Table.Td>{item.region}</Table.Td>
+                      <Table.Td>{item.deliveryService}</Table.Td>
+                      <Table.Td>{item.terms}</Table.Td>
+                    </Table.Tr>
+                  ))}
+                </Table.Tbody>
+              </Table>
+            </div>
           </div>
 
           <div className={styles.deliveryMethods}>
@@ -85,15 +86,11 @@ export default function DeliveryTerms() {
             </Text>
             <div className="divider" />
             <div className={styles.freeShippingInfo}>
-              <Text
-                fz={12}
-                fw={400}
-                className={styles.deliveryTermsDescription}
-              >
+              <Text className={styles.deliveryTermsDescription}>
                 СУМА ЗАМОВЛЕННЯ ВІД:
               </Text>
               <Text
-                fz={12}
+                fz={16}
                 fw={400}
                 className={styles.deliveryTermsDescription}
               >

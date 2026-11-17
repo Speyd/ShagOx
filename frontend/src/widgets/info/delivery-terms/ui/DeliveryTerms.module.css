@@ -1,14 +1,24 @@
 .deliveryTermsContent {
   display: flex;
   flex-direction: column;
-  gap: 42px;
-  padding: 40px 0 120px 0;
+  gap: clamp(24px, 4vw, 42px);
+  padding: clamp(24px, 4vw, 40px) 0 clamp(40px, 8vw, 120px) 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .deliveryTermsHeader {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: clamp(8px, 2vw, 16px);
+}
+
+.deliveryTermsHeader :global(.mantine-Text-root):first-child {
+  font-size: clamp(24px, 4vw, 40px) !important;
+}
+
+.deliveryTermsHeader :global(.mantine-Text-root):last-child {
+  font-size: clamp(13px, 1.5vw, 14px) !important;
 }
 
 .deliveryTermsDescription {
@@ -17,39 +27,54 @@
 
 .deliveryTermsContainer {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: clamp(16px, 2vw, 20px);
 }
 
 .leftColumn,
 .rightColumn {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: clamp(16px, 2vw, 20px);
+  min-width: 0;
 }
 
 .tableCard {
   background-color: #ffffff;
   border: 1px solid var(--color-border, #e9ecef);
   border-radius: 16px;
-  padding: 32px;
+  padding: clamp(16px, 3vw, 32px);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: clamp(16px, 2.5vw, 24px);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .tableTitle {
   color: #1a2536;
 }
 
+.tableTitle:global(.mantine-Text-root) {
+  font-size: clamp(18px, 2.5vw, 24px) !important;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .termsTable {
   width: 100%;
   border-collapse: collapse;
+  min-width: 500px;
 }
 
 .termsTable th {
   text-align: left;
-  font-size: 13px;
+  font-size: clamp(11px, 1.2vw, 13px);
   font-weight: 600;
   color: #2b3a4a;
   letter-spacing: 0.04em;
@@ -58,8 +83,8 @@
 }
 
 .termsTable td {
-  padding: 20px 0;
-  font-size: 15px;
+  padding: clamp(12px, 2vw, 20px) 0;
+  font-size: clamp(13px, 1.5vw, 15px);
   color: #1e293b;
   border-bottom: 1px solid #e2e8f0;
 }
@@ -83,17 +108,56 @@
   width: 30%;
 }
 
-.freeShipping {
+.deliveryMethods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 2vw, 20px);
+}
+
+.deliveryMethodCard {
   display: flex;
   flex-direction: column;
-
   justify-content: center;
-  gap: 24px;
-
-  padding: 32px;
+  gap: clamp(12px, 2vw, 16px);
+  padding: clamp(16px, 3vw, 32px);
   border-radius: 8px;
   border: 1px solid var(--color-border);
   background-color: white;
+}
+
+.deliveryMethodHeader {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.5vw, 16px);
+  width: 100%;
+}
+
+.deliveryMethodHeader :global(.mantine-Text-root) {
+  font-size: clamp(16px, 2vw, 20px) !important;
+}
+
+.spanTwo {
+  grid-column: span 2;
+}
+
+.freeShipping,
+.questionsInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(16px, 2.5vw, 24px);
+  padding: clamp(16px, 3vw, 32px);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: white;
+}
+
+.questionsInfo {
+  gap: clamp(12px, 2vw, 16px);
+}
+
+.questionsInfo :global(.mantine-Text-root):first-child {
+  font-size: clamp(16px, 2vw, 20px) !important;
 }
 
 .freeShippingInfo {
@@ -103,19 +167,6 @@
   align-items: center;
 }
 
-.questionsInfo {
-  display: flex;
-  flex-direction: column;
-
-  justify-content: center;
-  gap: 16px;
-
-  padding: 32px;
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
-  background-color: white;
-}
-
 .phoneInfo {
   display: flex;
   flex-direction: row;
@@ -123,38 +174,22 @@
   gap: 8px;
 }
 
-.deliveryMethodCard {
-  display: flex;
-  flex-direction: column;
-
-  justify-content: center;
-  gap: 16px;
-
-  padding: 32px;
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
-  background-color: white;
-}
-
-.spanTwo {
-  grid-column: span 2;
-}
-
-.deliveryMethodHeader {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-}
-
-.deliveryMethods {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+.phoneInfo :global(.mantine-Text-root) {
+  font-size: clamp(12px, 1.4vw, 14px) !important;
 }
 
 @media (max-width: 992px) {
   .deliveryTermsContainer {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .deliveryMethods {
+    grid-template-columns: 1fr;
+  }
+
+  .spanTwo {
+    grid-column: span 1;
   }
 }

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
+using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Update;
@@ -19,6 +19,11 @@ public static class CategoryUpdater
         if (request.ProductTypeId.HasValue)
         {
             category.ProductTypeId = request.ProductTypeId.Value;
+            countUpdated++;
+        }
+
+        if (request.Picture is not null)
+        {
             countUpdated++;
         }
 

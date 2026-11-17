@@ -1,6 +1,8 @@
+using ShagOxServer.Application.DTOs.Deliveries;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Request;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Calculators;
+using ShagOxServer.Application.Resources.Delivery.Core;
 using ShagOxServer.Application.Services.Deliveries.Providers;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
 using ShagOxServer.Domain.Entities.Orders;
@@ -43,61 +45,73 @@ public class DeliveryPriceCalculator
             order,
             provider.CurrencyCode);
 
+        if (!declaredValue.IsSuccess)
+            return Result<decimal>.Fail(declaredValue.Error);
+
+
         var request = CreateCalculationRequest(
             order,
-            declaredValue.ConvertedAmount!.Value);
+            declaredValue.Value!.ConvertedAmount!.Value);
+
+        if (!request.IsSuccess || request.Value is null)
+            return Result<decimal>.Fail(request.Error);
 
         var deliveryPrice = await provider.CalculatePriceAsync(
-            request,
+            request.Value,
             cancellationToken);
 
         if (!deliveryPrice.IsSuccess)
             return Result<decimal>.Fail(deliveryPrice.Error);
 
-        var price = deliveryPrice.Value / declaredValue.Coefficient;
+        var price = deliveryPrice.Value / declaredValue.Value.Coefficient;
 
         return Result<decimal>.Success(price);
     }
 
-    private (decimal? ConvertedAmount, decimal Coefficient) ConvertDeclaredValue(
+    private Result<AmountConversionResult> ConvertDeclaredValue(
         Order order,
         string targetCurrency)
     {
         if (order.Currency.Code == targetCurrency)
-            return (order.Subtotal, 1);
+        {
+            return Result<AmountConversionResult>
+                .Success(new AmountConversionResult(
+                    order.Subtotal, 
+                    1));
+        }
 
         var result = _converter.Convert(
             order.Subtotal,
             order.Currency.Code,
             targetCurrency);
 
-        //TODO: доделать ресурс
         if (!result.ConvertedAmount.HasValue) 
         {
-            throw new InvalidOperationException(
-                "Failed to convert order subtotal.");
+            return Result<AmountConversionResult>.Fail(
+                DeliveryErrorResources.FailedToConvertOrderSubtotal);
         }
 
-        return result;
+        return Result<AmountConversionResult>
+            .Success(result);
     }
 
-    private static DeliveryCalculationRequest CreateCalculationRequest(
+    private static Result<DeliveryCalculationRequest> CreateCalculationRequest(
         Order order,
         decimal declaredValue)
     {
         if(string.IsNullOrEmpty(order.RecipientCityExternalId))
         {
-            throw new InvalidOperationException(
-                "Failed to create delivery request.");
+            return Result<DeliveryCalculationRequest>.Fail(
+                DeliveryErrorResources.FailedToCreateDeliveryRequest);
         }
 
-        return new DeliveryCalculationRequest(
-            order.DeliveryType,
-            order.DeliveryPointType,
-            order.RecipientCityExternalId,
-            order.DeliveryPointExternalId,
-            order.TotalWeight,
-            declaredValue
-        );
+        return Result<DeliveryCalculationRequest>.Success(
+            new DeliveryCalculationRequest(
+                order.DeliveryType,
+                order.DeliveryPointType,
+                order.RecipientCityExternalId,
+                order.DeliveryPointExternalId,
+                order.TotalWeight,
+                declaredValue));
     }
 }

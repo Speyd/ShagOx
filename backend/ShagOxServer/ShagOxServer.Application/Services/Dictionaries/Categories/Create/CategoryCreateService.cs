@@ -1,9 +1,15 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Create;
+using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
@@ -21,6 +27,9 @@ public class CategoryCreateService
     private readonly CategoryValidator _categoryValidator;
     private readonly ProductTypeValidator _productTypeValidator;
 
+    private readonly ICategoryImageCreateService _imageCreateService;
+
+
     private readonly CategoryInvalidationService _categoryInvalidation;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -32,6 +41,7 @@ public class CategoryCreateService
         CategoryValidator categoryValidator,
         ProductTypeValidator productTypeValidator,
         CategoryInvalidationService categoryInvalidation,
+        ICategoryImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
         ILogger<CategoryCreateService> logger)
     {
@@ -39,6 +49,7 @@ public class CategoryCreateService
         _categoryValidator = categoryValidator;
         _productTypeValidator = productTypeValidator;
         _categoryInvalidation = categoryInvalidation;
+        _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -69,7 +80,22 @@ public class CategoryCreateService
 
         try
         {
+            
             _categoryRepository.Add(category);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            var imageResult = await _imageCreateService.CreateInternalAsync(
+                new PictureCreateRequest(category.Id, request.Picture),
+                cancellationToken);
+
+            if (!imageResult.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return Result<CreateResponse>
+                    .Fail(imageResult.Error);
+            }
 
             await _unitOfWork.CommitAsync();
         }

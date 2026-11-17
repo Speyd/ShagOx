@@ -3,13 +3,13 @@ using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
@@ -22,6 +22,8 @@ public class CategoryDeleteService
 
     private readonly CategoryInvalidationService _categoryInvalid;
 
+    private readonly ICategoryImageDeleteService _imageDeleteService;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CategoryDeleteService> _logger;
 
@@ -30,6 +32,7 @@ public class CategoryDeleteService
         IRepository<Category> categoryRepository,
         CategoryValidator categoryValidator,
         CategoryInvalidationService categoryInvalid,
+        ICategoryImageDeleteService imageDeleteService,
         IUnitOfWork unitOfWork,
         ILogger<CategoryDeleteService> logger
     )
@@ -38,6 +41,7 @@ public class CategoryDeleteService
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
         _categoryInvalid = categoryInvalid;
+        _imageDeleteService = imageDeleteService;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -58,6 +62,18 @@ public class CategoryDeleteService
         try
         {
             _categoryRepository.Delete(category.Value!);
+
+
+            var imageResult = await _imageDeleteService
+                .DeleteInternalAsync(category.Value!.CategoryImage);
+
+            if (!imageResult.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return Result<DeleteResponse>
+                    .Fail(imageResult.Error);
+            }
 
             await _unitOfWork.CommitAsync();
         }

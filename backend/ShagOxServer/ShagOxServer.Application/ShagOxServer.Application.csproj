@@ -61,6 +61,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RegistrationAuthResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Delivery\Core\DeliveryErrorResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DeliveryErrorResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Delivery\Providers\NovaPoshta\NovaPoshtaErrorResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -151,6 +156,10 @@
 		<EmbeddedResource Update="Resources\Auth\Registrations\RegistrationAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>RegistrationAuthResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Delivery\Core\DeliveryErrorResources.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>DeliveryErrorResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Delivery\Providers\NovaPoshta\NovaPoshtaErrorResources.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>

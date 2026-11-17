@@ -1,6 +1,9 @@
-﻿namespace ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
+using Microsoft.AspNetCore.Http;
+
+namespace ShagOxServer.Application.DTOs.Dictionaries.Categories.Create;
 public sealed record CategoryCreateRequest
 (
     string Code,
-    long ProductTypeId
+    long ProductTypeId,
+    IFormFile Picture
 );

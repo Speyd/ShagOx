@@ -83,13 +83,13 @@ export function useBasketAction({
         return;
       }
 
-      const basketId = currentBasket?.id ?? (await createBasket()).id;
+      const parentId = currentBasket?.id ?? (await createBasket()).id;
       const itemQuantity =
         availableStock === null ? quantity : Math.min(quantity, availableStock);
 
       mutationStarted = true;
       await addToBasket.mutateAsync({
-        basketId,
+        parentId,
         advertisementId,
         advertisementVariantId: variantId,
         quantity: itemQuantity,

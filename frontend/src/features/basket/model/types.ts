@@ -1,11 +1,14 @@
-import type { ShortAdvertisement } from "@/shared/lib/types/advertisements";
+import type {
+  ShortAdvertisement,
+  ShortAdvertisementVariant,
+} from "@/shared/lib/types/advertisements";
 import {
   toDisplayPrice,
   type DisplayPrice,
 } from "@/entities/advertisement/lib/price";
 
 export type BasketItemCreateRequest = {
-  basketId: number;
+  parentId: number;
   advertisementId: number;
   advertisementVariantId: number | null;
   quantity: number;
@@ -15,12 +18,16 @@ export type BasketItemUpdateRequest = {
   quantity?: number;
 };
 
+export type LineItemAdvertisement = Omit<ShortAdvertisement, "variants"> & {
+  variant: ShortAdvertisementVariant | null;
+};
+
 export type BasketItem = {
   id: number;
-  basketId: number;
+  parentId: number;
   advertisementId: number;
   advertisementVariantId: number | null;
-  advertisement: ShortAdvertisement;
+  advertisement: LineItemAdvertisement;
   quantity: number;
 };
 
@@ -54,11 +61,8 @@ export function isSameBasketProduct(item: BasketItem, key: BasketProductKey) {
 export function getBasketItemVariant(item: BasketItem) {
   if (item.advertisementVariantId == null) return null;
 
-  return (
-    item.advertisement?.variants?.find(
-      (variant) => variant.id === item.advertisementVariantId,
-    ) ?? null
-  );
+  const variant = item.advertisement?.variant;
+  return variant?.id === item.advertisementVariantId ? variant : null;
 }
 
 export function getBasketItemPrice(item: BasketItem): DisplayPrice {

@@ -77,7 +77,7 @@ export function CategoriesGrid({
           label="У цьому розділі немає категорій"
           description="Зачекайте, можливо скоро з'являться, або додайте першим!"
           buttonLabel="Додати оголошення"
-          onButtonClick={() => navigate("/advertisements/create-advertisement")}
+          onButtonClick={() => navigate("/create-advertisement")}
         />
       )}
     </section>

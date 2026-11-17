@@ -32,7 +32,7 @@ const categories = [
     title: "Аудіо",
     icon: headphones,
     keys: ["аудіо", "audio", "headphone"],
-    fallbackCode: "audio",
+    fallbackCode: "headphones",
   },
   {
     title: "Камери",
@@ -62,7 +62,7 @@ const categories = [
     title: "Аксесуари",
     icon: smartwatch,
     keys: ["аксесуар", "accessor"],
-    fallbackCode: "accessories",
+    fallbackCode: "phone-cases",
   },
 ];
 
@@ -102,8 +102,7 @@ export default function CategoriesBlock() {
               );
             });
 
-            const categoryCode =
-              matchedCategory?.code || category.fallbackCode;
+            const categoryCode = matchedCategory?.code || category.fallbackCode;
 
             const categoryLink = categoryCode
               ? `/catalog/category/${categoryCode}`

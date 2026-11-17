@@ -3,12 +3,13 @@ import clsx from "clsx";
 import { Text } from "@mantine/core";
 import { useGetProductTypes } from "@/entities/advertisement/model/hooks/useGetProductTypes";
 import styles from "./CatalogSidebar.module.css";
+import { CatalogSidebarSkeleton } from "./CatalogSidebarSketelon";
 
 export function CatalogSidebar() {
   const { data: productTypes, isLoading: isLoadingTypes } =
     useGetProductTypes();
 
-  if (isLoadingTypes || !productTypes) return null;
+  if (isLoadingTypes || !productTypes) return <CatalogSidebarSkeleton />;
 
   return (
     <aside className={styles.catalogSidebar}>

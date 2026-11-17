@@ -46,6 +46,8 @@ export function AdvertisementsGrid({
     ...filters,
   });
 
+  console.log("AdvertisementsGrid data:", data);
+  
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });

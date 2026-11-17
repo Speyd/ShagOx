@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Text, Button } from "@mantine/core";
 import { useGetCatalogAdvertisements } from "@/entities/advertisement/model/hooks/useGetCatalogAdvertisements";
 import AppPagination from "@/shared/ui/navigation/pagination";
@@ -11,13 +11,10 @@ import {
 } from "@/entities/advertisement";
 
 export function FeaturedAdvertisements() {
-  const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("search")?.trim() || "";
-
-  useEffect(() => {
-    setPage(1);
-  }, [searchQuery]);
+  const [pageState, setPageState] = useState({ query: searchQuery, page: 1 });
+  const page = pageState.query === searchQuery ? pageState.page : 1;
 
   const { data: advertisementsData, isLoading } = useGetCatalogAdvertisements({
     search: searchQuery || undefined,
@@ -25,7 +22,7 @@ export function FeaturedAdvertisements() {
   });
 
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+    setPageState({ query: searchQuery, page: newPage });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 

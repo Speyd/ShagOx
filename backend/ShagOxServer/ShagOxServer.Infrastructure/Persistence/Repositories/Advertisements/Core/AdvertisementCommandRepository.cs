@@ -1,0 +1,34 @@
+using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core;
+
+public class AdvertisementCommandRepository
+    : IAdvertisementCommandRepository
+{
+    private readonly AppDbContext _db;
+
+    public AdvertisementCommandRepository(
+        AppDbContext db)
+    {
+        _db = db;
+    }
+
+    public async Task<bool> DecreaseStockAsync(
+        long variantId,
+        int quantity,
+        CancellationToken cancellationToken = default)
+    {
+        var affected = await _db.Advertisements
+            .Where(x =>
+                x.Id == variantId &&
+                x.Stock >= quantity)
+            .ExecuteUpdateAsync(
+                setters => setters.SetProperty(
+                    x => x.Stock,
+                    x => x.Stock - quantity),
+                cancellationToken);
+
+        return affected > 0;
+    }
+}

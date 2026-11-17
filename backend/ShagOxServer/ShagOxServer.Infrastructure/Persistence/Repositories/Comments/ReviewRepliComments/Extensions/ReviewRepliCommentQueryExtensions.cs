@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Comments.ReviewRepliComments.Extensions;
 public static class ReviewRepliCommentQueryExtensions

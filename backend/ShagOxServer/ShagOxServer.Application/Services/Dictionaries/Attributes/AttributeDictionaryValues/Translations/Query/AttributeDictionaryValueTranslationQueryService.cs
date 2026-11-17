@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -23,7 +23,7 @@ public class AttributeDictionaryValueTranslationQueryService
     public AttributeDictionaryValueTranslationQueryService(
         IAttributeDictionaryValueTranslationQueryRepository attributeRepository,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> settings
     )
         : base(attributeRepository, cacheService, settings)
     {

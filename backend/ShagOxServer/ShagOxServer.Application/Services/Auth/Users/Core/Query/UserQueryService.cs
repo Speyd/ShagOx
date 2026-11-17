@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.DTOs.Location.Cities.Query;
@@ -47,7 +47,7 @@ public class UserQueryService
         ICityQueryService cityService,
         IUserContext userContext,
         IDataCacheService cache,
-        IOptions<CacheSettings> settings,
+        IOptions<CacheOptions> settings,
         ILanguageProvider language
     )
         : base(userQueryRepository, language, cache, settings)

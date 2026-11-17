@@ -1,18 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Systems.Middleware;
+using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
 
 namespace ShagOxServer.Api.Middleware;
 public class UpdateLastSeenMiddleware
 {
-    private readonly UpdateLastSeenSettings _settings;
+    private readonly UpdateLastSeenOptions _settings;
     private readonly RequestDelegate _next;
 
   
     public UpdateLastSeenMiddleware(
-        IOptions<UpdateLastSeenSettings> settings,
+        IOptions<UpdateLastSeenOptions> settings,
         RequestDelegate next)
     {
         _next = next;

@@ -22,7 +22,7 @@ public interface IQueryTranslationRepository<TEntity, TTranslation>
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
-    Task<TTranslation?> GetByTranslatableIdAsync(
+    Task<TTranslation?> GetByIdentificatorAsync(
         long translatableId,
         string language,
         CancellationToken cancellationToken = default,

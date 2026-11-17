@@ -1,5 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 

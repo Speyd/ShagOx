@@ -207,14 +207,14 @@
   <data name="AvatarUpdateFailed" xml:space="preserve">
     <value>Der Avatar konnte nicht aktualisiert werden.</value>
   </data>
-  <data name="BasketAttributeCreateFailed" xml:space="preserve">
-    <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
+  <data name="LineItemAttributeCreateFailed" xml:space="preserve">
+    <value>Positionsattribut konnte nicht erstellt werden.</value>
   </data>
-  <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
+  <data name="LineItemAttributeDeleteFailed" xml:space="preserve">
+    <value>Positionsattribut konnte nicht gelöscht werden.</value>
   </data>
-  <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Das Warenkorbattribut konnte nicht erstellt werden.</value>
+  <data name="LineItemAttributeUpdateFailed" xml:space="preserve">
+    <value>Positionsattribut konnte nicht aktualisiert werden.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Der Warenkorb konnte nicht erstellt werden.</value>
@@ -422,5 +422,41 @@
   </data>
   <data name="StatusChangeFailed" xml:space="preserve">
     <value>Beim Ändern des Status ist ein unerwarteter Fehler aufgetreten.</value>
+  </data>
+  <data name="DeliveryProviderCreateFailed" xml:space="preserve">
+    <value>Versanddienstleister konnte nicht erstellt werden.</value>
+  </data>
+  <data name="DeliveryProviderDeleteFailed" xml:space="preserve">
+    <value>Versanddienstleister konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="DeliveryProviderUpdateFailed" xml:space="preserve">
+    <value>Versanddienstleister konnte nicht aktualisiert werden.</value>
+  </data>
+  <data name="DeliveryProviderTranslationCreateFailed" xml:space="preserve">
+    <value>Die Übersetzung des Versanddienstleisters konnte nicht erstellt werden.</value>
+  </data>
+  <data name="DeliveryProviderTranslationDeleteFailed" xml:space="preserve">
+    <value>Die Übersetzung des Versanddienstleisters konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="DeliveryProviderTranslationUpdateFailed" xml:space="preserve">
+    <value>Die Übersetzung des Versanddienstleisters konnte nicht aktualisiert werden.</value>
+  </data>
+  <data name="OrderItemCreateFailed" xml:space="preserve">
+    <value>Bestellposition konnte nicht erstellt werden.</value>
+  </data>
+  <data name="OrderItemDeleteFailed" xml:space="preserve">
+    <value>Bestellposition konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="OrderItemUpdateFailed" xml:space="preserve">
+    <value>Bestellposition konnte nicht aktualisiert werden.</value>
+  </data>
+  <data name="OrderCreateFailed" xml:space="preserve">
+    <value>Bestellung konnte nicht erstellt werden.</value>
+  </data>
+  <data name="OrderDeleteFailed" xml:space="preserve">
+    <value>Bestellung konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="OrderUpdateFailed" xml:space="preserve">
+    <value>Bestellung konnte nicht aktualisiert werden.</value>
   </data>
 </root>

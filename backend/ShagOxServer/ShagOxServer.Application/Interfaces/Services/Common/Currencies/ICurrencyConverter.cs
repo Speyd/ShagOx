@@ -7,4 +7,9 @@ public interface ICurrencyConverter
         string to,
         out decimal? convertedAmount,
         out decimal coefficient);
+
+    public (decimal? ConvertedAmount, decimal Coefficient) Convert(
+        decimal? amount,
+        string from,
+        string to);
 }

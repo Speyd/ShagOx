@@ -1,9 +1,8 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Catalog;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Core;
-using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
@@ -13,14 +12,12 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
-using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping.Catalog;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping.Core;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeValues.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
-using System.Xml.Linq;
 
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query;
 public partial class AdvertisementVariantQueryService
@@ -55,7 +52,7 @@ public partial class AdvertisementVariantQueryService
         IPriceConversionService priceConversion,
         ILogger<AdvertisementVariantQueryService> logger,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings,
+        IOptions<CacheOptions> settings,
         ILanguageProvider language
     )
         : base(variantRepository, language, cacheService, settings)

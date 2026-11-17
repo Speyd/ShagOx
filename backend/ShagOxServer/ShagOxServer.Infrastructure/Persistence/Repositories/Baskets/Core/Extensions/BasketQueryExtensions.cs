@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core.Extensions;
@@ -10,41 +9,20 @@ public static class BasketQueryExtensions
     {
         return query
             .AsSplitQuery()
-            .Include(x => x.BasketItems
-                    .Where(i => i.EntityStatus == EntityStatus.Active))
+            .Include(x => x.BasketItems)
                 .ThenInclude(x => x.AdvertisementVariant)
 
             .Include(x => x.BasketItems)
                 .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Pictures)
-
-            .Include(x => x.BasketItems)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Owner)
-
-            .Include(x => x.BasketItems)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Buyer)
-
-            .Include(x => x.BasketItems)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Category)
-                        .ThenInclude(x => x.ProductType)
-
-            .Include(x => x.BasketItems)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Currency)
-
-            .Include(x => x.BasketItems)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Condition)
+                    .ThenInclude(x => x.Pictures
+                        .OrderBy(p => p.Order)
+                        .Take(1))
 
             .Include(x => x.BasketItems)
                 .ThenInclude(x => x.Advertisement)
                     .ThenInclude(x => x.Status)
 
             .Include(x => x.BasketItems)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Variants);
+                .ThenInclude(x => x.Parent);
     }
 }

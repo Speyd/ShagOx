@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
 public partial class BaseAppDbContext
@@ -7,5 +7,4 @@ public partial class BaseAppDbContext
 {
     public DbSet<ReviewComment> ReviewComments { get; set; }
     public DbSet<ReviewRepliComment> ReviewRepliComments { get; set; }
-
 }

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Infrastructure.DependencyInjections.ExternalServices.Delivery;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.ExternalServices;
 public static class ExternalServicesDependencyInjection
@@ -9,6 +10,8 @@ public static class ExternalServicesDependencyInjection
         services.AddCloudinaryInfrastructure();
 
         services.AddCurrenciesInfrastructure();
+
+        services.AddDeliveryInfrastructure();
 
         return services;
     }

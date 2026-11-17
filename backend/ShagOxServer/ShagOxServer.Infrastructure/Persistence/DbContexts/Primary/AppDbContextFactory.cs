@@ -2,7 +2,7 @@ using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Npgsql;
-using ShagOxServer.Application.Common.Settings.Db.Postgres;
+using ShagOxServer.Application.Common.Options.Db.Postgres;
 using ShagOxServer.SharedKernel.Configuration;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -15,8 +15,8 @@ public sealed class AppDbContextFactory
         var envPath = EnvironmentFileLocator.Find();
         Env.Load(envPath);
 
-        PostgresSettings settings =
-            PostgresSettingsLoader.Load();
+        PostgresOptions settings =
+            PostgresLoaderOptions.Load();
 
         var connectionString =
             new NpgsqlConnectionStringBuilder

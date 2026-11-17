@@ -6,10 +6,13 @@ using ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
 using ShagOxServer.Infrastructure.DependencyInjections.Baskets;
 using ShagOxServer.Infrastructure.DependencyInjections.Comments;
 using ShagOxServer.Infrastructure.DependencyInjections.Db;
+using ShagOxServer.Infrastructure.DependencyInjections.Deliveries;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
 using ShagOxServer.Infrastructure.DependencyInjections.ExternalServices;
+using ShagOxServer.Infrastructure.DependencyInjections.LineItems;
 using ShagOxServer.Infrastructure.DependencyInjections.Location;
 using ShagOxServer.Infrastructure.DependencyInjections.Monitoring;
+using ShagOxServer.Infrastructure.DependencyInjections.Orders;
 using ShagOxServer.Infrastructure.DependencyInjections.Specification;
 using ShagOxServer.Infrastructure.DependencyInjections.Verifications;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
@@ -22,14 +25,15 @@ public static class DependencyInjection
         this IServiceCollection services)
     {
         services.AddScoped<BaseAppDbContext>(
-    provider =>
-        provider.GetRequiredService<ReplicaDbContext>());
+            provider => provider.GetRequiredService<ReplicaDbContext>());
+
         return services
             .AddMonitoring()
             .AddDbInfrastructure()
             .AddVerificationInfrastructure()
             .AddBackgroundServiceInfrastructure()
             .AddBaseRepositoryInfrastructure()
+            .AddLineItemsInfrastructure()
             .AddBasketInfrastructure()
             .AddAuthInfrastructure()
             .AddLocationInfrastructure()
@@ -39,6 +43,8 @@ public static class DependencyInjection
             .AddUnitOfWorkInfrastructure()
             .AddSpecificationInfrastructure()
             .AddDictionariesInfrastructure()
-            .AddExternalServicesInfrastructure();
+            .AddDeliveriesInfrastructure()
+            .AddExternalServicesInfrastructure()
+            .AddOrdersInfrastructure();
     }
 }

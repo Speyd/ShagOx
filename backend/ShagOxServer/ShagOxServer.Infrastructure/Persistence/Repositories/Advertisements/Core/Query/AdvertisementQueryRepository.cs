@@ -21,6 +21,18 @@ public partial class AdvertisementQueryRepository
     { }
 
 
+    public async Task<Advertisement?> GetByIdShortIncludeAsync(
+        long id,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Advertisements
+            .ShortWithIncludes()
+            .WithStatusFilter(status)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+
     public async Task<List<Advertisement>> GetByIdsAsync(
         List<long> ids,
         CancellationToken cancellationToken = default,

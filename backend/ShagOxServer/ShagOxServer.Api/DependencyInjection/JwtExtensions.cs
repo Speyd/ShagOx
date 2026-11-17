@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Application.Common.Options.Systems;
 using System.Text;
 
 namespace ShagOxServer.Api.DependencyInjection;
@@ -10,10 +10,10 @@ public static class JwtExtensions
         this IServiceCollection services,
         IConfiguration config)
     {
-        var jwtSettings = config.GetSection("Jwt").Get<JwtSettings>()
+        var jwtSettings = config.GetSection("Jwt").Get<JwtOptions>()
             ?? throw new Exception("Jwt settings not found");
 
-        services.Configure<JwtSettings>(
+        services.Configure<JwtOptions>(
             config.GetSection("Jwt"));
 
         services

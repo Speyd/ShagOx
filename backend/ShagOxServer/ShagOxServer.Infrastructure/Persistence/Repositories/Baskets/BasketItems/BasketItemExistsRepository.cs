@@ -1,16 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.LineItems.Core;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems;
 public class BasketItemExistsRepository
-    : ExistsRepository<BasketItem>,
+    : LineItemExistsRepository<BasketItem>,
       IBasketItemExistsRepository
 {
     public BasketItemExistsRepository(
@@ -18,56 +17,8 @@ public class BasketItemExistsRepository
         : base(db)
     { }
 
-    public async Task<bool> ExistsAsync(
-        long advertisementId,
-        long? advertisementVariantId,
-        long basketId,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
-    {
-        var query = _db.BasketItems
-            .WithStatusFilter(status)
-            .Where(c => c.BasketId == basketId);
 
-        query = advertisementVariantId.HasValue
-            ? query.Where(c =>
-                c.AdvertisementVariantId == advertisementVariantId)
-            : query.Where(c =>
-                c.AdvertisementId == advertisementId &&
-                c.AdvertisementVariantId == null);
-
-        return await query.AnyAsync(cancellationToken);
-    }
-
-    public async Task<bool> ExistsByAdvertisementVariantAsync(
-        long itemId,
-        long advertisementVariantId,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
-    {
-        return await _db.BasketItems
-            .WithStatusFilter(status)
-            .AnyAsync(c =>
-                c.Id == itemId &&
-                c.AdvertisementVariantId == advertisementVariantId
-            );
-    }
-
-    public async Task<bool> ExistsByBasketAsync(
-        long itemId,
-        long basketId,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
-    {
-        return await _db.BasketItems
-            .WithStatusFilter(status)
-            .AnyAsync(c =>
-                c.Id == itemId &&
-                c.BasketId == basketId
-            );
-    }
-
-    public async Task<bool> IsOwnerAsync(
+    public override async Task<bool> IsOwnerAsync(
         long enityId,
         long userId,
         CancellationToken cancellationToken = default,
@@ -77,7 +28,8 @@ public class BasketItemExistsRepository
             .WithStatusFilter(status)
             .WithIncludes()
             .AnyAsync(x =>
-                (x.Id == enityId && x.Basket.OwnerId == userId));
+                x.Id == enityId &&
+                x.Parent.OwnerId == userId);
 
         return result;
     }

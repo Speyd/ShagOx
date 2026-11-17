@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Currencies;
+using ShagOxServer.Application.Common.Options.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies.FxApi;
 using ShagOxServer.Infrastructure.ExternalServices.Currencies;
 
@@ -12,14 +12,14 @@ public class CurrencyBackgroundService : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<CurrencyBackgroundService> _logger;
-    private readonly CurrencyRatesUpdaterSettings _settings;
+    private readonly CurrencyRatesUpdaterOptions _settings;
     private readonly CurrencyRateStore _store;
     private readonly string _cacheFilePath;
 
     public CurrencyBackgroundService(
         IServiceScopeFactory scopeFactory,
         ILogger<CurrencyBackgroundService> logger,
-        IOptions<CurrencyRatesUpdaterSettings> settings,
+        IOptions<CurrencyRatesUpdaterOptions> settings,
         CurrencyRateStore store,
         IHostEnvironment environment)
     {

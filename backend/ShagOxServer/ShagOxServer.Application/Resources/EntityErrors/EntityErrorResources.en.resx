@@ -207,14 +207,14 @@
   <data name="AvatarUpdateFailed" xml:space="preserve">
     <value>Failed to update avatar.</value>
   </data>
-  <data name="BasketAttributeCreateFailed" xml:space="preserve">
-    <value>Failed to create basket attribute.</value>
+  <data name="LineItemAttributeCreateFailed" xml:space="preserve">
+    <value>Failed to create line item attribute.</value>
   </data>
-  <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Failed to delete basket attribute.</value>
+  <data name="LineItemAttributeDeleteFailed" xml:space="preserve">
+    <value>Failed to delete line item attribute.</value>
   </data>
-  <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Failed to update basket attribute.</value>
+  <data name="LineItemAttributeUpdateFailed" xml:space="preserve">
+    <value>Failed to update line item attribute.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Failed to create basket.</value>
@@ -422,5 +422,41 @@
   </data>
   <data name="StatusChangeFailed" xml:space="preserve">
     <value>An unexpected error occurred while changing the status.</value>
+  </data>
+  <data name="DeliveryProviderCreateFailed" xml:space="preserve">
+    <value>Failed to create delivery provider.</value>
+  </data>
+  <data name="DeliveryProviderDeleteFailed" xml:space="preserve">
+    <value>Failed to delete delivery provider.</value>
+  </data>
+  <data name="DeliveryProviderUpdateFailed" xml:space="preserve">
+    <value>Failed to update delivery provider.</value>
+  </data>
+  <data name="DeliveryProviderTranslationCreateFailed" xml:space="preserve">
+    <value>Failed to create delivery provider translation.</value>
+  </data>
+  <data name="DeliveryProviderTranslationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete delivery provider translation.</value>
+  </data>
+  <data name="DeliveryProviderTranslationUpdateFailed" xml:space="preserve">
+    <value>Failed to update delivery provider translation.</value>
+  </data>
+  <data name="OrderItemCreateFailed" xml:space="preserve">
+    <value>Failed to create order item.</value>
+  </data>
+  <data name="OrderItemDeleteFailed" xml:space="preserve">
+    <value>Failed to delete order item.</value>
+  </data>
+  <data name="OrderItemUpdateFailed" xml:space="preserve">
+    <value> Failed to update order item.</value>
+  </data>
+  <data name="OrderCreateFailed" xml:space="preserve">
+    <value>Failed to create order.</value>
+  </data>
+  <data name="OrderDeleteFailed" xml:space="preserve">
+    <value>Failed to delete order.</value>
+  </data>
+  <data name="OrderUpdateFailed" xml:space="preserve">
+    <value>Failed to update order.</value>
   </data>
 </root>

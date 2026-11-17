@@ -1,8 +1,9 @@
 using ShagOxServer.Domain.Base.Owner;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Baskets;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using System.Text.Json;
@@ -24,8 +25,10 @@ public class Advertisement
     /// </summary>
     public decimal? PreviousPrice { get; set; } = null;
 
+    public decimal? Weight { get; set; } = null;
 
-    public int Stock { get; set; }
+
+    public int? Stock { get; set; }
 
 
     /// <summary>
@@ -83,6 +86,9 @@ public class Advertisement
         = [];
 
     public ICollection<BasketItem> BasketItems { get; set; }
+        = [];
+
+    public ICollection<OrderItem> OrderItems { get; set; }
         = [];
 
 

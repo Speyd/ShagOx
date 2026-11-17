@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DependencyInjections.Caches.Invalidations.Baskets.Localized;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
@@ -14,8 +14,6 @@ public static class BasketsInvalidationDependencyInjection
         services.AddScoped<BasketItemInvalidationService>();
 
         services.AddScoped<BasketItemBasketInvalidationService>();
-
-        services.AddScoped<BasketAttributeInvalidationService>();
 
         services.AddBasketsLocalizedInvalidationApplication();
 

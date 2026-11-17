@@ -5,6 +5,9 @@ public sealed record AdvertisementCreateRequest
 (
     string Title,
     string Description,
+    decimal? Price,
+    decimal? PreviousPrice,
+    int? Stock,
     int Popularity,
     long CurrencyId,
     long ConditionId,

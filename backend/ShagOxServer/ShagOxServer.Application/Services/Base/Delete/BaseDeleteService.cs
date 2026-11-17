@@ -83,7 +83,7 @@ public abstract class BaseDeleteService<TEntity>
                 entity.Id);
 
             return Result<DeleteResponse>.Fail(
-                EntityErrorResources.BasketAttributeDeleteFailed);
+                EntityErrorResources.LineItemAttributeDeleteFailed);
         }
 
         await InvalidateCache(entity);
@@ -115,7 +115,7 @@ public abstract class BaseDeleteService<TEntity>
                 entity.Id);
 
             return Result<DeleteResponse>.Fail(
-                EntityErrorResources.BasketAttributeDeleteFailed);
+                EntityErrorResources.LineItemAttributeDeleteFailed);
         }
 
         await InvalidateCache(entity);

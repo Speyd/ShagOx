@@ -22,7 +22,7 @@ public static class AdvertisementVariantShortMapper
         );
     }
 
-    public static List<AdvertisementVariantShortDto> ToVariantShortDto(
+    public static List<AdvertisementVariantShortDto> ToVariantsShortDto(
         ConvertedPricesDto priceConversion,
         ICollection<AdvertisementVariant> variants)
     {
@@ -30,23 +30,30 @@ public static class AdvertisementVariantShortMapper
 
         foreach (var x in variants)
         {
-            var converts = new ConvertedPricesDto(
-                priceConversion.Price with
-                {
-                    ConvertPrice = x.Price *
-                        priceConversion.Price.Coefficient
-                },
-                priceConversion.PreviousPrice with
-                {
-                    ConvertPrice = x.PreviousPrice *
-                        priceConversion.PreviousPrice.Coefficient
-                }
-            );
-
-            result.Add(AdvertisementVariantShortMapper
-                .ToDto(x, converts));
+            result.Add(ToVariantShortDto(priceConversion, x));
         }
 
         return result;
+    }
+
+    public static AdvertisementVariantShortDto ToVariantShortDto(
+        ConvertedPricesDto priceConversion,
+        AdvertisementVariant variant)
+    {
+        var converts = new ConvertedPricesDto(
+            priceConversion.Price with
+            {
+                ConvertPrice = variant.Price *
+                    priceConversion.Price.Coefficient
+            },
+            priceConversion.PreviousPrice with
+            {
+                ConvertPrice = variant.PreviousPrice *
+                priceConversion.PreviousPrice.Coefficient
+            }
+        );
+
+        return AdvertisementVariantShortMapper
+                .ToDto(variant, converts);
     }
 }

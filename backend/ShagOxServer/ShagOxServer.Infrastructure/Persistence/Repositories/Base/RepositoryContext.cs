@@ -16,4 +16,10 @@ public abstract class RepositoryContext<TEntity>
     {
         return query;
     }
+    
+    protected virtual IQueryable<TEntity> ApplyShortIncludes(
+        IQueryable<TEntity> query)
+    {
+        return query;
+    }
 }

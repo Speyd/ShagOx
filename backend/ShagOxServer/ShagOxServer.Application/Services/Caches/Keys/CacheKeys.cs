@@ -29,7 +29,7 @@ public static class CacheKeys
 
     public static string EntityPattern<TEntity>(
         EntityStatus status)
-        => $"{Prefix<TEntity>()}:*status:{status}";
+        => $"{Prefix<TEntity>()}:*:status:{status}";
 
     #endregion
 
@@ -119,7 +119,7 @@ public static class CacheKeys
 
     #region Search
 
-    private static string BuildSearchKey<TEntity, TFilter>(
+    public static string BuildSearchKey<TEntity, TFilter>(
         TFilter filter,
         int page,
         int pageSize,
@@ -135,6 +135,7 @@ public static class CacheKeys
             ? $"{Prefix<TEntity>()}:status:{status}:search:{hash}"
             : $"{LanguagePrefix<TEntity>()}:{language}:status:{status}:search:{hash}";
     }
+
 
     public static string BySearch<TEntity, TFilter>(
         TFilter filter,

@@ -7,7 +7,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictu
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Comments.Review;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 public class ReviewRepliCommentInvalidationService

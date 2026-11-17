@@ -16,6 +16,7 @@ public sealed record AdvertisementShortDto
     decimal? Price,
     decimal? PreviousPrice,
     ConvertedPricesDto PriceConversion,
+    int? Stock,
     long CurrencyId,
     long CategoryId,
     long SellerId,

@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.LineItems;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
 public partial class BaseAppDbContext
@@ -7,6 +8,5 @@ public partial class BaseAppDbContext
 {
     public DbSet<Basket> Baskets { get; set; }
     public DbSet<BasketItem> BasketItems { get; set; }
-    public DbSet<BasketAttribute> BasketAttributes { get; set; }
 
 }

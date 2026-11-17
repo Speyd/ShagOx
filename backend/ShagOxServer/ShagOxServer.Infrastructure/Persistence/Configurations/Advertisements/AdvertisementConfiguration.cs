@@ -25,6 +25,10 @@ public class AdvertisementConfiguration
             .HasPrecision(18, 2)
             .HasDefaultValue(null);
 
+        builder.Property(x => x.Weight)
+            .HasPrecision(18, 2)
+            .HasDefaultValue(null);
+
         builder.Property(x => x.Stock)
             .HasDefaultValue(null);
 

@@ -3,6 +3,7 @@ using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
@@ -42,6 +43,7 @@ public class User
 
     public Basket Basket { get; set; } = null!;
 
+
     public ICollection<UserRole> UserRoles { get; set; }
         = [];
 
@@ -54,6 +56,11 @@ public class User
     public ICollection<Favorite> Favorites { get; set; }
         = [];
 
+    public ICollection<Order> Orders { get; set; }
+        = [];
+
+    public ICollection<OrderItem> OrderItems { get; set; }
+        = [];
 
     public User()
     {

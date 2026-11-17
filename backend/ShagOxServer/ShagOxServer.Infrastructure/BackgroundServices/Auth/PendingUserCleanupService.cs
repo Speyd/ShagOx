@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Systems.BackgroundServices;
+using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
 using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
@@ -15,12 +15,12 @@ public class PendingUserCleanupService
 
     private readonly ILogger<PendingUserCleanupService> _logger;
 
-    private readonly UserCleanupSettings _setting;
+    private readonly UserCleanupOptions _setting;
 
 
     public PendingUserCleanupService(
         IServiceScopeFactory scopeFactory,
-        IOptions<UserCleanupSettings> setting,
+        IOptions<UserCleanupOptions> setting,
         ILogger<PendingUserCleanupService> logger)
     {
         _scopeFactory = scopeFactory;

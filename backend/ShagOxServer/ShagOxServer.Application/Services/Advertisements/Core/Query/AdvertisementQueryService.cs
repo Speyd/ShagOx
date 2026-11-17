@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Context;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Core;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 using ShagOxServer.Application.Interfaces.Providers;
@@ -9,7 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
-using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
@@ -56,7 +54,7 @@ public partial class AdvertisementQueryService
         IDataCacheService cacheService,
         IStatusQueryService statusService,
         IConditionQueryService conditionService,
-        IOptions<CacheSettings> settings,
+        IOptions<CacheOptions> settings,
         ILanguageProvider language
     )
         : base(advertisementRepository, 

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Location.Regions.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions;
@@ -28,7 +28,7 @@ public class RegionQueryService
         IRegionTranslationQueryRepository translationRepository,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> settings
     )
         : base(regionQueryRepository, language, cacheService, settings)
     {

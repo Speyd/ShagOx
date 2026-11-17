@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Core.Multiple;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Base.Pictures;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;

@@ -19,7 +19,7 @@ public static class CityCache
     public static string ByRegionPattern(
        long regionId,
         EntityStatus status)
-           => $"{Prefix}:*:status{status}:region:{regionId}:page:*";
+           => $"{Prefix}:*:status:{status}:region:{regionId}:page:*";
 
     public static string ByRegionPattern(
        long regionId)

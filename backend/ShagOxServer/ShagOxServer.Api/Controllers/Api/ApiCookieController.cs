@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -10,13 +10,13 @@ namespace ShagOxServer.Api.Controllers.Api;
 public abstract class ApiCookieController
     : ApiController
 {
-    private readonly CookieSettings _cookieSettings;
+    private readonly Application.Common.Options.Systems.CookieOptions _cookieSettings;
 
     private readonly ILogger<ApiCookieController> _logger;
 
 
     public ApiCookieController(
-        IOptions<CookieSettings> jwtSettings,
+        IOptions<Application.Common.Options.Systems.CookieOptions> jwtSettings,
         ILogger<ApiCookieController> logger,
         IUserContext userContext
     )
@@ -46,7 +46,7 @@ public abstract class ApiCookieController
         Response.Cookies.Append(
             _cookieSettings.CookieKey,
             response.Value.Token,
-            new CookieOptions
+            new Microsoft.AspNetCore.Http.CookieOptions
             {
                 HttpOnly = _cookieSettings.CookieHttpOnly,
                 Secure = _cookieSettings.CookieSecure,

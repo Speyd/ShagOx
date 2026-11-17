@@ -41,7 +41,7 @@ public class BasketItemAdminQueriesController
         CancellationToken cancellationToken)
     {
         var result = await _itemQueryService
-            .GetByBasketAsync(id, pagination,
+            .GetByParentAsync(id, pagination,
                 cancellationToken, status);
 
         return result.ToActionResult();

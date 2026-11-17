@@ -34,4 +34,14 @@ public class CurrencyConverter
 
         return true;
     }
+
+    public (decimal? ConvertedAmount, decimal Coefficient) Convert(
+        decimal? amount,
+        string from,
+        string to)
+    {
+        return TryConvert(amount, from, to, out var converted, out var coefficient)
+            ? (converted, coefficient)
+            : (null, 0m);
+    }
 }

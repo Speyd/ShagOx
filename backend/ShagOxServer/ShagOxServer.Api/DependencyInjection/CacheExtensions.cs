@@ -1,6 +1,5 @@
 using ShagOxServer.Api.Common;
-using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using StackExchange.Redis;
 
 namespace ShagOxServer.Api.DependencyInjection;
@@ -16,7 +15,7 @@ public static class CacheExtensions
         services.Configure<RedisSettings>(
             configuration.GetSection("UserRedis"));
 
-        services.Configure<CacheSettings>(
+        services.Configure<CacheOptions>(
             configuration.GetSection("Cache"));
 
         var dataSettings = configuration

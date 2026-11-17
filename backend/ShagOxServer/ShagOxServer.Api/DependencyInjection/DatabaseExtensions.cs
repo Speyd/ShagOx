@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.Common.Settings.Db;
+using ShagOxServer.Application.Common.Options.Db;
 using ShagOxServer.Domain.Entities.Db;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
@@ -10,10 +10,10 @@ public static class DatabaseExtensions
         this IServiceCollection services,
         IConfiguration config)
     {
-        services.Configure<LoadBalancerSettings>(
+        services.Configure<LoadBalancerOptions>(
           config.GetSection("LoadBalancer"));
 
-        services.Configure<DatabaseHealthCheckSettings>(
+        services.Configure<DatabaseHealthCheckOptions>(
           config.GetSection("DatabaseHealthCheck"));
 
 

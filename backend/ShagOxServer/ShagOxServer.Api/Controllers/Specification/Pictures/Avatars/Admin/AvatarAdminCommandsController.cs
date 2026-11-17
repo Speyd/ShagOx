@@ -4,7 +4,6 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
-using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Specification.Pictures.Avatars.Admin;

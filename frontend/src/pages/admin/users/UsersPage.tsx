@@ -58,10 +58,10 @@ const columns: ColumnDef<AdminUser>[] = [
   {
     id: "city",
     header: "Місто",
-    accessorFn: (user) => user.city?.lable ?? user.city?.name ?? "",
+    accessorFn: (user) => user.city?.label ?? user.city?.name ?? "",
     cell: ({ row }) => (
       <Text size="sm">
-        {row.original.city?.lable || row.original.city?.name || row.original.city?.code || "—"}
+        {row.original.city?.label || row.original.city?.name || row.original.city?.code || "—"}
       </Text>
     ),
   },

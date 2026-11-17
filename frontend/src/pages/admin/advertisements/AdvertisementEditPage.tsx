@@ -105,7 +105,7 @@ export default function AdvertisementEditPage() {
               <dt>Статус</dt>
               <dd>
                 <Badge variant="light" radius="sm">
-                  {ad.status?.lable || ad.status?.code}
+                  {ad.status?.label || ad.status?.code}
                 </Badge>
               </dd>
               <dt>Видимість</dt>

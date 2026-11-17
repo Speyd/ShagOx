@@ -44,7 +44,7 @@ const columns: ColumnDef<AdminAd>[] = [
             </Text>
           </Link>
           <Text size="xs" c="dimmed">
-            {ad.category?.lable ?? ""} · {formatDate(ad.createdAt)}
+            {ad.category?.label ?? ""} · {formatDate(ad.createdAt)}
           </Text>
         </div>
       </div>
@@ -102,7 +102,7 @@ const columns: ColumnDef<AdminAd>[] = [
           </Badge>
         ) : (
           <Badge color="blue" variant="light" radius="sm">
-            {row.original.status?.lable || row.original.status?.code || "—"}
+            {row.original.status?.label || row.original.status?.code || "—"}
           </Badge>
         )}
       </div>

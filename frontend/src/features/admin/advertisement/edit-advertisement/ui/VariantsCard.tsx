@@ -341,7 +341,7 @@ export default function VariantsCard({
             </FormField>
           </div>
           <div>
-            <Button size="sm" variant="outline" leftIcon={<Plus size={16} />} onClick={addVariant}>
+            <Button size="sm" variant="outline" leftSection={Plus} iconProps={{ size: 16 }} onClick={addVariant}>
               Додати варіант
             </Button>
           </div>

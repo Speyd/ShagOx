@@ -1,121 +1,104 @@
-import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import type { ImageItem } from "@/shared/lib/types/image";
-import type { AdvertisementFormData } from "@/features/advertisement/advertisement-form/model/schemas/schema";
-import useUpdateAdvertisement from "@/features/advertisement/update-advertisement/model/hooks/useUpdateAdvertisement";
+import { Button, Loader } from "@mantine/core";
+import Container from "@/shared/ui/layout/container";
+import { EmptyState } from "@/shared/ui/data-display/empty-state/EmptyState";
 import { useGetAdvertisement } from "@/entities/advertisement/model/hooks/useGetAdvertisement";
-import AdvertisementForm from "@/features/advertisement/advertisement-form/ui/AdvertisementForm";
-import type { UpdateAdvertisementRequestDto } from "@/features/advertisement/update-advertisement/model/types";
-import styles from "./UpdateAdvertisementPage.module.css";
 import { useAuthStore } from "@/features/auth";
-import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
+import {
+  UpdateAdvertisementForm,
+  useUpdateAdvertisement,
+  type UpdateAdvertisementRequestDto,
+} from "@/features/advertisement/update-advertisement";
+import styles from "@/pages/advertisement/create-advertisement-page/CreateAdvertisementPage.module.css";
 
+const FORM_ID = "update-advertisement-form";
 
 export default function UpdateAdvertisementPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const user = useAuthStore((state) => state.user);
 
   const { data: advertisement, isLoading } = useGetAdvertisement(Number(id));
+  const { mutate, isPending } = useUpdateAdvertisement();
 
-  const mutation = useUpdateAdvertisement();
-  const [deletedImageIds, setDeletedImageIds] = useState<number[]>([]);
+  const handleSubmit = (data: UpdateAdvertisementRequestDto) => {
+    if (!advertisement) return;
+    mutate(
+      { id: advertisement.id, data },
+      { onSuccess: () => navigate("/profile") },
+    );
+  };
 
-  function handleImageDelete(image: ImageItem) {
-    if (image.imageId == null) return;
-
-    setDeletedImageIds((previous) =>
-      previous.includes(image.imageId!)
-        ? previous
-        : [...previous, image.imageId!],
+  if (isLoading) {
+    return (
+      <div className={styles.page}>
+        <Container>
+          <div className={styles.headerCard}>
+            <Loader size="sm" />
+          </div>
+        </Container>
+      </div>
     );
   }
 
-  async function handleUpdate(
-    data: AdvertisementFormData,
-    images: ImageItem[],
-  ) {
-    if (!advertisement) return;
-
-    const imagesChanged =
-      deletedImageIds.length > 0 ||
-      images.length !== advertisement.pictures.length ||
-      images.some(
-        (image, index) =>
-          image.file != null ||
-          image.imageId == null ||
-          image.imageId !== advertisement.pictures[index]?.id,
-      );
-
-    const dto: UpdateAdvertisementRequestDto = {
-      title: data.title,
-      description: data.description,
-      attributes: advertisement.attributes,
-      variants: advertisement.variants[0]
-        ? {
-            [advertisement.variants[0].id]: {
-              price: data.price,
-              stock: advertisement.variants[0].stock,
-              attributes: {},
-            },
-          }
-        : undefined,
-
-      images: imagesChanged
-        ? [
-            ...images.map((image, index) => ({
-              id: image.imageId,
-              file: image.file,
-              order: index,
-              isDeleted: false,
-            })),
-            ...deletedImageIds.map((imageId) => ({
-              id: imageId,
-              order: 0,
-              isDeleted: true,
-            })),
-          ]
-        : undefined,
-    };
-
-    await mutation.mutateAsync({
-      id: advertisement.id,
-      data: dto,
-    });
-
-    navigate(`/advertisement/${advertisement.id}`);
+  if (!advertisement) {
+    return (
+      <div className={styles.page}>
+        <Container>
+          <EmptyState
+            title="Оголошення не знайдено"
+            description="Можливо, його було видалено."
+            buttonLabel="До моїх товарів"
+            onButtonClick={() => navigate("/profile")}
+          />
+        </Container>
+      </div>
+    );
   }
 
-  if (isLoading) return <p>Loading...</p>;
-  if (!advertisement) return <p>Advertisement not found</p>;
   if (user?.id !== advertisement.seller.id) {
     return <Navigate to={`/advertisement/${advertisement.id}`} replace />;
   }
 
   return (
-    <div className={styles.updateAdvertisementPage}>
-      <div className={styles.title}>
-        <h2>Редагування оголошення</h2>
-        <p>Внесіть необхідні зміни та збережіть їх.</p>
-      </div>
+    <div className={styles.page}>
+      <Container>
+        <div className={styles.topBar}>
+          <div className={styles.topBarActions}>
+            <Button
+              variant="default"
+              size="md"
+              onClick={() => navigate(-1)}
+              disabled={isPending}
+            >
+              Скасувати
+            </Button>
+            <Button
+              type="submit"
+              form={FORM_ID}
+              size="md"
+              loading={isPending}
+              bg="var(--color-base)"
+            >
+              Зберегти зміни
+            </Button>
+          </div>
+        </div>
 
-      <AdvertisementForm
-        key={advertisement.id}
-        defaultValues={{
-          title: advertisement.title,
-          description: advertisement.description,
-          price: getAdvertisementPrice(advertisement),
-        }}
-        defaultImages={advertisement.pictures.map((image) => ({
-          id: image.id.toString(),
-          imageId: image.id,
-          url: image.url,
-        }))}
-        onSubmit={handleUpdate}
-        onImageDelete={handleImageDelete}
-        isLoading={mutation.isPending}
-      />
+        <div className={styles.headerCard}>
+          <h2 className={styles.pageTitle}>Редагування товару</h2>
+          <p className={styles.pageSubtitle}>
+            Оновіть опис, ціни, залишки та фото товару
+          </p>
+        </div>
+
+        <UpdateAdvertisementForm
+          key={advertisement.id}
+          formId={FORM_ID}
+          advertisement={advertisement}
+          onSubmit={handleSubmit}
+        />
+      </Container>
     </div>
   );
 }

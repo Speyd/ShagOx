@@ -126,7 +126,7 @@ export default function CrudPage<T extends BaseEntity>(props: CrudPageProps<T>) 
             <>
               {headerActions}
               {canCreate && (
-                <Button leftIcon={<Plus size={18} />} onClick={openCreate}>
+                <Button leftSection={Plus} iconProps={{ size: 18 }} onClick={openCreate}>
                   {createLabel}
                 </Button>
               )}
@@ -148,7 +148,7 @@ export default function CrudPage<T extends BaseEntity>(props: CrudPageProps<T>) 
             )}
           </div>
           {canCreate && (
-            <Button size="sm" leftIcon={<Plus size={16} />} onClick={openCreate}>
+            <Button size="sm" leftSection={Plus} iconProps={{ size: 16 }} onClick={openCreate}>
               {createLabel}
             </Button>
           )}

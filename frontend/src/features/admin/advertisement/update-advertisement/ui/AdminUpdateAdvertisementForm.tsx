@@ -90,7 +90,6 @@ function AdminUpdateAdvertisementFormContent({
 
       data: {
         ...data,
-        attributes: advertisement.attributes,
         variants: advertisement.variants[0]
           ? {
               [advertisement.variants[0].id]: {

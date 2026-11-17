@@ -1,6 +1,6 @@
 import { Pencil } from "lucide-react";
-import IconButton from "@/shared/ui/buttons/icon-button/IconButton";
 import { useNavigate } from "react-router-dom";
+import IconButton from "@/shared/ui/buttons/icon-button/IconButton";
 
 type UpdateButtonProps = {
   id: number;
@@ -9,13 +9,14 @@ type UpdateButtonProps = {
 export default function UpdateAdvertisementButton({ id }: UpdateButtonProps) {
   const navigate = useNavigate();
 
-  const handleUpdate = () => {
-    navigate(`/update-advertisement/${id}`);
-  };
-
   return (
-    <IconButton onClick={() => handleUpdate()}>
-      <Pencil size={20} />
+    <IconButton
+      type="button"
+      onClick={() => navigate(`/update-advertisement/${id}`)}
+      aria-label="Редагувати оголошення"
+      title="Редагувати"
+    >
+      <Pencil size={18} />
     </IconButton>
   );
 }

@@ -21,7 +21,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
         }
 
         var request = new PictureOrderUpdateRequest(
-            ownerId,
+            null,
             picture.File,
             picture.Order
         );

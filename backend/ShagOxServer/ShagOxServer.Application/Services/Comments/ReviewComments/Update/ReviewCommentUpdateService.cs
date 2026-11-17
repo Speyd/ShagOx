@@ -73,25 +73,30 @@ public class ReviewCommentUpdateService
         if (!comment.IsSuccess)
             return Result<UpdateResponse>.Fail(comment.Error);
 
+        var tracked = await _commitValidator
+            .GetByIdAttachAsync(commentId, cancellationToken);
+        if (!tracked.IsSuccess)
+            return Result<UpdateResponse>.Fail(tracked.Error);
+
         var updatedCount = ReviewCommentUpdater
-            .ApplyUpdates(comment.Value!, request);
+            .ApplyUpdates(tracked.Value!, request);
+
+        var hasPictureChanges = request.Pictures is { Count: > 0 };
 
         var result = new UpdateResponse(
-            updatedCount,
+            updatedCount + (hasPictureChanges ? request.Pictures!.Count : 0),
             DateTime.UtcNow
         );
 
-        if (updatedCount == 0)
+        if (updatedCount == 0 && !hasPictureChanges)
             return Result<UpdateResponse>.Success(result);
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _commitRepository.Update(comment.Value!);
-
             var imagesResult = await _executor.SyncAsync(
-                comment.Value!,
+                tracked.Value!,
                 request.Pictures,
                 cancellationToken
             );

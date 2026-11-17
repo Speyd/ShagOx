@@ -13,43 +13,38 @@ public static class BasketQueryExtensions
             .Include(x => x.BasketItems
                     .Where(i => i.EntityStatus == EntityStatus.Active))
                 .ThenInclude(x => x.AdvertisementVariant)
-                    .ThenInclude(x => x.Advertisement)
-                        .ThenInclude(x => x.Pictures)
 
             .Include(x => x.BasketItems)
-                .ThenInclude(x => x.AdvertisementVariant)
-                    .ThenInclude(x => x.Advertisement)
-                        .ThenInclude(x => x.Owner)
+                .ThenInclude(x => x.Advertisement)
+                    .ThenInclude(x => x.Pictures)
 
             .Include(x => x.BasketItems)
-                .ThenInclude(x => x.AdvertisementVariant)
-                    .ThenInclude(x => x.Advertisement)
-                        .ThenInclude(x => x.Buyer)
+                .ThenInclude(x => x.Advertisement)
+                    .ThenInclude(x => x.Owner)
 
             .Include(x => x.BasketItems)
-                .ThenInclude(x => x.AdvertisementVariant)
-                    .ThenInclude(x => x.Advertisement)
-                        .ThenInclude(x => x.Category)
-                            .ThenInclude(x => x.ProductType)
+                .ThenInclude(x => x.Advertisement)
+                    .ThenInclude(x => x.Buyer)
 
             .Include(x => x.BasketItems)
-                .ThenInclude(x => x.AdvertisementVariant)
-                    .ThenInclude(x => x.Advertisement)
-                        .ThenInclude(x => x.Currency)
+                .ThenInclude(x => x.Advertisement)
+                    .ThenInclude(x => x.Category)
+                        .ThenInclude(x => x.ProductType)
 
             .Include(x => x.BasketItems)
-                .ThenInclude(x => x.AdvertisementVariant)
-                    .ThenInclude(x => x.Advertisement)
-                        .ThenInclude(x => x.Condition)
+                .ThenInclude(x => x.Advertisement)
+                    .ThenInclude(x => x.Currency)
 
             .Include(x => x.BasketItems)
-                .ThenInclude(x => x.AdvertisementVariant)
-                    .ThenInclude(x => x.Advertisement)
-                        .ThenInclude(x => x.Status)
+                .ThenInclude(x => x.Advertisement)
+                    .ThenInclude(x => x.Condition)
 
             .Include(x => x.BasketItems)
-                .ThenInclude(x => x.AdvertisementVariant)
-                    .ThenInclude(x => x.Advertisement)
-                        .ThenInclude(x => x.Variants);
+                .ThenInclude(x => x.Advertisement)
+                    .ThenInclude(x => x.Status)
+
+            .Include(x => x.BasketItems)
+                .ThenInclude(x => x.Advertisement)
+                    .ThenInclude(x => x.Variants);
     }
 }

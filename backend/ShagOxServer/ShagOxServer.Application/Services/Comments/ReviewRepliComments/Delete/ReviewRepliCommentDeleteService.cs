@@ -104,6 +104,21 @@ public class ReviewRepliCommentDeleteService
        );
     }
 
+    public override async Task<Result<DeleteResponse>> SoftDeleteAsync(
+        long id,
+        CancellationToken cancellationToken = default)
+    {
+        var comment = await _commentValidator
+            .GetByIdAttachAsync(id, cancellationToken);
+
+        if (!comment.IsSuccess)
+            return Result<DeleteResponse>.Fail(comment.Error);
+
+        return await SoftDeleteInternalAsync(
+            comment.Value!,
+            cancellationToken);
+    }
+
     public override async Task InvalidateCache(
         ReviewRepliComment entity)
     {

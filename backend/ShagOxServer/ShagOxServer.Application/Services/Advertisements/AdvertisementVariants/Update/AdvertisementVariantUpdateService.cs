@@ -108,7 +108,7 @@ public partial class AdvertisementVariantUpdateService
         CancellationToken cancellationToken = default)
     {
         var variant = await _variantValidator
-            .GetByIdAsync(variantId, cancellationToken);
+            .GetByIdAttachAsync(variantId, cancellationToken);
 
         if (!variant.IsSuccess)
         {

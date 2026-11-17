@@ -69,7 +69,10 @@ public class AdvertisementInvalidationService
 
     public async Task InvalidateCreateAsync(
         AdvertisementCacheInfo entityInfo)
-    { }
+    {
+        await _cache.RemoveByPatternAsync(AdvertisementCache
+            .BySellerPattern(entityInfo.SellerId));
+    }
 
     public async Task InvalidateDeleteAsync(
         AdvertisementCacheInfo entityInfo)

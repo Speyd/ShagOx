@@ -19,17 +19,24 @@ public class BasketItemExistsRepository
     { }
 
     public async Task<bool> ExistsAsync(
-        long advertisementVariantId,
+        long advertisementId,
+        long? advertisementVariantId,
         long basketId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null)
     {
-        return await _db.BasketItems
+        var query = _db.BasketItems
             .WithStatusFilter(status)
-            .AnyAsync(c => 
-                c.AdvertisementVariantId == advertisementVariantId &&
-                c.BasketId == basketId
-            );               
+            .Where(c => c.BasketId == basketId);
+
+        query = advertisementVariantId.HasValue
+            ? query.Where(c =>
+                c.AdvertisementVariantId == advertisementVariantId)
+            : query.Where(c =>
+                c.AdvertisementId == advertisementId &&
+                c.AdvertisementVariantId == null);
+
+        return await query.AnyAsync(cancellationToken);
     }
 
     public async Task<bool> ExistsByAdvertisementVariantAsync(

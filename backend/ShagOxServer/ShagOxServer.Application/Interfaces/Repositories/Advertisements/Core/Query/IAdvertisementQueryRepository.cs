@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
@@ -44,4 +45,8 @@ public partial interface IAdvertisementQueryRepository
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
+
+    Task<AdvertisementFacetsDto> GetFacetsAsync(
+        long categoryId,
+        CancellationToken cancellationToken = default);
 }

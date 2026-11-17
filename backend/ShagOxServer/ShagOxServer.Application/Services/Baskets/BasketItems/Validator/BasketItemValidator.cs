@@ -33,7 +33,8 @@ public class BasketItemValidator
     {
         if (!await _itemExistsRepository
                 .ExistsAsync(
-                    advertisementVariantId ?? advertisementid, 
+                    advertisementid,
+                    advertisementVariantId, 
                     basketId, 
                     cancellationToken))
         {
@@ -52,7 +53,8 @@ public class BasketItemValidator
     {
         if (await _itemExistsRepository
                 .ExistsAsync(
-                    advertisementVariantId ?? advertisementid,
+                    advertisementid,
+                    advertisementVariantId,
                     basketId, 
                     cancellationToken))
         {

@@ -16,3 +16,4 @@ appsettings.Development.json
 *.key
 *.srl
 *.ext
+.cache/

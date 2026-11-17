@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping.Cache;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
@@ -94,6 +95,20 @@ public partial class AdvertisementUpdateService
                 .Fail(variantsResult.Error!);
         }
 
+        var foreignVariant = variantsResult.Value?.Keys
+            .Any(id => advert.Value!.Variants.All(v => v.Id != id)) ?? false;
+
+        if (foreignVariant)
+        {
+            return Result<UpdateResponse>.NotFound(
+                EntityNamesResources.AdvertisementVariant);
+        }
+
+        var tracked = await _validator
+            .GetByIdAttachAsync(advertId, cancellationToken);
+        if (!tracked.IsSuccess)
+            return Result<UpdateResponse>.Fail(tracked.Error);
+
         await _unitOfWork.BeginTransactionAsync();
 
         int updatedCount = 0;
@@ -101,10 +116,10 @@ public partial class AdvertisementUpdateService
         try
         {
             updatedCount = AdvertisementUpdater
-                .ApplyUpdates(advert.Value!, request);
+                .ApplyUpdates(tracked.Value!, request);
 
             var imagesResult = await _executor.SyncAsync(
-                advert.Value!,
+                tracked.Value!,
                 request.Pictures,
                 cancellationToken
             );
@@ -125,8 +140,6 @@ public partial class AdvertisementUpdateService
                 return Result<UpdateResponse>
                     .Fail(updateResult.Error!);
             }
-
-            _advertRepository.Update(advert.Value!);
 
             await _executor.CommitAndDeleteAsync(
                 imagesResult.Value!

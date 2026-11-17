@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.PictureOrdering;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.PictureOrdering;
@@ -15,13 +16,18 @@ public partial class PictureOrderingService<TOwner, TPicture>
         CancellationToken cancellationToken = default)
     {
         var owner = await _ownerValidator
-            .GetByIdAsync(ownerId, cancellationToken);
+            .GetByIdAttachAsync(ownerId, cancellationToken);
 
         if (!owner.IsSuccess)
         {
             return Result<PictureSyncResponce<TPicture>>
                 .Fail(owner.Error);
         }
+
+        await _ownerRepository.LoadCollectionAsync(
+            owner.Value!,
+            nameof(IHasPictures<TOwner, TPicture>.Pictures),
+            cancellationToken);
 
         return await SyncPicturesAsync(
             owner.Value!,
@@ -122,8 +128,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
                deletePublicIds,
                cancellationToken);
         }
-
-        if (picture.Id is null &&
+        else if (picture.Id is null &&
             !picture.IsDeleted &&
             picture.File is not null)
         {
@@ -133,8 +138,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
                 loadedPicture,
                 cancellationToken);
         }
-
-        if (picture.Id is not null)
+        else if (picture.Id is not null)
         {
             var updateResult = await UpdateImage(
                 owner.Id,

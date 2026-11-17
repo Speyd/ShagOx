@@ -128,8 +128,19 @@ public abstract class BaseDeleteService<TEntity>
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
-        entity.EntityStatus = EntityStatus.Deleted;
-        entity.DeletedAt = DateTime.UtcNow;
+        var tracked = await _queryRepository
+            .GetByIdAttachAsync(entity.Id, cancellationToken);
+
+        if (!tracked.IsSuccess)
+            return Result<bool>.Fail(tracked.Error);
+
+        var deletedAt = DateTime.UtcNow;
+
+        foreach (var target in new[] { entity, tracked.Value! })
+        {
+            target.EntityStatus = EntityStatus.Deleted;
+            target.DeletedAt = deletedAt;
+        }
 
         return Result<bool>.Success(true);
     }

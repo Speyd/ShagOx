@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
@@ -147,6 +148,12 @@ public class BasketItemCreateService
 
             if (!variantExists.IsSuccess)
                 return Result<int>.Fail(variantExists.Error);
+
+            if (variantExists.Value!.AdvertisementId != request.AdvertisementId)
+            {
+                return Result<int>.NotFound(
+                    EntityNamesResources.AdvertisementVariant);
+            }
 
             variant = variantExists.Value;
         }

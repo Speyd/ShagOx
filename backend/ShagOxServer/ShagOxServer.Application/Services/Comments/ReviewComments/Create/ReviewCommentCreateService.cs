@@ -86,23 +86,25 @@ public class ReviewCommentCreateService
         {
             _commentRepository.Add(comment);
 
-            // Id відгуку потрібен, щоб прив'язати до нього фото
             await _unitOfWork.SaveChangesAsync();
 
-            var imagesResult = await _imageCreateService
-               .CreateAsync(
-                   new PicturesCreateRequest(
-                       request.CommentableEntityId,
-                       request.Pictures
-                   ), cancellationToken
-           );
-
-            if (!imagesResult.IsSuccess)
+            if (request.Pictures is { Count: > 0 })
             {
-                await _unitOfWork.RollbackAsync();
+                var imagesResult = await _imageCreateService
+                    .CreateAsync(
+                        new PicturesCreateRequest(
+                            comment.Id,
+                            request.Pictures
+                        ), cancellationToken
+                    );
 
-                return Result<CreateResponse>
-                    .Fail(imagesResult.Error!);
+                if (!imagesResult.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<CreateResponse>
+                        .Fail(imagesResult.Error!);
+                }
             }
 
 

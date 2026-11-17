@@ -11,8 +11,9 @@ public static class BasketItemCreater
         return new BasketItem
         {
             BasketId = request.BasketId,
+            AdvertisementId = request.AdvertisementId,
             AdvertisementVariantId = request.AdvertisementVariantId,
-            Quantity = request.Quantity < 0? 0 : 
+            Quantity = request.Quantity < 0 ? 0 :
                 request.Quantity > stock ? stock :
                 request.Quantity,
         };

@@ -12,10 +12,13 @@ public static class BasketItemUpdater
 
         if (request.Quantity.HasValue)
         {
+            var stock = basket.AdvertisementVariant?.Stock
+                ?? basket.Advertisement.Stock;
+
             if (request.Quantity.Value < 0)
                 basket.Quantity = 0;
-            else if (request.Quantity.Value > basket.AdvertisementVariant.Stock)
-                basket.Quantity = basket.AdvertisementVariant.Stock;
+            else if (request.Quantity.Value > stock)
+                basket.Quantity = stock;
             else
                 basket.Quantity = request.Quantity.Value;
 

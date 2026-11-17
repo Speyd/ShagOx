@@ -368,6 +368,18 @@ begin
   end loop;
 end $$;
 
+do $$
+declare t record;
+begin
+  for t in select table_name from information_schema.columns
+           where table_schema = 'public' and column_name = 'EntityStatus' and data_type = 'text'
+  loop
+    execute format($q$update %I set "EntityStatus" = case "EntityStatus"
+      when '0' then 'Active' when '1' then 'Hidden' when '2' then 'Deleted' end
+      where "EntityStatus" in ('0', '1', '2')$q$, t.table_name);
+  end loop;
+end $$;
+
 create function pg_temp.cat(p text) returns bigint language sql stable as
   $$ select "Id" from "Categories" where "Code" = p and "EntityStatus" = 'Active' $$;
 create function pg_temp.dict(p text) returns bigint language sql stable as

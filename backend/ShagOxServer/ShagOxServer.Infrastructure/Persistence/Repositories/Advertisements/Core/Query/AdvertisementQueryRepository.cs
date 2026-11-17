@@ -44,8 +44,9 @@ public partial class AdvertisementQueryRepository
             .WithStatusFilter(status)
             .Where(x => x.OwnerId == userId)
             .ToPagedResultAsync(pagination,
-                (x => x.Popularity),
-                cancellationToken);
+                (x => x.Id),
+                cancellationToken,
+                descending: true);
     }
     public async Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
         long userId,

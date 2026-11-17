@@ -8,7 +8,8 @@ public interface IBasketItemExistsRepository
     : IExistsRepository<BasketItem>, IExistsOwnerRepository
 {
     Task<bool> ExistsAsync(
-        long advertisementVariantId,
+        long advertisementId,
+        long? advertisementVariantId,
         long basketId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);

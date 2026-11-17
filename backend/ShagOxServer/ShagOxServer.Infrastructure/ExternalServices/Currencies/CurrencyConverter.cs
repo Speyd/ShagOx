@@ -11,18 +11,27 @@ public class CurrencyConverter
         _rateStore = rateStore;
     }
 
-
-    public (decimal? ConvertedAmount, decimal Coefficient) Convert(
+    public bool TryConvert(
         decimal? amount,
         string from,
-        string to)
+        string to,
+        out decimal? convertedAmount,
+        out decimal coefficient)
     {
-        var fromRate = _rateStore.GetRate(from);
-        var toRate = _rateStore.GetRate(to);
+        convertedAmount = amount;
+        coefficient = 1m;
 
-        var coefficient = toRate / fromRate;
+        if (string.Equals(from, to, StringComparison.OrdinalIgnoreCase))
+            return true;
 
-        return (amount is null? null : amount * coefficient,
-            coefficient);
+        if (!_rateStore.TryGetRate(from, out var fromRate)
+            || !_rateStore.TryGetRate(to, out var toRate)
+            || fromRate == 0)
+            return false;
+
+        coefficient = toRate / fromRate;
+        convertedAmount = amount * coefficient;
+
+        return true;
     }
 }

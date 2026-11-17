@@ -31,6 +31,7 @@ public static class AdvertisementQueryExtensions
             .Include(x => x.Pictures
                 .OrderBy(p => p.Order)
                 .Take(1))
+            .Include(x => x.Status)
             .Include(x => x.Currency);
     }
 

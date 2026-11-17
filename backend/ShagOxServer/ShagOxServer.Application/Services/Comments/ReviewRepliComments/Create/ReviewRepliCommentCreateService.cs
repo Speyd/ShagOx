@@ -7,10 +7,11 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityNames.Extensions;
+using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
-using ShagOxServer.Application.Services.Comments.ReviewComments.Create;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -29,7 +30,7 @@ public class ReviewRepliCommentCreateService
     private readonly IReviewRepliImageCreateService _imageCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<ReviewCommentCreateService> _logger;
+    private readonly ILogger<ReviewRepliCommentCreateService> _logger;
 
 
     public ReviewRepliCommentCreateService(
@@ -39,7 +40,7 @@ public class ReviewRepliCommentCreateService
         ReviewRepliCommentValidator repliValidator,
         IReviewRepliImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
-        ILogger<ReviewCommentCreateService> logger)
+        ILogger<ReviewRepliCommentCreateService> logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
@@ -56,16 +57,16 @@ public class ReviewRepliCommentCreateService
         long ownerId,
         CancellationToken cancellationToken = default)
     {
-        var exists = await ValidationAsync(
+        var validation = await ValidationAsync(
             request,
             ownerId,
             cancellationToken
         );
 
-        if (!exists.IsSuccess)
+        if (!validation.IsSuccess)
         {
             return Result<CreateResponse>
-                .Fail(exists.Error);
+                .Fail(validation.Error);
         }
 
         var comment = ReviewRepliCommentCreater
@@ -77,23 +78,26 @@ public class ReviewRepliCommentCreateService
         {
             _commentRepository.Add(comment);
 
+            await _unitOfWork.SaveChangesAsync();
 
-            var imagesResult = await _imageCreateService
-               .CreateAsync(
-                   new PicturesCreateRequest(
-                       request.CommentableEntityId,
-                       request.Pictures
-                   )
-           );
-
-            if (!imagesResult.IsSuccess)
+            if (request.Pictures is { Count: > 0 })
             {
-                await _unitOfWork.RollbackAsync();
+                var imagesResult = await _imageCreateService
+                    .CreateAsync(
+                        new PicturesCreateRequest(
+                            comment.Id,
+                            request.Pictures
+                        ), cancellationToken
+                    );
 
-                return Result<CreateResponse>
-                    .Fail(imagesResult.Error!);
+                if (!imagesResult.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<CreateResponse>
+                        .Fail(imagesResult.Error!);
+                }
             }
-
 
             await _unitOfWork.CommitAsync();
         }
@@ -125,9 +129,15 @@ public class ReviewRepliCommentCreateService
         long ownerId,
         CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(request.Text))
+        {
+            return Result<bool>
+                .Fail(ValidationResources.CommentTextRequired);
+        }
+
         var existsComment = await _commentValidator
             .ValidateCommentAsync(
-                 ownerId,
+                ownerId,
                 request.CommentableEntityId,
                 cancellationToken
         );
@@ -140,14 +150,22 @@ public class ReviewRepliCommentCreateService
 
         if (request.RepliId.HasValue)
         {
-            var existsRepli = await _repliValidator
-               .ExistsByIdAsync(request.RepliId.Value,
-                cancellationToken);
+            var parent = await _repliValidator
+                .GetByIdAttachAsync(request.RepliId.Value,
+                    cancellationToken);
 
-            if (!existsRepli.IsSuccess)
+            if (!parent.IsSuccess)
             {
                 return Result<bool>
-                    .Fail(existsComment.Error);
+                    .Fail(parent.Error);
+            }
+
+            if (parent.Value!.CommentableEntityId !=
+                request.CommentableEntityId)
+            {
+                return Result<bool>.NotFound(
+                    EntityNameExtensions
+                        .GetLocalizedName<ReviewRepliComment>());
             }
         }
 

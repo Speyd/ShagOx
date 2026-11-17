@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Comments.Review;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Comments;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
@@ -32,6 +33,8 @@ public class ReviewRepliCommentInvalidationService
     public async Task InvalidateCreateAsync(
         CommentCacheInfo entityInfo)
     {
+        await _cache.RemoveByPatternAsync(ReviewRepliCommentCache.
+             ByReviewCommentPattern(entityInfo.CommentableEntityId));
     }
 
     public async Task InvalidateDeleteAsync(
@@ -60,7 +63,11 @@ public class ReviewRepliCommentInvalidationService
         CommentCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys.
-             Entity<ReviewComment>(entityInfo.Id));
+             Entity<ReviewRepliComment>(entityInfo.Id));
+
+        await _cache.RemoveAsync(CacheKeys.
+             Entity<ReviewRepliComment>(entityInfo.Id,
+                EntityStatus.ActiveAndHidden));
 
         await _cache.RemoveByPatternAsync(ReviewRepliCommentCache.
              ByReviewCommentPattern(entityInfo.CommentableEntityId));

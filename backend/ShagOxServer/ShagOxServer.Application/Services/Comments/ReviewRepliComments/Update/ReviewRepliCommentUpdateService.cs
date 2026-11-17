@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
@@ -60,8 +61,15 @@ public class ReviewRepliCommentUpdateService
         ReviewRepliCommentUpdateRequest request,
         CancellationToken cancellationToken = default)
     {
+        if (request.Text is not null &&
+            string.IsNullOrWhiteSpace(request.Text))
+        {
+            return Result<UpdateResponse>
+                .Fail(ValidationResources.CommentTextRequired);
+        }
+
         var comment = await _commitValidator
-            .GetByIdIncludeAsync(commentId, cancellationToken);
+            .GetByIdAttachAsync(commentId, cancellationToken);
         if (!comment.IsSuccess)
             return Result<UpdateResponse>.Fail(comment.Error);
 
@@ -80,8 +88,6 @@ public class ReviewRepliCommentUpdateService
 
         try
         {
-            _commitRepository.Update(comment.Value!);
-
             var imagesResult = await _executor.SyncAsync(
                 comment.Value!,
                 request.Pictures,

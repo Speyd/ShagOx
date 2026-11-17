@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Query;
+using ShagOxServer.Application.Services.Specification.Pictures.CategoryImages.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.CategoryImages.Query;
 
 namespace ShagOxServer.Application.DependencyInjections.Specification.Pictures;
@@ -10,7 +12,10 @@ public static class CategoryImageDependencyInjection
     {
         services.AddScoped<ICategoryImageQueryService,
             CategoryImageQueryService>();
-        //services.AddScoped<IAvatarCreateService, AvatarCreateService>();
+
+        services.AddScoped<ICategoryImageCreateService,
+            CategoryImageCreateService>();
+
         //services.AddScoped<IAvatarDeleteService, AvatarDeleteService>();
         //services.AddScoped<IAvatarUpdateService, AvatarUpdateService>();
 

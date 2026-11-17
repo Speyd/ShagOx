@@ -2,9 +2,6 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Create;

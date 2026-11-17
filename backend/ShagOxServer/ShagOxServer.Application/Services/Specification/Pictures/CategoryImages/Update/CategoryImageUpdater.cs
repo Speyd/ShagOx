@@ -6,14 +6,14 @@ namespace ShagOxServer.Application.Services.Specification.Pictures.CategoryImage
 public static class CategoryImageUpdater
 {
     public static int ApplyUpdates(
-       CategoryImage avatar,
+       CategoryImage image,
        PictureUpdateRequest request)
     {
         var updated = 0;
 
         if (request.OwnerId is not null)
         {
-            avatar.OwnerId = request.OwnerId.Value;
+            image.OwnerId = request.OwnerId.Value;
             updated++;
         }
 
@@ -21,7 +21,7 @@ public static class CategoryImageUpdater
     }
 
     public static int ApplyUpdates(
-        CategoryImage avatar,
+        CategoryImage image,
         PictureUpdateRequest request,
         PictureLoaderUploadResponse response)
     {
@@ -29,19 +29,19 @@ public static class CategoryImageUpdater
 
         if (request.OwnerId is not null)
         {
-            avatar.OwnerId = request.OwnerId.Value;
+            image.OwnerId = request.OwnerId.Value;
             updated++;
         }
 
         if (!string.IsNullOrWhiteSpace(response.Url))
         {
-            avatar.Url = response.Url;
+            image.Url = response.Url;
             updated++;
         }
 
         if (!string.IsNullOrWhiteSpace(response.PublicId))
         {
-            avatar.PublicId = response.PublicId;
+            image.PublicId = response.PublicId;
             updated++;
         }
 

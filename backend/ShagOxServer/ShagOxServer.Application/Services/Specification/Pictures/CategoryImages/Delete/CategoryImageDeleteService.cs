@@ -11,30 +11,31 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.CategoryImages.Delete;
 public class CategoryImageDeleteService
     : PictureDeleteService<CategoryImage>,
     ICategoryImageDeleteService
 {
-    private readonly CategoryImageInvalidationService _avatarInvalid;
+    private readonly CategoryImageInvalidationService _imageInvalid;
 
 
     public CategoryImageDeleteService(
-        IRepository<CategoryImage> avatarRepository,
-        CategoryImageValidator avatarValidator,
+        IRepository<CategoryImage> imageRepository,
+        CategoryImageValidator imageValidator,
         PictureValidator pictureValidator,
-        CategoryImageInvalidationService avatarInvalid,
+        CategoryImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CategoryImageDeleteService> logger
     )
-        : base(avatarRepository,
-            avatarValidator,
+        : base(imageRepository,
+            imageValidator,
             pictureValidator,
             unitOfWork,
             logger)
     {
-        _avatarInvalid = avatarInvalid;
+        _imageInvalid = imageInvalid;
     }
 
 
@@ -71,9 +72,9 @@ public class CategoryImageDeleteService
 
 
     public override async Task InvalidateCache(
-        CategoryImage avatar)
+        CategoryImage image)
     {
-        await _avatarInvalid.InvalidateDeleteAsync(
-            PictureCacheMapper.ToInfo(avatar));
+        await _imageInvalid.InvalidateDeleteAsync(
+            PictureCacheMapper.ToInfo(image));
     }
 }

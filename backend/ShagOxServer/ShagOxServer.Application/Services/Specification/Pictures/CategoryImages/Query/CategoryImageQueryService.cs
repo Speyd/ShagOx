@@ -26,7 +26,7 @@ public class CategoryImageQueryService
         >,
     ICategoryImageQueryService
 {
-    private readonly ICategoryImageQueryRepository _categoryQueryRepository;
+    private readonly ICategoryImageQueryRepository _imageRepository;
 
     protected override bool CacheBySearch => false;
 
@@ -34,13 +34,13 @@ public class CategoryImageQueryService
 
 
     public CategoryImageQueryService(
-        ICategoryImageQueryRepository categoryQueryRepository,
+        ICategoryImageQueryRepository imageRepository,
         IDataCacheService cacheService,
         IOptions<CacheOptions> settings
     )
-        : base(categoryQueryRepository, cacheService, settings)
+        : base(imageRepository, cacheService, settings)
     {
-        _categoryQueryRepository = categoryQueryRepository;
+        _imageRepository = imageRepository;
     }
 
 
@@ -51,18 +51,18 @@ public class CategoryImageQueryService
     }
 
     public async Task<Result<CategoryImageDto>> GetByCategoryIdAsync(
-        long categoryId,
+        long imageId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
     {
-        var cacheKey = CategoryImageCache.ByCategory(categoryId);
+        var cacheKey = CategoryImageCache.ByCategory(imageId);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,
             async () =>
             {
-                var image = await _categoryQueryRepository
-                    .GetByOwnerAsync(categoryId,
+                var image = await _imageRepository
+                    .GetByOwnerAsync(imageId,
                         cancellationToken, status);
 
                 return await image.ToResultAsync(

@@ -37,13 +37,15 @@ public partial class AdvertisementVariantUpdateService
         AdvertisementVariantValidator variantValidator,
         AdvertisementValidator advertValidator,
         AdvertisementVariantInvalidationService variantInvalid,
-        IAdvertisementVariantDeleteService deleteService,
+        IAdvertisementVariantDeleteService variantService,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantUpdateService> logger,
         IDataCacheService cache
     )
-        : base(deleteService, variantValidator, 
-            logger, unitOfWork)
+        : base(variantService, 
+            variantValidator, 
+            logger, 
+            unitOfWork)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;

@@ -6,8 +6,6 @@ using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.C
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
@@ -15,7 +13,6 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.Attri
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping.Catalog;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping.Core;
 using ShagOxServer.Application.Services.Base.Localized;
-using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeValues.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
@@ -28,12 +25,7 @@ public partial class AdvertisementVariantQueryService
         >,
     IAdvertisementVariantQueryService
 {
-    protected readonly IAdvertisementVariantQueryRepository _variantRepository;
-    protected readonly IAttributeDefinitionQueryRepository _attributeRepository;
-    protected readonly IAttributeDictionaryValueQueryRepository _valueRepository;
-    protected readonly IAttributeValueService _attributeProcessor;
-    protected readonly AttributeValueQueryService _variantAttributeService;
-
+    protected readonly IAttributeValueService _attributeValueService;
     protected readonly IPriceConversionService _priceConversion;
 
     protected readonly ILogger<AdvertisementVariantQueryService> _logger;
@@ -45,23 +37,16 @@ public partial class AdvertisementVariantQueryService
 
     public AdvertisementVariantQueryService(
         IAdvertisementVariantQueryRepository variantRepository,
-        IAttributeDefinitionQueryRepository attributeRepository,
-        IAttributeDictionaryValueQueryRepository valueRepository,
-        IAttributeValueService attributeProcessor,
-        AttributeValueQueryService variantAttributeService,
+        IAttributeValueService attributeValueService,
         IPriceConversionService priceConversion,
         ILogger<AdvertisementVariantQueryService> logger,
+        ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings,
-        ILanguageProvider language
+        IOptions<CacheOptions> settings
     )
         : base(variantRepository, language, cacheService, settings)
     {
-        _variantRepository = variantRepository;
-        _attributeRepository = attributeRepository;
-        _valueRepository = valueRepository;
-        _attributeProcessor = attributeProcessor;
-        _variantAttributeService = variantAttributeService;
+        _attributeValueService = attributeValueService;
         _priceConversion = priceConversion;
         _logger = logger;
     }
@@ -97,7 +82,7 @@ public partial class AdvertisementVariantQueryService
     private async Task<List<AttributeDto>> GetAttributesAsync(
         AdvertisementVariant entity)
     {
-        var result = await _attributeProcessor.GetAttributesAsync(
+        var result = await _attributeValueService.GetAttributesAsync(
             entity.Attributes,
             entity.Advertisement.CategoryId);
 

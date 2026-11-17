@@ -1,7 +1,8 @@
 using ShagOxServer.Domain.Base.Enum;
 
 namespace ShagOxServer.Application.DTOs.Specification.Pictures.AdvertisementImages.Query;
-public sealed record AdvertisementImageDto(
+public sealed record AdvertisementImageDto
+(
     long Id,
     EntityStatus EntityStatus,
     string Url,

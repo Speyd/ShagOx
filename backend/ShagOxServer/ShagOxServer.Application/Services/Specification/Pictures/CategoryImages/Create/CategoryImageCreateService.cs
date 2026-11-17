@@ -27,14 +27,14 @@ public partial class CategoryImageCreateService
     public CategoryImageCreateService(
         IRepository<CategoryImage> imageRepository,
         PictureValidator pictureValidator,
-        CategoryValidator imageValidator,
+        CategoryValidator categoryValidator,
         CategoryImageInvalidationService imageInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<CategoryImageCreateService> logger
     )
         : base(imageRepository,
             pictureValidator,
-            imageValidator,
+            categoryValidator,
             unitOfWork,
             logger)
     {

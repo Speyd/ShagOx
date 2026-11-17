@@ -459,4 +459,13 @@
   <data name="OrderUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить заказ.</value>
   </data>
+  <data name="CategoryImageCreateFailed" xml:space="preserve">
+    <value>Не удалось создать изображение категории.</value>
+  </data>
+  <data name="CategoryImageDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить изображение категории.</value>
+  </data>
+  <data name="CategoryImageUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить изображение категории.</value>
+  </data>
 </root>

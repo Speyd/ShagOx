@@ -58,7 +58,7 @@ public partial class CategoryImageCreateService
     }
 
     public override async Task<Result<PictureCreateResponse>> CreateInternalAsync(
-       PictureCreateRequest request,
+        PictureCreateRequest request,
         CancellationToken cancellationToken = default)
     {
         try
@@ -69,7 +69,7 @@ public partial class CategoryImageCreateService
         catch
         {
             return Result<PictureCreateResponse>.Fail(
-                EntityErrorResources.AvatarCreateFailed);
+                EntityErrorResources.CategoryImageCreateFailed);
         }
     }
 

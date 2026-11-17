@@ -160,6 +160,15 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Category image.
+        /// </summary>
+        public static string CategoryImage {
+            get {
+                return ResourceManager.GetString("CategoryImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Category translation.
         /// </summary>
         public static string CategoryTranslation {

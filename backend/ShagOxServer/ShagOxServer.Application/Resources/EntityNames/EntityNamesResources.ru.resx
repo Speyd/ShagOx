@@ -138,7 +138,7 @@
   <data name="AttributeDefinition" xml:space="preserve">
     <value>Определение атрибута</value>
   </data>
-  <data name="Category" xml:space="preserve">
+  <data name="\" xml:space="preserve">
     <value>Категория</value>
   </data>
   <data name="ProductType" xml:space="preserve">
@@ -227,5 +227,11 @@
   </data>
   <data name="Order" xml:space="preserve">
     <value>Заказ</value>
+  </data>
+  <data name="CategoryImage" xml:space="preserve">
+    <value>Изображение категории</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Категория</value>
   </data>
 </root>

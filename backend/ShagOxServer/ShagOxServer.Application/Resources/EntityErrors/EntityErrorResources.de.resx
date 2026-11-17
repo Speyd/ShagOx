@@ -459,4 +459,13 @@
   <data name="OrderUpdateFailed" xml:space="preserve">
     <value>Bestellung konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="CategoryImageCreateFailed" xml:space="preserve">
+    <value>Das Kategoriebild konnte nicht erstellt werden.</value>
+  </data>
+  <data name="CategoryImageDeleteFailed" xml:space="preserve">
+    <value>Das Kategoriebild konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="CategoryImageUpdateFailed" xml:space="preserve">
+    <value>Das Kategoriebild konnte nicht aktualisiert werden.</value>
+  </data>
 </root>

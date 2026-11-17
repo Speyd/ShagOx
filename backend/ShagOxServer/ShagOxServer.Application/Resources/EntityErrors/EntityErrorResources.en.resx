@@ -459,4 +459,13 @@
   <data name="OrderUpdateFailed" xml:space="preserve">
     <value>Failed to update order.</value>
   </data>
+  <data name="CategoryImageCreateFailed" xml:space="preserve">
+    <value>Failed to create category image.</value>
+  </data>
+  <data name="CategoryImageDeleteFailed" xml:space="preserve">
+    <value>Failed to delete category image.</value>
+  </data>
+  <data name="CategoryImageUpdateFailed" xml:space="preserve">
+    <value>Failed to update category image.</value>
+  </data>
 </root>

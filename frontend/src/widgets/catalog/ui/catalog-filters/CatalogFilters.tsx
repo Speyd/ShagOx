@@ -34,7 +34,7 @@ export function CatalogFilters({ filters }: { filters: CatalogFiltersState }) {
           <Accordion.Item value="price" className={styles.accordionItem}>
             <Accordion.Control className={styles.accordionControl}>
               <Text fw={600} fz={14}>
-                Ціна, ₴
+                Ціна, {filters.priceCurrency.symbol}
               </Text>
             </Accordion.Control>
             <Accordion.Panel>

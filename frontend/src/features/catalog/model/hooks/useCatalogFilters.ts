@@ -9,6 +9,7 @@ import {
   toSearchParams,
   type FilterState,
 } from "../filterGroups";
+import { usePriceCurrency } from "./usePriceCurrency";
 
 export function useCatalogFilters(categoryId?: number) {
   const { data: attributes, isLoading: isLoadingAttributes } =
@@ -24,11 +25,17 @@ export function useCatalogFilters(categoryId?: number) {
     [attributes, facets],
   );
 
+  const priceCurrency = usePriceCurrency(categoryId);
+  const { coefficient } = priceCurrency;
+
   const priceBounds = useMemo<[number, number] | null>(() => {
     if (facets?.minPrice == null || facets.maxPrice == null) return null;
     if (facets.minPrice === facets.maxPrice) return null;
-    return [Math.floor(facets.minPrice), Math.ceil(facets.maxPrice)];
-  }, [facets]);
+    return [
+      Math.floor(facets.minPrice * coefficient),
+      Math.ceil(facets.maxPrice * coefficient),
+    ];
+  }, [facets, coefficient]);
 
   const update = (change: (current: FilterState) => FilterState) =>
     setStored({ categoryId, value: change(state) });
@@ -52,14 +59,22 @@ export function useCatalogFilters(categoryId?: number) {
 
   const reset = () => update(() => EMPTY_FILTERS);
 
-  const searchParams = useMemo(
-    () => toSearchParams(debouncedState, groups),
-    [debouncedState, groups],
-  );
+  const searchParams = useMemo(() => {
+    const params = toSearchParams(debouncedState, groups);
+    if (!debouncedState.price) return params;
+
+    const [from, to] = debouncedState.price;
+    return {
+      ...params,
+      minPrice: Math.floor(from / coefficient),
+      maxPrice: Math.ceil(to / coefficient),
+    };
+  }, [debouncedState, groups, coefficient]);
 
   return {
     groups,
     priceBounds,
+    priceCurrency,
     state,
     setOptions,
     setRange,

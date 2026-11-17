@@ -8,12 +8,16 @@ type Chip = { id: string; label: string; remove: () => void };
 const formatPrice = (value: number) => value.toLocaleString("uk-UA");
 
 function buildChips(filters: CatalogFilters): Chip[] {
-  const { groups, state } = filters;
+  const { groups, state, priceCurrency } = filters;
   const chips: Chip[] = [];
 
   if (state.price) {
     const [from, to] = state.price;
-    chips.push({ id: "price", label: `${formatPrice(from)} – ${formatPrice(to)} ₴`, remove: () => filters.setPrice(null) });
+    chips.push({
+      id: "price",
+      label: `${formatPrice(from)} – ${formatPrice(to)} ${priceCurrency.symbol}`,
+      remove: () => filters.setPrice(null),
+    });
   }
 
   for (const group of groups) {

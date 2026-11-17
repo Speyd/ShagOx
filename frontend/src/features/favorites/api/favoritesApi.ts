@@ -13,6 +13,19 @@ export async function getFavorites(
   return response.data;
 }
 
+const ALL_FAVORITES_PAGE_SIZE = 100;
+
+export async function getAllFavorites(): Promise<Favorite[]> {
+  const first = await getFavorites(1, ALL_FAVORITES_PAGE_SIZE);
+  const rest = await Promise.all(
+    Array.from({ length: first.totalPages - 1 }, (_, index) =>
+      getFavorites(index + 2, ALL_FAVORITES_PAGE_SIZE),
+    ),
+  );
+
+  return [first, ...rest].flatMap((page) => page.items);
+}
+
 export async function addToFavorites(request: FavoriteCreateRequest) {
   const response = await api.post("/favorites", request);
 

@@ -7,7 +7,7 @@ import {
   type MouseEvent,
 } from "react";
 import { TextInput, Loader, Text } from "@mantine/core";
-import { useDebouncedValue } from "@mantine/hooks";
+import { useDebouncedValue, useMediaQuery } from "@mantine/hooks";
 import styles from "./SearchInput.module.css";
 import {
   Search,
@@ -22,7 +22,7 @@ import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getCatalogAdvertisements } from "@/entities/advertisement/api/api";
 import { useGetCategories } from "@/entities/advertisement/model/hooks/useGetCategories";
-import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
+import { toDisplayPrice } from "@/entities/advertisement/lib/price";
 
 const SEARCH_HISTORY_KEY = "marketly_search_history";
 const MAX_HISTORY_ITEMS = 6;
@@ -57,15 +57,20 @@ export default function SearchInput() {
   const [value, setValue] = useState(queryFromUrl);
   const [isOpen, setIsOpen] = useState(false);
   const [history, setHistory] = useState<string[]>(loadSearchHistory);
+  const isCompact = useMediaQuery("(max-width: 639px)", false, {
+    getInitialValueInEffect: false,
+  });
 
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [debouncedSearch] = useDebouncedValue(value.trim(), 350);
 
-  useEffect(() => {
+  const [syncedQuery, setSyncedQuery] = useState(queryFromUrl);
+  if (syncedQuery !== queryFromUrl) {
+    setSyncedQuery(queryFromUrl);
     setValue(queryFromUrl);
-  }, [queryFromUrl]);
+  }
 
   const { data: categories = [] } = useGetCategories();
 
@@ -188,7 +193,7 @@ export default function SearchInput() {
             setValue(e.currentTarget.value);
             setIsOpen(true);
           }}
-          rightSectionWidth={value ? 76 : 44}
+          rightSectionWidth={isCompact ? (value ? 62 : 36) : value ? 76 : 44}
           rightSection={
             <div className={styles.rightSection}>
               {value && (
@@ -199,7 +204,7 @@ export default function SearchInput() {
                   aria-label="Очистити поле пошуку"
                   title="Очистити"
                 >
-                  <X size={16} />
+                  <X size={isCompact ? 14 : 16} />
                 </button>
               )}
               <button
@@ -208,11 +213,11 @@ export default function SearchInput() {
                 aria-label="Шукати"
                 title="Шукати"
               >
-                <Search size={18} />
+                <Search size={isCompact ? 16 : 18} />
               </button>
             </div>
           }
-          size="lg"
+          size={isCompact ? "md" : "lg"}
           className={styles.searchInput}
           aria-expanded={isOpen}
           aria-autocomplete="list"
@@ -342,8 +347,14 @@ export default function SearchInput() {
                       <div className={styles.productsList}>
                         {suggestions.map((item) => {
                           const imageUrl = item.picture?.url;
-                          const price = getAdvertisementPrice(item);
-                          const inStock = item.variants.some((variant) => variant.stock > 0);
+                          const price = toDisplayPrice(
+                            item.variants[0]?.price ?? item.price ?? 0,
+                            item.priceConversion?.price,
+                            "₴",
+                          );
+                          const inStock =
+                            item.variants.length === 0 ||
+                            item.variants.some((variant) => variant.stock > 0);
 
                           return (
                             <Link
@@ -376,7 +387,8 @@ export default function SearchInput() {
                                 </span>
                                 <div className={styles.productMeta}>
                                   <span className={styles.productPrice}>
-                                    {price.toLocaleString("uk-UA")} ₴
+                                    {price.amount.toLocaleString("uk-UA")}{" "}
+                                    {price.symbol}
                                   </span>
                                   {inStock ? (
                                     <span className={styles.inStockBadge}>

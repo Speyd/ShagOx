@@ -365,17 +365,20 @@
   font-size: 14px;
   font-weight: 700;
   color: var(--color-base);
+  white-space: nowrap;
 }
 
 .inStockBadge {
   font-size: 12px;
   font-weight: 600;
   color: #16a34a;
+  white-space: nowrap;
 }
 
 .outOfStockBadge {
   font-size: 12px;
   color: #94a3b8;
+  white-space: nowrap;
 }
 
 .viewAllButton {
@@ -408,4 +411,91 @@
   justify-content: center;
   padding: 36px 20px;
   text-align: center;
+}
+
+@media (max-width: 639px) {
+  .searchContainer {
+    min-width: 0;
+  }
+
+  .searchInput input {
+    font-size: 14px !important;
+    border-radius: 10px !important;
+  }
+
+  .searchInput input::placeholder {
+    font-size: 13px;
+  }
+
+  .rightSection {
+    gap: 2px;
+    padding-right: 4px;
+  }
+
+  .clearButton {
+    width: 22px;
+    height: 22px;
+  }
+
+  .searchButton {
+    width: 28px;
+    height: 28px;
+  }
+
+  .dropdown {
+    position: fixed;
+    top: calc(var(--header-height, 104px) + 4px);
+    left: 8px;
+    right: 8px;
+    max-height: calc(100dvh - var(--header-height, 104px) - 88px);
+    border-radius: 10px;
+  }
+
+  .section {
+    padding: 12px;
+  }
+
+  .categoryChip {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .categorySuggestionItem {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .previewHeader {
+    padding: 8px 12px 4px;
+  }
+
+  .productItem {
+    gap: 10px;
+    padding: 8px 12px;
+  }
+
+  .productImage,
+  .productImagePlaceholder {
+    width: 40px;
+    height: 40px;
+  }
+
+  .productTitle {
+    font-size: 13px;
+  }
+
+  .productMeta {
+    gap: 8px;
+  }
+
+  .productPrice {
+    font-size: 13px;
+  }
+
+  .viewAllButton {
+    gap: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    text-align: left;
+  }
 }

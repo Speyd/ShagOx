@@ -1,10 +1,14 @@
-import { Button, Group, Modal, Text } from "@mantine/core";
+import { Modal, Text } from "@mantine/core";
 import styles from "./ConfirmModal.module.css";
+import { type LucideIcon } from "lucide-react";
+import Button from "../../buttons/button";
 
 type ConfirmModalProps = {
   opened: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  icon?: LucideIcon;
+  iconProps?: { size?: number; color?: string; className?: string };
   title: string;
   message: string;
   confirmLabel: string;
@@ -13,6 +17,8 @@ type ConfirmModalProps = {
 };
 
 export default function ConfirmModal({
+  icon: Icon,
+  iconProps,
   opened,
   onClose,
   onConfirm,
@@ -26,31 +32,45 @@ export default function ConfirmModal({
     <Modal
       opened={opened}
       onClose={onClose}
-      title={title}
       centered
-      radius="md"
+      radius="lg"
+      size="sm"
+      withCloseButton={false}
       zIndex={1002}
       classNames={{
-        title: styles.title,
+        header: styles.header,
         content: styles.content,
         body: styles.body,
       }}
     >
+      {Icon && <Icon {...iconProps} />}
+
+      <Text className={styles.title}>{title}</Text>
+
       <Text className={styles.message}>{message}</Text>
 
-      <Group className={styles.actions} justify="flex-end" gap="sm">
-        <Button variant="default" onClick={onClose} disabled={isLoading}>
+      <div className="divider" />
+
+      <div className={styles.actions}>
+        <Button
+          variant="light"
+          onClick={onClose}
+          disabled={isLoading}
+          className={styles.button}
+        >
           Скасувати
         </Button>
 
         <Button
+          variant="danger"
           onClick={onConfirm}
           loading={isLoading}
           color={confirmColor}
+          className={styles.button}
         >
           {confirmLabel}
         </Button>
-      </Group>
+      </div>
     </Modal>
   );
 }

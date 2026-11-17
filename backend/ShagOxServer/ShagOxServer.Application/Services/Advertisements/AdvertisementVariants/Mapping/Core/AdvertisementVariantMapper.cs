@@ -1,9 +1,9 @@
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Core;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.Core.Query;
 using ShagOxServer.Domain.Entities.Advertisements;
 
-namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping;
+namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping.Core;
 public static class AdvertisementVariantMapper
 {
     public static AdvertisementVariantDto ToDto(

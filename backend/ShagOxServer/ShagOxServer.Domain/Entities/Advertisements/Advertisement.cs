@@ -1,5 +1,6 @@
 using ShagOxServer.Domain.Base.Owner;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification;
@@ -22,6 +23,9 @@ public class Advertisement
     /// Previous product price used for displaying discounts and price changes.
     /// </summary>
     public decimal? PreviousPrice { get; set; } = null;
+
+
+    public int Stock { get; set; }
 
 
     /// <summary>
@@ -76,6 +80,9 @@ public class Advertisement
         = [];
 
     public ICollection<ReviewComment> ReviewComments { get; set; }
+        = [];
+
+    public ICollection<BasketItem> BasketItems { get; set; }
         = [];
 
 

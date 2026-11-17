@@ -6,10 +6,12 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
+using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -21,7 +23,8 @@ public class BasketItemCreateService
     private readonly BasketItemValidator _itemValidator;
 
     private readonly BasketValidator _basketValidator;
-    private readonly AdvertisementVariantValidator _advertValidator;
+    private readonly AdvertisementVariantValidator _advertVariantValidator;
+    private readonly AdvertisementValidator _advertValidator;
 
     private readonly BasketItemBasketInvalidationService _basketInvalidation;
 
@@ -35,7 +38,8 @@ public class BasketItemCreateService
         IRepository<BasketItem> itemRepository,
         BasketItemValidator itemValidator,
         BasketValidator basketValidator,
-        AdvertisementVariantValidator advertValidator,
+        AdvertisementVariantValidator advertVariantValidator,
+        AdvertisementValidator advertValidator,
         BasketItemBasketInvalidationService basketInvalidation,
         BasketItemInvalidationService itemInvalid,
         IUnitOfWork unitOfWork,
@@ -44,6 +48,7 @@ public class BasketItemCreateService
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;
         _basketValidator = basketValidator;
+        _advertVariantValidator = advertVariantValidator;
         _advertValidator = advertValidator;
         _basketInvalidation = basketInvalidation;
         _itemInvalid = itemInvalid;
@@ -56,23 +61,14 @@ public class BasketItemCreateService
         BasketItemCreateRequest request,
         CancellationToken cancellationToken = default)
     {
-        var basketExists = await _basketValidator
-            .ExistsByIdAsync(request.BasketId, cancellationToken);
-        if (!basketExists.IsSuccess)
-            return Result<CreateResponse>.Fail(basketExists.Error);
+        var validation = await ValidateAndGetStockAsync(
+            request,
+            cancellationToken);
 
-        var variant = await _advertValidator
-            .GetByIdAsync(request.AdvertisementVariantId, cancellationToken);
-        if (!variant.IsSuccess)
-            return Result<CreateResponse>.Fail(variant.Error);
+        if (!validation.IsSuccess)
+            return Result<CreateResponse>.Fail(validation.Error);
 
-        var itemExists = await _itemValidator
-           .NotExistsAsync(request.AdvertisementVariantId,
-                request.BasketId, cancellationToken);
-        if (!itemExists.IsSuccess)
-            return Result<CreateResponse>.Fail(itemExists.Error);
-
-        var item = BasketItemCreater.Create(variant.Value!, request);
+        var item = BasketItemCreater.Create(request, validation.Value!);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -118,5 +114,53 @@ public class BasketItemCreateService
                 item.Id,
                 DateTime.UtcNow
         ));
+    }
+
+    private async Task<Result<int>> ValidateAndGetStockAsync(
+        BasketItemCreateRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var basketExists = await _basketValidator
+            .ExistsByIdAsync(request.BasketId, cancellationToken);
+        if (!basketExists.IsSuccess)
+            return Result<int>.Fail(basketExists.Error);
+
+        Advertisement? advert = null;
+        AdvertisementVariant? variant = null;
+
+
+        if (!request.AdvertisementVariantId.HasValue)
+        {
+            var advertExists = await _advertValidator
+                .GetByIdAsync(request.AdvertisementId, cancellationToken);
+
+            if (!advertExists.IsSuccess || advertExists.Value is null)
+                return Result<int>.Fail(advertExists.Error);
+
+            advert = advertExists.Value;
+        }
+        else
+        {
+            var variantExists = await _advertVariantValidator.GetByIdAsync(
+                request.AdvertisementVariantId.Value,
+                cancellationToken);
+
+            if (!variantExists.IsSuccess)
+                return Result<int>.Fail(variantExists.Error);
+
+            variant = variantExists.Value;
+        }
+
+        var itemExists = await _itemValidator.NotExistsAsync(
+            request.AdvertisementId,
+            request.AdvertisementVariantId,
+            request.BasketId, 
+            cancellationToken
+        );
+
+        if (!itemExists.IsSuccess)
+            return Result<int>.Fail(itemExists.Error);
+
+        return Result<int>.Success(variant?.Stock ?? advert!.Stock);
     }
 }

@@ -28,7 +28,9 @@ public static class AdvertisementQueryExtensions
         return query
             .AsSplitQuery()
             .Include(x => x.Variants)
-            .Include(x => x.Pictures)
+            .Include(x => x.Pictures
+                .OrderBy(p => p.Order)
+                .Take(1))
             .Include(x => x.Currency);
     }
 

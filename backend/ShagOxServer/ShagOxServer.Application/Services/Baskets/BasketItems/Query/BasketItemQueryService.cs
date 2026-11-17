@@ -11,7 +11,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Services.Advertisements.Core.Mapping;
+using ShagOxServer.Application.Services.Advertisements.Core.Mapping.Core;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;
@@ -73,36 +73,44 @@ public class BasketItemQueryService
         BasketItem entity)
     {
         await PrepareAttributesForMappingAsync(
+            entity.Advertisement,
             entity.AdvertisementVariant);
 
 
-        var advert = entity.AdvertisementVariant.Advertisement;
         var converts = await _advertisementService
-            .ConvertPricesAsync(advert);
+            .ConvertPricesAsync(entity.Advertisement);
 
         var statusDto = await _statusService
-            .ApplyMapperAsync(advert.Status);
+            .ApplyMapperAsync(entity.Advertisement.Status);
 
         var advertDto = AdvertisementShortMapper
-            .ToDto(advert, converts, statusDto);
+            .ToDto(entity.Advertisement, converts, statusDto);
 
         return BasketItemMapper.ToDto(entity, advertDto);
     }
 
     public async Task PrepareAttributesForMappingAsync(
-        AdvertisementVariant advert)
+        Advertisement advert,
+        AdvertisementVariant? variant)
     {
-        var variantKeys = await _attributeRepository.ExistsByKeysAsync(
-            advert.Attributes,
-            advert.Advertisement.CategoryId);
+        if(variant is not null)
+        {
+            var variantKeys =  await _attributeRepository
+                .ExistsByKeysAsync(
+                    variant.Attributes,
+                    advert.CategoryId);
+
+            variant.Attributes = FilterAttributes(variant.Attributes, variantKeys);
+        }
+        
 
         var advertisementKeys = await _attributeRepository.ExistsByKeysAsync(
-            advert.Advertisement.Attributes,
-            advert.Advertisement.CategoryId);
+            advert.Attributes,
+            advert.CategoryId);
 
-        advert.Attributes = FilterAttributes(advert.Attributes, variantKeys);
-        advert.Advertisement.Attributes = FilterAttributes(
-            advert.Advertisement.Attributes,
+        
+        advert.Attributes = FilterAttributes(
+            advert.Attributes,
             advertisementKeys);
     }
 
@@ -119,33 +127,7 @@ public class BasketItemQueryService
             JsonSerializer.Serialize(filtered));
     }
 
-    public async Task<Result<PagedResult<BasketItemDto>>> GetByAdvertisementVariantAsync(
-        long variantId,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active)
-    {
-        var cacheKey = BasketItemCache.ByAdvertisementVariant(
-            variantId,
-            _language.Language,
-            pagination.Page,
-            pagination.PageSize,
-            status);
-
-        return await _cache.GetOrCreateAsync(
-            cacheKey,
-            async () =>
-            {
-                var items = await _itemQueryRepository
-                    .GetByAdvertisementVariantAsync(variantId, pagination,
-                        cancellationToken, status);
-
-                return await items.ToResultPagedAsync(ApplyMapperAsync);
-            },
-            _settings.KeyExpiration
-        );
-    }
-
+   
     public async Task<Result<PagedResult<BasketItemDto>>> GetByBasketAsync(
         long basketId, 
         PaginationParams pagination,

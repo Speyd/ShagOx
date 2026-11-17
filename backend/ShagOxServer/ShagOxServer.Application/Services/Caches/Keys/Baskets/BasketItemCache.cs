@@ -7,23 +7,6 @@ public static class BasketItemCache
     private static readonly string Prefix =
         CacheKeys.LanguagePrefix<BasketItem>();
 
-    public static string ByAdvertisementVariant(
-        long variantId,
-        string language,
-        int page,
-        int pageSize,
-        EntityStatus status = EntityStatus.Active)
-             => $"{Prefix}:{language}:status:{status}:advertisement-variant:{variantId}:page:{page}:size:{pageSize}";
-
-    public static string ByAdvertisementVariantPattern(
-        long variantId,
-        EntityStatus status)
-           => $"{Prefix}:*:status:{status}:advertisement-variant:{variantId}:page:*";
-
-    public static string ByAdvertisementVariantPattern(
-        long variantId)
-           => $"{Prefix}:*:advertisement-variant:{variantId}:page:*";
-
 
     public static string ByBasket(
         long basketId,

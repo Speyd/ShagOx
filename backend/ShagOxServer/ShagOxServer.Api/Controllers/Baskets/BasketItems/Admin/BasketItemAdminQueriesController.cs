@@ -47,20 +47,6 @@ public class BasketItemAdminQueriesController
         return result.ToActionResult();
     }
 
-    [HttpGet("advertisement/{id:long}")]
-    public async Task<IActionResult> GetByAdvertisement(
-        [FromRoute] long id,
-        [FromQuery] PaginationParams pagination,
-        [FromQuery] EntityStatus status,
-        CancellationToken cancellationToken)
-    {
-        var result = await _itemQueryService
-            .GetByAdvertisementVariantAsync(id, pagination,
-                cancellationToken, status);
-
-        return result.ToActionResult();
-    }
-
     [HttpGet("user/{id:long}")]
     public async Task<IActionResult> GetPaged(
         [FromRoute] long id,

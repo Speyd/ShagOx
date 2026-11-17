@@ -1,4 +1,4 @@
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Core;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Domain.Entities.Advertisements;
 

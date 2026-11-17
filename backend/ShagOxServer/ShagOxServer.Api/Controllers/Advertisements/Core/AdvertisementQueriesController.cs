@@ -47,8 +47,8 @@ public class AdvertisementQueriesController
         CancellationToken cancellationToken)
     {
         var result = await _advertQueryService
-            .GetCatalogPagedAsync(pagination,
-                cancellationToken);
+            .GetCatalogPagedAsync(UserId, 
+                pagination, cancellationToken);
 
         return result.ToActionResult();
     }
@@ -117,8 +117,8 @@ public class AdvertisementQueriesController
         filter = AdvertisementSearchFilter.Create(filter);
 
         var result = await _advertQueryService
-            .CatalogSearchAsync(filter, pagination,
-                cancellationToken);
+            .CatalogSearchAsync(UserId, filter, 
+                pagination,cancellationToken);
 
         return result.ToActionResult();
     }

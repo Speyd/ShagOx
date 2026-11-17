@@ -54,5 +54,4 @@ public static class EntityStatusExtensions
             _ => query.Where(x => x.EntityStatus == EntityStatus.Active)
         };
     }
-
 }

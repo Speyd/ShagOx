@@ -12,12 +12,13 @@ public static class BasketItemQueryExtensions
         return query
             .AsSplitQuery()
             .Include(x => x.AdvertisementVariant)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Pictures)
 
-            .Include(x => x.AdvertisementVariant)
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Status)
+            .Include(x => x.Advertisement)
+                .ThenInclude(x => x.Pictures
+                    .OrderBy(p => p.Order)
+                    .Take(1))
+            .Include(x => x.Advertisement)
+                .ThenInclude(x => x.Status)
 
             .Include(x => x.Basket);
     }
@@ -29,6 +30,7 @@ public static class BasketItemQueryExtensions
         return query.Select(x => new BasketItemCacheInfo(
             x.Id,
             x.BasketId,
+            x.AdvertisementId,
             x.AdvertisementVariantId,
             status));
     }

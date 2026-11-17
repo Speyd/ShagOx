@@ -1,6 +1,7 @@
 import { Button, Group, Rating, Text, Textarea } from "@mantine/core";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { CommentImage } from "@/entities/review";
 import {
   REVIEW_TEXT_MAX,
   reviewSchema,
@@ -13,8 +14,7 @@ const GRADE_LABELS = ["", "Жахливо", "Погано", "Нормально"
 
 type ReviewFormProps = {
   defaultValues?: Partial<ReviewFormValues>;
-  /** Фото можна додати лише при створенні: редагування змінює текст і оцінку */
-  withPhotos?: boolean;
+  existingPictures?: CommentImage[];
   submitLabel: string;
   isPending: boolean;
   onSubmit: (values: ReviewFormValues) => void;
@@ -23,17 +23,29 @@ type ReviewFormProps = {
 
 export function ReviewForm({
   defaultValues,
-  withPhotos = false,
+  existingPictures = [],
   submitLabel,
   isPending,
   onSubmit,
   onCancel,
 }: ReviewFormProps) {
-  const { control, handleSubmit } = useForm<ReviewFormValues>({
+  const { control, handleSubmit, setValue } = useForm<ReviewFormValues>({
     resolver: zodResolver(reviewSchema),
-    defaultValues: { grade: 0, text: "", pictures: [], ...defaultValues },
+    defaultValues: {
+      grade: 0,
+      text: "",
+      pictures: [],
+      keptPictureIds: existingPictures.map((picture) => picture.id),
+      ...defaultValues,
+    },
   });
-  const [grade, text] = useWatch({ control, name: ["grade", "text"] });
+  const [grade, text, keptPictureIds] = useWatch({
+    control,
+    name: ["grade", "text", "keptPictureIds"],
+  });
+  const keptPictures = existingPictures.filter((picture) =>
+    keptPictureIds.includes(picture.id),
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form} noValidate>
@@ -84,19 +96,24 @@ export function ReviewForm({
         )}
       />
 
-      {withPhotos && (
-        <Controller
-          control={control}
-          name="pictures"
-          render={({ field, fieldState }) => (
-            <ReviewPhotosInput
-              value={field.value}
-              onChange={field.onChange}
-              error={fieldState.error?.message}
-            />
-          )}
-        />
-      )}
+      <Controller
+        control={control}
+        name="pictures"
+        render={({ field, fieldState }) => (
+          <ReviewPhotosInput
+            existing={keptPictures}
+            onRemoveExisting={(id) =>
+              setValue(
+                "keptPictureIds",
+                keptPictureIds.filter((keptId) => keptId !== id),
+              )
+            }
+            value={field.value}
+            onChange={field.onChange}
+            error={fieldState.error?.message}
+          />
+        )}
+      />
 
       <Group justify="flex-end" gap="sm">
         <Button variant="default" onClick={onCancel} disabled={isPending}>

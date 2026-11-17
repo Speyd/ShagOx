@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Badge, Button, Group, Loader, Text } from "@mantine/core";
+import { Badge, Skeleton, Text } from "@mantine/core";
+import {
+  CornerDownRight,
+  MessageCircle,
+  Pencil,
+  Trash2,
+  Trash2Icon,
+} from "lucide-react";
 import {
   CommentAuthor,
   getOwnerName,
@@ -7,8 +14,9 @@ import {
   type ReviewReply,
 } from "@/entities/review";
 import { ReplyForm, useReplyMutations } from "@/features/review/manage-reply";
-import { confirmDelete } from "@/shared/lib/confirmDelete";
+import Button from "@/shared/ui/buttons/button";
 import styles from "./ReviewsSection.module.css";
+import ConfirmModal from "@/shared/ui/feedback/confirm-modal";
 
 export type ReplyTarget = { parentReplyId: number | null; name: string };
 
@@ -17,16 +25,11 @@ type ReviewRepliesProps = {
   advertisementId: number;
   sellerId?: number;
   currentUserId?: number;
-  /** Кому зараз відповідаємо (null — форма відповіді закрита) */
   replyTarget: ReplyTarget | null;
   onReply: (target: ReplyTarget) => void;
   onCloseReply: () => void;
 };
 
-/**
- * Відповіді на відгук — пласкою стрічкою за часом (як у більшості маркетплейсів).
- * Відповідь на відповідь позначається «у відповідь ...».
- */
 export function ReviewReplies({
   reviewId,
   advertisementId,
@@ -37,10 +40,15 @@ export function ReviewReplies({
   onCloseReply,
 }: ReviewRepliesProps) {
   const { data: replies = [], isLoading } = useGetReviewReplies(reviewId, true);
-  const { create, update, remove } = useReplyMutations(reviewId, advertisementId);
+  const { create, update, remove } = useReplyMutations(
+    reviewId,
+    advertisementId,
+  );
   const [editingId, setEditingId] = useState<number | null>(null);
 
   const namesById = new Map(replies.map((r) => [r.id, getOwnerName(r.owner)]));
+
+  const [replyToDelete, setReplyToDelete] = useState<ReviewReply | null>(null);
 
   const handleCreate = (text: string) =>
     create.mutate(
@@ -48,26 +56,53 @@ export function ReviewReplies({
       { onSuccess: onCloseReply },
     );
 
-  const handleDelete = (reply: ReviewReply) =>
-    confirmDelete({
-      title: "Видалити відповідь",
-      message: "Ви дійсно бажаєте видалити цю відповідь?",
-      onConfirm: () => remove.mutate(reply.id),
+  const handleUpdate = (id: number, text: string) =>
+    update.mutate({ id, text }, { onSuccess: () => setEditingId(null) });
+
+  const handleConfirmDelete = () => {
+    if (!replyToDelete) return;
+
+    remove.mutate(replyToDelete.id, {
+      onSuccess: () => {
+        if (editingId === replyToDelete.id) setEditingId(null);
+        setReplyToDelete(null);
+      },
     });
+  };
+
+  const startEdit = (id: number) => {
+    onCloseReply();
+    setEditingId(id);
+  };
+
+  const startReply = (target: ReplyTarget) => {
+    setEditingId(null);
+    onReply(target);
+  };
+
+  if (isLoading) {
+    return (
+      <div className={styles.replies}>
+        <Skeleton height={100} radius="md" />
+      </div>
+    );
+  }
+
+  if (replies.length === 0 && !replyTarget) return null;
 
   return (
     <div className={styles.replies}>
-      {isLoading && <Loader size="sm" />}
-
       {replies.map((reply) => {
         const isOwner = reply.owner.id === currentUserId;
+        const isEditing = editingId === reply.id;
+        const isDeleting = remove.isPending && remove.variables === reply.id;
         const parentName = reply.parentReplyId
           ? namesById.get(reply.parentReplyId)
           : undefined;
 
         return (
           <div key={reply.id} className={styles.reply}>
-            <Group gap="xs">
+            <div className={styles.authorRow}>
               <CommentAuthor
                 owner={reply.owner}
                 createdAt={reply.createdAt}
@@ -79,19 +114,14 @@ export function ReviewReplies({
                   Продавець
                 </Badge>
               )}
-            </Group>
+            </div>
 
-            {editingId === reply.id ? (
+            {isEditing ? (
               <ReplyForm
                 initialText={reply.text}
                 submitLabel="Зберегти"
                 isPending={update.isPending}
-                onSubmit={(text) =>
-                  update.mutate(
-                    { id: reply.id, text },
-                    { onSuccess: () => setEditingId(null) },
-                  )
-                }
+                onSubmit={(text) => handleUpdate(reply.id, text)}
                 onCancel={() => setEditingId(null)}
               />
             ) : (
@@ -105,13 +135,15 @@ export function ReviewReplies({
               </Text>
             )}
 
-            {currentUserId && editingId !== reply.id && (
-              <Group gap={4}>
+            {currentUserId && !isEditing && (
+              <div className={styles.actions}>
                 <Button
-                  size="compact-xs"
-                  variant="subtle"
+                  variant="ghost"
+                  size="sm"
+                  leftSection={MessageCircle}
+                  iconProps={{ size: 14 }}
                   onClick={() =>
-                    onReply({
+                    startReply({
                       parentReplyId: reply.id,
                       name: getOwnerName(reply.owner),
                     })
@@ -122,24 +154,29 @@ export function ReviewReplies({
                 {isOwner && (
                   <>
                     <Button
-                      size="compact-xs"
-                      variant="subtle"
-                      color="gray"
-                      onClick={() => setEditingId(reply.id)}
+                      variant="ghost"
+                      size="sm"
+                      leftSection={Pencil}
+                      iconProps={{ size: 14 }}
+                      onClick={() => startEdit(reply.id)}
+                      disabled={isDeleting}
                     >
                       Редагувати
                     </Button>
                     <Button
-                      size="compact-xs"
-                      variant="subtle"
-                      color="red"
-                      onClick={() => handleDelete(reply)}
+                      variant="ghost"
+                      size="sm"
+                      className={styles.dangerAction}
+                      leftSection={Trash2}
+                      iconProps={{ size: 14 }}
+                      onClick={() => setReplyToDelete(reply)}
+                      loading={isDeleting}
                     >
                       Видалити
                     </Button>
                   </>
                 )}
-              </Group>
+              </div>
             )}
           </div>
         );
@@ -148,8 +185,8 @@ export function ReviewReplies({
       {replyTarget && (
         <div className={styles.reply}>
           {replyTarget.parentReplyId && (
-            <Text fz={12} c="dimmed" mb={4}>
-              У відповідь {replyTarget.name}
+            <Text fz={12} c="dimmed" className={styles.replyTo}>
+              <CornerDownRight size={12} />У відповідь {replyTarget.name}
             </Text>
           )}
           <ReplyForm
@@ -160,6 +197,19 @@ export function ReviewReplies({
           />
         </div>
       )}
+
+      <ConfirmModal
+        opened={Boolean(replyToDelete)}
+        onClose={() => setReplyToDelete(null)}
+        icon={Trash2Icon}
+        iconProps={{ size: 32, color: "var(--mantine-color-red-6)" }}
+        title="Видалити відповідь"
+        message="Ви дійсно бажаєте видалити цю відповідь? Цю дію неможливо скасувати."
+        confirmLabel="Видалити"
+        confirmColor="red"
+        onConfirm={handleConfirmDelete}
+        isLoading={remove.isPending}
+      />
     </div>
   );
 }

@@ -43,7 +43,7 @@ export function RatingSummary({
             <span className={styles.compactCount}>({count})</span>
           </>
         ) : (
-          <span className={styles.compactCount}>Немає відгуків</span>
+          <span className={styles.noReviewsText}>Немає відгуків</span>
         )}
       </span>
     );

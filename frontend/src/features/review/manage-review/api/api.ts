@@ -7,10 +7,18 @@ export type CreateReviewPayload = {
   pictures: File[];
 };
 
+export type ReviewPictureChange = {
+  id?: number;
+  file?: File;
+  order: number;
+  isDeleted: boolean;
+};
+
 export type UpdateReviewPayload = {
   id: number;
   text: string;
   grade: number;
+  pictures?: ReviewPictureChange[];
 };
 
 export async function createReview(payload: CreateReviewPayload) {
@@ -24,9 +32,23 @@ export async function createReview(payload: CreateReviewPayload) {
   return data;
 }
 
-export async function updateReview({ id, text, grade }: UpdateReviewPayload) {
-  // Pictures = null → фото залишаються без змін
-  await api.put(`/review-comment/${id}`, { text, grade, pictures: null });
+export async function updateReview({ id, text, grade, pictures }: UpdateReviewPayload) {
+  const formData = new FormData();
+  formData.append("Text", text);
+  formData.append("Grade", String(grade));
+
+  pictures?.forEach((picture, index) => {
+    if (picture.id != null) {
+      formData.append(`Pictures[${index}].Id`, String(picture.id));
+    }
+    if (picture.file) {
+      formData.append(`Pictures[${index}].File`, picture.file);
+    }
+    formData.append(`Pictures[${index}].Order`, String(picture.order));
+    formData.append(`Pictures[${index}].IsDeleted`, String(picture.isDeleted));
+  });
+
+  await api.put(`/review-comment/${id}`, formData);
 }
 
 export async function deleteReview(id: number) {

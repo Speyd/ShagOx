@@ -2,7 +2,6 @@ import { api } from "@/shared/api/api";
 
 export type CreateReplyPayload = {
   reviewId: number;
-  /** id відповіді, на яку відповідаємо (null — відповідь на сам відгук) */
   parentReplyId: number | null;
   text: string;
 };

@@ -4,10 +4,6 @@ import { reviewKeys } from "@/entities/review";
 import { getErrorMessage } from "@/shared/api/getErrorMessage";
 import { createReply, deleteReply, updateReply } from "../api/api";
 
-/**
- * Мутації відповідей на конкретний відгук. Після змін оновлюємо самі відповіді
- * та відгуки оголошення (лічильник repliesCount).
- */
 export function useReplyMutations(reviewId: number, advertisementId: number) {
   const queryClient = useQueryClient();
 

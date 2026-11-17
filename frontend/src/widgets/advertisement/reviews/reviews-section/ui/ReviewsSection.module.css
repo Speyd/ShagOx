@@ -105,14 +105,36 @@
   overflow-wrap: anywhere;
 }
 
-/* ---------- відповіді ---------- */
+.authorRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-left: -12px;
+}
+
+.dangerAction {
+  color: #dc2626;
+}
+
+.dangerAction:hover:not(:disabled) {
+  background-color: #fef2f2;
+}
 
 .replies {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-left: 20px;
-  padding-left: 16px;
+  gap: 18px;
+  margin-top: 4px;
+  margin-left: 18px;
+  padding-left: 18px;
   border-left: 2px solid #e2e8f0;
 }
 
@@ -120,6 +142,12 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.replyTo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 @media (max-width: 768px) {

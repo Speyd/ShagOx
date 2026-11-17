@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Skeleton, Text, UnstyledButton } from "@mantine/core";
+import { Skeleton, Text, UnstyledButton } from "@mantine/core";
 import { Star } from "lucide-react";
 import clsx from "clsx";
 import {
@@ -10,20 +10,26 @@ import {
   type Review,
 } from "@/entities/review";
 import { useAuthStore } from "@/features/auth";
-import { ReviewFormModal, useDeleteReview } from "@/features/review/manage-review";
+import {
+  ReviewFormModal,
+  useDeleteReview,
+} from "@/features/review/manage-review";
 import { confirmDelete } from "@/shared/lib/confirmDelete";
 import { ReviewCard } from "./ReviewCard";
 import styles from "./ReviewsSection.module.css";
+import Button from "@/shared/ui/buttons/button";
 
 type ReviewsSectionProps = {
   advertisementId: number;
   sellerId?: number;
 };
 
-export default function ReviewsSection({ advertisementId, sellerId }: ReviewsSectionProps) {
+export default function ReviewsSection({
+  advertisementId,
+  sellerId,
+}: ReviewsSectionProps) {
   const navigate = useNavigate();
-  // Користувача кладе в стор App (через useMe). Окремий useMe тут для гостя
-  // перезапитував би 401 і перемонтовував застосунок по колу.
+
   const me = useAuthStore((state) => state.user);
   const [grade, setGrade] = useState<number>();
   const [modal, setModal] = useState<{ review: Review | null } | null>(null);
@@ -39,26 +45,27 @@ export default function ReviewsSection({ advertisementId, sellerId }: ReviewsSec
   const handleDelete = (review: Review) =>
     confirmDelete({
       title: "Видалити відгук",
-      message: "Ви дійсно бажаєте видалити свій відгук? Цю дію неможливо скасувати.",
+      message:
+        "Ви дійсно бажаєте видалити свій відгук? Цю дію неможливо скасувати.",
       onConfirm: () => deleteReview.mutate(review.id),
     });
 
   const renderAction = () => {
     if (!me)
       return (
-        <Button variant="light" onClick={() => navigate("/authentication")}>
+        <Button onClick={() => navigate("/authentication")}>
           Увійдіть, щоб залишити відгук
         </Button>
       );
     if (isSeller) return null;
     if (myReview)
       return (
-        <Button variant="light" onClick={() => setModal({ review: myReview })}>
+        <Button onClick={() => setModal({ review: myReview })}>
           Редагувати мій відгук
         </Button>
       );
     return (
-      <Button bg="var(--color-base)" onClick={() => setModal({ review: null })}>
+      <Button onClick={() => setModal({ review: null })}>
         Написати відгук
       </Button>
     );
@@ -97,7 +104,11 @@ export default function ReviewsSection({ advertisementId, sellerId }: ReviewsSec
 
   const filters = [
     { value: undefined, label: "Усі", count: stats.total },
-    ...stats.distribution.map((d) => ({ value: d.grade, label: String(d.grade), count: d.count })),
+    ...stats.distribution.map((d) => ({
+      value: d.grade,
+      label: String(d.grade),
+      count: d.count,
+    })),
   ];
 
   return (
@@ -110,12 +121,17 @@ export default function ReviewsSection({ advertisementId, sellerId }: ReviewsSec
           {filters.map((filter) => (
             <UnstyledButton
               key={filter.label}
-              className={clsx(styles.filterItem, grade === filter.value && styles.filterActive)}
+              className={clsx(
+                styles.filterItem,
+                grade === filter.value && styles.filterActive,
+              )}
               onClick={() => setGrade(filter.value)}
               disabled={filter.value !== undefined && filter.count === 0}
             >
               <span className={styles.ratingLabel}>
-                {filter.value && <Star size={14} fill="#fea945" color="#fea945" />}
+                {filter.value && (
+                  <Star size={14} fill="#fea945" color="#fea945" />
+                )}
                 {filter.label}
               </span>
               <span className={styles.filterCount}>{filter.count}</span>

@@ -3,7 +3,6 @@ import { Image, Modal } from "@mantine/core";
 import type { CommentImage } from "../model/types";
 import styles from "./Review.module.css";
 
-/** Мініатюри фото з переглядом у модальному вікні. */
 export function CommentPhotos({ pictures }: { pictures: CommentImage[] }) {
   const [active, setActive] = useState<string | null>(null);
 

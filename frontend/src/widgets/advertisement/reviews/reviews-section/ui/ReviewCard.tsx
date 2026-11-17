@@ -1,6 +1,13 @@
 import { useState } from "react";
-import { ActionIcon, Badge, Button, Group, Menu, Rating, Text } from "@mantine/core";
-import { MessageCircle, MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { ActionIcon, Badge, Menu, Rating, Text } from "@mantine/core";
+import {
+  ChevronDown,
+  ChevronUp,
+  MessageCircle,
+  MoreVertical,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import {
   CommentAuthor,
   CommentPhotos,
@@ -9,6 +16,7 @@ import {
 } from "@/entities/review";
 import { ReviewReplies, type ReplyTarget } from "./ReviewReplies";
 import styles from "./ReviewsSection.module.css";
+import Button from "@/shared/ui/buttons/button";
 
 type ReviewCardProps = {
   review: Review;
@@ -41,7 +49,7 @@ export function ReviewCard({
   return (
     <article className={styles.reviewCard}>
       <div className={styles.cardHeader}>
-        <Group gap="xs">
+        <div className={styles.authorRow}>
           <CommentAuthor
             owner={review.owner}
             createdAt={review.createdAt}
@@ -52,17 +60,24 @@ export function ReviewCard({
               Ваш відгук
             </Badge>
           )}
-        </Group>
+        </div>
 
         {isOwner && (
           <Menu position="bottom-end" withinPortal>
             <Menu.Target>
-              <ActionIcon variant="subtle" color="gray" aria-label="Дії з відгуком">
+              <ActionIcon
+                variant="subtle"
+                color="gray"
+                aria-label="Дії з відгуком"
+              >
                 <MoreVertical size={18} />
               </ActionIcon>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item leftSection={<Pencil size={14} />} onClick={() => onEdit(review)}>
+              <Menu.Item
+                leftSection={<Pencil size={14} />}
+                onClick={() => onEdit(review)}
+              >
                 Редагувати
               </Menu.Item>
               <Menu.Item
@@ -85,33 +100,42 @@ export function ReviewCard({
 
       <CommentPhotos pictures={review.pictures} />
 
-      <Group gap="xs">
-        {currentUserId && (
-          <Button
-            size="compact-sm"
-            variant="subtle"
-            leftSection={<MessageCircle size={14} />}
-            onClick={() =>
-              startReply({ parentReplyId: null, name: getOwnerName(review.owner) })
-            }
-          >
-            Відповісти
-          </Button>
-        )}
-        {review.repliesCount > 0 && (
-          <Button
-            size="compact-sm"
-            variant="subtle"
-            color="gray"
-            onClick={() => {
-              setExpanded(!showReplies);
-              if (showReplies) setReplyTarget(null);
-            }}
-          >
-            {showReplies ? "Сховати відповіді" : `Відповіді (${review.repliesCount})`}
-          </Button>
-        )}
-      </Group>
+      {(currentUserId || review.repliesCount > 0) && (
+        <div className={styles.actions}>
+          {currentUserId && (
+            <Button
+              variant="ghost"
+              size="sm"
+              leftSection={MessageCircle}
+              iconProps={{ size: 14 }}
+              onClick={() =>
+                startReply({
+                  parentReplyId: null,
+                  name: getOwnerName(review.owner),
+                })
+              }
+            >
+              Відповісти
+            </Button>
+          )}
+          {review.repliesCount > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              rightSection={showReplies ? ChevronUp : ChevronDown}
+              iconProps={{ size: 14 }}
+              onClick={() => {
+                setExpanded(!showReplies);
+                if (showReplies) setReplyTarget(null);
+              }}
+            >
+              {showReplies
+                ? "Сховати відповіді"
+                : `Відповіді (${review.repliesCount})`}
+            </Button>
+          )}
+        </div>
+      )}
 
       {showReplies && (
         <ReviewReplies

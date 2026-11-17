@@ -14,6 +14,7 @@ import Price from "@/shared/ui/data-display/price";
 type BasketSummaryProps = {
   totalCount: number;
   subtotalPrice: number;
+  currencySymbol?: string;
   discountPrice?: number;
   freeShippingThreshold?: number;
   onCheckout?: () => void;
@@ -22,13 +23,13 @@ type BasketSummaryProps = {
 export default function BasketSummary({
   totalCount,
   subtotalPrice,
+  currencySymbol = "₴",
   discountPrice = 0,
   freeShippingThreshold = 5000,
   onCheckout,
 }: BasketSummaryProps) {
   const isFreeShipping = subtotalPrice >= freeShippingThreshold;
   const finalPrice = Math.max(0, subtotalPrice - discountPrice);
-  const currencySymbol = "грн";
 
   return (
     <Paper radius="lg" p="xl" withBorder className={styles.card}>

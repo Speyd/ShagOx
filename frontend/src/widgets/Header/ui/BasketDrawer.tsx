@@ -16,7 +16,7 @@ import { useMemo } from "react";
 import emptyBasketImage from "@/shared/assets/images/empty-basket.svg";
 import { useGetBasket } from "@/features/basket/model/hooks/useGetBasket";
 import BasketItemsList from "@/widgets/checkout/basket/basket-items-list";
-import { getBasketItemPrice } from "@/features/basket/model/types";
+import { getBasketTotal } from "@/features/basket/model/types";
 
 import styles from "./BasketDrawer.module.css";
 import Button from "@/shared/ui/buttons/button";
@@ -34,12 +34,7 @@ export default function BasketDrawer({ opened, onClose }: BasketDrawerProps) {
 
   const items = useMemo(() => basket?.basketItems || [], [basket]);
 
-  const totalPrice = useMemo(() => {
-    return items.reduce((sum, item) => {
-      const price = getBasketItemPrice(item);
-      return sum + price * item.quantity;
-    }, 0);
-  }, [items]);
+  const total = useMemo(() => getBasketTotal(items), [items]);
 
   const handleCheckout = () => {
     sessionStorage.setItem(
@@ -131,7 +126,7 @@ export default function BasketDrawer({ opened, onClose }: BasketDrawerProps) {
                 <Text fz={16} fw={500}>
                   Разом до сплати:
                 </Text>
-                <Price price={totalPrice} />
+                <Price price={total.amount} currency={total.symbol} />
               </Group>
 
               <div className={styles.actions}>

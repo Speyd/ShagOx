@@ -1,6 +1,10 @@
+.root {
+  container: basket-item / inline-size;
+}
+
 .card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 20px;
   padding: 20px 24px;
   background-color: #ffffff;
@@ -19,11 +23,13 @@
 
 .checkbox {
   cursor: pointer;
+  align-self: center;
+  flex-shrink: 0;
 }
 
 .imageWrapper {
   width: 100px;
-  height: 100px;
+  aspect-ratio: 1;
   border-radius: 12px;
   background-color: #f8fafc;
   display: flex;
@@ -42,16 +48,12 @@
 
 .content {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 16px;
-}
-
-.attributes {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
+  align-self: stretch;
 }
 
 .headerRow {
@@ -63,6 +65,7 @@
 
 .infoGroup {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -71,11 +74,22 @@
 .titleLink {
   text-decoration: none;
   color: #0f172a;
+  overflow-wrap: anywhere;
   transition: color 0.15s ease;
 }
 
 .titleLink:hover {
   color: var(--color-primary, #228be6);
+}
+
+.attributes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.attribute {
+  white-space: nowrap;
 }
 
 .priceGroup {
@@ -92,7 +106,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 12px 16px;
 }
 
 .actionLink {
@@ -125,10 +140,7 @@
   color: currentColor;
 }
 
-.favoriteIconActive {
-  color: var(--color-base);
-}
-
+.favoriteIconActive,
 .actionLink:hover:not(:disabled) .favoriteIconActive {
   color: var(--color-base);
 }
@@ -136,35 +148,98 @@
 .quantityControls {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 4px;
   background-color: #f8fafc;
 }
 
-@media (max-width: 640px) {
+.quantity {
+  min-width: 3ch;
+  padding-inline: 8px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+@container basket-item (max-width: 560px) {
   .card {
+    gap: 16px;
     padding: 16px;
+  }
+
+  .imageWrapper {
+    width: 84px;
+  }
+
+  .headerRow {
     gap: 12px;
+  }
+
+  .content {
+    gap: 12px;
+  }
+}
+
+@container basket-item (max-width: 440px) {
+  .card {
+    gap: 12px;
+    padding: 14px;
   }
 
   .imageWrapper {
     width: 72px;
-    height: 72px;
+    padding: 6px;
+    border-radius: 10px;
   }
 
   .headerRow {
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .priceGroup {
     text-align: left;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    column-gap: 8px;
+  }
+
+  .actionText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .separator {
+    display: none;
   }
 
   .footerRow {
-    flex-direction: column-reverse;
-    align-items: flex-start;
-    gap: 12px;
+    flex-wrap: nowrap;
+  }
+}
+
+@container basket-item (max-width: 340px) {
+  .imageWrapper {
+    width: 56px;
+  }
+
+  .checkbox {
+    align-self: flex-start;
+  }
+}
+
+@media (pointer: coarse) {
+  .qtyButton {
+    --ai-size: 32px;
+  }
+
+  .actionLink {
+    padding: 8px;
   }
 }

@@ -1,10 +1,10 @@
 import { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Title, Checkbox, Group, UnstyledButton, Text } from "@mantine/core";
 import { Trash2 } from "lucide-react";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetBasket } from "@/features/basket/model/hooks/useGetBasket";
-import { getBasketItemPrice } from "@/features/basket/model/types";
+import { getBasketTotal } from "@/features/basket/model/types";
 import BasketItemsList from "@/widgets/checkout/basket/basket-items-list";
 import BasketSummary from "@/widgets/checkout/basket/basket-summary";
 import styles from "./BasketPage.module.css";
@@ -14,8 +14,7 @@ import BasketFreeShipping from "@/widgets/checkout/basket/basket-free-shipping";
 import { useDeleteBasketItem } from "@/features/basket/model/hooks/useDeleteBacketItem";
 import Container from "@/shared/ui/layout/container";
 import ConfirmModal from "@/shared/ui/feedback/confirm-modal";
-import { EmptyState } from "@/shared/ui/data-display/empty-state/EmptyState";
-import emptyBasketImage from "@/shared/assets/images/empty-basket.svg";
+import { BasketPageSkeleton } from "./BasketPageSkeleton";
 
 export default function BasketPage() {
   const navigate = useNavigate();
@@ -45,11 +44,7 @@ export default function BasketPage() {
   );
 
   const selectedTotal = useMemo(
-    () =>
-      selectedItems.reduce(
-        (acc, item) => acc + getBasketItemPrice(item) * item.quantity,
-        0,
-      ),
+    () => getBasketTotal(selectedItems),
     [selectedItems],
   );
 
@@ -95,89 +90,84 @@ export default function BasketPage() {
   };
 
   if (isLoading) {
-    return <div className={styles.loading}>Завантаження кошика...</div>;
+    return <BasketPageSkeleton />;
   }
+
+  if (items.length === 0) return <Navigate to="/catalog" replace />;
 
   return (
     <section className={styles.pageWrapper}>
       <Container>
         <div className={styles.content}>
-          {items.length === 0 ? (
-            <EmptyState
-              label="Ваш кошик порожній"
-              description="Перейдіть до головної сторінки та скористайтеся пошуком або каталогом."
-              image={emptyBasketImage}
+          <>
+            <div className={styles.header}>
+              <Title fz={28} fw={700}>
+                Кошик
+              </Title>
+              <div className={styles.headerControls}>
+                <Checkbox
+                  label={`Вибрати все (${items.length})`}
+                  checked={isAllSelected}
+                  onChange={handleToggleAll}
+                  size="sm"
+                  vars={() => ({
+                    root: {
+                      "--checkbox-color": "var(--color-primary)",
+                    },
+                  })}
+                />
+
+                <UnstyledButton
+                  onClick={openClearModal}
+                  className={styles.clearBtn}
+                >
+                  <Group gap={6}>
+                    <Trash2 size={16} />
+                    <Text size="sm" className={styles.clearText}>
+                      Очистити кошик
+                    </Text>
+                  </Group>
+                </UnstyledButton>
+              </div>
+            </div>
+
+            <ConfirmModal
+              opened={clearModalOpened}
+              onClose={closeClearModal}
+              onConfirm={handleClearCart}
+              title="Очистити кошик"
+              message="Ви впевнені, що хочете видалити всі товари з кошика?"
+              confirmLabel="Очистити"
+              confirmColor="red"
+              isLoading={isDeleting}
             />
-          ) : (
-            <>
-              <div className={styles.header}>
-                <Title fz={28} fw={700}>
-                  Кошик
-                </Title>
-                <div className={styles.headerControls}>
-                  <Checkbox
-                    label={`Вибрати все (${items.length})`}
-                    checked={isAllSelected}
-                    onChange={handleToggleAll}
-                    size="sm"
-                    vars={() => ({
-                      root: {
-                        "--checkbox-color": "var(--color-primary)",
-                      },
-                    })}
-                  />
 
-                  <UnstyledButton
-                    onClick={openClearModal}
-                    className={styles.clearBtn}
-                  >
-                    <Group gap={6}>
-                      <Trash2 size={16} />
-                      <Text size="sm" className={styles.clearText}>
-                        Очистити кошик
-                      </Text>
-                    </Group>
-                  </UnstyledButton>
+            <div className={styles.layout}>
+              <div className={styles.leftSection}>
+                <BasketItemsList
+                  items={items}
+                  selectedIds={selectedIds}
+                  onToggleItem={handleToggleItem}
+                  isLoading={isLoading}
+                  className={styles.itemsList}
+                />
+                <div className={styles.freeShippingWrapper}>
+                  <BasketFreeShipping currentTotal={selectedTotal.amount} />
                 </div>
               </div>
 
-              <ConfirmModal
-                opened={clearModalOpened}
-                onClose={closeClearModal}
-                onConfirm={handleClearCart}
-                title="Очистити кошик"
-                message="Ви впевнені, що хочете видалити всі товари з кошика?"
-                confirmLabel="Очистити"
-                confirmColor="red"
-                isLoading={isDeleting}
-              />
-
-              <div className={styles.layout}>
-                <div className={styles.leftSection}>
-                  <BasketItemsList
-                    items={items}
-                    selectedIds={selectedIds}
-                    onToggleItem={handleToggleItem}
-                    isLoading={isLoading}
-                    className={styles.itemsList}
-                  />
-                  <div className={styles.freeShippingWrapper}>
-                    <BasketFreeShipping currentTotal={selectedTotal} />
-                  </div>
-                </div>
-
-                <div className={styles.rightSection}>
-                  <BasketSummary
-                    totalCount={selectedItems.length}
-                    subtotalPrice={selectedTotal}
-                    discountPrice={0}
-                    onCheckout={handleCheckout}
-                  />
-                  <TrustGuarantees />
-                </div>
+              <div className={styles.rightSection}>
+                <BasketSummary
+                  totalCount={selectedItems.length}
+                  subtotalPrice={selectedTotal.amount}
+                  currencySymbol={selectedTotal.symbol}
+                  discountPrice={0}
+                  onCheckout={handleCheckout}
+                />
+                <TrustGuarantees />
               </div>
-            </>
-          )}
+            </div>
+          </>
         </div>
       </Container>
     </section>

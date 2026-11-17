@@ -4,17 +4,15 @@ import ApplyPromoCode from "@/features/apply-promo-code/ui/ApplyPromoCode";
 import styles from "./OrderSummary.module.css";
 import BasketItemsList from "@/widgets/checkout/basket/basket-items-list";
 import type { BasketItem } from "@/features/basket/model/types";
-import { getBasketItemPrice } from "@/features/basket/model/types";
+import { getBasketTotal } from "@/features/basket/model/types";
 
 type OrderSummaryProps = {
   items: BasketItem[];
 };
 
 export default function OrderSummary({ items }: OrderSummaryProps) {
-  const subtotalPrice = items.reduce(
-    (sum, item) => sum + getBasketItemPrice(item) * item.quantity,
-    0,
-  );
+  const { amount: subtotalPrice, symbol: currencySymbol = "₴" } =
+    getBasketTotal(items);
   return (
     <section className={styles.orderSummary}>
       <Title order={2} fz={24} fw={600} mb="lg">
@@ -41,7 +39,7 @@ export default function OrderSummary({ items }: OrderSummaryProps) {
               Підсумок
             </Text>
             <Text fw={500} fz={16}>
-              {subtotalPrice.toLocaleString()} грн
+              {subtotalPrice.toLocaleString("uk-UA")} {currencySymbol}
             </Text>
           </Group>
 
@@ -50,7 +48,7 @@ export default function OrderSummary({ items }: OrderSummaryProps) {
               Знижка
             </Text>
             <Text fw={500} fz={16} c="red.6">
-              0 грн
+              0 {currencySymbol}
             </Text>
           </Group>
 
@@ -70,7 +68,7 @@ export default function OrderSummary({ items }: OrderSummaryProps) {
               До сплати
             </Text>
             <Text fw={700} fz={20}>
-              {subtotalPrice.toLocaleString()} грн
+              {subtotalPrice.toLocaleString("uk-UA")} {currencySymbol}
             </Text>
           </Group>
         </Flex>

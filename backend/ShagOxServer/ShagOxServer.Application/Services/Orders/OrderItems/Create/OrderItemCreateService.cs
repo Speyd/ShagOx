@@ -9,7 +9,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Order;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
@@ -19,7 +18,6 @@ using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Application.Services.Orders.OrderItems.Validator;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Orders.OrderItems.Create;
 
@@ -163,15 +161,7 @@ public class OrderItemCreateService
 
         _itemRepository.Add(item);
 
-        _logger.LogInformation(
-    "Variant stock before save: {Stock}",
-    details.Variant?.Stock);
-        _unitOfWork.DebugTrackedEntities();
-        var affected = await _unitOfWork.SaveChangesAsync();
-        Console.WriteLine($"SaveChanges affected: {affected}");
-        _logger.LogInformation(
-            "Variant stock after save: {Stock}",
-            details.Variant?.Stock);
+        await _unitOfWork.SaveChangesAsync();
 
         return Result<OrderItem>.Success(item);
     }

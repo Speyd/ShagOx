@@ -965,6 +965,9 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("CategoryImageId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -1722,6 +1725,45 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("Avatars");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.CategoryImage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_CategoryImages_OwnerId")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.ToTable("CategoryImages");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewImage", b =>
                 {
                     b.Property<long>("Id")
@@ -2376,6 +2418,18 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.CategoryImage", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Dictionaries.Category", "Owner")
+                        .WithOne("CategoryImage")
+                        .HasForeignKey("ShagOxServer.Domain.Entities.Specification.Pictures.CategoryImage", "OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_CategoryImages_Categories_OwnerId");
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Review.ReviewImage", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Comments.Review.ReviewComment", "Owner")
@@ -2528,6 +2582,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Advertisements");
 
                     b.Navigation("Attributes");
+
+                    b.Navigation("CategoryImage")
+                        .IsRequired();
 
                     b.Navigation("Translations");
                 });

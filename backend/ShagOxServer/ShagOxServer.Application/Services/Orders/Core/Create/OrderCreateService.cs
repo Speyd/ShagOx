@@ -15,6 +15,7 @@ using ShagOxServer.Application.Services.Orders.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.Domain.Entities.Orders.Enum;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -199,6 +200,7 @@ public class OrderCreateService : IOrderCreateService
 
         order.DeliveryProvider = deliveryProvider;
         order.Currency = currency;
+        order.OrderStatus = OrderStatus.Pending;
 
         await _unitOfWork.SaveChangesAsync();
 

@@ -17,11 +17,10 @@ public class UserContext
     {
         get
         {
-            //var value = _http.HttpContext?.User
-            //    .FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var value = _http.HttpContext?.User
+                .FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            //return long.TryParse(value, out var id) ? id : null;
-            return 22;
+            return long.TryParse(value, out var id) ? id : null;
         }
     }
 }

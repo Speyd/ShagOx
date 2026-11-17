@@ -23,6 +23,10 @@ public static class BasketQueryExtensions
                     .ThenInclude(x => x.Status)
 
             .Include(x => x.BasketItems)
+                .ThenInclude(x => x.Advertisement)
+                    .ThenInclude(x => x.Currency)
+
+            .Include(x => x.BasketItems)
                 .ThenInclude(x => x.Parent);
     }
 }

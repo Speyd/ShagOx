@@ -22,17 +22,27 @@ public static class DeliveryExstensions
 
         if (deliveryOptions.Providers.NovaPoshta.Enabled)
         {
-            services.AddHttpClient<NovaPoshtaApiClient>(
-                (sp, client) =>
-                {
-                    var options = sp
-                        .GetRequiredService<IOptions<DeliveryOptions>>()
-                        .Value
-                        .Providers
-                        .NovaPoshta;
+            void ConfigureNovaPoshtaClient(IServiceProvider sp, HttpClient client)
+            {
+                var options = sp
+                    .GetRequiredService<IOptions<DeliveryOptions>>()
+                    .Value
+                    .Providers
+                    .NovaPoshta;
 
-                    client.BaseAddress = new Uri(options.BaseUrl);
-                });
+                if (string.IsNullOrWhiteSpace(options.BaseUrl))
+                    throw new InvalidOperationException(
+                        "NovaPoshta BaseUrl is not configured.");
+
+                client.BaseAddress = new Uri(options.BaseUrl);
+            }
+
+            services.AddHttpClient<NovaPoshtaApiClient>(
+                ConfigureNovaPoshtaClient);
+
+            services.AddHttpClient<NovaPoshtaTypeResolver>(
+                ConfigureNovaPoshtaClient);
+
 
             services.AddScoped<NovaPoshtaDeliveryClient>();
 

@@ -204,6 +204,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
+	  <Folder Include="Services\Specification\Pictures\CategoryImages\" />
 	</ItemGroup>
 	
 </Project>

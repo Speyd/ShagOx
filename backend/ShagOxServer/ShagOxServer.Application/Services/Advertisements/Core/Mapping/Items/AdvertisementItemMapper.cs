@@ -11,10 +11,9 @@ public static class AdvertisementItemMapper
     public static AdvertisementLineItemDto ToDto(
         Advertisement x,
         ConvertedPricesDto priceConversion,
-        StatusDto statusDto)
+        StatusDto statusDto,
+        AdvertisementVariant? variant)
     {
-        var variant = x.Variants.FirstOrDefault();
-
         return new AdvertisementLineItemDto
         (
             x.Id,

@@ -7,7 +7,6 @@ import type {
 export type CompareRow = {
   key: string;
   label: string;
-  /** Значення в порядку товарів */
   values: string[];
   isDifferent: boolean;
 };
@@ -19,9 +18,8 @@ const EMPTY = "—";
 export const formatPrice = (value: number, symbol = "₴") =>
   `${value.toLocaleString("uk-UA")} ${symbol}`;
 
-/** API повертає `label`, хоча тип описує `lable`. */
 export const getCategoryLabel = (category: Advertisement["category"]) =>
-  (category as { label?: string }).label ?? category.lable ?? "";
+  category?.label ?? "";
 
 function formatValue(type: string, value: AttributeValue): string {
   if (type === "Boolean") return value.value === "True" ? "Так" : "Ні";
@@ -32,7 +30,6 @@ function attributeText(attr: VariantAttribute): string {
   return attr.values.map((v) => formatValue(attr.attribute.type, v)).filter(Boolean).join(", ");
 }
 
-/** Ключ → { назва, текст } для атрибутів товару. */
 function productAttributes(item: Advertisement) {
   const map = new Map<string, { label: string; text: string }>();
   for (const attr of Array.isArray(item.attributes) ? item.attributes : []) {
@@ -41,7 +38,6 @@ function productAttributes(item: Advertisement) {
   return map;
 }
 
-/** Ключ → { назва, усі значення по варіантах } для варіантних атрибутів. */
 function variantAttributes(item: Advertisement) {
   const map = new Map<string, { label: string; values: Set<string> }>();
   for (const variant of item.variants ?? []) {
@@ -57,14 +53,28 @@ function variantAttributes(item: Advertisement) {
 
 export function getPriceRange(item: Advertisement) {
   const prices = (item.variants ?? []).map((v) => v.price);
+  if (prices.length === 0) {
+    const price = item.price ?? 0;
+    return { min: price, max: price };
+  }
   return { min: Math.min(...prices), max: Math.max(...prices) };
+}
+
+export function getPreviousPrice(item: Advertisement, price: number) {
+  const variants = item.variants ?? [];
+  if (variants.length === 0) return item.previousPrice ?? 0;
+  return variants.find((v) => v.price === price)?.previousPrice ?? 0;
+}
+
+export function isAdvertisementInStock(item: Advertisement) {
+  const variants = item.variants ?? [];
+  return variants.length === 0 || variants.some((v) => v.stock > 0);
 }
 
 function row(key: string, label: string, values: string[]): CompareRow {
   return { key, label, values, isDifferent: new Set(values).size > 1 };
 }
 
-/** Рядки за порядком першої появи ключа серед товарів. */
 function rowsFromMaps(
   maps: Map<string, { label: string }>[],
   text: (index: number, key: string) => string | undefined,
@@ -86,7 +96,7 @@ export function buildCompareSections(items: Advertisement[]): CompareSection[] {
       return min === max ? formatPrice(min, symbol) : `від ${formatPrice(min, symbol)}`;
     })),
     row("stock", "Наявність", items.map((item) =>
-      (item.variants ?? []).some((v) => v.stock > 0) ? "В наявності" : "Немає в наявності",
+      isAdvertisementInStock(item) ? "В наявності" : "Немає в наявності",
     )),
     row("brand", "Бренд", product.map((m) => m.get("brand")?.text || EMPTY)),
     row("seller", "Продавець", items.map((item) =>

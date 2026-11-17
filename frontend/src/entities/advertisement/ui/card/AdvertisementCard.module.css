@@ -124,13 +124,21 @@
   height: 16px;
 }
 
-.variantPickerContainer{
+.variantPickerContainer {
   margin-top: 8px;
   margin-bottom: 8px;
   height: 2dvh;
 }
 
+.buttonText {
+  display: inline;
+}
+
 @media (max-width: 479px) {
+  .buttonText {
+    display: none;
+  }
+
   .card {
     padding: 8px;
     gap: 8px;
@@ -170,14 +178,17 @@
 
   .addButton {
     height: 32px !important;
-    font-size: 11px !important;
-    padding: 0 6px !important;
+    padding: 0 !important;
     border-radius: 6px !important;
   }
 
+  .addButton :global(.mantine-Button-section[data-position="left"]) {
+    margin-inline-end: 0 !important;
+  }
+
   .btnIcon {
-    width: 13px;
-    height: 13px;
+    width: 16px;
+    height: 16px;
   }
 }
 

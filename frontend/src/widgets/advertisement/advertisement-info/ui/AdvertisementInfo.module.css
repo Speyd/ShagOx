@@ -1,48 +1,91 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: clamp(18px, 2.2vw, 30px);
+  min-width: 0;
+}
+
+.title {
+  font-size: clamp(24px, 2.6vw, 40px) !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  font-size: clamp(14px, 1.1vw, 15px) !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  overflow-wrap: anywhere;
 }
 
 .properties {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: clamp(8px, 1vw, 10px);
 }
 
 .property {
   display: flex;
-  align-items: center;
-  gap: 5px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 5px;
+  row-gap: 2px;
+}
+
+.propertyLabel {
+  font-size: clamp(13px, 1.1vw, 15px) !important;
+  font-weight: 400 !important;
+}
+
+.propertyValue {
+  font-size: clamp(14px, 1.2vw, 17px) !important;
+  font-weight: 600 !important;
+  overflow-wrap: anywhere;
 }
 
 .countContainer {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 12px 20px;
+}
+
+.stockOut {
+  font-size: clamp(13px, 1vw, 14px) !important;
+  font-weight: 600 !important;
+}
+
+.stockLow {
+  font-size: clamp(13px, 1vw, 14px) !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
 }
 
 .buttonsContainer {
   display: flex;
-  gap: 150px;
+  gap: clamp(10px, 1.6vw, 24px);
   width: 100%;
 }
 
 .actionButton {
   flex: 1;
-  padding: 20px 24px;
-  font-size: 16px;
+  min-width: 0;
+  padding: clamp(14px, 1.4vw, 20px) clamp(16px, 1.8vw, 24px);
+  font-size: clamp(15px, 1.1vw, 16px);
   font-weight: 600;
 }
 
 .priceBlock {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 12px;
+  gap: 8px clamp(8px, 1vw, 12px);
 }
 
 .oldPrice {
-  font-size: 18px;
+  font-size: clamp(15px, 1.3vw, 18px);
   color: #94a3b8;
   text-decoration: line-through;
 }
@@ -51,7 +94,17 @@
   padding: 2px 8px;
   border-radius: 6px;
   background: #fee2e2;
-  font-size: 14px;
+  font-size: clamp(12px, 1vw, 14px);
   font-weight: 600;
   color: #dc2626;
+}
+
+@media (max-width: 480px) {
+  .buttonsContainer {
+    flex-direction: column;
+  }
+
+  .stockLow br {
+    display: none;
+  }
 }

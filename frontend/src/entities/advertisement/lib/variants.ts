@@ -1,7 +1,7 @@
 import { getColorHex } from "@/shared/lib/colors";
 import type {
-  AdvertisementVariant,
   VariantAttribute,
+  VariantLike,
 } from "@/shared/lib/types/advertisements";
 
 export type VariantOption = {
@@ -43,7 +43,7 @@ function optionLabel(attr: VariantAttribute): string {
   return isNumber && unit ? `${value.value} ${unit}` : value.value || value.code;
 }
 
-export function getVariantSelection(variant?: AdvertisementVariant): VariantSelection {
+export function getVariantSelection(variant?: VariantLike): VariantSelection {
   const selection: VariantSelection = {};
   for (const attr of variant?.attributes ?? []) {
     if (!EXCLUDED_KEYS.includes(attr.attribute.key)) {
@@ -53,7 +53,7 @@ export function getVariantSelection(variant?: AdvertisementVariant): VariantSele
   return selection;
 }
 
-export function getVariantOptionGroups(variants: AdvertisementVariant[]): VariantOptionGroup[] {
+export function getVariantOptionGroups(variants: VariantLike[]): VariantOptionGroup[] {
   const groups = new Map<string, VariantOptionGroup>();
 
   for (const variant of variants) {
@@ -85,13 +85,13 @@ export function getVariantOptionGroups(variants: AdvertisementVariant[]): Varian
   return [...groups.values()].filter((g) => g.options.length > 1 || g.isColor);
 }
 
-function matchesCount(variant: AdvertisementVariant, selection: VariantSelection) {
+function matchesCount(variant: VariantLike, selection: VariantSelection) {
   const own = getVariantSelection(variant);
   return Object.entries(selection).filter(([k, v]) => own[k] === v).length;
 }
 
 export function isOptionCombinable(
-  variants: AdvertisementVariant[],
+  variants: VariantLike[],
   selection: VariantSelection,
   key: string,
   code: string,
@@ -100,16 +100,16 @@ export function isOptionCombinable(
   return variants.some((v) => matchesCount(v, target) === Object.keys(target).length);
 }
 
-export function findVariantForOption(
-  variants: AdvertisementVariant[],
+export function findVariantForOption<T extends VariantLike>(
+  variants: T[],
   selection: VariantSelection,
   key: string,
   code: string,
-): AdvertisementVariant | undefined {
+): T | undefined {
   const target = { ...selection, [key]: code };
   const candidates = variants.filter((v) => getVariantSelection(v)[key] === code);
 
-  return candidates.reduce<AdvertisementVariant | undefined>((best, variant) => {
+  return candidates.reduce<T | undefined>((best, variant) => {
     if (!best) return variant;
     const score = matchesCount(variant, target) + (variant.stock > 0 ? 0.5 : 0);
     const bestScore = matchesCount(best, target) + (best.stock > 0 ? 0.5 : 0);
@@ -117,6 +117,6 @@ export function findVariantForOption(
   }, undefined);
 }
 
-export function getDefaultVariant(variants: AdvertisementVariant[]) {
+export function getDefaultVariant<T extends VariantLike>(variants: T[]): T | undefined {
   return variants.find((v) => v.stock > 0) ?? variants[0];
 }

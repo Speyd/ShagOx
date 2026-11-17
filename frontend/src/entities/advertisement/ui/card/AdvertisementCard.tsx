@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Image, Text } from "@mantine/core";
-import { Check, Plus } from "lucide-react";
+import { Check, ShoppingCart } from "lucide-react";
 import styles from "./AdvertisementCard.module.css";
 import Price from "@/shared/ui/data-display/price";
 import type {
   Advertisement,
   CatalogAdvertisement,
+  CatalogAdvertisementVariant,
 } from "@/shared/lib/types/advertisements";
 import FavoriteButton from "@/features/favorites";
 import { useBasketAction } from "@/features/basket/model/hooks/useBasketAction";
 import { RatingSummary } from "@/entities/review";
 import { getDefaultVariant } from "../../lib/variants";
+import { toDisplayPrice } from "../../lib/price";
 import { VariantPicker } from "../variant-picker";
 
 type AdvertisementCardProps = Advertisement | CatalogAdvertisement;
@@ -21,18 +23,31 @@ export function AdvertisementCard(props: AdvertisementCardProps) {
     "reviewCount" in props
       ? { count: props.reviewCount, average: props.averageRatings }
       : undefined;
-  const [variant, setVariant] = useState(() =>
-    getDefaultVariant(props.variants ?? []),
-  );
-  const { handleAdd, isInBasket, isLoading } = useBasketAction(variant?.id);
+  const variants: CatalogAdvertisementVariant[] = props.variants ?? [];
+  const hasVariants = variants.length > 0;
+  const [variant, setVariant] = useState(() => getDefaultVariant(variants));
+  const { handleAdd, isInBasket, isLoading } = useBasketAction({
+    advertisementId: props.id,
+    variantId: variant?.id,
+    availableStock: variant?.stock ?? null,
+  });
 
   const cover = "pictures" in props ? props.pictures[0] : props.picture;
   const imageUrl = cover?.url || "/placeholder-image.png";
   const href = `/advertisement/${props.id}`;
-  const price = variant?.price ?? 0;
-  const previousPrice = variant?.previousPrice ?? 0;
-  const inStock = (variant?.stock ?? 0) > 0;
-  const currencySymbol = props.priceConversion?.price.from.symbol;
+  const fallbackSymbol = "currency" in props ? props.currency?.symbol : undefined;
+  const conversion = props.priceConversion;
+  const price = toDisplayPrice(
+    variant?.price ?? props.price ?? 0,
+    conversion?.price,
+    fallbackSymbol,
+  );
+  const previousPrice = toDisplayPrice(
+    variant?.previousPrice ?? props.previousPrice ?? 0,
+    conversion?.previousPrice ?? conversion?.price,
+    fallbackSymbol,
+  );
+  const inStock = hasVariants ? (variant?.stock ?? 0) > 0 : true;
 
   return (
     <div className={styles.card}>
@@ -69,40 +84,45 @@ export function AdvertisementCard(props: AdvertisementCardProps) {
         <div className={styles.variantPickerContainer}>
           <VariantPicker
             size="sm"
-            variants={props.variants ?? []}
+            variants={variants}
             selected={variant}
             onSelect={setVariant}
           />
         </div>
 
-        <div className={styles.priceRow}>
-          <Price price={price} currency={currencySymbol} />
-          {previousPrice > price && (
-            <span className={styles.oldPrice}>
-              {previousPrice.toLocaleString("uk-UA")}{" "}
-              {currencySymbol ?? "₴"}
-            </span>
-          )}
-        </div>
+        <Price
+          price={price.amount}
+          oldPrice={previousPrice.amount}
+          currency={price.symbol}
+        />
 
         <div className={styles.actionButtons}>
           <Button
             onClick={handleAdd}
             loading={isLoading}
-            disabled={!variant || !inStock}
+            disabled={(hasVariants && !variant) || !inStock}
             leftSection={
               isInBasket ? (
                 <Check className={styles.btnIcon} />
               ) : (
-                <Plus className={styles.btnIcon} />
+                <ShoppingCart className={styles.btnIcon} />
               )
             }
             bg="var(--color-base)"
             className={styles.addButton}
+            aria-label={isInBasket ? "У кошику" : "У кошик"}
           >
-            {isInBasket ? "У кошику" : "У кошик"}
+            <span className={styles.buttonText}>
+              {isInBasket ? "У кошику" : "У кошик"}
+            </span>
           </Button>
-          <FavoriteButton advertisementId={props.id} />
+          <FavoriteButton
+            variant="card"
+            advertisementId={props.id}
+            defaultIsFavorite={
+              "isFavorite" in props ? props.isFavorite : undefined
+            }
+          />
         </div>
       </div>
     </div>

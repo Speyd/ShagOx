@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import type { Advertisement } from "@/shared/lib/types/advertisements";
-import { formatPrice, getCategoryLabel, getPriceRange } from "../lib/buildCompareSections";
+import {
+  formatPrice,
+  getCategoryLabel,
+  getPreviousPrice,
+  getPriceRange,
+} from "../lib/buildCompareSections";
 import styles from "./CompareBoard.module.css";
 
 type CompareCardProps = {
@@ -11,7 +16,7 @@ type CompareCardProps = {
 
 export function CompareCard({ advertisement, onRemove }: CompareCardProps) {
   const { min, max } = getPriceRange(advertisement);
-  const previousPrice = advertisement.variants.find((v) => v.price === min)?.previousPrice ?? 0;
+  const previousPrice = getPreviousPrice(advertisement, min);
   const symbol = advertisement.currency?.symbol;
   const image = advertisement.pictures?.[0]?.url;
   const href = `/advertisement/${advertisement.id}`;

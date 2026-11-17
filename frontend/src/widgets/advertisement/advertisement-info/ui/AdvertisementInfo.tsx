@@ -4,15 +4,23 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import styles from "./AdvertisementInfo.module.css";
 import Price from "@/shared/ui/data-display/price";
-import type { Advertisement, AdvertisementVariant } from "@/shared/lib/types/advertisements";
+import type {
+  Advertisement,
+  AdvertisementVariant,
+} from "@/shared/lib/types/advertisements";
 import CountBlock from "@/shared/ui/data-display/count-block";
 import Button from "@/shared/ui/buttons/button";
 import { useBasketAction } from "@/features/basket/model/hooks/useBasketAction";
 import { RatingSummary } from "@/entities/review";
 import { VariantPicker } from "@/entities/advertisement/ui/variant-picker";
 import { getDefaultVariant } from "@/entities/advertisement/lib/variants";
+import { toDisplayPrice } from "@/entities/advertisement/lib/price";
 import { formatAttribute } from "@/entities/advertisement/lib/attributes";
-import { MAX_COMPARE_PER_CATEGORY, useCompareStore, useIsInCompare } from "@/entities/compare";
+import {
+  MAX_COMPARE_PER_CATEGORY,
+  useCompareStore,
+  useIsInCompare,
+} from "@/entities/compare";
 
 type AdvertisementInfoProps = {
   advertisement: Advertisement;
@@ -21,7 +29,9 @@ type AdvertisementInfoProps = {
 const LOW_STOCK = 20;
 
 const scrollToReviews = () =>
-  document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document
+    .getElementById("reviews")
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
 
 export function AdvertisementInfo({ advertisement }: AdvertisementInfoProps) {
   const navigate = useNavigate();
@@ -34,13 +44,30 @@ export function AdvertisementInfo({ advertisement }: AdvertisementInfoProps) {
   );
   const [quantity, setQuantity] = useState(1);
 
-  const stock = variant?.stock ?? 0;
-  const price = variant?.price ?? 0;
-  const previousPrice = variant?.previousPrice ?? 0;
-  const symbol = advertisement.currency.symbol;
-  const discount = previousPrice > price ? Math.round((1 - price / previousPrice) * 100) : 0;
+  const hasVariants = (advertisement.variants ?? []).length > 0;
+  const stock = hasVariants ? (variant?.stock ?? 0) : null;
+  const conversion = variant?.priceConversion ?? advertisement.priceConversion;
+  const fallbackSymbol = advertisement.currency?.symbol;
+  const { amount: price, symbol } = toDisplayPrice(
+    variant?.price ?? advertisement.price ?? 0,
+    conversion?.price,
+    fallbackSymbol,
+  );
+  const { amount: previousPrice } = toDisplayPrice(
+    variant?.previousPrice ?? advertisement.previousPrice ?? 0,
+    conversion?.previousPrice ?? conversion?.price,
+    fallbackSymbol,
+  );
+  const discount =
+    previousPrice > price ? Math.round((1 - price / previousPrice) * 100) : 0;
+  const isOutOfStock = stock === 0;
 
-  const { handleAdd, isLoading } = useBasketAction(variant?.id, quantity, stock);
+  const { handleAdd, isLoading } = useBasketAction({
+    advertisementId: advertisement.id,
+    variantId: variant?.id,
+    quantity,
+    availableStock: stock,
+  });
 
   const handleSelectVariant = (next: AdvertisementVariant) => {
     setVariant(next);
@@ -53,9 +80,14 @@ export function AdvertisementInfo({ advertisement }: AdvertisementInfoProps) {
       return;
     }
 
-    const added = addToCompare({ id: advertisement.id, categoryId: advertisement.category.id });
+    const added = addToCompare({
+      id: advertisement.id,
+      categoryId: advertisement.category.id,
+    });
     if (!added) {
-      toast.error(`Можна порівнювати до ${MAX_COMPARE_PER_CATEGORY} товарів однієї категорії`);
+      toast.error(
+        `Можна порівнювати до ${MAX_COMPARE_PER_CATEGORY} товарів однієї категорії`,
+      );
       return;
     }
 
@@ -66,15 +98,19 @@ export function AdvertisementInfo({ advertisement }: AdvertisementInfoProps) {
 
   return (
     <div className={styles.wrapper}>
-      <Text fw={400} fz={40}>
+      <Text className={styles.title}>
         {advertisement.title}
       </Text>
 
-      <Text fw={400} fz={15}>
+      <Text className={styles.description}>
         {advertisement.description}
       </Text>
 
-      <RatingSummary advertisementId={advertisement.id} size="lg" onReviewsClick={scrollToReviews} />
+      <RatingSummary
+        advertisementId={advertisement.id}
+        size="lg"
+        onReviewsClick={scrollToReviews}
+      />
 
       <div className="divider" />
 
@@ -92,22 +128,25 @@ export function AdvertisementInfo({ advertisement }: AdvertisementInfoProps) {
 
       <div className="divider" />
 
-      <VariantPicker
-        variants={advertisement.variants ?? []}
-        selected={variant}
-        onSelect={handleSelectVariant}
-      />
+      {advertisement.variants?.length > 0 && (
+        <>
+          <VariantPicker
+            variants={advertisement.variants ?? []}
+            selected={variant}
+            onSelect={handleSelectVariant}
+          />
+        </>
+      )}
 
       {advertisement.attributes?.length > 0 && (
         <>
-          <div className="divider" />
           <div className={styles.properties}>
             {advertisement.attributes.map((attr) => (
               <div className={styles.property} key={attr.attribute.id}>
-                <Text fw={400} fz={15} c="dimmed">
+                <Text className={styles.propertyLabel} c="dimmed">
                   {attr.attribute.label || attr.attribute.key}:
                 </Text>
-                <Text fw={600} fz={17}>
+                <Text className={styles.propertyValue}>
                   {formatAttribute(attr)}
                 </Text>
               </div>
@@ -119,14 +158,19 @@ export function AdvertisementInfo({ advertisement }: AdvertisementInfoProps) {
       <div className="divider" />
 
       <div className={styles.countContainer}>
-        <CountBlock value={quantity} onChange={setQuantity} max={stock} />
-        {stock === 0 ? (
-          <Text fz={14} fw={600} c="red">
+        <CountBlock
+          value={quantity}
+          onChange={setQuantity}
+          max={stock ?? undefined}
+        />
+        {isOutOfStock ? (
+          <Text className={styles.stockOut} c="red">
             Немає в наявності
           </Text>
         ) : (
+          stock !== null &&
           stock <= LOW_STOCK && (
-            <Text fz={14} fw={400}>
+            <Text className={styles.stockLow}>
               Залишилось всього <b>{stock} шт.</b>
               <br /> встигни придбати
             </Text>
@@ -138,7 +182,7 @@ export function AdvertisementInfo({ advertisement }: AdvertisementInfoProps) {
         <Button
           className={styles.actionButton}
           onClick={handleAdd}
-          disabled={isLoading || stock === 0 || !variant}
+          disabled={isLoading || isOutOfStock || (hasVariants && !variant)}
         >
           {isLoading ? "Додаємо..." : "Купити"}
         </Button>

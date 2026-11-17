@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Tooltip } from "@mantine/core";
 import clsx from "clsx";
-import type { AdvertisementVariant } from "@/shared/lib/types/advertisements";
+import type { VariantLike } from "@/shared/lib/types/advertisements";
 import {
   findVariantForOption,
   getVariantOptionGroups,
@@ -11,16 +11,21 @@ import {
 } from "../../lib/variants";
 import styles from "./VariantPicker.module.css";
 
-type VariantPickerProps = {
-  variants: AdvertisementVariant[];
-  selected?: AdvertisementVariant;
-  onSelect: (variant: AdvertisementVariant) => void;
+type VariantPickerProps<T extends VariantLike> = {
+  variants: T[];
+  selected?: T;
+  onSelect: (variant: T) => void;
   size?: "sm" | "lg";
 };
 
 const MAX_COMPACT_COLORS = 5;
 
-export function VariantPicker({ variants, selected, onSelect, size = "lg" }: VariantPickerProps) {
+export function VariantPicker<T extends VariantLike>({
+  variants,
+  selected,
+  onSelect,
+  size = "lg",
+}: VariantPickerProps<T>) {
   const groups = useMemo(() => getVariantOptionGroups(variants), [variants]);
   const selection = useMemo(() => getVariantSelection(selected), [selected]);
 
@@ -33,18 +38,28 @@ export function VariantPicker({ variants, selected, onSelect, size = "lg" }: Var
     const colors = groups.find((g) => g.isColor);
     if (!colors) return null;
 
+    if (!colors || colors.options.length <= 1) return null;
+
     const visible = colors.options.slice(0, MAX_COMPACT_COLORS);
     const hidden = colors.options.length - visible.length;
 
     return (
       <div className={styles.compact}>
         {visible.map((option) => (
-          <Tooltip key={option.code} label={option.label} withArrow openDelay={200}>
+          <Tooltip
+            key={option.code}
+            label={option.label}
+            withArrow
+            openDelay={200}
+          >
             <button
               type="button"
               aria-label={option.label}
               aria-pressed={selection[colors.key] === option.code}
-              className={clsx(styles.dot, selection[colors.key] === option.code && styles.dotActive)}
+              className={clsx(
+                styles.dot,
+                selection[colors.key] === option.code && styles.dotActive,
+              )}
               style={{ backgroundColor: option.hex }}
               onClick={() => choose(colors.key, option.code)}
             />
@@ -72,18 +87,35 @@ export function VariantPicker({ variants, selected, onSelect, size = "lg" }: Var
         <div className={styles.options}>
           {group.options.map((option) => {
             const isActive = selection[group.key] === option.code;
-            const isCombinable = isOptionCombinable(variants, selection, group.key, option.code);
+            const isCombinable = isOptionCombinable(
+              variants,
+              selection,
+              group.key,
+              option.code,
+            );
 
             return group.isColor ? (
-              <Tooltip key={option.code} label={option.label} withArrow openDelay={150}>
+              <Tooltip
+                key={option.code}
+                label={option.label}
+                withArrow
+                openDelay={150}
+              >
                 <button
                   type="button"
                   aria-label={option.label}
                   aria-pressed={isActive}
-                  className={clsx(styles.swatch, isActive && styles.swatchActive, !isCombinable && styles.unavailable)}
+                  className={clsx(
+                    styles.swatch,
+                    isActive && styles.swatchActive,
+                    !isCombinable && styles.unavailable,
+                  )}
                   onClick={() => choose(group.key, option.code)}
                 >
-                  <span className={styles.swatchColor} style={{ backgroundColor: option.hex }} />
+                  <span
+                    className={styles.swatchColor}
+                    style={{ backgroundColor: option.hex }}
+                  />
                 </button>
               </Tooltip>
             ) : (
@@ -91,7 +123,11 @@ export function VariantPicker({ variants, selected, onSelect, size = "lg" }: Var
                 key={option.code}
                 type="button"
                 aria-pressed={isActive}
-                className={clsx(styles.chip, isActive && styles.chipActive, !isCombinable && styles.unavailable)}
+                className={clsx(
+                  styles.chip,
+                  isActive && styles.chipActive,
+                  !isCombinable && styles.unavailable,
+                )}
                 onClick={() => choose(group.key, option.code)}
               >
                 {option.label}

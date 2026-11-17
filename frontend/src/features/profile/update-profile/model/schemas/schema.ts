@@ -11,6 +11,8 @@ export const updateProfileSchema = z.object({
   email: z.string().email("Некоректний email").or(z.literal("")),
   avatar: z.instanceof(File).nullable().optional(),
   cityId: z.number().nullable(),
+  currencyId: z.number().int().positive().nullable(),
 });
 
-export type UpdateProfileDto = z.infer<typeof updateProfileSchema>;
+export type UpdateProfileInput = z.input<typeof updateProfileSchema>;
+export type UpdateProfileDto = z.output<typeof updateProfileSchema>;

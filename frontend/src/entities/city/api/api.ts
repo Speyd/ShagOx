@@ -25,3 +25,5 @@ export async function searchCities(
   });
   return data;
 }
+
+

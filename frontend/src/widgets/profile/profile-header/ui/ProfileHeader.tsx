@@ -2,7 +2,7 @@ import styles from "./ProfileHeader.module.css";
 import { Avatar, Button, Text } from "@mantine/core";
 import { Link, Mail, MapPin } from "lucide-react";
 import { useDisclosure } from "@mantine/hooks";
-import ProfileDrawer from "./ProfileDrawer";
+import ProfileDrawer from "../../../../features/profile/update-profile/ui/ProfileDrawer";
 import { useAuthStore } from "@/features/auth";
 
 type ProfileHeaderProps = {
@@ -105,11 +105,11 @@ export default function ProfileHeader({
 
         <div className={styles.rightBlock}>
           <div className={styles.infoBlock}>
-            {user?.city?.region?.lable && (
+            {user?.city?.region?.label && (
               <div className={styles.infoItem}>
                 <MapPin size={14} strokeWidth={2.5} />
                 <Text fw={500} fz={12}>
-                  {user.city.region.lable}
+                  {user.city.region.label}
                 </Text>
               </div>
             )}

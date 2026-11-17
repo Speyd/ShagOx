@@ -3,7 +3,7 @@ import styles from "./ProfileTabs.module.css";
 import { Text } from "@mantine/core";
 
 const TABS = [
-  { label: "Профіль та канал", to: "/profile" },
+  { label: "Профіль", to: "/profile" },
   { label: "Обране", to: "/profile/favorites" },
   { label: "Замовлення", to: "/profile/orders" },
   { label: "Інформаційна панель", to: "/profile/statistics" },

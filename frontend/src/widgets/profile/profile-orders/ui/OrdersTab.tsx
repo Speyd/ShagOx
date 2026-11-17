@@ -39,7 +39,7 @@ export default function OrdersTab() {
 
       <EmptyState
         variant="dashed"
-        description="У вас поки що немає обраних товарів."
+        description="У вас поки що немає замовлень."
       />
     </Paper>
   );

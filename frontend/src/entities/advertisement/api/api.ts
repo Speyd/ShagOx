@@ -154,3 +154,15 @@ export async function getAdminAdvertisements(
 
   return data;
 }
+
+export async function getSellerAdvertisements(
+  sellerId: number,
+  page: number,
+  pageSize: number,
+): Promise<PaginatedResponse<Advertisement>> {
+  const { data } = await api.get<PaginatedResponse<Advertisement>>(
+    `/advertisements/seller${sellerId}`,
+    { params: { page, pageSize } },
+  );
+  return data;
+}

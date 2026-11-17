@@ -3,6 +3,7 @@ import styles from "./MainLayout.module.css";
 
 import Footer from "@/widgets/footer";
 import Header from "@/widgets/header";
+import { MobileBottomNav } from "@/widgets/navigation/mobile-bottom-nav/ui/MobileBottomNav";
 
 export default function MainLayout() {
   return (
@@ -10,11 +11,11 @@ export default function MainLayout() {
       <Header />
 
       <main className={styles.content}>
-
         <Outlet />
-
       </main>
 
+      <MobileBottomNav />
+      
       <Footer />
     </div>
   );

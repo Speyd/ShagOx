@@ -151,6 +151,8 @@ export default function NavigationDrawer({
       <ConfirmModal
         opened={logoutModalOpened}
         onClose={() => setLogoutModalOpened(false)}
+        icon={LogOut}
+        iconProps={{ size: 32 }}
         title="Вихід з акаунту"
         message="Ви впевнені, що хочете вийти з акаунту?"
         confirmLabel="Вийти"

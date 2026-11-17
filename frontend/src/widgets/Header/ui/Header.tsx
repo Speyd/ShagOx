@@ -7,7 +7,7 @@ import {
   Menu,
   Scale,
   ShieldCheck,
-  ShoppingBag,
+  ShoppingCart,
   User,
 } from "lucide-react";
 import { Divider, Image, Text } from "@mantine/core";
@@ -22,7 +22,7 @@ import Button from "@/shared/ui/buttons/button";
 import { CitySelector } from "@/entities/city";
 import { useAuthStore } from "@/features/auth";
 import { hasRole } from "@/shared/lib/auth";
-
+import { useBasketItemsCount } from "@/features/basket/model/hooks/useBasketItemsCount";
 
 interface ActionItem {
   id: string;
@@ -54,6 +54,13 @@ export default function Header() {
   const location = useLocation();
   const isFavoritesActive = location.pathname.startsWith("/profile/favorites");
   const isAdmin = useAuthStore((state) => hasRole(state.user, "Admin"));
+  const basketCount = useBasketItemsCount();
+  const basketBadge =
+    basketCount > 0 ? (
+      <span className={styles.badge}>
+        {basketCount > 99 ? "99+" : basketCount}
+      </span>
+    ) : null;
 
   return (
     <header
@@ -104,8 +111,10 @@ export default function Header() {
               variant="outline"
               className={styles.catalogButton}
               onClick={() => navigate("/catalog")}
+              leftSection={LayoutGrid}
+              iconProps={{ size: 20 }}
+              hideTextOnMobile
             >
-              <LayoutGrid size={20} strokeWidth={2.2} />
               <Text
                 fz={15}
                 fw={600}
@@ -147,7 +156,10 @@ export default function Header() {
               })}
 
               <div onClick={openCart} className={styles.iconContainer}>
-                <ShoppingBag className="icon iconLarge" />
+                <span className={styles.iconWrapper}>
+                  <ShoppingCart className="icon iconLarge" />
+                  {basketBadge}
+                </span>
                 <Text className={styles.iconContainerText}>Кошик</Text>
               </div>
             </div>
@@ -158,7 +170,10 @@ export default function Header() {
               onClick={openCart}
               aria-label="Кошик"
             >
-              <ShoppingBag size={24} />
+              <span className={styles.iconWrapper}>
+                <ShoppingCart size={24} />
+                {basketBadge}
+              </span>
             </button>
 
             <CartDrawer opened={cartOpened} onClose={closeCart} />

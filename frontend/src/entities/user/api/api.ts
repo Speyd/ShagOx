@@ -28,6 +28,7 @@ export type UserUpdatePayload = {
   bio?: string;
   cityId?: number;
   avatar?: File;
+  currencyId?: number;
 };
 
 export async function updateUser(payload: UserUpdatePayload): Promise<void> {
@@ -43,6 +44,8 @@ export async function updateUser(payload: UserUpdatePayload): Promise<void> {
   if (payload.cityId !== undefined)
     formData.append("CityId", String(payload.cityId));
   if (payload.avatar !== undefined) formData.append("Avatar", payload.avatar);
+  if (payload.currencyId !== undefined)
+    formData.append("CurrencyId", String(payload.currencyId));
 
   await api.put(`/users/me`, formData, {
     headers: { "Content-Type": "multipart/form-data" },

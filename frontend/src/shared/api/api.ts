@@ -5,7 +5,7 @@ export const api = axios.create({
   baseURL: "/api",
   withCredentials: true,
   headers: {
-    "Accept-Language": navigator.language || "en",
+    "Accept-Language": "uk",
   },
 });
 

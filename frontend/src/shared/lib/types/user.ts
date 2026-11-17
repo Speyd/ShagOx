@@ -15,4 +15,5 @@ export type User = {
   roles: Role[];
   lastSeenAt: string;
   registeredAt: string;
+  currencyId: number | null;
 };

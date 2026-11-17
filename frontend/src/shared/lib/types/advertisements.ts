@@ -1,11 +1,5 @@
 import type { Category } from "./category";
-
-export type Currency = {
-  id: number;
-  code: string;
-  symbol: string;
-  name: string;
-};
+import type { Currency } from "./currency";
 
 export type UserSeller = {
   id: number;
@@ -57,24 +51,38 @@ export type VariantAttribute = {
   values: AttributeValue[];
 };
 
-export type AdvertisementVariant = {
+export type VariantLike = {
   id: number;
-  advertisementId: number;
-  price: number;
-  previousPrice: number;
   stock: number;
   attributes: VariantAttribute[];
+};
+
+export type CatalogAdvertisementVariant = VariantLike & {
+  price: number;
+  previousPrice: number;
+};
+
+export type AdvertisementVariant = CatalogAdvertisementVariant & {
+  advertisementId: number;
+  priceConversion: ConvertedPrices | null;
 };
 
 export type Advertisement = {
   id: number;
   title: string;
   description: string;
+  price: number | null;
+  previousPrice: number | null;
   status: {
     id: number;
     code: string;
-    lable: string | null;
+    label: string | null;
   };
+  condition?: {
+    id: number;
+    code: string;
+    label: string | null;
+  } | null;
   priceConversion: ConvertedPrices | null;
   currency: Currency;
   category: Category;
@@ -127,9 +135,11 @@ export type CatalogAdvertisement = {
   categoryId: number;
   picture: AdvertisementImage | null;
   attributes: VariantAttribute[];
-  variants: AdvertisementVariant[];
+  variants: CatalogAdvertisementVariant[];
   reviewCount: number;
   averageRatings: number;
+  isFavorite: boolean;
+  isInBasket: boolean;
 };
 
 export type ConvertedPrices = {
@@ -183,8 +193,9 @@ export function formatAttributeValue(value: unknown): string {
   return String(value);
 }
 
-export function getAdvertisementPrice(
-  advertisement: Pick<Advertisement, "variants">,
-): number {
-  return advertisement.variants[0]?.price ?? 0;
+export function getAdvertisementPrice(advertisement: {
+  price?: number | null;
+  variants: { price: number }[];
+}): number {
+  return advertisement.variants[0]?.price ?? advertisement.price ?? 0;
 }

@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Verifivations;
+using ShagOxServer.Application.Common.Options.Verifivations;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
@@ -18,7 +18,7 @@ public class VerificationCodeService
 {
     private readonly IRepository<VerificationCode> _repository;
     private readonly IVerificationCodeQueryRepository _queryRepository;
-    private readonly VerificationCodeSettings _options;
+    private readonly VerificationCodeOptions _options;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<VerificationCodeService> _logger;
@@ -27,7 +27,7 @@ public class VerificationCodeService
     public VerificationCodeService(
         IRepository<VerificationCode> repository,
         IVerificationCodeQueryRepository queryRepository,
-        IOptions<VerificationCodeSettings> options,
+        IOptions<VerificationCodeOptions> options,
         IUnitOfWork unitOfWork,
         ILogger<VerificationCodeService> logger)
     {

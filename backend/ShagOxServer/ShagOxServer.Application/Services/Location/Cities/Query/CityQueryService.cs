@@ -38,9 +38,9 @@ public class CityQueryService
         IRegionQueryService regionService,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(repositoryQueryCity, language, cacheService, settings)
+        : base(repositoryQueryCity, language, cacheService, cacheOptions)
     {
         _repositoryQueryCity = repositoryQueryCity;
         _translationCityRepository = translationCityRepository;
@@ -86,7 +86,7 @@ public class CityQueryService
                 return await cities.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

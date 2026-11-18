@@ -32,9 +32,11 @@ public class AvatarQueryService
     public AvatarQueryService(
         IAvatarQueryRepository avatarQueryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(avatarQueryRepository, cacheService, settings)
+        : base(avatarQueryRepository,
+            cacheService, 
+            cacheOptions)
     {
         _avatarQueryRepository = avatarQueryRepository;
     }
@@ -64,7 +66,7 @@ public class AvatarQueryService
                 return await image.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

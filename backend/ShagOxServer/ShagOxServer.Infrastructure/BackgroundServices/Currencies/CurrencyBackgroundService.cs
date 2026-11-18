@@ -11,24 +11,24 @@ public class CurrencyBackgroundService : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<CurrencyBackgroundService> _logger;
-    private readonly CurrencyRatesUpdaterOptions _settings;
+    private readonly CurrencyRatesUpdaterOptions _rateOptions;
 
 
     public CurrencyBackgroundService(
         IServiceScopeFactory scopeFactory,
         ILogger<CurrencyBackgroundService> logger,
-        IOptions<CurrencyRatesUpdaterOptions> settings)
+        IOptions<CurrencyRatesUpdaterOptions> rateOptions)
     {
         _scopeFactory = scopeFactory;
         _logger = logger;
-        _settings = settings.Value;
+        _rateOptions = rateOptions.Value;
     }
 
     protected override async Task ExecuteAsync(
         CancellationToken stoppingToken)
     {
         using var timer = new PeriodicTimer(
-            _settings.UpdateInterval);
+            _rateOptions.UpdateInterval);
 
         await UpdateRatesAsync(stoppingToken);
 

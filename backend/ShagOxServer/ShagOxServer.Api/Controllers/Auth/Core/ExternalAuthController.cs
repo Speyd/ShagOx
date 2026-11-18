@@ -18,11 +18,11 @@ public class ExternalAuthController
 
     public ExternalAuthController(
         IGoogleLoginService googleLoginService,
-        IOptions<JwtOptions> jwtSettings,
+        IOptions<JwtOptions> jwtOptions,
         ILogger<ApiCookieController> logger,
         IUserContext userContext
     )
-        : base(jwtSettings, logger, userContext)
+        : base(jwtOptions, logger, userContext)
     {
         _googleLoginService = googleLoginService;
     }

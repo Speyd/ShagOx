@@ -28,9 +28,9 @@ public class CurrencyQueryService
     public CurrencyQueryService(
         ICurrencyQueryRepository currencyRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(currencyRepository, cacheService, settings)
+        : base(currencyRepository, cacheService, cacheOptions)
     {
         _currencyRepository = currencyRepository;
     }
@@ -61,7 +61,7 @@ public class CurrencyQueryService
                 return await currencies.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -85,7 +85,7 @@ public class CurrencyQueryService
                 return await currency.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -108,7 +108,7 @@ public class CurrencyQueryService
 
                 return Result<Currency?>.Success(currency);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

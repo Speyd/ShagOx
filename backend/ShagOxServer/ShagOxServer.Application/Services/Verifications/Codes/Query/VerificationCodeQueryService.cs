@@ -21,9 +21,11 @@ public class VerificationCodeQueryService
     public VerificationCodeQueryService(
         IVerificationCodeQueryRepository categoryQueryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(categoryQueryRepository, cacheService, settings)
+        : base(categoryQueryRepository,
+            cacheService, 
+            cacheOptions)
     {
     }
 

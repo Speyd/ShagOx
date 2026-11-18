@@ -39,9 +39,12 @@ public class CategoryQueryService
         ICategoryTranslationQueryRepository translationRepository,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(categoryQueryRepository, language, cacheService, settings)
+        : base(categoryQueryRepository, 
+            language, 
+            cacheService, 
+            cacheOptions)
     {
         _categoryQueryRepository = categoryQueryRepository;
         _imageQueryService = imageQueryService;
@@ -85,7 +88,7 @@ public class CategoryQueryService
                 return await categories.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

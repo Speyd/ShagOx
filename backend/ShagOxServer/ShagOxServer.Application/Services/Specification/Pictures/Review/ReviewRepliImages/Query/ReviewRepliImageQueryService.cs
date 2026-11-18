@@ -26,9 +26,11 @@ public class ReviewRepliImageQueryService
     public ReviewRepliImageQueryService(
         IReviewRepliImageQueryRepository imageQueryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(imageQueryRepository, cacheService, settings)
+        : base(imageQueryRepository, 
+            cacheService,
+            cacheOptions)
     {
     }
 

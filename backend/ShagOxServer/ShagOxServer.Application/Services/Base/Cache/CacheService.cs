@@ -13,7 +13,7 @@ public abstract partial class CacheService<TDto, TEntity, TFilter>
 {
     protected readonly IDataCacheService _cache;
 
-    protected readonly CacheOptions _settings;
+    protected readonly CacheOptions _cacheOptions;
 
     protected virtual bool CacheById => true;
 
@@ -24,9 +24,9 @@ public abstract partial class CacheService<TDto, TEntity, TFilter>
 
     public CacheService(
         IDataCacheService cache,
-        IOptions<CacheOptions> settings)
+        IOptions<CacheOptions> cacheOptions)
     {
         _cache = cache;
-        _settings = settings.Value;
+        _cacheOptions = cacheOptions.Value;
     }
 }

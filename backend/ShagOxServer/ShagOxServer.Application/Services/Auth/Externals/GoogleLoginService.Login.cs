@@ -1,4 +1,4 @@
-﻿using Google.Apis.Auth;
+using Google.Apis.Auth;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Externals.Google;
 using ShagOxServer.Application.DTOs.Auth.Login;
@@ -20,8 +20,8 @@ public partial class GoogleLoginService
                 GoogleAuthResources.GoogleAuthorizationCodeEmpty);
         }
 
-        var clientId = _googleSettings.ClientId;
-        var clientSecret = _googleSettings.ClientSecret;
+        var clientId = _googleOptions.ClientId;
+        var clientSecret = _googleOptions.ClientSecret;
 
         if (string.IsNullOrWhiteSpace(clientId) ||
             string.IsNullOrWhiteSpace(clientSecret))
@@ -77,14 +77,14 @@ public partial class GoogleLoginService
         using var httpClient = new HttpClient();
 
         var response = await httpClient.PostAsync(
-            _googleSettings.TokenLink,
+            _googleOptions.TokenLink,
             new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 ["code"] = code,
                 ["client_id"] = clientId,
                 ["client_secret"] = clientSecret,
-                ["redirect_uri"] = _googleSettings.RedirectUri,
-                ["grant_type"] = _googleSettings.GrantType
+                ["redirect_uri"] = _googleOptions.RedirectUri,
+                ["grant_type"] = _googleOptions.GrantType
             }));
 
         if (!response.IsSuccessStatusCode)
@@ -124,17 +124,16 @@ public partial class GoogleLoginService
     {
         try
         {
-            var settings = new GoogleJsonWebSignature.ValidationSettings
+            var options = new GoogleJsonWebSignature.ValidationSettings
             {
                 Audience = new[]
                 {
-                clientId
-            }
+                    clientId
+                }
             };
 
-            var payload = await GoogleJsonWebSignature.ValidateAsync(
-                idToken,
-                settings);
+            var payload = await GoogleJsonWebSignature
+                .ValidateAsync(idToken, options);
 
             return Result<GoogleJsonWebSignature.Payload>
                 .Success(payload);

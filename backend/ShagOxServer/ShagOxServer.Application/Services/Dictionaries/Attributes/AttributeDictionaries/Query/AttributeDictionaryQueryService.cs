@@ -21,9 +21,11 @@ public class AttributeDictionaryQueryService
     public AttributeDictionaryQueryService(
         IAttributeDictionaryQueryRepository dictionaryDictQueryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(dictionaryDictQueryRepository, cacheService, settings)
+        : base(dictionaryDictQueryRepository, 
+            cacheService, 
+            cacheOptions)
     {
     }
 

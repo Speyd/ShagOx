@@ -23,9 +23,9 @@ public class CityTranslationQueryService
     public CityTranslationQueryService(
         ICityTranslationQueryRepository cityRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(cityRepository, cacheService, settings)
+        : base(cityRepository, cacheService, cacheOptions)
     {
     }
 

@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Verifivations;
+using ShagOxServer.Application.Common.Options.Verifivations;
+using ShagOxServer.Application.Common.Options.Verifivations;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Messaging.Sms;
 using ShagOxServer.Application.Resources.Verifications.Core;
@@ -13,15 +14,15 @@ namespace ShagOxServer.Application.Services.Verifications.Sending;
 public class SmsService
     : ISmsService
 {
-    private readonly SmsSettings _smsOptions;
-    private readonly VerificationCodeSettings _codeOptions;
+    private readonly SmsOptions _smsOptions;
+    private readonly VerificationCodeOptions _codeOptions;
 
     private readonly ILogger<SmsService> _logger;
 
 
     public SmsService(
-        IOptions<SmsSettings> smsOptions,
-        IOptions<VerificationCodeSettings> codeOptions,
+        IOptions<SmsOptions> smsOptions,
+        IOptions<VerificationCodeOptions> codeOptions,
         ILogger<SmsService> logger)
     {
         _smsOptions = smsOptions.Value;

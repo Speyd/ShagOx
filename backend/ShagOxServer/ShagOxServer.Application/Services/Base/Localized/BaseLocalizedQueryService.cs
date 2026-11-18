@@ -25,9 +25,11 @@ public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
         ISearchRepository<TEntity, TFilter> localizedRepository,
         ILanguageProvider language,
         IDataCacheService cacheRepository,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(localizedRepository, cacheRepository, settings)
+        : base(localizedRepository, 
+            cacheRepository, 
+            cacheOptions)
     {
         _language = language;
     }

@@ -10,8 +10,8 @@ public static class JwtExtensions
         this IServiceCollection services,
         IConfiguration config)
     {
-        var jwtSettings = config.GetSection("Jwt").Get<JwtOptions>()
-            ?? throw new Exception("Jwt settings not found");
+        var jwtOptions = config.GetSection("Jwt").Get<JwtOptions>()
+            ?? throw new Exception("Jwt options not found");
 
         services.Configure<JwtOptions>(
             config.GetSection("Jwt"));
@@ -27,10 +27,10 @@ public static class JwtExtensions
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
-                    ValidIssuer = jwtSettings.Issuer,
-                    ValidAudience = jwtSettings.Audience,
+                    ValidIssuer = jwtOptions.Issuer,
+                    ValidAudience = jwtOptions.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwtSettings.Key))
+                        Encoding.UTF8.GetBytes(jwtOptions.Key))
                 };
 
                 options.Events = new JwtBearerEvents

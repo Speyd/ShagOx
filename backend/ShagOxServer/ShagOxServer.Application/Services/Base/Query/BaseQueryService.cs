@@ -26,9 +26,9 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     public BaseQueryService(
         ISearchRepository<TEntity, TFilter> queryRepository,
         IDataCacheService cache,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(cache, settings)
+        : base(cache, cacheOptions)
     {
         _queryRepository = queryRepository;
     }

@@ -33,7 +33,6 @@ public static class DependencyInjection
             .AddSpecificationApplication()
             .AddCommonApplication()
             .AddDeliveriesApplication()
-            .AddSettingsApplication()
             .AddOrdersItemApplication();
     }
 }

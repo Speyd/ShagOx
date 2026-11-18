@@ -15,17 +15,17 @@ public sealed class AppDbContextFactory
         var envPath = EnvironmentFileLocator.Find();
         Env.Load(envPath);
 
-        PostgresOptions settings =
+        PostgresOptions option =
             PostgresLoaderOptions.Load();
 
         var connectionString =
             new NpgsqlConnectionStringBuilder
             {
-                Host = settings.PrimaryHost,
-                Port = settings.PrimaryPort,
-                Database = settings.Database,
-                Username = settings.User,
-                Password = settings.Password,
+                Host = option.PrimaryHost,
+                Port = option.PrimaryPort,
+                Database = option.Database,
+                Username = option.User,
+                Password = option.Password,
                 SslMode = SslMode.Disable
             }.ConnectionString;
 

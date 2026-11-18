@@ -15,6 +15,7 @@ using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Map
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
+using System.Xml.Linq;
 
 namespace ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Query;
 public partial class AdvertisementVariantQueryService
@@ -42,9 +43,12 @@ public partial class AdvertisementVariantQueryService
         ILogger<AdvertisementVariantQueryService> logger,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(variantRepository, language, cacheService, settings)
+        : base(variantRepository, 
+            language,
+            cacheService,
+            cacheOptions)
     {
         _attributeValueService = attributeValueService;
         _priceConversion = priceConversion;

@@ -23,9 +23,11 @@ public class RegionTranslationQueryService
     public RegionTranslationQueryService(
         IRegionTranslationQueryRepository regionRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(regionRepository, cacheService, settings)
+        : base(regionRepository, 
+            cacheService, 
+            cacheOptions)
     {
     }
 

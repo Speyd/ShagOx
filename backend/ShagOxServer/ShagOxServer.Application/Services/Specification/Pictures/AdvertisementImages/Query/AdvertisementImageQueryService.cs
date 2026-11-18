@@ -25,9 +25,11 @@ public class AdvertisementImageQueryService
     public AdvertisementImageQueryService(
         IAdvertisementImageQueryRepository imageQueryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(imageQueryRepository, cacheService, settings)
+        : base(imageQueryRepository, 
+            cacheService,
+            cacheOptions)
     {
     }
 

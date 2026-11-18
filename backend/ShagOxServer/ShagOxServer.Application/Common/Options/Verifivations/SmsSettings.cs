@@ -1,5 +1,5 @@
-﻿namespace ShagOxServer.Application.Common.Settings.Verifivations;
-public sealed class SmsSettings
+namespace ShagOxServer.Application.Common.Options.Verifivations;
+public sealed class SmsOptions
 {
     public string ProductName { get; set; } = null!;
     public string AccountSID { get; set; } = null!;

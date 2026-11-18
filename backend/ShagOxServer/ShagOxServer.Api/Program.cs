@@ -28,7 +28,7 @@ try
         .AddJWT(builder.Configuration)
         .AddCurrency(builder.Configuration)
         .AddCloudinary(builder.Configuration)
-        .AddSettingsConfiguration(builder.Configuration)
+        .AddOptionsConfiguration(builder.Configuration)
         .AddDelivery(builder.Configuration)
         .AddFrontendPolicy()
         .AddControllersWithJson()

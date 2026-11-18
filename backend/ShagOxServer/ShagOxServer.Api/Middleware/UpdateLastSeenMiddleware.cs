@@ -7,16 +7,16 @@ using System.Security.Claims;
 namespace ShagOxServer.Api.Middleware;
 public class UpdateLastSeenMiddleware
 {
-    private readonly UpdateLastSeenOptions _settings;
+    private readonly UpdateLastSeenOptions _updaterOptions;
     private readonly RequestDelegate _next;
 
-  
+    
     public UpdateLastSeenMiddleware(
-        IOptions<UpdateLastSeenOptions> settings,
+        IOptions<UpdateLastSeenOptions> updaterOptions,
         RequestDelegate next)
     {
         _next = next;
-        _settings = settings.Value;
+        _updaterOptions = updaterOptions.Value;
     }
 
     public async Task InvokeAsync(
@@ -30,7 +30,7 @@ public class UpdateLastSeenMiddleware
             if (int.TryParse(userIdClaim?.Value, out var userId))
             {
                 var now = DateTime.UtcNow;
-                var cutoff = now - _settings.UpdateLastSeen;
+                var cutoff = now - _updaterOptions.UpdateLastSeen;
 
                 await dbContext.Users
                     .Where(u => u.Id == userId &&

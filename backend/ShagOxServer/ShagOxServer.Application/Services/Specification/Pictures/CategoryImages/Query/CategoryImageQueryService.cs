@@ -16,6 +16,7 @@ using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.CategoryImages;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using System.Xml.Linq;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.CategoryImages.Query;
 public class CategoryImageQueryService
@@ -36,9 +37,11 @@ public class CategoryImageQueryService
     public CategoryImageQueryService(
         ICategoryImageQueryRepository imageRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(imageRepository, cacheService, settings)
+        : base(imageRepository, 
+            cacheService,
+            cacheOptions)
     {
         _imageRepository = imageRepository;
     }
@@ -68,7 +71,7 @@ public class CategoryImageQueryService
                 return await image.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

@@ -8,4 +8,6 @@ public sealed class NovaPoshtaOptions
     public string BaseUrl { get; set; } = "";
 
     public string CurrencyCode { get; set; } = "UAH";
+
+    public string WarehouseCityId = "";
 }

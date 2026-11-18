@@ -1,33 +1,33 @@
 using ShagOxServer.Application.Common.Options.Auth;
 using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
-using ShagOxServer.Application.Common.Settings.Verifivations;
+using ShagOxServer.Application.Common.Options.Verifivations;
 
 namespace ShagOxServer.Api.DependencyInjection;
-public static class SettingsConfigurationExtensions
+public static class OptionsConfigurationExtensions
 {
-    public static IServiceCollection AddSettingsConfiguration(
+    public static IServiceCollection AddOptionsConfiguration(
         this IServiceCollection services,
         IConfiguration config)
     {
-        #region Verification Settings
+        #region Verification Options
 
-        services.Configure<VerificationCodeSettings>(
+        services.Configure<VerificationCodeOptions>(
             config.GetSection("VerificationCode"));
 
         #endregion
 
-        #region Notification Settings
+        #region Notification Options
 
-        services.Configure<EmailSettings>(
+        services.Configure<EmailOptions>(
             config.GetSection("Email"));
 
-        services.Configure<SmsSettings>(
+        services.Configure<SmsOptions>(
             config.GetSection("Twilio"));
 
         #endregion
 
-        #region Cleanup Settings
+        #region Cleanup Options
 
         services.Configure<UserCleanupOptions>(
             config.GetSection("UserCleanup"));
@@ -37,14 +37,14 @@ public static class SettingsConfigurationExtensions
 
         #endregion
 
-        #region Authentication Settings
+        #region Authentication Options
 
-        services.Configure<GoogleSettings>(
+        services.Configure<GoogleOptions>(
             config.GetSection("Google"));
 
         #endregion
 
-        #region User Settings
+        #region User Options
 
         services.Configure<UserNameOptions>(
             config.GetSection("UserNameGenerate"));

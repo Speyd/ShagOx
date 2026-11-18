@@ -1,6 +1,8 @@
 using CloudinaryDotNet;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Caches;
+using ShagOxServer.Application.Common.Options.Deliveries;
+using ShagOxServer.Application.Common.Options.Deliveries.Providers;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Query;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Request;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Query;
@@ -22,7 +24,8 @@ public class NovaPoshtaDeliveryClient
     private readonly NovaPoshtaApiClient _apiClient;
     private readonly INovaPoshtaTypeResolver _typeResolve;
     private readonly IDataCacheService _cacheService;
-    private readonly CacheOptions _cacheSettings;
+    private readonly NovaPoshtaOptions _deliveryOptions;
+    private readonly CacheOptions _casheOptions;
 
 
     public string ProviderCode => "NOVA_POSHTA";
@@ -33,12 +36,14 @@ public class NovaPoshtaDeliveryClient
         NovaPoshtaApiClient apiClient,
         INovaPoshtaTypeResolver typeResolve,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings)
+        IOptions<NovaPoshtaOptions> deliveryOptions,
+        IOptions<CacheOptions> casheOptions)
     {
         _apiClient = apiClient;
         _typeResolve = typeResolve;
         _cacheService = cacheService;
-        _cacheSettings = settings.Value;
+        _deliveryOptions = deliveryOptions.Value;
+        _casheOptions = casheOptions.Value;
     }
 
 
@@ -52,7 +57,7 @@ public class NovaPoshtaDeliveryClient
 
         var methodProperties = new Dictionary<string, object>
         {
-            ["CitySender"] = "8d5a980d-391c-11dd-90d9-001a92567626",
+            ["CitySender"] = _deliveryOptions.WarehouseCityId,
             ["CityRecipient"] = request.RecipientCityExternalId,
             ["Weight"] = request.Weight.ToString(
                 System.Globalization.CultureInfo.InvariantCulture),
@@ -121,7 +126,7 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _cacheSettings.KeyExpiration);
+            _casheOptions.KeyExpiration);
     }
 
     public async Task<Result<IEnumerable<DeliveryStreetDto>>> GetStreetsAsync(
@@ -165,7 +170,7 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _cacheSettings.KeyExpiration);
+            _casheOptions.KeyExpiration);
     }
 
 
@@ -230,6 +235,6 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _cacheSettings.KeyExpiration);
+            _casheOptions.KeyExpiration);
     }
 }

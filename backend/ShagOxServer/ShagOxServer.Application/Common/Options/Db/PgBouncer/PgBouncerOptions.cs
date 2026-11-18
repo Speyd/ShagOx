@@ -9,5 +9,5 @@ public sealed class PgBouncerOptions
     public required int PrimaryPort { get; init; }
 
     public required string ReplicaHost { get; init; }
-    public required IReadOnlyList<PgBouncerReplicaSettings> Replicas { get; init; }
+    public required IReadOnlyList<PgBouncerReplicaOptions> Replicas { get; init; }
 }

@@ -34,10 +34,13 @@ public abstract class LineItemQueryService<TDto, TEntity, TFilter>
         ILineItemQueryRepository<TEntity, TFilter> itemQueryRepository,
         ILineItemAttributeExistsRepository attributeRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings,
+        IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
     )
-        : base(itemQueryRepository, language, cacheService, settings)
+        : base(itemQueryRepository, 
+            language, 
+            cacheService,
+            cacheOptions)
     {
         _itemQueryRepository = itemQueryRepository;
         _attributeRepository = attributeRepository;
@@ -68,7 +71,7 @@ public abstract class LineItemQueryService<TDto, TEntity, TFilter>
                 return await items.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 

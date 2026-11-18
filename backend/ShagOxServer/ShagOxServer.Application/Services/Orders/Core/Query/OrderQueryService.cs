@@ -46,10 +46,13 @@ public class OrderQueryService
         IDeliveryProviderQueryService deliveryService,
         ICurrencyQueryService currencyService,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings,
+        IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
     )
-        : base(orderQueryRepository, language, cacheService, settings)
+        : base(orderQueryRepository, 
+            language, 
+            cacheService,
+            cacheOptions)
     {
         _orderQueryRepository = orderQueryRepository;
         _orderItemService = orderItemService;
@@ -109,7 +112,7 @@ public class OrderQueryService
                 return await order.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -136,7 +139,7 @@ public class OrderQueryService
                 return await order.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -163,7 +166,7 @@ public class OrderQueryService
                 return await order.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

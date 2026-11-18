@@ -37,10 +37,13 @@ public class BasketQueryService
         IBasketQueryRepository basketQueryRepository,
         IBasketItemQueryService basketItemService,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings,
+        IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
     )
-        : base(basketQueryRepository, language, cacheService, settings)
+        : base(basketQueryRepository, 
+            language, 
+            cacheService, 
+            cacheOptions)
     {
         _basketQueryRepository = basketQueryRepository;
         _basketItemService = basketItemService;
@@ -83,7 +86,7 @@ public class BasketQueryService
 
                 return await basket.ToResultAsync(ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

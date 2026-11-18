@@ -19,7 +19,7 @@ public abstract partial class CacheService<TDto, TEntity, TFilter>
         await _cache.SetAsync(
             GetCacheKey(dto.Id, status),
             dto,
-            _settings.KeyExpiration);
+            _cacheOptions.KeyExpiration);
     }
 
     public virtual async Task CreatePagedCache(
@@ -30,7 +30,7 @@ public abstract partial class CacheService<TDto, TEntity, TFilter>
         await _cache.SetAsync(
             GetPagedCacheKey(pagination, status),
             result,
-            _settings.KeyExpiration);
+            _cacheOptions.KeyExpiration);
     }
 
     public virtual async Task CreateSearchCache(
@@ -42,6 +42,6 @@ public abstract partial class CacheService<TDto, TEntity, TFilter>
         await _cache.SetAsync(
             GetSearchCacheKey(filter, pagination, status),
             result,
-            _settings.KeyExpiration);
+            _cacheOptions.KeyExpiration);
     }
 }

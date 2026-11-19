@@ -9,6 +9,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Location;
 using ShagOxServer.Application.Services.Location.Regions.Mapping;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Delete;
@@ -27,12 +28,13 @@ public class RegionDeleteService
 
     public RegionDeleteService(
         IRepository<Region> regionRepository,
+        ICommandRepository<Region> regionCommand,
         RegionValidator regionValidator,
         RegionInvalidationService regionInvalid,
         IUnitOfWork unitOfWork,
         ILogger<RegionDeleteService> logger
     )
-        : base(regionRepository, regionValidator, unitOfWork, logger)
+        : base(regionCommand, regionValidator, unitOfWork, logger)
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;

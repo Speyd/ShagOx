@@ -5,7 +5,7 @@ public sealed record AdvertisementVariantCatalogDto
 (
     long Id,
     decimal Price,
-    decimal PreviousPrice,
+    decimal? PreviousPrice,
     int Stock,
     List<AttributeDto> Attributes
 );

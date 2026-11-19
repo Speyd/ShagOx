@@ -10,6 +10,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Transl
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
+using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Delete;
@@ -28,12 +29,13 @@ public class CategoryTranslationDeleteService
 
     public CategoryTranslationDeleteService(
         IRepository<CategoryTranslation> categoryRepository,
+        ICommandRepository<CategoryTranslation> categoryCommand,
         CategoryTranslationValidator categoryValidator,
         CategoryTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CategoryTranslationDeleteService> logger
     )
-        : base(categoryRepository, categoryValidator, unitOfWork, logger)
+        : base(categoryCommand, categoryValidator, unitOfWork, logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;

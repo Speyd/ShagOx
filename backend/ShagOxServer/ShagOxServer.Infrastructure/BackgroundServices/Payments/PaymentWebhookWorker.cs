@@ -7,12 +7,15 @@ using ShagOxServer.Application.Interfaces.Db;
 using ShagOxServer.Application.Interfaces.Services.Payments;
 
 namespace ShagOxServer.Infrastructure.BackgroundServices.Payments;
-public class PaymentWebhookWorker : BackgroundService
+public class PaymentWebhookWorker 
+    : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly WebhookWorkerOptions _options;
     private readonly IPostgresLoadBalancer _loadBalancer;
     private readonly ILogger<PaymentWebhookWorker> _logger;
+
+    private readonly int CountPending;
 
 
     public PaymentWebhookWorker(
@@ -25,6 +28,10 @@ public class PaymentWebhookWorker : BackgroundService
         _options = options.Value;
         _loadBalancer = loadBalancer;
         _logger = logger;
+
+        CountPending = options.Value.CountPending <= 0 ?
+            100 : 
+            options.Value.CountPending;
     }
 
 
@@ -49,14 +56,16 @@ public class PaymentWebhookWorker : BackgroundService
         //    }
 
         //    try
-        //    //{
-        //    //    await using var scope =
-        //    //        _scopeFactory.CreateAsyncScope();
+        //    {
+        //        await using var scope =
+        //            _scopeFactory.CreateAsyncScope();
 
-        //    //    var processor = scope.ServiceProvider
-        //    //        .GetRequiredService<IPaymentWebhookProcessor>();
+        //        var processor = scope.ServiceProvider
+        //            .GetRequiredService<IPaymentWebhookProcessor>();
 
-        //    //    await processor.ProcessPendingAsync(stoppingToken);
+        //        await processor.ProcessPendingAsync(
+        //            CountPending,
+        //            stoppingToken);
         //    }
         //    catch (OperationCanceledException)
         //        when (stoppingToken.IsCancellationRequested)
@@ -83,7 +92,7 @@ public class PaymentWebhookWorker : BackgroundService
         //    }
         //}
 
-        //_logger.LogInformation(
-        //    "Payment webhook worker stopped.");
+        _logger.LogInformation(
+            "Payment webhook worker stopped.");
     }
 }

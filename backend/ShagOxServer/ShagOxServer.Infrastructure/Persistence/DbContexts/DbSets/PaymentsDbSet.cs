@@ -6,4 +6,5 @@ public partial class BaseAppDbContext
     : DbContext
 {
     public DbSet<PaymentWebhook> PaymentWebhooks { get; set; }
+    public DbSet<Payment> Payments { get; set; }
 }

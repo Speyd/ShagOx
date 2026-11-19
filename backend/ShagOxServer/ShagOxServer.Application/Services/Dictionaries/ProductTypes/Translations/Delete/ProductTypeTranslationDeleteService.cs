@@ -8,6 +8,7 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Validator;
+using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -27,12 +28,13 @@ public class ProductTypeTranslationDeleteService
 
     public ProductTypeTranslationDeleteService(
         IRepository<ProductTypeTranslation> typeRepository,
+        ICommandRepository<ProductTypeTranslation> typeCommand,
         ProductTypeTranslationValidator typeValidator,
         CategoryTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeTranslationDeleteService> logger
     )
-        : base(typeRepository, typeValidator, unitOfWork, logger)
+        : base(typeCommand, typeValidator, unitOfWork, logger)
     {
         _typeRepository = typeRepository;
         _typeValidator = typeValidator;

@@ -8,6 +8,7 @@ using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Specification;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -104,6 +105,29 @@ public class CurrencyQueryService
             {
                 var currency = await _currencyRepository
                     .GetByUserAsync(userId,
+                        cancellationToken, status);
+
+                return Result<Currency?>.Success(currency);
+            },
+            _cacheOptions.KeyExpiration
+        );
+    }
+
+    public async Task<Result<Currency?>> GetEntityByCodeAsync(
+        string code, 
+        CancellationToken cancellationToken = default, 
+        EntityStatus status = EntityStatus.Active)
+    {
+        var cacheKey = CurrencyCache.EntityByCode(
+            code,
+            status);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var currency = await _currencyRepository
+                    .GetByCodeAsync(code,
                         cancellationToken, status);
 
                 return Result<Currency?>.Success(currency);

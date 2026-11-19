@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace ShagOxServer.Application.DTOs.Payment.Webhooks;
+namespace ShagOxServer.Infrastructure.ExternalServices.Payments.Providers.MonoBank.Models;
 public sealed record MonoWebhook
 (
     [property: JsonPropertyName("invoiceId")]

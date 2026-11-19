@@ -1408,10 +1408,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(35)
                         .HasColumnType("character varying(35)");
 
-                    b.Property<string>("InvoiceId")
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(35)
@@ -1574,6 +1570,62 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("OrderItems");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Payments.Payment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("InvoiceId")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PaymentUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Payments_InvoiceId")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("IX_Payments_OrderId");
+
+                    b.HasIndex("Status", "ExpiresAt")
+                        .HasDatabaseName("IX_Payments_Status_ExpiresAt");
+
+                    b.ToTable("Payments");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Payments.PaymentWebhook", b =>
                 {
                     b.Property<long>("Id")
@@ -1618,15 +1670,14 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InvoiceId")
                         .IsUnique()
                         .HasDatabaseName("IX_PaymentWebhooks_InvoiceId")
-                        .HasFilter("(\"EntityStatus\" IN ('Active', 'Hidden')) AND (\"Status\" = 'success')");
+                        .HasFilter("(\"EntityStatus\" IN ('Active', 'Hidden')) AND (\"Status\" = 'Succeeded')");
 
                     b.ToTable("PaymentWebhooks");
                 });
@@ -2077,7 +2128,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasConstraintName("FK_Advertisements_Conditions_ConditionId");
 
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
-                        .WithMany("Advertisements")
+                        .WithMany()
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -2401,7 +2452,7 @@ namespace ShagOxServer.Infrastructure.Migrations
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Orders.Order", b =>
                 {
                     b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -2459,6 +2510,18 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("AdvertisementVariant");
 
                     b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Payments.Payment", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Orders.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Payments_Orders_OrderId");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.AdvertisementImage", b =>
@@ -2691,10 +2754,6 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Currency", b =>
                 {
-                    b.Navigation("Advertisements");
-
-                    b.Navigation("Orders");
-
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618

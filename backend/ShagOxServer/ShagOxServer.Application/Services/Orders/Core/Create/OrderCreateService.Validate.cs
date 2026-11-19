@@ -1,5 +1,6 @@
 using ShagOxServer.Application.DTOs.Orders.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -40,19 +41,22 @@ public partial class OrderCreateService
             deliveryProvider = deliveryResult.Value;
         }
 
-        var currencyResult = await _currencyValidator
-            .GetByIdAsync(
-                request.CurrencyId,
-                cancellationToken);
+        var currencyResult = await _currencyProvider
+            .GetCurrencyAsync(cancellationToken);
 
-        if (!currencyResult.IsSuccess ||
-            currencyResult.Value is null)
+        if (currencyResult is null)
         {
-            return Result<(Currency, DeliveryProvider?)>
-                .Fail(currencyResult.Error);
+            currencyResult = await _currencyProvider
+                .GetBaseCurrencyAsync(cancellationToken);
+
+            if (currencyResult is null)
+            {
+                return Result<(Currency, DeliveryProvider?)>
+                    .NotFound(EntityNamesResources.Currency);
+            }
         }
 
         return Result<(Currency, DeliveryProvider?)>.Success(
-            (currencyResult!.Value, deliveryProvider));
+            (currencyResult, deliveryProvider));
     }
 }

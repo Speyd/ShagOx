@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
+using ShagOxServer.Infrastructure.ExternalServices.Payments.Providers.MonoBank;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Payments.PaymentWebhooks;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Payments;
@@ -13,6 +14,9 @@ public static class PaymentWebhookDependencyInjection
 
         services.AddScoped<IPaymentWebhookCommandRepository,
             PaymentWebhookCommandRepository>();
+
+
+        services.AddScoped<MonoWebhookDeserializer>();
 
         return services;
     }

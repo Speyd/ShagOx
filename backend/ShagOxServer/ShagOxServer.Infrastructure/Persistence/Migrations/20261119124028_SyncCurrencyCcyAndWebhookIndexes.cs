@@ -22,41 +22,14 @@ namespace ShagOxServer.Infrastructure.Persistence.Migrations
                 UPDATE "Currencies" SET "DecimalPlaces" = 2 WHERE "DecimalPlaces" = 0;
                 """);
 
-            migrationBuilder.DropIndex(
-                name: "IX_PaymentWebhooks_InvoiceId",
-                table: "PaymentWebhooks");
-
-            migrationBuilder.DropIndex(
-                name: "IX_PaymentWebhooks_IsProcessed_ReceivedAt",
-                table: "PaymentWebhooks");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaymentWebhooks_InvoiceId",
-                table: "PaymentWebhooks",
-                column: "InvoiceId",
-                unique: true,
-                filter: "(\"EntityStatus\" IN ('Active', 'Hidden')) AND (\"Status\" = 'success')");
+            // PaymentWebhooks index changes live in 20261119095854_UpdateIndexesWebhooks
+            // and 20261119133101_UpdateInedxWebhook; repeating them here breaks databases
+            // that already applied those migrations.
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_PaymentWebhooks_InvoiceId",
-                table: "PaymentWebhooks");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaymentWebhooks_InvoiceId",
-                table: "PaymentWebhooks",
-                column: "InvoiceId",
-                unique: true,
-                filter: "\"EntityStatus\" IN ('Active', 'Hidden')");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaymentWebhooks_IsProcessed_ReceivedAt",
-                table: "PaymentWebhooks",
-                columns: new[] { "IsProcessed", "ReceivedAt" });
-
             migrationBuilder.Sql("""
                 ALTER TABLE "Currencies" ALTER COLUMN "Ccy" DROP DEFAULT;
                 ALTER TABLE "Currencies" ALTER COLUMN "Ccy" TYPE character varying(3)

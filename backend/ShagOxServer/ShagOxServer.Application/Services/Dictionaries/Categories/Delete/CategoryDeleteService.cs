@@ -11,6 +11,7 @@ using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.CategoryImages.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
@@ -32,6 +33,7 @@ public class CategoryDeleteService
 
     public CategoryDeleteService(
         IRepository<Category> categoryRepository,
+        ICommandRepository<Category> categoryCommand,
         CategoryValidator categoryValidator,
         CategoryInvalidationService categoryInvalid,
         ICategoryImageDeleteService imageDeleteService,
@@ -39,7 +41,7 @@ public class CategoryDeleteService
         IUnitOfWork unitOfWork,
         ILogger<CategoryDeleteService> logger
     )
-        : base(categoryRepository, categoryValidator, unitOfWork, logger)
+        : base(categoryCommand, categoryValidator, unitOfWork, logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;

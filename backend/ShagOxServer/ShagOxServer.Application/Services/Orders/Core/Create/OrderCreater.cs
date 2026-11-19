@@ -33,7 +33,6 @@ public static class OrderCreater
 
             Comment = request.Comment,
 
-            CurrencyId = request.CurrencyId,
 
             DeliveryType = request.DeliveryType,
             DeliveryProviderId = request.DeliveryProviderId,
@@ -52,7 +51,7 @@ public static class OrderCreater
 
             PaymentMethod = request!.PaymentMethod,
 
-            PaymentStatus = PaymentStatus.Pending,
+            PaymentStatus = OrderPaymentStatus.Pending,
             OrderStatus = OrderStatus.Pending,
 
             Subtotal = 0,

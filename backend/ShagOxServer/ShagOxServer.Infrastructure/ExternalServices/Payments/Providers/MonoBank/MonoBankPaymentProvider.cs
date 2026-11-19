@@ -2,20 +2,27 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Payments.Providers;
 using ShagOxServer.Application.DTOs.Payment;
-using ShagOxServer.Application.DTOs.Payment.Webhooks;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Payments;
+using ShagOxServer.Application.Resources.Payment;
+using ShagOxServer.Domain.Entities.Payments;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Text;
 using System.Text.Json;
 
-namespace ShagOxServer.Infrastructure.ExternalServices.Payments.Providers;
+namespace ShagOxServer.Infrastructure.ExternalServices.Payments.Providers.MonoBank;
 public class MonoBankPaymentProvider
     : IPaymentProvider
 {
     private readonly IPaymentWebhookProcessor _webhookProcessor;
+    private readonly IRepository<Payment> _paymentRepository;
+    private readonly MonoWebhookDeserializer _deserializer;
     private readonly HttpClient _httpClient;
     private readonly MonoBankOptions _options;
+    private readonly IUnitOfWork _unitOfWork;
 
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -26,12 +33,18 @@ public class MonoBankPaymentProvider
 
     public MonoBankPaymentProvider(
         IPaymentWebhookProcessor webhookProcessor,
+        IRepository<Payment> paymentRepository,
+        MonoWebhookDeserializer deserializer,
         HttpClient httpClient,
-        IOptions<MonoBankOptions> options)
+        IOptions<MonoBankOptions> options,
+        IUnitOfWork unitOfWork)
     {
         _webhookProcessor = webhookProcessor;
+        _paymentRepository = paymentRepository;
+        _deserializer = deserializer;
         _httpClient = httpClient;
         _options = options.Value;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<PaymentResponse>> PaymentRequest(
@@ -75,9 +88,25 @@ public class MonoBankPaymentProvider
 
         if(responce is null)
         {
-            return Result<PaymentResponse>
-                .Fail("");
+            return Result<PaymentResponse>.Fail(
+               PaymentResources.PaymentProviderInvalidResponse);
         }
+
+        Console.WriteLine(responce.InvoiceId);
+
+        var payment = new Payment
+        {
+            OrderId = request.OrderId,
+            InvoiceId = responce.InvoiceId,
+            PaymentUrl = responce.PaymentUrl,
+            Amount = request.Amount,
+            ExpiresAt = DateTime.UtcNow + _options.PaymentExpiresAt,
+            Status = PaymentStatus.Pending
+        };
+
+        _paymentRepository.Add(payment);
+
+        await _unitOfWork.SaveChangesAsync();
 
         return Result<PaymentResponse>.Success(responce);
     }
@@ -90,25 +119,22 @@ public class MonoBankPaymentProvider
 
         var body = await reader.ReadToEndAsync(cancellationToken);
 
-        Console.WriteLine($"WEBHOOK BODY: {body}");
-
         if (string.IsNullOrWhiteSpace(body))
         {
-            return Result<bool>.Fail("Empty webhook body");
+            return Result<bool>.Fail(
+                PaymentResources.WebhookEmptyBody);
         }
 
-        var payment = JsonSerializer.Deserialize<MonoWebhook>(body);
+        var payment = _deserializer.Deserialize(body);
 
-        if (payment is null)
+        if (!payment.IsSuccess || payment.Value is null)
         {
-            return Result<bool>.Fail("Invalid webhook");
+            return Result<bool>.Fail(
+                payment.Error);
         }
-
-        Console.WriteLine($"Invoice: {payment.InvoiceId}");
-        Console.WriteLine($"Status: {payment.Status}");
 
         return await _webhookProcessor.ReceiveAsync(
-            payment,
+            payment.Value,
             body,
             cancellationToken);
     }

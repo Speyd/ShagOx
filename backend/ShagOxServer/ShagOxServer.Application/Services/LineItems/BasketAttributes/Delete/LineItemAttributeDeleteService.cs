@@ -8,6 +8,7 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.LineItems;
 using ShagOxServer.Application.Services.LineItems.LineItemAttributes.Mapping;
 using ShagOxServer.Application.Services.LineItems.LineItemAttributes.Validator;
+using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Domain.Entities.LineItems;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -27,12 +28,13 @@ public class LineItemAttributeDeleteService
 
     public LineItemAttributeDeleteService(
         IRepository<LineItemAttribute> attributeRepository,
+        ICommandRepository<LineItemAttribute> attributeCommand,
         LineItemAttributeValidator attributeValidator,
         LineItemAttributeInvalidationService attributeInvalid,
         IUnitOfWork unitOfWork,
         ILogger<LineItemAttributeDeleteService> logger
     )
-        : base(attributeRepository, attributeValidator, unitOfWork, logger)
+        : base(attributeCommand, attributeValidator, unitOfWork, logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;

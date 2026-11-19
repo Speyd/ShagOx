@@ -22,7 +22,7 @@ namespace ShagOxServer.Application.Resources.Order {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class OrderResources {
+    public class OrderResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace ShagOxServer.Application.Resources.Order {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Order.OrderResources", typeof(OrderResources).Assembly);
@@ -51,7 +51,7 @@ namespace ShagOxServer.Application.Resources.Order {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace ShagOxServer.Application.Resources.Order {
         /// <summary>
         ///   Ищет локализованную строку, похожую на The product &apos;{0}&apos; price is invalid..
         /// </summary>
-        internal static string InsufficientStock {
+        public static string InsufficientStock {
             get {
                 return ResourceManager.GetString("InsufficientStock", resourceCulture);
             }
@@ -72,9 +72,27 @@ namespace ShagOxServer.Application.Resources.Order {
         /// <summary>
         ///   Ищет локализованную строку, похожую на The requested quantity exceeds the available stock &apos;{0}&apos;..
         /// </summary>
-        internal static string InvalidPrice {
+        public static string InvalidPrice {
             get {
                 return ResourceManager.GetString("InvalidPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update the order payment status..
+        /// </summary>
+        public static string OrderPaymentStatusUpdateFailed {
+            get {
+                return ResourceManager.GetString("OrderPaymentStatusUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update the order status..
+        /// </summary>
+        public static string OrderStatusUpdateFailed {
+            get {
+                return ResourceManager.GetString("OrderStatusUpdateFailed", resourceCulture);
             }
         }
     }

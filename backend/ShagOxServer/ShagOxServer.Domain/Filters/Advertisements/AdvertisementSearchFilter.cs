@@ -5,6 +5,8 @@ namespace ShagOxServer.Domain.Filters.Advertisements;
 public sealed record AdvertisementSearchFilter(
     string? Title,
     string? Description,
+    bool? Newest,
+    bool? Discounts,
     long? CategoryId,
     string? Attributes,
     string? VariantAttributes = null,
@@ -17,6 +19,8 @@ public sealed record AdvertisementSearchFilter(
         return new AdvertisementSearchFilter(
             filter.Title,
             filter.Description,
+            filter.Newest,
+            filter.Discounts,
             filter.CategoryId,
             NormalizeAttributes(filter.Attributes),
             NormalizeAttributes(filter.VariantAttributes),

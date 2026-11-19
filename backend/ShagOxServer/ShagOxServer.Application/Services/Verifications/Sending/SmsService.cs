@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Verifivations;
-using ShagOxServer.Application.Common.Options.Verifivations;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Messaging.Sms;
 using ShagOxServer.Application.Resources.Verifications.Core;

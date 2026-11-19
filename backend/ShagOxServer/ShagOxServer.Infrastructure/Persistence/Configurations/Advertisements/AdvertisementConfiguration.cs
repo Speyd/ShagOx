@@ -37,7 +37,7 @@ public class AdvertisementConfiguration
             .IsRequired();
 
         builder.HasOne(x => x.Currency)
-            .WithMany(x => x.Advertisements)
+            .WithMany()
             .HasForeignKey(x => x.CurrencyId)
             .OnDelete(DeleteBehavior.Restrict);
 

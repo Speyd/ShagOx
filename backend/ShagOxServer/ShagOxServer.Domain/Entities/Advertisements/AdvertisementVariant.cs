@@ -17,7 +17,7 @@ public class AdvertisementVariant
     /// <summary>
     /// Previous product price used for displaying discounts and price changes.
     /// </summary>
-    public decimal PreviousPrice { get; set; }
+    public decimal? PreviousPrice { get; set; }
 
     public int Stock { get; set; }
 

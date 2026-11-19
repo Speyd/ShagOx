@@ -29,13 +29,14 @@ public partial class OrderCreateService
 
     private readonly UserValidator _userValidator;
     private readonly DeliveryProviderValidator _deliveryValidator;
-    private readonly CurrencyValidator _currencyValidator;
 
     private readonly IDeliveryPriceCalculator _deliveryCalculator;
     private readonly IOrderItemCreateService _orderItemCreateService;
     private readonly IOrderNumberGenerator _orderNumberGenerator;
     private readonly IPaymentProvider _paymentProvider;
     private readonly IPaymentWebhookProcessor _webhookProcessor;
+
+    private readonly ICurrencyProvider _currencyProvider;
 
     private readonly OrderInvalidationService _orderInvalidation;
 
@@ -46,13 +47,13 @@ public partial class OrderCreateService
         IRepository<Order> orderRepository,
         UserValidator userValidator,
         DeliveryProviderValidator deliveryValidator,
-        CurrencyValidator currencyValidator,
         IDeliveryPriceCalculator deliveryCalculator,
         IOrderItemCreateService orderItemCreateService,
         IPaymentProvider paymentProvider,
         IPaymentWebhookProcessor webhookProcessor,
         OrderInvalidationService orderInvalidation,
         IOrderNumberGenerator orderNumberGenerator,
+        ICurrencyProvider currencyProvider,
         IUnitOfWork unitOfWork,
         ILogger<OrderCreateService> logger)
     {
@@ -60,7 +61,6 @@ public partial class OrderCreateService
 
         _userValidator = userValidator;
         _deliveryValidator = deliveryValidator;
-        _currencyValidator = currencyValidator;
 
         _deliveryCalculator = deliveryCalculator;
         _orderItemCreateService = orderItemCreateService;
@@ -68,6 +68,8 @@ public partial class OrderCreateService
 
         _paymentProvider = paymentProvider;
         _webhookProcessor = webhookProcessor;
+
+        _currencyProvider = currencyProvider;
 
         _orderInvalidation = orderInvalidation;
 
@@ -196,24 +198,25 @@ public partial class OrderCreateService
         var request = new PaymentRequest
         (
             order.TotalPrice,
+            order.Id,
             order.Currency.Ccy,
             order.Currency.DecimalPlaces
         );
-
+ 
         var result = await _paymentProvider
             .PaymentRequest(request, cancellationToken);
 
         if (!result.IsSuccess || result.Value is null)
             return Result<string>.Fail(result.Error);
 
-        order.InvoiceId = result.Value.InvoiceId;
+        order.PaymentStatus = OrderPaymentStatus.Pending;
 
         _orderRepository.Update(order);
 
         await _unitOfWork.SaveChangesAsync();
 
         await _webhookProcessor.ProcessPendingAsync(
-            order.InvoiceId,
+            result.Value.InvoiceId,
             cancellationToken);
 
         return Result<string>.Success(result.Value.PaymentUrl);

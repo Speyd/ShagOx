@@ -20,11 +20,16 @@ public partial class OrderCreateService
 
         var order = OrderCreater.Create(ownerId, orderNumber, request);
 
+        order.DeliveryProviderId = deliveryProvider?.Id;
+        order.CurrencyId = currency.Id;
+      
+
+        order.OrderStatus = OrderStatus.Pending;
+
         _orderRepository.Add(order);
 
-        order.DeliveryProvider = deliveryProvider;
         order.Currency = currency;
-        order.OrderStatus = OrderStatus.Pending;
+        order.DeliveryProvider = deliveryProvider;
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -43,7 +48,9 @@ public partial class OrderCreateService
             var itemResult = await _orderItemCreateService
                 .CreateInternalAsync(item with
                 {
-                    ParentId = order.Id
+                    ParentId = order.Id,
+                    CurrencyId = order.CurrencyId
+
                 });
 
             if (!itemResult.IsSuccess)

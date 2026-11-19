@@ -9,6 +9,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attrib
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
@@ -27,12 +28,13 @@ public class AttributeDefinitionDeleteService
 
     public AttributeDefinitionDeleteService(
         IRepository<AttributeDefinition> attributeRepository,
+        ICommandRepository<AttributeDefinition> attributeCommand,
         AttributeDefinitionValidator attributeValidator,
         AttributeDefinitionInvalidationService attribureInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionDeleteService> logger
     )
-        : base(attributeRepository, attributeValidator, unitOfWork, logger)
+        : base(attributeCommand, attributeValidator, unitOfWork, logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;

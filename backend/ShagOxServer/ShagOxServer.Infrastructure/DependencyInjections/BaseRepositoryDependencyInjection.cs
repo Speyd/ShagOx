@@ -18,6 +18,9 @@ public static class BaseRepositoryDependencyInjection
         services.AddScoped(typeof(IRepository<>),
             typeof(Repository<>));
 
+        services.AddScoped(typeof(ICommandRepository<>),
+           typeof(CommandRepository<>));
+
         services.AddScoped(typeof(IExistsRepository<>),
             typeof(ExistsRepository<>));
 

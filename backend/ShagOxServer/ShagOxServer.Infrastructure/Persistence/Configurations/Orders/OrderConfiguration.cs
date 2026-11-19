@@ -132,11 +132,6 @@ public class OrderConfiguration
             .IsRequired(false);
 
 
-        builder.Property(x => x.InvoiceId)
-            .IsRequired(false)
-            .HasMaxLength(150);
-
-
         builder.Property(x => x.OrderStatus)
             .HasConversion<string>()
             .IsRequired();
@@ -184,7 +179,7 @@ public class OrderConfiguration
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Currency)
-            .WithMany(x => x.Orders)
+            .WithMany()
             .HasForeignKey(x => x.CurrencyId)
             .OnDelete(DeleteBehavior.Restrict);
 

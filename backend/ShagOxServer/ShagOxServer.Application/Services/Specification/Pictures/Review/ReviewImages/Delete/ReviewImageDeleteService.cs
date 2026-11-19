@@ -9,6 +9,7 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Validator;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -22,6 +23,7 @@ public class ReviewImageDeleteService
 
     public ReviewImageDeleteService(
         IRepository<ReviewImage> imageRepository,
+        ICommandRepository<ReviewImage> imageCommand,
         ReviewImageValidator imageValidator,
         PictureValidator pictureValidator,
         ReviewImageInvalidationService imageInvalid,
@@ -29,6 +31,7 @@ public class ReviewImageDeleteService
         ILogger<ReviewImageDeleteService> logger
     )
         : base(imageRepository,
+            imageCommand,
             imageValidator,
             pictureValidator,
             unitOfWork,

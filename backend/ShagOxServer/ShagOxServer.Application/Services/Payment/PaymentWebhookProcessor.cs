@@ -1,9 +1,11 @@
-using ShagOxServer.Application.DTOs.Payment.Webhooks;
+using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
 using ShagOxServer.Application.Interfaces.Services.Payments;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Payments;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Payment;
@@ -34,20 +36,15 @@ public class PaymentWebhookProcessor
 
 
     public async Task<Result<bool>> ReceiveAsync(
-        MonoWebhook webhook,
+        WebhookDto webhook,
         string payload,
         CancellationToken cancellationToken = default)
     {
-        if (!string.Equals(
-            webhook.Status,
-            "success",
-            StringComparison.OrdinalIgnoreCase))
-        {
-            return Result<bool>.Success(true);
-        }
-
         var existing = await _webhookQueryRepository
-            .GetByInvoiceIdAsync(webhook.InvoiceId, cancellationToken);
+            .GetByInvoiceIdAsync(
+                webhook.InvoiceId,
+                webhook.EnumStatus,
+                cancellationToken);
 
         if (existing is not null)
         {
@@ -57,7 +54,7 @@ public class PaymentWebhookProcessor
         var entity = new PaymentWebhook
         {
             InvoiceId = webhook.InvoiceId,
-            Status = webhook.Status,
+            Status = webhook.EnumStatus,
             Payload = payload,
             IsProcessed = false,
             ReceivedAt = DateTime.UtcNow
@@ -67,18 +64,61 @@ public class PaymentWebhookProcessor
 
         await _unitOfWork.SaveChangesAsync();
 
-        await ProcessPendingAsync(
-            webhook.InvoiceId,
+        Console.WriteLine(webhook.EnumStatus);
+        Console.WriteLine(webhook.InvoiceId);
+        Console.WriteLine(entity.InvoiceId);
+
+        return (webhook.EnumStatus switch
+        {
+            PaymentStatus.Succeeded => await ProcessPendingAsync(
+                entity,
+                cancellationToken),
+
+            PaymentStatus.Cancelled or PaymentStatus.Failed =>
+                await ProcessCancelAsync(
+                    entity,
+                    cancellationToken),
+
+            PaymentStatus.Processing =>
+                await MarkProcessingAsync(entity.Id, cancellationToken),
+
+            PaymentStatus.Pending =>
+                await MarkPendingAsync(entity.Id, cancellationToken),
+
+            _ => Result<bool>.Success(true)
+        });
+    }
+
+    private async Task<Result<bool>> MarkProcessingAsync(
+        long webhookId,
+        CancellationToken cancellationToken = default)
+    {
+        await _webhookCommandRepository.UpdateStatusAsync(
+            webhookId,
+            PaymentStatus.Processing,
+            cancellationToken);
+
+        return Result<bool>.Success(true);
+    }
+
+    private async Task<Result<bool>> MarkPendingAsync(
+         long webhookId,
+         CancellationToken cancellationToken = default)
+    {
+        await _webhookCommandRepository.UpdateStatusAsync(
+            webhookId,
+            PaymentStatus.Pending,
             cancellationToken);
 
         return Result<bool>.Success(true);
     }
 
     public async Task ProcessPendingAsync(
+        int count,
         CancellationToken cancellationToken)
     {
         var webhooks = await _webhookQueryRepository
-            .GetUnprocessedAsync(cancellationToken);
+            .GetUnprocessedAsync(cancellationToken, count);
 
         foreach (var webhook in webhooks)
         {
@@ -94,18 +134,53 @@ public class PaymentWebhookProcessor
         }
     }
 
-    public async Task ProcessPendingAsync(
+    public async Task<Result<bool>> ProcessPendingAsync(
         string invoiceId,
         CancellationToken cancellationToken)
     {
         var webhook = await _webhookQueryRepository
-            .GetByInvoiceIdAsync(invoiceId, cancellationToken);
+            .GetByInvoiceIdAsync(invoiceId, null, cancellationToken);
 
         if (webhook is null)
-            return;
+        {
+            return Result<bool>.NotFound(
+                EntityNamesResources.Webhook);
+        }
 
-        var result = await _paymentProcessingService
+        return await ProcessPendingAsync(webhook, cancellationToken);
+    }
+
+    public async Task<Result<bool>> ProcessPendingAsync(
+        PaymentWebhook webhook,
+        CancellationToken cancellationToken)
+    {
+        return await _paymentProcessingService
             .ProcessSuccessfulPayment(
+                webhook.InvoiceId, cancellationToken);
+    }
+
+    public async Task<Result<bool>> ProcessCancelAsync(
+        string invoiceId,
+        CancellationToken cancellationToken)
+    {
+        var webhook = await _webhookQueryRepository
+            .GetByInvoiceIdAsync(invoiceId, null, cancellationToken);
+
+        if (webhook is null)
+        {
+            return Result<bool>.NotFound(
+                EntityNamesResources.Webhook);
+        }
+
+        return await ProcessCancelAsync(webhook, cancellationToken);
+    }
+
+    public async Task<Result<bool>> ProcessCancelAsync(
+        PaymentWebhook webhook,
+        CancellationToken cancellationToken)
+    {
+        return await _paymentProcessingService
+            .ProcessFailedPayment(
                 webhook.InvoiceId, cancellationToken);
     }
 }

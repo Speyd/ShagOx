@@ -15,14 +15,14 @@ public abstract class BaseDeleteService<TEntity>
     : ISoftDeleteService<TEntity, DeleteResponse>
     where TEntity : BaseEntity
 {
-    protected readonly IRepository<TEntity> _repository;
+    protected readonly ICommandRepository<TEntity> _repository;
     protected readonly BaseValidator<TEntity> _queryRepository;
     private readonly ILogger<BaseDeleteService<TEntity>> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
 
     public BaseDeleteService(
-        IRepository<TEntity> repository,
+        ICommandRepository<TEntity> repository,
         BaseValidator<TEntity> queryRepository,
         IUnitOfWork unitOfWork,
         ILogger<BaseDeleteService<TEntity>> logger)
@@ -60,8 +60,6 @@ public abstract class BaseDeleteService<TEntity>
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
-        await _unitOfWork.BeginTransactionAsync();
-
         try
         {
             var body = await SoftBodyDeleteAsync(entity, 
@@ -72,17 +70,9 @@ public abstract class BaseDeleteService<TEntity>
                 await _unitOfWork.RollbackAsync();
                 return Result<DeleteResponse>.Fail(body.Error);
             }
-
-            // SoftBodyDeleteAsync already marks the tracked (primary) copy as deleted.
-            // Do NOT call _repository.Update(entity): `entity` may come from the replica
-            // context with a navigation graph; attaching it next to the tracked instance
-            // corrupts the change tracker ("Unexpected entry.EntityState: Detached").
-            await _unitOfWork.CommitAsync();
         }
         catch (Exception ex)
         {
-            await _unitOfWork.RollbackAsync();
-
             _logger.LogError(
                 ex,
                 "Failed to delete {EntityName}. Id: {Id}",
@@ -135,19 +125,7 @@ public abstract class BaseDeleteService<TEntity>
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
-        var tracked = await _queryRepository
-            .GetByIdAttachAsync(entity.Id, cancellationToken);
-
-        if (!tracked.IsSuccess)
-            return Result<bool>.Fail(tracked.Error);
-
-        var deletedAt = DateTime.UtcNow;
-
-        foreach (var target in new[] { entity, tracked.Value! })
-        {
-            target.EntityStatus = EntityStatus.Deleted;
-            target.DeletedAt = deletedAt;
-        }
+        await _repository.SoftDeleteAsync(entity.Id);
 
         return Result<bool>.Success(true);
     }

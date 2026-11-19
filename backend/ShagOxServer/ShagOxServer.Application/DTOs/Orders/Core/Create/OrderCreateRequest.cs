@@ -12,7 +12,6 @@ public sealed record OrderCreateRequest
     string Email,
     ICollection<LineItemCreateRequest> OrderItems,
     string? Comment,
-    long CurrencyId,
     DeliveryType DeliveryType,
     long? DeliveryProviderId,
     DeliveryPointDto? DeliveryPointDto,

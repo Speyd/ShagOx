@@ -8,6 +8,7 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -27,12 +28,13 @@ public class CityDeleteService
 
     public CityDeleteService(
         IRepository<City> cityRepository,
+        ICommandRepository<City> cityCommand,
         CityValidator cityValidator,
         CityInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityDeleteService> logger
     )
-        : base(cityRepository, cityValidator, unitOfWork, logger)
+        : base(cityCommand, cityValidator, unitOfWork, logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;

@@ -4,5 +4,6 @@ public sealed record LineItemCreateRequest
     long ParentId,
     long AdvertisementId,
     long? AdvertisementVariantId,
+    long CurrencyId,
     int Quantity
 );

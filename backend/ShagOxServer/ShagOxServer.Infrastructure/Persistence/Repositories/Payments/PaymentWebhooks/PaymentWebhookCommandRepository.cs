@@ -1,18 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
+using ShagOxServer.Domain.Entities.Payments;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Payments.PaymentWebhooks;
 public class PaymentWebhookCommandRepository 
-    : IPaymentWebhookCommandRepository
+    : CommandRepository<PaymentWebhook>,
+    IPaymentWebhookCommandRepository
 {
-    private readonly AppDbContext _db;
-
-
     public PaymentWebhookCommandRepository(
-        AppDbContext db)
+        AppDbContext db
+    )
+        : base(db)
     {
-        _db = db;
     }
 
 
@@ -28,4 +30,16 @@ public class PaymentWebhookCommandRepository
                 cancellationToken);
     }
 
+    public async Task UpdateStatusAsync(
+        long webhookId,
+        PaymentStatus status,
+        CancellationToken cancellationToken = default)
+    {
+        await _db.PaymentWebhooks
+            .Where(x => x.Id == webhookId && x.Status == status)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(x => x.IsProcessed, true)
+                .SetProperty(x => x.ProcessedAt, DateTime.UtcNow),
+                cancellationToken);
+    }
 }

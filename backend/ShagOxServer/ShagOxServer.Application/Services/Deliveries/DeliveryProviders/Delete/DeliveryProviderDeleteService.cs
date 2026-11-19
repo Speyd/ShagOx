@@ -9,6 +9,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Mapping;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
 using ShagOxServer.Domain.Entities.Deliveries;
+using ShagOxServer.Domain.Entities.LineItems;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Delete;
@@ -27,12 +28,13 @@ public class DeliveryProviderDeleteService
 
     public DeliveryProviderDeleteService(
         IRepository<DeliveryProvider> deliveryRepository,
+        ICommandRepository<DeliveryProvider> deliveryCommand,
         DeliveryProviderValidator deliveryValidator,
         DeliveryProviderInvalidationService deliveryInvalid,
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderDeleteService> logger
     )
-        : base(deliveryRepository, deliveryValidator, unitOfWork, logger)
+        : base(deliveryCommand, deliveryValidator, unitOfWork, logger)
     {
         _deliveryRepository = deliveryRepository;
         _deliveryValidator = deliveryValidator;

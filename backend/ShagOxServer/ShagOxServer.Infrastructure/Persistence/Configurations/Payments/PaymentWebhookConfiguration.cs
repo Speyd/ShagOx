@@ -16,7 +16,7 @@ public class PaymentWebhookConfiguration
 
         builder.Property(x => x.Status)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasConversion<string>();
 
         builder.Property(x => x.Payload)
             .IsRequired()
@@ -41,6 +41,6 @@ public class PaymentWebhookConfiguration
 
         builder.HasUniqueActiveIndex(
             x => x.InvoiceId,
-            "\"Status\" = 'success'");
+            "\"Status\" = 'Succeeded'");
     }
 }

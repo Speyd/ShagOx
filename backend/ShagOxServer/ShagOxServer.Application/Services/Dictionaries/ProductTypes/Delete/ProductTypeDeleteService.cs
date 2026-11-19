@@ -27,12 +27,13 @@ public class ProductTypeDeleteService
 
     public ProductTypeDeleteService(
         IRepository<ProductType> productTypeRepository,
+        ICommandRepository<ProductType> productTypeCommand,
         ProductTypeValidator productTypeValidator,
         ProductTypeInvalidationService productInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeDeleteService> logger
     )
-        : base(productTypeRepository, productTypeValidator, unitOfWork, logger)
+        : base(productTypeCommand, productTypeValidator, unitOfWork, logger)
     {
         _productTypeRepository = productTypeRepository;
         _productTypeValidator = productTypeValidator;

@@ -49,8 +49,11 @@ public static class OptionsConfigurationExtensions
         services.Configure<WebhookWorkerOptions>(
             config.GetSection("WebhookWorker"));
 
-        #endregion
+        services.Configure<PaymentExpirationWorkerOptions>(
+            config.GetSection("PaymentExpirationWorker"));
         
+        #endregion
+
         #region Middleware
 
         services.Configure<RequestTrackingOptions>(

@@ -1,11 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
 using ShagOxServer.Application.Interfaces.Services.Orders;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
+using ShagOxServer.Application.Interfaces.Services.Orders.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Query;
 using ShagOxServer.Application.Services.Orders;
 using ShagOxServer.Application.Services.Orders.Core.Create;
+using ShagOxServer.Application.Services.Orders.Core.Delete;
 using ShagOxServer.Application.Services.Orders.Core.Query;
+using ShagOxServer.Application.Services.Orders.Core.Validator;
 
 namespace ShagOxServer.Application.DependencyInjections.Orders;
 public static class OrdersDependencyInjection
@@ -22,10 +24,10 @@ public static class OrdersDependencyInjection
         //services.AddScoped<IBasketItemUpdateService,
         //    BasketItemUpdateService>();
 
-        //services.AddScoped<IOrderItemDeleteService,
-        //    OrderItemDeleteService>();
+        services.AddScoped<IOrderDeleteService,
+            OrderDeleteService>();
 
-        //services.AddScoped<OrderItemValidator>();
+        services.AddScoped<OrderValidator>();
 
         services.AddScoped<IOrderNumberGenerator,
            OrderNumberGenerator>();

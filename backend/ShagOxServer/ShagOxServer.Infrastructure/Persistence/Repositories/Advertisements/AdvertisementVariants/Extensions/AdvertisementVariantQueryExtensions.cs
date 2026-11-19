@@ -10,6 +10,8 @@ public static class AdvertisementVariantQueryExtensions
         return query
             .AsSplitQuery()
             .Include(x => x.Advertisement)
-                .ThenInclude(x => x.Currency);
+                .ThenInclude(x => x.Currency)
+            .Include(x => x.Advertisement)
+                .ThenInclude(x => x.Status);
     }
 }

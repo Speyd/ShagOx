@@ -31,7 +31,8 @@ public static class AdvertisementQueryExtensions
             .Include(x => x.Pictures
                 .OrderBy(p => p.Order)
                 .Take(1))
-            .Include(x => x.Currency);
+            .Include(x => x.Currency)
+            .Include(x => x.Status);
     }
 
     public static IQueryable<AdvertisementCacheInfo> SelectCacheInfo(

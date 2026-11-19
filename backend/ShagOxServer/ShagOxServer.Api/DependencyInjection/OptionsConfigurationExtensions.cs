@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Common.Options.Auth;
+using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Common.Options.Verifivations;
@@ -61,6 +62,13 @@ public static class OptionsConfigurationExtensions
 
         services.Configure<UpdateLastSeenOptions>(
             config.GetSection("UpdateLastSeen"));
+
+        #endregion
+
+        #region Entity Options
+
+        services.Configure<EntityStatusesOptions>(
+           config.GetSection("EntityStatuses"));
 
         #endregion
 

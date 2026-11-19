@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.LineItems.LineItemAttributes;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.LineItems;
@@ -16,9 +17,12 @@ public class LineItemAttributeExistsRepository
       ILineItemAttributeExistsRepository
 {
     public LineItemAttributeExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<bool> ExistsAsync(

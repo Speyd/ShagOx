@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Deliveries.DeliveryProvid
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Validator;
+using ShagOxServer.Domain.Entities.Advertisements.Enum;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

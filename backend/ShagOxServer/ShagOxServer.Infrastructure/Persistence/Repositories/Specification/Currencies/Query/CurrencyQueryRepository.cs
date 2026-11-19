@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
@@ -16,9 +17,12 @@ public partial class CurrencyQueryRepository
     ICurrencyQueryRepository
 {
     public CurrencyQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<Currency?> GetByCodeAsync(

@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements.Enum;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
@@ -16,9 +19,12 @@ public partial class AdvertisementQueryRepository
       IAdvertisementQueryRepository
 {
     public AdvertisementQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<Advertisement?> GetByIdShortIncludeAsync(
@@ -29,8 +35,10 @@ public partial class AdvertisementQueryRepository
         return await _db.Advertisements
             .ShortWithIncludes()
             .WithStatusFilter(status)
+            .Where(x => x.Status.Code == AdvertisementStatus.Active)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
 
 
     public async Task<List<Advertisement>> GetByIdsAsync(
@@ -41,7 +49,8 @@ public partial class AdvertisementQueryRepository
         return await _db.Advertisements
             .WithIncludes()
             .WithStatusFilter(status)
-            .Where(x => ids.Contains(x.Id))
+            .Where(x => x.Status.Code == AdvertisementStatus.Active &&
+                ids.Contains(x.Id))
             .ToListAsync(cancellationToken);
     }
 
@@ -54,7 +63,8 @@ public partial class AdvertisementQueryRepository
         return await _db.Advertisements
             .WithIncludes()
             .WithStatusFilter(status)
-            .Where(x => x.OwnerId == userId)
+            .Where(x => x.OwnerId == userId &&
+                x.Status.Code == AdvertisementStatus.Active)
             .ToPagedResultAsync(pagination,
                 (x => x.Popularity),
                 cancellationToken);
@@ -74,21 +84,6 @@ public partial class AdvertisementQueryRepository
                 cancellationToken);
     }
 
-    public override async Task<PagedResult<Advertisement>> SearchAsync(
-        AdvertisementSearchFilter filter,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
-    {
-        return await _db.Advertisements
-            .WithIncludes()
-            .WithStatusFilter(status)
-            .Filter(filter)
-            .ToPagedResultAsync(pagination,
-                (x => x.Popularity),
-                cancellationToken);
-    }
-
     public async Task<PagedResult<Advertisement>> ShortSearchAsync(
         AdvertisementSearchFilter filter,
         PaginationParams pagination,
@@ -98,6 +93,8 @@ public partial class AdvertisementQueryRepository
         return await _db.Advertisements
             .ShortWithIncludes()
             .WithStatusFilter(status)
+            .Where(x => x.OwnerId == _userContext.UserId &&
+                x.Status.Code == AdvertisementStatus.Active)
             .Filter(filter)
             .ToPagedResultAsync(pagination,
                 (x => x.Popularity),
@@ -114,7 +111,9 @@ public partial class AdvertisementQueryRepository
         var query = _db.Advertisements
             .AsNoTracking()
             .ShortWithIncludes()
-            .WithStatusFilter(status);
+            .WithStatusFilter(status)
+            .Where(x => x.OwnerId == _userContext.UserId &&
+                x.Status.Code == AdvertisementStatus.Active);
 
         return await GetCatalogResultAsync(
             userId,
@@ -135,6 +134,8 @@ public partial class AdvertisementQueryRepository
             .AsNoTracking()
             .ShortWithIncludes()
             .WithStatusFilter(status)
+            .Where(x => x.OwnerId == _userContext.UserId &&
+                x.Status.Code == AdvertisementStatus.Active)
             .Filter(filter);
 
         return await GetCatalogResultAsync(

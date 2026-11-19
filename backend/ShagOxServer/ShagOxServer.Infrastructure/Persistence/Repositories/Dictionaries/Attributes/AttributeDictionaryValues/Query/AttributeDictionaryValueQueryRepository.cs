@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -18,9 +19,12 @@ public partial class AttributeDictionaryValueQueryRepository
       IAttributeDictionaryValueQueryRepository
 {
     public AttributeDictionaryValueQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<AttributeDictionaryValue?> GetByIdentificatorAsync(

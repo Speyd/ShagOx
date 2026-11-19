@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Conditions;
@@ -13,9 +14,12 @@ public partial class ConditionQueryRepository
       IConditionQueryRepository
 {
     public ConditionQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<Condition?> GetByIdentificatorAsync(

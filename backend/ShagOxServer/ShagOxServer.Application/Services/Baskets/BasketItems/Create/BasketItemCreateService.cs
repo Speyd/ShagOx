@@ -41,14 +41,12 @@ public class BasketItemCreateService
         BasketItemInvalidationService itemInvalid,
         IUnitOfWork unitOfWork,
         ILogger<BasketItemCreateService> logger,
-        IUserContext userContext,
-        IOptions<EntityStatusesOptions> entityOptions
+        IUserContext userContext
     )
         : base(itemValidator,
             userContext,
             advertVariantValidator,
-            advertValidator,
-            entityOptions)
+            advertValidator)
     {
         _itemRepository = itemRepository;
         _basketInvalidation = basketInvalidation;

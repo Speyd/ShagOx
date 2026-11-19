@@ -1,7 +1,9 @@
-﻿namespace ShagOxServer.Domain.Filters.Advertisements.Translations;
+using ShagOxServer.Domain.Entities.Advertisements.Enum;
+
+namespace ShagOxServer.Domain.Filters.Advertisements.Translations;
 public sealed record StatusTranslationSearchFilter
 (
-    string? StatusCode,
+    AdvertisementStatus? StatusCode,
     string? Language,
     string? Name,
     string? Description

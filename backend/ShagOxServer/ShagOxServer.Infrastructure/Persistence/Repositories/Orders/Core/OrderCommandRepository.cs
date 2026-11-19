@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Orders.Enum;
 using ShagOxServer.Domain.Entities.Payments.Enum;
@@ -12,9 +13,10 @@ public class OrderCommandRepository
     IOrderCommandRepository
 {
     public OrderCommandRepository(
-        AppDbContext db
+        AppDbContext db,
+        IUserContext userContext
     )
-        : base(db)
+        : base(db, userContext)
     {
     }
 

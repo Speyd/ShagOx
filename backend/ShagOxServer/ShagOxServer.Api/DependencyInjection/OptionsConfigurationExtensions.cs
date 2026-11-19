@@ -3,6 +3,7 @@ using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Common.Options.Verifivations;
+using ShagOxServer.Infrastructure.Options;
 
 namespace ShagOxServer.Api.DependencyInjection;
 public static class OptionsConfigurationExtensions
@@ -65,10 +66,10 @@ public static class OptionsConfigurationExtensions
 
         #endregion
 
-        #region Entity Options
+        #region Picture Options
 
-        services.Configure<EntityStatusesOptions>(
-           config.GetSection("EntityStatuses"));
+        services.Configure<PictureLoadeOptions>(
+            config.GetSection("PictureLoade"));
 
         #endregion
 

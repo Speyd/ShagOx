@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -12,9 +13,12 @@ public class CategoryExistsRepository
       ICategoryExistsRepository
 {
     public CategoryExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<bool> ExistsAsync(

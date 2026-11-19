@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.LineItems;
 using ShagOxServer.Domain.Filters.LineItems.LineItemAttributes;
@@ -16,9 +17,12 @@ public partial class LineItemAttributeQueryRepository
       ILineItemAttributeQueryRepository
 {
     public LineItemAttributeQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<PagedResult<LineItemAttribute>> GetByCategoryAsync(

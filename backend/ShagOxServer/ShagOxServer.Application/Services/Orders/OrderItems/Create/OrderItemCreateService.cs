@@ -62,15 +62,13 @@ public class OrderItemCreateService
         OrderItemInvalidationService itemInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<OrderItemCreateService> logger,
-        IUserContext userContext,
-        IOptions<EntityStatusesOptions> entityOptions
+        IUserContext userContext
     )
         : base(
             itemValidator,
             userContext,
             advertVariantValidator,
-            advertValidator,
-            entityOptions)
+            advertValidator)
     {
         _itemRepository = itemRepository;
 

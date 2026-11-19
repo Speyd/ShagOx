@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;
@@ -15,9 +16,12 @@ public class StatusTranslationQueryRepository
       IStatusTranslationQueryRepository
 {
     public StatusTranslationQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
     protected override IQueryable<StatusTranslation> ApplyIncludes(
          IQueryable<StatusTranslation> query)
@@ -37,6 +41,6 @@ public class StatusTranslationQueryRepository
         string identificator)
     {
         return query.Where(x => 
-            x.Translatable.Code == identificator);
+            x.Translatable.Code.ToString() == identificator);
     }
 }

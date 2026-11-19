@@ -1,9 +1,11 @@
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.DTOs.Common.ImageLoaders.Delete;
 using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
+using ShagOxServer.Infrastructure.Options;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Infrastructure.ExternalServices.ImageStorage;
@@ -11,11 +13,15 @@ public class CloudinaryImageLoader
     : IPictureLoaderService
 {
     private readonly Cloudinary _cloudinary;
+    private readonly PictureLoadeOptions _pictureOptions;
+
 
     public CloudinaryImageLoader(
-        Cloudinary cloudinary)
+        Cloudinary cloudinary,
+        IOptions<PictureLoadeOptions> pictureOptions)
     {
         _cloudinary = cloudinary;
+        _pictureOptions = pictureOptions.Value;
     }
 
 
@@ -48,12 +54,19 @@ public class CloudinaryImageLoader
     {
         await using var stream = file.OpenReadStream();
 
+        await using var webpStream = await PictureConverter
+            .Convert(
+                stream,
+                _pictureOptions.PictureFormat,
+                cancellationToken);
+
         var uploadParams = new ImageUploadParams
         {
             File = new FileDescription(
-                file.FileName,
-                stream),
-            Folder = "ShagOx"
+                $"{Path.GetFileNameWithoutExtension(file.FileName)}.{_pictureOptions.PictureFormat}",
+                webpStream),
+            Folder = _pictureOptions.PictureFolder,
+            Format = _pictureOptions.PictureFormat
         };
 
         var result = await _cloudinary

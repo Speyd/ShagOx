@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.LineItems.Core;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.LineItems.Core;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -13,9 +14,12 @@ public abstract class LineItemExistsRepository<TEntity>
     where TEntity : LineItem
 {
     public LineItemExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public Task<bool> ExistsAsync(

@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Infrastructure.Options;
+namespace ShagOxServer.Infrastructure.Options;
 public class CloudinaryOptions
 {
     public string CloudName { get; set; } = "";

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
@@ -13,9 +14,12 @@ public partial class StatusQueryRepository
       IStatusQueryRepository
 {
     public StatusQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<Status?> GetByIdentificatorAsync(
@@ -27,7 +31,7 @@ public partial class StatusQueryRepository
         return await _db.Statuses
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(x =>
-                x.Code == identificator,
+                x.Code.ToString() == identificator,
                 cancellationToken);
     }
 }

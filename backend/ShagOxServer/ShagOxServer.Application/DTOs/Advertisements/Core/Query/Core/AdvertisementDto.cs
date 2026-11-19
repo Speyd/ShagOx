@@ -24,7 +24,7 @@ public sealed record AdvertisementDto
     int? Stock,
     StatusDto Status,
     CurrencyDto Currency,
-    CategoryDto Category,
+    CategoryDto? Category,
     ConditionDto Condition,
     UserShortDto Seller,
     UserShortDto? Buyer,

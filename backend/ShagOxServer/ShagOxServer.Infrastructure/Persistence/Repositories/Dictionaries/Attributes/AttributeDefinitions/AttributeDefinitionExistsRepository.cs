@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -12,9 +13,12 @@ public class AttributeDefinitionExistsRepository
       IAttributeDefinitionExistsRepository
 {
     public AttributeDefinitionExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<bool> ExistsByCategoryAsync(

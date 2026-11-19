@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Statuses.Update;
+using ShagOxServer.Application.DTOs.Advertisements.Statuses.Update;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Update;
@@ -10,9 +10,9 @@ public class StatusUpdater
     {
         int countUpdated = 0;
 
-        if (request.Code is not null)
+        if (request.Code.HasValue)
         {
-            status.Code = request.Code;
+            status.Code = request.Code.Value;
             countUpdated++;
         }
 

@@ -83,8 +83,8 @@ public partial class AdvertisementQueryService
             variants.Add(variantDto);
         }
 
-        var categoryDto = await _categoryService
-            .ApplyMapperAsync(entity.Category);
+        //var categoryDto = await _categoryService
+        //    .ApplyMapperAsync(entity.Category);
 
         var statusDto = await _statusService
             .ApplyMapperAsync(entity.Status);
@@ -104,7 +104,8 @@ public partial class AdvertisementQueryService
         return AdvertisementMapper.ToDto(
             entity,
             variants,
-            categoryDto,
+            //categoryDto,
+            null,
             statusDto,
             attributeDto.Value!,
             convertedPrices,

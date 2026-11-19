@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Orders.OrderItems;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Filters.Orders.OrderItems;
@@ -15,8 +16,10 @@ public partial class OrderItemQueryRepository
       IOrderItemQueryRepository
 {
     public OrderItemQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
     {
     }
 

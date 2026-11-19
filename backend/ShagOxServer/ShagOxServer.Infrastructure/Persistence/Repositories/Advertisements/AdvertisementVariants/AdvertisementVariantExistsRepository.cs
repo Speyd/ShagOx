@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -14,9 +15,12 @@ public class AdvertisementVariantExistsRepository
       IAdvertisementVariantExistsRepository
 {
     public AdvertisementVariantExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<bool> ExistsAsync(

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
@@ -16,8 +17,10 @@ public class QueryTranslationRepository<TEntity, Translation>
     where Translation : BaseTranslation<TEntity>
 {
     public QueryTranslationRepository(
-        ReplicaDbContext db)
-        : base(db)
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
     {
     }
 

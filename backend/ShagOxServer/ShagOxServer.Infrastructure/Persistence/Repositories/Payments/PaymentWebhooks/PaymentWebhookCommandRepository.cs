@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Payments;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -11,9 +12,10 @@ public class PaymentWebhookCommandRepository
     IPaymentWebhookCommandRepository
 {
     public PaymentWebhookCommandRepository(
-        AppDbContext db
+        AppDbContext db,
+        IUserContext userContext
     )
-        : base(db)
+        : base(db, userContext)
     {
     }
 

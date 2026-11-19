@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Filters.Verifications.VerificationCodes;
@@ -13,9 +14,12 @@ public partial class VerificationCodeQueryRepository
       IVerificationCodeQueryRepository
 {
     public VerificationCodeQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<VerificationCode?> GetActiveByUserIdAsync(

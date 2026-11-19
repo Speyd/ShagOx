@@ -1,5 +1,7 @@
-﻿namespace ShagOxServer.Domain.Filters.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements.Enum;
+
+namespace ShagOxServer.Domain.Filters.Advertisements;
 public sealed record StatusSearchFilter
 (
-    string? Code
+    AdvertisementStatus? Code
 ) : BaseFilter();

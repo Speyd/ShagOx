@@ -11,6 +11,7 @@ using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.LineItems.Core.Validator;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements.Enum;
 using ShagOxServer.Domain.Entities.LineItems.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -22,21 +23,18 @@ public abstract class LineItemCreateService<TEntity>
     private readonly IUserContext _userContext;
     private readonly AdvertisementVariantValidator _advertVariantValidator;
     private readonly AdvertisementValidator _advertValidator;
-    private readonly EntityStatusesOptions _entityOption;
 
 
     protected LineItemCreateService(
         LineItemValidator<TEntity> itemValidator,
         IUserContext userContext,
         AdvertisementVariantValidator advertVariantValidator,
-        AdvertisementValidator advertValidator,
-        IOptions<EntityStatusesOptions> entityOption)
+        AdvertisementValidator advertValidator)
     {
         _itemValidator = itemValidator;
         _userContext = userContext;
         _advertVariantValidator = advertVariantValidator;
         _advertValidator = advertValidator;
-        _entityOption = entityOption.Value;
     }
 
 
@@ -169,7 +167,7 @@ public abstract class LineItemCreateService<TEntity>
         {
             if (advert.EntityStatus == EntityStatus.Deleted ||
                 advert.EntityStatus == EntityStatus.Hidden ||
-                advert.Status.Code != _entityOption.ActiveCode)
+                advert.Status.Code != AdvertisementStatus.Active)
             {
                 return Result<bool>.Fail(string.Format(
                     EntityErrorResources.ProoductNotAvailable,
@@ -180,7 +178,7 @@ public abstract class LineItemCreateService<TEntity>
         {
             if (variant.EntityStatus == EntityStatus.Deleted ||
                 variant.EntityStatus == EntityStatus.Hidden ||
-                variant.Advertisement.Status.Code != _entityOption.ActiveCode)
+                variant.Advertisement.Status.Code != AdvertisementStatus.Active)
             {
                 return Result<bool>.Fail(string.Format(
                     EntityErrorResources.ProoductNotAvailable,

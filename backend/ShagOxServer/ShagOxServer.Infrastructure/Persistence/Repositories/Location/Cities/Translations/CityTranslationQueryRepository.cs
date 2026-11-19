@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Filters.Location.Cities.Translations;
@@ -15,9 +16,12 @@ public class CityTranslationQueryRepository
       ICityTranslationQueryRepository
 {
     public CityTranslationQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     protected override IQueryable<CityTranslation> ApplyIncludes(

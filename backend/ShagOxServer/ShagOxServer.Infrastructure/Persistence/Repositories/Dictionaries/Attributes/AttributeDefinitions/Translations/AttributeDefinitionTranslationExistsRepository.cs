@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -12,9 +13,12 @@ public class AttributeDefinitionTranslationExistsRepository
       IAttributeDefinitionTranslationExistsRepository
 {
     public AttributeDefinitionTranslationExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
     protected override IQueryable<AttributeDefinitionTranslation> ApplyIncludes(
         IQueryable<AttributeDefinitionTranslation> query)

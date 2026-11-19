@@ -11,7 +11,9 @@ using ShagOxServer.Application.Resources.Auth.Contacts.Passwords;
 using ShagOxServer.Application.Resources.Auth.Logins;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Account.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Enum;
 
 namespace ShagOxServer.Application.Services.Auth.Core.Login;
 
@@ -65,6 +67,19 @@ public class LoginService : ILoginService
             {
                 return Result<LoginResponse>
                     .Fail(PasswordAuthResources.InvalidPassword);
+            }
+
+            if (user.Status == UserStatus.Blocked)
+            {
+                return Result<LoginResponse>
+                    .Fail(LoginAuthResources.AccountBlocked);
+            }
+
+            if (user.Status == UserStatus.PendingVerification)
+            {
+                return Result<LoginResponse>.Fail(
+                    LoginAuthResources.AccountNotVerified,
+                    ResultErrorType.Forbidden);
             }
 
             _logger.LogInformation(

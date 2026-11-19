@@ -120,4 +120,10 @@
   <data name="LoginFailed" xml:space="preserve">
     <value>Не удалось войти.</value>
   </data>
+  <data name="AccountNotVerified" xml:space="preserve">
+    <value>Аккаунт не подтверждён. Введите код подтверждения.</value>
+  </data>
+  <data name="AccountBlocked" xml:space="preserve">
+    <value>Аккаунт заблокирован.</value>
+  </data>
 </root>

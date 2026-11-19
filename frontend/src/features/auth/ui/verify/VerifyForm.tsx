@@ -36,7 +36,7 @@ export default function VerifyForm({
 
   const navigate = useNavigate();
 
-  const { mutateAsync: verify, isPending } = useVerify();
+  const { mutateAsync: verify, isPending } = useVerify("Акаунт успішно підтверджено!");
 
   useEffect(() => {
     if (resendTimer <= 0) return;

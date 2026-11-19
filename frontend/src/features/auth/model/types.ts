@@ -48,14 +48,13 @@ export type VerifyRequest = {
   code: string;
 };
 
-export type ConfirmResetPasswordRequest = {
-  userId: number;
-  code: string;
-  newPassword: string;
-};
-
 export type ResetPasswordRequest = {
   userId: number;
   emailOrPhoneOrUserName: string;
+  newPassword: string;
+};
+
+export type ChangePasswordRequest = {
+  oldPassword: string;
   newPassword: string;
 };

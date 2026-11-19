@@ -3,80 +3,52 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Text } from "@mantine/core";
-import { toast } from "sonner";
 import Input from "@/shared/ui/data-display/inputs/input";
 import Button from "@/shared/ui/buttons/button";
 import styles from "../ForgotPasswordForm.module.css";
 import {
-  resetPasswordSchema,
-  type ResetPasswordFormData,
+  newPasswordSchema,
+  type NewPasswordFormData,
 } from "@/features/auth/model/schemas/resetPasswordSchema";
-import { useResetPassword } from "@/features/auth/model/hooks/useResetPassword";
 
 type Props = {
-  userId: number;
-  onSuccess: () => void;
+  isSending: boolean;
+  error: string;
+  onSubmit: (newPassword: string) => void;
 };
 
-export default function PasswordStep({ userId, onSuccess }: Props) {
+export default function PasswordStep({ isSending, error, onSubmit }: Props) {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
-    trigger,
-    getValues,
+    handleSubmit,
     formState: { errors },
-  } = useForm<ResetPasswordFormData>({
-    resolver: zodResolver(resetPasswordSchema),
+  } = useForm<NewPasswordFormData>({
+    resolver: zodResolver(newPasswordSchema),
     mode: "onChange",
   });
-
-  const passwordReset = useResetPassword();
-
-  const handleSubmit = async () => {
-    const isValid = await trigger(["newPassword", "confirmPassword"]);
-
-    if (!isValid) return;
-
-    try {
-      await passwordReset.mutateAsync({
-        userId,
-        emailOrPhoneOrUserName: getValues("contact"),
-        newPassword: getValues("newPassword"),
-      });
-
-      onSuccess();
-    } catch {
-      toast.error("Помилка під час зміни пароля.");
-    }
-  };
 
   return (
     <>
       <div className={styles.description}>
         <Text fz={15} c="var(--text-base)">
-          Придумайте новий пароль та повторіть його.
+          Придумайте новий пароль. Після цього ми надішлемо код підтвердження.
         </Text>
       </div>
 
       <form
         className={styles.form}
-        onSubmit={(event) => {
-          event.preventDefault();
-          handleSubmit();
-        }}
+        onSubmit={handleSubmit((data) => onSubmit(data.newPassword))}
       >
         <div className={styles.inputWrapper}>
           <div className={styles.inputBlock}>
             <LockIcon className={styles.icon} />
-
             <Input
               {...register("newPassword")}
               type={showPassword ? "text" : "password"}
-              placeholder="Пароль"
+              placeholder="Новий пароль"
             />
-
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -101,25 +73,11 @@ export default function PasswordStep({ userId, onSuccess }: Props) {
         <div className={styles.inputWrapper}>
           <div className={styles.inputBlock}>
             <LockIcon className={styles.icon} />
-
             <Input
               {...register("confirmPassword")}
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Пароль"
+              type={showPassword ? "text" : "password"}
+              placeholder="Повторіть пароль"
             />
-
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className={styles.eyeButton}
-              tabIndex={-1}
-            >
-              {showConfirmPassword ? (
-                <Eye className={styles.eyeIcon} />
-              ) : (
-                <EyeOff className={styles.eyeIcon} />
-              )}
-            </button>
           </div>
 
           {errors.confirmPassword && (
@@ -129,16 +87,17 @@ export default function PasswordStep({ userId, onSuccess }: Props) {
           )}
         </div>
 
-        <Button
-          type="submit"
-          className={styles.button}
-          disabled={passwordReset.isPending}
-        >
+        {error && (
+          <Text c="red" fz={12}>
+            {error}
+          </Text>
+        )}
+
+        <Button type="submit" loading={isSending}>
           <div className={styles.loginButton}>
             <Text fw={700} fz={15}>
-              {passwordReset.isPending ? "Надсилання..." : "Надіслати код"}
+              Надіслати код
             </Text>
-
             <ArrowRight size={20} />
           </div>
         </Button>

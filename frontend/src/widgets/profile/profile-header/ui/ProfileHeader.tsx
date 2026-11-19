@@ -3,7 +3,8 @@ import { Avatar, Button, Text } from "@mantine/core";
 import { Link, Mail, MapPin } from "lucide-react";
 import { useDisclosure } from "@mantine/hooks";
 import ProfileDrawer from "../../../../features/profile/update-profile/ui/ProfileDrawer";
-import { useAuthStore } from "@/features/auth";
+import { ChangePasswordModal, useAuthStore } from "@/features/auth";
+import OwnButton from "@/shared/ui/buttons/button";
 
 type ProfileHeaderProps = {
   orientation?: "horizontal" | "vertical";
@@ -17,6 +18,11 @@ export default function ProfileHeader({
   const [
     userProfileOpened,
     { open: openUserProfile, close: closeUserProfile },
+  ] = useDisclosure(false);
+
+  const [
+    changePasswordOpened,
+    { open: openChangePassword, close: closeChangePassword },
   ] = useDisclosure(false);
 
   const displayName =
@@ -129,18 +135,32 @@ export default function ProfileHeader({
             )}
           </div>
 
-          <Button
-            bg="var(--color-base)"
-            fz={15}
-            className={styles.editButton}
-            onClick={openUserProfile}
-          >
-            Редагувати профіль
-          </Button>
+          <div className={styles.buttons}>
+            <Button
+              bg="var(--color-base)"
+              fz={15}
+              className={styles.editButton}
+              onClick={openUserProfile}
+            >
+              Редагувати профіль
+            </Button>
+
+            <OwnButton
+              variant="outline"
+              className={styles.editButton}
+              onClick={openChangePassword}
+            >
+              Змінити пароль
+            </OwnButton>
+          </div>
         </div>
       </div>
 
       <ProfileDrawer opened={userProfileOpened} close={closeUserProfile} />
+      <ChangePasswordModal
+        opened={changePasswordOpened}
+        onClose={closeChangePassword}
+      />
     </section>
   );
 }

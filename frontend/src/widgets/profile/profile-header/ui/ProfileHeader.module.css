@@ -98,6 +98,13 @@
   width: 100% !important;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
 .statsBlockHorizontal {
   display: flex;
   flex-direction: row;

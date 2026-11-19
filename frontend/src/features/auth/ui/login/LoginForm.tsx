@@ -14,6 +14,10 @@ import { Text } from "@mantine/core";
 import Input from "@/shared/ui/data-display/inputs/input";
 import Button from "@/shared/ui/buttons/button";
 import { useLogin } from "../../model/hooks/useLogin";
+import { register as registerUser } from "../../api/api";
+import { getByContanct } from "@/entities/user/api/api";
+import axios from "axios";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const [serverError, setServerError] = useState("");
@@ -31,6 +35,29 @@ export default function LoginForm() {
     mode: "onChange",
   });
 
+  const goToVerification = async (data: LoginFormData) => {
+    const user = await getByContanct(data.emailOrPhoneOrUserName);
+    const contact = user.email ?? user.phone ?? "";
+
+    await registerUser({
+      emailOrPhone: contact,
+      userName: user.userName,
+      password: data.password,
+    });
+
+    toast.info("Підтвердіть акаунт. Ми надіслали вам новий код.");
+
+    navigate("/authentication/verify", {
+      state: {
+        userId: user.id,
+        email: user.email ?? undefined,
+        phone: user.email ? undefined : (user.phone ?? undefined),
+        userName: user.userName,
+        password: data.password,
+      },
+    });
+  };
+
   const onSubmit = async (data: LoginFormData) => {
     setServerError("");
 
@@ -38,7 +65,19 @@ export default function LoginForm() {
       await loginMutation.mutateAsync(data);
       navigate("/");
     } catch (error) {
-      setServerError(getErrorMessage(error, "Невірний логін або пароль."));
+      const isNotVerified =
+        axios.isAxiosError(error) && error.response?.status === 403;
+
+      if (!isNotVerified) {
+        setServerError(getErrorMessage(error, "Невірний логін або пароль."));
+        return;
+      }
+
+      try {
+        await goToVerification(data);
+      } catch {
+        setServerError(getErrorMessage(error, "Акаунт не підтверджено."));
+      }
     }
   };
 

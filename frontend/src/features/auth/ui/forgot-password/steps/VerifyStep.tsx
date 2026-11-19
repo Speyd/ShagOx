@@ -2,7 +2,6 @@ import { ArrowRight } from "lucide-react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Text } from "@mantine/core";
-import { toast } from "sonner";
 import Button from "@/shared/ui/buttons/button";
 import styles from "../ForgotPasswordForm.module.css";
 import { useVerify } from "@/features/auth/model/hooks/useVerify";
@@ -11,16 +10,22 @@ const CODE_LENGTH = 6;
 
 type Props = {
   userId: number;
+  contact: string;
+  isResending: boolean;
+  onResend: () => void;
 };
 
-export default function VerifyStep({ userId }: Props) {
+export default function VerifyStep({
+  userId,
+  contact,
+  isResending,
+  onResend,
+}: Props) {
   const navigate = useNavigate();
-
   const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(""));
-
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const verify = useVerify();
+  const verify = useVerify("Пароль змінено! Увійдіть з новим паролем.");
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
@@ -50,68 +55,47 @@ export default function VerifyStep({ userId }: Props) {
   const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
     event.preventDefault();
 
-    const pastedData = event.clipboardData
+    const digits = event.clipboardData
       .getData("text")
       .replace(/\D/g, "")
-      .slice(0, CODE_LENGTH);
+      .slice(0, CODE_LENGTH)
+      .split("");
 
-    if (!pastedData) return;
+    if (digits.length === 0) return;
 
-    const digits = pastedData.split("");
-
-    setCode((prev) => {
-      const next = [...prev];
-
-      digits.forEach((digit, index) => {
-        next[index] = digit;
-      });
-
-      return next;
-    });
-
-    const focusIndex = Math.min(pastedData.length, CODE_LENGTH - 1);
-
-    inputRefs.current[focusIndex]?.focus();
+    setCode((prev) => prev.map((digit, index) => digits[index] ?? digit));
+    inputRefs.current[Math.min(digits.length, CODE_LENGTH - 1)]?.focus();
   };
 
-  const handleSubmit = async () => {
-    const fullCode = code.join("");
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
-    if (fullCode.length !== CODE_LENGTH) {
-      toast.error("Введіть повний код підтвердження.");
-      return;
-    }
+    const fullCode = code.join("");
+    if (fullCode.length !== CODE_LENGTH) return;
 
     try {
-      await verify.mutateAsync({
-        userId,
-        code: fullCode,
-      });
-
-      toast.success("Пароль успішно змінено!");
-      navigate("/profile");
+      await verify.mutateAsync({ userId, code: fullCode });
+      navigate("/authentication", { replace: true });
     } catch {
-      toast.error("Невірний код або помилка зміни пароля.");
+      setCode(Array(CODE_LENGTH).fill(""));
+      inputRefs.current[0]?.focus();
     }
   };
 
-  const isVerifying = verify.isPending;
+  const handleResend = () => {
+    setCode(Array(CODE_LENGTH).fill(""));
+    onResend();
+  };
 
   return (
     <>
       <div className={styles.description}>
         <Text fz={15} c="var(--text-base)">
-          Введіть код підтвердження.
+          Ми надіслали код підтвердження на {contact}. Введіть його нижче.
         </Text>
       </div>
 
-      <form
-        className={styles.form}
-        onSubmit={(event) => {
-          event.preventDefault();
-          handleSubmit();
-        }}
-      >
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.codeContainer} onPaste={handlePaste}>
           {code.map((digit, index) => (
             <input
@@ -123,7 +107,7 @@ export default function VerifyStep({ userId }: Props) {
               inputMode="numeric"
               maxLength={1}
               value={digit}
-              disabled={isVerifying}
+              disabled={verify.isPending}
               onChange={(event) => handleChange(index, event.target.value)}
               onKeyDown={(event) => handleKeyDown(index, event)}
               className={`${styles.input} ${digit ? styles.inputFilled : ""}`}
@@ -133,16 +117,24 @@ export default function VerifyStep({ userId }: Props) {
 
         <Button
           type="submit"
-          disabled={code.join("").length !== CODE_LENGTH || isVerifying}
-          className={styles.submitBtn}
+          disabled={code.join("").length !== CODE_LENGTH}
+          loading={verify.isPending}
         >
           <div className={styles.verifyButton}>
             <Text fw={700} fz={15}>
-              {isVerifying ? "Перевірка..." : "Підтвердити"}
+              Підтвердити
             </Text>
-
             <ArrowRight size={20} />
           </div>
+        </Button>
+
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={handleResend}
+          loading={isResending}
+        >
+          Надіслати код ще раз
         </Button>
       </form>
     </>

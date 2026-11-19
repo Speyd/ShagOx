@@ -52,7 +52,16 @@ export async function updateUser(payload: UserUpdatePayload): Promise<void> {
   });
 }
 
-export async function getByContanct(contact: string) {
-  const response = await api.get(`/users/contact/${contact}`);
+export type UserByContact = {
+  id: number;
+  userName: string;
+  email: string | null;
+  phone: string | null;
+};
+
+export async function getByContanct(contact: string): Promise<UserByContact> {
+  const response = await api.get(
+    `/users/contact/${encodeURIComponent(contact.trim())}`,
+  );
   return response.data;
 }

@@ -73,8 +73,10 @@ public abstract class BaseDeleteService<TEntity>
                 return Result<DeleteResponse>.Fail(body.Error);
             }
 
-            _repository.Update(entity);
-
+            // SoftBodyDeleteAsync already marks the tracked (primary) copy as deleted.
+            // Do NOT call _repository.Update(entity): `entity` may come from the replica
+            // context with a navigation graph; attaching it next to the tracked instance
+            // corrupts the change tracker ("Unexpected entry.EntityState: Detached").
             await _unitOfWork.CommitAsync();
         }
         catch (Exception ex)
@@ -105,8 +107,6 @@ public abstract class BaseDeleteService<TEntity>
         {
             var body = await SoftBodyDeleteAsync(entity, 
                 cancellationToken);
-
-            _repository.Update(entity);
 
             if (!body.IsSuccess)
                 return Result<DeleteResponse>.Fail(body.Error);

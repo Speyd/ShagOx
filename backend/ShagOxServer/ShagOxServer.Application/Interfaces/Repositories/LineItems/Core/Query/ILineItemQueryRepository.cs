@@ -28,4 +28,10 @@ public partial interface ILineItemQueryRepository<TEntity, TFilter>
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
+
+    Task<List<TEntity>> GetByParentAndDependenciesAsync(
+        long parentId,
+        List<(long AdvertId, long? VariantId)> dependencies,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

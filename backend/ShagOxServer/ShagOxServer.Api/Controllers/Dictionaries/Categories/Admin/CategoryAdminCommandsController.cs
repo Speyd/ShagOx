@@ -40,7 +40,7 @@ public class CategoryAdminCommandsController
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] CategoryCreateRequest request)
+        [FromForm] CategoryCreateRequest request)
     {
         var result = await _createService
             .CreateAsync(request);
@@ -51,7 +51,7 @@ public class CategoryAdminCommandsController
     [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
         [FromRoute] long id,
-        [FromBody] CategoryUpdateRequest request)
+        [FromForm] CategoryUpdateRequest request)
     {
         var result = await _updateService
             .UpdateAsync(id, request);

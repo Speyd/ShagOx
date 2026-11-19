@@ -36,7 +36,7 @@ public class CategoryDeleteService
         IUnitOfWork unitOfWork,
         ILogger<CategoryDeleteService> logger
     )
-        : base(categoryValidator, unitOfWork, logger)
+        : base(categoryRepository, categoryValidator, unitOfWork, logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;

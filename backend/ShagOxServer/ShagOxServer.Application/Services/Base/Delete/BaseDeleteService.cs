@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Base.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
@@ -14,17 +15,19 @@ public abstract class BaseDeleteService<TEntity>
     : ISoftDeleteService<TEntity, DeleteResponse>
     where TEntity : BaseEntity
 {
+    protected readonly IRepository<TEntity> _repository;
     protected readonly BaseValidator<TEntity> _queryRepository;
     private readonly ILogger<BaseDeleteService<TEntity>> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
 
     public BaseDeleteService(
+        IRepository<TEntity> repository,
         BaseValidator<TEntity> queryRepository,
         IUnitOfWork unitOfWork,
-        ILogger<BaseDeleteService<TEntity>> logger
-    )
+        ILogger<BaseDeleteService<TEntity>> logger)
     {
+        _repository = repository;
         _queryRepository = queryRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -70,6 +73,8 @@ public abstract class BaseDeleteService<TEntity>
                 return Result<DeleteResponse>.Fail(body.Error);
             }
 
+            _repository.Update(entity);
+
             await _unitOfWork.CommitAsync();
         }
         catch (Exception ex)
@@ -100,6 +105,8 @@ public abstract class BaseDeleteService<TEntity>
         {
             var body = await SoftBodyDeleteAsync(entity, 
                 cancellationToken);
+
+            _repository.Update(entity);
 
             if (!body.IsSuccess)
                 return Result<DeleteResponse>.Fail(body.Error);

@@ -31,7 +31,7 @@ public class DeliveryProviderTranslationDeleteService
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderTranslationDeleteService> logger
     )
-        : base(deliveryValidator, unitOfWork, logger)
+        : base(deliveryRepository, deliveryValidator, unitOfWork, logger)
     {
         _deliveryRepository = deliveryRepository;
         _deliveryValidator = deliveryValidator;

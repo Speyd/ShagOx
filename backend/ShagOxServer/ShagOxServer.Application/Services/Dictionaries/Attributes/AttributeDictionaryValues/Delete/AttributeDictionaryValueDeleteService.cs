@@ -34,7 +34,7 @@ public class AttributeDictionaryValueDeleteService
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryValueDeleteService> logger
     )
-        : base(valueValidator, unitOfWork, logger)
+        : base(valueRepository, valueValidator, unitOfWork, logger)
     {
         _valueRepository = valueRepository;
         _valueValidator = valueValidator;

@@ -34,7 +34,7 @@ public class OrderItemDeleteService
         IUnitOfWork unitOfWork,
         ILogger<OrderItemDeleteService> logger
     )
-        : base(itemValidator, unitOfWork, logger)
+        : base(itemRepository, itemValidator, unitOfWork, logger)
     {
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;

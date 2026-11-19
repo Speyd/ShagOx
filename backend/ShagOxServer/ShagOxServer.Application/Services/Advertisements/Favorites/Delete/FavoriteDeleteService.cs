@@ -32,7 +32,7 @@ public class FavoriteDeleteService
         IUnitOfWork unitOfWork,
         ILogger<FavoriteDeleteService> logger
     )
-        : base(favoriteValidator, unitOfWork, logger)
+        : base(favoriteRepository, favoriteValidator, unitOfWork, logger)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;

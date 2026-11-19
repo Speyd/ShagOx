@@ -32,7 +32,7 @@ public class CurrencyDeleteService
         IUnitOfWork unitOfWork,
         ILogger<CurrencyDeleteService> logger
     )
-        : base(currencyValidator, unitOfWork, logger)
+        : base(currencyRepository, currencyValidator, unitOfWork, logger)
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;

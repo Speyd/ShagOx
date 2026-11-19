@@ -32,7 +32,7 @@ public class RegionDeleteService
         IUnitOfWork unitOfWork,
         ILogger<RegionDeleteService> logger
     )
-        : base(regionValidator, unitOfWork, logger)
+        : base(regionRepository, regionValidator, unitOfWork, logger)
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;

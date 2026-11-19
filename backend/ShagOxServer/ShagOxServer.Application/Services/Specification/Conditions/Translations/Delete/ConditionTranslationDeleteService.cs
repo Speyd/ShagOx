@@ -32,7 +32,7 @@ public class ConditionTranslationDeleteService
         IUnitOfWork unitOfWork,
         ILogger<ConditionTranslationDeleteService> logger
     )
-        : base(conditionValidator, unitOfWork, logger)
+        : base(conditionRepository, conditionValidator, unitOfWork, logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;

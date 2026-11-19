@@ -44,13 +44,13 @@ public static class OptionsConfigurationExtensions
 
         #endregion
 
-        #region User Options
+        #region Worker Options
 
-        services.Configure<UserNameOptions>(
-            config.GetSection("UserNameGenerate"));
+        services.Configure<WebhookWorkerOptions>(
+            config.GetSection("WebhookWorker"));
 
         #endregion
-
+        
         #region Middleware
 
         services.Configure<RequestTrackingOptions>(

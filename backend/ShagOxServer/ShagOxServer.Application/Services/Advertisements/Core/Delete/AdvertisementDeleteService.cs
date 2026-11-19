@@ -38,7 +38,7 @@ public class AdvertisementDeleteService
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementDeleteService> logger
     )
-        : base(advertValidator, unitOfWork, logger)
+        : base(advertRepository, advertValidator, unitOfWork, logger)
     {
         _advertRepository = advertRepository;
         _advertValidator = advertValidator;

@@ -8,6 +8,8 @@ public class Currency
     : BaseEntity
 {
     public string Code { get; set; } = "";
+    public int Ccy { get; set; }
+    public int DecimalPlaces { get; set; }
     public string Symbol { get; set; } = "";
     public string Name { get; set; } = "";
 

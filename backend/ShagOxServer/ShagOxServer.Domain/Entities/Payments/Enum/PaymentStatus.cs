@@ -1,4 +1,4 @@
-namespace ShagOxServer.Domain.Entities.Orders.Enum;
+namespace ShagOxServer.Domain.Entities.Payments.Enum;
 public enum PaymentStatus
 {
     Pending,

@@ -1,4 +1,4 @@
-using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers;
+using ShagOxServer.Application.Interfaces.Providers;
 
 namespace ShagOxServer.Application.Services.Deliveries.Providers;
 public class DeliveryProviderResolver

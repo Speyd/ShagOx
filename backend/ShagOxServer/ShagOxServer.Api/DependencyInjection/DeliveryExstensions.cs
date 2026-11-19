@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Deliveries;
-using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers;
+using ShagOxServer.Application.Common.Options.Deliveries.Providers;
+using ShagOxServer.Application.Common.Options.Payments;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Infrastructure.ExternalServices.Deliveries.Providers.NovaPoshta;
 
 namespace ShagOxServer.Api.DependencyInjection;
@@ -16,6 +18,8 @@ public static class DeliveryExstensions
         var deliveryOptions = configuration
             .GetSection(DeliveryOptions.SectionName)
             .Get<DeliveryOptions>() ?? new();
+
+        string providerSection = $"{DeliveryOptions.SectionName}:{DeliveryProvidersOptions.SectionName}";
 
 
         #region Nova Poshta
@@ -36,6 +40,9 @@ public static class DeliveryExstensions
 
                 client.BaseAddress = new Uri(options.BaseUrl);
             }
+
+            services.Configure<NovaPoshtaOptions>(
+                configuration.GetSection($"{providerSection}:NovaPoshta"));
 
             services.AddHttpClient<NovaPoshtaApiClient>(
                 ConfigureNovaPoshtaClient);

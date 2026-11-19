@@ -44,4 +44,14 @@ public class PostgresLoadBalancer
 
         return null;
     }
+
+    public bool HasHealthyReplica()
+    {
+        var now = DateTime.UtcNow;
+
+        return _replicas.Any(replica =>
+            replica.IsHealthy &&
+            replica.LastHealthCheck != default &&
+            now - replica.LastHealthCheck <= _setting.MaxHealthAge);
+    }
 }

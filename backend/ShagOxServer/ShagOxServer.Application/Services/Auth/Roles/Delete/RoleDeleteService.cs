@@ -32,7 +32,7 @@ public class RoleDeleteService
         IUnitOfWork unitOfWork,
         ILogger<RoleDeleteService> logger
     )
-        : base(roleValidator, unitOfWork, logger)
+        : base(roleRepository, roleValidator, unitOfWork, logger)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;

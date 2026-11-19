@@ -33,7 +33,7 @@ public class CityTranslationDeleteService
         IUnitOfWork unitOfWork,
         ILogger<CityTranslationDeleteService> logger
     )
-        : base(cityValidator, unitOfWork, logger)
+        : base(cityRepository, cityValidator, unitOfWork, logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;

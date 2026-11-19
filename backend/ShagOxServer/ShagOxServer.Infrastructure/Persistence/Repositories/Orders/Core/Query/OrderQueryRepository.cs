@@ -34,6 +34,17 @@ public partial class OrderQueryRepository
         return basketId?.Id;
     }
 
+    public async Task<Order?> GetByInvoiceIdAsync(
+       string invoiceId,
+       CancellationToken cancellationToken = default)
+    {
+        return await _db.Orders
+           .WithIncludes()
+           .FirstOrDefaultAsync(c =>
+               c.InvoiceId == invoiceId,
+               cancellationToken);
+    }
+
     public async Task<Order?> GetByDeliveryTrackingNumberAsync(
         string trackingNumber,
         CancellationToken cancellationToken = default,

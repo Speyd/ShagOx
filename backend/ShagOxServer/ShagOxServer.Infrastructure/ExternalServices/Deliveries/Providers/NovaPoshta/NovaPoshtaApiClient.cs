@@ -12,10 +12,12 @@ public class NovaPoshtaApiClient
     private readonly HttpClient _httpClient;
     private readonly NovaPoshtaOptions _options;
 
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true
     };
+
 
     public NovaPoshtaApiClient(
         HttpClient httpClient,

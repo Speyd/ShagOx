@@ -1,27 +1,28 @@
+using CloudinaryDotNet;
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Orders.Core.Create;
+using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Calculators;
 using ShagOxServer.Application.Interfaces.Services.Orders;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
+using ShagOxServer.Application.Interfaces.Services.Payments;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Orders;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
 using ShagOxServer.Application.Services.Orders.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
-using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Orders;
-using ShagOxServer.Domain.Entities.Orders.Enum;
-using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Create;
 
-public class OrderCreateService : IOrderCreateService
+public partial class OrderCreateService 
+    : IOrderCreateService
 {
     private readonly IRepository<Order> _orderRepository;
 
@@ -32,6 +33,8 @@ public class OrderCreateService : IOrderCreateService
     private readonly IDeliveryPriceCalculator _deliveryCalculator;
     private readonly IOrderItemCreateService _orderItemCreateService;
     private readonly IOrderNumberGenerator _orderNumberGenerator;
+    private readonly IPaymentProvider _paymentProvider;
+    private readonly IPaymentWebhookProcessor _webhookProcessor;
 
     private readonly OrderInvalidationService _orderInvalidation;
 
@@ -45,6 +48,8 @@ public class OrderCreateService : IOrderCreateService
         CurrencyValidator currencyValidator,
         IDeliveryPriceCalculator deliveryCalculator,
         IOrderItemCreateService orderItemCreateService,
+        IPaymentProvider paymentProvider,
+        IPaymentWebhookProcessor webhookProcessor,
         OrderInvalidationService orderInvalidation,
         IOrderNumberGenerator orderNumberGenerator,
         IUnitOfWork unitOfWork,
@@ -60,6 +65,9 @@ public class OrderCreateService : IOrderCreateService
         _orderItemCreateService = orderItemCreateService;
         _orderNumberGenerator = orderNumberGenerator;
 
+        _paymentProvider = paymentProvider;
+        _webhookProcessor = webhookProcessor;
+
         _orderInvalidation = orderInvalidation;
 
         _unitOfWork = unitOfWork;
@@ -67,7 +75,7 @@ public class OrderCreateService : IOrderCreateService
     }
 
 
-    public async Task<Result<CreateResponse>> CreateAsync(
+    public async Task<Result<OrderCreateResponse>> CreateAsync(
         OrderCreateRequest request,
         long ownerId,
         CancellationToken cancellationToken = default)
@@ -79,15 +87,17 @@ public class OrderCreateService : IOrderCreateService
 
         if (!validationResult.IsSuccess)
         {
-            return Result<CreateResponse>
+            return Result<OrderCreateResponse>
                 .Fail(validationResult.Error);
         }
 
         await _unitOfWork.BeginTransactionAsync();
 
+        Order order;
+
         try
         {
-            var order = await CreateOrderEntityAsync(
+            order = await CreateOrderEntityAsync(
                 ownerId,
                 validationResult.Value.Item2,
                 validationResult.Value.Item1,
@@ -101,7 +111,7 @@ public class OrderCreateService : IOrderCreateService
             {
                 await _unitOfWork.RollbackAsync();
 
-                return Result<CreateResponse>
+                return Result<OrderCreateResponse>
                     .Fail(itemsResult.Error);
             }
 
@@ -111,7 +121,9 @@ public class OrderCreateService : IOrderCreateService
 
             if(!amountReult.IsSuccess)
             {
-                return Result<CreateResponse>
+                await _unitOfWork.RollbackAsync();
+
+                return Result<OrderCreateResponse>
                     .Fail(amountReult.Error);
             }    
 
@@ -120,11 +132,6 @@ public class OrderCreateService : IOrderCreateService
 
             await _orderInvalidation.InvalidateCreateAsync(
                 OrderCacheMapper.ToInfo(order));
-
-            return Result<CreateResponse>.Success(
-                new CreateResponse(
-                    order.Id,
-                    DateTime.UtcNow));
         }
         catch (Exception ex)
         {
@@ -135,103 +142,71 @@ public class OrderCreateService : IOrderCreateService
                 "Failed to create order. UserId: {UserId}",
                 ownerId);
 
-            return Result<CreateResponse>
+            return Result<OrderCreateResponse>
+                .Fail(EntityErrorResources.OrderCreateFailed);
+        }
+
+        try
+        {
+            var paymentResult = await MakePayment(
+                order,
+                cancellationToken);
+
+            if (!paymentResult.IsSuccess)
+            {
+                return Result<OrderCreateResponse>
+                    .Fail(paymentResult.Error);
+            }
+
+            await _orderInvalidation.InvalidateCreateAsync(
+                OrderCacheMapper.ToInfo(order));
+
+            return Result<OrderCreateResponse>.Success(
+                new OrderCreateResponse(
+                    order.Id,
+                    paymentResult.Value,
+                    DateTime.UtcNow));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Payment failed. OrderId: {OrderId}",
+                order.Id);
+
+            return Result<OrderCreateResponse>
                 .Fail(EntityErrorResources.OrderCreateFailed);
         }
     }
 
-
-    private async Task<Result<(Currency, DeliveryProvider?)>> ValidateOrderAsync(
-        long ownerId,
-        OrderCreateRequest request,
+    private async Task<Result<string>> MakePayment(
+        Order order,
         CancellationToken cancellationToken)
     {
-        var userResult = await _userValidator
-            .ExistsByIdAsync(ownerId, cancellationToken);
+        var request = new PaymentRequest
+        (
+            order.TotalPrice,
+            order.Currency.Ccy,
+            order.Currency.DecimalPlaces
+        );
 
-        if (!userResult.IsSuccess)
-        {
-            return Result<(Currency, DeliveryProvider?)>.Fail(userResult.Error);
-        }
+        var result = await _paymentProvider
+            .PaymentRequest(request, cancellationToken);
 
-        DeliveryProvider? deliveryProvider = null;
-        if (request.DeliveryProviderId.HasValue)
-        {
-            var deliveryResult = await _deliveryValidator
-                .GetByIdAsync(
-                    request.DeliveryProviderId.Value,
-                    cancellationToken);
+        if (!result.IsSuccess || result.Value is null)
+            return Result<string>.Fail(result.Error);
 
-            if (!deliveryResult.IsSuccess)
-            {
-                return Result<(Currency, DeliveryProvider?)>.Fail(deliveryResult.Error);
-            }
+        order.InvoiceId = result.Value.InvoiceId;
 
-            deliveryProvider = deliveryResult.Value;
-        }
-
-        var currencyResult = await _currencyValidator
-            .GetByIdAsync(
-                request.CurrencyId,
-                cancellationToken);
-
-        if (!currencyResult.IsSuccess ||
-            currencyResult.Value is null)
-        {
-            return Result<(Currency, DeliveryProvider?)>
-                .Fail(currencyResult.Error);
-        }
-
-        return Result<(Currency, DeliveryProvider?)>.Success(
-            (currencyResult!.Value, deliveryProvider));
-    }
-
-    private async Task<Order> CreateOrderEntityAsync(
-        long ownerId,
-        DeliveryProvider? deliveryProvider,
-        Currency currency,
-        OrderCreateRequest request)
-    {
-        var orderNumber = _orderNumberGenerator.Generate();
-
-        var order = OrderCreater.Create(ownerId, orderNumber, request);
-
-        _orderRepository.Add(order);
-
-        order.DeliveryProvider = deliveryProvider;
-        order.Currency = currency;
-        order.OrderStatus = OrderStatus.Pending;
+        _orderRepository.Update(order);
 
         await _unitOfWork.SaveChangesAsync();
 
-        return order;
-    }
+        await _webhookProcessor.ProcessPendingAsync(
+            order.InvoiceId,
+            cancellationToken);
 
-    private async Task<Result<bool>> CreateOrderItemsAsync(
-        Order order,
-        OrderCreateRequest request)
-    {
-        order.Subtotal = 0;
-        order.TotalWeight = 0;
-
-        foreach (var item in request.OrderItems)
-        {
-            var itemResult = await _orderItemCreateService
-                .CreateInternalAsync(item with
-                {
-                    ParentId = order.Id
-                });
-
-            if (!itemResult.IsSuccess)
-            {
-                return Result<bool>.Fail(itemResult.Error);
-            }
-
-            order.Subtotal += itemResult.Value!.TotalPrice;
-            order.TotalWeight += itemResult.Value.TotalWeight;
-        }
-
-        return Result<bool>.Success(true);
+        return Result<string>.Success(result.Value.PaymentUrl);
     }
 
     private async Task<Result<bool>> CalculateOrderAmountsAsync(
@@ -242,7 +217,7 @@ public class OrderCreateService : IOrderCreateService
             .CalculateAsync(order, cancellationToken);
 
         if (!price.IsSuccess)
-            Result<bool>.Fail(price.Error);
+            return Result<bool>.Fail(price.Error);
 
         order.DeliveryPrice = price.Value;
 

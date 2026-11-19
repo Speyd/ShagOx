@@ -1,14 +1,12 @@
-using CloudinaryDotNet;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Caches;
-using ShagOxServer.Application.Common.Options.Deliveries;
 using ShagOxServer.Application.Common.Options.Deliveries.Providers;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Query;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Request;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Query;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Request;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Services.Caches;
-using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers.NovaPoshta;
 using ShagOxServer.Application.Resources.Delivery.Providers.NovaPoshta;
 using ShagOxServer.Application.Services.Caches.Keys.Deliveries.Providers.NovaPoshta;
@@ -28,9 +26,9 @@ public class NovaPoshtaDeliveryClient
     private readonly CacheOptions _casheOptions;
 
 
-    public string ProviderCode => "NOVA_POSHTA";
-    public string CurrencyCode => "UAH";
-    
+    public string ProviderCode { get; init; }
+    public string CurrencyCode { get; init; }
+
 
     public NovaPoshtaDeliveryClient(
         NovaPoshtaApiClient apiClient,
@@ -44,6 +42,9 @@ public class NovaPoshtaDeliveryClient
         _cacheService = cacheService;
         _deliveryOptions = deliveryOptions.Value;
         _casheOptions = casheOptions.Value;
+
+        ProviderCode = deliveryOptions.Value.ProviderCode;
+        CurrencyCode = deliveryOptions.Value.CurrencyCode;
     }
 
 
@@ -54,6 +55,7 @@ public class NovaPoshtaDeliveryClient
         var serviceType = request.DeliveryType == DeliveryType.HomeDelivery
             ? "WarehouseDoors"
             : "WarehouseWarehouse";
+
 
         var methodProperties = new Dictionary<string, object>
         {

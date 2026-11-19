@@ -32,7 +32,7 @@ public class ProductTypeDeleteService
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeDeleteService> logger
     )
-        : base(productTypeValidator, unitOfWork, logger)
+        : base(productTypeRepository, productTypeValidator, unitOfWork, logger)
     {
         _productTypeRepository = productTypeRepository;
         _productTypeValidator = productTypeValidator;

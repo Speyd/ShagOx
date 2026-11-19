@@ -37,7 +37,7 @@ public class UserDeleteService
         IUnitOfWork unitOfWork,
         ILogger<UserDeleteService> logger
     )
-        : base(userValidator, unitOfWork, logger)
+        : base(userRepository, userValidator, unitOfWork, logger)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;

@@ -30,11 +30,12 @@ try
         .AddCloudinary(builder.Configuration)
         .AddOptionsConfiguration(builder.Configuration)
         .AddDelivery(builder.Configuration)
+        .AddPayments(builder.Configuration)
         .AddFrontendPolicy()
         .AddControllersWithJson()
         .AddSwaggerDocumentation()
         .AddApplication()
-        .AddInfrastructure()
+        .AddInfrastructure()   
         .AddHttpContextAccessor();
 
 

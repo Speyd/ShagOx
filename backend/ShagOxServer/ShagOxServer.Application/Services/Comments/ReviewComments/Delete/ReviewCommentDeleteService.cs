@@ -39,7 +39,7 @@ public class ReviewCommentDeleteService
         IUnitOfWork unitOfWork,
         ILogger<ReviewCommentDeleteService> logger
     )
-        : base(commentValidator, unitOfWork, logger)
+        : base(commentRepository, commentValidator, unitOfWork, logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;

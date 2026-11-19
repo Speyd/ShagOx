@@ -33,7 +33,7 @@ import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage";
 import CategorySelectionPage from "@/pages/category-selection/CategorySelectionPage";
 import VerifyPage from "@/pages/verify";
 import CheckoutPage from "@/pages/checkout/checkout";
-import PaymentPage from "@/pages/checkout/payment";
+import OrderPage from "@/pages/order/OrderPage";
 import BasketPage from "@/pages/checkout/basket";
 
 import NotificationSettingsPage from "@/pages/notifications/notification-settings/NotificationSettingsPage";
@@ -110,7 +110,7 @@ export default function Router() {
             element={<UserUpdateAdvertisementPage />}
           />
           <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/orders/:id" element={<OrderPage />} />
 
           <Route path="/profile" element={<ProfileLayout />}>
             <Route index element={<GeneralTab />} />

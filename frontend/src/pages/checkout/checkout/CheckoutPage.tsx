@@ -1,26 +1,29 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { Button, Text } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
+import { Text } from "@mantine/core";
 import Container from "@/shared/ui/layout/container";
+import Button from "@/shared/ui/buttons/button";
 import CheckoutDetailsForm from "@/widgets/checkout/checkout/checkout-details-form";
 import OrderSummary from "@/widgets/checkout/checkout/checkout-order-summary";
-import CheckoutStepper from "@/widgets/checkout/checkout/checkout-stepper";
 import { useGetBasket } from "@/features/basket/model/hooks/useGetBasket";
 import styles from "./CheckoutPage.module.css";
 
+function readSelectedIds() {
+  const savedIds = sessionStorage.getItem("checkoutItemIds");
+  if (!savedIds) return new Set<number>();
+
+  try {
+    return new Set<number>(JSON.parse(savedIds) as number[]);
+  } catch {
+    return new Set<number>();
+  }
+}
+
 export default function CheckoutPage() {
+  const navigate = useNavigate();
   const { data: basket, isLoading } = useGetBasket();
-  const [selectedIds] = useState(() => {
-    const savedIds = sessionStorage.getItem("checkoutItemIds");
+  const [selectedIds] = useState(readSelectedIds);
 
-    if (!savedIds) return new Set<number>();
-
-    try {
-      return new Set<number>(JSON.parse(savedIds) as number[]);
-    } catch {
-      return new Set<number>();
-    }
-  });
   const items = useMemo(() => {
     const basketItems = basket?.basketItems ?? [];
     const selected = basketItems.filter((item) => selectedIds.has(item.id));
@@ -34,28 +37,22 @@ export default function CheckoutPage() {
   return (
     <div className={styles.checkoutPage}>
       <Container>
-        <CheckoutStepper />
         {items.length === 0 ? (
           <div className={styles.empty}>
             <Text fw={600} fz={22}>
-              Немає вибраних товарів
+              Немає товарів для оформлення
             </Text>
             <Text c="dimmed">
-              Поверніться до кошика та виберіть товари для оформлення.
+              Поверніться до кошика та виберіть товари для замовлення.
             </Text>
-            <Button
-              component={Link}
-              to="/basket"
-              radius="md"
-              className={styles.primaryButton}
-            >
+            <Button onClick={() => navigate("/basket")}>
               Повернутися до кошика
             </Button>
           </div>
         ) : (
           <div className={styles.contentWrapper}>
             <OrderSummary items={items} />
-            <CheckoutDetailsForm />
+            <CheckoutDetailsForm items={items} />
           </div>
         )}
       </Container>

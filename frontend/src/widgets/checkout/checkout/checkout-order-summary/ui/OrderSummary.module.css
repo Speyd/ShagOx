@@ -13,6 +13,13 @@
   width: 100%;
 }
 
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
 .scrollArea {
   height: 100%;
   overflow-y: auto;

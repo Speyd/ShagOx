@@ -20,24 +20,63 @@
   gap: 16px;
 }
 
-.paymentOptions {
+.options {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 16px;
-  border: 1px solid var(--color-border);
+  gap: 4px;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 12px;
+  border: 1px solid transparent;
   border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.option input {
+  margin-top: 3px;
+  accent-color: var(--color-primary);
+}
+
+.option:hover,
+.selected {
   background-color: #f8fafc;
+  border-color: #dbeafe;
+}
+
+.optionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.optionTitle {
+  color: var(--text-base);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.optionDescription {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.submitBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .submitButton {
   align-self: flex-start;
   min-width: 240px;
-  background-color: var(--color-base);
-}
-
-.submitButton:hover {
-  background-color: var(--color-base-hover);
 }
 
 @media (max-width: 640px) {

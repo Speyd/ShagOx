@@ -1,143 +1,202 @@
-import { Select, Text, TextInput } from "@mantine/core";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { useEffect } from "react";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Text } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { useAuthStore } from "@/features/auth";
-import styles from "./CheckoutDetailsForm.module.css";
 import Button from "@/shared/ui/buttons/button";
+import { FormField, TextAreaField, TextField } from "@/shared/ui/form";
+import { getErrorMessage } from "@/shared/api/getErrorMessage";
+import { useGetCurrencies } from "@/entities/currency/model/hooks/useGetCurrencies";
+import { useDeliveryProviders } from "@/entities/delivery/model/hooks";
+import { NOVA_POSHTA_CODE } from "@/entities/delivery/model/types";
+import type { BasketItem } from "@/features/basket/model/types";
+import {
+  checkoutSchema,
+  type CheckoutFormData,
+} from "@/features/checkout/model/checkoutSchema";
+import { toOrderRequest } from "@/features/checkout/lib/toOrderRequest";
+import { useCreateOrder } from "@/features/checkout/model/useCreateOrder";
+import DeliverySection from "./DeliverySection";
+import styles from "./CheckoutDetailsForm.module.css";
 
-type CheckoutFormData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  city: string;
-  address: string;
-  branch: string;
-  delivery: string;
+const PAYMENT_OPTIONS = [
+  {
+    value: "CashOnDelivery",
+    title: "Готівкою при отриманні",
+    description: "Оплата у відділенні або кур'єру",
+  },
+  {
+    value: "CardOnDelivery",
+    title: "Карткою при отриманні",
+    description: "Оплата карткою через термінал перевізника",
+  },
+] as const;
+
+type Props = {
+  items: BasketItem[];
 };
 
-export default function CheckoutDetailsForm() {
+export default function CheckoutDetailsForm({ items }: Props) {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<CheckoutFormData>({
+
+  const { data: providers, isLoading: providersLoading } = useDeliveryProviders();
+  const { data: currencies = [] } = useGetCurrencies();
+  const createOrder = useCreateOrder();
+
+  const novaPoshta = providers?.find((p) => p.code === NOVA_POSHTA_CODE);
+  const currencyId =
+    user?.currency?.id ?? currencies.find((c) => c.code === "UAH")?.id;
+
+  const form = useForm<CheckoutFormData>({
+    resolver: zodResolver(checkoutSchema),
     defaultValues: {
       firstName: user?.firstName ?? "",
       lastName: user?.lastName ?? "",
-      email: user?.email ?? "",
       phone: user?.phone ?? "",
-      city: user?.city?.name ?? "",
-      address: "",
-      branch: "",
-      delivery: "nova-poshta",
+      email: user?.email ?? "",
+      deliveryMethod: "branch",
+      city: null,
+      point: null,
+      street: null,
+      building: "",
+      flat: "",
+      paymentMethod: "CashOnDelivery",
+      comment: "",
     },
   });
 
-  const delivery = watch("delivery");
-  const onSubmit = (data: CheckoutFormData) => {
-    sessionStorage.setItem("checkoutDetails", JSON.stringify(data));
-    toast.success("Дані доставки збережено!");
-    navigate("/payment");
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors },
+  } = form;
+
+  const paymentMethod = useWatch({ control, name: "paymentMethod" });
+
+  useEffect(() => {
+    if (!providersLoading && !novaPoshta) {
+      setValue("deliveryMethod", "pickup");
+    }
+  }, [providersLoading, novaPoshta, setValue]);
+
+  const onSubmit = async (data: CheckoutFormData) => {
+    if (!currencyId) {
+      toast.error("Не вдалося визначити валюту замовлення.");
+      return;
+    }
+
+    try {
+      const order = await createOrder.mutateAsync({
+        request: toOrderRequest(data, items, novaPoshta?.id ?? null, currencyId),
+        basketItemIds: items.map((item) => item.id),
+      });
+
+      navigate(`/orders/${order.id}`, {
+        replace: true,
+        state: { justCreated: true },
+      });
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Не вдалося оформити замовлення."));
+    }
   };
 
   return (
-    <form
-      className={styles.checkoutDetailsForm}
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className={styles.section}>
-        <Text fw={600} fz={24} className={styles.title}>
-          Контактні дані
-        </Text>
+    <FormProvider {...form}>
+      <form
+        className={styles.checkoutDetailsForm}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className={styles.section}>
+          <Text fw={600} fz={24} className={styles.title}>
+            Отримувач
+          </Text>
 
-        <div className={styles.fields}>
-          <TextInput
-            label="Ім'я"
-            placeholder="Введіть ім'я"
-            error={errors.firstName?.message}
-            {...register("firstName", { required: "Введіть ім'я" })}
-          />
+          <div className={styles.fields}>
+            <FormField label="Ім'я" htmlFor="firstName" required error={errors.firstName?.message}>
+              <TextField id="firstName" invalid={!!errors.firstName} {...register("firstName")} />
+            </FormField>
 
-          <TextInput
-            label="Прізвище"
-            placeholder="Введіть прізвище"
-            error={errors.lastName?.message}
-            {...register("lastName", { required: "Введіть прізвище" })}
-          />
+            <FormField label="Прізвище" htmlFor="lastName" required error={errors.lastName?.message}>
+              <TextField id="lastName" invalid={!!errors.lastName} {...register("lastName")} />
+            </FormField>
 
-          <TextInput
-            label="Електронна пошта"
-            placeholder="example@email.com"
-            type="email"
-            error={errors.email?.message}
-            {...register("email", {
-              required: "Введіть електронну пошту",
-              pattern: {
-                value: /^\S+@\S+\.\S+$/,
-                message: "Некоректний email",
-              },
-            })}
-          />
+            <FormField label="Телефон" htmlFor="phone" required error={errors.phone?.message}>
+              <TextField
+                id="phone"
+                type="tel"
+                placeholder="+380"
+                invalid={!!errors.phone}
+                {...register("phone")}
+              />
+            </FormField>
 
-          <TextInput
-            label="Номер телефону"
-            placeholder="+380"
-            error={errors.phone?.message}
-            {...register("phone", { required: "Введіть номер телефону" })}
-          />
+            <FormField label="Електронна пошта" htmlFor="email" required error={errors.email?.message}>
+              <TextField
+                id="email"
+                type="email"
+                placeholder="example@email.com"
+                invalid={!!errors.email}
+                {...register("email")}
+              />
+            </FormField>
+          </div>
         </div>
-      </div>
 
-      <div className={styles.section}>
-        <Text fw={600} fz={24} className={styles.title}>
-          Деталі доставки
-        </Text>
+        <DeliverySection hasNovaPoshta={!!novaPoshta} />
 
-        <TextInput
-          label="Місто"
-          placeholder="Введіть місто"
-          error={errors.city?.message}
-          {...register("city", { required: "Введіть місто" })}
-        />
+        <div className={styles.section}>
+          <Text fw={600} fz={24} className={styles.title}>
+            Оплата
+          </Text>
 
-        <Select
-          label="Спосіб доставки"
-          value={delivery}
-          onChange={(value) => setValue("delivery", value ?? "")}
-          data={[
-            { value: "nova-poshta", label: "Нова пошта" },
-            { value: "ukr-poshta", label: "Укрпошта" },
-            { value: "pickup", label: "Самовивіз" },
-          ]}
-          allowDeselect={false}
-        />
+          <div className={styles.options}>
+            {PAYMENT_OPTIONS.map((option) => (
+              <label
+                key={option.value}
+                className={`${styles.option} ${
+                  paymentMethod === option.value ? styles.selected : ""
+                }`}
+              >
+                <input type="radio" value={option.value} {...register("paymentMethod")} />
+                <span className={styles.optionContent}>
+                  <span className={styles.optionTitle}>{option.title}</span>
+                  <span className={styles.optionDescription}>
+                    {option.description}
+                  </span>
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
 
-        <TextInput
-          label="Адреса"
-          placeholder="Введіть адресу доставки"
-          error={errors.address?.message}
-          {...register("address", { required: "Введіть адресу" })}
-        />
+        <FormField
+          label="Коментар до замовлення"
+          htmlFor="comment"
+          error={errors.comment?.message}
+        >
+          <TextAreaField id="comment" rows={3} {...register("comment")} />
+        </FormField>
 
-        <TextInput
-          label="Відділення або поштомат"
-          placeholder="Номер відділення"
-          error={errors.branch?.message}
-          {...register("branch", {
-            required: "Введіть відділення або поштомат",
-          })}
-        />
-      </div>
+        <div className={styles.submitBlock}>
+          <Button
+            type="submit"
+            className={styles.submitButton}
+            loading={createOrder.isPending}
+          >
+            Підтвердити замовлення
+          </Button>
 
-      <Button type="submit" className={styles.submitButton}>
-        Перейти до оплати
-      </Button>
-    </form>
+          <Text fz={12} c="dimmed">
+            Натискаючи кнопку, ви погоджуєтесь з умовами доставки та оплати.
+            Вартість доставки розраховується за тарифами перевізника.
+          </Text>
+        </div>
+      </form>
+    </FormProvider>
   );
 }

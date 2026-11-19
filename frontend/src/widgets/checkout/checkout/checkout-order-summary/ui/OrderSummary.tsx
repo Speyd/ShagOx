@@ -1,6 +1,4 @@
-import { Divider, Flex, Group, ScrollArea, Text, Title } from "@mantine/core";
-import ApplyPromoCode from "@/features/apply-promo-code/ui/ApplyPromoCode";
-
+import { Divider, ScrollArea, Text } from "@mantine/core";
 import styles from "./OrderSummary.module.css";
 import BasketItemsList from "@/widgets/checkout/basket/basket-items-list";
 import type { BasketItem } from "@/features/basket/model/types";
@@ -13,11 +11,13 @@ type OrderSummaryProps = {
 export default function OrderSummary({ items }: OrderSummaryProps) {
   const { amount: subtotalPrice, symbol: currencySymbol = "₴" } =
     getBasketTotal(items);
+  const itemsCount = items.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <section className={styles.orderSummary}>
-      <Title order={2} fz={24} fw={600} mb="lg">
-        Підсумок замовлення
-      </Title>
+      <Text fz={24} fw={600} mb="lg">
+        Ваше замовлення
+      </Text>
 
       <div className={styles.promoCodeContainer}>
         <ScrollArea
@@ -29,49 +29,36 @@ export default function OrderSummary({ items }: OrderSummaryProps) {
           <BasketItemsList items={items} />
         </ScrollArea>
 
-        <ApplyPromoCode />
+        <Divider my="xs" color="gray.2" />
+
+        <div className={styles.row}>
+          <Text c="dimmed" fz={16}>
+            Товари ({itemsCount})
+          </Text>
+          <Text fw={500} fz={16}>
+            {subtotalPrice.toLocaleString("uk-UA")} {currencySymbol}
+          </Text>
+        </div>
+
+        <div className={styles.row}>
+          <Text c="dimmed" fz={16}>
+            Доставка
+          </Text>
+          <Text fw={500} fz={14} c="dimmed">
+            За тарифами перевізника
+          </Text>
+        </div>
 
         <Divider my="xs" color="gray.2" />
 
-        <Flex direction="column" gap="sm">
-          <Group justify="space-between">
-            <Text c="dimmed" fz={16}>
-              Підсумок
-            </Text>
-            <Text fw={500} fz={16}>
-              {subtotalPrice.toLocaleString("uk-UA")} {currencySymbol}
-            </Text>
-          </Group>
-
-          <Group justify="space-between">
-            <Text c="dimmed" fz={16}>
-              Знижка
-            </Text>
-            <Text fw={500} fz={16} c="red.6">
-              0 {currencySymbol}
-            </Text>
-          </Group>
-
-          <Group justify="space-between">
-            <Text c="dimmed" fz={16}>
-              Відправлення
-            </Text>
-            <Text fw={500} fz={14} c="green.7">
-              Безкоштовно
-            </Text>
-          </Group>
-
-          <Divider my="xs" color="gray.2" />
-
-          <Group justify="space-between">
-            <Text fw={600} fz={18}>
-              До сплати
-            </Text>
-            <Text fw={700} fz={20}>
-              {subtotalPrice.toLocaleString("uk-UA")} {currencySymbol}
-            </Text>
-          </Group>
-        </Flex>
+        <div className={styles.row}>
+          <Text fw={600} fz={18}>
+            До сплати
+          </Text>
+          <Text fw={700} fz={20}>
+            {subtotalPrice.toLocaleString("uk-UA")} {currencySymbol}
+          </Text>
+        </div>
       </div>
     </section>
   );

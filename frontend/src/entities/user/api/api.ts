@@ -1,3 +1,4 @@
+import type { UserStatistics } from "../model/statistics";
 import { api } from "@/shared/api/api";
 import type { PaginatedResponse } from "@/shared/lib/types/paginatedResponse";
 import type { User } from "@/shared/lib/types/user";
@@ -64,4 +65,9 @@ export async function getByContanct(contact: string): Promise<UserByContact> {
     `/users/contact/${encodeURIComponent(contact.trim())}`,
   );
   return response.data;
+}
+
+export async function getMyStatistics(): Promise<UserStatistics> {
+  const { data } = await api.get<UserStatistics>("/users/me/statistics");
+  return data;
 }

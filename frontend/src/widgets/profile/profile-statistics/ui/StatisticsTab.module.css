@@ -2,9 +2,8 @@
   width: 100%;
   box-sizing: border-box;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 32px;
+  flex-direction: column;
+  gap: 28px;
   background-color: var(--color-bg-surface, white);
   border-radius: 20px;
   padding: 30px;
@@ -14,4 +13,186 @@
 .title {
   font-size: clamp(18px, 3vw, 24px) !important;
   font-weight: 600 !important;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.blockHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #0f2238;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+}
+
+.tileLabel {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.tileValue {
+  color: #0f172a;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.tileHint {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ratingIcon {
+  color: #f59e0b;
+  fill: #f59e0b;
+}
+
+.ratingCount {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.grades {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gradeRow {
+  display: grid;
+  grid-template-columns: 32px 1fr 36px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.gradeLabel {
+  color: #475569;
+}
+
+.gradeTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: #eef2f7;
+}
+
+.gradeBar {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background-color: #0f2238;
+}
+
+.gradeCount {
+  color: #475569;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.topList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topItem {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.topImage {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #f1f5f9;
+  object-fit: cover;
+}
+
+.topTitle {
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 14px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topTitle:hover {
+  text-decoration: underline;
+}
+
+.topMeta {
+  display: inline-flex;
+  gap: 10px;
+  color: #64748b;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.topMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
 }

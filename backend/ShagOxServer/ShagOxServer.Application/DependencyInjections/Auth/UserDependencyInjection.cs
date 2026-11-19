@@ -1,3 +1,5 @@
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Statistics;
+using ShagOxServer.Application.Services.Auth.Users.Statistics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Common.Context;
@@ -23,6 +25,7 @@ public static class UserDependencyInjection
         services.AddScoped<IUserContext, UserContext>();
 
         services.AddScoped<IUserQueryService, UserQueryService>();
+        services.AddScoped<IUserStatisticsService, UserStatisticsService>();
         services.AddScoped<IUserAdminQueryService, UserAdminQueryService>();
         services.AddScoped<IUserUpdateService, UserUpdateService>();
         services.AddScoped<IUserDeleteService, UserDeleteService>();

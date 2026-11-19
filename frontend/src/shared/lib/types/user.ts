@@ -1,4 +1,5 @@
 import type { Avatar } from "./avatar";
+import type { Currency } from "./currency";
 import type { City } from "./city";
 import type { Role } from "./role";
 
@@ -15,5 +16,5 @@ export type User = {
   roles: Role[];
   lastSeenAt: string;
   registeredAt: string;
-  currencyId: number | null;
+  currency: Currency | null;
 };

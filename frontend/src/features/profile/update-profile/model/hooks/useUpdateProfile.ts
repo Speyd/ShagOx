@@ -30,13 +30,13 @@ export default function useUpdateProfile() {
       return getUser(id);
     },
     onSuccess: (updatedUser) => {
-      const previousCurrencyId = useAuthStore.getState().user?.currencyId;
+      const previousCurrencyId = useAuthStore.getState().user?.currency?.id;
 
       setUser(updatedUser);
       queryClient.setQueryData(["me"], updatedUser);
       queryClient.setQueryData(["user", updatedUser.id], updatedUser);
 
-      if (previousCurrencyId !== updatedUser.currencyId) {
+      if (previousCurrencyId !== updatedUser.currency?.id) {
         queryClient.invalidateQueries({
           predicate: (query) =>
             !KEEP_ON_CURRENCY_CHANGE.includes(String(query.queryKey[0])),

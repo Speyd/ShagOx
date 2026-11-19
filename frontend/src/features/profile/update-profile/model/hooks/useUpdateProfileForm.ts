@@ -19,7 +19,7 @@ export const getProfileFormValues = (
   email: user?.email ?? "",
   avatar: null,
   cityId: user?.city?.id ?? null,
-  currencyId: user?.currencyId ?? null,
+  currencyId: user?.currency?.id ?? null,
 });
 
 export default function useUpdateProfileForm(user: ProfileUser) {

@@ -60,7 +60,7 @@ public class OrderInvalidationService
         OrderCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-           .EntityLanguagePattern<Basket>(entityInfo.Id));
+           .EntityLanguagePattern<Order>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(OrderCache
           .ByUserPattern(entityInfo.UserId));

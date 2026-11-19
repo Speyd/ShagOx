@@ -7,7 +7,7 @@ public static class CategoryMapper
 {
     public static CategoryDto ToDto(
        Category category,
-       CategoryImageDto imageDto,
+       CategoryImageDto? imageDto,
        string? label)
     {
         return new CategoryDto(

@@ -87,15 +87,26 @@ export default function CategoriesPage() {
           required: true,
           options: productTypeOptions,
         },
+        {
+          name: "picture",
+          label: "Зображення",
+          kind: "image",
+          hint: "Необовʼязково. PNG, JPG або WebP — показується на головній і в каталозі.",
+        },
       ]}
       getDefaults={(item) => ({
         code: item?.code ?? "",
         productTypeId: item ? String(item.productTypeId) : productTypeId,
+        picture: item?.picture?.url ?? null,
       })}
-      toPayload={(values) => ({
-        code: values.code,
-        productTypeId: Number(values.productTypeId),
-      })}
+      // The backend takes categories as multipart/form-data (the picture is a file).
+      toPayload={(values) => {
+        const form = new FormData();
+        form.append("Code", String(values.code));
+        form.append("ProductTypeId", String(values.productTypeId));
+        if (values.picture instanceof File) form.append("Picture", values.picture);
+        return form;
+      }}
       translations={{
         path: "/admin/categories/translations",
         codeParam: "CategoryCode",

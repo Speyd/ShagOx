@@ -13,6 +13,7 @@ export type AdminProductType = BaseEntity & {
 
 export type AdminCategory = AdminCodeEntity & {
   productTypeId: number;
+  picture?: { id: number; url: string } | null;
 };
 
 export type AdminRegion = AdminCodeEntity;

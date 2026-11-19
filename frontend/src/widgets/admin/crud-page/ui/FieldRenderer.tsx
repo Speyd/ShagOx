@@ -3,6 +3,7 @@ import { Controller, type Control } from "react-hook-form";
 import { FormField, TextAreaField, TextField } from "@/shared/ui/form";
 import type { FieldConfig, FormValues } from "../model/types";
 import styles from "./CrudPage.module.css";
+import ImageField from "./ImageField";
 
 type FieldRendererProps = {
   field: FieldConfig;
@@ -73,7 +74,11 @@ export default function FieldRenderer({ field, control, isEdit }: FieldRendererP
             required={field.required}
             hint={field.hint}
             error={error}
-            className={field.fullWidth || field.kind === "textarea" ? styles.full : undefined}
+            className={
+              field.fullWidth || field.kind === "textarea" || field.kind === "image"
+                ? styles.full
+                : undefined
+            }
           >
             {field.kind === "text" && (
               <TextField
@@ -134,6 +139,16 @@ export default function FieldRenderer({ field, control, isEdit }: FieldRendererP
                 disabled={disabled}
                 radius="md"
                 comboboxProps={{ withinPortal: true, zIndex: 1100 }}
+              />
+            )}
+
+            {field.kind === "image" && (
+              <ImageField
+                id={id}
+                value={input.value}
+                onChange={input.onChange}
+                accept={field.accept}
+                disabled={disabled}
               />
             )}
           </FormField>

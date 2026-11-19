@@ -63,7 +63,7 @@ public class CategoryCreateService
            .ExistsByIdAsync(request.ProductTypeId, cancellationToken);
 
         if (!typeValidator.IsSuccess)
-            Result<CreateResponse>.Fail(typeValidator.Error);
+            return Result<CreateResponse>.Fail(typeValidator.Error);
 
 
         var nameValidator = await _categoryValidator
@@ -71,7 +71,7 @@ public class CategoryCreateService
                 request.ProductTypeId, cancellationToken);
 
         if (!nameValidator.IsSuccess)
-            Result<CreateResponse>.Fail(nameValidator.Error);  
+            return Result<CreateResponse>.Fail(nameValidator.Error);
 
 
         var category = CategoryCreater.Create(request);
@@ -85,16 +85,20 @@ public class CategoryCreateService
 
             await _unitOfWork.SaveChangesAsync();
 
-            var imageResult = await _imageCreateService.CreateInternalAsync(
-                new PictureCreateRequest(category.Id, request.Picture),
-                cancellationToken);
-
-            if (!imageResult.IsSuccess)
+            // The picture is optional: a category can be created first and get an image later.
+            if (request.Picture is not null)
             {
-                await _unitOfWork.RollbackAsync();
+                var imageResult = await _imageCreateService.CreateInternalAsync(
+                    new PictureCreateRequest(category.Id, request.Picture),
+                    cancellationToken);
 
-                return Result<CreateResponse>
-                    .Fail(imageResult.Error);
+                if (!imageResult.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<CreateResponse>
+                        .Fail(imageResult.Error);
+                }
             }
 
             await _unitOfWork.CommitAsync();

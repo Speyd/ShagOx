@@ -29,6 +29,11 @@ export type FieldConfig = BaseField &
         clearable?: boolean;
       }
     | { kind: "switch" }
+    | {
+        /** Value: existing image URL (string) or a newly picked File. */
+        kind: "image";
+        accept?: string;
+      }
   );
 
 export type CrudTranslations<T> = TranslationConfig & {

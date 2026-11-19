@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Image, Text } from "@mantine/core";
 import googleLogo from "@/shared/assets/icons/google.png";
+import { env } from "@/shared/config/env";
 import { useGoogleLogin } from "@/features/auth/model/hooks/useGoogleLogin";
 import styles from "./GoogleLoginButton.module.css";
 
@@ -29,10 +30,6 @@ type GoogleCodeClient = {
   requestCode: () => void;
 };
 
-const googleClientId =
-  import.meta.env.VITE_GOOGLE_CLIENT_ID ??
-  "563178656560-77f9ji4ulbssucovapmgl1pt0b4u7e9c.apps.googleusercontent.com";
-
 export default function GoogleLoginButton(): React.ReactNode {
   const codeClientRef = useRef<GoogleCodeClient | null>(null);
   const [isGoogleReady, setIsGoogleReady] = useState(false);
@@ -40,12 +37,16 @@ export default function GoogleLoginButton(): React.ReactNode {
 
   useEffect(() => {
     const initializeGoogleClient = () => {
-      if (codeClientRef.current || !window.google?.accounts?.oauth2) {
+      if (
+        codeClientRef.current ||
+        !window.google?.accounts?.oauth2 ||
+        !env.GOOGLE_CLIENT_ID
+      ) {
         return;
       }
 
       codeClientRef.current = window.google.accounts.oauth2.initCodeClient({
-        client_id: googleClientId,
+        client_id: env.GOOGLE_CLIENT_ID,
         scope: "openid profile email",
         ux_mode: "popup",
         callback: (response) => {

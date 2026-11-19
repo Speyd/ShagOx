@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core.Extensions;
@@ -9,7 +10,8 @@ public static class BasketQueryExtensions
     {
         return query
             .AsSplitQuery()
-            .Include(x => x.BasketItems)
+            .Include(x => x.BasketItems
+                .Where(i => i.EntityStatus == EntityStatus.Active))
                 .ThenInclude(x => x.AdvertisementVariant)
 
             .Include(x => x.BasketItems)
@@ -28,9 +30,6 @@ public static class BasketQueryExtensions
 
             .Include(x => x.BasketItems)
                 .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Variants)
-
-            .Include(x => x.BasketItems)
-                .ThenInclude(x => x.Parent);
+                    .ThenInclude(x => x.Variants);
     }
 }

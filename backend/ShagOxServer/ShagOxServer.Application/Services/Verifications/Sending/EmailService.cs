@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Verifivations;
+using ShagOxServer.Application.Common.Options.Verifivations;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Messaging.Email;
 using ShagOxServer.Application.Resources.Verifications.Core;
@@ -12,15 +12,15 @@ namespace ShagOxServer.Application.Services.Verifications.Sending;
 public class EmailService 
     : IEmailService
 {
-    private readonly EmailSettings _emailOptions;
-    private readonly VerificationCodeSettings _codeOptions;
+    private readonly EmailOptions _emailOptions;
+    private readonly VerificationCodeOptions _codeOptions;
 
     private readonly ILogger<EmailService> _logger;
 
 
     public EmailService(
-        IOptions<EmailSettings> emailOptions,
-        IOptions<VerificationCodeSettings> codeOptions,
+        IOptions<EmailOptions> emailOptions,
+        IOptions<VerificationCodeOptions> codeOptions,
         ILogger<EmailService> logger)
     {
         _emailOptions = emailOptions.Value;

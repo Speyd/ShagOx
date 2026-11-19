@@ -1,7 +1,7 @@
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Query;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
-using ShagOxServer.Domain.Entities.Orders.Enum;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 
 namespace ShagOxServer.Application.DTOs.Orders.Core.Create;
 public sealed record OrderCreateRequest

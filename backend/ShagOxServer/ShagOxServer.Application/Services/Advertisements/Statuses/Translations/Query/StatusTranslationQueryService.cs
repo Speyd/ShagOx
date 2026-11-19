@@ -23,9 +23,11 @@ public class StatusTranslationQueryService
     public StatusTranslationQueryService(
         IStatusTranslationQueryRepository statusRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(statusRepository, cacheService, settings)
+        : base(statusRepository, 
+            cacheService, 
+            cacheOptions)
     {
     }
 

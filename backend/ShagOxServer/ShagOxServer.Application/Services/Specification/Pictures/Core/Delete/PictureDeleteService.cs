@@ -32,7 +32,7 @@ public abstract class PictureDeleteService<TPicture>
         IUnitOfWork unitOfWork,
         ILogger<PictureDeleteService<TPicture>> logger
     )
-        : base(pictureBaseValidator, unitOfWork, logger)
+        : base(pictureRepository, pictureBaseValidator, unitOfWork, logger)
     {
         _pictureRepository = pictureRepository;
         _pictureBaseValidator = pictureBaseValidator;

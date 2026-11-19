@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core;
 
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core;
 public class AdvertisementCommandRepository
     : IAdvertisementCommandRepository
 {

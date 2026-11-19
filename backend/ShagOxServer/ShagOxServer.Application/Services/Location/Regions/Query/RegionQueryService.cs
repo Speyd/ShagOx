@@ -28,9 +28,12 @@ public class RegionQueryService
         IRegionTranslationQueryRepository translationRepository,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(regionQueryRepository, language, cacheService, settings)
+        : base(regionQueryRepository, 
+            language, 
+            cacheService, 
+            cacheOptions)
     {
         _translationRepository = translationRepository;
     }

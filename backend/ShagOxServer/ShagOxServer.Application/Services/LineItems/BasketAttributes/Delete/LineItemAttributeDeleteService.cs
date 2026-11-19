@@ -32,7 +32,7 @@ public class LineItemAttributeDeleteService
         IUnitOfWork unitOfWork,
         ILogger<LineItemAttributeDeleteService> logger
     )
-        : base(attributeValidator, unitOfWork, logger)
+        : base(attributeRepository, attributeValidator, unitOfWork, logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;

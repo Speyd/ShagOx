@@ -13,11 +13,19 @@ public static class NovaPoshtaCache
           => $"{Prefix}:city:{GetHash(citySearch, page, pageSize)}";
 
     public static string StreetBySearch(
-      string streetExternalId,
-      string streetSearch,
-      int page,
-      int pageSize)
-          => $"{Prefix}:street:{GetHash(new { streetExternalId, streetSearch }, page, pageSize)}";
+        string streetExternalId,
+        string streetSearch,
+        int page,
+        int pageSize)
+    {
+        var filter = new
+        {
+            StreetExternalId = streetExternalId,
+            StreetSearch = streetSearch
+        };
+
+        return $"{Prefix}:street:{GetHash(filter, page, pageSize)}"; 
+    }
 
     public static string PointBySearch(
        string cityExternalId,
@@ -26,7 +34,12 @@ public static class NovaPoshtaCache
         int page,
         int pageSize)
     {
-        var filter = new { cityExternalId, pointSearch, deliveryPointType };
+        var filter = new
+        {
+            CityExternalId = cityExternalId,
+            PointSearch = pointSearch,
+            DeliveryPointType = deliveryPointType
+        };
 
         return $"{Prefix}:point:{GetHash(filter, page, pageSize)}";
     }

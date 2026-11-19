@@ -32,7 +32,7 @@ public class AttributeDefinitionTranslationDeleteService
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionTranslationDeleteService> logger
     )
-        : base(attributeValidator, unitOfWork, logger)
+        : base(attributeRepository, attributeValidator, unitOfWork, logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;

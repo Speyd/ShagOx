@@ -14,7 +14,7 @@ namespace ShagOxServer.Application.Services.Auth.Externals;
 public partial class GoogleLoginService 
     : IGoogleLoginService
 {
-    private readonly GoogleSettings _googleSettings;
+    private readonly GoogleOptions _googleOptions;
 
     private readonly IRegisterService _register;
 
@@ -29,7 +29,7 @@ public partial class GoogleLoginService
 
 
     public GoogleLoginService(
-        IOptions<GoogleSettings> googleSettings,
+        IOptions<GoogleOptions> googleOptions,
         IRegisterService register,
         IBasketCreateService basketService,
         IUserQueryRepository userQueryRepository,
@@ -39,7 +39,7 @@ public partial class GoogleLoginService
         IUnitOfWork unitOfWork,
         ILogger<GoogleLoginService> logger)
     {
-        _googleSettings = googleSettings.Value;
+        _googleOptions = googleOptions.Value;
         _register = register;
         _basketService = basketService; 
         _userQueryRepository = userQueryRepository;

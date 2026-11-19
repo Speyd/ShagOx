@@ -14,6 +14,7 @@ public static class CategoryQueryExtensions
             .Include(x => x.ProductType)
                 .ThenInclude(x => x.Translations)
             .Include(x => x.Attributes)
+            .Include(x => x.CategoryImage)
             .Include(x => x.Advertisements);
     }
 

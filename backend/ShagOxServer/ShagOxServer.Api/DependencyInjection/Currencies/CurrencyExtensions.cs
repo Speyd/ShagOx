@@ -10,7 +10,7 @@ public static class CurrencyExtensions
         IConfiguration config)
     {
         services.Configure<CurrencyRatesUpdaterOptions>(
-            config.GetSection("CurrencyRatesUpdaterSettings"));
+            config.GetSection("CurrencyRatesUpdater"));
 
         services.AddScoped<ICurrencyProvider, 
             CurrencyProvider>();

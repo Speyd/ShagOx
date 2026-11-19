@@ -11,6 +11,8 @@ public static class PicturesInvalidationDependencyInjection
 
         services.AddScoped<AdvertisementImageInvalidationService>();
 
+        services.AddScoped<CategoryImageInvalidationService>();
+
         services.AddReviewImagesInvalidationApplication();
 
 

@@ -15,6 +15,7 @@ using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionVal
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using System.Xml.Linq;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 public class AttributeDictionaryValueQueryService
@@ -36,9 +37,12 @@ public class AttributeDictionaryValueQueryService
         IAttributeDictionaryValueTranslationQueryRepository translation,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(dictionaryDictQueryRepository, language, cacheService, settings)
+        : base(dictionaryDictQueryRepository, 
+            language, 
+            cacheService,
+            cacheOptions)
     {
         _dictionaryDictQueryRepository = dictionaryDictQueryRepository;
         _translation = translation;
@@ -80,7 +84,7 @@ public class AttributeDictionaryValueQueryService
                 return await values.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

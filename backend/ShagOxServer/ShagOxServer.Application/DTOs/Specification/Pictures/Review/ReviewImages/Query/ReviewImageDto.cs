@@ -1,7 +1,8 @@
 using ShagOxServer.Domain.Base.Enum;
 
 namespace ShagOxServer.Application.DTOs.Specification.Pictures.Review.ReviewImages.Query;
-public sealed record ReviewImageDto(
+public sealed record ReviewImageDto
+(
     long Id,
     EntityStatus EntityStatus,
     string Url,

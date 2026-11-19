@@ -15,12 +15,16 @@ public static class OrderItemQueryExtensions
                 .ThenInclude(x => x.Pictures
                     .OrderBy(p => p.Order)
                     .Take(1))
+
             .Include(x => x.Advertisement)
                 .ThenInclude(x => x.Status)
             .Include(x => x.Advertisement)
                 .ThenInclude(x => x.Currency)
             .Include(x => x.Advertisement)
                 .ThenInclude(x => x.Variants)
+
+            .Include(x => x.Advertisement)
+                .ThenInclude(x => x.Currency)
 
             .Include(x => x.Parent);
     }

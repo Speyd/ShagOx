@@ -42,7 +42,7 @@ public partial class AdvertisementVariantUpdateService
         ILogger<AdvertisementVariantUpdateService> logger,
         IDataCacheService cache
     )
-        : base(deleteService, variantValidator, 
+        : base(deleteService, variantValidator,
             logger, unitOfWork)
     {
         _variantRepository = variantRepository;

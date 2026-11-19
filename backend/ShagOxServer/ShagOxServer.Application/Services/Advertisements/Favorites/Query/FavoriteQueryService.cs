@@ -43,9 +43,9 @@ public class FavoriteQueryService
         IAdvertisementQueryService advertService,
         IStatusQueryService statusService,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(favoriteRepository, cacheService, settings)
+        : base(favoriteRepository, cacheService, cacheOptions)
     {
         _favoriteRepository = favoriteRepository;
         _userService = userService;
@@ -107,7 +107,7 @@ public class FavoriteQueryService
                 return await favorites.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

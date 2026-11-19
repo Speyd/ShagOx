@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Deliveries;
 using ShagOxServer.Application.Common.Options.Deliveries.Providers;
-using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers.NovaPoshta;
 using ShagOxServer.Infrastructure.ExternalServices.Deliveries.Providers.NovaPoshta;
 
@@ -15,24 +15,40 @@ public static class DeliveryExstensions
         services.Configure<DeliveryOptions>(
             configuration.GetSection(DeliveryOptions.SectionName));
 
-        services.Configure<NovaPoshtaOptions>(
-            configuration.GetSection(
-                $"{DeliveryOptions.SectionName}:Providers:NovaPoshta"));
-
         var deliveryOptions = configuration
             .GetSection(DeliveryOptions.SectionName)
             .Get<DeliveryOptions>() ?? new();
+
+        string providerSection = $"{DeliveryOptions.SectionName}:{DeliveryProvidersOptions.SectionName}";
 
 
         #region Nova Poshta
 
         if (deliveryOptions.Providers.NovaPoshta.Enabled)
         {
+            void ConfigureNovaPoshtaClient(IServiceProvider sp, HttpClient client)
+            {
+                var options = sp
+                    .GetRequiredService<IOptions<DeliveryOptions>>()
+                    .Value
+                    .Providers
+                    .NovaPoshta;
+
+                if (string.IsNullOrWhiteSpace(options.BaseUrl))
+                    throw new InvalidOperationException(
+                        "NovaPoshta BaseUrl is not configured.");
+
+                client.BaseAddress = new Uri(options.BaseUrl);
+            }
+
+            services.Configure<NovaPoshtaOptions>(
+                configuration.GetSection($"{providerSection}:NovaPoshta"));
+
             services.AddHttpClient<NovaPoshtaApiClient>(
-                SetNovaPoshtaBaseAddress);
+                ConfigureNovaPoshtaClient);
 
             services.AddHttpClient<INovaPoshtaTypeResolver, NovaPoshtaTypeResolver>(
-                SetNovaPoshtaBaseAddress);
+                ConfigureNovaPoshtaClient);
 
             services.AddScoped<NovaPoshtaDeliveryClient>();
 
@@ -43,16 +59,5 @@ public static class DeliveryExstensions
         #endregion
 
         return services;
-    }
-
-    private static void SetNovaPoshtaBaseAddress(
-        IServiceProvider serviceProvider,
-        HttpClient client)
-    {
-        var options = serviceProvider
-            .GetRequiredService<IOptions<NovaPoshtaOptions>>()
-            .Value;
-
-        client.BaseAddress = new Uri(options.BaseUrl);
     }
 }

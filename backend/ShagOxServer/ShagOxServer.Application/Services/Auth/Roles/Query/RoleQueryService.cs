@@ -29,9 +29,11 @@ public class RoleQueryService
     public RoleQueryService(
         IRoleQueryRepository roleQueryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(roleQueryRepository, cacheService, settings)
+        : base(roleQueryRepository, 
+            cacheService, 
+            cacheOptions)
     {
         _roleQueryRepository = roleQueryRepository;
     }
@@ -66,7 +68,7 @@ public class RoleQueryService
                 return await roles.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -88,7 +90,7 @@ public class RoleQueryService
                 return await role.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

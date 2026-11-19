@@ -3,6 +3,7 @@ using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
 using ShagOxServer.Domain.Entities.Orders.Enum;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Domain.Entities.Orders;
@@ -69,6 +70,7 @@ public class Order
 
 
 
+    public string? InvoiceId { get; set; } 
     public PaymentMethod PaymentMethod { get; set; }
 
     public PaymentStatus PaymentStatus { get; set; }

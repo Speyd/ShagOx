@@ -17,7 +17,7 @@ public class PgBouncerLoaderOptions
                 "POSTGRES_REPLICA_CONTAINER_NAMES and PGBOUNCER_REPLICA_DATABASES must have the same number of items.");
 
         var replicas = databases
-            .Select((name, index) => new PgBouncerReplicaSettings
+            .Select((name, index) => new PgBouncerReplicaOptions
             {
                 Database = name,
                 ContainerName = containers[index],

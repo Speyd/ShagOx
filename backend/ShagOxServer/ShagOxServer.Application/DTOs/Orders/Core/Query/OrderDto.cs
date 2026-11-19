@@ -6,6 +6,7 @@ using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
 using ShagOxServer.Domain.Entities.Orders.Enum;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 
 namespace ShagOxServer.Application.DTOs.Orders.Core.Query;
 public sealed record OrderDto

@@ -2,6 +2,7 @@ using ShagOxServer.Application.DTOs.Orders.Core.Create;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Orders.Enum;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Create;
 

@@ -32,7 +32,7 @@ public class StatusDeleteService
         IUnitOfWork unitOfWork,
         ILogger<StatusDeleteService> logger
     )
-        : base(statusValidator, unitOfWork, logger)
+        : base(statusRepository, statusValidator, unitOfWork, logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;

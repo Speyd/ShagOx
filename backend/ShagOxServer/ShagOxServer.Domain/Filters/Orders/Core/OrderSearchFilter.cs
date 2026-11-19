@@ -1,5 +1,6 @@
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
 using ShagOxServer.Domain.Entities.Orders.Enum;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 
 namespace ShagOxServer.Domain.Filters.Orders.Core;
 public sealed record OrderSearchFilter

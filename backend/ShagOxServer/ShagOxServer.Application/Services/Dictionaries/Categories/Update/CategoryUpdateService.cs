@@ -2,10 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Update;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
@@ -24,6 +26,8 @@ public class CategoryUpdateService
     private readonly CategoryValidator _categoryValidator;
     private readonly CategoryUpdateValidator _categoryUpdateValidator;
 
+    private readonly ICategoryImageUpdateService _imageUploadService;
+
     private readonly CategoryInvalidationService _categoryInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -35,6 +39,7 @@ public class CategoryUpdateService
         CategoryValidator categoryValidator,
         ICategoryDeleteService categoryDeleteValidator,
         CategoryUpdateValidator categoryUpdateValidator,
+        ICategoryImageUpdateService imageUploadService,
         CategoryInvalidationService categoryInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CategoryUpdateService> logger
@@ -44,6 +49,7 @@ public class CategoryUpdateService
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
         _categoryUpdateValidator = categoryUpdateValidator;
+        _imageUploadService = imageUploadService;
         _categoryInvalid = categoryInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -98,6 +104,19 @@ public class CategoryUpdateService
         try
         {
             _categoryRepository.Update(category.Value!);
+
+            var imageResult = await _imageUploadService.UpdateInternalAsync(
+                category.Value!.CategoryImage,
+                new PictureUpdateRequest(null, request.Picture),
+                cancellationToken);
+
+            if (!imageResult.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return Result<UpdateResponse>
+                    .Fail(imageResult.Error);
+            }
 
             await _unitOfWork.CommitAsync();
         }

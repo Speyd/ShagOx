@@ -28,9 +28,12 @@ public class ProductTypeQueryService
         IProductTypeTranslationQueryRepository translationRepository,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(productTypeQueryRepository, language, cacheService, settings)
+        : base(productTypeQueryRepository,
+            language, 
+            cacheService, 
+            cacheOptions)
     {
         _translationRepository = translationRepository;
     }

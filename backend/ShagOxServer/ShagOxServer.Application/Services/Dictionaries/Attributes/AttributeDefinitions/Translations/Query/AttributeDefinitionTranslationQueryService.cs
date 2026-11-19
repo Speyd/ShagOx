@@ -23,9 +23,11 @@ public class AttributeDefinitionTranslationQueryService
     public AttributeDefinitionTranslationQueryService(
         IAttributeDefinitionTranslationQueryRepository attributeRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(attributeRepository, cacheService, settings)
+        : base(attributeRepository, 
+            cacheService, 
+            cacheOptions)
     {
     }
 

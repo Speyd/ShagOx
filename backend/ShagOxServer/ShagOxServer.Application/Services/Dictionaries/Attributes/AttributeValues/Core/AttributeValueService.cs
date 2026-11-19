@@ -31,8 +31,6 @@ public partial class AttributeValueService
         IAttributeDictionaryValueQueryService valueService,
         AttributeValueQueryService variantAttributeService,
         ILogger<AdvertisementVariantQueryService> logger,
-        IDataCacheService cacheService,
-        IOptions<CacheOptions> settings,
         ILanguageProvider language
     )
     {

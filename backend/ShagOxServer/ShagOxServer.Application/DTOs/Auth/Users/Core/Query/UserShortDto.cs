@@ -15,7 +15,7 @@ public sealed record UserShortDto
     string? Phone,
     string? Email,
     CurrencyDto? Currency,
-    AvatarDto? AvatarId,
+    AvatarDto? Avatar,
     long? CityId,
     DateTime? LastSeenAt
 ) : BaseDto(Id, EntityStatus);

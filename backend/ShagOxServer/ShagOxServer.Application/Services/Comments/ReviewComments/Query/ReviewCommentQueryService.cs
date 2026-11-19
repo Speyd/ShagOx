@@ -34,9 +34,11 @@ public class ReviewCommentQueryService
         IAvatarQueryService avatarService,
         IReviewCommentQueryRepository commentQueryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(commentQueryRepository, cacheService, settings)
+        : base(commentQueryRepository, 
+            cacheService, 
+            cacheOptions)
     {
         _avatarService = avatarService;
         _commentRepository = commentQueryRepository;

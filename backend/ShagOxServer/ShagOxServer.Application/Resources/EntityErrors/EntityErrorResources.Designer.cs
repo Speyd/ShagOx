@@ -421,11 +421,38 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Failed to delete category..
+        ///   Ищет локализованную строку, похожую на Failed to create category..
         /// </summary>
         internal static string CategoryDeleteFailed {
             get {
                 return ResourceManager.GetString("CategoryDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create category image..
+        /// </summary>
+        internal static string CategoryImageCreateFailed {
+            get {
+                return ResourceManager.GetString("CategoryImageCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete category image..
+        /// </summary>
+        internal static string CategoryImageDeleteFailed {
+            get {
+                return ResourceManager.GetString("CategoryImageDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update category image..
+        /// </summary>
+        internal static string CategoryImageUpdateFailed {
+            get {
+                return ResourceManager.GetString("CategoryImageUpdateFailed", resourceCulture);
             }
         }
         

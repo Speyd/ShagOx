@@ -33,7 +33,7 @@ public class AdvertisementVariantDeleteService
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantDeleteService> logger
     )
-        : base(variantValidator, unitOfWork, logger)
+        : base(variantRepository, variantValidator, unitOfWork, logger)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;

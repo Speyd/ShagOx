@@ -54,13 +54,13 @@ public partial class AdvertisementQueryService
         IDataCacheService cacheService,
         IStatusQueryService statusService,
         IConditionQueryService conditionService,
-        IOptions<CacheOptions> settings,
+        IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
     )
         : base(advertisementRepository, 
             language,
-            cacheService, 
-            settings)
+            cacheService,
+            cacheOptions)
     {
         _advertisementRepository = advertisementRepository;
         _variantService = variantService;
@@ -135,7 +135,7 @@ public partial class AdvertisementQueryService
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -163,7 +163,7 @@ public partial class AdvertisementQueryService
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

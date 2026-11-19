@@ -6,4 +6,5 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Q
 public partial interface IBasketItemQueryRepository
     : ILineItemQueryRepository<BasketItem, BasketItemSearchFilter>
 {
+
 }

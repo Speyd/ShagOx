@@ -15,6 +15,9 @@ public static class OrdersDependencyInjection
         services.AddScoped<IOrderExistsRepository,
             OrderExistsRepository>();
 
+        services.AddScoped<IOrderCommandRepository, 
+            OrderCommandRepository>();
+
         services.AddOrderItemInfrastructure();
 
         return services;

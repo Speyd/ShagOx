@@ -138,7 +138,7 @@
   <data name="AttributeDefinition" xml:space="preserve">
     <value>Attributdefinition</value>
   </data>
-  <data name="Category" xml:space="preserve">
+  <data name="\" xml:space="preserve">
     <value>Kategorie</value>
   </data>
   <data name="ProductType" xml:space="preserve">
@@ -227,5 +227,11 @@
   </data>
   <data name="Order" xml:space="preserve">
     <value>Bestellung</value>
+  </data>
+  <data name="CategoryImage" xml:space="preserve">
+    <value>Kategoriebild</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Kategorie</value>
   </data>
 </root>

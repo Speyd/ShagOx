@@ -10,9 +10,18 @@ public partial class BaseAppDbContext
     public DbSet<Condition> Conditions { get; set; }
     public DbSet<Currency> Currencies { get; set; }
 
+    #region Pictures
+
+    #region Review
+
     public DbSet<ReviewImage> ReviewImages { get; set; }
     public DbSet<ReviewRepliImage> ReviewRepliImages { get; set; }
 
+    #endregion
+
     public DbSet<AdvertisementImage> AdvertisementImages { get; set; }
     public DbSet<Avatar> Avatars { get; set; }
+    public DbSet<CategoryImage> CategoryImages { get; set; }
+
+    #endregion
 }

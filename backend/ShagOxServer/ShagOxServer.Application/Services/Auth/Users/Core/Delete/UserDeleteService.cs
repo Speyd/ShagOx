@@ -37,7 +37,7 @@ public class UserDeleteService
         IUnitOfWork unitOfWork,
         ILogger<UserDeleteService> logger
     )
-        : base(userValidator, unitOfWork, logger)
+        : base(userRepository, userValidator, unitOfWork, logger)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
@@ -65,8 +65,17 @@ public class UserDeleteService
 
             if (user.Value!.Avatar is not null)
             {
-                await _avatarDeleteService
+                var avatarResult = await _avatarDeleteService
                     .DeleteInternalAsync(user.Value!.Avatar);
+
+                if (!avatarResult.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<DeleteResponse>
+                        .Fail(avatarResult.Error);
+                    
+                }
             }
 
             await _unitOfWork.CommitAsync();

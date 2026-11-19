@@ -23,11 +23,11 @@ public class AuthController
     public AuthController(
         IRegisterService registerService,
         ILoginService loginService,
-        IOptions<JwtOptions> jwtSettings,
+        IOptions<JwtOptions> jwtOptions,
         ILogger<ApiCookieController> logger,
         IUserContext userContext
     )
-        : base(jwtSettings, logger, userContext)
+        : base(jwtOptions, logger, userContext)
     {
         _registerService = registerService;
         _loginService = loginService;

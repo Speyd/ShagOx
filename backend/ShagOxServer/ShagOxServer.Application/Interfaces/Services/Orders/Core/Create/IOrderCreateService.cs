@@ -5,7 +5,7 @@ using ShagOxServer.Application.Interfaces.Services.Base.Create;
 namespace ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
 public interface IOrderCreateService
     : ICreateOwnerService<
-        CreateResponse,
+        OrderCreateResponse,
         OrderCreateRequest
         >
 {

@@ -34,10 +34,13 @@ public class LineItemAttributeQueryService
         ILineItemAttributeQueryRepository attributeQueryRepository,
         IAttributeDefinitionQueryService attributeService,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings,
+        IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
     )
-        : base(attributeQueryRepository, language, cacheService, settings)
+        : base(attributeQueryRepository, 
+            language, 
+            cacheService, 
+            cacheOptions)
     {
         _attributeQueryRepository = attributeQueryRepository;
         _attributeService = attributeService;
@@ -74,7 +77,7 @@ public class LineItemAttributeQueryService
                 return await attribute.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -102,7 +105,7 @@ public class LineItemAttributeQueryService
                 return await attributes.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

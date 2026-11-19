@@ -34,7 +34,7 @@ public class BasketItemDeleteService
         IUnitOfWork unitOfWork,
         ILogger<BasketItemDeleteService> logger
     )
-        : base(itemValidator, unitOfWork, logger)
+        : base(itemRepository, itemValidator, unitOfWork, logger)
     {
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;

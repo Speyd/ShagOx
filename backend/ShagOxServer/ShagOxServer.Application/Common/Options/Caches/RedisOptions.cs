@@ -1,5 +1,5 @@
 namespace ShagOxServer.Application.Common.Options.Caches;
-public sealed class RedisSettings
+public sealed class RedisOptions
 {
     public string Endpoints { get; set; } = null!;
     public bool Ssl { get; set; } = true;

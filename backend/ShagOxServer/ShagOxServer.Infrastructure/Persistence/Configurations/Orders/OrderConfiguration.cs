@@ -132,6 +132,10 @@ public class OrderConfiguration
             .IsRequired(false);
 
 
+        builder.Property(x => x.InvoiceId)
+            .IsRequired(false)
+            .HasMaxLength(150);
+
 
         builder.Property(x => x.OrderStatus)
             .HasConversion<string>()
@@ -140,7 +144,37 @@ public class OrderConfiguration
 
 
         builder.Property(x => x.CreatedAt)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("timestamp with time zone");
+
+        builder.Property(x => x.ConfirmedAt)
+            .IsRequired(false)
+            .HasColumnType("timestamp with time zone");
+
+        builder.Property(x => x.UpdatedAt)
+            .IsRequired(false)
+            .HasColumnType("timestamp with time zone");
+
+        builder.Property(x => x.CancelledAt)
+            .IsRequired(false)
+            .HasColumnType("timestamp with time zone");
+
+
+        builder.Property(x => x.ShippedAt)
+            .IsRequired(false)
+            .HasColumnType("timestamp with time zone");
+
+        builder.Property(x => x.DeliveredAt)
+            .IsRequired(false)
+            .HasColumnType("timestamp with time zone");
+
+        builder.Property(x => x.EstimatedDeliveryAt)
+            .IsRequired(false)
+            .HasColumnType("timestamp with time zone");
+
+        builder.Property(x => x.PaidAt)
+            .IsRequired(false)
+            .HasColumnType("timestamp with time zone");
 
 
 

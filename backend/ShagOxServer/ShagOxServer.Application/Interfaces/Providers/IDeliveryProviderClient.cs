@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Request;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Interfaces.Services.Deliveries.Providers;
+namespace ShagOxServer.Application.Interfaces.Providers;
 public interface IDeliveryProviderClient
 {
     string ProviderCode { get; }

@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.DTOs.Baskets.BasketItems.Update;
+using ShagOxServer.Application.DTOs.Baskets.BasketItems.Update;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketItems.Update;
@@ -10,16 +10,16 @@ public static class BasketItemUpdater
     {
         int countUpdated = 0;
 
+
+        var stock = basket.AdvertisementVariant?.Stock ?? basket.Advertisement?.Stock;
+        stock ??= 1;
+
         if (request.Quantity.HasValue)
         {
-            var stock = basket.AdvertisementVariant?.Stock
-                ?? basket.Advertisement.Stock
-                ?? 0;
-
             if (request.Quantity.Value < 0)
                 basket.Quantity = 0;
             else if (request.Quantity.Value > stock)
-                basket.Quantity = stock;
+                basket.Quantity = stock.Value;
             else
                 basket.Quantity = request.Quantity.Value;
 

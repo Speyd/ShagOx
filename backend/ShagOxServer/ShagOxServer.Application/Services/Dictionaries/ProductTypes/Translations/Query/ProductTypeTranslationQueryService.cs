@@ -23,9 +23,11 @@ public class ProductTypeTranslationQueryService
     public ProductTypeTranslationQueryService(
         IProductTypeTranslationQueryRepository typeRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(typeRepository, cacheService, settings)
+        : base(typeRepository, 
+            cacheService, 
+            cacheOptions)
     {
     }
 

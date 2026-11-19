@@ -23,9 +23,9 @@ public class CategoryTranslationQueryService
     public CategoryTranslationQueryService(
         ICategoryTranslationQueryRepository categoryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(categoryRepository, cacheService, settings)
+        : base(categoryRepository, cacheService, cacheOptions)
     {
     }
 

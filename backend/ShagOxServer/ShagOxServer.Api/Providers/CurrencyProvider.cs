@@ -28,7 +28,7 @@ public class CurrencyProvider
             return null;
 
         var result = await _currencyService
-            .GetByUserAsync(_userContext.UserId.Value, 
+            .GetByUserAsync(_userContext.UserId.Value,
                 cancellationToken, status);
 
         return result.Value;

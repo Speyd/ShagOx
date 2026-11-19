@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Deliveries;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 
 namespace ShagOxServer.Infrastructure.ExternalServices.Currencies;
@@ -5,6 +6,7 @@ public class CurrencyConverter
     : ICurrencyConverter
 {
     private readonly CurrencyRateStore _rateStore;
+
 
     public CurrencyConverter(CurrencyRateStore rateStore)
     {
@@ -35,13 +37,13 @@ public class CurrencyConverter
         return true;
     }
 
-    public (decimal? ConvertedAmount, decimal Coefficient) Convert(
+    public AmountConversionResult Convert(
         decimal? amount,
         string from,
         string to)
     {
         return TryConvert(amount, from, to, out var converted, out var coefficient)
-            ? (converted, coefficient)
-            : (null, 0m);
+            ? new AmountConversionResult(converted, coefficient)
+            : new AmountConversionResult(null, 0m);
     }
 }

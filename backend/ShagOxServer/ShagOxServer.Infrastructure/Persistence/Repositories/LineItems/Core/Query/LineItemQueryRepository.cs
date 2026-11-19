@@ -1,3 +1,5 @@
+using LinqKit;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Items.Query;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.LineItems.Core;
@@ -45,6 +47,36 @@ public abstract partial class LineItemQueryRepository<TEntity, TFilter>
             pagination,
             x => x.Id,
             cancellationToken);
+    }
+
+    public async Task<List<TEntity>> GetByParentAndDependenciesAsync(
+        long parentId,
+        List<(long AdvertId, long? VariantId)> dependencies,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        if (dependencies.Count == 0)
+            return [];
+
+        var variantIds = dependencies
+            .Where(x => x.VariantId.HasValue)
+            .Select(x => x.VariantId.Value)
+            .Distinct()
+            .ToArray();
+
+        var advertIds = dependencies
+            .Where(x => !x.VariantId.HasValue)
+            .Select(x => x.AdvertId)
+            .Distinct()
+            .ToArray();
+
+        return await ApplyIncludes(_db.Set<TEntity>())
+            .WithStatusFilter(status)
+            .Where(x => x.ParentId == parentId &&
+                (x.AdvertisementVariantId.HasValue
+                    ? variantIds.Contains(x.AdvertisementVariantId.Value)
+                    : advertIds.Contains(x.AdvertisementId)))
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<PagedResult<TEntity>> GetByParentAsync(

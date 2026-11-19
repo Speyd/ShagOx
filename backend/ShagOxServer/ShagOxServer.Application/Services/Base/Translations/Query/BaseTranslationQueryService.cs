@@ -28,9 +28,9 @@ public abstract class BaseTranslationQueryService<TDto, TEntity, TTranslation, T
     public BaseTranslationQueryService(
         ISearchTranslationRepository<TEntity, TTranslation, TFilter> queryRepository,
         IDataCacheService cache,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
      )
-        : base(queryRepository, cache, settings)
+        : base(queryRepository, cache, cacheOptions)
     {
         _queryTranslationRepository = queryRepository;
     }

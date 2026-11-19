@@ -33,7 +33,7 @@ public class BasketDeleteService
         IUnitOfWork unitOfWork,
         ILogger<BasketDeleteService> logger
     )
-        : base(basketValidator, unitOfWork, logger)
+        : base(basketRepository, basketValidator, unitOfWork, logger)
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;

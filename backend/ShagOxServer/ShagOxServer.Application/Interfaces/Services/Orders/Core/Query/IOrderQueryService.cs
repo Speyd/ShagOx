@@ -23,4 +23,5 @@ public interface IOrderQueryService
         string trackingNumber,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
+
 }

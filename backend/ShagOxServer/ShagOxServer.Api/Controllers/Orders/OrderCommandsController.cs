@@ -17,14 +17,10 @@ public class OrderCommandsController
     : ApiOwnerExistsController
 {
     private readonly IOrderCreateService _createService;
-    //private readonly IOrderUpdateService _updateService;
-    //private readonly IOrderDeleteService _deleteService;
 
 
     public OrderCommandsController(
         IOrderCreateService createService,
-        //IAdvertisementUpdateService updateService,
-        //IAdvertisementDeleteService deleteService,
         IOrderExistsRepository existsAdvertRepository,
         IUserAdminQueryService userQueryService,
         IUserContext userContext
@@ -32,8 +28,6 @@ public class OrderCommandsController
         : base(existsAdvertRepository, userQueryService, userContext)
     {
         _createService = createService;
-        //_updateService = updateService;
-        //_deleteService = deleteService;
     }
 
 
@@ -46,33 +40,4 @@ public class OrderCommandsController
 
         return result.ToActionResult();
     }
-
-    //[HttpPut("{id:long}")]
-    //public async Task<IActionResult> Update(
-    //    [FromRoute] long id,
-    //    [FromForm] AdvertisementUpdateRequest request)
-    //{
-    //    var forbidden = await CheckOwnershipAsync(id);
-    //    if (forbidden is not null)
-    //        return forbidden;
-
-    //    var result = await _updateService
-    //        .UpdateAsync(id, request);
-
-    //    return result.ToActionResult();
-    //}
-
-    //[HttpDelete("{id:long}")]
-    //public async Task<IActionResult> Delete(
-    //    [FromRoute] long id)
-    //{
-    //    var forbidden = await CheckOwnershipAsync(id);
-    //    if (forbidden is not null)
-
-    //        return forbidden;
-    //    var result = await _deleteService
-    //        .SoftDeleteAsync(id);
-
-    //    return result.ToActionResult();
-    //}
 }

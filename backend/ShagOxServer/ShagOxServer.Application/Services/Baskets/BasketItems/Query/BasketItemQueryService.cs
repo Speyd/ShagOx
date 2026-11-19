@@ -47,13 +47,13 @@ public class BasketItemQueryService
         IStatusQueryService statusService,
         ILineItemAttributeExistsRepository attributeRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings,
+        IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
     )
         : base(itemQueryRepository, 
             attributeRepository,
             cacheService,
-            settings,
+            cacheOptions,
             language)
     {
         _basketQueryRepository = basketQueryRepository;

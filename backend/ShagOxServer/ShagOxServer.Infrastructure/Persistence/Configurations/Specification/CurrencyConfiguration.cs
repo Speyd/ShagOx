@@ -4,7 +4,6 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Specification;
-
 public class CurrencyConfiguration 
     : IEntityTypeConfiguration<Currency>
 {
@@ -18,6 +17,12 @@ public class CurrencyConfiguration
         builder.Property(x => x.Code)
                .IsRequired()
                .HasMaxLength(3);
+
+        builder.Property(x => x.Ccy)
+            .IsRequired();
+
+        builder.Property(x => x.DecimalPlaces)
+            .IsRequired();
 
         builder.Property(x => x.Symbol)
                .IsRequired()

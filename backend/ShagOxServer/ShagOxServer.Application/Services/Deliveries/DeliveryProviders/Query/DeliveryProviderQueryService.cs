@@ -28,9 +28,12 @@ public class DeliveryProviderQueryService
         IDeliveryProviderTranslationQueryRepository translationRepository,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(deliveryRepository, language, cacheService, settings)
+        : base(deliveryRepository, 
+            language, 
+            cacheService,
+            cacheOptions)
     {
         _translationRepository = translationRepository;
     }

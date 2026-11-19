@@ -23,9 +23,9 @@ public class ConditionTranslationQueryService
     public ConditionTranslationQueryService(
         IConditionTranslationQueryRepository condtitionRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(condtitionRepository, cacheService, settings)
+        : base(condtitionRepository, cacheService, cacheOptions)
     {
     }
 

@@ -12,6 +12,10 @@ public interface IOrderQueryRepository
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
+    Task<Order?> GetByInvoiceIdAsync(
+        string invoiceId,
+        CancellationToken cancellationToken = default);
+
     Task<Order?> GetByOrderNumberAsync(
         string orderNumber,
         CancellationToken cancellationToken = default,

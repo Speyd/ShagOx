@@ -1,5 +1,5 @@
-﻿namespace ShagOxServer.Application.Common.Settings.Verifivations;
-public sealed class EmailSettings
+namespace ShagOxServer.Application.Common.Options.Verifivations;
+public sealed class EmailOptions
 {
     public string SmtpHost { get; set; } = null!;
     public int SmtpPort { get; set; }

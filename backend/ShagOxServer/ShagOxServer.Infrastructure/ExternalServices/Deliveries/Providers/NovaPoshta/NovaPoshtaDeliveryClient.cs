@@ -1,12 +1,12 @@
-using CloudinaryDotNet;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Caches;
+using ShagOxServer.Application.Common.Options.Deliveries.Providers;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Query;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.Core.Request;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Query;
 using ShagOxServer.Application.DTOs.Deliveries.Providers.NovaPoshta.Request;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Services.Caches;
-using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers.NovaPoshta;
 using ShagOxServer.Application.Resources.Delivery.Providers.NovaPoshta;
 using ShagOxServer.Application.Services.Caches.Keys.Deliveries.Providers.NovaPoshta;
@@ -22,25 +22,31 @@ public class NovaPoshtaDeliveryClient
     private readonly NovaPoshtaApiClient _apiClient;
     private readonly INovaPoshtaTypeResolver _typeResolve;
     private readonly IDataCacheService _cacheService;
-    private readonly CacheOptions _cacheSettings;
+    private readonly NovaPoshtaOptions _deliveryOptions;
+    private readonly CacheOptions _casheOptions;
 
 
-    public string ProviderCode => "NOVA_POSHTA";
-    public string CurrencyCode => "UAH";
+    public string ProviderCode { get; init; }
+    public string CurrencyCode { get; init; }
 
     private const decimal MinWeight = 0.1m;
-    
+
 
     public NovaPoshtaDeliveryClient(
         NovaPoshtaApiClient apiClient,
         INovaPoshtaTypeResolver typeResolve,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings)
+        IOptions<NovaPoshtaOptions> deliveryOptions,
+        IOptions<CacheOptions> casheOptions)
     {
         _apiClient = apiClient;
         _typeResolve = typeResolve;
         _cacheService = cacheService;
-        _cacheSettings = settings.Value;
+        _deliveryOptions = deliveryOptions.Value;
+        _casheOptions = casheOptions.Value;
+
+        ProviderCode = deliveryOptions.Value.ProviderCode;
+        CurrencyCode = deliveryOptions.Value.CurrencyCode;
     }
 
 
@@ -52,9 +58,10 @@ public class NovaPoshtaDeliveryClient
             ? "WarehouseDoors"
             : "WarehouseWarehouse";
 
+
         var methodProperties = new Dictionary<string, object>
         {
-            ["CitySender"] = "8d5a980d-391c-11dd-90d9-001a92567626",
+            ["CitySender"] = _deliveryOptions.WarehouseCityId,
             ["CityRecipient"] = request.RecipientCityExternalId,
             ["Weight"] = Math.Max(request.Weight, MinWeight).ToString(
                 System.Globalization.CultureInfo.InvariantCulture),
@@ -123,7 +130,7 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _cacheSettings.KeyExpiration);
+            _casheOptions.KeyExpiration);
     }
 
     public async Task<Result<IEnumerable<DeliveryStreetDto>>> GetStreetsAsync(
@@ -167,7 +174,7 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _cacheSettings.KeyExpiration);
+            _casheOptions.KeyExpiration);
     }
 
 
@@ -232,6 +239,6 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _cacheSettings.KeyExpiration);
+            _casheOptions.KeyExpiration);
     }
 }

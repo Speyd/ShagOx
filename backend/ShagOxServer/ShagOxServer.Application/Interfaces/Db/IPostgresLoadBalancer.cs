@@ -4,4 +4,6 @@ namespace ShagOxServer.Application.Interfaces.Db;
 public interface IPostgresLoadBalancer
 {
     Replica? SelectReplica();
+
+    bool HasHealthyReplica();
 }

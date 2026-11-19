@@ -35,9 +35,12 @@ public class AttributeDefinitionQueryService
         IAttributeDefinitionTranslationQueryRepository translationRepository,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(attributeQueryRepository, language, cacheService, settings)
+        : base(attributeQueryRepository, 
+            language, 
+            cacheService,
+            cacheOptions)
     {
         _attributeRepository = attributeQueryRepository;
         _translationRepository = translationRepository;
@@ -75,7 +78,7 @@ public class AttributeDefinitionQueryService
                 return await values.ToResultListAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

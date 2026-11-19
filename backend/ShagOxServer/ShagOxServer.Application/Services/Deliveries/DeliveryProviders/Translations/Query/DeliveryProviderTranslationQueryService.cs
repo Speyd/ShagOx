@@ -24,9 +24,11 @@ public class DeliveryProviderTranslationQueryService
     public DeliveryProviderTranslationQueryService(
         IDeliveryProviderTranslationQueryRepository deliveryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheOptions> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(deliveryRepository, cacheService, settings)
+        : base(deliveryRepository, 
+            cacheService,
+            cacheOptions)
     {
     }
 

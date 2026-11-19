@@ -10,7 +10,7 @@ public sealed record AdvertisementVariantDto
     EntityStatus EntityStatus,
     long AdvertisementId,
     decimal Price,
-    decimal PreviousPrice,
+    decimal? PreviousPrice,
     ConvertedPricesDto PriceConversion,
     int Stock,
     List<AttributeDto> Attributes

@@ -3,7 +3,6 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
-
 public static class AdvertisementFilterExtensions
 {
     public static IQueryable<Advertisement> Filter(
@@ -17,6 +16,25 @@ public static class AdvertisementFilterExtensions
         {
             query = query.Where(u =>
                 EF.Functions.ILike(u.Title, $"%{filter.Title}%"));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.Description))
+        {
+            query = query.Where(u =>
+                 EF.Functions.ILike(u.Description, $"%{filter.Description}%"));
+        }
+
+        if (filter.Discounts.HasValue)
+        {
+            query = query.Where(x =>
+                   x.PreviousPrice.HasValue ||
+                   x.Variants.Any(v => v.PreviousPrice.HasValue)       
+           );
+        }
+
+        if (filter.Newest.HasValue)
+        {
+            query = query.OrderByDescending(x => x.CreatedAt);
         }
 
         if (!string.IsNullOrWhiteSpace(filter.Description))

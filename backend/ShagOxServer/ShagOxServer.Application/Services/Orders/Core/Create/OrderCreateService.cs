@@ -17,6 +17,7 @@ using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
 using ShagOxServer.Application.Services.Orders.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Create;
@@ -144,6 +145,15 @@ public partial class OrderCreateService
 
             return Result<OrderCreateResponse>
                 .Fail(EntityErrorResources.OrderCreateFailed);
+        }
+
+        if (order.PaymentMethod != PaymentMethod.Online)
+        {
+            return Result<OrderCreateResponse>.Success(
+                new OrderCreateResponse(
+                    order.Id,
+                    null,
+                    DateTime.UtcNow));
         }
 
         try

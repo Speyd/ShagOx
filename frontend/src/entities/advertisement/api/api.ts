@@ -166,3 +166,17 @@ export async function getSellerAdvertisements(
   );
   return data;
 }
+
+export type CatalogSort = "Default" | "Newest" | "Discount";
+
+/** Showcase lists for the home page: newest or discounted products. */
+export async function getCatalogShowcase(
+  sort: CatalogSort,
+  pageSize = 12,
+): Promise<CatalogAdvertisement[]> {
+  const { data } = await api.get<PaginatedResponse<CatalogAdvertisement>>(
+    "/advertisements/catalog",
+    { params: { Page: 1, PageSize: pageSize, sort } },
+  );
+  return data.items;
+}

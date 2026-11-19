@@ -49,11 +49,12 @@ public partial class AdvertisementQueryService
         long? userId,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active)
+        EntityStatus status = EntityStatus.Active,
+        CatalogSort sort = CatalogSort.Default)
     {
         var adverts = await _advertisementRepository
             .GetCatalogPagedAsync(userId, pagination,
-                cancellationToken, status);
+                cancellationToken, status, sort);
 
         return await adverts.ToResultPagedAsync(async advert =>
         {

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
@@ -110,19 +111,31 @@ public partial class AdvertisementQueryRepository
         long? userId,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
+        EntityStatus? status = null,
+        CatalogSort sort = CatalogSort.Default)
     {
         var query = _db.Advertisements
             .AsNoTracking()
             .ShortWithIncludes()
             .WithStatusFilter(status);
 
-        return await GetCatalogResultAsync(
-            userId,
-            query, 
-            pagination, 
-            cancellationToken
-        );
+        if (sort == CatalogSort.Discount)
+        {
+            // Discounted = previous price above the current one, on the advertisement or a variant.
+            query = query.Where(x =>
+                (x.PreviousPrice != null && x.Price != null && x.PreviousPrice > x.Price) ||
+                x.Variants.Any(v =>
+                    v.EntityStatus == EntityStatus.Active &&
+                    v.PreviousPrice > v.Price));
+        }
+
+        return sort == CatalogSort.Default
+            ? await GetCatalogResultAsync(
+                userId, query, pagination, cancellationToken)
+            : await GetCatalogResultAsync(
+                userId, query, pagination, cancellationToken,
+                orderBy: x => x.CreatedAt,
+                descending: true);
     }
 
     public async Task<PagedResult<AdvertisementCatalogQueryDto>> CatalogSearchAsync(
@@ -150,12 +163,15 @@ public partial class AdvertisementQueryRepository
         long? userId,
         IQueryable<Advertisement> query,
         PaginationParams pagination,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        Expression<Func<Advertisement, object>>? orderBy = null,
+        bool descending = false)
     {
         var result = await query.ToPagedResultAsync(
             pagination,
-            x => x.Popularity,
-            cancellationToken);
+            orderBy ?? (x => x.Popularity),
+            cancellationToken,
+            descending);
 
         var ids = result.Items.Select(x => x.Id).ToList();
 

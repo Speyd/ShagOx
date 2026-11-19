@@ -234,4 +234,7 @@
   <data name="Payment" xml:space="preserve">
     <value>Payment</value>
   </data>
+  <data name="Webhook" xml:space="preserve">
+    <value>Webhook</value>
+  </data>
 </root>

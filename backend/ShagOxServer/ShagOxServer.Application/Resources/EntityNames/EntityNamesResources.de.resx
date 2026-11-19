@@ -231,10 +231,10 @@
   <data name="CategoryImage" xml:space="preserve">
     <value>Kategoriebild</value>
   </data>
-  <data name="\" xml:space="preserve">
-    <value>Kategorie</value>
-  </data>
   <data name="Payment" xml:space="preserve">
     <value>Zahlung</value>
+  </data>
+  <data name="Webhook" xml:space="preserve">
+    <value>Webhook</value>
   </data>
 </root>

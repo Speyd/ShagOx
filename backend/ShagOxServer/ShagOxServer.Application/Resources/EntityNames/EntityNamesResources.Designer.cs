@@ -410,5 +410,14 @@ namespace ShagOxServer.Application.Resources.EntityNames {
                 return ResourceManager.GetString("VerificationCode", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Webhook.
+        /// </summary>
+        public static string Webhook {
+            get {
+                return ResourceManager.GetString("Webhook", resourceCulture);
+            }
+        }
     }
 }

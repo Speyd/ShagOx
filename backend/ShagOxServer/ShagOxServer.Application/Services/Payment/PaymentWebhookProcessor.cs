@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
 using ShagOxServer.Application.Interfaces.Services.Payments;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Payments;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -63,14 +64,18 @@ public class PaymentWebhookProcessor
 
         await _unitOfWork.SaveChangesAsync();
 
-        if (webhook.EnumStatus == PaymentStatus.Succeeded)
+        return (webhook.EnumStatus switch
         {
-            return await ProcessPendingAsync(
+            PaymentStatus.Succeeded => await ProcessPendingAsync(
                 webhook.InvoiceId,
-                cancellationToken);
-        }
+                cancellationToken),
 
-        return Result<bool>.Success(true);
+            PaymentStatus.Cancelled => await ProcessCancelAsync(
+                webhook.InvoiceId,
+                cancellationToken),
+
+            _ => Result<bool>.Success(true)
+        });
     }
 
     public async Task ProcessPendingAsync(
@@ -102,10 +107,46 @@ public class PaymentWebhookProcessor
             .GetByInvoiceIdAsync(invoiceId, null, cancellationToken);
 
         if (webhook is null)
-            return Result<bool>.Fail("");
+        {
+            return Result<bool>.NotFound(
+                EntityNamesResources.Webhook);
+        }
 
+        return await ProcessPendingAsync(webhook, cancellationToken);
+    }
+
+    public async Task<Result<bool>> ProcessPendingAsync(
+        PaymentWebhook webhook,
+        CancellationToken cancellationToken)
+    {
         return await _paymentProcessingService
             .ProcessSuccessfulPayment(
+                webhook.InvoiceId, cancellationToken);
+    }
+
+    public async Task<Result<bool>> ProcessCancelAsync(
+        string invoiceId,
+        CancellationToken cancellationToken)
+    {
+        var webhook = await _webhookQueryRepository
+            .GetByInvoiceIdAsync(invoiceId, null, cancellationToken);
+
+        if (webhook is null)
+        {
+            return Result<bool>.NotFound(
+                EntityNamesResources.Webhook);
+        }
+
+        return await ProcessCancelAsync(
+                webhook.InvoiceId, cancellationToken);
+    }
+
+    public async Task<Result<bool>> ProcessCancelAsync(
+        PaymentWebhook webhook,
+        CancellationToken cancellationToken)
+    {
+        return await _paymentProcessingService
+            .ProcessFailedPayment(
                 webhook.InvoiceId, cancellationToken);
     }
 }

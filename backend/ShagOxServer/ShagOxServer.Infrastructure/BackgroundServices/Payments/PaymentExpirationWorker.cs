@@ -71,8 +71,7 @@ public class PaymentExpirationWorker : BackgroundService
 
                 var payments = await db.Payments
                     .Where(x =>
-                        x.ExpiresAt <= now &&
-                        x.Status == PaymentStatus.Processing)
+                        x.ExpiresAt <= now && x.Status == PaymentStatus.Processing)
                     .OrderBy(x => x.ExpiresAt)
                     .Take(CountPending)
                     .ToListAsync(stoppingToken);

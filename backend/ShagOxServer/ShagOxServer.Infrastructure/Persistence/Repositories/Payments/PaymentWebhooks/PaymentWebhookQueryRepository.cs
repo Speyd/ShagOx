@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Payments;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -18,11 +19,14 @@ public class PaymentWebhookQueryRepository
 
     public async Task<PaymentWebhook?> GetByInvoiceIdAsync(
         string invoiceId,
+        PaymentStatus? status = null,
         CancellationToken cancellationToken = default)
     {
         return await _db.PaymentWebhooks
             .FirstOrDefaultAsync(
-                x => x.InvoiceId == invoiceId);
+                x => x.InvoiceId == invoiceId &&
+                (status != null && x.Status == status) ||
+                status == null);
     }
 
     public async Task<IReadOnlyList<PaymentWebhook>> GetUnprocessedAsync(

@@ -18,6 +18,8 @@ public static class BackgroundServiceDependencyInjection
 
         services.AddHostedService<PaymentWebhookWorker>();
 
+        services.AddHostedService<PaymentExpirationWorker>();
+
 
         return services;
     }

@@ -6,4 +6,8 @@ public interface IAdvertisementVariantCommandRepository
         int quantity,
         CancellationToken cancellationToken = default);
 
+    Task<bool> IncreaseStockAsync(
+        long variantId,
+        int quantity,
+        CancellationToken cancellationToken = default);
 }

@@ -132,11 +132,6 @@ public class OrderConfiguration
             .IsRequired(false);
 
 
-        builder.Property(x => x.InvoiceId)
-            .IsRequired(false)
-            .HasMaxLength(150);
-
-
         builder.Property(x => x.OrderStatus)
             .HasConversion<string>()
             .IsRequired();

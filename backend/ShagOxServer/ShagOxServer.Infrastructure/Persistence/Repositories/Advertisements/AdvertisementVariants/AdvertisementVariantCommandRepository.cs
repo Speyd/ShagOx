@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
-using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants;
@@ -28,6 +27,25 @@ public class AdvertisementVariantCommandRepository
                 setters => setters.SetProperty(
                     x => x.Stock,
                     x => x.Stock - quantity),
+                cancellationToken);
+
+        return affected > 0;
+    }
+
+    public async Task<bool> IncreaseStockAsync(
+        long variantId,
+        int quantity,
+        CancellationToken cancellationToken = default)
+    {
+        if (quantity <= 0)
+            throw new ArgumentOutOfRangeException(nameof(quantity));
+
+        var affected = await _db.AdvertisementVariants
+            .Where(x => x.Id == variantId)
+            .ExecuteUpdateAsync(
+                setters => setters.SetProperty(
+                    x => x.Stock,
+                    x => x.Stock + quantity),
                 cancellationToken);
 
         return affected > 0;

@@ -123,4 +123,10 @@
   <data name="InvalidPrice" xml:space="preserve">
     <value>Die angeforderte Menge überschreitet den verfügbaren Lagerbestand '{0}'.</value>
   </data>
+  <data name="OrderPaymentStatusUpdateFailed" xml:space="preserve">
+    <value>Der Zahlungsstatus der Bestellung konnte nicht aktualisiert werden.</value>
+  </data>
+  <data name="OrderStatusUpdateFailed" xml:space="preserve">
+    <value>Der Bestellstatus konnte nicht aktualisiert werden.</value>
+  </data>
 </root>

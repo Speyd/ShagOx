@@ -24,7 +24,7 @@ public sealed record OrderSearchFilter
     DeliveryPointType? DeliveryPointType,
 
     PaymentMethod? PaymentMethod,
-    PaymentStatus? PaymentStatus,
+    OrderPaymentStatus? PaymentStatus,
 
     OrderStatus? OrderStatus,
 

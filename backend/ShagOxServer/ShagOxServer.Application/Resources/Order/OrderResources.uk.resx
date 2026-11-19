@@ -123,4 +123,10 @@
   <data name="InvalidPrice" xml:space="preserve">
     <value>Запитана кількість перевищує доступний залишок товару '{0}'.</value>
   </data>
+  <data name="OrderPaymentStatusUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити статус оплати замовлення.</value>
+  </data>
+  <data name="OrderStatusUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити статус замовлення.</value>
+  </data>
 </root>

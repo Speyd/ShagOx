@@ -17,6 +17,7 @@ using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
 using ShagOxServer.Application.Services.Orders.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Create;
@@ -186,6 +187,7 @@ public partial class OrderCreateService
         var request = new PaymentRequest
         (
             order.TotalPrice,
+            order.CurrencyId,
             order.Currency.Ccy,
             order.Currency.DecimalPlaces
         );
@@ -196,14 +198,14 @@ public partial class OrderCreateService
         if (!result.IsSuccess || result.Value is null)
             return Result<string>.Fail(result.Error);
 
-        order.InvoiceId = result.Value.InvoiceId;
+        order.PaymentStatus = OrderPaymentStatus.Pending;
 
         _orderRepository.Update(order);
 
         await _unitOfWork.SaveChangesAsync();
 
         await _webhookProcessor.ProcessPendingAsync(
-            order.InvoiceId,
+            result.Value.InvoiceId,
             cancellationToken);
 
         return Result<string>.Success(result.Value.PaymentUrl);

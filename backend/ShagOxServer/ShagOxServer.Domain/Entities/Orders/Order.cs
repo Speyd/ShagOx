@@ -69,11 +69,9 @@ public class Order
     public DateTime? EstimatedDeliveryAt { get; set; }
 
 
-
-    public string? InvoiceId { get; set; } 
     public PaymentMethod PaymentMethod { get; set; }
 
-    public PaymentStatus PaymentStatus { get; set; }
+    public OrderPaymentStatus PaymentStatus { get; set; }
 
     public DateTime? PaidAt { get; set; }
 

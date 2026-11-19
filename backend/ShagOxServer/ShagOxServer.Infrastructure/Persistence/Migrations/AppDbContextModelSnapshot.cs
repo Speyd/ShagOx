@@ -1626,10 +1626,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("InvoiceId")
                         .IsUnique()
                         .HasDatabaseName("IX_PaymentWebhooks_InvoiceId")
-                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
-
-                    b.HasIndex("IsProcessed", "ReceivedAt")
-                        .HasDatabaseName("IX_PaymentWebhooks_IsProcessed_ReceivedAt");
+                        .HasFilter("(\"EntityStatus\" IN ('Active', 'Hidden')) AND (\"Status\" = 'success')");
 
                     b.ToTable("PaymentWebhooks");
                 });

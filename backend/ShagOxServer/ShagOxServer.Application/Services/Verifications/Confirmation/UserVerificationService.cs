@@ -13,7 +13,10 @@ public class UserVerificationService
        User user,
        VerificationCode verificationCode)
     {
-        if (user.EmailConfirmed)
+        // A user still pending verification must be able to confirm,
+        // even if the flag is already set (e.g. account created via Google).
+        if (user.EmailConfirmed &&
+            user.Status != UserStatus.PendingVerification)
         {
             return Result<bool>.Fail(
                 VerificationResources.EmailAlreadyConfirmed);
@@ -51,7 +54,8 @@ public class UserVerificationService
         User user,
         VerificationCode verificationCode)
     {
-        if (user.PhoneConfirmed)
+        if (user.PhoneConfirmed &&
+            user.Status != UserStatus.PendingVerification)
         {
             return Result<bool>.Fail(
                 VerificationResources.PhoneAlreadyConfirmed);

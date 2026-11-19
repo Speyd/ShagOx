@@ -25,6 +25,7 @@ public partial class VerificationCodeQueryRepository
     {
         return await _db.VerificationCodes
             .WithStatusFilter(status)
+            .OrderByDescending(x => x.Id)
             .FirstOrDefaultAsync(x =>
                 x.UserId == userId &&
                 x.UsedAt == null &&

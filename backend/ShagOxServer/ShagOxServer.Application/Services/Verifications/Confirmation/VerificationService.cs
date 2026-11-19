@@ -18,7 +18,7 @@ namespace ShagOxServer.Application.Services.Verifications.Confirmation;
 public class VerificationService
     : IVerificationService
 {
-    private readonly IUserQueryRepository _userRepository;
+    private readonly IRepository<User> _userRepository;
     private readonly IUserVerificationService _userVerifyService;
 
     private readonly IVerificationCodeService
@@ -27,7 +27,7 @@ public class VerificationService
     private readonly IUnitOfWork _unitOfWork;
 
     public VerificationService(
-        IUserQueryRepository userRepository,
+        IRepository<User> userRepository,
         IUserVerificationService userVerifyService,
         IVerificationCodeService verificationCodeService,
         IUnitOfWork unitOfWork)
@@ -41,8 +41,11 @@ public class VerificationService
     public async Task<Result<bool>> VerifyAsync(
         VerificationRequest request)
     {
+        if (!request.UserId.HasValue)
+            return Result<bool>.NotFound(EntityNamesResources.User);
+
         var user = await _userRepository
-            .GetByIdAsync(request.UserId!.Value);
+            .GetByIdAsync(request.UserId.Value);
 
         if (user is null)
             return Result<bool>.NotFound(EntityNamesResources.User);

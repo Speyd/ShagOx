@@ -26,16 +26,18 @@ export default function ForgotPasswordForm() {
     setStep("password");
   };
 
+  const requestCode = (password: string) =>
+    resetPassword.mutateAsync({
+      userId,
+      emailOrPhoneOrUserName: contact,
+      newPassword: password,
+    });
+
   const sendCode = async (password: string) => {
     setPasswordError("");
 
     try {
-      await resetPassword.mutateAsync({
-        userId,
-        emailOrPhoneOrUserName: contact,
-        newPassword: password,
-      });
-
+      await requestCode(password);
       setNewPassword(password);
       setStep("verify");
       toast.success("Код підтвердження надіслано.");
@@ -43,6 +45,16 @@ export default function ForgotPasswordForm() {
       const message = getErrorMessage(error, "Не вдалося надіслати код.");
       setPasswordError(message);
       toast.error(message);
+    }
+  };
+
+  const resendCode = async () => {
+    try {
+      await requestCode(newPassword);
+      toast.success("Новий код надіслано.");
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Не вдалося надіслати код."));
+      throw error;
     }
   };
 
@@ -76,7 +88,7 @@ export default function ForgotPasswordForm() {
           userId={userId}
           contact={contact}
           isResending={resetPassword.isPending}
-          onResend={() => sendCode(newPassword)}
+          onResend={resendCode}
         />
       )}
     </div>

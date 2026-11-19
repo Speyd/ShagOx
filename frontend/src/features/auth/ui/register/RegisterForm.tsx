@@ -1,5 +1,7 @@
-import Input from "@/shared/ui/data-display/inputs/input";
 import Button from "@/shared/ui/buttons/button";
+import AuthTextField from "../fields/AuthTextField";
+import AuthPasswordField from "../fields/AuthPasswordField";
+import ServerError from "../fields/ServerError";
 import styles from "./RegisterForm.module.css";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,14 +13,7 @@ import {
 } from "../../model/schemas/registerSchema";
 import { useRegister } from "../../model/hooks/useRegister";
 import { useNavigate } from "react-router-dom";
-import {
-  ArrowRight,
-  Eye,
-  EyeOff,
-  LockIcon,
-  Mail,
-  UserRound,
-} from "lucide-react";
+import { ArrowRight, Mail, UserRound } from "lucide-react";
 import { Text } from "@mantine/core";
 
 const isEmail = (value: string) =>
@@ -26,7 +21,6 @@ const isEmail = (value: string) =>
 
 export default function RegisterForm() {
   const [serverError, setServerError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
   const registerMutation = useRegister();
@@ -72,56 +66,30 @@ export default function RegisterForm() {
 
   return (
     <form className={styles.registerForm} onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles.inputWrapper}>
-        <div className={styles.inputBlock}>
-          <UserRound className={styles.icon} />
-          <Input {...register("userName")} placeholder="Нікнейм" />
-        </div>
-        {errors.userName && (
-          <p className={styles.error}>{errors.userName.message}</p>
-        )}
-      </div>
+      <AuthTextField
+        icon={UserRound}
+        placeholder="Нікнейм"
+        autoComplete="nickname"
+        error={errors.userName?.message}
+        {...register("userName")}
+      />
 
-      <div className={styles.inputWrapper}>
-        <div className={styles.inputBlock}>
-          <Mail className={styles.icon} />
-          <Input
-            {...register("emailOrPhone")}
-            placeholder="Електронна пошта чи телефон"
-          />
-        </div>
-        {errors.emailOrPhone && (
-          <p className={styles.error}>{errors.emailOrPhone.message}</p>
-        )}
-      </div>
+      <AuthTextField
+        icon={Mail}
+        placeholder="Електронна пошта чи телефон"
+        autoComplete="username"
+        error={errors.emailOrPhone?.message}
+        {...register("emailOrPhone")}
+      />
 
-      <div className={styles.inputWrapper}>
-        <div className={styles.inputBlock}>
-          <LockIcon className={styles.icon} />
-          <Input
-            {...register("password")}
-            type={showPassword ? "text" : "password"}
-            placeholder="Пароль"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className={styles.eyeButton}
-            tabIndex={-1}
-          >
-            {showPassword ? (
-              <Eye className={styles.eyeIcon} />
-            ) : (
-              <EyeOff className={styles.eyeIcon} />
-            )}
-          </button>
-        </div>
-        {errors.password && (
-          <p className={styles.error}>{errors.password.message}</p>
-        )}
-      </div>
+      <AuthPasswordField
+        placeholder="Пароль"
+        autoComplete="new-password"
+        error={errors.password?.message}
+        {...register("password")}
+      />
 
-      {serverError && <p className={styles.serverError}>{serverError}</p>}
+      <ServerError message={serverError} />
 
       <Button type="submit" disabled={registerMutation.isPending}>
         {registerMutation.isPending ? (

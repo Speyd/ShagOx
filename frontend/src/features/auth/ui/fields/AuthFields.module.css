@@ -1,0 +1,92 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary, #4b5563);
+  margin-left: 4px;
+}
+
+.control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.icon {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: #9ca3af;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.control input {
+  width: 100%;
+  padding-left: 42px;
+  padding-right: 42px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.control input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.invalid input {
+  border-color: #ef4444;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  z-index: 1;
+}
+
+.eyeButton:hover {
+  color: #4b5563;
+}
+
+.eyeIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.error {
+  margin: 0 0 0 4px;
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.serverError {
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid #fee2e2;
+  border-radius: 6px;
+  background-color: #fef2f2;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+}

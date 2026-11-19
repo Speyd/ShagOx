@@ -8,11 +8,13 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getErrorMessage } from "@/shared/api/getErrorMessage";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Eye, EyeOff, LockIcon, Mail } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 
 import { Text } from "@mantine/core";
-import Input from "@/shared/ui/data-display/inputs/input";
 import Button from "@/shared/ui/buttons/button";
+import AuthTextField from "../fields/AuthTextField";
+import AuthPasswordField from "../fields/AuthPasswordField";
+import ServerError from "../fields/ServerError";
 import { useLogin } from "../../model/hooks/useLogin";
 import { register as registerUser } from "../../api/api";
 import { getByContanct } from "@/entities/user/api/api";
@@ -21,7 +23,6 @@ import { toast } from "sonner";
 
 export default function LoginForm() {
   const [serverError, setServerError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const loginMutation = useLogin();
 
   const navigate = useNavigate();
@@ -83,46 +84,20 @@ export default function LoginForm() {
 
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles.inputWrapper}>
-        <div className={styles.inputBlock}>
-          <Mail className={styles.icon} />
-          <Input
-            {...register("emailOrPhoneOrUserName")}
-            placeholder="Електронна пошта, телефон або нікнейм"
-          />
-        </div>
-        {errors.emailOrPhoneOrUserName && (
-          <p className={styles.error}>
-            {errors.emailOrPhoneOrUserName.message}
-          </p>
-        )}
-      </div>
+      <AuthTextField
+        icon={Mail}
+        placeholder="Електронна пошта, телефон або нікнейм"
+        autoComplete="username"
+        error={errors.emailOrPhoneOrUserName?.message}
+        {...register("emailOrPhoneOrUserName")}
+      />
 
-      <div className={styles.inputWrapper}>
-        <div className={styles.inputBlock}>
-          <LockIcon className={styles.icon} />
-          <Input
-            {...register("password")}
-            type={showPassword ? "text" : "password"}
-            placeholder="Пароль"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className={styles.eyeButton}
-            tabIndex={-1}
-          >
-            {showPassword ? (
-              <Eye className={styles.eyeIcon} />
-            ) : (
-              <EyeOff className={styles.eyeIcon} />
-            )}
-          </button>
-        </div>
-        {errors.password && (
-          <p className={styles.error}>{errors.password.message}</p>
-        )}
-      </div>
+      <AuthPasswordField
+        placeholder="Пароль"
+        autoComplete="current-password"
+        error={errors.password?.message}
+        {...register("password")}
+      />
 
       <div className={styles.forgotPasswordWrapper}>
         <Link to="/forgot-password" className={styles.forgotLink}>
@@ -130,7 +105,7 @@ export default function LoginForm() {
         </Link>
       </div>
 
-      {serverError && <p className={styles.serverError}>{serverError}</p>}
+      <ServerError message={serverError} />
 
       <Button type="submit" disabled={loginMutation.isPending}>
         {loginMutation.isPending ? (

@@ -1,15 +1,16 @@
-import { ArrowRight, Eye, EyeOff, LockIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Text } from "@mantine/core";
-import Input from "@/shared/ui/data-display/inputs/input";
 import Button from "@/shared/ui/buttons/button";
 import styles from "../ForgotPasswordForm.module.css";
 import {
   newPasswordSchema,
   type NewPasswordFormData,
 } from "@/features/auth/model/schemas/resetPasswordSchema";
+import AuthPasswordField from "../../fields/AuthPasswordField";
+import ServerError from "../../fields/ServerError";
 
 type Props = {
   isSending: boolean;
@@ -41,65 +42,33 @@ export default function PasswordStep({ isSending, error, onSubmit }: Props) {
         className={styles.form}
         onSubmit={handleSubmit((data) => onSubmit(data.newPassword))}
       >
-        <div className={styles.inputWrapper}>
-          <div className={styles.inputBlock}>
-            <LockIcon className={styles.icon} />
-            <Input
-              {...register("newPassword")}
-              type={showPassword ? "text" : "password"}
-              placeholder="Новий пароль"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className={styles.eyeButton}
-              tabIndex={-1}
-            >
-              {showPassword ? (
-                <Eye className={styles.eyeIcon} />
-              ) : (
-                <EyeOff className={styles.eyeIcon} />
-              )}
-            </button>
-          </div>
+        <AuthPasswordField
+          placeholder="Новий пароль"
+          autoComplete="new-password"
+          visible={showPassword}
+          onVisibleChange={setShowPassword}
+          error={errors.newPassword?.message}
+          {...register("newPassword")}
+        />
 
-          {errors.newPassword && (
-            <Text c="red" fz={12} mt={4}>
-              {errors.newPassword.message}
-            </Text>
-          )}
-        </div>
+        <AuthPasswordField
+          placeholder="Повторіть пароль"
+          autoComplete="new-password"
+          visible={showPassword}
+          hideToggle
+          error={errors.confirmPassword?.message}
+          {...register("confirmPassword")}
+        />
 
-        <div className={styles.inputWrapper}>
-          <div className={styles.inputBlock}>
-            <LockIcon className={styles.icon} />
-            <Input
-              {...register("confirmPassword")}
-              type={showPassword ? "text" : "password"}
-              placeholder="Повторіть пароль"
-            />
-          </div>
+        <ServerError message={error} />
 
-          {errors.confirmPassword && (
-            <Text c="red" fz={12} mt={4}>
-              {errors.confirmPassword.message}
-            </Text>
-          )}
-        </div>
-
-        {error && (
-          <Text c="red" fz={12}>
-            {error}
-          </Text>
-        )}
-
-        <Button type="submit" loading={isSending}>
-          <div className={styles.loginButton}>
-            <Text fw={700} fz={15}>
-              Надіслати код
-            </Text>
-            <ArrowRight size={20} />
-          </div>
+        <Button
+          type="submit"
+          loading={isSending}
+          rightSection={ArrowRight}
+          iconProps={{ size: 20 }}
+        >
+          Надіслати код
         </Button>
       </form>
     </>

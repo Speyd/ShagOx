@@ -4,8 +4,9 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Text } from "@mantine/core";
-import Input from "@/shared/ui/data-display/inputs/input";
 import Button from "@/shared/ui/buttons/button";
+import AuthTextField from "../../fields/AuthTextField";
+import ServerError from "../../fields/ServerError";
 import { getByContanct } from "@/entities/user/api/api";
 import styles from "../ForgotPasswordForm.module.css";
 import {
@@ -54,35 +55,23 @@ export default function ContactStep({ onSuccess }: Props) {
       </div>
 
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.inputWrapper}>
-          <div className={styles.inputBlock}>
-            <Mail className={styles.icon} />
-            <Input
-              placeholder="Електронна пошта чи телефон"
-              {...register("contact")}
-            />
-          </div>
+        <AuthTextField
+          icon={Mail}
+          placeholder="Електронна пошта чи телефон"
+          autoComplete="username"
+          error={errors.contact?.message}
+          {...register("contact")}
+        />
 
-          {errors.contact && (
-            <Text c="red" fz={12} mt={4}>
-              {errors.contact.message}
-            </Text>
-          )}
+        <ServerError message={serverError} />
 
-          {serverError && (
-            <Text c="red" fz={12} mt={4}>
-              {serverError}
-            </Text>
-          )}
-        </div>
-
-        <Button type="submit" loading={isSearching}>
-          <div className={styles.loginButton}>
-            <Text fw={700} fz={15}>
-              Далі
-            </Text>
-            <ArrowRight size={20} />
-          </div>
+        <Button
+          type="submit"
+          loading={isSearching}
+          rightSection={ArrowRight}
+          iconProps={{ size: 20 }}
+        >
+          Далі
         </Button>
 
         <div className={styles.guestWrapper}>

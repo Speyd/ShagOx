@@ -9,6 +9,7 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
+using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
@@ -26,12 +27,13 @@ public class StatusTranslationDeleteService
 
     public StatusTranslationDeleteService(
         IRepository<StatusTranslation> statusRepository,
+        ICommandRepository<StatusTranslation> statusCommand,
         StatusTranslationValidator statusValidator,
         StatusTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusTranslationDeleteService> logger
     )
-        : base(statusRepository, statusValidator, unitOfWork, logger)
+        : base(statusCommand, statusValidator, unitOfWork, logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;

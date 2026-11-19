@@ -2,7 +2,7 @@ namespace ShagOxServer.Application.DTOs.Payment;
 public sealed record PaymentRequest
 (
     decimal Amount,
-    long CurrencyId,
+    long OrderId,
     int Ccy,
     int DecimalPlaces
 );

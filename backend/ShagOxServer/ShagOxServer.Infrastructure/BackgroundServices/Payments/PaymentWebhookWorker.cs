@@ -41,56 +41,56 @@ public class PaymentWebhookWorker
         _logger.LogInformation(
             "Payment webhook worker started.");
 
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            if (!_loadBalancer.HasHealthyReplica())
-            {
-                _logger.LogWarning(
-                    "No healthy PostgreSQL replicas. Waiting...");
+        //while (!stoppingToken.IsCancellationRequested)
+        //{
+        //    if (!_loadBalancer.HasHealthyReplica())
+        //    {
+        //        _logger.LogWarning(
+        //            "No healthy PostgreSQL replicas. Waiting...");
 
-                await Task.Delay(
-                    _options.PendingInterval,
-                    stoppingToken);
+        //        await Task.Delay(
+        //            _options.PendingInterval,
+        //            stoppingToken);
 
-                continue;
-            }
+        //        continue;
+        //    }
 
-            try
-            {
-                await using var scope =
-                    _scopeFactory.CreateAsyncScope();
+        //    try
+        //    {
+        //        await using var scope =
+        //            _scopeFactory.CreateAsyncScope();
 
-                var processor = scope.ServiceProvider
-                    .GetRequiredService<IPaymentWebhookProcessor>();
+        //        var processor = scope.ServiceProvider
+        //            .GetRequiredService<IPaymentWebhookProcessor>();
 
-                await processor.ProcessPendingAsync(
-                    CountPending,
-                    stoppingToken);
-            }
-            catch (OperationCanceledException)
-                when (stoppingToken.IsCancellationRequested)
-            {
-                break;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(
-                    ex,
-                    "Payment webhook processing failed.");
-            }
+        //        await processor.ProcessPendingAsync(
+        //            CountPending,
+        //            stoppingToken);
+        //    }
+        //    catch (OperationCanceledException)
+        //        when (stoppingToken.IsCancellationRequested)
+        //    {
+        //        break;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(
+        //            ex,
+        //            "Payment webhook processing failed.");
+        //    }
 
-            try
-            {
-                await Task.Delay(
-                    _options.PendingInterval,
-                    stoppingToken);
-            }
-            catch (OperationCanceledException)
-                when (stoppingToken.IsCancellationRequested)
-            {
-                break;
-            }
-        }
+        //    try
+        //    {
+        //        await Task.Delay(
+        //            _options.PendingInterval,
+        //            stoppingToken);
+        //    }
+        //    catch (OperationCanceledException)
+        //        when (stoppingToken.IsCancellationRequested)
+        //    {
+        //        break;
+        //    }
+        //}
 
         _logger.LogInformation(
             "Payment webhook worker stopped.");

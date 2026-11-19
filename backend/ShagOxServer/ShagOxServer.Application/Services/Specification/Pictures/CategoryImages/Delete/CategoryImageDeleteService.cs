@@ -10,6 +10,7 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
+using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -23,6 +24,7 @@ public class CategoryImageDeleteService
 
     public CategoryImageDeleteService(
         IRepository<CategoryImage> imageRepository,
+        ICommandRepository<CategoryImage> imageCommand,
         CategoryImageValidator imageValidator,
         PictureValidator pictureValidator,
         CategoryImageInvalidationService imageInvalid,
@@ -30,6 +32,7 @@ public class CategoryImageDeleteService
         ILogger<CategoryImageDeleteService> logger
     )
         : base(imageRepository,
+            imageCommand,
             imageValidator,
             pictureValidator,
             unitOfWork,

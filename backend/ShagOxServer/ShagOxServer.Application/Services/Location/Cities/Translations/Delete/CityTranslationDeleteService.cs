@@ -28,12 +28,13 @@ public class CityTranslationDeleteService
 
     public CityTranslationDeleteService(
         IRepository<CityTranslation> cityRepository,
+        ICommandRepository<CityTranslation> cityCommand,
         CityTranslationValidator cityValidator,
         CityTranslationInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityTranslationDeleteService> logger
     )
-        : base(cityRepository, cityValidator, unitOfWork, logger)
+        : base(cityCommand, cityValidator, unitOfWork, logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;

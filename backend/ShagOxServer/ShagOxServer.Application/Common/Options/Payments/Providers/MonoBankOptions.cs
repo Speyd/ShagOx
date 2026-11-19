@@ -9,4 +9,6 @@ public sealed class MonoBankOptions
     public string RedirectUrl { get; set; } = "";
 
     public string WebHookUrl { get; set; } = "";
+
+    public TimeSpan PaymentExpiresAt { get; set; }
 }

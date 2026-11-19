@@ -1,6 +1,5 @@
 using ShagOxServer.Application.Interfaces.Services.Payments;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Resources.Order;
 using ShagOxServer.Application.Resources.Payment;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Orders.Enum;
@@ -35,14 +34,15 @@ public partial class PaymentProcessingService
 
         try
         {
-            if (payment.Status == PaymentStatus.Failed)
-            {
-                await _unitOfWork.CommitAsync();
+            var webhooks = await _webhookQueryRepository
+                .GetByInvoiceIdAsync(
+                    payment.InvoiceId,
+                    cancellationToken,
+                    PaymentStatus.Failed,
+                    PaymentStatus.Cancelled);
 
-                return Result<bool>.Success(true);
-            }
-
-            if (payment.Status == PaymentStatus.Succeeded)
+            if (payment.Status == PaymentStatus.Succeeded &&
+                !webhooks.Any())
             {
                 await _unitOfWork.RollbackAsync();
 
@@ -61,6 +61,14 @@ public partial class PaymentProcessingService
                 payment.Order,
                 cancellationToken);
 
+            foreach (var webhook in webhooks)
+            {
+                await _webhookCommandRepository.UpdateStatusAsync(
+                    webhook.Id,
+                    webhook.Status,
+                    cancellationToken);
+            }
+
             await _unitOfWork.CommitAsync();
 
             return Result<bool>.Success(true);
@@ -76,7 +84,7 @@ public partial class PaymentProcessingService
         ShagOxServer.Domain.Entities.Payments.Payment payment,
         CancellationToken cancellationToken)
     {
-        var orderId = payment.Order.Id;
+        var orderId = payment.OrderId;
 
         var paymentUpdated = await _paymentCommandRepository
             .TryUpdatePaymentStatusAsync(
@@ -88,13 +96,14 @@ public partial class PaymentProcessingService
         {
             await _unitOfWork.RollbackAsync();
 
-            return Result<bool>.Fail(
-                PaymentResources.PaymentStatusUpdateFailed);
+            return Result<bool>.NotFound(
+                EntityNamesResources.Payment);
         }
+
 
         var orderPayment = await _orderCommandRepository
             .TryUpdatePaymentStatusAsync(
-            orderId,
+                orderId,
                 OrderPaymentStatus.Failed,
                 cancellationToken);
 
@@ -102,21 +111,36 @@ public partial class PaymentProcessingService
         {
             await _unitOfWork.RollbackAsync();
 
-            return Result<bool>.Fail(
-                OrderResources.OrderPaymentStatusUpdateFailed);
+            return Result<bool>.NotFound(
+                EntityNamesResources.Order);
         }
 
-        var orderStatus = await _orderCommandRepository.TryUpdateStatusAsync(
-            orderId,
-            OrderStatus.Cancelled,
-            cancellationToken);
+        var orderStatus = await _orderCommandRepository
+            .TryUpdateStatusAsync(
+                orderId,
+                OrderStatus.Cancelled,
+                cancellationToken);
 
         if (!orderStatus)
         {
             await _unitOfWork.RollbackAsync();
 
-            return Result<bool>.Fail(
-                OrderResources.OrderStatusUpdateFailed);
+            return Result<bool>.NotFound(
+                EntityNamesResources.Order);
+        }
+
+
+        var cancelledOrder = await _orderCommandRepository
+            .TryMarkAsCancelledAsync(
+                orderId,
+                cancellationToken);
+
+        if (!cancelledOrder)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            return Result<bool>.NotFound(
+                EntityNamesResources.Order);
         }
 
         return Result<bool>.Success(true);

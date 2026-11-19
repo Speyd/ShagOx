@@ -16,6 +16,7 @@ public  class Repository<TEntity>
     {
     }
 
+
     public virtual async Task<TEntity?> GetByIdAsync(
         long entityId,
         CancellationToken cancellationToken = default,

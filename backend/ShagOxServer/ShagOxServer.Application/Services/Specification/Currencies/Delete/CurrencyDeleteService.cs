@@ -8,6 +8,7 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
+using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -27,12 +28,13 @@ public class CurrencyDeleteService
 
     public CurrencyDeleteService(
         IRepository<Currency> currencyRepository,
+        ICommandRepository<Currency> currencyCommand,
         CurrencyValidator currencyValidator,
         CurrencyInvalidationService currencyInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CurrencyDeleteService> logger
     )
-        : base(currencyRepository, currencyValidator, unitOfWork, logger)
+        : base(currencyCommand, currencyValidator, unitOfWork, logger)
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;

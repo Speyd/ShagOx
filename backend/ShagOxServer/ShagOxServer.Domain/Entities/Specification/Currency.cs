@@ -13,14 +13,9 @@ public class Currency
     public string Symbol { get; set; } = "";
     public string Name { get; set; } = "";
 
-    public ICollection<Advertisement> Advertisements { get; set; }
-        = [];
-
     public ICollection<User> Users { get; set; }
         = [];
 
-    public ICollection<Order> Orders { get; set; }
-        = [];
 
     public override string ToString()
     {

@@ -8,6 +8,7 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
 using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Application.Services.Orders.OrderItems.Validator;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -28,13 +29,14 @@ public class OrderItemDeleteService
 
     public OrderItemDeleteService(
         IRepository<OrderItem> itemRepository,
+        ICommandRepository<OrderItem> itemCommand,
         OrderItemValidator itemValidator,
         OrderItemInvalidationService itemInvalidation,
         OrderItemOrderInvalidationService orderValidator,
         IUnitOfWork unitOfWork,
         ILogger<OrderItemDeleteService> logger
     )
-        : base(itemRepository, itemValidator, unitOfWork, logger)
+        : base(itemCommand, itemValidator, unitOfWork, logger)
     {
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;

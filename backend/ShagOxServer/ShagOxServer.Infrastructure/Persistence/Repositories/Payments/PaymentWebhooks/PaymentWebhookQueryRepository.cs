@@ -7,6 +7,7 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
+
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Payments.PaymentWebhooks;
 public class PaymentWebhookQueryRepository
     : QueryRepository<PaymentWebhook>,
@@ -27,6 +28,17 @@ public class PaymentWebhookQueryRepository
                 x => x.InvoiceId == invoiceId &&
                 (status != null && x.Status == status) ||
                 status == null);
+    }
+
+    public async Task<List<PaymentWebhook>> GetByInvoiceIdAsync(
+        string invoiceId,
+        CancellationToken cancellationToken = default,
+        params PaymentStatus[] statuses)
+    {
+        return await _db.PaymentWebhooks
+            .Where(x => x.InvoiceId == invoiceId &&
+                statuses.Contains(x.Status))
+            .ToListAsync();
     }
 
     public async Task<IReadOnlyList<PaymentWebhook>> GetUnprocessedAsync(

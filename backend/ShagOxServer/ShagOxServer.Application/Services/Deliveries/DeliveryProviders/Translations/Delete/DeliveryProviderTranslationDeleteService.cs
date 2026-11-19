@@ -9,6 +9,7 @@ using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries.Translations;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Validator;
 using ShagOxServer.Domain.Entities.Deliveries.Translations;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Delete;
@@ -26,12 +27,13 @@ public class DeliveryProviderTranslationDeleteService
 
     public DeliveryProviderTranslationDeleteService(
         IRepository<DeliveryProviderTranslation> deliveryRepository,
+        ICommandRepository<DeliveryProviderTranslation> deliveryCommand,
         DeliveryProviderTranslationValidator deliveryValidator,
         DeliveryProviderTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderTranslationDeleteService> logger
     )
-        : base(deliveryRepository, deliveryValidator, unitOfWork, logger)
+        : base(deliveryCommand, deliveryValidator, unitOfWork, logger)
     {
         _deliveryRepository = deliveryRepository;
         _deliveryValidator = deliveryValidator;

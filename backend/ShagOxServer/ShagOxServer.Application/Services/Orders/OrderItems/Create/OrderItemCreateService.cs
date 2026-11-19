@@ -6,9 +6,13 @@ using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
+using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.EntityNames;
+using ShagOxServer.Application.Resources.EntityNames.Extensions;
 using ShagOxServer.Application.Resources.Order;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
@@ -29,6 +33,8 @@ public class OrderItemCreateService
 
     private readonly ICurrencyConverter _converter;
     private readonly ICurrencyProvider _currencyProvider;
+    private readonly ICurrencyQueryRepository _currencyRepository;
+
 
     private readonly OrderItemOrderInvalidationService _orderInvalidation;
     private readonly OrderItemInvalidationService _itemInvalidation;
@@ -44,6 +50,7 @@ public class OrderItemCreateService
         OrderItemValidator itemValidator,
         ICurrencyConverter converter,
         ICurrencyProvider currencyProvider,
+        ICurrencyQueryRepository currencyRepository,
         AdvertisementVariantValidator advertVariantValidator,
         AdvertisementValidator advertValidator,
         OrderItemOrderInvalidationService orderInvalidation, 
@@ -61,6 +68,7 @@ public class OrderItemCreateService
 
         _converter = converter;
         _currencyProvider = currencyProvider;
+        _currencyRepository = currencyRepository;
 
         _orderInvalidation = orderInvalidation;
         _itemInvalidation = itemInvalidation;
@@ -131,7 +139,21 @@ public class OrderItemCreateService
 
         var details = validationResult.Value!;
 
-        var currency = await _currencyProvider.GetCurrencyAsync();
+        var currency = await _currencyRepository
+            .GetByIdAsync(request.CurrencyId);
+
+        if (currency is null)
+        {
+            currency = await _currencyProvider
+                .GetCurrencyAsync();
+
+            if (currency is null)
+            {
+                return Result<OrderItem>.Fail(
+                    EntityNamesResources.Currency);
+            }
+        }
+
 
         var (price, code) = await GetPriceAndCurrencyCode(details, request);
 

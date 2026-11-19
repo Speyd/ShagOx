@@ -1,18 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.Core;
+using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
+using ShagOxServer.Domain.Entities.Payments;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Payments.Core;
 public class PaymentCommandRepository
-    : IPaymentCommandRepository
+    : CommandRepository<Payment>,
+    IPaymentCommandRepository
 {
-    private readonly AppDbContext _db;
-
     public PaymentCommandRepository(
-        AppDbContext db)
+        AppDbContext db
+    )
+        : base(db)
     {
-        _db = db;
     }
 
     public async Task<bool> TryMarkAsPaidAsync(
@@ -44,15 +47,14 @@ public class PaymentCommandRepository
                 nameof(newStatus));
 
         var affectedRows = await _db.Payments
-            .Where(x =>
-                x.InvoiceId == invoiceId &&
-                x.Status != PaymentStatus.Succeeded)
+            .Where(x => x.InvoiceId == invoiceId)
             .ExecuteUpdateAsync(
                 setters => setters
                     .SetProperty(
                         x => x.Status,
                         newStatus),
                 cancellationToken);
+
 
         return affectedRows > 0;
     }

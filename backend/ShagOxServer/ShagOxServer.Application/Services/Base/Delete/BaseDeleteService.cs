@@ -15,14 +15,14 @@ public abstract class BaseDeleteService<TEntity>
     : ISoftDeleteService<TEntity, DeleteResponse>
     where TEntity : BaseEntity
 {
-    protected readonly IRepository<TEntity> _repository;
+    protected readonly ICommandRepository<TEntity> _repository;
     protected readonly BaseValidator<TEntity> _queryRepository;
     private readonly ILogger<BaseDeleteService<TEntity>> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
 
     public BaseDeleteService(
-        IRepository<TEntity> repository,
+        ICommandRepository<TEntity> repository,
         BaseValidator<TEntity> queryRepository,
         IUnitOfWork unitOfWork,
         ILogger<BaseDeleteService<TEntity>> logger)
@@ -60,8 +60,6 @@ public abstract class BaseDeleteService<TEntity>
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
-        await _unitOfWork.BeginTransactionAsync();
-
         try
         {
             var body = await SoftBodyDeleteAsync(entity, 
@@ -72,15 +70,9 @@ public abstract class BaseDeleteService<TEntity>
                 await _unitOfWork.RollbackAsync();
                 return Result<DeleteResponse>.Fail(body.Error);
             }
-
-            _repository.Update(entity);
-
-            await _unitOfWork.CommitAsync();
         }
         catch (Exception ex)
         {
-            await _unitOfWork.RollbackAsync();
-
             _logger.LogError(
                 ex,
                 "Failed to delete {EntityName}. Id: {Id}",
@@ -105,8 +97,6 @@ public abstract class BaseDeleteService<TEntity>
         {
             var body = await SoftBodyDeleteAsync(entity, 
                 cancellationToken);
-
-            _repository.Update(entity);
 
             if (!body.IsSuccess)
                 return Result<DeleteResponse>.Fail(body.Error);
@@ -135,8 +125,7 @@ public abstract class BaseDeleteService<TEntity>
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
-        entity.EntityStatus = EntityStatus.Deleted;
-        entity.DeletedAt = DateTime.UtcNow;
+        await _repository.SoftDeleteAsync(entity.Id);
 
         return Result<bool>.Success(true);
     }

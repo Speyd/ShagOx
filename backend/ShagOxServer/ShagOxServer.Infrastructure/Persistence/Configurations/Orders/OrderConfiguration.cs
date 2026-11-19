@@ -179,7 +179,7 @@ public class OrderConfiguration
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Currency)
-            .WithMany(x => x.Orders)
+            .WithMany()
             .HasForeignKey(x => x.CurrencyId)
             .OnDelete(DeleteBehavior.Restrict);
 

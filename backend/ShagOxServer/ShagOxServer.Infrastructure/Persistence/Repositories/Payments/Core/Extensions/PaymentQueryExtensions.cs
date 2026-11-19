@@ -13,6 +13,6 @@ public static class PaymentQueryExtensions
                 .ThenInclude(x => x.OrderItems)
 
             .Include(x => x.Order)
-                .Include(x => x.Currency);
+                .ThenInclude(x => x.Currency);
     }
 }

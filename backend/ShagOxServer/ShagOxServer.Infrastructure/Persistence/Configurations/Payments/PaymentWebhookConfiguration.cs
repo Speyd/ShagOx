@@ -41,6 +41,6 @@ public class PaymentWebhookConfiguration
 
         builder.HasUniqueActiveIndex(
             x => x.InvoiceId,
-            "\"Status\" = 'success'");
+            "\"Status\" = 'Succeeded'");
     }
 }

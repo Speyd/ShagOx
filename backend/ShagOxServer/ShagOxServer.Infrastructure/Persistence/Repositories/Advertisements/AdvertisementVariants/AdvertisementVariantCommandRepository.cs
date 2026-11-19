@@ -1,17 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
+using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants;
 public class AdvertisementVariantCommandRepository
-    : IAdvertisementVariantCommandRepository
+    : CommandRepository<AdvertisementVariant>,
+    IAdvertisementVariantCommandRepository
 {
-    private readonly AppDbContext _db;
-
     public AdvertisementVariantCommandRepository(
-        AppDbContext db)
-    {
-        _db = db;
+        AppDbContext db
+    )
+        : base(db)
+    { 
     }
 
     public async Task<bool> DecreaseStockAsync(

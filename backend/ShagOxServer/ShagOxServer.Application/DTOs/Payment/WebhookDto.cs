@@ -2,7 +2,8 @@ using ShagOxServer.Domain.Entities.Payments.Enum;
 using System.Text.Json.Serialization;
 
 namespace ShagOxServer.Application.DTOs.Payment;
-public record WebhookDto(
+public record WebhookDto
+(
     string InvoiceId,
     string Status,
     long Amount,
@@ -13,5 +14,5 @@ public record WebhookDto(
 )
 {
     [JsonIgnore]
-    public PaymentStatus EnumStatus { get; init; }
+    public PaymentStatus EnumStatus { get; set; }
 }

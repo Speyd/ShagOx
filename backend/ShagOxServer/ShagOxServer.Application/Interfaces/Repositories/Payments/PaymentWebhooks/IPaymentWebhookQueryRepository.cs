@@ -16,4 +16,9 @@ public interface IPaymentWebhookQueryRepository
         string invoiceId,
         PaymentStatus? status = null,
         CancellationToken cancellationToken = default);
+
+    Task<List<PaymentWebhook>> GetByInvoiceIdAsync(
+        string invoiceId,
+        CancellationToken cancellationToken = default,
+        params PaymentStatus[] statuses);
 }

@@ -2,10 +2,10 @@ using ShagOxServer.Application.Interfaces.Services.Payments;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Payment;
 using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Payment.PaymentProcessing;
-
 public partial class PaymentProcessingService
     : IPaymentProcessingService
 {
@@ -27,6 +27,15 @@ public partial class PaymentProcessingService
                 return Result<bool>.NotFound(
                     EntityNamesResources.Payment);
             }
+
+            var webhooks = await _webhookQueryRepository
+                .GetByInvoiceIdAsync(
+                    payment.InvoiceId,
+                    cancellationToken,
+                    PaymentStatus.Succeeded);
+
+            if(!webhooks.Any())
+                return Result<bool>.Success(true);
 
             var paymentUpdated = await _paymentCommandRepository
                 .TryMarkAsPaidAsync(invoiceId, cancellationToken);
@@ -60,6 +69,14 @@ public partial class PaymentProcessingService
 
                 return Result<bool>
                     .Fail(deleteResult.Error);
+            }
+
+            foreach (var webhook in webhooks)
+            {
+                await _webhookCommandRepository.UpdateStatusAsync(
+                    webhook.Id,
+                    webhook.Status,
+                    cancellationToken);
             }
 
             await _unitOfWork.CommitAsync();

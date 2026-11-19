@@ -28,12 +28,13 @@ public class RegionTranslationDeleteService
 
     public RegionTranslationDeleteService(
         IRepository<RegionTranslation> regionRepository,
+        ICommandRepository<RegionTranslation> regionCommand,
         RegionTranslationValidator regionValidator,
         RegionTranslationInvalidationService trnsInvalid,
         IUnitOfWork unitOfWork,
         ILogger<RegionTranslationDeleteService> logger
     )
-        : base(regionRepository, regionValidator, unitOfWork, logger)
+        : base(regionCommand, regionValidator, unitOfWork, logger)
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;

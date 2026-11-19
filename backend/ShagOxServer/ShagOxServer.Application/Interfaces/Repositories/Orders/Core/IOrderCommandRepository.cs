@@ -13,6 +13,10 @@ public interface IOrderCommandRepository
         OrderPaymentStatus newStatus,
         CancellationToken cancellationToken = default);
 
+    Task<bool> TryMarkAsCancelledAsync(
+        long orderId,
+        CancellationToken cancellationToken = default);
+
     Task<bool> TryUpdateStatusAsync(
         long orderId,
         OrderStatus newStatus,

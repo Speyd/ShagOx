@@ -11,6 +11,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
 using ShagOxServer.Domain.Entities.Comments.Review;
+using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewRepliComments.Delete;
@@ -32,6 +33,7 @@ public class ReviewRepliCommentDeleteService
 
     public ReviewRepliCommentDeleteService(
         IRepository<ReviewRepliComment> commentRepository,
+        ICommandRepository<ReviewRepliComment> commentCommand,
         ReviewRepliCommentValidator commentValidator,
         ReviewRepliCommentInvalidationService commInvalid,
         IAdvertisementImageDeleteService imageDeleteService,
@@ -39,7 +41,7 @@ public class ReviewRepliCommentDeleteService
         IUnitOfWork unitOfWork,
         ILogger<ReviewRepliCommentDeleteService> logger
     )
-        : base(commentRepository, commentValidator, unitOfWork, logger)
+        : base(commentCommand, commentValidator, unitOfWork, logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;

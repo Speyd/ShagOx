@@ -33,4 +33,13 @@ public static class CurrencyCache
     public static string ByUserPattern(
        long userId)
            => $"{Prefix}:*:userId:{userId}";
+
+    public static string EntityByCode(
+       string code,
+        EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:status:{status}:enitycode:{code}";
+
+    public static string EntityByCodePattern(
+       string code)
+           => $"{Prefix}:*:enitycode:{code}";
 }

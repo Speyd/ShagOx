@@ -64,18 +64,53 @@ public class PaymentWebhookProcessor
 
         await _unitOfWork.SaveChangesAsync();
 
+        Console.WriteLine(webhook.EnumStatus);
+        Console.WriteLine(webhook.InvoiceId);
+        Console.WriteLine(entity.InvoiceId);
+
         return (webhook.EnumStatus switch
         {
             PaymentStatus.Succeeded => await ProcessPendingAsync(
-                webhook.InvoiceId,
+                entity,
                 cancellationToken),
 
-            PaymentStatus.Cancelled => await ProcessCancelAsync(
-                webhook.InvoiceId,
-                cancellationToken),
+            PaymentStatus.Cancelled or PaymentStatus.Failed =>
+                await ProcessCancelAsync(
+                    entity,
+                    cancellationToken),
+
+            PaymentStatus.Processing =>
+                await MarkProcessingAsync(entity.Id, cancellationToken),
+
+            PaymentStatus.Pending =>
+                await MarkPendingAsync(entity.Id, cancellationToken),
 
             _ => Result<bool>.Success(true)
         });
+    }
+
+    private async Task<Result<bool>> MarkProcessingAsync(
+        long webhookId,
+        CancellationToken cancellationToken = default)
+    {
+        await _webhookCommandRepository.UpdateStatusAsync(
+            webhookId,
+            PaymentStatus.Processing,
+            cancellationToken);
+
+        return Result<bool>.Success(true);
+    }
+
+    private async Task<Result<bool>> MarkPendingAsync(
+         long webhookId,
+         CancellationToken cancellationToken = default)
+    {
+        await _webhookCommandRepository.UpdateStatusAsync(
+            webhookId,
+            PaymentStatus.Pending,
+            cancellationToken);
+
+        return Result<bool>.Success(true);
     }
 
     public async Task ProcessPendingAsync(
@@ -137,8 +172,7 @@ public class PaymentWebhookProcessor
                 EntityNamesResources.Webhook);
         }
 
-        return await ProcessCancelAsync(
-                webhook.InvoiceId, cancellationToken);
+        return await ProcessCancelAsync(webhook, cancellationToken);
     }
 
     public async Task<Result<bool>> ProcessCancelAsync(

@@ -1,16 +1,18 @@
-using CloudinaryDotNet.Actions;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.DTOs.Comments.Core.Cache;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
@@ -33,6 +35,9 @@ public class UserInvalidationService
     private readonly IReviewRepliCommentQueryRepository _reviewRepliRepository;
     private readonly ReviewRepliCommentInvalidationService _reviewRepliInvalid;
 
+    private readonly ICurrencyQueryRepository _currencyRepository;
+    private readonly CurrencyInvalidationService _currencyInvalid;
+
     private readonly IDataCacheService _cache;
 
 
@@ -45,6 +50,8 @@ public class UserInvalidationService
         ReviewCommentInvalidationService reviewInvalid,
         IReviewRepliCommentQueryRepository reviewRepliRepository,
         ReviewRepliCommentInvalidationService reviewRepliInvalid,
+        ICurrencyQueryRepository currencyRepository,
+        CurrencyInvalidationService currencyInvalid,
         IDataCacheService cache)
     {
         _advertRepository = advertRepository;
@@ -55,6 +62,8 @@ public class UserInvalidationService
         _reviewInvalid = reviewInvalid;
         _reviewRepliRepository = reviewRepliRepository;
         _reviewRepliInvalid = reviewRepliInvalid;
+        _currencyRepository = currencyRepository;
+        _currencyInvalid = currencyInvalid;
         _cache = cache;
     }
 
@@ -86,6 +95,15 @@ public class UserInvalidationService
         {
             await _avatarInvalid
                 .InvalidateDeleteAsync(avatarInfo);
+        }
+
+        var currencyInfo = await GetCurrencyInfo(
+            entityInfo.Id);
+
+        if (currencyInfo is not null)
+        {
+            await _currencyInvalid
+                .InvalidateDeleteAsync(currencyInfo);
         }
 
 
@@ -193,5 +211,12 @@ public class UserInvalidationService
     {
         return await _reviewRepliRepository
             .GetCacheInfosByOwnerAsync(entityId);
+    }
+    
+    private async Task<CurrencyCacheInfo?> GetCurrencyInfo(
+        long entityId)
+    {
+        return await _currencyRepository
+            .GetCahceInfoByUserAsync(entityId);
     }
 }

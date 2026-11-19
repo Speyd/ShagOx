@@ -9,6 +9,7 @@ using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketItems.Delete;
@@ -28,13 +29,14 @@ public class BasketItemDeleteService
 
     public BasketItemDeleteService(
         IRepository<BasketItem> itemRepository,
+        ICommandRepository<BasketItem> itemCommand,
         BasketItemValidator itemValidator,
         BasketItemInvalidationService itemInvalidation,
         BasketItemBasketInvalidationService basketValidator,
         IUnitOfWork unitOfWork,
         ILogger<BasketItemDeleteService> logger
     )
-        : base(itemRepository, itemValidator, unitOfWork, logger)
+        : base(itemCommand, itemValidator, unitOfWork, logger)
     {
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;

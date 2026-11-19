@@ -27,12 +27,13 @@ public class AttributeDictionaryDeleteService
 
     public AttributeDictionaryDeleteService(
         IRepository<AttributeDictionary> dictionaryRepository,
+        ICommandRepository<AttributeDictionary> dictionaryCommand,
         AttributeDictionaryValidator dictionaryValidator,
         AttributeDictionaryInvalidationService dictInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryDeleteService> logger
     )
-        : base(dictionaryRepository, dictionaryValidator, unitOfWork, logger)
+        : base(dictionaryCommand, dictionaryValidator, unitOfWork, logger)
     {
         _dictionaryRepository = dictionaryRepository;
         _dictionaryValidator = dictionaryValidator;

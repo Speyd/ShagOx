@@ -8,9 +8,10 @@ public static class OrderQueryExtensions
         this IQueryable<Order> query)
     {
         return query
-           .AsSplitQuery()
-           .Include(x => x.OrderItems)
+            .AsSplitQuery()
+            .Include(x => x.OrderItems)
 
-           .Include(x => x.Currency);
+            .Include(x => x.Currency);
+
     }
 }

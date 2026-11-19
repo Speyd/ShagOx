@@ -10,6 +10,7 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
+using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Images.Delete;
@@ -22,13 +23,15 @@ public class AdvertisementImageDeleteService
 
     public AdvertisementImageDeleteService(
         IRepository<AdvertisementImage> imageRepository,
+        ICommandRepository<AdvertisementImage> imageCommand,
         AdvertisementImageValidator imageValidator,
         PictureValidator pictureValidator,
         AdvertisementImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageDeleteService> logger
     )
-        : base(imageRepository, 
+        : base(imageRepository,
+            imageCommand,
             imageValidator, 
             pictureValidator, 
             unitOfWork, 

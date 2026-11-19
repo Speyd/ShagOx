@@ -21,9 +21,6 @@ public class PaymentConfiguration
             .IsRequired()
             .HasPrecision(18, 2);
 
-        builder.Property(x => x.CurrencyId)
-            .IsRequired();
-
         builder.Property(x => x.ExpiresAt)
             .IsRequired()
             .HasColumnType("timestamp with time zone");
@@ -37,10 +34,6 @@ public class PaymentConfiguration
             .HasForeignKey(x => x.OrderId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.Currency)
-            .WithMany()
-            .HasForeignKey(x => x.CurrencyId)
-            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasUniqueActiveIndex(x => x.InvoiceId);
 

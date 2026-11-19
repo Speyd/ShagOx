@@ -7,4 +7,8 @@ public interface ICurrencyProvider
     Task<Currency?> GetCurrencyAsync(
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
+
+    Task<Currency?> GetBaseCurrencyAsync(
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

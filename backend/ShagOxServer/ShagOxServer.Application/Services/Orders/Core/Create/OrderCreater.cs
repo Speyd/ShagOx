@@ -33,7 +33,6 @@ public static class OrderCreater
 
             Comment = request.Comment,
 
-            CurrencyId = request.CurrencyId,
 
             DeliveryType = request.DeliveryType,
             DeliveryProviderId = request.DeliveryProviderId,

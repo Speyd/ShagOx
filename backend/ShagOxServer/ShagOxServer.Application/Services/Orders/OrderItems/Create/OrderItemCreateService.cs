@@ -19,7 +19,6 @@ using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Application.Services.Orders.OrderItems.Validator;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using Twilio.Http;
 
 namespace ShagOxServer.Application.Services.Orders.OrderItems.Create;
 
@@ -163,15 +162,7 @@ public class OrderItemCreateService
 
         _itemRepository.Add(item);
 
-        _logger.LogInformation(
-    "Variant stock before save: {Stock}",
-    details.Variant?.Stock);
-        _unitOfWork.DebugTrackedEntities();
-        var affected = await _unitOfWork.SaveChangesAsync();
-        Console.WriteLine($"SaveChanges affected: {affected}");
-        _logger.LogInformation(
-            "Variant stock after save: {Stock}",
-            details.Variant?.Stock);
+        await _unitOfWork.SaveChangesAsync();
 
         return Result<OrderItem>.Success(item);
     }
@@ -203,6 +194,11 @@ public class OrderItemCreateService
             await _advertCommand.DecreaseStockAsync(
                 details.Advertisement.Id,
                 request.Quantity);
+
+            return (
+                details.Price,
+                currencyCode
+            );
         }
 
         return (

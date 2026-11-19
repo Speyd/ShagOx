@@ -110,6 +110,8 @@ public class OrderCreateService : IOrderCreateService
 
             if(!amountReult.IsSuccess)
             {
+                await _unitOfWork.RollbackAsync();
+
                 return Result<CreateResponse>
                     .Fail(amountReult.Error);
             }    
@@ -240,7 +242,7 @@ public class OrderCreateService : IOrderCreateService
             .CalculateAsync(order, cancellationToken);
 
         if (!price.IsSuccess)
-            Result<bool>.Fail(price.Error);
+            return Result<bool>.Fail(price.Error);
 
         order.DeliveryPrice = price.Value;
 

@@ -43,24 +43,6 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public void DebugTrackedEntities()
-    {
-        foreach (var entry in _db.ChangeTracker.Entries())
-        {
-            Console.WriteLine(
-                $"Entity: {entry.Entity.GetType().Name} | State: {entry.State}");
-
-            foreach (var property in entry.Properties)
-            {
-                Console.WriteLine(
-                    $"  {property.Metadata.Name}: " +
-                    $"Current={property.CurrentValue}, " +
-                    $"Original={property.OriginalValue}, " +
-                    $"Modified={property.IsModified}");
-            }
-        }
-    }
-
     public async Task<int> SaveChangesAsync()
     {
         return await _db.SaveChangesAsync();

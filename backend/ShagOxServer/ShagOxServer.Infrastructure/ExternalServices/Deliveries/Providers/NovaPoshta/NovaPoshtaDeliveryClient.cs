@@ -27,6 +27,8 @@ public class NovaPoshtaDeliveryClient
 
     public string ProviderCode => "NOVA_POSHTA";
     public string CurrencyCode => "UAH";
+
+    private const decimal MinWeight = 0.1m;
     
 
     public NovaPoshtaDeliveryClient(
@@ -54,7 +56,7 @@ public class NovaPoshtaDeliveryClient
         {
             ["CitySender"] = "8d5a980d-391c-11dd-90d9-001a92567626",
             ["CityRecipient"] = request.RecipientCityExternalId,
-            ["Weight"] = request.Weight.ToString(
+            ["Weight"] = Math.Max(request.Weight, MinWeight).ToString(
                 System.Globalization.CultureInfo.InvariantCulture),
             ["ServiceType"] = serviceType,
             ["Cost"] = request.DeclaredValue,

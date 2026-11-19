@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers.NovaPoshta;
 using ShagOxServer.Infrastructure.ExternalServices.Deliveries.Providers.NovaPoshta;
 
@@ -8,7 +9,7 @@ public static class NovaPoshtaDependencyInjection
     public static IServiceCollection AddNovaPoshtaInfrastructure(
         this IServiceCollection services)
     {
-        services.AddScoped<INovaPoshtaTypeResolver,
+        services.TryAddScoped<INovaPoshtaTypeResolver,
             NovaPoshtaTypeResolver>();
 
         return services;

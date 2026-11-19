@@ -17,7 +17,7 @@ public static class NovaPoshtaCache
       string streetSearch,
       int page,
       int pageSize)
-          => $"{Prefix}:street:{GetHash((streetExternalId, streetSearch), page, pageSize)}";
+          => $"{Prefix}:street:{GetHash(new { streetExternalId, streetSearch }, page, pageSize)}";
 
     public static string PointBySearch(
        string cityExternalId,
@@ -26,7 +26,7 @@ public static class NovaPoshtaCache
         int page,
         int pageSize)
     {
-        var filter = (cityExternalId, pointSearch, deliveryPointType);
+        var filter = new { cityExternalId, pointSearch, deliveryPointType };
 
         return $"{Prefix}:point:{GetHash(filter, page, pageSize)}";
     }

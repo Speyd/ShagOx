@@ -46,7 +46,7 @@ public class DeliveriesQueriesController
 
     [HttpGet("streets")]
     public async Task<IActionResult> GetStreets(
-        string providerCode,
+        [FromQuery] string providerCode,
         [FromQuery] DeliveryStreetSearchRequest request,
         [FromQuery] PaginationParams pagination,
         CancellationToken cancellationToken)
@@ -62,13 +62,13 @@ public class DeliveriesQueriesController
 
     [HttpGet("points")]
     public async Task<IActionResult> GetPoints(
-        [FromQuery] string providerId,
+        [FromQuery] string providerCode,
         [FromQuery] DeliveryPointSearchRequest request,
         [FromQuery] PaginationParams pagination,
         CancellationToken cancellationToken)
     {
         var result = await _deliveryQueriesService.GetPointsAsync(
-            providerId,
+            providerCode,
             request,
             pagination,
             cancellationToken);

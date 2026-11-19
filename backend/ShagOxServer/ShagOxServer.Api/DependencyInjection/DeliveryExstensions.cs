@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Deliveries;
+using ShagOxServer.Application.Common.Options.Deliveries.Providers;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers;
+using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers.NovaPoshta;
 using ShagOxServer.Infrastructure.ExternalServices.Deliveries.Providers.NovaPoshta;
 
 namespace ShagOxServer.Api.DependencyInjection;
@@ -13,6 +15,10 @@ public static class DeliveryExstensions
         services.Configure<DeliveryOptions>(
             configuration.GetSection(DeliveryOptions.SectionName));
 
+        services.Configure<NovaPoshtaOptions>(
+            configuration.GetSection(
+                $"{DeliveryOptions.SectionName}:Providers:NovaPoshta"));
+
         var deliveryOptions = configuration
             .GetSection(DeliveryOptions.SectionName)
             .Get<DeliveryOptions>() ?? new();
@@ -23,16 +29,10 @@ public static class DeliveryExstensions
         if (deliveryOptions.Providers.NovaPoshta.Enabled)
         {
             services.AddHttpClient<NovaPoshtaApiClient>(
-                (sp, client) =>
-                {
-                    var options = sp
-                        .GetRequiredService<IOptions<DeliveryOptions>>()
-                        .Value
-                        .Providers
-                        .NovaPoshta;
+                SetNovaPoshtaBaseAddress);
 
-                    client.BaseAddress = new Uri(options.BaseUrl);
-                });
+            services.AddHttpClient<INovaPoshtaTypeResolver, NovaPoshtaTypeResolver>(
+                SetNovaPoshtaBaseAddress);
 
             services.AddScoped<NovaPoshtaDeliveryClient>();
 
@@ -43,5 +43,16 @@ public static class DeliveryExstensions
         #endregion
 
         return services;
+    }
+
+    private static void SetNovaPoshtaBaseAddress(
+        IServiceProvider serviceProvider,
+        HttpClient client)
+    {
+        var options = serviceProvider
+            .GetRequiredService<IOptions<NovaPoshtaOptions>>()
+            .Value;
+
+        client.BaseAddress = new Uri(options.BaseUrl);
     }
 }

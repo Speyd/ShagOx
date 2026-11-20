@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
@@ -27,7 +28,7 @@ public class StatusValidator
 
 
     public async Task<Result<bool>> ExistsByCodeAsync(
-        string code,
+        AdvertisementStatus code,
         CancellationToken cancellationToken = default)
     {
         if (!await _statusExistsRepository
@@ -41,7 +42,7 @@ public class StatusValidator
     }
 
     public async Task<Result<bool>> NotExistsByCodeAsync(
-        string code,
+        AdvertisementStatus code,
         CancellationToken cancellationToken = default)
     {
         if (await _statusExistsRepository

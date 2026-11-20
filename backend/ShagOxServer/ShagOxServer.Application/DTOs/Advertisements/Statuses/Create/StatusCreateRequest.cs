@@ -1,5 +1,7 @@
-﻿namespace ShagOxServer.Application.DTOs.Advertisements.Statuses.Create;
+using ShagOxServer.Domain.Entities.Advertisements.Enum;
+
+namespace ShagOxServer.Application.DTOs.Advertisements.Statuses.Create;
 public sealed record StatusCreateRequest
 (
-    string Code
+    AdvertisementStatus Code
 );

@@ -43,7 +43,7 @@ public class StatusQueryService
         Status entity)
     {
         var translation = await _translationRepository
-            .GetByIdentificatorAsync(entity.Code, _language.Language);
+            .GetByIdentificatorAsync(entity.Code.ToString(), _language.Language);
 
         return StatusMapper.ToDto(entity, translation?.Name);
     }

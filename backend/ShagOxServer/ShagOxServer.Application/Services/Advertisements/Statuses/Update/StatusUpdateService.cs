@@ -124,11 +124,11 @@ public class StatusUpdateService
         StatusUpdateRequest request,
         CancellationToken cancellationToken = default)
     {
-        if (request.Code is not null &&
+        if (request.Code.HasValue &&
            request.Code != status.Code)
         {
             var validator = await _statusValidator
-                .NotExistsByCodeAsync(request.Code, cancellationToken);
+                .NotExistsByCodeAsync(request.Code.Value, cancellationToken);
 
             if (!validator.IsSuccess)
                 return Result<bool>.Fail(validator.Error);

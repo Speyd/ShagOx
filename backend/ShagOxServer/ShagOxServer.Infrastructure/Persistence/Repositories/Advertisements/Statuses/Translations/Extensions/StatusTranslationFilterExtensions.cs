@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Filters.Advertisements.Translations;
 
@@ -12,10 +12,11 @@ public static class StatusTranslationFilterExtensions
         if (filter is null)
             return query;
 
-        if (!string.IsNullOrWhiteSpace(filter.StatusCode))
+        if (filter.StatusCode.HasValue)
         {
             query = query.Where(x =>
-                EF.Functions.ILike(x.Translatable.Code, $"%{filter.StatusCode}%"));
+                EF.Functions.ILike(
+                    x.Translatable.Code.ToString(), $"%{filter.StatusCode}%"));
         }
 
         if (!string.IsNullOrWhiteSpace(filter.Language))

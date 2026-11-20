@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaries;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -16,9 +17,12 @@ public partial class AttributeDictionaryQueryRepository
       IAttributeDictionaryQueryRepository
 {
     public AttributeDictionaryQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<PagedResult<AttributeDefinition>> GetByDictionaryAsync(

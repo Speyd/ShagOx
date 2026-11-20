@@ -468,4 +468,10 @@
   <data name="CategoryImageUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить изображение категории.</value>
   </data>
+  <data name="CannotAddOwnAdvertisement" xml:space="preserve">
+    <value>Вы не можете добавить собственное объявление.</value>
+  </data>
+  <data name="ProoductNotAvailable" xml:space="preserve">
+    <value>Товар «{0}» больше недоступен.</value>
+  </data>
 </root>

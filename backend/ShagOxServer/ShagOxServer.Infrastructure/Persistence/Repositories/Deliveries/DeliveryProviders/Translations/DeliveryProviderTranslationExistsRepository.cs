@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Deliveries.DeliveryProviders.Translations;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Deliveries.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -12,9 +13,12 @@ public class DeliveryProviderTranslationExistsRepository
       IDeliveryProviderTranslationExistsRepository
 {
     public DeliveryProviderTranslationExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
     protected override IQueryable<DeliveryProviderTranslation> ApplyIncludes(
          IQueryable<DeliveryProviderTranslation> query)

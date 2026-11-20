@@ -317,7 +317,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasDefaultValue("Active");
 
-                    b.Property<decimal>("PreviousPrice")
+                    b.Property<decimal?>("PreviousPrice")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 

@@ -1,6 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Deliveries;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Deliveries.DeliveryProviders;

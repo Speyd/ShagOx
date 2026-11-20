@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Review.ReviewImages;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Review;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
@@ -10,7 +11,10 @@ public partial class ReviewImageQueryRepository
       IReviewImageQueryRepository
 {
     public ReviewImageQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 }

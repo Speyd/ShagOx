@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Filters.Orders.Core;
@@ -15,9 +16,12 @@ public partial class OrderQueryRepository
       IOrderQueryRepository
 {
     public OrderQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<long?> GetIdByUserAsync(

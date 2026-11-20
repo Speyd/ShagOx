@@ -412,6 +412,15 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на You cannot add your own advertisement..
+        /// </summary>
+        internal static string CannotAddOwnAdvertisement {
+            get {
+                return ResourceManager.GetString("CannotAddOwnAdvertisement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create category..
         /// </summary>
         internal static string CategoryCreateFailed {
@@ -885,6 +894,15 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         internal static string ProductTypeUpdateFailed {
             get {
                 return ResourceManager.GetString("ProductTypeUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The product &quot;{0}&quot; is no longer available..
+        /// </summary>
+        internal static string ProoductNotAvailable {
+            get {
+                return ResourceManager.GetString("ProoductNotAvailable", resourceCulture);
             }
         }
         

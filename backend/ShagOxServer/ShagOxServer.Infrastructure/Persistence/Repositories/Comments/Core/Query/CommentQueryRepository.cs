@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Comments;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Comments;
 using ShagOxServer.Domain.Filters;
@@ -15,9 +16,12 @@ public partial class CommentQueryRepository<TEntity, TFilter>
     where TFilter : BaseFilter
 {
     public CommentQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<PagedResult<TEntity>> GetByOwnerAsync(

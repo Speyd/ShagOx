@@ -10,11 +10,11 @@ public static class StatusFilterExtensions
         StatusSearchFilter filter)
     {
 
-        if (!string.IsNullOrWhiteSpace(filter?.Code))
+        if (!filter.Code.HasValue)
         {
 
             query = query.Where(x =>
-                EF.Functions.ILike(x.Code, $"%{filter.Code}%"));
+                EF.Functions.ILike(x.Code.ToString(), $"%{filter.Code}%"));
         }
 
         return query;

@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Deliveries.DeliveryProviders.Translations;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Deliveries.Translations;
 using ShagOxServer.Domain.Filters.Deliveries.Translations;
@@ -14,9 +15,12 @@ public class DeliveryProviderTranslationQueryRepository
       IDeliveryProviderTranslationQueryRepository
 {
     public DeliveryProviderTranslationQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
     protected override IQueryable<DeliveryProviderTranslation> ApplyIncludes(
          IQueryable<DeliveryProviderTranslation> query)

@@ -1,6 +1,8 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Advertisements.Enum;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Extensions;
@@ -15,9 +17,13 @@ public partial class AdvertisementVariantQueryRepository
       IAdvertisementVariantQueryRepository
 {
     public AdvertisementVariantQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
+
 
     public async Task<PagedResult<AdvertisementVariant>> GetByAdvertisementAsync(
         long advertId,
@@ -28,7 +34,9 @@ public partial class AdvertisementVariantQueryRepository
         return await _db.AdvertisementVariants
             .WithIncludes()
             .WithStatusFilter(status)
-            .Where(x => x.AdvertisementId == advertId)
+            .Where(x => x.AdvertisementId == advertId &&
+                (x.Advertisement.OwnerId == _userContext.UserId || 
+                x.Advertisement.Status.Code == AdvertisementStatus.Active))
             .ToPagedResultAsync(pagination,
                 (x => x.Id),
                 cancellationToken);

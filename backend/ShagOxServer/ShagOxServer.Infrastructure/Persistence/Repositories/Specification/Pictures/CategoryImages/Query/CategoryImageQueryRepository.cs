@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.CategoryImages;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.CategoryImages;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
@@ -11,7 +12,10 @@ public partial class CategoryImageQueryRepository
       ICategoryImageQueryRepository
 {
     public CategoryImageQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 }

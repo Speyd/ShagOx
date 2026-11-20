@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
@@ -10,10 +11,11 @@ public class AdvertisementCommandRepository
     IAdvertisementCommandRepository
 {
     public AdvertisementCommandRepository(
-        AppDbContext db
+        AppDbContext db,
+        IUserContext userContext
     )
-        : base(db)
-    { 
+        : base(db, userContext)
+    {
     }
 
 

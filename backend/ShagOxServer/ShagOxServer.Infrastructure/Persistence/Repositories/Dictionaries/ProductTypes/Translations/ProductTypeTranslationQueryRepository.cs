@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes.Translations;
@@ -16,9 +17,12 @@ public class ProductTypeTranslationQueryRepository
       IProductTypeTranslationQueryRepository
 {
     public ProductTypeTranslationQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     protected override IQueryable<ProductTypeTranslation> ApplyIncludes(

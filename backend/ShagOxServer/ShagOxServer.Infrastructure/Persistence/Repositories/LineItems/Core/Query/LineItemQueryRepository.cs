@@ -1,6 +1,7 @@
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Items.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.LineItems.Core;
 using ShagOxServer.Domain.Filters;
@@ -17,8 +18,10 @@ public abstract partial class LineItemQueryRepository<TEntity, TFilter>
     where TFilter : BaseFilter
 {
     public LineItemQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
     {
     }
 

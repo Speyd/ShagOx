@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Core.Multiple;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Base.Pictures;
 using ShagOxServer.Domain.Filters;
@@ -15,9 +16,12 @@ public partial class PictureOrderQueryRepository<TEntity, TFilter>
     where TFilter : BaseFilter
 {
     public PictureOrderQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<List<TEntity>> GetByOwnerAsync(

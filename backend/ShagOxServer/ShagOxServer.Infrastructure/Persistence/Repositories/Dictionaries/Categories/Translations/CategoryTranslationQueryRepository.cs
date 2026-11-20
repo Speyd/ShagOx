@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories.Translations;
@@ -15,9 +16,12 @@ public class CategoryTranslationQueryRepository
       ICategoryTranslationQueryRepository
 {
     public CategoryTranslationQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     protected override IQueryable<CategoryTranslation> ApplyIncludes(

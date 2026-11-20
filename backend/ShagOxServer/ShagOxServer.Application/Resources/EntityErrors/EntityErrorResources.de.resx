@@ -468,4 +468,10 @@
   <data name="CategoryImageUpdateFailed" xml:space="preserve">
     <value>Das Kategoriebild konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="CannotAddOwnAdvertisement" xml:space="preserve">
+    <value>Du kannst deine eigene Anzeige nicht hinzufügen.</value>
+  </data>
+  <data name="ProoductNotAvailable" xml:space="preserve">
+    <value>Der Artikel "{0}" ist nicht mehr verfügbar.</value>
+  </data>
 </root>

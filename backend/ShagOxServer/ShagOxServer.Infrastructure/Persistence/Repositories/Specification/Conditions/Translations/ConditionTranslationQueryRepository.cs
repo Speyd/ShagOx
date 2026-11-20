@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.Domain.Filters.Specification.Conditions.Translations;
@@ -15,9 +16,12 @@ public class ConditionTranslationQueryRepository
       IConditionTranslationQueryRepository
 {
     public ConditionTranslationQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     protected override IQueryable<ConditionTranslation> ApplyIncludes(

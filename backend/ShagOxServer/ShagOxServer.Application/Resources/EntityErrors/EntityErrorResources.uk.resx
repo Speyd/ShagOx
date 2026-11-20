@@ -468,4 +468,10 @@
   <data name="CategoryImageUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити зображення категорії.</value>
   </data>
+  <data name="CannotAddOwnAdvertisement" xml:space="preserve">
+    <value>Ви не можете додати власне оголошення.</value>
+  </data>
+  <data name="ProoductNotAvailable" xml:space="preserve">
+    <value>Товар «{0}» більше недоступний.</value>
+  </data>
 </root>

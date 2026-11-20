@@ -1,9 +1,12 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Create;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
@@ -37,9 +40,11 @@ public class BasketItemCreateService
         BasketItemBasketInvalidationService basketInvalidation,
         BasketItemInvalidationService itemInvalid,
         IUnitOfWork unitOfWork,
-        ILogger<BasketItemCreateService> logger
+        ILogger<BasketItemCreateService> logger,
+        IUserContext userContext
     )
-        : base(itemValidator, 
+        : base(itemValidator,
+            userContext,
             advertVariantValidator,
             advertValidator)
     {

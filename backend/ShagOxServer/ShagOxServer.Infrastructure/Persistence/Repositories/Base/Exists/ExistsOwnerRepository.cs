@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Special;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Base.Owner;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -11,8 +12,11 @@ public class ExistsOwnerRepository<TEntity>
         IExistsOwnerRepository
     where TEntity : OwnedEntity
 {
-    public ExistsOwnerRepository(AppDbContext db)
-        : base(db)
+    public ExistsOwnerRepository(
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
     {
     }
 

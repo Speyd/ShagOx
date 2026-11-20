@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Translations;
+using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Translations;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -13,9 +14,12 @@ public class AttributeDictionaryValueTranslationExistsRepository
       IAttributeDictionaryValueTranslationExistsRepository
 {
     public AttributeDictionaryValueTranslationExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     protected override IQueryable<AttributeDictionaryValueTranslation> ApplyIncludes(

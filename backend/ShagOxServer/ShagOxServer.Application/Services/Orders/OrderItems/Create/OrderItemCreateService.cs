@@ -1,4 +1,6 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -7,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Advertisem
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
@@ -58,9 +61,12 @@ public class OrderItemCreateService
         IAdvertisementVariantCommandRepository variantCommand,
         OrderItemInvalidationService itemInvalidation,
         IUnitOfWork unitOfWork,
-        ILogger<OrderItemCreateService> logger)
+        ILogger<OrderItemCreateService> logger,
+        IUserContext userContext
+    )
         : base(
             itemValidator,
+            userContext,
             advertVariantValidator,
             advertValidator)
     {

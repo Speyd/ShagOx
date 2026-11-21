@@ -25,7 +25,9 @@ export async function getCatalogAdvertisements(
     params.categoryId !== undefined ||
     params.minPrice !== undefined ||
     params.maxPrice !== undefined ||
-    hasAttributes;
+    hasAttributes ||
+    Boolean(params.newest) ||
+    Boolean(params.discounts);
 
   const endpoint = hasFilters
     ? "/advertisements/catalog-search"
@@ -44,6 +46,8 @@ export async function getCatalogAdvertisements(
         Attributes: hasAttributes
           ? JSON.stringify(params.attributes)
           : undefined,
+        Newest: params.newest || undefined,
+        Discounts: params.discounts || undefined,
       },
     },
   );
@@ -165,18 +169,4 @@ export async function getSellerAdvertisements(
     { params: { page, pageSize } },
   );
   return data;
-}
-
-export type CatalogSort = "Default" | "Newest" | "Discount";
-
-/** Showcase lists for the home page: newest or discounted products. */
-export async function getCatalogShowcase(
-  sort: CatalogSort,
-  pageSize = 12,
-): Promise<CatalogAdvertisement[]> {
-  const { data } = await api.get<PaginatedResponse<CatalogAdvertisement>>(
-    "/advertisements/catalog",
-    { params: { Page: 1, PageSize: pageSize, sort } },
-  );
-  return data.items;
 }

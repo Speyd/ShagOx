@@ -55,7 +55,7 @@ export function AdvertisementsGrid({
     return (
       <div className={styles.advertisementsContainer}>
         <div className={styles.advertisementsGrid}>
-          {Array.from({ length: 8 }).map((_, index) => (
+          {Array.from({ length: 20 }).map((_, index) => (
             <AdvertisementCardSkeleton key={index} />
           ))}
         </div>

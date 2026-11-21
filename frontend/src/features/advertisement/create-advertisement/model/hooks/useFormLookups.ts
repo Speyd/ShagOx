@@ -5,8 +5,8 @@ import type { LookupDto, SelectOption } from "../types";
 
 const STALE_TIME = 10 * 60 * 1000;
 const DEFAULT_CURRENCY_CODE = "UAH";
-// Порядок важливий: каталог використовує "published"
-const PUBLISH_STATUS_CODES = ["published", "active"];
+// Каталог показує лише оголошення зі статусом AdvertisementStatus.Active
+const PUBLISH_STATUS_CODES = ["active"];
 
 const toOptions = (items: LookupDto[] = []): SelectOption[] =>
   items.map((item) => ({ value: String(item.id), label: item.label || item.code }));

@@ -36,7 +36,7 @@ export function FeaturedAdvertisements() {
     return (
       <section className={styles.featuredAdvertisements}>
         <div className={styles.featuredAdvertisementsGrid}>
-          {Array.from({ length: 8 }).map((_, index) => (
+          {Array.from({ length: 20 }).map((_, index) => (
             <AdvertisementCardSkeleton key={index} />
           ))}
         </div>

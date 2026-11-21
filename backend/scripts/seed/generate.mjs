@@ -521,7 +521,7 @@ function productsSql(categories) {
       // наявний товар з такою назвою (не демо) — оновлюється, фото зберігаються
       out.push(`update "Advertisements" a set "Description" = ${sql(describe(c, product, "new"))}, "Attributes" = ${attrs},
   "CurrencyId" = pg_temp.lookup('Currencies', 'UAH'), "ConditionId" = pg_temp.lookup('Conditions', 'new'),
-  "StatusId" = pg_temp.lookup('Statuses', 'published'), "Popularity" = ${popularity}
+  "StatusId" = pg_temp.lookup('Statuses', 'Active'), "Popularity" = ${popularity}
 where a."Title" = ${title} and ${notSeed};
 delete from "AdvertisementVariants" v using "Advertisements" a where v."AdvertisementId" = a."Id" and a."Title" = ${title} and ${notSeed};
 insert into "AdvertisementVariants"("AdvertisementId","Price","PreviousPrice","Stock","Attributes","EntityStatus")
@@ -534,7 +534,7 @@ select a."Id", x.p, x.pp, x.s, x.j, 'Active' from "Advertisements" a, (values
   insert into "Advertisements"("Title","Description","Popularity","CurrencyId","CategoryId","OwnerId","CreatedAt","Attributes","ConditionId","StatusId","EntityStatus")
   select ${title}, ${sql(describe(c, product, condition))}, ${popularity}, pg_temp.lookup('Currencies', 'UAH'), pg_temp.cat(${sql(c.code)}),
     pg_temp.uid(${sql(sellerFor(c.code, index))}), ${ts(daysAgo(randInt(3, 300)))}, ${attrs},
-    pg_temp.lookup('Conditions', ${sql(condition)}), pg_temp.lookup('Statuses', 'published'), 'Active'
+    pg_temp.lookup('Conditions', ${sql(condition)}), pg_temp.lookup('Statuses', 'Active'), 'Active'
   where pg_temp.adv_id(${title}) is null
   returning "Id", "CategoryId"
 ), v as (

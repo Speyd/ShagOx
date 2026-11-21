@@ -43,9 +43,15 @@ function optionLabel(attr: VariantAttribute): string {
   return isNumber && unit ? `${value.value} ${unit}` : value.value || value.code;
 }
 
+// The API types `attribute` as nullable, and old snapshots (recently viewed in
+// localStorage) can contain such entries: skip them instead of crashing.
+function variantAttributes(variant?: VariantLike): VariantAttribute[] {
+  return (variant?.attributes ?? []).filter((attr) => attr?.attribute != null);
+}
+
 export function getVariantSelection(variant?: VariantLike): VariantSelection {
   const selection: VariantSelection = {};
-  for (const attr of variant?.attributes ?? []) {
+  for (const attr of variantAttributes(variant)) {
     if (!EXCLUDED_KEYS.includes(attr.attribute.key)) {
       selection[attr.attribute.key] = optionCode(attr);
     }
@@ -57,7 +63,7 @@ export function getVariantOptionGroups(variants: VariantLike[]): VariantOptionGr
   const groups = new Map<string, VariantOptionGroup>();
 
   for (const variant of variants) {
-    for (const attr of variant.attributes) {
+    for (const attr of variantAttributes(variant)) {
       const { key } = attr.attribute;
       if (EXCLUDED_KEYS.includes(key)) continue;
 

@@ -9,7 +9,6 @@ import {
   Package,
   Phone,
   Settings,
-  Smartphone,
   Truck,
   X,
 } from "lucide-react";
@@ -30,7 +29,6 @@ const NAV_ITEMS = [
   { to: "/", label: "Головна", icon: Home, end: true },
   { to: "/catalog", label: "Каталог", icon: LayoutGrid },
   { to: "/profile/orders", label: "Мої замовлення", icon: Package },
-  { to: "/devices", label: "Мої пристрої", icon: Smartphone },
   { to: "/delivery-terms", label: "Доставка та оплата", icon: Truck },
   { to: "/contacts", label: "Контакти", icon: Phone },
   { to: "/support", label: "Підтримка", icon: Headphones },

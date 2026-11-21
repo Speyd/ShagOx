@@ -36,8 +36,7 @@ public partial interface IAdvertisementQueryRepository
         long? userId,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null,
-        CatalogSort sort = CatalogSort.Default);
+        EntityStatus? status = null);
 
     Task<PagedResult<Advertisement>> ShortSearchAsync(
         AdvertisementSearchFilter filter,

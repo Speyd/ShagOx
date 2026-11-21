@@ -7,14 +7,14 @@ import { HomeShowcase } from "@/widgets/home/showcase";
 import { PromoBlocks } from "@/widgets/home/promo-blocks";
 import { SubscriptionBanner } from "@/widgets/home/subscription-banner";
 
-export default function HomePage() {
+export function HomePage() {
   return (
     <div className={styles.homePage}>
       <Hero />
       <CategoriesBlock />
-      <HomeShowcase title="Новинки" sort="Newest" />
+      <HomeShowcase title="Новинки" newest />
       <PromoBlocks />
-      <HomeShowcase title="Зі знижкою" sort="Discount" />
+      <HomeShowcase title="Зі знижкою" discounts newest />
       <SubscriptionBanner />
       <WhyMarketly />
     </div>

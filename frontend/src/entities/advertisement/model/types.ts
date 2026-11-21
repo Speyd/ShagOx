@@ -6,6 +6,8 @@ export type CatalogParams = {
   minPrice?: number;
   maxPrice?: number;
   attributes?: Record<string, unknown>;
+  newest?: boolean;
+  discounts?: boolean;
 };
 
 export type ProductTypeItem = {

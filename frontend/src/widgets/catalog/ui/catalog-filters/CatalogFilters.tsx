@@ -29,7 +29,7 @@ export function CatalogFilters({ filters }: { filters: CatalogFiltersState }) {
 
       <ActiveFilters filters={filters} />
 
-      <Accordion multiple defaultValue={opened} variant="separated" radius="md" className={styles.accordion}>
+      <Accordion multiple defaultValue={opened} radius="md" className={styles.accordion}>
         {priceBounds && (
           <Accordion.Item value="price" className={styles.accordionItem}>
             <Accordion.Control className={styles.accordionControl}>

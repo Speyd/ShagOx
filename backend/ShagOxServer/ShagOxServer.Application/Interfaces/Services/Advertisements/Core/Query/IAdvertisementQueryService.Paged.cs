@@ -21,6 +21,5 @@ public partial interface IAdvertisementQueryService
         long? userId,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active,
-        CatalogSort sort = CatalogSort.Default);
+        EntityStatus status = EntityStatus.Active);
 }

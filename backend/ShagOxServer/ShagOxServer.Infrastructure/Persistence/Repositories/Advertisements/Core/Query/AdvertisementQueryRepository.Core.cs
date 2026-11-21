@@ -28,8 +28,7 @@ public partial class AdvertisementQueryRepository
                 x.OwnerId == _userContext.UserId ||
                 x.Status.Code == AdvertisementStatus.Active)
             .Filter(filter)
-            .ToPagedResultAsync(pagination,
-                (x => x.Popularity),
+            .ToSearchPagedResultAsync(filter, pagination,
                 cancellationToken);
     }
 

@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import HomePage from "@/pages/home";
+
 import { Navigate, Routes, Route } from "react-router-dom";
 import NotFoundPage from "@/pages/not-found";
 import UserUpdateAdvertisementPage from "@/pages/advertisement/update-advertisement-page";
@@ -60,6 +60,7 @@ import WarrantyPage from "@/pages/info/warranty/WarrantyPage";
 import PrivacyPolicyPage from "@/pages/info/privacy-policy/PrivacyPolicyPage";
 import { AdvertisementPage } from "@/pages/advertisement/advertisement-page";
 import { AdminRoute, ProtectedRoute, PublicRoute } from "./routes";
+import { HomePage } from "@/pages/home";
 
 export default function Router() {
   return (

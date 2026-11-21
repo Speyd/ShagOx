@@ -41,17 +41,14 @@ public class AdvertisementQueriesController
         return result.ToActionResult();
     }
 
-    /// <param name="sort">Default (popularity), Newest or Discount (only discounted, newest first).</param>
     [HttpGet("catalog")]
     public async Task<IActionResult> GetCatalogPaged(
         [FromQuery] PaginationParams pagination,
-        CancellationToken cancellationToken,
-        [FromQuery] CatalogSort sort = CatalogSort.Default)
+        CancellationToken cancellationToken)
     {
         var result = await _advertQueryService
-            .GetCatalogPagedAsync(UserId,
-                pagination, cancellationToken,
-                sort: sort);
+            .GetCatalogPagedAsync(UserId, 
+                pagination, cancellationToken);
 
         return result.ToActionResult();
     }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using System.Linq.Expressions;
 using System.Text.Json;
 
@@ -26,18 +27,17 @@ public static class AdvertisementFilterExtensions
                  EF.Functions.ILike(u.Description, $"%{filter.Description}%"));
         }
 
-        if (filter.Discounts.HasValue)
+        if (filter.Discounts == true)
         {
+            // Compare with the current price: existing variants store 0 instead of null.
             query = query.Where(x =>
-                   x.PreviousPrice.HasValue ||
-                   x.Variants.Any(v => v.PreviousPrice.HasValue)       
+                   x.PreviousPrice > x.Price ||
+                   x.Variants.Any(v => v.PreviousPrice > v.Price)
            );
         }
 
-        if (filter.Newest.HasValue)
-        {
-            query = query.OrderByDescending(x => x.CreatedAt);
-        }
+        // Newest is an ordering, applied in ToSearchPagedResultAsync:
+        // an OrderBy here would be replaced by the pagination OrderBy.
 
         if (!string.IsNullOrWhiteSpace(filter.Description))
         {
@@ -72,6 +72,23 @@ public static class AdvertisementFilterExtensions
         query = query.FilterByAttributes(filter.VariantAttributes);
 
         return query;
+    }
+
+    /// <summary>Pages search results: newest first when filter.Newest, otherwise by popularity.</summary>
+    public static Task<PagedResult<Advertisement>> ToSearchPagedResultAsync(
+        this IQueryable<Advertisement> query,
+        AdvertisementSearchFilter? filter,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default)
+    {
+        return filter?.Newest == true
+            ? query.ToPagedResultAsync(pagination,
+                x => x.CreatedAt,
+                cancellationToken,
+                descending: true)
+            : query.ToPagedResultAsync(pagination,
+                x => x.Popularity,
+                cancellationToken);
     }
 
     private static IQueryable<Advertisement> FilterByAttributes(

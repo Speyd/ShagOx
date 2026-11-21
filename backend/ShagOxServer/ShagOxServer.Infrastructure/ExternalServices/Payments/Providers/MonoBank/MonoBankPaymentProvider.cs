@@ -10,6 +10,7 @@ using ShagOxServer.Application.Resources.Payment;
 using ShagOxServer.Domain.Entities.Payments;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Enum;
 using System.Text;
 using System.Text.Json;
 
@@ -20,6 +21,7 @@ public class MonoBankPaymentProvider
     private readonly IPaymentWebhookProcessor _webhookProcessor;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly MonoWebhookDeserializer _deserializer;
+    private readonly MonoBankSignatureVerifier _signatureVerifier;
     private readonly HttpClient _httpClient;
     private readonly MonoBankOptions _options;
     private readonly IUnitOfWork _unitOfWork;
@@ -35,6 +37,7 @@ public class MonoBankPaymentProvider
         IPaymentWebhookProcessor webhookProcessor,
         IRepository<Payment> paymentRepository,
         MonoWebhookDeserializer deserializer,
+        MonoBankSignatureVerifier signatureVerifier,
         HttpClient httpClient,
         IOptions<MonoBankOptions> options,
         IUnitOfWork unitOfWork)
@@ -42,6 +45,7 @@ public class MonoBankPaymentProvider
         _webhookProcessor = webhookProcessor;
         _paymentRepository = paymentRepository;
         _deserializer = deserializer;
+        _signatureVerifier = signatureVerifier;
         _httpClient = httpClient;
         _options = options.Value;
         _unitOfWork = unitOfWork;
@@ -142,6 +146,21 @@ public class MonoBankPaymentProvider
         {
             return Result<bool>.Fail(
                 PaymentResources.WebhookEmptyBody);
+        }
+
+        // Приймаємо лише вебхуки, підписані банком.
+        var signature = request.Headers["X-Sign"].FirstOrDefault();
+
+        var isSigned = await _signatureVerifier.VerifyAsync(
+            body,
+            signature,
+            cancellationToken);
+
+        if (!isSigned)
+        {
+            return Result<bool>.Fail(
+                PaymentResources.WebhookInvalidPayload,
+                ResultErrorType.Unauthorized);
         }
 
         var payment = _deserializer.Deserialize(body);

@@ -15,4 +15,10 @@ public sealed class MonoBankOptions
     /// 20 хвилин (інакше платіж прострочувався б одразу після створення).
     /// </summary>
     public TimeSpan PaymentExpiresAt { get; set; } = TimeSpan.FromMinutes(20);
+
+    /// <summary>
+    /// Перевіряти підпис X-Sign вебхуків. Вимикати лише для локальних тестів,
+    /// коли вебхуки надсилаються вручну.
+    /// </summary>
+    public bool VerifyWebhookSignature { get; set; } = true;
 }

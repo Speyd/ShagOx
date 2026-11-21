@@ -14,6 +14,9 @@ public static class MonoBankDependencyInjection
         services.AddScoped<IPaymentGateway,
             MonoBankPaymentGateway>();
 
+        // Singleton: кешує публічний ключ банку між запитами.
+        services.AddSingleton<MonoBankSignatureVerifier>();
+
         return services;
     }
 }

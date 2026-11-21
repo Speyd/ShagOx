@@ -1,5 +1,6 @@
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Entities.Orders;
 using System.Text.Json;
 
 namespace ShagOxServer.Domain.Entities.Advertisements;
@@ -16,13 +17,18 @@ public class AdvertisementVariant
     /// <summary>
     /// Previous product price used for displaying discounts and price changes.
     /// </summary>
-    public decimal PreviousPrice { get; set; }
+    public decimal? PreviousPrice { get; set; }
 
     public int Stock { get; set; }
+
+    public decimal Weight { get; set; }
 
     public JsonDocument Attributes { get; set; } = null!;
 
     public ICollection<BasketItem> BasketItems { get; set; }
+        = [];
+
+    public ICollection<OrderItem> OrderItems { get; set; }
         = [];
 
 

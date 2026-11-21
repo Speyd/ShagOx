@@ -9,6 +9,7 @@ using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Delete;
@@ -27,12 +28,13 @@ public class FavoriteDeleteService
 
     public FavoriteDeleteService(
         IRepository<Favorite> favoriteRepository,
+        ICommandRepository<Favorite> favoriteCommand,
         FavoriteValidator favoriteValidator,
         FavoriteInvalidationService favoriteInvalid,
         IUnitOfWork unitOfWork,
         ILogger<FavoriteDeleteService> logger
     )
-        : base(favoriteValidator, unitOfWork, logger)
+        : base(favoriteCommand, favoriteValidator, unitOfWork, logger)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;

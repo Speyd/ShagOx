@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
-public partial interface IAvatarQueryRepository
+public interface IAvatarQueryRepository
     : ISearchRepository<Avatar, AvatarSearchFilter>,
     IPictureQueryRepository<Avatar>
 {

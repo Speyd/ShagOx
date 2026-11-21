@@ -1,5 +1,6 @@
-﻿using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
 using ShagOxServer.Domain.Entities.Advertisements;
+using System.Collections;
 using System.Text.Json;
 
 namespace ShagOxServer.Application.Services.Advertisements.Core.Update;
@@ -30,6 +31,25 @@ public static class AdvertisementUpdater
             count++;
         }
 
+        if (request.Price.HasValue)
+        {
+            var price = request.Price.Value;
+
+            if (price < advert.Price)
+                advert.PreviousPrice = advert.Price;
+
+            advert.Price = price;
+
+            count++;
+        }
+
+        if (request.Stock.HasValue)
+        {
+            advert.Stock = request.Stock.Value;
+
+            count++;
+        }
+
         if (request.CurrencyId.HasValue)
         {
             advert.CurrencyId = request.CurrencyId.Value;
@@ -45,6 +65,12 @@ public static class AdvertisementUpdater
         if (request.CategoryId.HasValue)
         {
             advert.CategoryId = request.CategoryId.Value;
+            count++;
+        }
+
+        if (request.StatusId.HasValue)
+        {
+            advert.StatusId = request.StatusId.Value;
             count++;
         }
 

@@ -1,0 +1,85 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  align-items: start;
+  gap: 20px;
+}
+
+.aside {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.external {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.external:hover {
+  background-color: var(--bg-base);
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px;
+  margin: -6px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.person:hover {
+  background-color: var(--bg-base);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 12px;
+  margin: 0;
+  font-size: var(--font-sm);
+}
+
+.facts dt {
+  color: #64748b;
+}
+
+.facts dd {
+  margin: 0;
+  text-align: right;
+  font-weight: 600;
+  color: var(--color-base);
+}
+
+.danger {
+  border-color: #fecaca;
+  background-color: #fffafa;
+}
+
+.dangerActions {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 1200px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .aside {
+    position: static;
+  }
+}

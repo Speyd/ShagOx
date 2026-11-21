@@ -9,10 +9,9 @@ export const useCreateBasketItem = () => {
 
   return useMutation({
     mutationFn: async (data: BasketItemCreateRequest) => {
-      // Якщо basketId відсутній або дорівнює 0 — спочатку отримуємо/створюємо кошик
-      if (!data.basketId) {
+      if (!data.parentId) {
         const basket = await createBasket();
-        data.basketId = basket.id;
+        data.parentId = basket.id;
       }
       return createItem(data);
     },

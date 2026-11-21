@@ -4,22 +4,14 @@ import type { UpdateUserRequestDto } from "../model/types";
 export async function adminUpdateUser(id: number, data: UpdateUserRequestDto) {
   const formData = new FormData();
 
-  formData.append("firstName", data.firstName);
-  formData.append("lastName", data.lastName);
-  formData.append("userName", data.userName);
-  formData.append("bio", data.bio ?? "");
-  formData.append("phone", data.phone);
-  formData.append("email", data.email);
+  formData.append("FirstName", data.firstName);
+  formData.append("LastName", data.lastName);
+  formData.append("UserName", data.userName);
+  formData.append("Bio", data.bio);
 
-  if (data.cityId !== null) {
-    formData.append("cityId", String(data.cityId));
-  }
-
-  if (data.avatar) {
-    formData.append("avatar", data.avatar);
-  }
+  if (data.cityId !== null) formData.append("CityId", String(data.cityId));
+  if (data.avatar) formData.append("Avatar", data.avatar);
 
   const response = await api.put(`/admin/users/${id}`, formData);
-
   return response.data;
 }

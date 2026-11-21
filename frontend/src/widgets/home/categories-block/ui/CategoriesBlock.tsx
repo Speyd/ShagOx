@@ -1,8 +1,9 @@
 import styles from "./CategoriesBlock.module.css";
-import Container from "@/shared/ui/container";
-import { Divider, Image, Text } from "@mantine/core";
+import Container from "@/shared/ui/layout/container";
+import { Image, Text } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import smartphone from "@/shared/assets/icons/mobile-phone.png";
 import laptop from "@/shared/assets/icons/laptop.png";
@@ -12,7 +13,6 @@ import joystick from "@/shared/assets/icons/joystick.png";
 import smartwatch from "@/shared/assets/icons/smartwatch.png";
 import monitor from "@/shared/assets/icons/monitor.png";
 import tablet from "@/shared/assets/icons/tablet.png";
-import { Link } from "react-router-dom";
 import { useGetCategories } from "@/entities/advertisement/model/hooks/useGetCategories";
 
 const categories = [
@@ -20,59 +20,93 @@ const categories = [
     title: "Смартфони",
     icon: smartphone,
     keys: ["смартфон", "smartphone", "phone"],
+    fallbackCode: "smartphones",
   },
-  { title: "Ноутбуки", icon: laptop, keys: ["ноутбук", "laptop"] },
-  { title: "Аудіо", icon: headphones, keys: ["аудіо", "audio", "headphone"] },
-  { title: "Камери", icon: camera, keys: ["камера", "camera"] },
-  { title: "Геймінг", icon: joystick, keys: ["геймінг", "gaming"] },
+  {
+    title: "Ноутбуки",
+    icon: laptop,
+    keys: ["ноутбук", "laptop"],
+    fallbackCode: "laptops",
+  },
+  {
+    title: "Аудіо",
+    icon: headphones,
+    keys: ["аудіо", "audio", "headphone"],
+    fallbackCode: "headphones",
+  },
+  {
+    title: "Камери",
+    icon: camera,
+    keys: ["камера", "camera"],
+    fallbackCode: "cameras",
+  },
+  {
+    title: "Геймінг",
+    icon: joystick,
+    keys: ["геймінг", "gaming"],
+    fallbackCode: "gaming",
+  },
   {
     title: "Телевізори",
     icon: monitor,
     keys: ["телевізор", "телевизор", "tv", "television"],
+    fallbackCode: "tvs",
   },
-  { title: "Планшети", icon: tablet, keys: ["планшет", "tablet"] },
+  {
+    title: "Планшети",
+    icon: tablet,
+    keys: ["планшет", "tablet"],
+    fallbackCode: "tablets",
+  },
   {
     title: "Аксесуари",
     icon: smartwatch,
     keys: ["аксесуар", "accessor"],
+    fallbackCode: "phone-cases",
   },
 ];
 
 export default function CategoriesBlock() {
   const { data: availableCategories = [] } = useGetCategories();
 
+  const normalize = (value: string) => value.trim().toLocaleLowerCase();
+
   return (
     <Container>
       <section className={styles.categoriesBlock}>
-        <Text fw={700} fz={24}>
+        <Text fw={700} fz={{ base: 20, sm: 24 }}>
           Категорії
         </Text>
 
         <Carousel
           slideSize={{
-            base: "100%",
-            sm: "50%",
-            md: "33.333333%",
-            lg: "16.666667%",
+            base: "33.333333%",
+            xs: "25%",
+            sm: "20%",
+            md: "16.666667%",
           }}
-          slideGap={0}
-          nextControlIcon={<ChevronRight size={24} />}
-          previousControlIcon={<ChevronLeft size={24} />}
+          slideGap={{ base: "xs", sm: "md" }}
+          nextControlIcon={<ChevronRight size={20} />}
+          previousControlIcon={<ChevronLeft size={20} />}
           classNames={{
             root: styles.carouselRoot,
             controls: styles.carouselControls,
             control: styles.carouselControl,
           }}
         >
-          {categories.map((category, index) => {
-            const matchedCategory = availableCategories.find((cat) =>
-              category.keys.some((key) =>
-                cat.label.toLowerCase().includes(key),
-              ),
-            );
-            const categoryLink = matchedCategory
-              ? `/catalog?category=${matchedCategory.id}`
-              : "/catalog";
+          {categories.map((category) => {
+            const matchedCategory = availableCategories.find((item) => {
+              const categoryName = normalize(item.label);
+              return category.keys.some((key) =>
+                categoryName.includes(normalize(key)),
+              );
+            });
+
+            const categoryCode = matchedCategory?.code || category.fallbackCode;
+
+            const categoryLink = categoryCode
+              ? `/catalog/category/${categoryCode}`
+              : `/catalog?search=${encodeURIComponent(category.title)}`;
 
             return (
               <Carousel.Slide
@@ -86,18 +120,11 @@ export default function CategoriesBlock() {
                       alt={category.title}
                       className={styles.icon}
                     />
-                    <Text className={styles.categoryTitle} fw={600} fz={16}>
+                    <Text className={styles.categoryTitle} fw={600}>
                       {category.title}
                     </Text>
                   </div>
                 </Link>
-                {index < categories.length - 1 && (
-                  <Divider
-                    orientation="vertical"
-                    h={65}
-                    color="var(--color-primary)"
-                  />
-                )}
               </Carousel.Slide>
             );
           })}

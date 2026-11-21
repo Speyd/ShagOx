@@ -22,7 +22,11 @@ public static class FavoriteQueryExtensions
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Currency)
             .Include(x => x.Advertisement)
-                .ThenInclude(a => a.Pictures);
+                .ThenInclude(a => a.Pictures)
+            .Include(x => x.Advertisement)
+                .ThenInclude(a => a.Status)
+            .Include(x => x.Advertisement)
+                .ThenInclude(a => a.Variants);
     }
 
     public static IQueryable<FavoriteCacheInfo> SelectCacheInfo(

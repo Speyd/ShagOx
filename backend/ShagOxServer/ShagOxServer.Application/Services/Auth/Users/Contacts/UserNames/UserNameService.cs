@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Auth;
+using ShagOxServer.Application.Common.Options.Auth;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames;
 using ShagOxServer.Application.Resources.Auth.Contacts.UserNames;
@@ -11,17 +11,17 @@ public class UserNameService
     : IUserNameService
 {
     private readonly IUserQueryRepository _userQueryRepository;
-    private readonly UserNameSettings _userNameSettings;
+    private readonly UserNameOptions _userNameOptions;
 
     private readonly ILogger<UserNameService> _logger;
 
     public UserNameService(
         IUserQueryRepository userQueryRepository,
-        IOptions<UserNameSettings> userNameSettings,
+        IOptions<UserNameOptions> userNameOptions,
         ILogger<UserNameService> logger)
     {
         _userQueryRepository = userQueryRepository;
-        _userNameSettings = userNameSettings.Value;
+        _userNameOptions = userNameOptions.Value;
         _logger = logger;
     }
 
@@ -33,7 +33,7 @@ public class UserNameService
         {
             var baseUserName = userName.Trim();
             var candidate = baseUserName;
-            var maxAttempts = _userNameSettings.MaxAttempts;
+            var maxAttempts = _userNameOptions.MaxAttempts;
 
             for (var attempt = 0; attempt < maxAttempts; attempt++)
             {

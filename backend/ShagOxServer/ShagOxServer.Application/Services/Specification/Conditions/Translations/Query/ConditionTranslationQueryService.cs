@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Specification.Conditions.Translations.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -23,9 +23,9 @@ public class ConditionTranslationQueryService
     public ConditionTranslationQueryService(
         IConditionTranslationQueryRepository condtitionRepository,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(condtitionRepository, cacheService, settings)
+        : base(condtitionRepository, cacheService, cacheOptions)
     {
     }
 

@@ -1,5 +1,5 @@
 import type { User } from "@/features/auth/model/types";
-import type { Advertisement } from "@/shared/lib/types/advertisements";
+import type { ShortAdvertisement } from "@/shared/lib/types/advertisements";
 
 export type FavoriteCreateRequest = {
   userId: number;
@@ -9,5 +9,5 @@ export type FavoriteCreateRequest = {
 export type Favorite = {
   id: number;
   user: User;
-  advertisement: Advertisement;
+  advertisement: ShortAdvertisement;
 };

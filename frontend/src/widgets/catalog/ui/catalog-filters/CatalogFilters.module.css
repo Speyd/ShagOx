@@ -1,0 +1,120 @@
+.catalogFilters {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 4px;
+  color: var(--color-base);
+}
+
+.badge {
+  min-width: 22px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--color-base);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: 12px;
+  color: var(--color-base);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.chip:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.accordionItem {
+  background-color: #ffffff;
+  border: 1px solid #eef2f6 !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.accordionItem:hover {
+  border-color: #cbd5e1 !important;
+}
+
+.accordionControl {
+  padding: 12px 16px !important;
+}
+
+.accordionControl:hover {
+  background-color: #f8fafc !important;
+}
+
+.rangeBox {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 2px 6px;
+}
+
+.option {
+  cursor: pointer;
+}
+
+.optionLabel {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.optionCount {
+  color: #94a3b8;
+}
+
+.moreButton {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.moreButton:hover {
+  text-decoration: underline;
+}
+
+.resetButton {
+  height: 40px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 900px) {
+  .header {
+    display: none;
+  }
+}

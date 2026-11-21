@@ -1,0 +1,30 @@
+.card {
+  background-color: #ffffff;
+  border-color: var(--color-border);
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.icon {
+  color: var(--color-primary);
+}
+
+.progressGroup {
+  min-width: 220px;
+}
+
+.progressBar {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .progressGroup {
+    min-width: 140px;
+  }
+}

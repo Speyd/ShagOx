@@ -1,73 +1,170 @@
-export type Advertisement = {
+import type { Category } from "./category";
+import type { Currency } from "./currency";
+
+export type UserSeller = {
   id: number;
-  title: string;
-  description: string;
-  currency: Currency;
-  category: Category;
-  seller: UserShort;
-  buyer: UserShort | null;
-  pictures: AdvertisementImage[];
-  attributes: Record<string, unknown>;
-  variants: AdvertisementVariant[];
-  price?: number;
-  previousPrice?: number;
-  stock?: number;
-  properties?: Record<string, unknown>;
-  createdAt: string;
-  soldAt: string | null;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  bio: string | null;
+  phone: string | null;
+  email: string;
+  avatarId: string | null;
+  cityId: number | null;
+  cityCode: string;
+  lastSeenAt: string;
 };
 
-export type AdvertisementShort = {
+export type AdvertisementImage = {
   id: number;
-  title: string;
-  description: string;
-  currencyId: number;
-  categoryId: number;
-  sellerId: number;
-  buyerId: number | null;
-  pictures: AdvertisementImage[];
-  attributes: Record<string, unknown>;
-  variants: AdvertisementVariantShort[];
-  createdAt: string;
-  soldAt: string | null;
-};
-
-export type AdvertisementVariant = {
-  id: number;
+  order: number;
   advertisementId: number;
-  price: number;
-  previousPrice: number;
+  url: string;
+  publicId: string;
+};
+
+export type AttributeDefinition = {
+  id: number;
+  categoryId: number;
+  categoryCode: string;
+  key: string;
+  dictionaryId: number | null;
+  type: string;
+  required: boolean;
+  min: number | null;
+  max: number | null;
+  isVariant: boolean;
+  multiple: boolean;
+  label: string;
+};
+
+export type AttributeValue = {
+  id: number;
+  dictionaryId: number;
+  code: string;
+  value: string;
+  label: string;
+};
+
+export type VariantAttribute = {
+  attribute: AttributeDefinition;
+  values: AttributeValue[];
+};
+
+export type VariantLike = {
+  id: number;
   stock: number;
   attributes: VariantAttribute[];
 };
 
-export type AdvertisementVariantShort = Omit<
-  AdvertisementVariant,
-  "attributes"
-> & {
+export type CatalogAdvertisementVariant = VariantLike & {
+  price: number;
+  previousPrice: number;
+};
+
+export type AdvertisementVariant = CatalogAdvertisementVariant & {
+  advertisementId: number;
+  priceConversion: ConvertedPrices | null;
+};
+
+export type Advertisement = {
+  id: number;
+  title: string;
+  description: string;
+  price: number | null;
+  previousPrice: number | null;
+  status: {
+    id: number;
+    code: string;
+    label: string | null;
+  };
+  condition?: {
+    id: number;
+    code: string;
+    label: string | null;
+  } | null;
+  priceConversion: ConvertedPrices | null;
+  currency: Currency;
+  category: Category;
+  seller: UserSeller;
+  buyer: UserSeller | null;
+  pictures: AdvertisementImage[];
+  attributes: VariantAttribute[];
+  variants: AdvertisementVariant[];
+  soldAt: string | null;
+  createdAt: string;
+};
+
+export type ShortAdvertisementVariant = {
+  id: number;
+  advertisementId: number;
+  price: number;
+  previousPrice: number;
+  priceConversion: ConvertedPrices;
+  stock: number;
   attributes: Record<string, unknown>;
 };
 
-export type VariantAttribute = {
-  attributeId: number;
-  attributeKey: string;
-  value: {
-    id: number;
-    dictionaryId: number;
-    code: string;
-    value: string | null;
-    label: string | null;
-  };
+export type ShortAdvertisement = {
+  id: number;
+  title: string;
+  description: string;
+  price: number | null;
+  previousPrice: number | null;
+  priceConversion: ConvertedPrices;
+  currencyId: number;
+  categoryId: number;
+  sellerId: number;
+  buyerId: number | null;
+  status: Status;
+  picture: AdvertisementImage | null;
+  attributes: Record<string, unknown>;
+  variants: ShortAdvertisementVariant[];
+  soldAt: string | null;
+  createdAt: string;
 };
 
-export function getVariantAttributeText(attribute: VariantAttribute): string {
-  return (
-    attribute.value.label?.trim() ||
-    attribute.value.value?.trim() ||
-    attribute.value.code?.trim() ||
-    ""
-  );
-}
+export type CatalogAdvertisement = {
+  id: number;
+  title: string;
+  description: string;
+  price: number | null;
+  previousPrice: number | null;
+  priceConversion: ConvertedPrices;
+  currencyId: number;
+  categoryId: number;
+  picture: AdvertisementImage | null;
+  attributes: VariantAttribute[];
+  variants: CatalogAdvertisementVariant[];
+  reviewCount: number;
+  averageRatings: number;
+  isFavorite: boolean;
+  isInBasket: boolean;
+};
+
+export type ConvertedPrices = {
+  price: CurrencyConvert;
+  previousPrice: CurrencyConvert;
+};
+
+export type CurrencyConvert = {
+  from: CurrencyShort;
+  to: CurrencyShort | null;
+  convertPrice: number | null;
+  coefficient: number;
+};
+
+export type CurrencyShort = {
+  code: string;
+  symbol: string;
+  name: string;
+};
+
+export type Status = {
+  id: number;
+  code: string;
+  label: string | null;
+};
 
 export function formatAttributeValue(value: unknown): string {
   if (value == null) return "";
@@ -96,48 +193,9 @@ export function formatAttributeValue(value: unknown): string {
   return String(value);
 }
 
-export type Currency = {
-  id: number;
-  name: string;
-  symbol: string;
-};
-
-export type Condition = {
-  id: number;
-  name: string;
-};
-
-export type Category = {
-  id: number;
-  name: string;
-};
-
-export type UserShort = {
-  id: number;
-  username: string;
-  name: string;
-};
-
-export type AdvertisementImage = {
-  id: number;
-  advertisementId: number;
-  order: number;
-  publicId: string;
-  url: string;
-};
-
-export function getAdvertisementPrice(
-  advertisement:
-    | Pick<Advertisement, "variants">
-    | Pick<AdvertisementShort, "variants">,
-): number {
-  return advertisement.variants[0]?.price ?? 0;
-}
-
-export function getAdvertisementStock(
-  advertisement:
-    | Pick<Advertisement, "variants">
-    | Pick<AdvertisementShort, "variants">,
-): number {
-  return advertisement.variants[0]?.stock ?? 0;
+export function getAdvertisementPrice(advertisement: {
+  price?: number | null;
+  variants: { price: number }[];
+}): number {
+  return advertisement.variants[0]?.price ?? advertisement.price ?? 0;
 }

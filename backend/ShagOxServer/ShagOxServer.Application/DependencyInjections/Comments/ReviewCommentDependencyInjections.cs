@@ -11,7 +11,7 @@ using ShagOxServer.Application.Services.Comments.ReviewComments.Query;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Update;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Application.DependencyInjections.Comments;
 public static class ReviewCommentDependencyInjections

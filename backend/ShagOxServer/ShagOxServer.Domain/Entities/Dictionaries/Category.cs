@@ -2,6 +2,7 @@ using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
+using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;
 public class Category 
@@ -11,6 +12,9 @@ public class Category
 
     public long ProductTypeId { get; set; }
     public ProductType ProductType { get; set; } = null!;
+
+    public long CategoryImageId { get; set; }
+    public CategoryImage CategoryImage { get; set; } = null!;
 
 
     public ICollection<AttributeDefinition> Attributes { get; set; }

@@ -1,3 +1,4 @@
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -28,6 +29,8 @@ public partial class PictureOrderingService<TOwner, TPicture>
 
     private readonly IPictureLoaderService _pictureLoaderService;
     private readonly BaseValidator<TOwner>  _ownerValidator;
+    private readonly IRepository<TOwner> _ownerRepository;
+    private readonly IRepository<TPicture> _pictureRepository;
 
 
     public PictureOrderingService(
@@ -38,7 +41,9 @@ public partial class PictureOrderingService<TOwner, TPicture>
         IPictureUpdateService<TPicture, 
             PictureOrderUpdateRequest> pictureUpdateService,
         IPictureLoaderService pictureLoaderService,
-        BaseValidator<TOwner> ownerValidator)
+        BaseValidator<TOwner> ownerValidator,
+        IRepository<TOwner> ownerRepository,
+        IRepository<TPicture> pictureRepository)
     {
         _unitOfWork = unitOfWork;
         _pictureCreateService = pictureCreateService;
@@ -46,5 +51,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
         _pictureUpdateService = pictureUpdateService;
         _pictureLoaderService = pictureLoaderService;
         _ownerValidator = ownerValidator;
+        _ownerRepository = ownerRepository;
+        _pictureRepository = pictureRepository;
     }
 }

@@ -126,8 +126,8 @@
   <data name="Basket" xml:space="preserve">
     <value>Warenkorb</value>
   </data>
-  <data name="BasketAttribute" xml:space="preserve">
-    <value>Warenkorbattribut</value>
+  <data name="LineItemAttribute" xml:space="preserve">
+    <value>Positionsattribut</value>
   </data>
   <data name="BasketItem" xml:space="preserve">
     <value>Warenkorbartikel</value>
@@ -215,5 +215,26 @@
   </data>
   <data name="ReviewRepliImage" xml:space="preserve">
     <value>Bild der Antwort auf eine Bewertung</value>
+  </data>
+  <data name="DeliveryProvider" xml:space="preserve">
+    <value> Versanddienstleister</value>
+  </data>
+  <data name="DeliveryProviderTranslation" xml:space="preserve">
+    <value>Übersetzung des Versanddienstleisters</value>
+  </data>
+  <data name="OrderItem" xml:space="preserve">
+    <value>Bestellposition</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Bestellung</value>
+  </data>
+  <data name="CategoryImage" xml:space="preserve">
+    <value>Kategoriebild</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Zahlung</value>
+  </data>
+  <data name="Webhook" xml:space="preserve">
+    <value>Webhook</value>
   </data>
 </root>

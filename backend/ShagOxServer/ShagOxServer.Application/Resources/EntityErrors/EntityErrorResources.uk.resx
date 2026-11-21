@@ -207,14 +207,14 @@
   <data name="AvatarUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити аватар.</value>
   </data>
-  <data name="BasketAttributeCreateFailed" xml:space="preserve">
-    <value>Не вдалося створити атрибут кошика.</value>
+  <data name="LineItemAttributeCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити атрибут позиції.</value>
   </data>
-  <data name="BasketAttributeDeleteFailed" xml:space="preserve">
-    <value>Не вдалося видалити атрибут кошика.</value>
+  <data name="LineItemAttributeDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити атрибут позиції.</value>
   </data>
-  <data name="BasketAttributeUpdateFailed" xml:space="preserve">
-    <value>Не вдалося оновити атрибут кошика.</value>
+  <data name="LineItemAttributeUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити атрибут позиції.</value>
   </data>
   <data name="BasketCreateFailed" xml:space="preserve">
     <value>Не вдалося створити кошик.</value>
@@ -422,5 +422,56 @@
   </data>
   <data name="StatusChangeFailed" xml:space="preserve">
     <value>Під час зміни статусу сталася непередбачена помилка.</value>
+  </data>
+  <data name="DeliveryProviderCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити службу доставки.</value>
+  </data>
+  <data name="DeliveryProviderDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити службу доставки.</value>
+  </data>
+  <data name="DeliveryProviderUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити службу доставки.</value>
+  </data>
+  <data name="DeliveryProviderTranslationCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити переклад служби доставки.</value>
+  </data>
+  <data name="DeliveryProviderTranslationDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити переклад служби доставки.</value>
+  </data>
+  <data name="DeliveryProviderTranslationUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити переклад служби доставки.</value>
+  </data>
+  <data name="OrderItemCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити позицію замовлення.</value>
+  </data>
+  <data name="OrderItemDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити позицію замовлення.</value>
+  </data>
+  <data name="OrderItemUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити позицію замовлення.</value>
+  </data>
+  <data name="OrderCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити замовлення.</value>
+  </data>
+  <data name="OrderDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити замовлення.</value>
+  </data>
+  <data name="OrderUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити замовлення.</value>
+  </data>
+  <data name="CategoryImageCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити зображення категорії.</value>
+  </data>
+  <data name="CategoryImageDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити зображення категорії.</value>
+  </data>
+  <data name="CategoryImageUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити зображення категорії.</value>
+  </data>
+  <data name="CannotAddOwnAdvertisement" xml:space="preserve">
+    <value>Ви не можете додати власне оголошення.</value>
+  </data>
+  <data name="ProoductNotAvailable" xml:space="preserve">
+    <value>Товар «{0}» більше недоступний.</value>
   </data>
 </root>

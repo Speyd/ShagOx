@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
@@ -26,9 +26,9 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     public BaseQueryService(
         ISearchRepository<TEntity, TFilter> queryRepository,
         IDataCacheService cache,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(cache, settings)
+        : base(cache, cacheOptions)
     {
         _queryRepository = queryRepository;
     }

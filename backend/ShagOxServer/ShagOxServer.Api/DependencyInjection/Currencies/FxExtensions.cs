@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Currencies.Fx;
+using ShagOxServer.Application.Common.Options.Currencies.Fx;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies.FxApi;
 using ShagOxServer.Infrastructure.ExternalServices.Currencies.FxApi;
 
@@ -10,14 +10,14 @@ public static class FxExtensions
        this IServiceCollection services,
        IConfiguration configuration)
     {
-        services.Configure<FxApiSettings>(
+        services.Configure<FxApiOptions>(
             configuration.GetSection("FxApi"));
 
         services.AddHttpClient<IFxApiService, FxApiService>(
         (sp, client) =>
         {
             var options = sp
-                .GetRequiredService<IOptions<FxApiSettings>>()
+                .GetRequiredService<IOptions<FxApiOptions>>()
                 .Value;
 
             client.BaseAddress = new Uri(options.BaseUrl);

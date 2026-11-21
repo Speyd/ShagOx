@@ -8,6 +8,7 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Base.Pictures;
+using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
@@ -27,12 +28,13 @@ public abstract class PictureDeleteService<TPicture>
 
     public PictureDeleteService(
         IRepository<TPicture> pictureRepository,
+        ICommandRepository<TPicture> pictureCommand,
         BaseValidator<TPicture> pictureBaseValidator,
         PictureValidator pictureValidator,
         IUnitOfWork unitOfWork,
         ILogger<PictureDeleteService<TPicture>> logger
     )
-        : base(pictureBaseValidator, unitOfWork, logger)
+        : base(pictureCommand, pictureBaseValidator, unitOfWork, logger)
     {
         _pictureRepository = pictureRepository;
         _pictureBaseValidator = pictureBaseValidator;

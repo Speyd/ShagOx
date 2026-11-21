@@ -10,5 +10,6 @@ public sealed record AttributeDefinitionUpdateRequest
     int? Min,
     int? Max,
     bool? IsVariant,
-    bool? Multiple
+    bool? Multiple,
+    long? DictionaryId = null
 );

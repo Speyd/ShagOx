@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.DTOs.Baskets.BasketItems.Query;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Baskets.Core.Query;
+using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
@@ -37,10 +37,13 @@ public class BasketQueryService
         IBasketQueryRepository basketQueryRepository,
         IBasketItemQueryService basketItemService,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings,
+        IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
     )
-        : base(basketQueryRepository, language, cacheService, settings)
+        : base(basketQueryRepository, 
+            language, 
+            cacheService, 
+            cacheOptions)
     {
         _basketQueryRepository = basketQueryRepository;
         _basketItemService = basketItemService;
@@ -50,7 +53,7 @@ public class BasketQueryService
     public override async Task<BasketDto> ApplyMapperAsync(
         Basket entity)
     {
-        var items = new List<BasketItemDto>();
+        var items = new List<LineItemDto>();
 
         foreach(var item in entity.BasketItems)
         {
@@ -83,7 +86,7 @@ public class BasketQueryService
 
                 return await basket.ToResultAsync(ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

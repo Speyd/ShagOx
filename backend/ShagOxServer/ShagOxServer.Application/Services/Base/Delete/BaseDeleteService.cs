@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Base.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
@@ -14,17 +15,19 @@ public abstract class BaseDeleteService<TEntity>
     : ISoftDeleteService<TEntity, DeleteResponse>
     where TEntity : BaseEntity
 {
+    protected readonly ICommandRepository<TEntity> _repository;
     protected readonly BaseValidator<TEntity> _queryRepository;
     private readonly ILogger<BaseDeleteService<TEntity>> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
 
     public BaseDeleteService(
+        ICommandRepository<TEntity> repository,
         BaseValidator<TEntity> queryRepository,
         IUnitOfWork unitOfWork,
-        ILogger<BaseDeleteService<TEntity>> logger
-    )
+        ILogger<BaseDeleteService<TEntity>> logger)
     {
+        _repository = repository;
         _queryRepository = queryRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -57,8 +60,6 @@ public abstract class BaseDeleteService<TEntity>
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
-        await _unitOfWork.BeginTransactionAsync();
-
         try
         {
             var body = await SoftBodyDeleteAsync(entity, 
@@ -69,13 +70,9 @@ public abstract class BaseDeleteService<TEntity>
                 await _unitOfWork.RollbackAsync();
                 return Result<DeleteResponse>.Fail(body.Error);
             }
-
-            await _unitOfWork.CommitAsync();
         }
         catch (Exception ex)
         {
-            await _unitOfWork.RollbackAsync();
-
             _logger.LogError(
                 ex,
                 "Failed to delete {EntityName}. Id: {Id}",
@@ -83,7 +80,7 @@ public abstract class BaseDeleteService<TEntity>
                 entity.Id);
 
             return Result<DeleteResponse>.Fail(
-                EntityErrorResources.BasketAttributeDeleteFailed);
+                EntityErrorResources.LineItemAttributeDeleteFailed);
         }
 
         await InvalidateCache(entity);
@@ -115,7 +112,7 @@ public abstract class BaseDeleteService<TEntity>
                 entity.Id);
 
             return Result<DeleteResponse>.Fail(
-                EntityErrorResources.BasketAttributeDeleteFailed);
+                EntityErrorResources.LineItemAttributeDeleteFailed);
         }
 
         await InvalidateCache(entity);
@@ -128,8 +125,7 @@ public abstract class BaseDeleteService<TEntity>
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
-        entity.EntityStatus = EntityStatus.Deleted;
-        entity.DeletedAt = DateTime.UtcNow;
+        await _repository.SoftDeleteAsync(entity.Id);
 
         return Result<bool>.Success(true);
     }

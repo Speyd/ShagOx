@@ -16,9 +16,7 @@
 }
 
 html,
-body,
-#root {
-  height: 100%;
+body {
   margin: 0;
   padding: 0;
 }
@@ -27,6 +25,8 @@ body,
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -36,6 +36,7 @@ body {
 }
 
 :root {
+  --header-height: 130px;
   --font-base: "Inter", sans-serif;
   --font-secondary: "Yantramanav", sans-serif;
   --font-logo: "Poppins", sans-serif;

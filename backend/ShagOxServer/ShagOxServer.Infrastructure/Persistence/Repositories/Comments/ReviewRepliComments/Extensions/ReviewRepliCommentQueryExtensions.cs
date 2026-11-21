@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Comments.ReviewRepliComments.Extensions;
 public static class ReviewRepliCommentQueryExtensions
@@ -10,7 +10,8 @@ public static class ReviewRepliCommentQueryExtensions
         return query
             .AsSplitQuery()
             .Include(x => x.Owner)
-                .ThenInclude(x => x.Avatar)
+                .ThenInclude(o => o.Avatar)
+            .Include(x => x.Pictures)
             .Include(x => x.Replies);
     }
 }

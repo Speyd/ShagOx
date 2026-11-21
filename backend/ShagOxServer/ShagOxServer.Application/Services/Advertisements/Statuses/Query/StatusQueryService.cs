@@ -1,6 +1,5 @@
-
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses;
@@ -29,9 +28,12 @@ public class StatusQueryService
         IStatusTranslationQueryRepository translationRepository,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(statusRepository, language, cacheService, settings)
+        : base(statusRepository, 
+            language, 
+            cacheService, 
+            cacheOptions)
     {
         _translationRepository = translationRepository;
     }
@@ -41,7 +43,7 @@ public class StatusQueryService
         Status entity)
     {
         var translation = await _translationRepository
-            .GetByIdentificatorAsync(entity.Code, _language.Language);
+            .GetByIdentificatorAsync(entity.Code.ToString(), _language.Language);
 
         return StatusMapper.ToDto(entity, translation?.Name);
     }

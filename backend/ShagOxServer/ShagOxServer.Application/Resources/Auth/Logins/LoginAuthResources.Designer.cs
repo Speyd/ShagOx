@@ -68,5 +68,23 @@ namespace ShagOxServer.Application.Resources.Auth.Logins {
                 return ResourceManager.GetString("LoginFailed", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Account is not verified. Enter the confirmation code..
+        /// </summary>
+        internal static string AccountNotVerified {
+            get {
+                return ResourceManager.GetString("AccountNotVerified", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Account is blocked..
+        /// </summary>
+        internal static string AccountBlocked {
+            get {
+                return ResourceManager.GetString("AccountBlocked", resourceCulture);
+            }
+        }
     }
 }

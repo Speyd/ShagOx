@@ -27,12 +27,13 @@ public class ConditionTranslationDeleteService
 
     public ConditionTranslationDeleteService(
         IRepository<ConditionTranslation> conditionRepository,
+        ICommandRepository<ConditionTranslation> conditionCommand,
         ConditionTranslationValidator conditionValidator,
         ConditionTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ConditionTranslationDeleteService> logger
     )
-        : base(conditionValidator, unitOfWork, logger)
+        : base(conditionCommand, conditionValidator, unitOfWork, logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;

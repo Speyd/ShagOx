@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Review.ReviewRepliImages.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Review.ReviewRepliImages;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -26,9 +26,11 @@ public class ReviewRepliImageQueryService
     public ReviewRepliImageQueryService(
         IReviewRepliImageQueryRepository imageQueryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(imageQueryRepository, cacheService, settings)
+        : base(imageQueryRepository, 
+            cacheService,
+            cacheOptions)
     {
     }
 

@@ -1,20 +1,21 @@
-import { useDeleteAdvertisement } from "../model/hooks/useDeleteAdvertisement";
 import { Trash2 } from "lucide-react";
-import IconButton from "@/shared/ui/icon-button/IconButton";
-import { useNavigate } from "react-router-dom";
+import { modals } from "@mantine/modals";
+import { Text } from "@mantine/core";
+import IconButton from "@/shared/ui/buttons/icon-button/IconButton";
+import { useDeleteAdvertisement } from "../model/hooks/useDeleteAdvertisement";
 
 type DeleteAdvertisementButtonProps = {
   id: number;
+  title?: string;
+  onDeleted?: () => void;
 };
-
-import { modals } from "@mantine/modals";
-import { Text } from "@mantine/core";
 
 export default function DeleteAdvertisementButton({
   id,
+  title,
+  onDeleted,
 }: DeleteAdvertisementButtonProps) {
   const deleteMutation = useDeleteAdvertisement();
-  const navigate = useNavigate();
 
   const handleDelete = () => {
     modals.openConfirmModal({
@@ -22,7 +23,8 @@ export default function DeleteAdvertisementButton({
       centered: true,
       children: (
         <Text size="sm">
-          Ви дійсно бажаєте видалити це оголошення? Цю дію неможливо буде скасувати.
+          {title ? `Видалити «${title}»? ` : "Ви дійсно бажаєте видалити це оголошення? "}
+          Цю дію неможливо буде скасувати.
         </Text>
       ),
       labels: {
@@ -32,23 +34,19 @@ export default function DeleteAdvertisementButton({
       confirmProps: {
         color: "red",
       },
-      onConfirm: async () => {
-        try {
-          await deleteMutation.mutateAsync(id);
-          navigate("/");
-        } catch (error) {
-          void error;
-        }
-      },
+      onConfirm: () => deleteMutation.mutate(id, { onSuccess: onDeleted }),
     });
   };
 
   return (
     <IconButton
+      type="button"
       onClick={handleDelete}
       disabled={deleteMutation.isPending}
+      aria-label="Видалити оголошення"
+      title="Видалити"
     >
-      <Trash2 size={20} />
+      <Trash2 size={18} />
     </IconButton>
   );
 }

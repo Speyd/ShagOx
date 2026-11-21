@@ -12,7 +12,8 @@ public class StatusConfiguration
     {
         builder.Property(x => x.Code)
             .HasMaxLength(50)
-            .IsRequired();
+            .IsRequired()
+            .HasConversion<string>();
 
         builder.HasUniqueActiveIndex(x => x.Code);
     }

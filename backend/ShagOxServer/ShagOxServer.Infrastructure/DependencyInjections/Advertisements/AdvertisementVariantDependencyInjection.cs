@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants;
@@ -15,6 +15,10 @@ public static class AdvertisementVariantDependencyInjection
 
         services.AddScoped<IAdvertisementVariantExistsRepository,
             AdvertisementVariantExistsRepository>();
+
+        services.AddScoped<IAdvertisementVariantCommandRepository,
+            AdvertisementVariantCommandRepository>();
+       
 
         return services;
     }

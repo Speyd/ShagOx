@@ -1,0 +1,30 @@
+import styles from "./NotificationSettingsPage.module.css";
+import Container from "@/shared/ui/layout/container";
+import {
+  CommunicationChannels,
+  NotificationTypes,
+} from "@/widgets/notifications/notification-settings";
+import { Text } from "@mantine/core";
+
+export default function NotificationSettingsPage() {
+  return (
+    <section className={styles.notificationSettingsPage}>
+      <Container>
+        <div className={styles.notificationSettingsContainer}>
+          <div className={styles.notificationSettingsHeader}>
+            <Text className={styles.title}>Сповіщення та канали зв'язку</Text>
+            <Text className={styles.description}>
+              Керуйте налаштуваннями сповіщень, щоб отримувати лише найважливішу{" "}
+              <br />
+              інформацію зручним для вас способом.
+            </Text>
+          </div>
+          <div className={styles.notificationSettingsContent}>
+            <NotificationTypes />
+            <CommunicationChannels />
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}

@@ -31,6 +31,7 @@ public static class AdvertisementMapper
             x.Price,
             x.PreviousPrice,
             priceConversion,
+            x.Stock,
             status,
             CurrencyMapper.ToDto(x.Currency),
             category,

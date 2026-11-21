@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
@@ -15,6 +15,7 @@ using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionVal
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using System.Xml.Linq;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 public class AttributeDictionaryValueQueryService
@@ -36,9 +37,12 @@ public class AttributeDictionaryValueQueryService
         IAttributeDictionaryValueTranslationQueryRepository translation,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(dictionaryDictQueryRepository, language, cacheService, settings)
+        : base(dictionaryDictQueryRepository, 
+            language, 
+            cacheService,
+            cacheOptions)
     {
         _dictionaryDictQueryRepository = dictionaryDictQueryRepository;
         _translation = translation;
@@ -49,7 +53,7 @@ public class AttributeDictionaryValueQueryService
         AttributeDictionaryValue entity)
     {
         var translation = await _translation
-            .GetByIdentificatorAsync(entity.Code, _language.Language);
+            .GetByIdentificatorAsync(entity.Id, _language.Language);
 
         return AttributeDictionaryValueMapper.ToDto(entity, translation?.Name);
     }
@@ -80,7 +84,7 @@ public class AttributeDictionaryValueQueryService
                 return await values.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

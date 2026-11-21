@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
@@ -28,9 +28,12 @@ public abstract class BaseTranslatableQueryService<TDto, TEntity, TFilter>
         ISearchTranslatableRepository<TEntity, TFilter> translatableRepository,
         ILanguageProvider language,
         IDataCacheService cacheRepository,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(translatableRepository, language, cacheRepository, settings)
+        : base(translatableRepository, 
+            language, 
+            cacheRepository, 
+            cacheOptions)
     {
         _translatableRepository = translatableRepository;
     }

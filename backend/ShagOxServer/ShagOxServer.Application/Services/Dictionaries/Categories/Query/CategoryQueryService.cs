@@ -1,11 +1,13 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
+using ShagOxServer.Application.DTOs.Specification.Pictures.CategoryImages.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
+using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Query;
 using ShagOxServer.Application.Services.Base.Translations;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
@@ -27,20 +29,26 @@ public class CategoryQueryService
     ICategoryQueryService
 {
     private readonly ICategoryQueryRepository _categoryQueryRepository;
+    private readonly ICategoryImageQueryService _imageQueryService;
 
     private readonly ICategoryTranslationQueryRepository _translationRepository;
 
 
     public CategoryQueryService(
         ICategoryQueryRepository categoryQueryRepository,
+        ICategoryImageQueryService imageQueryService,
         ICategoryTranslationQueryRepository translationRepository,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(categoryQueryRepository, language, cacheService, settings)
+        : base(categoryQueryRepository, 
+            language, 
+            cacheService, 
+            cacheOptions)
     {
         _categoryQueryRepository = categoryQueryRepository;
+        _imageQueryService = imageQueryService;
         _translationRepository = translationRepository;
     }
 
@@ -51,7 +59,15 @@ public class CategoryQueryService
         var translation = await _translationRepository
             .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        return CategoryMapper.ToDto(entity, translation?.Name);
+        CategoryImageDto? imageDto = null;
+
+        if (entity.CategoryImage is not null)
+        {
+            imageDto = await _imageQueryService
+                .ApplyMapperAsync(entity.CategoryImage);
+        }
+
+        return CategoryMapper.ToDto(entity, imageDto, translation?.Name);
     }
 
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
@@ -78,7 +94,7 @@ public class CategoryQueryService
                 return await categories.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

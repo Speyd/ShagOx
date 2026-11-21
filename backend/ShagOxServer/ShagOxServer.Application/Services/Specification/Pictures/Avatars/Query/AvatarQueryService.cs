@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -32,9 +32,11 @@ public class AvatarQueryService
     public AvatarQueryService(
         IAvatarQueryRepository avatarQueryRepository,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(avatarQueryRepository, cacheService, settings)
+        : base(avatarQueryRepository,
+            cacheService, 
+            cacheOptions)
     {
         _avatarQueryRepository = avatarQueryRepository;
     }
@@ -64,7 +66,7 @@ public class AvatarQueryService
                 return await image.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

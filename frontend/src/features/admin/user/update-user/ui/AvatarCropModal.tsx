@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
-import { Button, Group, Modal, Slider, Stack } from "@mantine/core";
+import { Modal, Slider } from "@mantine/core";
 import Cropper, { type Area } from "react-easy-crop";
+import Button from "@/shared/ui/buttons/button";
 
 type AvatarCropModalProps = {
   opened: boolean;
@@ -43,7 +44,7 @@ export default function AvatarCropModal({
       centered
       size="md"
     >
-      <Stack>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <div
           style={{
             position: "relative",
@@ -76,14 +77,14 @@ export default function AvatarCropModal({
           onChange={setZoom}
         />
 
-        <Group justify="flex-end">
-          <Button variant="default" onClick={onClose}>
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
+          <Button variant="ghost" onClick={onClose}>
             Скасувати
           </Button>
 
           <Button onClick={createCroppedImage}>Застосувати</Button>
-        </Group>
-      </Stack>
+        </div>
+      </div>
     </Modal>
   );
 }

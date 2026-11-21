@@ -6,18 +6,23 @@ import {
   type LoginFormData,
 } from "../../model/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { getErrorMessage } from "@/shared/api/getErrorMessage";
 import { Link, useNavigate } from "react-router-dom";
-import { useLogin } from "../../model/hooks/useLogin";
-import { ArrowRight, Eye, EyeOff, LockIcon, Mail } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 
 import { Text } from "@mantine/core";
-import Input from "@/shared/ui/input";
-import Button from "@/shared/ui/button";
+import Button from "@/shared/ui/buttons/button";
+import AuthTextField from "../fields/AuthTextField";
+import AuthPasswordField from "../fields/AuthPasswordField";
+import ServerError from "../fields/ServerError";
+import { useLogin } from "../../model/hooks/useLogin";
+import { register as registerUser } from "../../api/api";
+import { getByContanct } from "@/entities/user/api/api";
+import axios from "axios";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const [serverError, setServerError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const loginMutation = useLogin();
 
   const navigate = useNavigate();
@@ -31,6 +36,29 @@ export default function LoginForm() {
     mode: "onChange",
   });
 
+  const goToVerification = async (data: LoginFormData) => {
+    const user = await getByContanct(data.emailOrPhoneOrUserName);
+    const contact = user.email ?? user.phone ?? "";
+
+    await registerUser({
+      emailOrPhone: contact,
+      userName: user.userName,
+      password: data.password,
+    });
+
+    toast.info("Підтвердіть акаунт. Ми надіслали вам новий код.");
+
+    navigate("/authentication/verify", {
+      state: {
+        userId: user.id,
+        email: user.email ?? undefined,
+        phone: user.email ? undefined : (user.phone ?? undefined),
+        userName: user.userName,
+        password: data.password,
+      },
+    });
+  };
+
   const onSubmit = async (data: LoginFormData) => {
     setServerError("");
 
@@ -38,72 +66,38 @@ export default function LoginForm() {
       await loginMutation.mutateAsync(data);
       navigate("/");
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const responseData = error.response?.data;
-        if (typeof responseData === "string") {
-          setServerError(responseData);
-        } else if (responseData && typeof responseData === "object") {
-          const msg =
-            (
-              responseData as {
-                message?: string;
-                detail?: string;
-                error?: string;
-              }
-            ).message ||
-            (responseData as { detail?: string }).detail ||
-            (responseData as { error?: string }).error ||
-            "Невірний логін або пароль.";
-          setServerError(msg);
-        } else {
-          setServerError("Невірний логін або пароль.");
-        }
+      const isNotVerified =
+        axios.isAxiosError(error) && error.response?.status === 403;
+
+      if (!isNotVerified) {
+        setServerError(getErrorMessage(error, "Невірний логін або пароль."));
+        return;
+      }
+
+      try {
+        await goToVerification(data);
+      } catch {
+        setServerError(getErrorMessage(error, "Акаунт не підтверджено."));
       }
     }
   };
 
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles.inputWrapper}>
-        <div className={styles.inputBlock}>
-          <Mail className={styles.icon} />
-          <Input
-            {...register("emailOrPhoneOrUserName")}
-            placeholder="Електронна пошта, телефон або нікнейм"
-          />
-        </div>
-        {errors.emailOrPhoneOrUserName && (
-          <p className={styles.error}>
-            {errors.emailOrPhoneOrUserName.message}
-          </p>
-        )}
-      </div>
+      <AuthTextField
+        icon={Mail}
+        placeholder="Електронна пошта, телефон або нікнейм"
+        autoComplete="username"
+        error={errors.emailOrPhoneOrUserName?.message}
+        {...register("emailOrPhoneOrUserName")}
+      />
 
-      <div className={styles.inputWrapper}>
-        <div className={styles.inputBlock}>
-          <LockIcon className={styles.icon} />
-          <Input
-            {...register("password")}
-            type={showPassword ? "text" : "password"}
-            placeholder="Пароль"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className={styles.eyeButton}
-            tabIndex={-1}
-          >
-            {showPassword ? (
-              <Eye className={styles.eyeIcon} />
-            ) : (
-              <EyeOff className={styles.eyeIcon} />
-            )}
-          </button>
-        </div>
-        {errors.password && (
-          <p className={styles.error}>{errors.password.message}</p>
-        )}
-      </div>
+      <AuthPasswordField
+        placeholder="Пароль"
+        autoComplete="current-password"
+        error={errors.password?.message}
+        {...register("password")}
+      />
 
       <div className={styles.forgotPasswordWrapper}>
         <Link to="/forgot-password" className={styles.forgotLink}>
@@ -111,7 +105,7 @@ export default function LoginForm() {
         </Link>
       </div>
 
-      {serverError && <p className={styles.serverError}>{serverError}</p>}
+      <ServerError message={serverError} />
 
       <Button type="submit" disabled={loginMutation.isPending}>
         {loginMutation.isPending ? (

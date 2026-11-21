@@ -10,6 +10,7 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Delete;
@@ -31,13 +32,14 @@ public class UserDeleteService
 
     public UserDeleteService(
         IRepository<User> userRepository,
+        ICommandRepository<User> userCommand,
         UserValidator userValidator,
         IAvatarDeleteService avatarDeleteService,
         UserInvalidationService userInvalid,
         IUnitOfWork unitOfWork,
         ILogger<UserDeleteService> logger
     )
-        : base(userValidator, unitOfWork, logger)
+        : base(userCommand, userValidator, unitOfWork, logger)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
@@ -65,8 +67,17 @@ public class UserDeleteService
 
             if (user.Value!.Avatar is not null)
             {
-                await _avatarDeleteService
+                var avatarResult = await _avatarDeleteService
                     .DeleteInternalAsync(user.Value!.Avatar);
+
+                if (!avatarResult.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<DeleteResponse>
+                        .Fail(avatarResult.Error);
+                    
+                }
             }
 
             await _unitOfWork.CommitAsync();

@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 
 namespace ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Update;
 public sealed record AdvertisementVariantUpdateRequest

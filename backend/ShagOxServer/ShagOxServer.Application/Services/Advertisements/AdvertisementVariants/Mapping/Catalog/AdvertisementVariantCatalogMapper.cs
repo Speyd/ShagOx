@@ -12,6 +12,8 @@ public static class AdvertisementVariantCatalogMapper
         return new AdvertisementVariantCatalogDto
         (
             x.Id,
+            x.Price,
+            x.PreviousPrice,
             x.Stock,
             attributes
         );

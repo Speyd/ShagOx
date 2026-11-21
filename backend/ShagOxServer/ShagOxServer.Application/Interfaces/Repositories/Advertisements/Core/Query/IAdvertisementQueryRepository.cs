@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
@@ -9,6 +10,11 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Q
 public partial interface IAdvertisementQueryRepository
     : ISearchRepository<Advertisement, AdvertisementSearchFilter>
 {
+    Task<Advertisement?> GetByIdShortIncludeAsync(
+        long id,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<List<Advertisement>> GetByIdsAsync(
         List<long> ids,
         CancellationToken cancellationToken = default,
@@ -44,4 +50,8 @@ public partial interface IAdvertisementQueryRepository
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
+
+    Task<AdvertisementFacetsDto> GetFacetsAsync(
+        long categoryId,
+        CancellationToken cancellationToken = default);
 }

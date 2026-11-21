@@ -5,7 +5,7 @@ using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.AdvertisementImages;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
-public partial interface IAdvertisementImageQueryRepository
+public interface IAdvertisementImageQueryRepository
     : ISearchRepository<AdvertisementImage, AdvertisementImageSearchFilter>,
     IPictureOrderQueryRepository<AdvertisementImage>
 {

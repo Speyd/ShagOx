@@ -25,6 +25,10 @@ public class AdvertisementConfiguration
             .HasPrecision(18, 2)
             .HasDefaultValue(null);
 
+        builder.Property(x => x.Weight)
+            .HasPrecision(18, 2)
+            .HasDefaultValue(null);
+
         builder.Property(x => x.Stock)
             .HasDefaultValue(null);
 
@@ -33,7 +37,7 @@ public class AdvertisementConfiguration
             .IsRequired();
 
         builder.HasOne(x => x.Currency)
-            .WithMany(x => x.Advertisements)
+            .WithMany()
             .HasForeignKey(x => x.CurrencyId)
             .OnDelete(DeleteBehavior.Restrict);
 

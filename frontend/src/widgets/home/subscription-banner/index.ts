@@ -1,1 +1,1 @@
-export { default as SubscriptionBanner } from './ui/SubscriptionBanner'
+export * from "./ui";

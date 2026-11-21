@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Query;
@@ -38,9 +38,9 @@ public class CityQueryService
         IRegionQueryService regionService,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(repositoryQueryCity, language, cacheService, settings)
+        : base(repositoryQueryCity, language, cacheService, cacheOptions)
     {
         _repositoryQueryCity = repositoryQueryCity;
         _translationCityRepository = translationCityRepository;
@@ -86,7 +86,7 @@ public class CityQueryService
                 return await cities.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

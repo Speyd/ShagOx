@@ -120,4 +120,10 @@
   <data name="LoginFailed" xml:space="preserve">
     <value>Login failed.</value>
   </data>
+  <data name="AccountNotVerified" xml:space="preserve">
+    <value>Account is not verified. Enter the confirmation code.</value>
+  </data>
+  <data name="AccountBlocked" xml:space="preserve">
+    <value>Account is blocked.</value>
+  </data>
 </root>

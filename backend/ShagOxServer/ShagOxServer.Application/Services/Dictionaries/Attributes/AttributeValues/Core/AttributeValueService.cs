@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
@@ -31,8 +31,6 @@ public partial class AttributeValueService
         IAttributeDictionaryValueQueryService valueService,
         AttributeValueQueryService variantAttributeService,
         ILogger<AdvertisementVariantQueryService> logger,
-        IDataCacheService cacheService,
-        IOptions<CacheSettings> settings,
         ILanguageProvider language
     )
     {

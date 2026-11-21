@@ -27,12 +27,13 @@ public class RoleDeleteService
 
     public RoleDeleteService(
         IRepository<Role> roleRepository,
+        ICommandRepository<Role> roleCommand,
         RoleValidator roleValidator,
         RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
         ILogger<RoleDeleteService> logger
     )
-        : base(roleValidator, unitOfWork, logger)
+        : base(roleCommand, roleValidator, unitOfWork, logger)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;

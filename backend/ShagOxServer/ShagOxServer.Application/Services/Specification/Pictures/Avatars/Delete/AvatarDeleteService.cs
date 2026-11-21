@@ -10,6 +10,7 @@ using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
+using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Avatars.Delete;
@@ -22,13 +23,15 @@ public class AvatarDeleteService
 
     public AvatarDeleteService(
         IRepository<Avatar> avatarRepository,
+        ICommandRepository<Avatar> avatarCommand,
         AvatarValidator avatarValidator,
         PictureValidator pictureValidator,
         AvatarInvalidationService avatarInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AvatarDeleteService> logger
     )
-        : base(avatarRepository, 
+        : base(avatarRepository,
+            avatarCommand,
             avatarValidator, 
             pictureValidator, 
             unitOfWork, 

@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Context;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Core;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
 using ShagOxServer.Application.Interfaces.Providers;
@@ -9,7 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
-using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeProcessor;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query;
@@ -56,13 +54,13 @@ public partial class AdvertisementQueryService
         IDataCacheService cacheService,
         IStatusQueryService statusService,
         IConditionQueryService conditionService,
-        IOptions<CacheSettings> settings,
+        IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
     )
         : base(advertisementRepository, 
             language,
-            cacheService, 
-            settings)
+            cacheService,
+            cacheOptions)
     {
         _advertisementRepository = advertisementRepository;
         _variantService = variantService;
@@ -85,8 +83,8 @@ public partial class AdvertisementQueryService
             variants.Add(variantDto);
         }
 
-        var categoryDto = await _categoryService
-            .ApplyMapperAsync(entity.Category);
+        //var categoryDto = await _categoryService
+        //    .ApplyMapperAsync(entity.Category);
 
         var statusDto = await _statusService
             .ApplyMapperAsync(entity.Status);
@@ -106,7 +104,8 @@ public partial class AdvertisementQueryService
         return AdvertisementMapper.ToDto(
             entity,
             variants,
-            categoryDto,
+            //categoryDto,
+            null,
             statusDto,
             attributeDto.Value!,
             convertedPrices,
@@ -137,7 +136,7 @@ public partial class AdvertisementQueryService
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -165,7 +164,7 @@ public partial class AdvertisementQueryService
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

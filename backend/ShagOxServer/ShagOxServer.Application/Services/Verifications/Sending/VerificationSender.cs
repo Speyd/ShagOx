@@ -183,11 +183,20 @@ public class VerificationSender
         User user,
         VerificationCodePurpose purpose)
     {
-        if (purpose is
-            VerificationCodePurpose.RegistrationEmail or
-            VerificationCodePurpose.RegistrationPhone)
+        // Status and the "confirmed" flag must change together and be saved
+        // together (SendCode saves right after this). Previously EmailConfirmed was
+        // reset only after sending and never persisted, leaving users in the state
+        // PendingVerification + EmailConfirmed = true (login asks for a code,
+        // confirmation says "already confirmed").
+        if (purpose is VerificationCodePurpose.RegistrationEmail)
         {
             user.Status = UserStatus.PendingVerification;
+            user.EmailConfirmed = false;
+        }
+        else if (purpose is VerificationCodePurpose.RegistrationPhone)
+        {
+            user.Status = UserStatus.PendingVerification;
+            user.PhoneConfirmed = false;
         }
     }
 }

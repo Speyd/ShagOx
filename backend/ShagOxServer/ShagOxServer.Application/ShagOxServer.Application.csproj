@@ -61,6 +61,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RegistrationAuthResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Delivery\Core\DeliveryErrorResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DeliveryErrorResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Delivery\Providers\NovaPoshta\NovaPoshtaErrorResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NovaPoshtaErrorResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Delivery\Providers\NovaPoshta\NovaPoshtaErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NovaPoshtaErrors.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\EntityErrors\EntityErrorResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -85,6 +100,16 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SmsTemplatesResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Order\OrderResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrderResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Payment\PaymentResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PaymentResources.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Validations\ValidationResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -137,6 +162,18 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>RegistrationAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Delivery\Core\DeliveryErrorResources.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>DeliveryErrorResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Delivery\Providers\NovaPoshta\NovaPoshtaErrorResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>NovaPoshtaErrorResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Delivery\Providers\NovaPoshta\NovaPoshtaErrors.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>NovaPoshtaErrors.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\EntityErrors\EntityErrorResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>EntityErrorResources.Designer.cs</LastGenOutput>
@@ -157,6 +194,14 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>SmsTemplatesResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Order\OrderResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>OrderResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Payment\PaymentResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>PaymentResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Validations\ValidationResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>ValidationResources.Designer.cs</LastGenOutput>
@@ -173,6 +218,10 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>VerificationMapperResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
 	</ItemGroup>
 	
 </Project>

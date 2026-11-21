@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Create;
-using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Delete;
-using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Query;
-using ShagOxServer.Application.Interfaces.Services.Baskets.BasketAttributes.Update;
-using ShagOxServer.Application.Services.Baskets.BasketAttributes.Create;
-using ShagOxServer.Application.Services.Baskets.BasketAttributes.Delete;
-using ShagOxServer.Application.Services.Baskets.BasketAttributes.Query;
-using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update;
-using ShagOxServer.Application.Services.Baskets.BasketAttributes.Update.Validator;
-using ShagOxServer.Application.Services.Baskets.BasketAttributes.Validator;
+using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.LineItems.BasketAttributes.Create;
+using ShagOxServer.Application.Interfaces.Services.LineItems.BasketAttributes.Delete;
+using ShagOxServer.Application.Interfaces.Services.LineItems.BasketAttributes.Query;
+using ShagOxServer.Application.Interfaces.Services.LineItems.BasketAttributes.Update;
+using ShagOxServer.Application.Services.LineItems.LineItemAttributes.Create;
+using ShagOxServer.Application.Services.LineItems.LineItemAttributes.Delete;
+using ShagOxServer.Application.Services.LineItems.LineItemAttributes.Query;
+using ShagOxServer.Application.Services.LineItems.LineItemAttributes.Update;
+using ShagOxServer.Application.Services.LineItems.LineItemAttributes.Update.Validator;
+using ShagOxServer.Application.Services.LineItems.LineItemAttributes.Validator;
 
 namespace ShagOxServer.Application.DependencyInjections.Baskets;
 public static class BasketAttributeDependencyInjection
@@ -16,21 +16,21 @@ public static class BasketAttributeDependencyInjection
     public static IServiceCollection AddBasketAttributeApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<IBasketAttributeQueryService, 
-            BasketAttributeQueryService>();
+        services.AddScoped<ILineItemAttributeQueryService, 
+            LineItemAttributeQueryService>();
 
-        services.AddScoped<IBasketAttributeCreateService,
-            BasketAttributeCreateService>();
+        services.AddScoped<ILineItemAttributeCreateService,
+            LineItemAttributeCreateService>();
 
-        services.AddScoped<IBasketAttributeUpdateService,
-            BasketAttributeUpdateService>();
+        services.AddScoped<ILineItemAttributeUpdateService,
+            LineItemAttributeUpdateService>();
 
-        services.AddScoped<IBasketAttributeDeleteService,
-         BasketAttributeDeleteService>();
+        services.AddScoped<ILineItemAttributeDeleteService,
+         LineItemAttributeDeleteService>();
 
-        services.AddScoped<BasketAttributeValidator>();
+        services.AddScoped<LineItemAttributeValidator>();
 
-        services.AddScoped<BasketAttributeUpdateValidator>();
+        services.AddScoped<LineItemAttributeUpdateValidator>();
 
 
         return services;

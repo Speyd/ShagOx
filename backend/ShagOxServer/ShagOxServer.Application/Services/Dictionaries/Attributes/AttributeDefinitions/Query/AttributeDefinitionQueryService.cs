@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
@@ -35,9 +35,12 @@ public class AttributeDefinitionQueryService
         IAttributeDefinitionTranslationQueryRepository translationRepository,
         ILanguageProvider language,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(attributeQueryRepository, language, cacheService, settings)
+        : base(attributeQueryRepository, 
+            language, 
+            cacheService,
+            cacheOptions)
     {
         _attributeRepository = attributeQueryRepository;
         _translationRepository = translationRepository;
@@ -75,7 +78,7 @@ public class AttributeDefinitionQueryService
                 return await values.ToResultListAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.DTOs.Location.Cities.Query;
@@ -47,10 +47,13 @@ public class UserQueryService
         ICityQueryService cityService,
         IUserContext userContext,
         IDataCacheService cache,
-        IOptions<CacheSettings> settings,
+        IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
     )
-        : base(userQueryRepository, language, cache, settings)
+        : base(userQueryRepository,
+            language, 
+            cache, 
+            cacheOptions)
     {
         _userQueryRepository = userQueryRepository;
         _roleQueryRepository = roleQueryRepository;
@@ -92,7 +95,7 @@ public class UserQueryService
 
                 return user.ToResult(UserShortMapper.ToDto);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -114,7 +117,7 @@ public class UserQueryService
 
                 return await user.ToResultAsync(ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -139,7 +142,7 @@ public class UserQueryService
 
                 return roles.ToResultPaged(RoleMapper.ToDto);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

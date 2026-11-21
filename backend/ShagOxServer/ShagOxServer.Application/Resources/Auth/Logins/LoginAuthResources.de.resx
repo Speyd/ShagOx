@@ -120,4 +120,10 @@
   <data name="LoginFailed" xml:space="preserve">
     <value>Die Anmeldung ist fehlgeschlagen.</value>
   </data>
+  <data name="AccountNotVerified" xml:space="preserve">
+    <value>Das Konto ist nicht bestätigt. Geben Sie den Bestätigungscode ein.</value>
+  </data>
+  <data name="AccountBlocked" xml:space="preserve">
+    <value>Das Konto ist gesperrt.</value>
+  </data>
 </root>

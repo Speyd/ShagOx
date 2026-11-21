@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters;
@@ -16,8 +17,10 @@ public class SearchTranslationRepository<TEntity, TTranslator, TFilter>
     where TFilter : BaseFilter
 {
     public SearchTranslationRepository(
-        ReplicaDbContext db)
-        : base(db)
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
     {
     }
 

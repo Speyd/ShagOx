@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import styles from "./GeneralTab.module.css";
 import { useOutletContext } from "react-router-dom";
 import type { ProfileContextType } from "@/app/layouts/ProfileLayout";
-import { Text } from "@mantine/core";
+import { MyAdvertisements } from "@/widgets/profile/profile-advertisements";
+import styles from "./GeneralTab.module.css";
 
 export default function GeneralTab() {
   const { setOrientation } = useOutletContext<ProfileContextType>();
@@ -13,9 +13,7 @@ export default function GeneralTab() {
 
   return (
     <section className={styles.profileGeneral}>
-      <div className="emptyState">
-        <Text c="dimmed">У вас поки що немає створених оголошень.</Text>
-      </div>
+      <MyAdvertisements />
     </section>
   );
 }

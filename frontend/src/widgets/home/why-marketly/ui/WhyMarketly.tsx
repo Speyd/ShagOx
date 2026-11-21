@@ -1,6 +1,6 @@
 import { Image, Text } from "@mantine/core";
 import styles from "./WhyMarketly.module.css";
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 
 import shield from "@/shared/assets/icons/shield.png";
 import creditCard from "@/shared/assets/icons/credit-card.png";
@@ -11,43 +11,22 @@ const benefits = [
   {
     icon: shield,
     title: "Гарантія якості",
-    description: (
-      <>
-        Офіційна гарантія
-        <br />
-        від виробника
-      </>
-    ),
+    description: "Офіційна гарантія від виробника",
   },
   {
     icon: creditCard,
     title: "Безпечна оплата",
-    description: (
-      <>
-        Зручні та надійні <br />
-        способи оплати
-      </>
-    ),
+    description: "Зручні та надійні способи оплати",
   },
   {
     icon: sync,
     title: "Легке повернення",
-    description: (
-      <>
-        Повернення протягом
-        <br /> 14 днів
-      </>
-    ),
+    description: "Повернення протягом 14 днів",
   },
   {
     icon: giftbox,
     title: "Бонуси та кешбек",
-    description: (
-      <>
-        Накопичуйте та
-        <br /> економте більше
-      </>
-    ),
+    description: "Накопичуйте та економте більше",
   },
 ];
 

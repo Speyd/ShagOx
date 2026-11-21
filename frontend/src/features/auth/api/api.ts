@@ -5,8 +5,8 @@ import type {
   LogoutResponse,
   RegisterRequest,
   RegisterResponse,
-  ConfirmResetPasswordRequest,
   ResetPasswordRequest,
+  ChangePasswordRequest,
   VerifyRequest,
 } from "../model/types";
 import type { User } from "@/shared/lib/types/user";
@@ -41,14 +41,12 @@ export async function verify(data: VerifyRequest) {
   return response.data;
 }
 
-export async function resetPassword(
-  data: ResetPasswordRequest,
-): Promise<number> {
+export async function resetPassword(data: ResetPasswordRequest) {
   const response = await api.post("/users/reset-password", data);
   return response.data;
 }
 
-export async function confirmPasswordReset(data: ConfirmResetPasswordRequest) {
-  const response = await api.post("/users/reset-password/confirm", data);
+export async function changePassword(data: ChangePasswordRequest) {
+  const response = await api.put("/users/password", data);
   return response.data;
 }

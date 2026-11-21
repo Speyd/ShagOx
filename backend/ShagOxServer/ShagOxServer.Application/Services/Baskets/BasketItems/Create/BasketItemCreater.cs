@@ -1,16 +1,17 @@
-using ShagOxServer.Application.DTOs.Baskets.BasketItems.Create;
+using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Baskets.BasketItems.Create;
 public static class BasketItemCreater
 {
     public static BasketItem Create(
-        BasketItemCreateRequest request,
+        LineItemCreateRequest request,
         int stock)
     {
         return new BasketItem
         {
-            BasketId = request.BasketId,
+            ParentId = request.ParentId,
+            AdvertisementId = request.AdvertisementId,
             AdvertisementVariantId = request.AdvertisementVariantId,
             Quantity = request.Quantity < 0? 0 : 
                 request.Quantity > stock ? stock :

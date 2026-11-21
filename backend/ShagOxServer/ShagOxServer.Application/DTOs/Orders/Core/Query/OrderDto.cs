@@ -1,0 +1,56 @@
+using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Deliveries.DeliveryProviders.Query;
+using ShagOxServer.Application.DTOs.Orders.OrderItems.Query;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Deliveries;
+using ShagOxServer.Domain.Entities.Deliveries.Enum;
+using ShagOxServer.Domain.Entities.Orders.Enum;
+using ShagOxServer.Domain.Entities.Payments.Enum;
+
+namespace ShagOxServer.Application.DTOs.Orders.Core.Query;
+public sealed record OrderDto
+(
+    long Id,
+    EntityStatus EntityStatus,
+    string OrderNumber,
+    string FirstName,
+    string LastName,
+    string Phone,
+    string Email,
+    ICollection<OrderItemDto> OrderItems,
+    string? Comment,
+    decimal Subtotal,
+    decimal DeliveryPrice,
+    decimal TotalPrice,
+    CurrencyDto Currency,
+    DeliveryType DeliveryType,
+    DeliveryProviderDto? DeliveryProvider,
+    string? DeliveryPointExternalId,
+    string? DeliveryPointNumber,
+    string? DeliveryPointName,
+    string? DeliveryPointAddress,
+    DeliveryPointType? DeliveryPointType,
+    string? DeliveryTrackingNumber,
+    string? DeliveryTrackingUrl,
+    DateTime? ShippedAt,
+    DateTime? DeliveredAt,
+    DateTime? EstimatedDeliveryAt,
+    PaymentMethod PaymentMethod,
+    OrderPaymentStatus PaymentStatus,
+    DateTime? PaidAt,
+    string? PaymentTransactionId,
+    string? PaymentProvider,
+    OrderStatus OrderStatus,
+    DateTime? ConfirmedAt,
+    DateTime CreatedAt,
+    DateTime? UpdatedAt,
+    DateTime? CancelledAt,
+    // Коли закінчується діюче посилання на оплату (null — посилання немає).
+    DateTime? PaymentExpiresAt,
+    // До якого моменту замовлення ще можна оплатити онлайн
+    // (null — оплата неможлива або не потрібна).
+    DateTime? PaymentDeadline,
+    // Продавець замовлення (null — старе замовлення з товарами кількох продавців).
+    long? SellerId
+) : BaseDto(Id, EntityStatus);

@@ -13,6 +13,8 @@ public static class PicturesDependencyInjection
 
         services.AddReviewImagesDependencyInfrastructure();
 
+        services.AddCategoryImageInfrastructure();
+
 
         return services;
     }

@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Comments.ReviewComments.Update;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewComments.Update;
 public static class ReviewCommentUpdater

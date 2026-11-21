@@ -1,14 +1,17 @@
 import { z } from "zod";
 
 export const adminUpdateUserSchema = z.object({
-  firstName: z.string().min(1, "Введіть ім'я"),
-  lastName: z.string().min(1, "Введіть прізвище"),
-  userName: z.string().min(1, "Введіть нікнейм").max(40, "Максимум 40 символів"),
-  bio: z.string().max(500, "Максимум 500 символів").optional().default(""),
-  phone: z.string().min(1, "Введіть телефон"),
-  email: z.string().email("Некоректний email"),
-  avatar: z.instanceof(File).nullable().optional(),
-  cityId: z.number().nullable(),
+  firstName: z.string().trim().max(50, "Максимум 50 символів"),
+  lastName: z.string().trim().max(50, "Максимум 50 символів"),
+  userName: z
+    .string()
+    .trim()
+    .min(3, "Мінімум 3 символи")
+    .max(40, "Максимум 40 символів")
+    .regex(/^[a-zA-Z0-9_.]+$/, "Лише латиниця, цифри, «_» та «.»"),
+  bio: z.string().max(500, "Максимум 500 символів"),
+  avatar: z.instanceof(File).nullable(),
+  cityId: z.string().nullable(),
 });
 
 export type UpdateUserDto = z.infer<typeof adminUpdateUserSchema>;

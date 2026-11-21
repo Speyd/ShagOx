@@ -1,6 +1,6 @@
 using DotNetEnv;
 using ShagOxServer.Api.DependencyInjection.Environments.Db;
-using ShagOxServer.Application.Common.Settings.Db.PgBouncer;
+using ShagOxServer.Application.Common.Options.Db.PgBouncer;
 using ShagOxServer.SharedKernel.Configuration;
 
 namespace ShagOxServer.Api.DependencyInjection.Environments;
@@ -13,25 +13,25 @@ public partial class EnvironmentExtensions
 
         Env.Load(envPath);
 
-        var settings = PgBouncerSettingsLoader.Load();
+        var options = PgBouncerLoaderOptions.Load();
 
         builder.Configuration["ConnectionStrings:PrimaryConnection"] =
             PostgresConnectionStringBuilder.Build(
-                settings.User,
-                settings.Password,
-                settings.Database,
-                settings.PrimaryHost,
-                settings.PrimaryPort.ToString());
+                options.User,
+                options.Password,
+                options.Database,
+                options.PrimaryHost,
+                options.PrimaryPort.ToString());
 
-        for (var i = 0; i < settings.Replicas.Count; i++)
+        for (var i = 0; i < options.Replicas.Count; i++)
         {
-            var replica = settings.Replicas[i];
+            var replica = options.Replicas[i];
 
             var connectionString = PostgresConnectionStringBuilder.Build(
-                settings.User,
-                settings.Password,
+                options.User,
+                options.Password,
                 replica.Database,
-                settings.ReplicaHost,
+                options.ReplicaHost,
                 replica.Port.ToString());
 
 

@@ -31,15 +31,20 @@ public class PriceConversionService
         var convertedPrice = price;
         var coefficient = 1m;
 
-        if (userCurrency is not null)
-        {
-            var result = _currencyConverter.Convert(
+        if (userCurrency is not null
+            && _currencyConverter.TryConvert(
                 price,
                 sourceCurrency.Code,
-                userCurrency.Code);
-
-            convertedPrice = result.ConvertedAmount;
-            coefficient = result.Coefficient;
+                userCurrency.Code,
+                out var converted,
+                out var rate))
+        {
+            convertedPrice = converted;
+            coefficient = rate;
+        }
+        else
+        {
+            userCurrency = null;
         }
 
         return CurrencyConvertMapper.ToDto(

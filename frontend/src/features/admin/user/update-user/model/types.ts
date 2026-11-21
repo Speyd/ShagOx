@@ -8,8 +8,6 @@ export type UpdateUserRequestDto = {
   lastName: string;
   userName: string;
   bio: string;
-  phone: string;
-  email: string;
-  avatar?: File | null;
+  avatar: File | null;
   cityId: number | null;
 };

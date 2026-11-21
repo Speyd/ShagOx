@@ -1,5 +1,5 @@
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Comments.Review;
 public static class ReviewRepliCommentCache

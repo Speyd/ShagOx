@@ -1,4 +1,5 @@
-﻿using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
+using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -13,9 +14,13 @@ public class RegionTranslationExistsRepository
       IRegionTranslationExistsRepository
 {
     public RegionTranslationExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
+
 
     protected override IQueryable<RegionTranslation> ApplyIncludes(
          IQueryable<RegionTranslation> query)

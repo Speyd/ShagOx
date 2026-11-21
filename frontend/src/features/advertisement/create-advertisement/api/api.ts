@@ -1,43 +1,60 @@
 import { api } from "@/shared/api/api";
-import type { CreateAdvertisementPayload } from "../model/types";
+import type { PaginatedResponse } from "@/shared/lib/types/paginatedResponse";
+import type {
+  CreateAdvertisementPayload,
+  CreateAdvertisementResponse,
+  CurrencyDto,
+  LookupDto,
+} from "../model/types";
 
-export type CreateAdvertisementResponse = {
-  id: number;
-  createdAt: string;
-};
-
-export async function createAdvertisement(
-  data: CreateAdvertisementPayload,
-): Promise<CreateAdvertisementResponse> {
+export function buildAdvertisementFormData(payload: CreateAdvertisementPayload) {
   const formData = new FormData();
 
-  formData.append("title", data.title.trim());
-  formData.append("description", data.description.trim());
-  formData.append("popularity", (data.popularity ?? 0).toString());
-  formData.append("currencyId", (data.currencyId ?? 1).toString());
-  formData.append("categoryId", data.categoryId.toString());
-  formData.append("conditionId", data.conditionId.toString());
-  formData.append("statusId", (data.statusId ?? 0).toString());
+  formData.append("Title", payload.title);
+  formData.append("Description", payload.description);
+  formData.append("Popularity", "0");
+  formData.append("CategoryId", String(payload.categoryId));
+  formData.append("ConditionId", String(payload.conditionId));
+  formData.append("CurrencyId", String(payload.currencyId));
+  formData.append("StatusId", String(payload.statusId));
+  payload.pictures.forEach((file) => formData.append("Pictures", file));
+  formData.append("Attributes", JSON.stringify(payload.attributes));
 
-  // JSON attributes
-  formData.append("attributes", JSON.stringify(data.attributes ?? {}));
-  formData.append("variants", JSON.stringify(data.variants ?? []));
-
-  // Append images both as "pictures" (C# model binding) and "images" (fallback)
-  data.pictures.forEach((file: File) => {
-    formData.append("pictures", file);
-    formData.append("images", file);
-  });
-
-  const response = await api.post<CreateAdvertisementResponse>(
-    "/advertisements",
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    },
+  // Бекенд десеріалізує Variants через JsonSerializer без camelCase-політики,
+  // тому назви полів мають бути в PascalCase.
+  formData.append(
+    "Variants",
+    JSON.stringify(
+      payload.variants.map((variant) => ({
+        Price: variant.price,
+        PreviousPrice: variant.previousPrice,
+        Stock: variant.stock,
+        Attributes: variant.attributes,
+      })),
+    ),
   );
 
-  return response.data;
+  return formData;
 }
+
+export async function createAdvertisement(
+  payload: CreateAdvertisementPayload,
+) {
+  const { data } = await api.post<CreateAdvertisementResponse>(
+    "/advertisements",
+    buildAdvertisementFormData(payload),
+  );
+
+  return data;
+}
+
+async function getLookup<T>(endpoint: string): Promise<T[]> {
+  const { data } = await api.get<PaginatedResponse<T>>(endpoint, {
+    params: { page: 1, pageSize: 100 },
+  });
+  return data.items;
+}
+
+export const getConditions = () => getLookup<LookupDto>("/conditions");
+export const getStatuses = () => getLookup<LookupDto>("/statuses");
+export const getCurrencies = () => getLookup<CurrencyDto>("/currencies");

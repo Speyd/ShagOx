@@ -126,8 +126,8 @@
   <data name="Basket" xml:space="preserve">
     <value>Кошик</value>
   </data>
-  <data name="BasketAttribute" xml:space="preserve">
-    <value>Атрибут кошика</value>
+  <data name="LineItemAttribute" xml:space="preserve">
+    <value>Атрибут позиції</value>
   </data>
   <data name="BasketItem" xml:space="preserve">
     <value>Елемент кошика</value>
@@ -215,5 +215,26 @@
   </data>
   <data name="ReviewRepliImage" xml:space="preserve">
     <value>Зображення відповіді на відгук</value>
+  </data>
+  <data name="DeliveryProvider" xml:space="preserve">
+    <value>Служба доставки</value>
+  </data>
+  <data name="DeliveryProviderTranslation" xml:space="preserve">
+    <value>Переклад служби доставки</value>
+  </data>
+  <data name="OrderItem" xml:space="preserve">
+    <value>Позиція замовлення</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Замовлення</value>
+  </data>
+  <data name="CategoryImage" xml:space="preserve">
+    <value>Зображення категорії</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Оплата</value>
+  </data>
+  <data name="Webhook" xml:space="preserve">
+    <value>Вебхук</value>
   </data>
 </root>

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -8,6 +8,7 @@ using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Specification;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -28,9 +29,9 @@ public class CurrencyQueryService
     public CurrencyQueryService(
         ICurrencyQueryRepository currencyRepository,
         IDataCacheService cacheService,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(currencyRepository, cacheService, settings)
+        : base(currencyRepository, cacheService, cacheOptions)
     {
         _currencyRepository = currencyRepository;
     }
@@ -61,7 +62,7 @@ public class CurrencyQueryService
                 return await currencies.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -85,7 +86,7 @@ public class CurrencyQueryService
                 return await currency.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -108,7 +109,30 @@ public class CurrencyQueryService
 
                 return Result<Currency?>.Success(currency);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
+        );
+    }
+
+    public async Task<Result<Currency?>> GetEntityByCodeAsync(
+        string code, 
+        CancellationToken cancellationToken = default, 
+        EntityStatus status = EntityStatus.Active)
+    {
+        var cacheKey = CurrencyCache.EntityByCode(
+            code,
+            status);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var currency = await _currencyRepository
+                    .GetByCodeAsync(code,
+                        cancellationToken, status);
+
+                return Result<Currency?>.Success(currency);
+            },
+            _cacheOptions.KeyExpiration
         );
     }
 }

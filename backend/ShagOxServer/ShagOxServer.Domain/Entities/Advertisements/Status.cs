@@ -1,11 +1,12 @@
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Advertisements.Enum;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 
 namespace ShagOxServer.Domain.Entities.Advertisements;
 public class Status
     : BaseTranslatable
 {
-    public string Code { get; set; } = null!;
+    public AdvertisementStatus Code { get; set; }
 
     public ICollection<Advertisement> Advertisements { get; set; } 
         = [];
@@ -15,7 +16,7 @@ public class Status
 
     public override string GetIdentificator()
     {
-        return Code;
+        return Code.ToString();
     }
 
     public override string ToString()

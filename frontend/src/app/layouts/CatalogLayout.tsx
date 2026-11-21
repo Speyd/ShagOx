@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Container from "@/shared/ui/container";
-import Breadcrumbs from "@/widgets/breadcrumbs";
+import Container from "@/shared/ui/layout/container";
+import Breadcrumbs from "@/shared/ui/navigation/breadcrumbs";
 import { Text } from "@mantine/core";
 import styles from "./CatalogLayout.module.css";
 

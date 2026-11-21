@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Comments.ReviewRepliComments.Create;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewRepliComments.Create;
 public static class ReviewRepliCommentCreater
@@ -12,6 +12,7 @@ public static class ReviewRepliCommentCreater
         {
             OwnerId = userId,
             CommentableEntityId = request.CommentableEntityId,
+            ParentReplyId = request.RepliId,
             Text = request.Text,
             CreatedAt = DateTime.UtcNow
         };

@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Specification.Currencies.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification;
@@ -18,6 +19,11 @@ public interface ICurrencyQueryRepository
         EntityStatus? status = null);
 
     Task<Currency?> GetByUserAsync(
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
+    Task<CurrencyCacheInfo?> GetCahceInfoByUserAsync(
         long userId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);

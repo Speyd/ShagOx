@@ -1,0 +1,48 @@
+.bottomNav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .bottomNav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.05);
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+  }
+
+  .navItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    text-decoration: none;
+    color: #64748b;
+    padding: 4px 0;
+    transition: color 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .navItem.active {
+    color: var(--color-base, #0f172a);
+  }
+
+  .label {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+
+  .navItem.active .label {
+    font-weight: 600;
+  }
+}

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Db;
+using ShagOxServer.Application.Common.Options.Db;
 using ShagOxServer.Application.Interfaces.Db;
 using ShagOxServer.Domain.Entities.Db;
 
@@ -8,12 +8,12 @@ public class PostgresLoadBalancer
     : IPostgresLoadBalancer
 {
     private readonly IReadOnlyList<Replica> _replicas;
-    private readonly LoadBalancerSettings _setting;
+    private readonly LoadBalancerOptions _setting;
 
 
     public PostgresLoadBalancer(
         IReadOnlyList<Replica> replicas,
-        IOptions<LoadBalancerSettings> setting)
+        IOptions<LoadBalancerOptions> setting)
     {
         _replicas = replicas;
         _setting = setting.Value;
@@ -43,5 +43,15 @@ public class PostgresLoadBalancer
             return selected;
 
         return null;
+    }
+
+    public bool HasHealthyReplica()
+    {
+        var now = DateTime.UtcNow;
+
+        return _replicas.Any(replica =>
+            replica.IsHealthy &&
+            replica.LastHealthCheck != default &&
+            now - replica.LastHealthCheck <= _setting.MaxHealthAge);
     }
 }

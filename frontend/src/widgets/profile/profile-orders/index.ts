@@ -1,1 +1,1 @@
-export { default as OrdersTab } from './ui/OrdersTab';
+export { default as OrdersTab, SalesTab } from "./ui/OrdersTab";

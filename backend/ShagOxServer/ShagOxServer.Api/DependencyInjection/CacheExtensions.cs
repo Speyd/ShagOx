@@ -1,6 +1,5 @@
 using ShagOxServer.Api.Common;
-using ShagOxServer.Application.Common.Settings.Caches;
-using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using StackExchange.Redis;
 
 namespace ShagOxServer.Api.DependencyInjection;
@@ -10,29 +9,29 @@ public static class CacheExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<RedisSettings>(
+        services.Configure<RedisOptions>(
             configuration.GetSection("Redis"));
 
-        services.Configure<RedisSettings>(
+        services.Configure<RedisOptions>(
             configuration.GetSection("UserRedis"));
 
-        services.Configure<CacheSettings>(
+        services.Configure<CacheOptions>(
             configuration.GetSection("Cache"));
 
-        var dataSettings = configuration
+        var dataOptions = configuration
             .GetSection("Redis")
-            .Get<RedisSettings>()
+            .Get<RedisOptions>()
             ?? throw new InvalidOperationException(
-                "Redis settings are not configured.");
+                "Redis options are not configured.");
 
-        var userSettings = configuration
+        var userOptions = configuration
             .GetSection("UserRedis")
-            .Get<RedisSettings>()
+            .Get<RedisOptions>()
             ?? throw new InvalidOperationException(
-                "UserRedis settings are not configured.");
+                "UserRedis options are not configured.");
 
-        var dataMuxer = await CreateConnectionAsync(dataSettings);
-        var userMuxer = await CreateConnectionAsync(userSettings);
+        var dataMuxer = await CreateConnectionAsync(dataOptions);
+        var userMuxer = await CreateConnectionAsync(userOptions);
 
         services.AddKeyedSingleton<IConnectionMultiplexer>(
             "DataRedis", dataMuxer);
@@ -44,39 +43,39 @@ public static class CacheExtensions
     }
 
     private static async Task<IConnectionMultiplexer>
-        CreateConnectionAsync(RedisSettings settings)
+        CreateConnectionAsync(RedisOptions options)
     {
-        var options = ConfigurationOptions.Parse(
-            settings.Endpoints);
+        var redisOptions = ConfigurationOptions.Parse(
+            options.Endpoints);
 
-        options.Ssl = settings.Ssl;
-        options.User = settings.User;
-        options.Password = settings.Password;
+        redisOptions.Ssl = options.Ssl;
+        redisOptions.User = options.User;
+        redisOptions.Password = options.Password;
 
-        if (settings.Ssl)
+        if (options.Ssl)
         {
             var clientCertRoot = Path.Combine(
                 ProjectPath.Root,
-                settings.ClientPath);
+                options.ClientPath);
 
-            options.SetUserPemCertificate(
+            redisOptions.SetUserPemCertificate(
                 userCertificatePath: Path.Combine(
                     clientCertRoot,
-                    settings.ClientCrtFileName),
+                    options.ClientCrtFileName),
                 userKeyPath: Path.Combine(
                     clientCertRoot,
-                    settings.ClientKeyFileName));
+                    options.ClientKeyFileName));
 
             var caCertRoot = Path.Combine(
                 ProjectPath.Root,
-                settings.CaPath);
+                options.CaPath);
 
-            options.TrustIssuer(
+            redisOptions.TrustIssuer(
                 Path.Combine(
                     caCertRoot,
-                    settings.CaFileName));
+                    options.CaFileName));
         }
 
-        return await ConnectionMultiplexer.ConnectAsync(options);
+        return await ConnectionMultiplexer.ConnectAsync(redisOptions);
     }
 }

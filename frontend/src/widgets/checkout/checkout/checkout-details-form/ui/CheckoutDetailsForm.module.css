@@ -1,0 +1,90 @@
+.checkoutDetailsForm {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  color: var(--text-base);
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.option input {
+  margin-top: 3px;
+  accent-color: var(--color-primary);
+}
+
+.option:hover,
+.selected {
+  background-color: #f8fafc;
+  border-color: #dbeafe;
+}
+
+.optionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.optionTitle {
+  color: var(--text-base);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.optionDescription {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.submitBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.submitButton {
+  align-self: flex-start;
+  min-width: 240px;
+}
+
+@media (max-width: 640px) {
+  .fields {
+    grid-template-columns: 1fr;
+  }
+
+  .submitButton {
+    width: 100%;
+  }
+}

@@ -28,12 +28,13 @@ public class AttributeDictionaryValueTranslationDeleteService
 
     public AttributeDictionaryValueTranslationDeleteService(
         IRepository<AttributeDictionaryValueTranslation> attributeRepository,
+        ICommandRepository<AttributeDictionaryValueTranslation> attributeCommand,
         AttributeDictionaryValueTranslationValidator attributeValidator,
         AttributeDictionaryValueTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryValueTranslationDeleteService> logger
     )
-        : base(attributeValidator, unitOfWork, logger)
+        : base(attributeCommand, attributeValidator, unitOfWork, logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;

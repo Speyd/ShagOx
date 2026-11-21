@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
@@ -14,9 +15,12 @@ public partial class UserRoleQueryRepository
       IUserRoleQueryRepository
 {
     public UserRoleQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<PagedResult<Role>> GetRolesByUserAsync(

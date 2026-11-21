@@ -31,6 +31,7 @@ public class AdvertisementDeleteService
 
     public AdvertisementDeleteService(
         IRepository<Advertisement> advertRepository,
+        ICommandRepository<Advertisement> advertCommand,
         AdvertisementValidator advertValidator,
         IAdvertisementImageDeleteService imageDeleteService,
         IPictureLoaderService loaderService,
@@ -38,7 +39,7 @@ public class AdvertisementDeleteService
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementDeleteService> logger
     )
-        : base(advertValidator, unitOfWork, logger)
+        : base(advertCommand, advertValidator, unitOfWork, logger)
     {
         _advertRepository = advertRepository;
         _advertValidator = advertValidator;
@@ -121,7 +122,7 @@ public class AdvertisementDeleteService
         foreach (var image in entity.Pictures)
         {
             var imageDelete = await _imageDeleteService
-                .SoftDeleteAsync(image.Id, cancellationToken);
+                .SoftDeleteRecordAsync(image, cancellationToken);
 
             if (!imageDelete.IsSuccess)
                 Result<bool>.Fail(imageDelete.Error);

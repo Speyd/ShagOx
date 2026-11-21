@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -11,10 +12,14 @@ public  class Repository<TEntity>
     IRepository<TEntity>
     where TEntity : BaseEntity
 {
-    public Repository(AppDbContext db)
-        : base(db)
+    public Repository(
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
     {
     }
+
 
     public virtual async Task<TEntity?> GetByIdAsync(
         long entityId,
@@ -61,5 +66,15 @@ public  class Repository<TEntity>
         {
             return false;
         }     
+    }
+
+    public virtual async Task LoadCollectionAsync(
+        TEntity entity,
+        string navigation,
+        CancellationToken cancellationToken = default)
+    {
+        await _db.Entry(entity)
+            .Collection(navigation)
+            .LoadAsync(cancellationToken);
     }
 }

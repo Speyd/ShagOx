@@ -1,11 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Currencies.Query;
 public partial class CurrencyQueryRepository 
@@ -13,9 +17,12 @@ public partial class CurrencyQueryRepository
     ICurrencyQueryRepository
 {
     public CurrencyQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 
 
     public async Task<Currency?> GetByCodeAsync(
@@ -50,5 +57,18 @@ public partial class CurrencyQueryRepository
             .Where(u => u.Id == userId)
             .Select(u => u.Currency)
             .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<CurrencyCacheInfo?> GetCahceInfoByUserAsync(
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        var user = await _db.Users
+            .Where(u => u.Id == userId)
+            .Select(u => u.Currency)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return user?.SelectCacheInfo();
     }
 }

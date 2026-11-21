@@ -26,6 +26,8 @@ public static class PicturesDependencyInjection
 
         services.AddAvatarApplication();
 
+        services.AddCategoryImageApplication();
+
         services.AddReviewImagesApplication();
 
 

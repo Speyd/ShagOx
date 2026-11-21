@@ -1,0 +1,1 @@
+export { CatalogFilters } from "./CatalogFilters";

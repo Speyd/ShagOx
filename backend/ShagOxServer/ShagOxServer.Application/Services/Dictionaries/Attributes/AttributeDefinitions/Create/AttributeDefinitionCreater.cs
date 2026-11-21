@@ -17,6 +17,7 @@ public static class AttributeDefinitionCreater
             Max = request.Max,
             IsVariant = request.IsVariant,
             Multiple = request.Multiple,
+            DictionaryId = request.DictionaryId,
         };
     }
 }

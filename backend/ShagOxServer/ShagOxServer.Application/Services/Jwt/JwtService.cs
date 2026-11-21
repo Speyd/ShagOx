@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
 using ShagOxServer.Domain.Entities.Account;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,11 +9,12 @@ using System.Text;
 
 public class JwtService : IJwtService
 {
-    private readonly JwtSettings _settings;
+    private readonly JwtOptions _options;
 
-    public JwtService(IOptions<JwtSettings> options)
+    public JwtService(
+        IOptions<JwtOptions> options)
     {
-        _settings = options.Value;
+        _options = options.Value;
     }
 
     public string GenerateToken(
@@ -33,7 +34,7 @@ public class JwtService : IJwtService
         }
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_settings.Key)
+            Encoding.UTF8.GetBytes(_options.Key)
         );
 
         var creds = new SigningCredentials(
@@ -42,10 +43,10 @@ public class JwtService : IJwtService
         );
 
         var token = new JwtSecurityToken(
-            issuer: _settings.Issuer,
-            audience: _settings.Audience,
+            issuer: _options.Issuer,
+            audience: _options.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_settings.ExpireMinutes),
+            expires: DateTime.UtcNow.AddMinutes(_options.ExpireMinutes),
             signingCredentials: creds
         );
 

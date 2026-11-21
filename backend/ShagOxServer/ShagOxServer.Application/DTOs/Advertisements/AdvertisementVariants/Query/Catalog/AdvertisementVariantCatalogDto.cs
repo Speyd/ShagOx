@@ -4,6 +4,8 @@ namespace ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Que
 public sealed record AdvertisementVariantCatalogDto
 (
     long Id,
+    decimal Price,
+    decimal? PreviousPrice,
     int Stock,
     List<AttributeDto> Attributes
 );

@@ -18,10 +18,17 @@ public static class AvatarDependencyInjection
     public static IServiceCollection AddAvatarApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<IAvatarQueryService, AvatarQueryService>();
-        services.AddScoped<IAvatarCreateService, AvatarCreateService>();
-        services.AddScoped<IAvatarDeleteService, AvatarDeleteService>();
-        services.AddScoped<IAvatarUpdateService, AvatarUpdateService>();
+        services.AddScoped<IAvatarQueryService, 
+            AvatarQueryService>();
+
+        services.AddScoped<IAvatarCreateService, 
+            AvatarCreateService>();
+
+        services.AddScoped<IAvatarDeleteService, 
+            AvatarDeleteService>();
+
+        services.AddScoped<IAvatarUpdateService, 
+            AvatarUpdateService>();
 
         services.AddScoped<
            IPictureDeleteService<Avatar>,

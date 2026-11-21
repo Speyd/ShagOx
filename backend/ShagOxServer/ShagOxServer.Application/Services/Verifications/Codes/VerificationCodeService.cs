@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Verifivations;
+using ShagOxServer.Application.Common.Options.Verifivations;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Verifications.VerificationCodes;
@@ -18,7 +18,7 @@ public class VerificationCodeService
 {
     private readonly IRepository<VerificationCode> _repository;
     private readonly IVerificationCodeQueryRepository _queryRepository;
-    private readonly VerificationCodeSettings _options;
+    private readonly VerificationCodeOptions _options;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<VerificationCodeService> _logger;
@@ -27,7 +27,7 @@ public class VerificationCodeService
     public VerificationCodeService(
         IRepository<VerificationCode> repository,
         IVerificationCodeQueryRepository queryRepository,
-        IOptions<VerificationCodeSettings> options,
+        IOptions<VerificationCodeOptions> options,
         IUnitOfWork unitOfWork,
         ILogger<VerificationCodeService> logger)
     {
@@ -43,8 +43,7 @@ public class VerificationCodeService
         VerificationCodePurpose purpose,
         string? pendingValue = null)
     {
-        var oldCode = await _queryRepository
-            .GetActiveByUserIdAsync(userId);
+        var oldCode = await GetActiveCodeAsync(userId);
 
         if (oldCode is not null)
             oldCode.InvalidatedAt = DateTime.UtcNow;
@@ -97,8 +96,7 @@ public class VerificationCodeService
         long userId,
         string hashCode)
     {
-        var code =
-            await _queryRepository.GetActiveByUserIdAsync(userId);
+        var code = await GetActiveCodeAsync(userId);
 
         if (code is null)
             return new (VerificationCodeResult.NotFound, code);
@@ -140,5 +138,17 @@ public class VerificationCodeService
             userId);
 
         return new(VerificationCodeResult.Success, code);
+    }
+
+    private async Task<VerificationCode?> GetActiveCodeAsync(
+        long userId)
+    {
+        var code = await _queryRepository
+            .GetActiveByUserIdAsync(userId);
+
+        if (code is null)
+            return null;
+
+        return await _repository.GetByIdAsync(code.Id);
     }
 }

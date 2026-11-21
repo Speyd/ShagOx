@@ -38,8 +38,3 @@
   margin: 0;
 }
 
-.mainColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}

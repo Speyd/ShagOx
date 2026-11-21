@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 
@@ -9,7 +10,10 @@ public class ReviewCommentExistsRepository
       IReviewCommentExistsRepository
 {
     public ReviewCommentExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 }

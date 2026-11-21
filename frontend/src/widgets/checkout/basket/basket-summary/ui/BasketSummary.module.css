@@ -1,0 +1,22 @@
+.card {
+  border-color: var(--color-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.checkoutButton {
+  background-color: var(--color-base) !important;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+  font-weight: 600;
+}
+
+.checkoutButton:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+.checkoutButton:disabled {
+  background-color: #e2e8f0;
+  color: #94a3b8;
+}

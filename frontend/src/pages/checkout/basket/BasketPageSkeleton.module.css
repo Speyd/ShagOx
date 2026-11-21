@@ -1,0 +1,31 @@
+.wrapper {
+  min-height: 100vh;
+  background-color: #f4f6f9;
+}
+
+.card {
+  background-color: #ffffff;
+  border-color: #e5e9f0;
+}
+
+.imageSkeleton {
+  flex-shrink: 0;
+}
+
+.itemContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.progressWrapper {
+  min-width: 220px;
+  flex: 1;
+  max-width: 260px;
+}
+
+@media (max-width: 48em) {
+  .progressWrapper {
+    max-width: 100%;
+    width: 100%;
+  }
+}

@@ -9,34 +9,18 @@ import ScrollToTop from "@/shared/lib/ScrollToTop";
 
 export default function App() {
   const setUser = useAuthStore((state) => state.setUser);
-
   const { data: user, isLoading, isError } = useMe();
 
   useEffect(() => {
     if (isLoading) return;
-
     setUser(isError ? null : (user ?? null));
   }, [user, isLoading, isError, setUser]);
-
-  if (isLoading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <h3>Ініціалізація додатка...</h3>
-      </div>
-    );
-  }
 
   return (
     <>
       <ScrollToTop />
-      <Router /> <Toaster />
+      <Router />
+      <Toaster />
     </>
   );
 }

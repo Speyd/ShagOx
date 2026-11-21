@@ -1,0 +1,21 @@
+.categoryItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 6px 0;
+  font-size: 14px;
+  color: #334155;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.categoryItem:hover {
+  color: #2563eb;
+}
+
+.categoryItemActive {
+  font-weight: 600;
+  color: #2563eb;
+}

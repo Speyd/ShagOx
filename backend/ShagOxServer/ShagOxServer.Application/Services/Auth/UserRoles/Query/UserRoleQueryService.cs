@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Caches;
+using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
@@ -39,9 +39,11 @@ public class UserRoleQueryService
         IUserQueryService userService,
         IRoleQueryService roleService,
         IDataCacheService cache,
-        IOptions<CacheSettings> settings
+        IOptions<CacheOptions> cacheOptions
     )
-        : base(userRoleQueryRepository, cache, settings)
+        : base(userRoleQueryRepository, 
+            cache,
+            cacheOptions)
     {
         _userRoleQueryRepository = userRoleQueryRepository;
         _userService = userService;
@@ -78,7 +80,7 @@ public class UserRoleQueryService
                 return await roles.ToResultPagedAsync(
                     _roleService.ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -101,7 +103,7 @@ public class UserRoleQueryService
 
                 return Result<List<RoleCacheInfo>>.Success(roles);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -128,7 +130,7 @@ public class UserRoleQueryService
                 return await users.ToResultPagedAsync(
                     _userService.ApplyMapperAsync);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 
@@ -151,7 +153,7 @@ public class UserRoleQueryService
 
                 return Result<List<UserCacheInfo>>.Success(users);
             },
-            _settings.KeyExpiration
+            _cacheOptions.KeyExpiration
         );
     }
 }

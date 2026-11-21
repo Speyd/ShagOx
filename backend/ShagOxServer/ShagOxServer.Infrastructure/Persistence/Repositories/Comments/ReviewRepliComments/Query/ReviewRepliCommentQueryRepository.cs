@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Domain.Filters.Comments;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Comments.Core.Query;
@@ -11,7 +12,10 @@ public partial class ReviewRepliCommentQueryRepository
       IReviewRepliCommentQueryRepository
 {
     public ReviewRepliCommentQueryRepository(
-        ReplicaDbContext db)
-        : base(db)
-    { }
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 }

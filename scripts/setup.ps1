@@ -31,7 +31,7 @@ if (-not (Get-Command openssl -ErrorAction SilentlyContinue)) {
 Write-Host "OpenSSL is available."
 openssl version
 
-Write-Host "=== Starting infrastructure ==="
+Write-Host "=== Starting infrastructure (Redis) ==="
 
 Push-Location (Join-Path $projectRoot "infrastructure\my_redis\init")
 try {

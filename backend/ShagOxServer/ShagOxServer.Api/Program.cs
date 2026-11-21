@@ -28,12 +28,15 @@ try
         .AddJWT(builder.Configuration)
         .AddCurrency(builder.Configuration)
         .AddCloudinary(builder.Configuration)
-        .AddSettingsConfiguration(builder.Configuration)
+        .AddOptionsConfiguration(builder.Configuration)
+        .AddDelivery(builder.Configuration)
+        .AddPayments(builder.Configuration)
         .AddFrontendPolicy()
         .AddControllersWithJson()
         .AddSwaggerDocumentation()
         .AddApplication()
         .AddInfrastructure()
+        .AddDevelopmentEmailFallback(builder.Configuration, builder.Environment)
         .AddHttpContextAccessor();
 
 

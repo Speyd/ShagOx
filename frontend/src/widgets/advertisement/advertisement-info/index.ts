@@ -1,1 +1,1 @@
-export { default } from "./ui/AdvertisementInfo";
+export { AdvertisementInfo } from "./ui/AdvertisementInfo";

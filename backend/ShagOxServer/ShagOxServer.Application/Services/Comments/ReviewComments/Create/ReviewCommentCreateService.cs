@@ -7,11 +7,13 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.Validations;
+using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewComments.Create;
@@ -51,6 +53,17 @@ public class ReviewCommentCreateService
         long ownerId,
         CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(request.Text))
+        {
+            return Result<CreateResponse>
+                .Fail(ValidationResources.CommentTextRequired);
+        }
+
+        var grade = ReviewGrade.Validate(request.Grade);
+
+        if (!grade.IsSuccess)
+            return Result<CreateResponse>.Fail(grade.Error);
+
         var exists = await _commentValidator
             .ValidateCommentAsync(
                 ownerId, 
@@ -73,21 +86,25 @@ public class ReviewCommentCreateService
         {
             _commentRepository.Add(comment);
 
+            await _unitOfWork.SaveChangesAsync();
 
-            var imagesResult = await _imageCreateService
-               .CreateAsync(
-                   new PicturesCreateRequest(
-                       request.CommentableEntityId,
-                       request.Pictures
-                   ), cancellationToken
-           );
-
-            if (!imagesResult.IsSuccess)
+            if (request.Pictures is { Count: > 0 })
             {
-                await _unitOfWork.RollbackAsync();
+                var imagesResult = await _imageCreateService
+                    .CreateAsync(
+                        new PicturesCreateRequest(
+                            comment.Id,
+                            request.Pictures
+                        ), cancellationToken
+                    );
 
-                return Result<CreateResponse>
-                    .Fail(imagesResult.Error!);
+                if (!imagesResult.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<CreateResponse>
+                        .Fail(imagesResult.Error!);
+                }
             }
 
 

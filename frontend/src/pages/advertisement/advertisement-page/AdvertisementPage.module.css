@@ -1,18 +1,18 @@
 .wrapper {
-  padding: 60px 0;
+  padding: clamp(24px, 4vw, 60px) 0;
   background-color: var(--bg-base);
 }
 
 .pageContent {
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: clamp(28px, 3.5vw, 48px);
 }
 
 .topSection {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 150px;
+  grid-template-columns: minmax(0, 760px) minmax(340px, 1fr);
+  gap: clamp(32px, 6vw, 150px);
   width: 100%;
   align-items: start;
 }
@@ -27,22 +27,19 @@
 .bottomSection {
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: clamp(28px, 3.5vw, 48px);
   width: 100%;
+  min-width: 0;
 }
 
 @media (max-width: 900px) {
   .topSection {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(20px, 4vw, 32px);
+    justify-items: center;
   }
 
   .infoColumn {
-    gap: 24px;
-  }
-
-  .pageContent,
-  .bottomSection {
-    gap: 32px;
+    width: 100%;
   }
 }

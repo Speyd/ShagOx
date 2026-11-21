@@ -18,6 +18,7 @@
     "@hookform/resolvers": "^5.4.0",
     "@hugeicons/react": "^1.1.10",
     "@mantine/carousel": "^9.5.0",
+    "@mantine/charts": "^9.5.0",
     "@mantine/core": "^9.5.0",
     "@mantine/hooks": "^9.5.0",
     "@mantine/modals": "^9.5.0",
@@ -33,6 +34,7 @@
     "react-easy-crop": "^6.2.3",
     "react-hook-form": "^7.80.0",
     "react-router-dom": "^7.17.0",
+    "recharts": "^3.10.1",
     "sonner": "^2.0.8",
     "zod": "^4.4.3",
     "zustand": "^5.0.14"

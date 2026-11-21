@@ -4,6 +4,12 @@
   gap: 32px !important;
   border-radius: 20px;
   border: 1px solid var(--color-border);
+  width: 100%;
+}
+
+.title {
+  font-size: clamp(18px, 3vw, 24px) !important;
+  font-weight: 600 !important;
 }
 
 .list {
@@ -21,11 +27,74 @@
   border: 1px solid #d9e4f2 !important;
   border-radius: 8px !important;
   color: #183250;
-  font-size: 13px;
+  font-size: clamp(12px, 1.2vw, 15px) !important;
 }
 
 .tab[data-active] {
   border-color: #0f2238 !important;
   background: #0f2238 !important;
   color: #fff !important;
+}
+
+.orders {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.order {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.order:hover {
+  border-color: #0f2238;
+}
+
+.orderHeader,
+.orderFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.pictures {
+  display: flex;
+  gap: 8px;
+}
+
+.picture {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: contain;
+  background-color: #ffff;
+}
+
+.orderHighlighted {
+  border-color: #fdba74;
+  background-color: #fff7ed;
+}
+
+.counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background-color: #ea580c;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
 }

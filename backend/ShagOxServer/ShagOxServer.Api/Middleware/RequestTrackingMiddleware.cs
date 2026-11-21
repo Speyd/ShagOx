@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Systems.Middleware;
+using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Caches.Keys.Security;
 using ShagOxServer.Domain.Entities.Security;
@@ -10,17 +10,17 @@ public sealed class RequestTrackingMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IUserCacheService _userCache;
-    private readonly RequestTrackingSettings _settings;
+    private readonly RequestTrackingOptions _trackingOptions;
 
-
+    
     public RequestTrackingMiddleware(
         RequestDelegate next,
         IUserCacheService userCache,
-        IOptions<RequestTrackingSettings> settings)
+        IOptions<RequestTrackingOptions> trackingOptions)
     {
         _next = next;
         _userCache = userCache;
-        _settings = settings.Value;
+        _trackingOptions = trackingOptions.Value;
     }
 
 
@@ -70,7 +70,7 @@ public sealed class RequestTrackingMiddleware
         await _userCache.SetAsync(
             cacheKey,
             state,
-            _settings.CacheDuration);
+            _trackingOptions.CacheDuration);
 
         await _next(context);
     }
@@ -102,20 +102,20 @@ public sealed class RequestTrackingMiddleware
     {
         state.HttpRequest++;
 
-        if (state.HttpRequest % _settings.RequestsPerToken != 0)
+        if (state.HttpRequest % _trackingOptions.RequestsPerToken != 0)
             return;
 
         state.RemainingTokens++;
 
-        for(int i = 1; i <= _settings.BanLevelCount; i++)
+        for(int i = 1; i <= _trackingOptions.BanLevelCount; i++)
         {
             var tokenThreshold = Math.Ceiling(
-                (double)_settings.MaxTokens / i);
+                (double)_trackingOptions.MaxTokens / i);
 
             if (state.RemainingTokens >= tokenThreshold)
             {
                 state.BannedUntil = now.Add(
-                    _settings.BanDuration / i);
+                    _trackingOptions.BanDuration / i);
 
                 break;
             }

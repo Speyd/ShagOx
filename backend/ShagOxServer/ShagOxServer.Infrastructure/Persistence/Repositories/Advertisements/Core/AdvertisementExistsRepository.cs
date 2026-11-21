@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
@@ -9,7 +10,10 @@ public class AdvertisementExistsRepository
       IAdvertisementExistsRepository
 {
     public AdvertisementExistsRepository(
-        AppDbContext db)
-        : base(db)
-    { }
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
+    {
+    }
 }

@@ -14,7 +14,12 @@ public class AdvertisementVariantConfiguration
             .IsRequired();
 
         builder.Property(x => x.PreviousPrice)
-            .HasPrecision(18, 2);
+            .HasPrecision(18, 2)
+            .HasDefaultValue(null);
+
+        builder.Property(x => x.Weight)
+            .HasPrecision(18, 2)
+            .HasDefaultValue(0m);
 
         builder.Property(x => x.Stock)
             .IsRequired();

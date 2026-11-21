@@ -1,0 +1,31 @@
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.group + .group {
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.seller {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-base);
+}
+
+.checkout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}

@@ -2,14 +2,17 @@ using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
+using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
+using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.CategoryImages;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -28,6 +31,9 @@ public class CategoryInvalidationService
     private readonly ICategoryTranslationQueryRepository _transRepository;
     private readonly CategoryTranslationInvalidationService _transInvalid;
 
+    private readonly ICategoryImageQueryRepository _imageRepository;
+    private readonly CategoryImageInvalidationService _imageInvalid;
+
     private readonly IDataCacheService _cache;
 
 
@@ -39,6 +45,8 @@ public class CategoryInvalidationService
         AdvertisementInvalidationService advertInvalid,
         ICategoryTranslationQueryRepository transRepository,
         CategoryTranslationInvalidationService transInvalid,
+        ICategoryImageQueryRepository imageRepository,
+        CategoryImageInvalidationService imageInvalid,
         IDataCacheService cache)
     {
         _attributeRepository = attributeRepository;
@@ -47,6 +55,8 @@ public class CategoryInvalidationService
         _advertInvalid = advertInvalid;
         _transRepository = transRepository;
         _transInvalid = transInvalid;
+        _imageRepository = imageRepository;
+        _imageInvalid = imageInvalid;
         _cache = cache;
     }
 
@@ -90,6 +100,15 @@ public class CategoryInvalidationService
         {
             await _transInvalid
                 .InvalidateDeleteAsync(transInfo);
+        }
+
+        var imageInfo = await GetImageInfo(
+            entityInfo.Id);
+
+        if (imageInfo is not null)
+        {
+            await _imageInvalid
+                .InvalidateDeleteAsync(imageInfo);
         }
     }
 
@@ -163,5 +182,12 @@ public class CategoryInvalidationService
     {
         return await _transRepository
             .GetCacheInfosByTranslatableAsync(entityId);
+    }
+
+    private async Task<PictureCacheInfo?> GetImageInfo(
+       long entityId)
+    {
+        return await _imageRepository
+            .GetCacheInfoByOwnerAsync(entityId);
     }
 }

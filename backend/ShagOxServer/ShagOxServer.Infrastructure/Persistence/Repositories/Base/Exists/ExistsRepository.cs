@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -7,11 +8,15 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 public class ExistsRepository<TEntity>
-    : RepositoryContext<TEntity>, IExistsRepository<TEntity>
+    : RepositoryContext<TEntity>, 
+    IExistsRepository<TEntity>
     where TEntity : BaseEntity
 {
-    public ExistsRepository(AppDbContext db)
-        : base(db)
+    public ExistsRepository(
+        AppDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
     {
     }
 

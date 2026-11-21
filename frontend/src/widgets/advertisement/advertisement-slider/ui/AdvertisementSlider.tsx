@@ -4,12 +4,15 @@ import { Text, UnstyledButton } from "@mantine/core";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { EmblaCarouselType } from "embla-carousel";
 import styles from "./AdvertisementSlider.module.css";
-import type { Advertisement } from "@/shared/lib/types/advertisements";
-import AdvertisementCard from "@/entities/advertisement/ui/AdvertisementCard";
+import type {
+  Advertisement,
+  CatalogAdvertisement,
+} from "@/shared/lib/types/advertisements";
+import { AdvertisementCard } from "@/entities/advertisement";
 
 interface AdvertisementSliderProps {
   title: string;
-  items: Advertisement[];
+  items: (Advertisement | CatalogAdvertisement)[];
   isLoading?: boolean;
 }
 
@@ -47,8 +50,13 @@ export default function AdvertisementSlider({
       <Carousel
         getEmblaApi={setEmbla}
         onSlideChange={handleSelect}
-        slideSize={{ base: "100%", sm: "50%", md: "25%" }}
-        slideGap="md"
+        slideSize={{
+          base: "calc(50% - 6px)",
+          xs: "calc(50% - 8px)",
+          sm: "33.333%",
+          md: "25%",
+        }}
+        slideGap={{ base: "xs", sm: "md" }}
         withControls={false}
         className={styles.carousel}
         styles={{

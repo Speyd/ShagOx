@@ -42,7 +42,7 @@ public partial class AdvertisementVariantUpdateService
         ILogger<AdvertisementVariantUpdateService> logger,
         IDataCacheService cache
     )
-        : base(deleteService, variantValidator, 
+        : base(deleteService, variantValidator,
             logger, unitOfWork)
     {
         _variantRepository = variantRepository;
@@ -108,7 +108,7 @@ public partial class AdvertisementVariantUpdateService
         CancellationToken cancellationToken = default)
     {
         var variant = await _variantValidator
-            .GetByIdAsync(variantId, cancellationToken);
+            .GetByIdAttachAsync(variantId, cancellationToken);
 
         if (!variant.IsSuccess)
         {

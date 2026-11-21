@@ -1,0 +1,33 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ShagOxServer.Domain.Entities.Deliveries.Translations;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
+
+namespace ShagOxServer.Infrastructure.Persistence.Configurations.Deliveries.Translations;
+public class DeliveryProviderTranslationConfiguration
+    : IEntityTypeConfiguration<DeliveryProviderTranslation>
+{
+    public void Configure(
+        EntityTypeBuilder<DeliveryProviderTranslation> builder)
+    {
+        builder.Property(x => x.Language)
+            .HasMaxLength(30)
+            .IsRequired();
+
+        builder.Property(x => x.Name)
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.HasOne(x => x.Translatable)
+            .WithMany(x => x.Translations)
+            .HasForeignKey(x => x.TranslatableId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasUniqueActiveIndex(x =>
+            new { x.TranslatableId, x.Language });
+
+        builder.HasIndex(x => x.Name);
+
+        builder.HasIndex(x => new { x.Language, x.Name });
+    }
+}

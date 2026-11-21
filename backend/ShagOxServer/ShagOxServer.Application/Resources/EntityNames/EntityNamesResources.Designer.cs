@@ -142,15 +142,6 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Basket attribute.
-        /// </summary>
-        public static string BasketAttribute {
-            get {
-                return ResourceManager.GetString("BasketAttribute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Basket item.
         /// </summary>
         public static string BasketItem {
@@ -165,6 +156,15 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         public static string Category {
             get {
                 return ResourceManager.GetString("Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Category image.
+        /// </summary>
+        public static string CategoryImage {
+            get {
+                return ResourceManager.GetString("CategoryImage", resourceCulture);
             }
         }
         
@@ -232,6 +232,24 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Delivery provider.
+        /// </summary>
+        public static string DeliveryProvider {
+            get {
+                return ResourceManager.GetString("DeliveryProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delivery provider translation.
+        /// </summary>
+        public static string DeliveryProviderTranslation {
+            get {
+                return ResourceManager.GetString("DeliveryProviderTranslation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Favorite.
         /// </summary>
         public static string Favorite {
@@ -246,6 +264,42 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         public static string Image {
             get {
                 return ResourceManager.GetString("Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Line item attribute.
+        /// </summary>
+        public static string LineItemAttribute {
+            get {
+                return ResourceManager.GetString("LineItemAttribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Order.
+        /// </summary>
+        public static string Order {
+            get {
+                return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Order item.
+        /// </summary>
+        public static string OrderItem {
+            get {
+                return ResourceManager.GetString("OrderItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Payment.
+        /// </summary>
+        public static string Payment {
+            get {
+                return ResourceManager.GetString("Payment", resourceCulture);
             }
         }
         
@@ -354,6 +408,15 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         public static string VerificationCode {
             get {
                 return ResourceManager.GetString("VerificationCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Webhook.
+        /// </summary>
+        public static string Webhook {
+            get {
+                return ResourceManager.GetString("Webhook", resourceCulture);
             }
         }
     }

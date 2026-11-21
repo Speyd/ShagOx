@@ -1,23 +1,20 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Settings.Auth;
+using ShagOxServer.Application.Common.Options.Auth;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
-using ShagOxServer.Application.Services.Auth.Users.Roles;
-using ShagOxServer.Domain.Entities.Account;
 
 namespace ShagOxServer.Application.Services.Auth.Externals;
 public partial class GoogleLoginService 
     : IGoogleLoginService
 {
-    private readonly GoogleSettings _googleSettings;
+    private readonly GoogleOptions _googleOptions;
 
     private readonly IRegisterService _register;
 
@@ -32,7 +29,7 @@ public partial class GoogleLoginService
 
 
     public GoogleLoginService(
-        IOptions<GoogleSettings> googleSettings,
+        IOptions<GoogleOptions> googleOptions,
         IRegisterService register,
         IBasketCreateService basketService,
         IUserQueryRepository userQueryRepository,
@@ -42,7 +39,7 @@ public partial class GoogleLoginService
         IUnitOfWork unitOfWork,
         ILogger<GoogleLoginService> logger)
     {
-        _googleSettings = googleSettings.Value;
+        _googleOptions = googleOptions.Value;
         _register = register;
         _basketService = basketService; 
         _userQueryRepository = userQueryRepository;

@@ -5,13 +5,21 @@ import { createBasket } from "../../api/api";
 import { useCreateBasketItem } from "./useCreateBasketItem";
 import { useUpdateBasketItem } from "./useUpdateBasketItem";
 import { useGetBasket } from "./useGetBasket";
-import { getBasketItemStock } from "../types";
+import { getBasketItemStock, isSameBasketProduct } from "../types";
 
-export function useBasketAction(
-  variantId?: number,
+type BasketActionOptions = {
+  advertisementId: number;
+  variantId?: number | null;
+  quantity?: number;
+  availableStock?: number | null;
+};
+
+export function useBasketAction({
+  advertisementId,
+  variantId = null,
   quantity = 1,
-  availableStock?: number,
-) {
+  availableStock = null,
+}: BasketActionOptions) {
   const { data: basket, refetch } = useGetBasket();
   const addToBasket = useCreateBasketItem();
   const updateBasketItem = useUpdateBasketItem();
@@ -19,11 +27,10 @@ export function useBasketAction(
   const [isAdding, setIsAdding] = useState(false);
   const pendingRef = useRef(false);
 
+  const productKey = { advertisementId, advertisementVariantId: variantId };
+
   const isInBasket = Boolean(
-    variantId &&
-      basket?.basketItems.some(
-      (item) => item.advertisementVariantId === variantId,
-      ),
+    basket?.basketItems.some((item) => isSameBasketProduct(item, productKey)),
   );
 
   const handleAdd = async (event: MouseEvent<HTMLButtonElement>) => {
@@ -37,12 +44,7 @@ export function useBasketAction(
       return;
     }
 
-    if (!variantId) {
-      toast.error("Варіант товару не знайдено");
-      return;
-    }
-
-    if (availableStock !== undefined && availableStock <= 0) {
+    if (availableStock !== null && availableStock <= 0) {
       toast.error("Товару немає в наявності");
       return;
     }
@@ -59,13 +61,14 @@ export function useBasketAction(
       }
 
       const currentBasket = basketResult.data ?? null;
-      const existingItem = currentBasket?.basketItems.find(
-        (item) => item.advertisementVariantId === variantId,
+      const existingItem = currentBasket?.basketItems.find((item) =>
+        isSameBasketProduct(item, productKey),
       );
 
       if (existingItem) {
         const stock = getBasketItemStock(existingItem);
-        const nextQuantity = Math.min(existingItem.quantity + quantity, stock);
+        const wanted = existingItem.quantity + quantity;
+        const nextQuantity = stock === null ? wanted : Math.min(wanted, stock);
 
         if (nextQuantity <= existingItem.quantity) {
           toast.error("У кошику вже максимальна доступна кількість");
@@ -80,17 +83,16 @@ export function useBasketAction(
         return;
       }
 
-      const basketId = currentBasket?.id ?? (await createBasket()).id;
+      const parentId = currentBasket?.id ?? (await createBasket()).id;
       const itemQuantity =
-        availableStock === undefined
-          ? quantity
-          : Math.min(quantity, availableStock);
+        availableStock === null ? quantity : Math.min(quantity, availableStock);
 
       mutationStarted = true;
       await addToBasket.mutateAsync({
-        basketId,
-        quantity: itemQuantity,
+        parentId,
+        advertisementId,
         advertisementVariantId: variantId,
+        quantity: itemQuantity,
       });
     } catch {
       if (!mutationStarted) {
@@ -104,10 +106,7 @@ export function useBasketAction(
 
   return {
     isInBasket,
-    isLoading:
-      isAdding ||
-      addToBasket.isPending ||
-      updateBasketItem.isPending,
+    isLoading: isAdding || addToBasket.isPending || updateBasketItem.isPending,
     handleAdd,
   };
 }

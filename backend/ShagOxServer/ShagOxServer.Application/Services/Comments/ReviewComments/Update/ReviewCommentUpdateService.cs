@@ -12,7 +12,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.PictureOrdering;
-using ShagOxServer.Domain.Entities.Comments;
+using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -60,30 +60,43 @@ public class ReviewCommentUpdateService
         ReviewCommentUpdateRequest request,
         CancellationToken cancellationToken = default)
     {
+        if (request.Grade.HasValue)
+        {
+            var grade = ReviewGrade.Validate(request.Grade.Value);
+
+            if (!grade.IsSuccess)
+                return Result<UpdateResponse>.Fail(grade.Error);
+        }
+
         var comment = await _commitValidator
             .GetByIdIncludeAsync(commentId, cancellationToken);
         if (!comment.IsSuccess)
             return Result<UpdateResponse>.Fail(comment.Error);
 
+        var tracked = await _commitValidator
+            .GetByIdAttachAsync(commentId, cancellationToken);
+        if (!tracked.IsSuccess)
+            return Result<UpdateResponse>.Fail(tracked.Error);
+
         var updatedCount = ReviewCommentUpdater
-            .ApplyUpdates(comment.Value!, request);
+            .ApplyUpdates(tracked.Value!, request);
+
+        var hasPictureChanges = request.Pictures is { Count: > 0 };
 
         var result = new UpdateResponse(
-            updatedCount,
+            updatedCount + (hasPictureChanges ? request.Pictures!.Count : 0),
             DateTime.UtcNow
         );
 
-        if (updatedCount == 0)
+        if (updatedCount == 0 && !hasPictureChanges)
             return Result<UpdateResponse>.Success(result);
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            _commitRepository.Update(comment.Value!);
-
             var imagesResult = await _executor.SyncAsync(
-                comment.Value!,
+                tracked.Value!,
                 request.Pictures,
                 cancellationToken
             );

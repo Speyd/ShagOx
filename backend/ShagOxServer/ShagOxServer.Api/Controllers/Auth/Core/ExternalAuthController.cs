@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Application.Common.Settings.Systems;
+using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.Auth.Externals.Google;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
@@ -18,11 +18,11 @@ public class ExternalAuthController
 
     public ExternalAuthController(
         IGoogleLoginService googleLoginService,
-        IOptions<JwtSettings> jwtSettings,
+        IOptions<JwtOptions> jwtOptions,
         ILogger<ApiCookieController> logger,
         IUserContext userContext
     )
-        : base(jwtSettings, logger, userContext)
+        : base(jwtOptions, logger, userContext)
     {
         _googleLoginService = googleLoginService;
     }

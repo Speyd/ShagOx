@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 import styles from "./ProfileLayout.module.css";
 import { Text } from "@mantine/core";
 import { ProfileTabs } from "@/widgets/profile/profile-tabs";
@@ -17,9 +17,7 @@ export default function ProfileLayout() {
     <section className={styles.profileLayout}>
       <Container>
         <div className={styles.content}>
-          <Text fw={700} fz={40} c={"var(--color-base)"}>
-            Мій профіль
-          </Text>
+          <Text className={styles.title}>Мій профіль</Text>
           <ProfileTabs />
           <div className={`${styles.pageLayout} ${styles[orientation]}`}>
             <ProfileHeader

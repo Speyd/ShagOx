@@ -1,58 +1,28 @@
-import IconButton from "@/shared/ui/icon-button";
+import IconButton from "@/shared/ui/buttons/icon-button";
 import styles from "./FavoriteButton.module.css";
 import { Heart } from "lucide-react";
-import { useAddToFavorites } from "../model/hooks/useAddToFavorites";
-import { useDeleteFavorite } from "../model/hooks/useDeleteFavorite";
-import { useGetFavorites } from "../model/hooks/useGetFavorites";
-import { toast } from "sonner";
-import { useAuthStore } from "@/features/auth";
+import { useToggleFavorite } from "../model/hooks/useToggleFavorite";
 
 type FavoriteButtonProps = {
   advertisementId: number;
+  defaultIsFavorite?: boolean;
   variant?: "default" | "card";
   className?: string;
 };
 
 export default function FavoriteButton({
   advertisementId,
+  defaultIsFavorite,
   variant = "default",
   className,
 }: FavoriteButtonProps) {
-  const user = useAuthStore((state) => state.user);
-
-  const addMutation = useAddToFavorites();
-  const deleteMutation = useDeleteFavorite();
-
-  const { data: favorites, isLoading: isFavoritesLoading } = useGetFavorites();
-
-  // Шукаємо, чи є оголошення в обраному (без useState!)
-  const favorite = favorites?.items?.find(
-    (x) => x.advertisement?.id === advertisementId,
-  );
-  const isFavorite = Boolean(favorite);
-
-  const isPending =
-    isFavoritesLoading || addMutation.isPending || deleteMutation.isPending;
+  const { isFavorite, isPending, toggleFavorite } =
+    useToggleFavorite(advertisementId, defaultIsFavorite);
 
   function handleClick(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-
-    if (!user) {
-      toast.error(
-        "Ви повинні бути зареєстровані, щоб додавати оголошення в обране.",
-      );
-      return;
-    }
-
-    if (favorite) {
-      deleteMutation.mutate(favorite.id);
-    } else {
-      addMutation.mutate({
-        advertisementId,
-        userId: user.id,
-      });
-    }
+    toggleFavorite();
   }
 
   if (variant === "card") {

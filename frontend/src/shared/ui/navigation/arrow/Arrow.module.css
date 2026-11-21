@@ -1,0 +1,31 @@
+.seeMore {
+  display: inline-flex;
+  cursor: pointer;
+  color: var(--color-textSecond);
+  transition: color 200ms ease;
+}
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.line {
+  width: 8px;
+  height: 2px;
+  background: currentColor;
+  transition: width 300ms ease;
+}
+
+.icon {
+  transform: translateX(-5px);
+}
+
+.seeMore:hover {
+  color: var(--color-primary);
+}
+
+.seeMore:hover .line {
+  width: 22px;
+}

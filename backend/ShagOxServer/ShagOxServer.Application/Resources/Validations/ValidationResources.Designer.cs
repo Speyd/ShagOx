@@ -140,5 +140,23 @@ namespace ShagOxServer.Application.Resources.Validations {
                 return ResourceManager.GetString("UnsupportedAttributeType", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Grade must be between {0} and {1}..
+        /// </summary>
+        internal static string ReviewGradeOutOfRange {
+            get {
+                return ResourceManager.GetString("ReviewGradeOutOfRange", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Comment text is required..
+        /// </summary>
+        internal static string CommentTextRequired {
+            get {
+                return ResourceManager.GetString("CommentTextRequired", resourceCulture);
+            }
+        }
     }
 }

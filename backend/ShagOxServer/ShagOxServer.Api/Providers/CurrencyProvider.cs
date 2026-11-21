@@ -11,6 +11,8 @@ public class CurrencyProvider
     private readonly ICurrencyQueryService _currencyService;
     private readonly IUserContext _userContext;
 
+    private const string BaseCurrencyCode = "USD";
+
 
     public CurrencyProvider(
         ICurrencyQueryService currencyService,
@@ -20,6 +22,7 @@ public class CurrencyProvider
         _userContext = userContext;
     }
 
+
     public async Task<Currency?> GetCurrencyAsync(
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -28,7 +31,18 @@ public class CurrencyProvider
             return null;
 
         var result = await _currencyService
-            .GetByUserAsync(_userContext.UserId.Value, 
+            .GetByUserAsync(_userContext.UserId.Value,
+                cancellationToken, status);
+
+        return result.Value;
+    }
+
+    public async Task<Currency?> GetBaseCurrencyAsync(
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+        var result = await _currencyService
+            .GetEntityByCodeAsync(BaseCurrencyCode,
                 cancellationToken, status);
 
         return result.Value;

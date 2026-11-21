@@ -10,7 +10,6 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System.Net.NetworkInformation;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Delete;
 public class StatusDeleteService
@@ -28,12 +27,13 @@ public class StatusDeleteService
 
     public StatusDeleteService(
         IRepository<Status> statusRepository,
+        ICommandRepository<Status> statusCommand,
         StatusValidator statusValidator,
         StatusInvalidationService statusInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusDeleteService> logger
     )
-        : base(statusValidator, unitOfWork, logger)
+        : base(statusCommand, statusValidator, unitOfWork, logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;

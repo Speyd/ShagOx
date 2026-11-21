@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Statistics;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Account;
 using ShagOxServer.Domain.Filters.Auth.Users;
@@ -37,6 +38,19 @@ public class UserQueriesController
     {
         var result = await _userQueryService
             .GetMyProfileAsync(cancellationToken);
+
+        return result.ToActionResult();
+    }
+
+    /// <summary>Numbers for the profile dashboard (as a seller and as a buyer).</summary>
+    [Authorize]
+    [HttpGet("me/statistics")]
+    public async Task<IActionResult> GetMyStatistics(
+        [FromServices] IUserStatisticsService statisticsService,
+        CancellationToken cancellationToken)
+    {
+        var result = await statisticsService
+            .GetAsync(UserId!.Value, cancellationToken);
 
         return result.ToActionResult();
     }

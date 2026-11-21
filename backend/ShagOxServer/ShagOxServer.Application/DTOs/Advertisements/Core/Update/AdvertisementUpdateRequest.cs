@@ -5,6 +5,9 @@ public sealed record AdvertisementUpdateRequest
 (
     string? Title,
     string? Description,
+    decimal? Price,
+    decimal? PreviousPrice,
+    int? Stock,
     int? Popularity,
     long? CurrencyId,
     long? ConditionId,
@@ -12,5 +15,6 @@ public sealed record AdvertisementUpdateRequest
     long? BuyerId,
     string? Attributes,
     string? Variants,
-    List<OwnerPictureOrderUpdateRequest>? Pictures
+    List<OwnerPictureOrderUpdateRequest>? Pictures,
+    long? StatusId = null
 );

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.Core.Query;
@@ -15,8 +15,6 @@ public static class BasketDependencyInjection
         services.AddScoped<IBasketExistsRepository,
             BasketExistsRepository>();
 
-
-        services.AddBasketAttributeInfrastructure();
 
         services.AddBasketItemInfrastructure();
 

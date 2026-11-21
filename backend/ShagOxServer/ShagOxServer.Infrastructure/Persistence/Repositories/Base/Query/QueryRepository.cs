@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
@@ -12,8 +13,11 @@ public class QueryRepository<TEntity>
     IQueryRepository<TEntity>
     where TEntity : BaseEntity
 {
-    public QueryRepository(ReplicaDbContext db)
-        : base(db)
+    public QueryRepository(
+        ReplicaDbContext db,
+        IUserContext userContext
+    )
+        : base(db, userContext)
     {
     }
 

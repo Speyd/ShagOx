@@ -1,4 +1,4 @@
-import Container from "@/shared/ui/container";
+import Container from "@/shared/ui/layout/container";
 import { Grid, Group, Skeleton, Stack } from "@mantine/core";
 
 export default function AdvertisementDetailsSkeleton() {

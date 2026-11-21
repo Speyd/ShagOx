@@ -57,10 +57,28 @@ export type Order = {
   deliveryPointAddress: string | null;
   deliveryPointType: DeliveryPointType | null;
   deliveryTrackingNumber: string | null;
+  deliveryTrackingUrl: string | null;
   paymentMethod: PaymentMethod;
   paymentStatus: PaymentStatus;
+  paidAt: string | null;
+  /** Коли закінчується діюче посилання на оплату (null — посилання немає). */
+  paymentExpiresAt: string | null;
+  /** До якого моменту замовлення ще можна оплатити онлайн (null — не можна). */
+  paymentDeadline: string | null;
   orderStatus: OrderStatus;
   createdAt: string;
+  confirmedAt: string | null;
+  shippedAt: string | null;
+  deliveredAt: string | null;
+  cancelledAt: string | null;
+  /** Продавець замовлення (null — старе замовлення з товарами кількох продавців). */
+  sellerId: number | null;
+};
+
+export type OrderStatusResponse = {
+  id: number;
+  orderStatus: OrderStatus;
+  changedAt: string;
 };
 
 export type OrderItemCreateRequest = {
@@ -89,7 +107,13 @@ export type OrderCreateRequest = {
   paymentMethod: PaymentMethod;
 };
 
+export type OrderPaymentResponse = {
+  paymentUrl: string;
+  expiresAt: string;
+};
+
 export type OrderCreateResponse = {
   id: number;
+  paymentUrl?: string;
   createdAt: string;
 };

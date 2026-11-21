@@ -5,7 +5,9 @@ import { Trash2 } from "lucide-react";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetBasket } from "@/features/basket/model/hooks/useGetBasket";
 import { getBasketTotal } from "@/features/basket/model/types";
-import BasketItemsList from "@/widgets/checkout/basket/basket-items-list";
+import BasketSellerGroup from "@/widgets/checkout/basket/basket-seller-group";
+import { splitBySeller } from "@/features/basket/model/splitBySeller";
+import type { BasketItem } from "@/features/basket/model/types";
 import BasketSummary from "@/widgets/checkout/basket/basket-summary";
 import styles from "./BasketPage.module.css";
 
@@ -43,9 +45,22 @@ export default function BasketPage() {
     [items, selectedIds],
   );
 
-  const selectedTotal = useMemo(
-    () => getBasketTotal(selectedItems),
+  // Одне замовлення = один продавець, тож кошик оформлюється по продавцях.
+  const groups = useMemo(() => splitBySeller(items), [items]);
+  const selectedGroups = useMemo(
+    () => splitBySeller(selectedItems),
     [selectedItems],
+  );
+  const hasManySellers = groups.length > 1;
+
+  // Підсумок рахує те, що реально піде в наступне замовлення.
+  const nextOrderItems = useMemo(
+    () => selectedGroups[0]?.items ?? [],
+    [selectedGroups],
+  );
+  const selectedTotal = useMemo(
+    () => getBasketTotal(nextOrderItems),
+    [nextOrderItems],
   );
 
   const isAllSelected = items.length > 0 && selectedIds.size === items.length;
@@ -79,15 +94,17 @@ export default function BasketPage() {
     }
   };
 
-  const handleCheckout = () => {
-    if (selectedIds.size === 0) return;
+  const checkoutItems = (itemsToOrder: BasketItem[]) => {
+    if (itemsToOrder.length === 0) return;
 
     sessionStorage.setItem(
       "checkoutItemIds",
-      JSON.stringify(Array.from(selectedIds)),
+      JSON.stringify(itemsToOrder.map((item) => item.id)),
     );
     navigate("/checkout");
   };
+
+  const handleCheckout = () => checkoutItems(nextOrderItems);
 
   if (isLoading) {
     return <BasketPageSkeleton />;
@@ -144,13 +161,19 @@ export default function BasketPage() {
 
             <div className={styles.layout}>
               <div className={styles.leftSection}>
-                <BasketItemsList
-                  items={items}
-                  selectedIds={selectedIds}
-                  onToggleItem={handleToggleItem}
-                  isLoading={isLoading}
-                  className={styles.itemsList}
-                />
+                <div className={styles.itemsList}>
+                  {groups.map((group) => (
+                    <BasketSellerGroup
+                      key={group.sellerId}
+                      sellerId={group.sellerId}
+                      items={group.items}
+                      selectedIds={selectedIds}
+                      onToggleItem={handleToggleItem}
+                      onCheckout={checkoutItems}
+                      showCheckout={hasManySellers}
+                    />
+                  ))}
+                </div>
                 <div className={styles.freeShippingWrapper}>
                   <BasketFreeShipping currentTotal={selectedTotal.amount} />
                 </div>
@@ -158,11 +181,21 @@ export default function BasketPage() {
 
               <div className={styles.rightSection}>
                 <BasketSummary
-                  totalCount={selectedItems.length}
+                  totalCount={nextOrderItems.length}
                   subtotalPrice={selectedTotal.amount}
                   currencySymbol={selectedTotal.symbol}
                   discountPrice={0}
                   onCheckout={handleCheckout}
+                  checkoutLabel={
+                    selectedGroups.length > 1
+                      ? "Оформити першого продавця"
+                      : "Перейти до оформлення"
+                  }
+                  notice={
+                    selectedGroups.length > 1
+                      ? `Обрано товари ${selectedGroups.length} продавців. Кожен продавець відправляє своє замовлення окремо, тому вони оформлюються по черзі.`
+                      : undefined
+                  }
                 />
                 <TrustGuarantees />
               </div>

@@ -75,6 +75,26 @@
   width: 48px;
   height: 48px;
   border-radius: 8px;
-  object-fit: cover;
-  background-color: #f1f5f9;
+  object-fit: contain;
+  background-color: #ffff;
+}
+
+.orderHighlighted {
+  border-color: #fdba74;
+  background-color: #fff7ed;
+}
+
+.counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background-color: #ea580c;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
 }

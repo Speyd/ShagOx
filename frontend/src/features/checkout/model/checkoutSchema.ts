@@ -8,7 +8,12 @@ import type {
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?380\d{9}$/;
 
-export const DELIVERY_METHODS = ["branch", "locker", "courier", "pickup"] as const;
+export const DELIVERY_METHODS = [
+  "branch",
+  "locker",
+  "courier",
+  "pickup",
+] as const;
 export type DeliveryMethod = (typeof DELIVERY_METHODS)[number];
 
 export const checkoutSchema = z
@@ -26,29 +31,45 @@ export const checkoutSchema = z
     street: z.custom<DeliveryStreet>().nullable(),
     building: z.string().trim(),
     flat: z.string().trim(),
-    paymentMethod: z.enum(["CashOnDelivery", "CardOnDelivery"]),
+    paymentMethod: z.enum(["OnDelivery", "Online"]),
     comment: z.string().trim().max(500, "Не більше 500 символів."),
   })
   .superRefine((data, ctx) => {
     if (data.deliveryMethod === "pickup") return;
 
     if (!data.city) {
-      ctx.addIssue({ code: "custom", path: ["city"], message: "Оберіть місто." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["city"],
+        message: "Оберіть місто.",
+      });
       return;
     }
 
     if (data.deliveryMethod === "courier") {
       if (!data.street) {
-        ctx.addIssue({ code: "custom", path: ["street"], message: "Оберіть вулицю." });
+        ctx.addIssue({
+          code: "custom",
+          path: ["street"],
+          message: "Оберіть вулицю.",
+        });
       }
       if (!data.building) {
-        ctx.addIssue({ code: "custom", path: ["building"], message: "Введіть номер будинку." });
+        ctx.addIssue({
+          code: "custom",
+          path: ["building"],
+          message: "Введіть номер будинку.",
+        });
       }
       return;
     }
 
     if (!data.point) {
-      ctx.addIssue({ code: "custom", path: ["point"], message: "Оберіть відділення." });
+      ctx.addIssue({
+        code: "custom",
+        path: ["point"],
+        message: "Оберіть відділення.",
+      });
     }
   });
 

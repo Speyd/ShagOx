@@ -23,14 +23,14 @@ import styles from "./CheckoutDetailsForm.module.css";
 
 const PAYMENT_OPTIONS = [
   {
-    value: "CashOnDelivery",
-    title: "Готівкою при отриманні",
-    description: "Оплата у відділенні або кур'єру",
+    value: "OnDelivery",
+    title: "При отриманні",
+    description: "Оплата при отриманні",
   },
   {
-    value: "CardOnDelivery",
-    title: "Карткою при отриманні",
-    description: "Оплата карткою через термінал перевізника",
+    value: "Online",
+    title: "Карткою",
+    description: "Повна оплата карткою",
   },
 ] as const;
 
@@ -42,7 +42,8 @@ export default function CheckoutDetailsForm({ items }: Props) {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
 
-  const { data: providers, isLoading: providersLoading } = useDeliveryProviders();
+  const { data: providers, isLoading: providersLoading } =
+    useDeliveryProviders();
   const { data: currencies = [] } = useGetCurrencies();
   const createOrder = useCreateOrder();
 
@@ -63,7 +64,7 @@ export default function CheckoutDetailsForm({ items }: Props) {
       street: null,
       building: "",
       flat: "",
-      paymentMethod: "CashOnDelivery",
+      paymentMethod: "OnDelivery",
       comment: "",
     },
   });
@@ -92,9 +93,19 @@ export default function CheckoutDetailsForm({ items }: Props) {
 
     try {
       const order = await createOrder.mutateAsync({
-        request: toOrderRequest(data, items, novaPoshta?.id ?? null, currencyId),
+        request: toOrderRequest(
+          data,
+          items,
+          novaPoshta?.id ?? null,
+          currencyId,
+        ),
         basketItemIds: items.map((item) => item.id),
       });
+
+      if (order.paymentUrl) {
+        window.location.replace(order.paymentUrl);
+        return;
+      }
 
       navigate(`/orders/${order.id}`, {
         replace: true,
@@ -117,15 +128,38 @@ export default function CheckoutDetailsForm({ items }: Props) {
           </Text>
 
           <div className={styles.fields}>
-            <FormField label="Ім'я" htmlFor="firstName" required error={errors.firstName?.message}>
-              <TextField id="firstName" invalid={!!errors.firstName} {...register("firstName")} />
+            <FormField
+              label="Ім'я"
+              htmlFor="firstName"
+              required
+              error={errors.firstName?.message}
+            >
+              <TextField
+                id="firstName"
+                invalid={!!errors.firstName}
+                {...register("firstName")}
+              />
             </FormField>
 
-            <FormField label="Прізвище" htmlFor="lastName" required error={errors.lastName?.message}>
-              <TextField id="lastName" invalid={!!errors.lastName} {...register("lastName")} />
+            <FormField
+              label="Прізвище"
+              htmlFor="lastName"
+              required
+              error={errors.lastName?.message}
+            >
+              <TextField
+                id="lastName"
+                invalid={!!errors.lastName}
+                {...register("lastName")}
+              />
             </FormField>
 
-            <FormField label="Телефон" htmlFor="phone" required error={errors.phone?.message}>
+            <FormField
+              label="Телефон"
+              htmlFor="phone"
+              required
+              error={errors.phone?.message}
+            >
               <TextField
                 id="phone"
                 type="tel"
@@ -135,7 +169,12 @@ export default function CheckoutDetailsForm({ items }: Props) {
               />
             </FormField>
 
-            <FormField label="Електронна пошта" htmlFor="email" required error={errors.email?.message}>
+            <FormField
+              label="Електронна пошта"
+              htmlFor="email"
+              required
+              error={errors.email?.message}
+            >
               <TextField
                 id="email"
                 type="email"
@@ -162,7 +201,11 @@ export default function CheckoutDetailsForm({ items }: Props) {
                   paymentMethod === option.value ? styles.selected : ""
                 }`}
               >
-                <input type="radio" value={option.value} {...register("paymentMethod")} />
+                <input
+                  type="radio"
+                  value={option.value}
+                  {...register("paymentMethod")}
+                />
                 <span className={styles.optionContent}>
                   <span className={styles.optionTitle}>{option.title}</span>
                   <span className={styles.optionDescription}>

@@ -18,6 +18,10 @@ type BasketSummaryProps = {
   discountPrice?: number;
   freeShippingThreshold?: number;
   onCheckout?: () => void;
+  /** Текст кнопки (наприклад, коли оформлюється лише частина кошика). */
+  checkoutLabel?: string;
+  /** Підказка над кнопкою оформлення. */
+  notice?: string;
 };
 
 export default function BasketSummary({
@@ -27,6 +31,8 @@ export default function BasketSummary({
   discountPrice = 0,
   freeShippingThreshold = 5000,
   onCheckout,
+  checkoutLabel = "Перейти до оформлення",
+  notice,
 }: BasketSummaryProps) {
   const isFreeShipping = subtotalPrice >= freeShippingThreshold;
   const finalPrice = Math.max(0, subtotalPrice - discountPrice);
@@ -83,6 +89,12 @@ export default function BasketSummary({
         <Price price={finalPrice} currency={currencySymbol} />
       </Group>
 
+      {notice && (
+        <Text size="sm" c="dimmed" mb="md">
+          {notice}
+        </Text>
+      )}
+
       <Button
         onClick={onCheckout}
         fullWidth
@@ -92,7 +104,7 @@ export default function BasketSummary({
         disabled={totalCount === 0}
         rightSection={<ArrowRight size={18} />}
       >
-        Перейти до оформлення
+        {checkoutLabel}
       </Button>
 
       <Group justify="center" gap={6} mt="md">

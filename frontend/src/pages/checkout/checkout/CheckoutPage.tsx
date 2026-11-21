@@ -6,6 +6,8 @@ import Button from "@/shared/ui/buttons/button";
 import CheckoutDetailsForm from "@/widgets/checkout/checkout/checkout-details-form";
 import OrderSummary from "@/widgets/checkout/checkout/checkout-order-summary";
 import { useGetBasket } from "@/features/basket/model/hooks/useGetBasket";
+import { splitBySeller } from "@/features/basket/model/splitBySeller";
+import { useUserDisplayName } from "@/entities/user/model/hooks/useUserDisplayName";
 import styles from "./CheckoutPage.module.css";
 
 function readSelectedIds() {
@@ -24,11 +26,17 @@ export default function CheckoutPage() {
   const { data: basket, isLoading } = useGetBasket();
   const [selectedIds] = useState(readSelectedIds);
 
-  const items = useMemo(() => {
+  const groups = useMemo(() => {
     const basketItems = basket?.basketItems ?? [];
     const selected = basketItems.filter((item) => selectedIds.has(item.id));
-    return selected.length > 0 ? selected : basketItems;
+    return splitBySeller(selected.length > 0 ? selected : basketItems);
   }, [basket, selectedIds]);
+
+  // Одне замовлення = один продавець. Якщо сюди потрапили товари кількох
+  // продавців, оформлюємо першого, решта лишається в кошику.
+  const items = groups[0]?.items ?? [];
+  const otherSellers = groups.length - 1;
+  const sellerName = useUserDisplayName(groups[0]?.sellerId);
 
   if (isLoading) {
     return <div className={styles.loading}>Завантаження оформлення...</div>;
@@ -50,10 +58,22 @@ export default function CheckoutPage() {
             </Button>
           </div>
         ) : (
-          <div className={styles.contentWrapper}>
-            <OrderSummary items={items} />
-            <CheckoutDetailsForm items={items} />
-          </div>
+          <>
+            {otherSellers > 0 && (
+              <div className={styles.notice}>
+                <Text fz={14}>
+                  Замовлення оформлюється окремо для кожного продавця. Зараз —
+                  товари продавця <b>{sellerName ?? "…"}</b>; товари ще{" "}
+                  {otherSellers} продавц{otherSellers === 1 ? "я" : "ів"}{" "}
+                  залишаться в кошику.
+                </Text>
+              </div>
+            )}
+            <div className={styles.contentWrapper}>
+              <OrderSummary items={items} />
+              <CheckoutDetailsForm items={items} />
+            </div>
+          </>
         )}
       </Container>
     </div>

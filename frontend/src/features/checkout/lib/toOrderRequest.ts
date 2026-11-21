@@ -51,6 +51,8 @@ export function toOrderRequest(
     recipientStreetDto: isCourier ? data.street : null,
     recipientBuildingNumber: isCourier ? data.building : null,
     recipientFlatNumber: isCourier && data.flat ? data.flat : null,
-    paymentMethod: data.paymentMethod,
+    // Бекенд розрізняє готівку й картку при отриманні; у формі це один варіант.
+    paymentMethod:
+      data.paymentMethod === "Online" ? "Online" : "CashOnDelivery",
   };
 }

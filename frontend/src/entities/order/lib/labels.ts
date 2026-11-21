@@ -34,8 +34,8 @@ export const ORDER_STATUS_COLORS: Record<OrderStatus, string> = {
 };
 
 export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
-  CashOnDelivery: "Готівкою при отриманні",
-  CardOnDelivery: "Карткою при отриманні",
+  CashOnDelivery: "Оплата при отриманні",
+  CardOnDelivery: "Оплата карткою при отриманні",
   Online: "Онлайн-оплата",
 };
 
@@ -47,7 +47,8 @@ export const DELIVERY_TYPE_LABELS: Record<DeliveryType, string> = {
 
 export function getDeliveryAddress(order: Order) {
   if (order.deliveryType === "Pickup") return "Самовивіз з магазину";
-  if (order.deliveryType === "HomeDelivery") return "Кур'єром за вказаною адресою";
+  if (order.deliveryType === "HomeDelivery")
+    return "Кур'єром за вказаною адресою";
 
   return order.deliveryPointName ?? order.deliveryPointAddress ?? "";
 }

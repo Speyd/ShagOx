@@ -25,7 +25,7 @@ const RolesPage = lazy(() => import("@/pages/admin/roles/RolesPage"));
 
 import { GeneralTab } from "@/widgets/profile/profile-general";
 import { FavoritesTab } from "@/widgets/profile/profile-favorites";
-import { OrdersTab } from "@/widgets/profile/profile-orders";
+import { OrdersTab, SalesTab } from "@/widgets/profile/profile-orders";
 import ProfileLayout from "../layouts/ProfileLayout";
 import { StatisticsTab } from "@/widgets/profile/profile-statistics";
 import { AuthPage } from "@/pages/auth";
@@ -116,6 +116,7 @@ export default function Router() {
             <Route index element={<GeneralTab />} />
             <Route path="favorites" element={<FavoritesTab />} />
             <Route path="orders" element={<OrdersTab />} />
+            <Route path="sales" element={<SalesTab />} />
             <Route path="statistics" element={<StatisticsTab />} />
           </Route>
 

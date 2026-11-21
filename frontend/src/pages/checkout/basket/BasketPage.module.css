@@ -18,6 +18,9 @@
 }
 
 .itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   max-height: 510px;
   height: 100%;
   overflow-y: auto;

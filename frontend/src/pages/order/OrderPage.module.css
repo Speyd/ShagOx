@@ -81,8 +81,8 @@
   width: 64px;
   height: 64px;
   border-radius: 10px;
-  object-fit: cover;
-  background-color: #f1f5f9;
+  object-fit: contain;
+  background-color: #ffff;
 }
 
 .itemTitle {

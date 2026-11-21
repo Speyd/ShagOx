@@ -95,5 +95,104 @@ namespace ShagOxServer.Application.Resources.Order {
                 return ResourceManager.GetString("OrderStatusUpdateFailed", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An order can contain products of only one seller. Please place orders with different sellers separately..
+        /// </summary>
+        public static string OrderMultipleSellers {
+            get {
+                return ResourceManager.GetString("OrderMultipleSellers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This order does not contain your products..
+        /// </summary>
+        public static string OrderNotSellerOrder {
+            get {
+                return ResourceManager.GetString("OrderNotSellerOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The order contains products of other sellers and can be managed only by an administrator..
+        /// </summary>
+        public static string OrderHasOtherSellersItems {
+            get {
+                return ResourceManager.GetString("OrderHasOtherSellersItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The order can no longer be cancelled: it has already been handed over for delivery..
+        /// </summary>
+        public static string OrderCancelNotAllowed {
+            get {
+                return ResourceManager.GetString("OrderCancelNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only a new order can be confirmed..
+        /// </summary>
+        public static string OrderConfirmNotAllowed {
+            get {
+                return ResourceManager.GetString("OrderConfirmNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The buyer has not paid for the order yet. You can confirm it after the payment..
+        /// </summary>
+        public static string OrderConfirmUnpaid {
+            get {
+                return ResourceManager.GetString("OrderConfirmUnpaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only an order that has not been shipped yet can be rejected..
+        /// </summary>
+        public static string OrderRejectNotAllowed {
+            get {
+                return ResourceManager.GetString("OrderRejectNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only a confirmed order can be shipped..
+        /// </summary>
+        public static string OrderShipNotAllowed {
+            get {
+                return ResourceManager.GetString("OrderShipNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the waybill number so the buyer can track the parcel..
+        /// </summary>
+        public static string OrderTrackingNumberRequired {
+            get {
+                return ResourceManager.GetString("OrderTrackingNumberRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only a shipped order can be completed..
+        /// </summary>
+        public static string OrderCompleteNotAllowed {
+            get {
+                return ResourceManager.GetString("OrderCompleteNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The order status has just changed. Please refresh the page..
+        /// </summary>
+        public static string OrderStatusChanged {
+            get {
+                return ResourceManager.GetString("OrderStatusChanged", resourceCulture);
+            }
+        }
     }
 }

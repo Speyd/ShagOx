@@ -5,6 +5,7 @@ using ShagOxServer.Application.DTOs.Orders.Core.Query;
 using ShagOxServer.Application.DTOs.Orders.OrderItems.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
+using ShagOxServer.Application.Interfaces.Repositories.Payments.Core;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Query;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Query;
@@ -15,6 +16,8 @@ using ShagOxServer.Application.Services.Caches.Keys.Orders;
 using ShagOxServer.Application.Services.Orders.Core.Mapping;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.Domain.Entities.Orders.Enum;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.Domain.Filters.Orders.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -33,6 +36,7 @@ public class OrderQueryService
 
     private readonly IDeliveryProviderQueryService _deliveryService;
     private readonly ICurrencyQueryService _currencyService;
+    private readonly IPaymentQueryRepository _paymentQueryRepository;
 
 
     protected override bool CacheBySearch => false;
@@ -45,6 +49,7 @@ public class OrderQueryService
         IOrderItemQueryService orderItemService,
         IDeliveryProviderQueryService deliveryService,
         ICurrencyQueryService currencyService,
+        IPaymentQueryRepository paymentQueryRepository,
         IDataCacheService cacheService,
         IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
@@ -58,6 +63,7 @@ public class OrderQueryService
         _orderItemService = orderItemService;
         _deliveryService = deliveryService;
         _currencyService = currencyService;
+        _paymentQueryRepository = paymentQueryRepository;
     }
 
 
@@ -85,10 +91,30 @@ public class OrderQueryService
                 .ApplyMapperAsync(entity.DeliveryProvider);
         }     
 
+        var paymentExpiresAt = await GetActivePaymentExpiresAtAsync(entity);
+
         return OrderMapper.ToDto(entity, 
             items, 
             currency, 
-            delivery);
+            delivery,
+            paymentExpiresAt);
+    }
+
+    private async Task<DateTime?> GetActivePaymentExpiresAtAsync(
+        Order order)
+    {
+        var awaitsPayment =
+            order.PaymentMethod == PaymentMethod.Online &&
+            order.OrderStatus == OrderStatus.Pending &&
+            order.PaymentStatus == OrderPaymentStatus.Pending;
+
+        if (!awaitsPayment)
+            return null;
+
+        var payment = await _paymentQueryRepository
+            .GetActiveByOrderIdAsync(order.Id, DateTime.UtcNow);
+
+        return payment?.ExpiresAt;
     }
 
     public async Task<Result<OrderDto>> GetByOrderNumberAsync(

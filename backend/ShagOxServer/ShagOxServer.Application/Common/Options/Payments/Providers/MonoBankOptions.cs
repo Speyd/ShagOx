@@ -10,5 +10,9 @@ public sealed class MonoBankOptions
 
     public string WebHookUrl { get; set; } = "";
 
-    public TimeSpan PaymentExpiresAt { get; set; }
+    /// <summary>
+    /// Термін дії посилання на оплату. Якщо не задано в конфігурації —
+    /// 20 хвилин (інакше платіж прострочувався б одразу після створення).
+    /// </summary>
+    public TimeSpan PaymentExpiresAt { get; set; } = TimeSpan.FromMinutes(20);
 }

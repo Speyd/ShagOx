@@ -55,12 +55,18 @@ public class MonoBankPaymentProvider
             request.Amount, 
             request.DecimalPlaces);
 
+        var expiresIn = _options.PaymentExpiresAt;
+
+        // Монобанк сам закриває рахунок після validity (за замовчуванням
+        // 24 год). Синхронізуємо з нашим терміном, щоб після закінчення
+        // посилання оплатити старий рахунок було вже неможливо.
         var data = new
         {
             amount = trueAmount,
             ccy = request.Ccy,
-            redirectUrl = _options.RedirectUrl,
-            webHookUrl = _options.WebHookUrl
+            redirectUrl = BuildRedirectUrl(request.OrderId),
+            webHookUrl = _options.WebHookUrl,
+            validity = (long)expiresIn.TotalSeconds
         };
 
         var json = JsonSerializer.Serialize(data);
@@ -100,7 +106,7 @@ public class MonoBankPaymentProvider
             InvoiceId = responce.InvoiceId,
             PaymentUrl = responce.PaymentUrl,
             Amount = request.Amount,
-            ExpiresAt = DateTime.UtcNow + _options.PaymentExpiresAt,
+            ExpiresAt = DateTime.UtcNow + expiresIn,
             Status = PaymentStatus.Pending
         };
 
@@ -109,6 +115,19 @@ public class MonoBankPaymentProvider
         await _unitOfWork.SaveChangesAsync();
 
         return Result<PaymentResponse>.Success(responce);
+    }
+
+    /// <summary>
+    /// RedirectUrl може містити плейсхолдер {orderId}, наприклад
+    /// https://site/orders/{orderId} — тоді після оплати користувач
+    /// повертається на сторінку свого замовлення.
+    /// </summary>
+    private string BuildRedirectUrl(long orderId)
+    {
+        return _options.RedirectUrl.Replace(
+            "{orderId}",
+            orderId.ToString(),
+            StringComparison.OrdinalIgnoreCase);
     }
 
     public async Task<Result<bool>> WebHook(

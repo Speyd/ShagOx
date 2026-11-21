@@ -50,7 +50,22 @@ public partial class PaymentProcessingService
                     PaymentResources.PaymentAlreadySucceeded);
             }
 
-            var updateResult = await UpdatePaymentAndOrderStatusAsync(
+            // Платіж уже оброблено (оплачено, відхилено або прострочено
+            // раніше) — повторна обробка не повинна вдруге скасовувати
+            // замовлення чи повертати товари на склад.
+            var paymentFailed = await _paymentCommandRepository
+                .TryMarkAsFailedAsync(
+                    payment.InvoiceId,
+                    cancellationToken);
+
+            if (!paymentFailed)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return Result<bool>.Success(true);
+            }
+
+            var updateResult = await UpdateOrderStatusAsync(
                 payment,
                 cancellationToken);
 
@@ -71,6 +86,8 @@ public partial class PaymentProcessingService
 
             await _unitOfWork.CommitAsync();
 
+            await InvalidateOrderCacheAsync(payment.Order);
+
             return Result<bool>.Success(true);
         }
         catch
@@ -80,26 +97,11 @@ public partial class PaymentProcessingService
         }
     }
 
-    private async Task<Result<bool>> UpdatePaymentAndOrderStatusAsync(
+    private async Task<Result<bool>> UpdateOrderStatusAsync(
         ShagOxServer.Domain.Entities.Payments.Payment payment,
         CancellationToken cancellationToken)
     {
         var orderId = payment.OrderId;
-
-        var paymentUpdated = await _paymentCommandRepository
-            .TryUpdatePaymentStatusAsync(
-                payment.InvoiceId,
-                PaymentStatus.Failed,
-                cancellationToken);
-
-        if (!paymentUpdated)
-        {
-            await _unitOfWork.RollbackAsync();
-
-            return Result<bool>.NotFound(
-                EntityNamesResources.Payment);
-        }
-
 
         var orderPayment = await _orderCommandRepository
             .TryUpdatePaymentStatusAsync(

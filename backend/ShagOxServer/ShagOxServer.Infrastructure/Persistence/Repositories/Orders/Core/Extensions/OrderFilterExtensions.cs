@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.Domain.Filters.Orders.Core;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Orders.Core.Extensions;
@@ -14,6 +16,27 @@ public static class OrderFilterExtensions
 
         if (filter.OwnerId.HasValue)
             query = query.Where(x => x.OwnerId == filter.OwnerId);
+
+        if (filter.SellerId.HasValue)
+        {
+            var sellerId = filter.SellerId.Value;
+
+            query = query.Where(x =>
+                x.OrderItems.Any(i =>
+                    i.EntityStatus == EntityStatus.Active &&
+                    i.Advertisement.OwnerId == sellerId) &&
+                x.OrderItems.All(i =>
+                    i.EntityStatus != EntityStatus.Active ||
+                    i.Advertisement.OwnerId == sellerId));
+        }
+
+        if (filter.HideUnpaidOnline == true)
+        {
+            query = query.Where(x =>
+                x.PaymentMethod != PaymentMethod.Online ||
+                x.PaymentStatus == OrderPaymentStatus.Paid ||
+                x.PaymentStatus == OrderPaymentStatus.Refunded);
+        }
 
         if (!string.IsNullOrWhiteSpace(filter.SearchTerm))
         {

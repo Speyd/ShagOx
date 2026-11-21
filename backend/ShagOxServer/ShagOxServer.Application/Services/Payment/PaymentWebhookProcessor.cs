@@ -1,6 +1,7 @@
 using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Payments.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
 using ShagOxServer.Application.Interfaces.Services.Payments;
 using ShagOxServer.Application.Resources.EntityNames;
@@ -16,6 +17,7 @@ public class PaymentWebhookProcessor
     private readonly IPaymentWebhookCommandRepository _webhookCommandRepository;
     private readonly IPaymentWebhookQueryRepository _webhookQueryRepository;
     private readonly IPaymentProcessingService _paymentProcessingService;
+    private readonly IPaymentCommandRepository _paymentCommandRepository;
 
     private readonly IUnitOfWork _unitOfWork;
 
@@ -25,12 +27,14 @@ public class PaymentWebhookProcessor
         IPaymentWebhookCommandRepository webhookCommandRepository,
         IPaymentWebhookQueryRepository webhookQueryRepository,
         IPaymentProcessingService paymentProcessingService,
+        IPaymentCommandRepository paymentCommandRepository,
         IUnitOfWork unitOfWork)
     {
         _webhookRepository = webhookRepository;
         _webhookCommandRepository = webhookCommandRepository;
         _webhookQueryRepository = webhookQueryRepository;
         _paymentProcessingService = paymentProcessingService;
+        _paymentCommandRepository = paymentCommandRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -74,13 +78,15 @@ public class PaymentWebhookProcessor
                 entity,
                 cancellationToken),
 
-            PaymentStatus.Cancelled or PaymentStatus.Failed =>
+            PaymentStatus.Cancelled or
+            PaymentStatus.Failed or
+            PaymentStatus.Expired =>
                 await ProcessCancelAsync(
                     entity,
                     cancellationToken),
 
             PaymentStatus.Processing =>
-                await MarkProcessingAsync(entity.Id, cancellationToken),
+                await MarkProcessingAsync(entity, cancellationToken),
 
             PaymentStatus.Pending =>
                 await MarkPendingAsync(entity.Id, cancellationToken),
@@ -90,12 +96,18 @@ public class PaymentWebhookProcessor
     }
 
     private async Task<Result<bool>> MarkProcessingAsync(
-        long webhookId,
+        PaymentWebhook webhook,
         CancellationToken cancellationToken = default)
     {
         await _webhookCommandRepository.UpdateStatusAsync(
-            webhookId,
+            webhook.Id,
             PaymentStatus.Processing,
+            cancellationToken);
+
+        // Банк почав списання: воркер прострочення дасть такому платежу
+        // додатковий час (OrderPaymentPolicy.ProcessingGracePeriod).
+        await _paymentCommandRepository.TryMarkAsProcessingAsync(
+            webhook.InvoiceId,
             cancellationToken);
 
         return Result<bool>.Success(true);

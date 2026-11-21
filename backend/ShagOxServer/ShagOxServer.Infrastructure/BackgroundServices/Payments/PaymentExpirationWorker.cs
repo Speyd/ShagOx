@@ -6,6 +6,8 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
 using ShagOxServer.Application.Interfaces.Db;
 using ShagOxServer.Application.Interfaces.Services.Payments;
+using ShagOxServer.Application.Services.Orders.Core.Payment;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
@@ -69,9 +71,20 @@ public class PaymentExpirationWorker : BackgroundService
 
                 var now = DateTime.UtcNow;
 
+                // Платіж у Processing міг бути розпочатий до закінчення
+                // терміну дії посилання, тому чекаємо його довше.
+                var processingDeadline = now -
+                    OrderPaymentPolicy.ProcessingGracePeriod;
+
                 var payments = await db.Payments
+                    .Include(x => x.Order)
+                        .ThenInclude(x => x.OrderItems
+                            .Where(i => i.EntityStatus == EntityStatus.Active))
                     .Where(x =>
-                        x.ExpiresAt <= now && x.Status == PaymentStatus.Processing)
+                        (x.Status == PaymentStatus.Pending &&
+                         x.ExpiresAt <= now) ||
+                        (x.Status == PaymentStatus.Processing &&
+                         x.ExpiresAt <= processingDeadline))
                     .OrderBy(x => x.ExpiresAt)
                     .Take(CountPending)
                     .ToListAsync(stoppingToken);

@@ -11,6 +11,9 @@ public static class MonoBankDependencyInjection
         services.AddScoped<IPaymentProvider,
             MonoBankPaymentProvider>();
 
+        services.AddScoped<IPaymentGateway,
+            MonoBankPaymentGateway>();
+
         return services;
     }
 }

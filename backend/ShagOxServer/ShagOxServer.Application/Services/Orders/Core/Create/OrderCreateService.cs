@@ -5,12 +5,14 @@ using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Calculators;
 using ShagOxServer.Application.Interfaces.Services.Orders;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
 using ShagOxServer.Application.Interfaces.Services.Payments;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Resources.Order;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Orders;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
@@ -26,6 +28,7 @@ public partial class OrderCreateService
     : IOrderCreateService
 {
     private readonly IRepository<Order> _orderRepository;
+    private readonly IOrderCommandRepository _orderCommandRepository;
 
     private readonly UserValidator _userValidator;
     private readonly DeliveryProviderValidator _deliveryValidator;
@@ -45,6 +48,7 @@ public partial class OrderCreateService
 
     public OrderCreateService(
         IRepository<Order> orderRepository,
+        IOrderCommandRepository orderCommandRepository,
         UserValidator userValidator,
         DeliveryProviderValidator deliveryValidator,
         IDeliveryPriceCalculator deliveryCalculator,
@@ -58,6 +62,7 @@ public partial class OrderCreateService
         ILogger<OrderCreateService> logger)
     {
         _orderRepository = orderRepository;
+        _orderCommandRepository = orderCommandRepository;
 
         _userValidator = userValidator;
         _deliveryValidator = deliveryValidator;
@@ -118,6 +123,19 @@ public partial class OrderCreateService
                     .Fail(itemsResult.Error);
             }
 
+            // Одне замовлення — один продавець: саме він підтверджує,
+            // відправляє й отримує оплату за свої товари.
+            var sellerIds = await _orderCommandRepository
+                .GetSellerIdsAsync(order.Id, cancellationToken);
+
+            if (sellerIds.Count != 1)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return Result<OrderCreateResponse>
+                    .Fail(OrderResources.OrderMultipleSellers);
+            }
+
             var amountReult = await CalculateOrderAmountsAsync(
                 order,
                 cancellationToken);
@@ -166,8 +184,20 @@ public partial class OrderCreateService
 
             if (!paymentResult.IsSuccess)
             {
-                return Result<OrderCreateResponse>
-                    .Fail(paymentResult.Error);
+                // Замовлення вже створено й товари зарезервовано,
+                // тому не повертаємо помилку (інакше користувач оформить
+                // його вдруге). Без посилання фронтенд відкриє сторінку
+                // замовлення, де можна натиснути "Оплатити".
+                _logger.LogWarning(
+                    "Payment link was not created. OrderId: {OrderId}, Error: {Error}",
+                    order.Id,
+                    paymentResult.Error);
+
+                return Result<OrderCreateResponse>.Success(
+                    new OrderCreateResponse(
+                        order.Id,
+                        null,
+                        order.CreatedAt));
             }
 
             await _orderInvalidation.InvalidateCreateAsync(
@@ -186,8 +216,11 @@ public partial class OrderCreateService
                 "Payment failed. OrderId: {OrderId}",
                 order.Id);
 
-            return Result<OrderCreateResponse>
-                .Fail(EntityErrorResources.OrderCreateFailed);
+            return Result<OrderCreateResponse>.Success(
+                new OrderCreateResponse(
+                    order.Id,
+                    null,
+                    order.CreatedAt));
         }
     }
 

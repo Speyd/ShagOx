@@ -1,4 +1,6 @@
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
@@ -8,6 +10,9 @@ using ShagOxServer.Application.Interfaces.Repositories.Payments.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
 using ShagOxServer.Application.Interfaces.Services.Payments;
+using ShagOxServer.Application.Services.Caches.Invalidations.Orders;
+using ShagOxServer.Application.Services.Orders.Core.Mapping;
+using ShagOxServer.Domain.Entities.Orders;
 
 namespace ShagOxServer.Application.Services.Payment.PaymentProcessing;
 public partial class PaymentProcessingService
@@ -29,7 +34,12 @@ public partial class PaymentProcessingService
     private readonly IAdvertisementVariantCommandRepository _variantCommand;
     private readonly IAdvertisementCommandRepository _advertCommand;
 
+    private readonly OrderInvalidationService _orderInvalidation;
+
+    private readonly IPaymentGateway _paymentGateway;
+
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<PaymentProcessingService> _logger;
 
     public PaymentProcessingService(
         IBasketQueryRepository basketRepository,
@@ -42,7 +52,10 @@ public partial class PaymentProcessingService
         IPaymentWebhookQueryRepository webhookQueryRepository,
         IAdvertisementVariantCommandRepository variantCommand,
         IAdvertisementCommandRepository advertCommand,
-        IUnitOfWork unitOfWork)
+        OrderInvalidationService orderInvalidation,
+        IPaymentGateway paymentGateway,
+        IUnitOfWork unitOfWork,
+        ILogger<PaymentProcessingService> logger)
     {
         _basketRepository = basketRepository;
         _itemRepository = itemRepository;
@@ -54,6 +67,16 @@ public partial class PaymentProcessingService
         _webhookQueryRepository = webhookQueryRepository;
         _variantCommand = variantCommand;
         _advertCommand = advertCommand;
+        _orderInvalidation = orderInvalidation;
+        _paymentGateway = paymentGateway;
         _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
+
+
+    private async Task InvalidateOrderCacheAsync(Order order)
+    {
+        await _orderInvalidation.InvalidateUpdateAsync(
+            OrderCacheMapper.ToInfo(order));
     }
 }

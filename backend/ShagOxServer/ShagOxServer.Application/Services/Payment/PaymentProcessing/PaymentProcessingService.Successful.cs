@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Interfaces.Services.Payments;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Payment;
@@ -34,8 +35,12 @@ public partial class PaymentProcessingService
                     cancellationToken,
                     PaymentStatus.Succeeded);
 
-            if(!webhooks.Any())
+            if (!webhooks.Any())
+            {
+                await _unitOfWork.RollbackAsync();
+
                 return Result<bool>.Success(true);
+            }
 
             var paymentUpdated = await _paymentCommandRepository
                 .TryMarkAsPaidAsync(invoiceId, cancellationToken);
@@ -52,23 +57,21 @@ public partial class PaymentProcessingService
 
 
             var isPaid = await _orderCommandRepository
-                .TryMarkAsPaidAsync(order.Id, cancellationToken);
+                .TryMarkAsPaidAsync(
+                    order.Id,
+                    payment.InvoiceId,
+                    cancellationToken);
 
             if (!isPaid)
             {
+                // Гроші прийшли, а замовлення вже не чекає оплату
+                // (скасоване покупцем/продавцем, прострочене або вже
+                // оплачене іншим рахунком) — повертаємо кошти.
                 await _unitOfWork.RollbackAsync();
+
+                await RefundLatePaymentAsync(payment, cancellationToken);
 
                 return Result<bool>.Success(true);
-            }
-
-            var deleteResult = await DeleteBasketItems(order);
-
-            if (!deleteResult.IsSuccess)
-            {
-                await _unitOfWork.RollbackAsync();
-
-                return Result<bool>
-                    .Fail(deleteResult.Error);
             }
 
             foreach (var webhook in webhooks)
@@ -81,12 +84,72 @@ public partial class PaymentProcessingService
 
             await _unitOfWork.CommitAsync();
 
+            await InvalidateOrderCacheAsync(order);
+
+            // Прибирання кошика — поза транзакцією: якщо воно не вдасться,
+            // оплата все одно має залишитися зарахованою.
+            await TryDeleteBasketItemsAsync(order);
+
             return Result<bool>.Success(true);
         }
         catch
         {
             await _unitOfWork.RollbackAsync();
             throw;
+        }
+    }
+
+    private async Task RefundLatePaymentAsync(
+        ShagOxServer.Domain.Entities.Payments.Payment payment,
+        CancellationToken cancellationToken)
+    {
+        _logger.LogWarning(
+            "Payment received for an order that no longer awaits payment. " +
+            "Refunding. OrderId: {OrderId}, InvoiceId: {InvoiceId}",
+            payment.OrderId,
+            payment.InvoiceId);
+
+        var refund = await _paymentGateway.RefundAsync(
+            payment.InvoiceId,
+            cancellationToken);
+
+        if (!refund.IsSuccess)
+        {
+            _logger.LogError(
+                "Automatic refund failed, manual refund required. " +
+                "OrderId: {OrderId}, InvoiceId: {InvoiceId}",
+                payment.OrderId,
+                payment.InvoiceId);
+
+            return;
+        }
+
+        await _paymentCommandRepository.TryUpdatePaymentStatusAsync(
+            payment.InvoiceId,
+            PaymentStatus.Refunded,
+            cancellationToken);
+    }
+
+    private async Task TryDeleteBasketItemsAsync(Order order)
+    {
+        try
+        {
+            var result = await DeleteBasketItems(order);
+
+            if (!result.IsSuccess)
+            {
+                _logger.LogWarning(
+                    "Basket cleanup after payment skipped. OrderId: {OrderId}, Reason: {Reason}",
+                    order.Id,
+                    result.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(
+                ex,
+                "Basket cleanup after payment failed. OrderId: {OrderId}",
+                order.Id);
         }
     }
 

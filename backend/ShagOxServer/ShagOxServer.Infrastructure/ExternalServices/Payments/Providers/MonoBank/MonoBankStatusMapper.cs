@@ -10,6 +10,8 @@ public static class MonoBankStatusMapper
         {
             "created" => PaymentStatus.Pending,
             "processing" => PaymentStatus.Processing,
+            "hold" => PaymentStatus.Processing,
+            "reversed" => PaymentStatus.Refunded,
             "success" => PaymentStatus.Succeeded,
             "failure" => PaymentStatus.Failed,
             "expired" => PaymentStatus.Expired,

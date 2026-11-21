@@ -129,4 +129,37 @@
   <data name="OrderStatusUpdateFailed" xml:space="preserve">
     <value>Der Bestellstatus konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="OrderMultipleSellers" xml:space="preserve">
+    <value>Eine Bestellung kann nur Produkte eines Verkäufers enthalten. Bitte bestellen Sie bei verschiedenen Verkäufern separat.</value>
+  </data>
+  <data name="OrderNotSellerOrder" xml:space="preserve">
+    <value>Diese Bestellung enthält keine Ihrer Produkte.</value>
+  </data>
+  <data name="OrderHasOtherSellersItems" xml:space="preserve">
+    <value>Die Bestellung enthält Produkte anderer Verkäufer und kann nur von einem Administrator verwaltet werden.</value>
+  </data>
+  <data name="OrderCancelNotAllowed" xml:space="preserve">
+    <value>Die Bestellung kann nicht mehr storniert werden: Sie wurde bereits zur Lieferung übergeben.</value>
+  </data>
+  <data name="OrderConfirmNotAllowed" xml:space="preserve">
+    <value>Nur eine neue Bestellung kann bestätigt werden.</value>
+  </data>
+  <data name="OrderConfirmUnpaid" xml:space="preserve">
+    <value>Der Käufer hat die Bestellung noch nicht bezahlt. Sie können sie nach der Zahlung bestätigen.</value>
+  </data>
+  <data name="OrderRejectNotAllowed" xml:space="preserve">
+    <value>Nur eine noch nicht versandte Bestellung kann abgelehnt werden.</value>
+  </data>
+  <data name="OrderShipNotAllowed" xml:space="preserve">
+    <value>Nur eine bestätigte Bestellung kann versandt werden.</value>
+  </data>
+  <data name="OrderTrackingNumberRequired" xml:space="preserve">
+    <value>Geben Sie die Sendungsnummer ein, damit der Käufer das Paket verfolgen kann.</value>
+  </data>
+  <data name="OrderCompleteNotAllowed" xml:space="preserve">
+    <value>Nur eine versandte Bestellung kann abgeschlossen werden.</value>
+  </data>
+  <data name="OrderStatusChanged" xml:space="preserve">
+    <value>Der Bestellstatus hat sich gerade geändert. Bitte aktualisieren Sie die Seite.</value>
+  </data>
 </root>

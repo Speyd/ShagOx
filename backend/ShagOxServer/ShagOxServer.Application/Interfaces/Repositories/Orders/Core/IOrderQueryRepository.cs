@@ -22,6 +22,14 @@ public interface IOrderQueryRepository
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
+    /// <summary>
+    /// Чи є користувач продавцем замовлення (усі товари — його).
+    /// </summary>
+    Task<bool> IsSellerAsync(
+        long orderId,
+        long userId,
+        CancellationToken cancellationToken = default);
+
     Task<Order?> GetByDeliveryTrackingNumberAsync(
         string trackingNumber,
         CancellationToken cancellationToken = default,

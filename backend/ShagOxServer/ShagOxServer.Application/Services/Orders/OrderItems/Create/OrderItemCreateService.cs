@@ -161,12 +161,21 @@ public class OrderItemCreateService
         }
 
 
-        var (price, code) = await GetPriceAndCurrencyCode(details, request);
+        var (price, code, reserved) = await GetPriceAndCurrencyCode(details, request);
 
         if(!price.HasValue)
         {
             return Result<OrderItem>
                 .Fail(OrderResources.InvalidPrice);
+        }
+
+        // Списання атомарне (UPDATE ... WHERE Stock >= qty). Якщо між
+        // перевіркою і списанням товар викупили, не продаємо понад залишок.
+        if (!reserved)
+        {
+            return Result<OrderItem>.Fail(string.Format(
+                OrderResources.InsufficientStock,
+                details.Variant?.Advertisement?.Title ?? details.Advertisement?.Title));
         }
 
         var convertedPrice = currency is null? price:
@@ -194,7 +203,7 @@ public class OrderItemCreateService
         return Result<OrderItem>.Success(item);
     }
 
-    private async Task<(decimal? Price, string CurrencyCode)>
+    private async Task<(decimal? Price, string CurrencyCode, bool Reserved)>
         GetPriceAndCurrencyCode(
             LineItemDetails details,
             LineItemCreateRequest request)
@@ -205,32 +214,35 @@ public class OrderItemCreateService
         {
             currencyCode = details.Variant.Advertisement.Currency.Code;
 
-            await _variantCommand.DecreaseStockAsync(
+            var reserved = await _variantCommand.DecreaseStockAsync(
                 details.Variant.Id,
                 request.Quantity);
 
             return (
                 details.Price!.Value,
-                details.Variant.Advertisement.Currency.Code
+                details.Variant.Advertisement.Currency.Code,
+                reserved
             );
         }
         else if (details.Advertisement is not null)
         {
             currencyCode = details.Advertisement.Currency.Code;
 
-            await _advertCommand.DecreaseStockAsync(
+            var reserved = await _advertCommand.DecreaseStockAsync(
                 details.Advertisement.Id,
                 request.Quantity);
 
             return (
                 details.Price,
-                currencyCode
+                currencyCode,
+                reserved
             );
         }
 
         return (
             null,
-            currencyCode
+            currencyCode,
+            false
         );
     }
 

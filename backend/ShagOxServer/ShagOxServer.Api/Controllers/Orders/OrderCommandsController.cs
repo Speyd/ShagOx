@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Orders;
 
 [ApiController]
 [Route("api/orders")]
-[Authorize]
+//[Authorize]
 public class OrderCommandsController
     : ApiOwnerExistsController
 {

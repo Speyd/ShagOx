@@ -12,12 +12,21 @@ namespace ShagOxServer.Application.Services.Orders.Core.Create;
 public partial class OrderCreateService
     : IOrderCreateService
 {
-    private async Task<Result<OrderCreateResponse>> ExecuteWithErrorHandlingAsync(
+    private async Task<Result<OrderCreateResponse>> InitiateOrderPaymentAsync(
         Order order,
         CancellationToken cancellationToken)
     {
         if (order.PaymentMethod != PaymentMethod.Online)
         {
+            var emailResult =  await _emailService
+                .SendOrderPaidEmailAsync(order);
+
+            if (!emailResult.IsSuccess)
+            {
+                return Result<OrderCreateResponse>
+                    .Fail(emailResult.Error);
+            }
+
             return Result<OrderCreateResponse>.Success(
                 new OrderCreateResponse(
                     order.Id,

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ShagOxServer.Application.Resources.Order {
+namespace ShagOxServer.Application.Resources.Orders.Order {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ShagOxServer.Application.Resources.Order {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Order.OrderResources", typeof(OrderResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.Orders.Order.OrderResources", typeof(OrderResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

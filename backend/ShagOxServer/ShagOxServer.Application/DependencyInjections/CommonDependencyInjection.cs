@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Common.Builders;
 using ShagOxServer.Application.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
@@ -12,6 +13,9 @@ public static class CommonDependencyInjection
         services.AddSingleton<IContactValidator, ContactValidator>();
 
         services.AddSingleton<IJwtService, JwtService>();
+
+        services.AddSingleton<OrderUrlBuilder>();
+
 
         return services;
     }

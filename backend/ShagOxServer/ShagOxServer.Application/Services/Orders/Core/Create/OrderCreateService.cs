@@ -1,22 +1,27 @@
 using CloudinaryDotNet;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Builders;
+using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.Orders.Core.Create;
 using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Calculators;
 using ShagOxServer.Application.Interfaces.Services.Orders;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
 using ShagOxServer.Application.Interfaces.Services.Payments;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Orders;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
 using ShagOxServer.Application.Services.Orders.Core.Mapping;
 using ShagOxServer.Domain.Entities.Orders;
-using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Create;
@@ -37,10 +42,18 @@ public partial class OrderCreateService
 
     private readonly ICurrencyProvider _currencyProvider;
 
+    private readonly IAdvertisementCommandRepository _advertCommand;
+    private readonly IAdvertisementVariantCommandRepository _variantProvider;
+
+
     private readonly OrderInvalidationService _orderInvalidation;
+
+    private readonly IEmailService _emailService;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<OrderCreateService> _logger;
+
+
 
     public OrderCreateService(
         IRepository<Order> orderRepository,
@@ -50,9 +63,12 @@ public partial class OrderCreateService
         IOrderItemCreateService orderItemCreateService,
         IPaymentProvider paymentProvider,
         IPaymentWebhookProcessor webhookProcessor,
+        IAdvertisementCommandRepository advertCommand,
+        IAdvertisementVariantCommandRepository variantProvider,
         OrderInvalidationService orderInvalidation,
         IOrderNumberGenerator orderNumberGenerator,
         ICurrencyProvider currencyProvider,
+        IEmailService emailService,
         IUnitOfWork unitOfWork,
         ILogger<OrderCreateService> logger)
     {
@@ -70,7 +86,12 @@ public partial class OrderCreateService
 
         _currencyProvider = currencyProvider;
 
+        _advertCommand = advertCommand;
+        _variantProvider = variantProvider;
+
         _orderInvalidation = orderInvalidation;
+
+        _emailService = emailService;
 
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -127,8 +148,7 @@ public partial class OrderCreateService
 
                 return Result<OrderCreateResponse>
                     .Fail(amountReult.Error);
-            }    
-
+            }
 
             await _unitOfWork.CommitAsync();
 
@@ -148,9 +168,19 @@ public partial class OrderCreateService
                 .Fail(EntityErrorResources.OrderCreateFailed);
         }
 
-        return await ExecuteWithErrorHandlingAsync(
+        var paymentResult = await InitiateOrderPaymentAsync(
             order, 
             cancellationToken);
+
+        if(!paymentResult.IsSuccess)
+        {
+            await ResetStockAsync(order, cancellationToken);
+
+            return Result<OrderCreateResponse>
+                .Fail(paymentResult.Error);
+        }
+
+        return paymentResult;
     }
 
     private async Task<Result<bool>> CalculateOrderAmountsAsync(
@@ -168,5 +198,28 @@ public partial class OrderCreateService
         order.TotalPrice = order.Subtotal + order.DeliveryPrice;
 
         return Result<bool>.Success(true);
+    }
+
+    private async Task ResetStockAsync(
+        Order order,
+        CancellationToken cancellationToken)
+    {
+        foreach(var item in order.OrderItems)
+        {
+            if(item.AdvertisementVariantId.HasValue)
+            {
+                await _variantProvider.IncreaseStockAsync(
+                    item.AdvertisementVariantId.Value,
+                    item.Quantity,
+                    cancellationToken);
+            }
+            else
+            {
+                await _advertCommand.IncreaseStockAsync(
+                    item.AdvertisementId,
+                    item.Quantity,
+                    cancellationToken);
+            }
+        }
     }
 }

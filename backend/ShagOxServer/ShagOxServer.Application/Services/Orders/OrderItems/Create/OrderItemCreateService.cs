@@ -1,6 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -12,11 +10,9 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
-using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Resources.EntityNames.Extensions;
-using ShagOxServer.Application.Resources.Order;
+using ShagOxServer.Application.Resources.Orders.Order;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
@@ -145,8 +141,9 @@ public class OrderItemCreateService
 
         var details = validationResult.Value!;
 
-        var currency = await _currencyRepository
-            .GetByIdAsync(request.CurrencyId);
+        var currency = request.CurrencyId is null ? null 
+            : await _currencyRepository
+                .GetByIdAsync(request.CurrencyId.Value);
 
         if (currency is null)
         {
@@ -186,10 +183,15 @@ public class OrderItemCreateService
             convertedPrice.Value);
 
         item.TotalWeight = CalculateItemWeight(details, request);
+        
 
         _itemRepository.Add(item);
 
+        item.Advertisement = validationResult.Value?.Advertisement!;
+        item.AdvertisementVariant = validationResult.Value?.Variant;
+
         await _unitOfWork.SaveChangesAsync();
+
 
         return Result<OrderItem>.Success(item);
     }

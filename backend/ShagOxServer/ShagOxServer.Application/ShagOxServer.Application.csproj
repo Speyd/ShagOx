@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.15" />
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.12" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.15" />
+    <PackageReference Include="RazorLight" Version="2.3.1" />
     <PackageReference Include="StackExchange.Redis" Version="3.3.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
     <PackageReference Include="Twilio" Version="8.0.1" />
@@ -25,6 +26,12 @@
   <ItemGroup>
     <ProjectReference Include="..\ShagOxServer.Domain\ShagOxServer.Domain.csproj" />
     <ProjectReference Include="..\ShagOxServer.SharedKernel\ShagOxServer.SharedKernel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Content Include="Templates\EmailTemplates\**\*.cshtml">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -108,7 +115,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SmsTemplatesResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Order\OrderResources.Designer.cs">
+    <Compile Update="Resources\Orders\OrderPaidEmail\OrderPaidEmailResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrderPaidEmailResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Orders\Order\OrderResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>OrderResources.resx</DependentUpon>
@@ -210,7 +222,11 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>SmsTemplatesResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Order\OrderResources.resx">
+		<EmbeddedResource Update="Resources\Orders\OrderPaidEmail\OrderPaidEmailResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>OrderPaidEmailResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Orders\Order\OrderResources.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>OrderResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>

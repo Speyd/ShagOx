@@ -1,0 +1,163 @@
+@using ShagOxServer.Application.DTOs.Orders.Core.Query.Email
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Model.PaymentSuccess</title>
+</head>
+
+<body style="margin:0; padding:0; background:#f4f4f4;
+             font-family:Arial,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0"
+       style="background:#f4f4f4; padding:30px 10px;">
+    <tr>
+        <td align="center">
+
+            <table width="600" cellpadding="0" cellspacing="0"
+                   style="max-width:600px; background:#ffffff;
+                          border-radius:12px;">
+
+                <!-- Header -->
+                <tr>
+                    <td align="center" style="padding:35px 20px;">
+                        <h1 style="color:#222;">
+                            @Model.PaymentSuccess
+                        </h1>
+
+                        <p style="color:#777;">
+                            @Model.ThankYou
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- Order information -->
+                <tr>
+                    <td style="padding:0 30px;">
+
+                        <h3>
+                            @Model.OrderTitle #@Model.OrderNumber
+                        </h3>
+
+                        <p>
+                            @Model.Greeting
+                        </p>
+
+                        <h3>@Model.YourProducts</h3>
+
+                        <!-- Products -->
+                        @foreach (var item in Model.Items)
+                        {
+                            <table width="100%" cellpadding="10"
+                                   cellspacing="0"
+                                   style="border-bottom:1px solid #eee;">
+                                <tr>
+                                    <td width="90" valign="middle">
+                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                        {
+                                            <img src="@item.ImageUrl"
+                                                 width="80"
+                                                 alt="@item.Name"
+                                                 style="display:block;
+                                                        border-radius:8px;
+                                                        max-width:80px;
+                                                        height:auto;">
+                                        }
+                                    </td>
+
+                                    <td valign="middle">
+                                        <strong>@item.Name</strong>
+                                        <br>
+                                        <span style="color:#777;">
+                                            @Model.Quantity: @item.Quantity
+                                        </span>
+                                    </td>
+
+                                    <td align="right" valign="middle">
+                                        @((item.Price * item.Quantity).ToString("N2"))
+                                        @Model.CurrencyCode
+                                    </td>
+                                </tr>
+                            </table>
+                        }
+
+                        <!-- Totals -->
+                        <table width="100%" cellpadding="8"
+                               cellspacing="0"
+                               style="margin-top:20px;">
+
+                            <tr>
+                                <td>
+                                    @Model.Products
+                                </td>
+                                <td align="right">
+                                    @Model.Subtotal.ToString("N2")
+                                    @Model.CurrencyCode
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    @Model.Delivery
+                                </td>
+                                <td align="right">
+                                    @Model.DeliveryPrice.ToString("N2")
+                                    @Model.CurrencyCode
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <hr style="border:none;
+                                               border-top:1px solid #eee;">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <h2 style="margin:5px 0;">
+                                        @Model.Total
+                                    </h2>
+                                </td>
+                                <td align="right">
+                                    <h2 style="margin:5px 0;">
+                                        @Model.TotalPrice.ToString("N2")
+                                        @Model.CurrencyCode
+                                    </h2>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Order button -->
+                        <p style="text-align:center; padding:25px;">
+                            <a href="@Model.OrderUrl"
+                               style="display:inline-block;
+                                      background:#222;
+                                      color:#fff;
+                                      padding:15px 30px;
+                                      text-decoration:none;
+                                      border-radius:6px;">
+                                @Model.ViewOrder
+                            </a>
+                        </p>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td align="center"
+                        style="padding:25px; color:#999;">
+                        @Model.Footer
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

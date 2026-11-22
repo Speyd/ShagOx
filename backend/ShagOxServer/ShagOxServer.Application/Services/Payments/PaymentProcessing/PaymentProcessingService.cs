@@ -8,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Payments.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
 using ShagOxServer.Application.Interfaces.Services.Payments;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 
 namespace ShagOxServer.Application.Services.Payments.PaymentProcessing;
 public partial class PaymentProcessingService
@@ -29,6 +30,8 @@ public partial class PaymentProcessingService
     private readonly IAdvertisementVariantCommandRepository _variantCommand;
     private readonly IAdvertisementCommandRepository _advertCommand;
 
+    private readonly IEmailService _emailService;
+
     private readonly IUnitOfWork _unitOfWork;
 
     public PaymentProcessingService(
@@ -42,6 +45,7 @@ public partial class PaymentProcessingService
         IPaymentWebhookQueryRepository webhookQueryRepository,
         IAdvertisementVariantCommandRepository variantCommand,
         IAdvertisementCommandRepository advertCommand,
+        IEmailService emailService,
         IUnitOfWork unitOfWork)
     {
         _basketRepository = basketRepository;
@@ -54,6 +58,7 @@ public partial class PaymentProcessingService
         _webhookQueryRepository = webhookQueryRepository;
         _variantCommand = variantCommand;
         _advertCommand = advertCommand;
+        _emailService = emailService;
         _unitOfWork = unitOfWork;
     }
 }

@@ -13,7 +13,10 @@ public partial class PaymentProcessingService
         string invoiceId,
         CancellationToken cancellationToken = default)
     {
+        Order order;
+
         await _unitOfWork.BeginTransactionAsync();
+
         try
         {
             var payment = await _paymentRepository.GetByInvoiceIdAsync(
@@ -28,6 +31,7 @@ public partial class PaymentProcessingService
                     EntityNamesResources.Payment);
             }
 
+
             var webhooks = await _webhookQueryRepository
                 .GetByInvoiceIdAsync(
                     payment.InvoiceId,
@@ -36,6 +40,8 @@ public partial class PaymentProcessingService
 
             if(!webhooks.Any())
                 return Result<bool>.Success(true);
+
+
 
             var paymentUpdated = await _paymentCommandRepository
                 .TryMarkAsPaidAsync(invoiceId, cancellationToken);
@@ -48,8 +54,9 @@ public partial class PaymentProcessingService
                     PaymentResources.PaymentStatusUpdateFailed);
             }
 
-            var order = payment.Order;
 
+
+            order = payment.Order;
 
             var isPaid = await _orderCommandRepository
                 .TryMarkAsPaidAsync(order.Id, cancellationToken);
@@ -61,6 +68,8 @@ public partial class PaymentProcessingService
                 return Result<bool>.Success(true);
             }
 
+
+
             var deleteResult = await DeleteBasketItems(order);
 
             if (!deleteResult.IsSuccess)
@@ -70,6 +79,8 @@ public partial class PaymentProcessingService
                 return Result<bool>
                     .Fail(deleteResult.Error);
             }
+
+
 
             foreach (var webhook in webhooks)
             {
@@ -81,13 +92,15 @@ public partial class PaymentProcessingService
 
             await _unitOfWork.CommitAsync();
 
-            return Result<bool>.Success(true);
+            return await _emailService
+                .SendOrderPaidEmailAsync(order);
         }
         catch
         {
             await _unitOfWork.RollbackAsync();
             throw;
         }
+
     }
 
     private async Task<Result<bool>> DeleteBasketItems(

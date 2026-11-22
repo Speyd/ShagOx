@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers;
 using System.Globalization;
 
 namespace ShagOxServer.Api.Providers;

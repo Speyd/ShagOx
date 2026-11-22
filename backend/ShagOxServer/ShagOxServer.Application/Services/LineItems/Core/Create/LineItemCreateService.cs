@@ -1,11 +1,9 @@
-using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Resources.Order;
+using ShagOxServer.Application.Resources.Orders.Order;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.LineItems.Core.Validator;
@@ -14,6 +12,7 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Enum;
 using ShagOxServer.Domain.Entities.LineItems.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using Twilio.Rest.Trunking.V1;
 
 namespace ShagOxServer.Application.Services.LineItems.Core.Create;
 public abstract class LineItemCreateService<TEntity>
@@ -96,7 +95,7 @@ public abstract class LineItemCreateService<TEntity>
     {
         if (request.AdvertisementVariantId.HasValue)
         {
-            var variant = await GetAdvertisementVariantAsync(
+            return await GetAdvertisementVariantAsync(
                 request,
                 cancellationToken);
         }

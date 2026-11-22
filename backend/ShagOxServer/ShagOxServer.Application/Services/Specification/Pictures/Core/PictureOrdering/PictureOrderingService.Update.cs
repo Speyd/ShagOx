@@ -1,4 +1,3 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Response;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;

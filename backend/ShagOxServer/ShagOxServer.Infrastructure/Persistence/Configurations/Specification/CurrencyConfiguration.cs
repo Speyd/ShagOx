@@ -18,7 +18,7 @@ public class CurrencyConfiguration
                .IsRequired()
                .HasMaxLength(3);
 
-        builder.Property(x => x.Ccy)
+        builder.Property(x => x.NumericCode)
             .IsRequired();
 
         builder.Property(x => x.DecimalPlaces)

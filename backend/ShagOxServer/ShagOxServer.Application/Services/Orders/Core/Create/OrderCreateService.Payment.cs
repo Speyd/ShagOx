@@ -66,7 +66,7 @@ public partial class OrderCreateService
         (
             order.TotalPrice,
             order.Id,
-            order.Currency.Ccy,
+            order.Currency.NumericCode,
             order.Currency.DecimalPlaces
         );
 

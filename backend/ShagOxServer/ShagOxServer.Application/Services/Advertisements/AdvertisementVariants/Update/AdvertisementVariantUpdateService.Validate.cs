@@ -11,27 +11,17 @@ public partial class AdvertisementVariantUpdateService
     IAdvertisementVariantUpdateService
 {
     private async Task<Result<bool>> ValidateUpdateConflictsAsync(
-        AdvertisementVariant variant,
-        AdvertisementVariantUpdateRequest request,
-        CancellationToken cancellationToken = default)
+    AdvertisementVariant variant,
+    AdvertisementVariantUpdateRequest request,
+    CancellationToken cancellationToken = default)
     {
         var attributes = request.Attributes ?? variant.Attributes;
-        var advertId = request.AdvertisementId ?? variant.AdvertisementId;
 
-        if (advertId != variant.AdvertisementId)
-        {
-            var advertExists = await _advertValidator
-                .ExistsByIdAsync(advertId, cancellationToken);
-
-            if (!advertExists.IsSuccess)
-                return Result<bool>.Fail(advertExists.Error);
-        }
-
-        if (attributes != variant.Attributes ||
-            advertId != variant.AdvertisementId)
+        if (attributes != variant.Attributes)
         {
             var variantExists = await _variantValidator
-                .NotExistsAsync(advertId, attributes, cancellationToken);
+                .NotExistsAsync(variant.AdvertisementId, 
+                    attributes, cancellationToken);
 
             if (!variantExists.IsSuccess)
                 return Result<bool>.Fail(variantExists.Error);
@@ -42,7 +32,7 @@ public partial class AdvertisementVariantUpdateService
 
             var isVariantExists = await _variantValidator
                 .ValidateVariantAttributesAsync(
-                    advertId,
+                    variant.AdvertisementId,
                     request.Attributes);
 
             if (!isVariantExists.IsSuccess)
@@ -55,6 +45,52 @@ public partial class AdvertisementVariantUpdateService
 
         return Result<bool>.Success(true);
     }
+
+    //private async Task<Result<bool>> ValidateUpdateConflictsAsync(
+    //    AdvertisementVariant variant,
+    //    AdvertisementVariantUpdateRequest request,
+    //    CancellationToken cancellationToken = default)
+    //{
+    //    var attributes = request.Attributes ?? variant.Attributes;
+    //    var advertId = request.AdvertisementId ?? variant.AdvertisementId;
+
+    //    if (advertId != variant.AdvertisementId)
+    //    {
+    //        var advertExists = await _advertValidator
+    //            .ExistsByIdAsync(advertId, cancellationToken);
+
+    //        if (!advertExists.IsSuccess)
+    //            return Result<bool>.Fail(advertExists.Error);
+    //    }
+
+    //    if (attributes != variant.Attributes ||
+    //        advertId != variant.AdvertisementId)
+    //    {
+    //        var variantExists = await _variantValidator
+    //            .NotExistsAsync(advertId, attributes, cancellationToken);
+
+    //        if (!variantExists.IsSuccess)
+    //            return Result<bool>.Fail(variantExists.Error);
+    //    }
+
+    //    if (request.Attributes is not null)
+    //    {
+
+    //        var isVariantExists = await _variantValidator
+    //            .ValidateVariantAttributesAsync(
+    //                advertId,
+    //                request.Attributes);
+
+    //        if (!isVariantExists.IsSuccess)
+    //        {
+    //            return Result<bool>
+    //                .Fail(isVariantExists.Error);
+    //        }
+    //    }
+
+
+    //    return Result<bool>.Success(true);
+    //}
 
     protected override async Task<Result<bool>> ValidateUpdateConflictsAsync(
         AdvertisementVariant variant,

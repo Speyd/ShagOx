@@ -58,10 +58,14 @@ public class CategoryQueryService
         var translation = await _translationRepository
             .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        var imageDto = await _imageQueryService
-            .ApplyMapperAsync(entity.CategoryImage);
+        var imageDto = entity.CategoryImage is null ? null 
+            : await _imageQueryService
+                .ApplyMapperAsync(entity.CategoryImage);
 
-        return CategoryMapper.ToDto(entity, imageDto, translation?.Name);
+        return CategoryMapper.ToDto(
+            entity, 
+            imageDto, 
+            translation?.Name);
     }
 
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(

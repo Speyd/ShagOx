@@ -11,12 +11,6 @@ public static class AdvertisementVariantUpdater
         int count = 0;
 
 
-        if (request.AdvertisementId.HasValue)
-        {
-            variant.AdvertisementId = request.AdvertisementId.Value;
-            count++;
-        }
-
         if (request.Price.HasValue)
         {
             var price = request.Price.Value;

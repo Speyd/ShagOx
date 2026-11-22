@@ -1717,9 +1717,6 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("Ccy")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(3)
@@ -1741,6 +1738,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<int>("NumericCode")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Symbol")
                         .IsRequired()

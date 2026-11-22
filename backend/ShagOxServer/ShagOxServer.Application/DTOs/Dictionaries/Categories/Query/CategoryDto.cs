@@ -9,6 +9,6 @@ public sealed record CategoryDto
     EntityStatus EntityStatus,
     string Code,
     long ProductTypeId,
-    CategoryImageDto Picture,
+    CategoryImageDto? Picture,
     string? Label
 ) : BaseDto(Id, EntityStatus);

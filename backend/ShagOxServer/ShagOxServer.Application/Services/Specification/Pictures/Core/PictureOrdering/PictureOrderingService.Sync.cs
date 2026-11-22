@@ -60,7 +60,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
 
             foreach (var picture in request)
             {
-                await SyncPictureAsync(
+                var result = await SyncPictureAsync(
                     owner,
                     picture,
                     loadedPictures,
@@ -68,6 +68,12 @@ public partial class PictureOrderingService<TOwner, TPicture>
                     updatePictures,
                     cancellationToken
                  );
+
+                if (!result.IsSuccess)
+                {
+                    return Result<PictureSyncResponce<TPicture>>
+                        .Fail(result.Error);
+                }
             }
 
             return Result<PictureSyncResponce<TPicture>>
@@ -122,8 +128,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
                deletePublicIds,
                cancellationToken);
         }
-
-        if (picture.Id is null &&
+        else if (picture.Id is null &&
             !picture.IsDeleted &&
             picture.File is not null)
         {
@@ -133,8 +138,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
                 loadedPicture,
                 cancellationToken);
         }
-
-        if (picture.Id is not null)
+        else if (picture.Id is not null)
         {
             var updateResult = await UpdateImage(
                 owner.Id,
@@ -152,14 +156,15 @@ public partial class PictureOrderingService<TOwner, TPicture>
             }
             else
             {
-                result = Result<bool>.Fail("");
+                result = Result<bool>
+                    .Fail(updateResult.Error);
             }
         }
 
         if (result is not null &&
             !result.IsSuccess)
         {
-            throw new Exception("Handle image sync errors and rollback");
+            return result;
         }
 
         return Result<bool>.Success(true);

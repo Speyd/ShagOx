@@ -91,17 +91,20 @@ public class CategoryCreateService
 
             await _unitOfWork.SaveChangesAsync();
 
-            var imageResult = await CreatePicture(
-                category, 
-                request,
-                cancellationToken);
-
-            if (!imageResult.IsSuccess)
+            if (request.Picture is not null)
             {
-                await _unitOfWork.RollbackAsync();
 
-                return Result<CreateResponse>
-                    .Fail(imageResult.Error);
+                var imageResult = await _imageCreateService.CreateInternalAsync(
+                       new PictureCreateRequest(category.Id, request.Picture),
+                       cancellationToken);
+
+                if (!imageResult.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<CreateResponse>
+                        .Fail(imageResult.Error);
+                }
             }
 
             await _unitOfWork.CommitAsync();

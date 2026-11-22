@@ -106,17 +106,20 @@ public class CategoryUpdateService
         {
             _categoryRepository.Update(category.Value!);
 
-            var imageResult = await _imageUploadService.UpdateInternalAsync(
-                category.Value!.CategoryImage,
-                new PictureUpdateRequest(null, request.Picture),
-                cancellationToken);
-
-            if (!imageResult.IsSuccess)
+            if (category.Value!.CategoryImage is not null)
             {
-                await _unitOfWork.RollbackAsync();
+                var imageResult = await _imageUploadService.UpdateInternalAsync(
+                    category.Value!.CategoryImage,
+                    new PictureUpdateRequest(null, request.Picture),
+                    cancellationToken);
 
-                return Result<UpdateResponse>
-                    .Fail(imageResult.Error);
+                if (!imageResult.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<UpdateResponse>
+                        .Fail(imageResult.Error);
+                }
             }
 
             await _unitOfWork.CommitAsync();

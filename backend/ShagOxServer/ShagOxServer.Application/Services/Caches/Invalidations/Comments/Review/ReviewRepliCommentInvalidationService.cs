@@ -60,7 +60,7 @@ public class ReviewRepliCommentInvalidationService
         CommentCacheInfo entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys.
-             Entity<ReviewComment>(entityInfo.Id));
+             Entity<ReviewRepliComment>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(ReviewRepliCommentCache.
              ByReviewCommentPattern(entityInfo.CommentableEntityId));

@@ -63,7 +63,10 @@ public class CategoryCreateService
            .ExistsByIdAsync(request.ProductTypeId, cancellationToken);
 
         if (!typeValidator.IsSuccess)
-            Result<CreateResponse>.Fail(typeValidator.Error);
+        {
+            return Result<CreateResponse>
+                .Fail(typeValidator.Error);
+        }
 
 
         var nameValidator = await _categoryValidator
@@ -71,7 +74,10 @@ public class CategoryCreateService
                 request.ProductTypeId, cancellationToken);
 
         if (!nameValidator.IsSuccess)
-            Result<CreateResponse>.Fail(nameValidator.Error);  
+        {
+            return Result<CreateResponse>
+                .Fail(nameValidator.Error);
+        }
 
 
         var category = CategoryCreater.Create(request);

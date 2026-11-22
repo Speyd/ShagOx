@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InsufficientStock" xml:space="preserve">
-    <value>Der Produktpreis '{0}' ist ungültig.</value>
+    <value>Die angeforderte Menge überschreitet den verfügbaren Lagerbestand '{0}'.</value>
   </data>
   <data name="InvalidPrice" xml:space="preserve">
-    <value>Die angeforderte Menge überschreitet den verfügbaren Lagerbestand '{0}'.</value>
+    <value>Der Produktpreis '{0}' ist ungültig.</value>
   </data>
   <data name="OrderPaymentStatusUpdateFailed" xml:space="preserve">
     <value>Der Zahlungsstatus der Bestellung konnte nicht aktualisiert werden.</value>

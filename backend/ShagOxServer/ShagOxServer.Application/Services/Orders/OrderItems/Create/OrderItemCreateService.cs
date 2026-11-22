@@ -211,7 +211,7 @@ public class OrderItemCreateService
 
             return (
                 details.Price!.Value,
-                details.Variant.Advertisement.Currency.Code
+                currencyCode
             );
         }
         else if (details.Advertisement is not null)
@@ -221,6 +221,11 @@ public class OrderItemCreateService
             await _advertCommand.DecreaseStockAsync(
                 details.Advertisement.Id,
                 request.Quantity);
+
+            return (
+                details.Price!.Value,
+                currencyCode
+            );
         }
 
         return (

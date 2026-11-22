@@ -12,7 +12,7 @@ namespace ShagOxServer.Api.Controllers.Orders;
 
 [ApiController]
 [Route("api/orders")]
-//[Authorize]
+[Authorize]
 public class OrderCommandsController
     : ApiOwnerExistsController
 {
@@ -33,7 +33,7 @@ public class OrderCommandsController
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromForm] OrderCreateRequest request)
+        [FromBody] OrderCreateRequest request)
     {
         var result = await _createService
             .CreateAsync(request, UserId!.Value);

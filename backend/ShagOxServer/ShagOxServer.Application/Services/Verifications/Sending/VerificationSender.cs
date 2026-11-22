@@ -183,11 +183,15 @@ public class VerificationSender
         User user,
         VerificationCodePurpose purpose)
     {
-        if (purpose is
-            VerificationCodePurpose.RegistrationEmail or
-            VerificationCodePurpose.RegistrationPhone)
+        if (purpose is VerificationCodePurpose.RegistrationEmail)
         {
             user.Status = UserStatus.PendingVerification;
+            user.EmailConfirmed = false;
+        }
+        else if (purpose is VerificationCodePurpose.RegistrationPhone)
+        {
+            user.Status = UserStatus.PendingVerification;
+            user.PhoneConfirmed = false;
         }
     }
 }

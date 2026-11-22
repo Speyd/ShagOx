@@ -80,7 +80,7 @@ public class UserVerificationService
         }
 
         user.Phone = verificationCode.PendingValue;
-        user.EmailConfirmed = true;
+        user.PhoneConfirmed = true;
         user.Status = UserStatus.Active;
 
         return Result<bool>.Success(true);

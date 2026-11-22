@@ -61,7 +61,7 @@ namespace ShagOxServer.Application.Resources.Order {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на The product &apos;{0}&apos; price is invalid..
+        ///   Ищет локализованную строку, похожую на The requested quantity exceeds the available stock &apos;{0}&apos;..
         /// </summary>
         public static string InsufficientStock {
             get {
@@ -70,7 +70,7 @@ namespace ShagOxServer.Application.Resources.Order {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на The requested quantity exceeds the available stock &apos;{0}&apos;..
+        ///   Ищет локализованную строку, похожую на The product &apos;{0}&apos; price is invalid..
         /// </summary>
         public static string InvalidPrice {
             get {

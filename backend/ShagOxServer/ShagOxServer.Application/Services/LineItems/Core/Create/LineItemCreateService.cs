@@ -96,7 +96,7 @@ public abstract class LineItemCreateService<TEntity>
     {
         if (request.AdvertisementVariantId.HasValue)
         {
-            return await GetAdvertisementVariantAsync(
+            var variant = await GetAdvertisementVariantAsync(
                 request,
                 cancellationToken);
         }

@@ -69,6 +69,9 @@ public class VerificationCodeService
 
         try
         {
+            if (oldCode is not null)
+                _repository.Update(oldCode);
+
             _repository.Add(verificationCode);
 
             await _unitOfWork.CommitAsync();

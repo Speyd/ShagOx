@@ -6,7 +6,6 @@ using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Orders;
-using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Orders;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Orders;
@@ -60,7 +59,7 @@ public class OrderInvalidationService
         OrderCacheInfo entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
-           .EntityLanguagePattern<Basket>(entityInfo.Id));
+           .EntityLanguagePattern<Order>(entityInfo.Id));
 
         await _cache.RemoveByPatternAsync(OrderCache
           .ByUserPattern(entityInfo.UserId));

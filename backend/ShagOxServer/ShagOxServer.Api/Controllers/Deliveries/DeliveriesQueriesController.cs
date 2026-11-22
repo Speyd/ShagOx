@@ -62,13 +62,13 @@ public class DeliveriesQueriesController
 
     [HttpGet("points")]
     public async Task<IActionResult> GetPoints(
-        [FromQuery] string providerId,
+        [FromQuery] string providerCode,
         [FromQuery] DeliveryPointSearchRequest request,
         [FromQuery] PaginationParams pagination,
         CancellationToken cancellationToken)
     {
         var result = await _deliveryQueriesService.GetPointsAsync(
-            providerId,
+            providerCode,
             request,
             pagination,
             cancellationToken);

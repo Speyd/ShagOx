@@ -3,8 +3,8 @@ using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Account.Enum;
+using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

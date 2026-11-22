@@ -67,8 +67,9 @@ public class AdvertisementConfiguration
               .OnDelete(DeleteBehavior.Restrict);
 
 
-        builder.HasIndex(x => x.OwnerId);
         builder.HasIndex(x => new { x.OwnerId, x.CreatedAt });
+
+        builder.HasIndex(x => x.Popularity);
 
         builder.HasIndex(x => x.CurrencyId);
         builder.HasIndex(x => x.ConditionId);
@@ -79,13 +80,48 @@ public class AdvertisementConfiguration
 
         builder.HasIndex(x => new
         {
+            x.OwnerId,
+            x.EntityStatus
+        });
+
+        builder.HasIndex(x => new
+        {
+            x.BuyerId,
+            x.EntityStatus
+        });
+
+        builder.HasIndex(x => new
+        {
             x.CategoryId,
-            x.ConditionId,
-            x.CreatedAt
+            x.EntityStatus
+        });
+
+        builder.HasIndex(x => new
+        {
+            x.StatusId,
+            x.EntityStatus
         });
 
         builder.HasIndex(x => x.CategoryId)
-            .HasDatabaseName("IX_Advertisements_Active_CategoryId")
-            .HasFilter("\"EntityStatus\" = 'Active'");
+            .HasFilter(
+                "\"EntityStatus\" IN ('Active', 'Hidden')");
+
+        builder.HasIndex(x => x.OwnerId)
+            .HasFilter(
+                "\"EntityStatus\" IN ('Active', 'Hidden')");
+
+        builder.HasIndex(x => new
+        {
+            x.CreatedAt,
+            x.Id
+        })
+        .IsDescending(true, true)
+        .HasFilter(
+            "\"EntityStatus\" IN ('Active', 'Hidden')");
+
+        builder.HasIndex(x => x.SoldAt)
+            .HasFilter(
+                "\"EntityStatus\" IN ('Active', 'Hidden') " +
+                "AND \"SoldAt\" IS NOT NULL");
     }
 }

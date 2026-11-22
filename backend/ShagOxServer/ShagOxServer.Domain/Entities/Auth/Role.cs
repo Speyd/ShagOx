@@ -1,7 +1,7 @@
-﻿
+
 using ShagOxServer.Domain.Base;
 
-namespace ShagOxServer.Domain.Entities.Account;
+namespace ShagOxServer.Domain.Entities.Auth;
 public class Role 
     : BaseEntity
 {

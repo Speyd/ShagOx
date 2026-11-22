@@ -8,7 +8,7 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Roles.Mapping;
 using ShagOxServer.Application.Services.Auth.Roles.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Create;

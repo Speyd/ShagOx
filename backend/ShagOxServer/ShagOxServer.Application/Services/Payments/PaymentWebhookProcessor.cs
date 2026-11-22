@@ -8,7 +8,7 @@ using ShagOxServer.Domain.Entities.Payments;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Payment;
+namespace ShagOxServer.Application.Services.Payments;
 public class PaymentWebhookProcessor 
     : IPaymentWebhookProcessor
 {
@@ -64,9 +64,6 @@ public class PaymentWebhookProcessor
 
         await _unitOfWork.SaveChangesAsync();
 
-        Console.WriteLine(webhook.EnumStatus);
-        Console.WriteLine(webhook.InvoiceId);
-        Console.WriteLine(entity.InvoiceId);
 
         return (webhook.EnumStatus switch
         {

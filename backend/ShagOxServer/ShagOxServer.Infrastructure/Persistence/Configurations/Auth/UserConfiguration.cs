@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
-namespace ShagOxServer.Infrastructure.Persistence.Configurations.Account;
+namespace ShagOxServer.Infrastructure.Persistence.Configurations.Auth;
 
 public class UserConfiguration 
     : IEntityTypeConfiguration<User>
@@ -50,14 +50,16 @@ public class UserConfiguration
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.City)
-               .WithMany(x => x.Users)
-               .HasForeignKey(x => x.CityId)
-               .OnDelete(DeleteBehavior.Restrict);
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.CityId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(x => x.UserRoles)
                .WithOne(x => x.User)
                .HasForeignKey(x => x.UserId)
                .OnDelete(DeleteBehavior.Cascade);
+
+
 
         builder.HasIndex(x => x.CityId);
 
@@ -66,8 +68,16 @@ public class UserConfiguration
         builder.HasUniqueActiveIndex(x => x.Email)
                .HasFilter("\"Email\" IS NOT NULL");
 
-
         builder.HasUniqueActiveIndex(x => x.Phone)
                .HasFilter("\"Phone\" IS NOT NULL");
+
+        builder.HasIndex(x => new
+        {
+            x.RegisteredAt,
+            x.Id
+        })
+        .IsDescending(true, true)
+        .HasFilter(
+            "\"EntityStatus\" IN ('Active', 'Hidden')");
     }
 }

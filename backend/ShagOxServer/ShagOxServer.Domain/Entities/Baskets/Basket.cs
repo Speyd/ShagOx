@@ -1,5 +1,5 @@
 using ShagOxServer.Domain.Base.Owner;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Domain.Entities.Baskets;
 public class Basket

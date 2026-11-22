@@ -5,27 +5,24 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Validator;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 public class UserValidator
     : BaseValidator<User>
 {
-    private readonly IUserQueryRepository _userQueryRepository;
     private readonly IUserExistsRepository _userExistsRepository;
 
 
     public UserValidator(
         IRepository<User> repository,
         IQueryRepository<User> userRepository,
-        IUserQueryRepository userQueryRepository,
         IUserExistsRepository userExistsRepository,
         IDataCacheService cache
     ) 
         : base(repository, userRepository, userExistsRepository, cache)
     {
-        _userQueryRepository = userQueryRepository;
         _userExistsRepository = userExistsRepository;
     }
 

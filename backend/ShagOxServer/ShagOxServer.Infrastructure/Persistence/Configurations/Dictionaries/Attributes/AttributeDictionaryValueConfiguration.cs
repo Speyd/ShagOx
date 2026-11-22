@@ -24,5 +24,18 @@ public class AttributeDictionaryValueConfiguration
 
         builder.HasUniqueActiveIndex(x =>
             new { x.DictionaryId, x.Code });
+
+        builder.HasIndex(x => new
+        {
+            x.DictionaryId,
+            x.EntityStatus,
+            x.Id
+        });
+
+        builder.HasIndex(x => new
+        {
+            x.Code,
+            x.EntityStatus
+        });
     }
 }

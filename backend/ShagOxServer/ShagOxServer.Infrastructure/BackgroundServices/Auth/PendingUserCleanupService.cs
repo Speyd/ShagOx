@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
-using ShagOxServer.Domain.Entities.Account.Enum;
+using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
 namespace ShagOxServer.Infrastructure.BackgroundServices.Auth;

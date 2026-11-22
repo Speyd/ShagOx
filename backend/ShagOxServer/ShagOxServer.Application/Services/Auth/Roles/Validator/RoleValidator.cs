@@ -4,7 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Base.Validator;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Validator;

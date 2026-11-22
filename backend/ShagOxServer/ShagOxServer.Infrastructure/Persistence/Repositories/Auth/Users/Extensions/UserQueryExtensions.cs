@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 public static class UserQueryExtensions

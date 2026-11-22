@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
-namespace ShagOxServer.Infrastructure.Persistence.Configurations.Account;
+namespace ShagOxServer.Infrastructure.Persistence.Configurations.Auth;
 public class RoleConfiguration 
     : IEntityTypeConfiguration<Role>
 {
@@ -20,5 +21,7 @@ public class RoleConfiguration
             .WithOne(x => x.Role)
             .HasForeignKey(x => x.RoleId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasUniqueActiveIndex(x => x.Name);
     }
 }

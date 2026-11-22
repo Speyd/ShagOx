@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.UserRoles.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;

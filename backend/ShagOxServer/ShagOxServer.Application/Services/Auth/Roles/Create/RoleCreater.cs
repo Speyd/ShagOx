@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles.Create;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Application.DTOs.Auth.Roles.Create;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Create;
 public static class RoleCreater

@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Roles.Update;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Application.DTOs.Auth.Roles.Update;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Update;
 public static class RoleUpdater

@@ -5,7 +5,7 @@ using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 

@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Payments;
-using ShagOxServer.Application.Services.Payment;
-using ShagOxServer.Application.Services.Payment.PaymentProcessing;
+using ShagOxServer.Application.Services.Payments;
+using ShagOxServer.Application.Services.Payments.PaymentProcessing;
 
 namespace ShagOxServer.Application.DependencyInjections.Payments;
 public static class PaymentsDependencyInjection

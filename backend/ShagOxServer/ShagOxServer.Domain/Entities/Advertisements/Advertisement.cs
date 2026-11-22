@@ -1,5 +1,5 @@
 using ShagOxServer.Domain.Base.Owner;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Domain.Entities.Dictionaries;

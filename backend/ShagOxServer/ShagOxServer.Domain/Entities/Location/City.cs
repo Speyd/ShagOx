@@ -1,5 +1,5 @@
-﻿using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Location.Translations;
 
 namespace ShagOxServer.Domain.Entities.Location;

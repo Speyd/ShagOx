@@ -23,5 +23,18 @@ public class FavoriteConfiguration
 
         builder.HasUniqueActiveIndex(x => 
             new { x.OwnerId, x.AdvertisementId });
+
+        builder.HasIndex(x => new
+        {
+            x.AdvertisementId,
+            x.EntityStatus
+        });
+
+        builder.HasIndex(x => new
+        {
+            x.OwnerId,
+            x.EntityStatus,
+            x.Id
+        });
     }
 }

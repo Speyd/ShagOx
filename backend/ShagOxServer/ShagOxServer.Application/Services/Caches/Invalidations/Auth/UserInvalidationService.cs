@@ -17,7 +17,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictu
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Application.Services.Caches.Keys.Specification;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 public class UserInvalidationService

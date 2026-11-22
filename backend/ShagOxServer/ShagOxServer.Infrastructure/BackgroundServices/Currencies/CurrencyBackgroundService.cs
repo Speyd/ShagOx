@@ -7,7 +7,8 @@ using ShagOxServer.Application.Interfaces.Services.Common.Currencies.FxApi;
 using ShagOxServer.Infrastructure.ExternalServices.Currencies;
 
 namespace ShagOxServer.Infrastructure.BackgroundServices.Currencies;
-public class CurrencyBackgroundService : BackgroundService
+public class CurrencyBackgroundService
+    : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<CurrencyBackgroundService> _logger;

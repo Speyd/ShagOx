@@ -16,5 +16,11 @@ public class StatusConfiguration
             .HasConversion<string>();
 
         builder.HasUniqueActiveIndex(x => x.Code);
+
+        builder.HasIndex(x => new
+        {
+            x.Code,
+            x.EntityStatus
+        });
     }
 }

@@ -1,7 +1,7 @@
 using ShagOxServer.Application.DTOs.Dashboards.Advertisements;
 using ShagOxServer.Application.DTOs.Dashboards.Users;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dashboards.Admin.Extensions;

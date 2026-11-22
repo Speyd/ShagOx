@@ -14,7 +14,7 @@ using ShagOxServer.Application.Services.Auth.UserRoles.Mapping;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;

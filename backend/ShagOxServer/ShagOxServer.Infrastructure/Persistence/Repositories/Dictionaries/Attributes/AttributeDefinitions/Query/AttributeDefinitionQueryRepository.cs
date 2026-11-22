@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;

@@ -1,15 +1,12 @@
 using ShagOxServer.Application.DTOs.Verifications.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Verifications.Core;
-using ShagOxServer.Application.Services.Auth.Users.Core.Query;
-using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Verifications.Mappers;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;

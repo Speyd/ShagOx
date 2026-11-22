@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Application.Services.Auth.UserRoles.Mapping;
 public static class UserRoleMapper

@@ -9,7 +9,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
 using ShagOxServer.Application.Interfaces.Services.Payments;
 
-namespace ShagOxServer.Application.Services.Payment.PaymentProcessing;
+namespace ShagOxServer.Application.Services.Payments.PaymentProcessing;
 public partial class PaymentProcessingService
     : IPaymentProcessingService
 {

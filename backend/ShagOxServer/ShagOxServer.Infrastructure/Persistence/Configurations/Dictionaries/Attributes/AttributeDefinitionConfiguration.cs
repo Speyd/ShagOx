@@ -24,6 +24,19 @@ public class AttributeDefinitionConfiguration
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasUniqueActiveIndex(x =>
-            new { x.CategoryId, x.Key });
+           new { x.CategoryId, x.Key });
+
+        builder.HasIndex(x => new
+        {
+            x.DictionaryId,
+            x.EntityStatus,
+            x.Id
+        });
+
+        builder.HasIndex(x => new
+        {
+            x.CategoryId,
+            x.EntityStatus
+        });
     }
 }

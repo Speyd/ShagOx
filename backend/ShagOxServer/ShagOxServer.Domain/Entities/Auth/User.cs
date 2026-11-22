@@ -1,5 +1,5 @@
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Account.Enum;
+using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Location;
@@ -7,7 +7,7 @@ using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
-namespace ShagOxServer.Domain.Entities.Account;
+namespace ShagOxServer.Domain.Entities.Auth;
 public class User 
     : BaseEntity
 {

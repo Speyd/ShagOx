@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Currencies.Fx;
 using ShagOxServer.Application.DTOs.Common.Currencies.Fx;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies.FxApi;
@@ -15,11 +16,11 @@ public class FxApiService : IFxApiService
 
     public FxApiService(
         HttpClient httpClient,
-        FxApiOptions options,
+        IOptions<FxApiOptions> options,
         ILogger<FxApiService> logger)
     {
         _httpClient = httpClient;
-        _options = options;
+        _options = options.Value;
         _logger = logger;
     }
 

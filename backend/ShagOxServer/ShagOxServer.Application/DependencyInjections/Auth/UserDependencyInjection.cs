@@ -12,7 +12,7 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Update;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Application.DependencyInjections.Auth;
 public static class UserDependencyInjection

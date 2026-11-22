@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

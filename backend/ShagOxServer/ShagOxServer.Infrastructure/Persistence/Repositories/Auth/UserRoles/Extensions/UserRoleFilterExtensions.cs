@@ -1,4 +1,4 @@
-﻿using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.UserRoles.Extensions;

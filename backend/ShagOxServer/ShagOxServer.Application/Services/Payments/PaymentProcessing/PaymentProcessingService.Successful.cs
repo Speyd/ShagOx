@@ -5,7 +5,7 @@ using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Payment.PaymentProcessing;
+namespace ShagOxServer.Application.Services.Payments.PaymentProcessing;
 public partial class PaymentProcessingService
     : IPaymentProcessingService
 {

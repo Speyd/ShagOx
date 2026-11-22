@@ -1,7 +1,7 @@
-﻿using ShagOxServer.Application.DTOs.Auth.Register;
+using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Services.Auth.Users.Contacts;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Create;

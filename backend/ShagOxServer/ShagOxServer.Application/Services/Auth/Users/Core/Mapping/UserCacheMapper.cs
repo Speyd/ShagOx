@@ -1,6 +1,6 @@
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 public static class UserCacheMapper

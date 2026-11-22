@@ -1,5 +1,5 @@
 using ShagOxServer.Domain.Base.Owner;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Domain.Entities.Comments;
 public abstract class Comment

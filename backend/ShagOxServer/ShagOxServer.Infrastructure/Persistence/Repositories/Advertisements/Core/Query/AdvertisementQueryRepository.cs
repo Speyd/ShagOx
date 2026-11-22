@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Enum;
 using ShagOxServer.Domain.Filters.Advertisements;

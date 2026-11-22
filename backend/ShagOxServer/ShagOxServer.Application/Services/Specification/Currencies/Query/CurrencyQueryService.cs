@@ -8,7 +8,7 @@ using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Specification;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.SharedKernel.Abstractions.Results;

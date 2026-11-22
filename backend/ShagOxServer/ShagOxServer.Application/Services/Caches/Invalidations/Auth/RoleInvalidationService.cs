@@ -6,8 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 public class RoleInvalidationService

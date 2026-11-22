@@ -16,8 +16,6 @@ public static class BackgroundServiceDependencyInjection
         services.AddHostedService<PendingUserCleanupService>();
    
 
-        services.AddHostedService<PaymentWebhookWorker>();
-
         services.AddHostedService<PaymentExpirationWorker>();
 
 

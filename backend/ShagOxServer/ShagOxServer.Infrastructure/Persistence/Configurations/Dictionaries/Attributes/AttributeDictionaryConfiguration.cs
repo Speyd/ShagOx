@@ -20,5 +20,6 @@ public class AttributeDictionaryConfiguration
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasUniqueActiveIndex(x => x.Code);
+
     }
 }

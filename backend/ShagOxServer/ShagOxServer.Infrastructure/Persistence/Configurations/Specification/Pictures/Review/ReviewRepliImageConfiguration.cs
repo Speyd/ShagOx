@@ -26,5 +26,11 @@ public class ReviewRepliImageConfiguration
 
         builder.HasUniqueActiveIndex(x => 
             new { x.OwnerId, x.Order });
+
+        builder.HasIndex(x => new
+        {
+            x.EntityStatus,
+            x.OwnerId
+        });
     }
 }

@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
 using ShagOxServer.Application.Resources.Auth.External.Google;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Account.Enum;
+using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Externals;

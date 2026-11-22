@@ -1,6 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
 using ShagOxServer.Application.Resources.Auth.Registrations;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Roles;

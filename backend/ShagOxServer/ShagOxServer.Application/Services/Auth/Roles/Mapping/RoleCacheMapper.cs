@@ -1,6 +1,6 @@
 using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Mapping;
 public static class RoleCacheMapper

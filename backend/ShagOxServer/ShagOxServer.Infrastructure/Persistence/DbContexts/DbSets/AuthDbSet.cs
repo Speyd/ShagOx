@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities.Account;
+using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
 public partial class BaseAppDbContext

@@ -7,7 +7,6 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
 using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base.Delete;

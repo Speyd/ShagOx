@@ -4,7 +4,6 @@ using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Orders;
-
 public class OrderConfiguration
     : IEntityTypeConfiguration<Order>
 {
@@ -184,35 +183,52 @@ public class OrderConfiguration
             .OnDelete(DeleteBehavior.Restrict);
 
 
+        builder.HasUniqueActiveIndex(x => x.OrderNumber);
 
         builder.HasIndex(x => new
         {
+            x.EntityStatus,
             x.OwnerId,
             x.CreatedAt
         });
 
         builder.HasIndex(x => new
         {
+            x.EntityStatus,
             x.OrderStatus,
             x.CreatedAt
         });
 
         builder.HasIndex(x => new
         {
+            x.EntityStatus,
             x.PaymentMethod,
             x.PaymentStatus
         });
 
         builder.HasIndex(x => new
         {
+            x.EntityStatus,
             x.PaymentProvider,
             x.PaymentTransactionId
         });
 
-        builder.HasIndex(x => x.DeliveryProviderId);
+        builder.HasIndex(x => new
+        {
+            x.EntityStatus,
+            x.DeliveryProviderId
+        });
 
-        builder.HasIndex(x => x.DeliveryType);
+        builder.HasIndex(x => new
+        {
+            x.EntityStatus,
+            x.DeliveryType
+        });
 
-        builder.HasUniqueActiveIndex(x => x.OrderNumber);
+        builder.HasIndex(x => new
+        {
+            x.EntityStatus,
+            x.DeliveryTrackingNumber
+        });
     }
 }

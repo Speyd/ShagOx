@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.Users;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;

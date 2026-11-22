@@ -34,6 +34,13 @@ public class AdvertisementVariantConfiguration
             .OnDelete(DeleteBehavior.Cascade);
 
 
-        builder.HasIndex(x => x.AdvertisementId);
+        builder.HasIndex(x => new
+        {
+            x.AdvertisementId,
+            x.EntityStatus
+        });
+
+        builder.HasIndex(x => x.AdvertisementId)
+            .HasFilter("\"EntityStatus\" <> 'Deleted'");
     }
 }

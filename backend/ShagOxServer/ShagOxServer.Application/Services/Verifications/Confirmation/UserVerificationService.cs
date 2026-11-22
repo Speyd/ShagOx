@@ -1,7 +1,7 @@
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.Application.Resources.Verifications.Core;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Account.Enum;
+using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

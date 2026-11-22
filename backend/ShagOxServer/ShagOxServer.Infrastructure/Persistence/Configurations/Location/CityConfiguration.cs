@@ -20,8 +20,13 @@ public class CityConfiguration
                .OnDelete(DeleteBehavior.Restrict);
 
 
-        builder.HasIndex(x => x.RegionId);
-
         builder.HasUniqueActiveIndex(x => x.Code);
+
+        builder.HasIndex(x => new
+        {
+            x.RegionId,
+            x.EntityStatus,
+            x.Id
+        });
     }
 }

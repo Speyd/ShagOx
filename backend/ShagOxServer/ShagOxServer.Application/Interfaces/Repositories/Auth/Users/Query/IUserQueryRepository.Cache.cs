@@ -1,7 +1,7 @@
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.Users;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;

@@ -1,9 +1,8 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Facets;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 public partial interface IAdvertisementQueryRepository
@@ -19,34 +18,7 @@ public partial interface IAdvertisementQueryRepository
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
-    Task<PagedResult<Advertisement>> GetBySellerAsync(
-        long userId,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
-
-    Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
-        long userId,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
-
-    Task<PagedResult<AdvertisementCatalogQueryDto>> GetCatalogPagedAsync(
-        long? userId,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
-
-    Task<PagedResult<Advertisement>> ShortSearchAsync(
-        AdvertisementSearchFilter filter,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
-
-    Task<PagedResult<AdvertisementCatalogQueryDto>> CatalogSearchAsync(
-        long? userId,
-        AdvertisementSearchFilter filter,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+    Task<AdvertisementFacetsDto> GetFacetsAsync(
+        long categoryId,
+        CancellationToken cancellationToken = default);
 }

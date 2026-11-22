@@ -90,7 +90,7 @@ public class NovaPoshtaTypeResolver
                 return Result<IReadOnlyList<NovaPoshtaWarehouseTypeDto>>
                     .Success(result.Data ?? []);
             },
-            _cacheOptions.KeyExpiration);
+            _cacheOptions.DefaultExpiration);
     }
 
     public string GetWarehouseTypeRef(

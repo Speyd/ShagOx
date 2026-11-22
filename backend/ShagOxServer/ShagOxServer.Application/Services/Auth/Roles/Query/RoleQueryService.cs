@@ -68,7 +68,7 @@ public class RoleQueryService
                 return await roles.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -90,7 +90,7 @@ public class RoleQueryService
                 return await role.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

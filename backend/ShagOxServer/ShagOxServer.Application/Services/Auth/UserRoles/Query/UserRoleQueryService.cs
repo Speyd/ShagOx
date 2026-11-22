@@ -80,7 +80,7 @@ public class UserRoleQueryService
                 return await roles.ToResultPagedAsync(
                     _roleService.ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -103,7 +103,7 @@ public class UserRoleQueryService
 
                 return Result<List<RoleCacheInfo>>.Success(roles);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -130,7 +130,7 @@ public class UserRoleQueryService
                 return await users.ToResultPagedAsync(
                     _userService.ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -153,7 +153,7 @@ public class UserRoleQueryService
 
                 return Result<List<UserCacheInfo>>.Success(users);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

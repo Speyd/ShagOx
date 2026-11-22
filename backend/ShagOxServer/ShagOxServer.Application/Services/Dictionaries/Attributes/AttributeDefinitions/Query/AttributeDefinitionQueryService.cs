@@ -78,7 +78,7 @@ public class AttributeDefinitionQueryService
                 return await values.ToResultListAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

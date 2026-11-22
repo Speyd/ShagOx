@@ -68,17 +68,24 @@ public class AdvertisementConfiguration
 
 
         builder.HasIndex(x => x.OwnerId);
-        builder.HasIndex(x => x.CategoryId);
+        builder.HasIndex(x => new { x.OwnerId, x.CreatedAt });
+
         builder.HasIndex(x => x.CurrencyId);
         builder.HasIndex(x => x.ConditionId);
         builder.HasIndex(x => x.StatusId);
 
-        builder.HasIndex(x => x.CreatedAt);
-        builder.HasIndex(x => x.Popularity);
-
         builder.HasIndex(x => new { x.CategoryId, x.CreatedAt });
         builder.HasIndex(x => new { x.CategoryId, x.Popularity });
-        builder.HasIndex(x => new { x.CategoryId, x.ConditionId, x.CreatedAt });
-        builder.HasIndex(x => new { x.OwnerId, x.CreatedAt });
+
+        builder.HasIndex(x => new
+        {
+            x.CategoryId,
+            x.ConditionId,
+            x.CreatedAt
+        });
+
+        builder.HasIndex(x => x.CategoryId)
+            .HasDatabaseName("IX_Advertisements_Active_CategoryId")
+            .HasFilter("\"EntityStatus\" = 'Active'");
     }
 }

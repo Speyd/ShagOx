@@ -3,5 +3,7 @@ public sealed class CacheOptions
 {
     public const string SectionName = "Cache";
 
-    public TimeSpan KeyExpiration { get; set; }
+    public TimeSpan DefaultExpiration { get; set; }
+    
+    public TimeSpan CatalogExpiration { get; set; }
 }

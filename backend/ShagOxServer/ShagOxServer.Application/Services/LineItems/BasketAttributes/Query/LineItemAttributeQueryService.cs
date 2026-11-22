@@ -77,7 +77,7 @@ public class LineItemAttributeQueryService
                 return await attribute.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -105,7 +105,7 @@ public class LineItemAttributeQueryService
                 return await attributes.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

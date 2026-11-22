@@ -84,7 +84,7 @@ public class AttributeDictionaryValueQueryService
                 return await values.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

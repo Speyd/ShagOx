@@ -62,7 +62,7 @@ public class CurrencyQueryService
                 return await currencies.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -86,7 +86,7 @@ public class CurrencyQueryService
                 return await currency.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -109,7 +109,7 @@ public class CurrencyQueryService
 
                 return Result<Currency?>.Success(currency);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -132,7 +132,7 @@ public class CurrencyQueryService
 
                 return Result<Currency?>.Success(currency);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

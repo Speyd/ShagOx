@@ -241,6 +241,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Common\Context\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
 	</ItemGroup>
 	

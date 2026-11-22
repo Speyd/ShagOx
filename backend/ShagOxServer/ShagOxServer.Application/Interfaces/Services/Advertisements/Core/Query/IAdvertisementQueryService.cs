@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Facets;
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
@@ -22,6 +23,10 @@ public partial interface IAdvertisementQueryService
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
+
+    Task<Result<AdvertisementFacetsDto>> GetFacetsAsync(
+       long categoryId,
+       CancellationToken cancellationToken = default);
 
     Task<ConvertedPricesDto> ConvertPricesAsync(
         Advertisement advert,

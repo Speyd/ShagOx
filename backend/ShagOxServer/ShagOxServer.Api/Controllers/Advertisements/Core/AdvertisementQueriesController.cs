@@ -67,6 +67,17 @@ public class AdvertisementQueriesController
         return result.ToActionResult();
     }
 
+    [HttpGet("facets")]
+    public async Task<IActionResult> GetFacets(
+        [FromQuery] long categoryId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _advertQueryService
+            .GetFacetsAsync(categoryId, cancellationToken);
+
+        return result.ToActionResult();
+    }
+
     [HttpGet("search")]
     public override async Task<IActionResult> Search(
         [FromQuery] AdvertisementSearchFilter filter,

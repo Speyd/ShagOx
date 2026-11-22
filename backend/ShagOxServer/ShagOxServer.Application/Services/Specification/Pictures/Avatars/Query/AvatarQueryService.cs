@@ -66,7 +66,7 @@ public class AvatarQueryService
                 return await image.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

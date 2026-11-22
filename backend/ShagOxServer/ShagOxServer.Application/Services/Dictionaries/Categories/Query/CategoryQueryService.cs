@@ -88,7 +88,7 @@ public class CategoryQueryService
                 return await categories.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

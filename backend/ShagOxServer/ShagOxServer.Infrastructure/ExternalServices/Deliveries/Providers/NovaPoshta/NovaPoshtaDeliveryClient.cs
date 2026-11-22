@@ -128,7 +128,7 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _casheOptions.KeyExpiration);
+            _casheOptions.DefaultExpiration);
     }
 
     public async Task<Result<IEnumerable<DeliveryStreetDto>>> GetStreetsAsync(
@@ -172,7 +172,7 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _casheOptions.KeyExpiration);
+            _casheOptions.DefaultExpiration);
     }
 
 
@@ -237,6 +237,6 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _casheOptions.KeyExpiration);
+            _casheOptions.DefaultExpiration);
     }
 }

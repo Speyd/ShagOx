@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Query.Core;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Core;
+using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Facets;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Query;
@@ -83,8 +84,8 @@ public partial class AdvertisementQueryService
             variants.Add(variantDto);
         }
 
-        //var categoryDto = await _categoryService
-        //    .ApplyMapperAsync(entity.Category);
+        var categoryDto = await _categoryService
+            .ApplyMapperAsync(entity.Category);
 
         var statusDto = await _statusService
             .ApplyMapperAsync(entity.Status);
@@ -104,8 +105,7 @@ public partial class AdvertisementQueryService
         return AdvertisementMapper.ToDto(
             entity,
             variants,
-            //categoryDto,
-            null,
+            categoryDto,
             statusDto,
             attributeDto.Value!,
             convertedPrices,
@@ -136,7 +136,7 @@ public partial class AdvertisementQueryService
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -164,7 +164,29 @@ public partial class AdvertisementQueryService
                 return await advert.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
+        );
+    }
+
+    public async Task<Result<AdvertisementFacetsDto>> GetFacetsAsync(
+        long categoryId,
+        CancellationToken cancellationToken = default)
+    {
+
+        var cacheKey = AdvertisementCache.FacetByCategory(
+           categoryId);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var facets = await _advertisementRepository
+                    .GetFacetsAsync(categoryId, cancellationToken);
+
+                return Result<AdvertisementFacetsDto>
+                    .Success(facets);
+            },
+            _cacheOptions.CatalogExpiration
         );
     }
 }

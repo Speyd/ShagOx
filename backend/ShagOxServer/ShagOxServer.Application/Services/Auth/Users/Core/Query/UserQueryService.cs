@@ -95,7 +95,7 @@ public class UserQueryService
 
                 return user.ToResult(UserShortMapper.ToDto);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -117,7 +117,7 @@ public class UserQueryService
 
                 return await user.ToResultAsync(ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -142,7 +142,7 @@ public class UserQueryService
 
                 return roles.ToResultPaged(RoleMapper.ToDto);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

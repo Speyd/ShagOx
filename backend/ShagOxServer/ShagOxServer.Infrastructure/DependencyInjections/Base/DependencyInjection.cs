@@ -4,6 +4,7 @@ using ShagOxServer.Infrastructure.DependencyInjections.Auth;
 using ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
 using ShagOxServer.Infrastructure.DependencyInjections.Baskets;
 using ShagOxServer.Infrastructure.DependencyInjections.Comments;
+using ShagOxServer.Infrastructure.DependencyInjections.Dashboards;
 using ShagOxServer.Infrastructure.DependencyInjections.Db;
 using ShagOxServer.Infrastructure.DependencyInjections.Deliveries;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
@@ -45,6 +46,7 @@ public static class DependencyInjection
             .AddDeliveriesInfrastructure()
             .AddExternalServicesInfrastructure()
             .AddOrdersInfrastructure()
-            .AddPaymentsInfrastructure();
+            .AddPaymentsInfrastructure()
+            .AddDashboardsInfrastructure();
     }
 }

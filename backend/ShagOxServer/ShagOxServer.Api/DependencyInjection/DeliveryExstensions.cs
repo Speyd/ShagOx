@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Deliveries;
 using ShagOxServer.Application.Common.Options.Deliveries.Providers;
-using ShagOxServer.Application.Common.Options.Payments;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Infrastructure.ExternalServices.Deliveries.Providers.NovaPoshta;
 
@@ -42,7 +41,8 @@ public static class DeliveryExstensions
             }
 
             services.Configure<NovaPoshtaOptions>(
-                configuration.GetSection($"{providerSection}:NovaPoshta"));
+                configuration.GetSection($"{providerSection}:" +
+                    $"{NovaPoshtaOptions.SectionName}"));
 
             services.AddHttpClient<NovaPoshtaApiClient>(
                 ConfigureNovaPoshtaClient);

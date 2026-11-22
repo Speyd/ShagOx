@@ -1,6 +1,8 @@
 namespace ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
 public sealed class WebhookWorkerOptions
 {
+    public const string SectionName = "WebhookWorker";
+
     public TimeSpan PendingInterval { get; init; }
     public int CountPending { get; init; }
 }

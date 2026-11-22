@@ -2,10 +2,11 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using ShagOxServer.Application.Common.Options.Pictures;
 using ShagOxServer.Application.DTOs.Common.ImageLoaders.Delete;
 using ShagOxServer.Application.DTOs.Common.ImageLoaders.Upload;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
-using ShagOxServer.Infrastructure.Options;
+using ShagOxServer.Application.Resources.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Infrastructure.ExternalServices.ImageStorage;
@@ -29,16 +30,20 @@ public class CloudinaryImageLoader
         string publicId)
     {
         if (string.IsNullOrWhiteSpace(publicId))
-            return Result<PictureLoaderDeleteResponse>
-                .Fail("PublicId is incorrect");
+        {
+            return Result<PictureLoaderDeleteResponse>.Fail(
+                PicturesResources.PicturePublicIdInvalid);
+        }
 
         var deleteParams = new DeletionParams(publicId);
 
         var result = await _cloudinary.DestroyAsync(deleteParams);
 
-        if (result.Error != null)
-            return Result<PictureLoaderDeleteResponse>
-                .Fail($"Cloudinary delete failed: {result.Error.Message}");
+        if (result.Error != null) 
+        {
+            return Result<PictureLoaderDeleteResponse>.Fail(
+                PicturesResources.PictureCloudinaryDeleteFailed);
+        }
 
         return Result<PictureLoaderDeleteResponse>.Success(
            new PictureLoaderDeleteResponse(
@@ -74,8 +79,8 @@ public class CloudinaryImageLoader
 
         if (result.Error != null)
         {
-            return Result<PictureLoaderUploadResponse>
-                .Fail($"Cloudinary upload failed: {result.Error.Message}");
+            return Result<PictureLoaderUploadResponse>.Fail(
+                PicturesResources.PictureCloudinaryUploadFailed);
         }
 
         return Result<PictureLoaderUploadResponse>.Success(

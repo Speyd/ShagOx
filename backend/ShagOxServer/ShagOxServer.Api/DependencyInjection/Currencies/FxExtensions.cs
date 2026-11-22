@@ -11,7 +11,7 @@ public static class FxExtensions
        IConfiguration configuration)
     {
         services.Configure<FxApiOptions>(
-            configuration.GetSection("FxApi"));
+            configuration.GetSection(FxApiOptions.SectionName));
 
         services.AddHttpClient<IFxApiService, FxApiService>(
         (sp, client) =>

@@ -1,6 +1,8 @@
 namespace ShagOxServer.Application.Common.Options.Payments.Providers;
 public sealed class MonoBankOptions
 {
+    public const string SectionName = "MonoBank";
+
     public bool Enabled { get; set; }
     public string ApiKey { get; set; } = "";
 

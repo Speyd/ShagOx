@@ -8,7 +8,6 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
-
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Payments.PaymentWebhooks;
 public class PaymentWebhookQueryRepository
     : QueryRepository<PaymentWebhook>,

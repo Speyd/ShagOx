@@ -1,6 +1,8 @@
 namespace ShagOxServer.Application.Common.Options.Systems.Middleware;
 public sealed class RequestTrackingOptions
 {
+    public const string SectionName = "RequestTracking";
+
     public int MaxTokens { get; init; }
     public int RequestsPerToken { get; init; }
     public int BanLevelCount { get; init; }

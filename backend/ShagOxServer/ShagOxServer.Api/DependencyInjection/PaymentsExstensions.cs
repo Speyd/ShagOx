@@ -15,7 +15,8 @@ public static class PaymentsExstensions
             .GetSection(PaymentOptions.SectionName)
             .Get<PaymentOptions>() ?? new();
 
-        string providerSection = $"{PaymentOptions.SectionName}:{PaymentProvidersOptions.SectionName}";
+        string providerSection = $"{PaymentOptions.SectionName}:" +
+            $"{PaymentProvidersOptions.SectionName}";
 
 
         #region MonoBank
@@ -24,7 +25,8 @@ public static class PaymentsExstensions
         {
             
             services.Configure<MonoBankOptions>(
-                configuration.GetSection($"{providerSection}:MonoBank"));
+                configuration.GetSection($"{providerSection}:" +
+                   $"{MonoBankOptions.SectionName}"));
         }
 
         #endregion

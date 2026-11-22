@@ -1,6 +1,8 @@
 namespace ShagOxServer.Application.Common.Options.Deliveries.Providers;
 public sealed class NovaPoshtaOptions
 {
+    public const string SectionName = "NovaPoshta";
+
     public bool Enabled { get; set; }
 
     public string ApiKey { get; set; } = "";

@@ -11,10 +11,10 @@ public static class DatabaseExtensions
         IConfiguration config)
     {
         services.Configure<LoadBalancerOptions>(
-          config.GetSection("LoadBalancer"));
+          config.GetSection(LoadBalancerOptions.SectionName));
 
         services.Configure<DatabaseHealthCheckOptions>(
-          config.GetSection("DatabaseHealthCheck"));
+          config.GetSection(DatabaseHealthCheckOptions.SectionName));
 
 
         services.AddDbContext<AppDbContext>(options =>

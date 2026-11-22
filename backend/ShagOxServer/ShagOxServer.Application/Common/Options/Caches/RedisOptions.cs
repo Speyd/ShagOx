@@ -1,6 +1,9 @@
 namespace ShagOxServer.Application.Common.Options.Caches;
 public sealed class RedisOptions
 {
+    public const string SectionDataName = "Redis";
+    public const string SectionUserName = "UserRedis";
+
     public string Endpoints { get; set; } = null!;
     public bool Ssl { get; set; } = true;
     public string CaPath { get; set; } = null!;

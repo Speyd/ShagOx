@@ -6,6 +6,7 @@ using ShagOxServer.Application.DependencyInjections.Baskets;
 using ShagOxServer.Application.DependencyInjections.Caches;
 using ShagOxServer.Application.DependencyInjections.Caches.Invalidations;
 using ShagOxServer.Application.DependencyInjections.Comments;
+using ShagOxServer.Application.DependencyInjections.Dashboards;
 using ShagOxServer.Application.DependencyInjections.Deliveries;
 using ShagOxServer.Application.DependencyInjections.Dictionary;
 using ShagOxServer.Application.DependencyInjections.Location;
@@ -15,7 +16,6 @@ using ShagOxServer.Application.DependencyInjections.Specification;
 using ShagOxServer.Application.DependencyInjections.Verifications;
 
 namespace ShagOxServer.Application.DependencyInjections.Base;
-
 public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(
@@ -35,6 +35,7 @@ public static class DependencyInjection
             .AddCommonApplication()
             .AddDeliveriesApplication()
             .AddOrdersItemApplication()
-            .AddPaymentsApplication();
+            .AddPaymentsApplication()
+            .AddDashboardsApplication();
     }
 }

@@ -17,6 +17,7 @@ using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using Twilio.Http;
 
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Create;
@@ -85,14 +86,14 @@ public class CategoryCreateService
         await _unitOfWork.BeginTransactionAsync();
 
         try
-        {
-            
+        {   
             _categoryRepository.Add(category);
 
             await _unitOfWork.SaveChangesAsync();
 
-            var imageResult = await _imageCreateService.CreateInternalAsync(
-                new PictureCreateRequest(category.Id, request.Picture),
+            var imageResult = await CreatePicture(
+                category, 
+                request,
                 cancellationToken);
 
             if (!imageResult.IsSuccess)
@@ -126,5 +127,26 @@ public class CategoryCreateService
                 category.Id,
                 DateTime.UtcNow
         ));
+    }
+
+    private async Task<Result<bool>> CreatePicture(
+        Category category,
+        CategoryCreateRequest request,
+        CancellationToken cancellationToken)
+    {
+        if(request.Picture is null)
+            return Result<bool>.Success(true);
+
+        var imageResult = await _imageCreateService.CreateInternalAsync(
+               new PictureCreateRequest(category.Id, request.Picture),
+               cancellationToken);
+
+        if (!imageResult.IsSuccess)
+        {
+            return Result<bool>
+                .Fail(imageResult.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

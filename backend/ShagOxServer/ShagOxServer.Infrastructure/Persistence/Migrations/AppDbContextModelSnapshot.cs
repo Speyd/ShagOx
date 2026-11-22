@@ -18,7 +18,7 @@ namespace ShagOxServer.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.8")
+                .HasAnnotation("ProductVersion", "10.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -258,22 +258,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasDatabaseName("IX_Advertisements_BuyerId");
 
                     b.HasIndex("CategoryId")
-                        .HasDatabaseName("IX_Advertisements_CategoryId");
+                        .HasDatabaseName("IX_Advertisements_CategoryId")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
 
                     b.HasIndex("ConditionId")
                         .HasDatabaseName("IX_Advertisements_ConditionId");
-
-                    b.HasIndex("CreatedAt")
-                        .HasDatabaseName("IX_Advertisements_CreatedAt");
 
                     b.HasIndex("CurrencyId")
                         .HasDatabaseName("IX_Advertisements_CurrencyId");
 
                     b.HasIndex("OwnerId")
                         .HasDatabaseName("IX_Advertisements_OwnerId");
-
-                    b.HasIndex("Popularity")
-                        .HasDatabaseName("IX_Advertisements_Popularity");
 
                     b.HasIndex("StatusId")
                         .HasDatabaseName("IX_Advertisements_StatusId");
@@ -965,7 +960,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CategoryImageId")
+                    b.Property<long?>("CategoryImageId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Code")
@@ -2713,8 +2708,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Navigation("Attributes");
 
-                    b.Navigation("CategoryImage")
-                        .IsRequired();
+                    b.Navigation("CategoryImage");
 
                     b.Navigation("Translations");
                 });

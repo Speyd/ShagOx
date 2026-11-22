@@ -5,5 +5,5 @@ public sealed record CategoryCreateRequest
 (
     string Code,
     long ProductTypeId,
-    IFormFile Picture
+    IFormFile? Picture
 );

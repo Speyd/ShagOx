@@ -56,12 +56,14 @@ public class NovaPoshtaDeliveryClient
             ? "WarehouseDoors"
             : "WarehouseWarehouse";
 
+        var weight = Math.Max(request.Weight, 0.1m);
+
 
         var methodProperties = new Dictionary<string, object>
         {
             ["CitySender"] = _deliveryOptions.WarehouseCityId,
             ["CityRecipient"] = request.RecipientCityExternalId,
-            ["Weight"] = request.Weight.ToString(
+            ["Weight"] = weight.ToString(
                 System.Globalization.CultureInfo.InvariantCulture),
             ["ServiceType"] = serviceType,
             ["Cost"] = request.DeclaredValue,

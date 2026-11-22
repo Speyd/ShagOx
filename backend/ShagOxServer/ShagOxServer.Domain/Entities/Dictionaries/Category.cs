@@ -13,8 +13,8 @@ public class Category
     public long ProductTypeId { get; set; }
     public ProductType ProductType { get; set; } = null!;
 
-    public long CategoryImageId { get; set; }
-    public CategoryImage CategoryImage { get; set; } = null!;
+    public long? CategoryImageId { get; set; }
+    public CategoryImage? CategoryImage { get; set; }
 
 
     public ICollection<AttributeDefinition> Attributes { get; set; }

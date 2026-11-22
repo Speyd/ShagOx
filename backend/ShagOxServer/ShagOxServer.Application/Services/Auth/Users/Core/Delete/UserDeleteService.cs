@@ -10,7 +10,6 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Delete;
@@ -117,7 +116,7 @@ public class UserDeleteService
         if (entity.Avatar is not null)
         {
             var avatarDelete = await _avatarDeleteService
-                .DeleteInternalAsync(entity.Avatar, cancellationToken);
+                .SoftDeleteInternalAsync(entity.Avatar, cancellationToken);
 
             if (!avatarDelete.IsSuccess)
                 Result<bool>.Fail(avatarDelete.Error);

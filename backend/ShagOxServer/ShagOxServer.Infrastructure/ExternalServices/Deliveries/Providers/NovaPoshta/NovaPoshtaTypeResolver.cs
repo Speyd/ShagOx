@@ -55,7 +55,7 @@ public class NovaPoshtaTypeResolver
                 var json = JsonSerializer.Serialize(body);
 
                 using var response = await _httpClient.PostAsync(
-                    "https://api.novaposhta.ua/v2.0/json/",
+                    "",
                     new StringContent(json, Encoding.UTF8, "application/json"),
                     cancellationToken);
 
@@ -101,11 +101,9 @@ public class NovaPoshtaTypeResolver
         {
             DeliveryPointType.Branch => warehouseTypes
                 .Where(x =>
-                    x.DescriptionRu.Contains(
-                        "отделение",
-                        StringComparison.OrdinalIgnoreCase) ||
-                    x.Description.Contains(
-                        "відділення",
+                    string.Equals(
+                        x.DescriptionRu?.Trim(),
+                        "Почтовое отделение",
                         StringComparison.OrdinalIgnoreCase))
                 .ToList(),
 
@@ -119,8 +117,9 @@ public class NovaPoshtaTypeResolver
 
             DeliveryPointType.ParcelShop => warehouseTypes
                 .Where(x =>
-                    x.Description.Contains(
-                        "до 10 кг",
+                    string.Equals(
+                        x.DescriptionRu?.Trim(),
+                        "Parcel Shop",
                         StringComparison.OrdinalIgnoreCase))
                 .ToList(),
 

@@ -10,7 +10,6 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
@@ -65,16 +64,18 @@ public class CategoryDeleteService
         {
             _categoryRepository.Delete(category.Value!);
 
-
-            var imageResult = await _imageDeleteService
-                .DeleteInternalAsync(category.Value!.CategoryImage);
-
-            if (!imageResult.IsSuccess)
+            if (category.Value!.CategoryImage is not null)
             {
-                await _unitOfWork.RollbackAsync();
+                var imageResult = await _imageDeleteService
+                    .DeleteInternalAsync(category.Value!.CategoryImage);
 
-                return Result<DeleteResponse>
-                    .Fail(imageResult.Error);
+                if (!imageResult.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<DeleteResponse>
+                        .Fail(imageResult.Error);
+                }
             }
 
             await _unitOfWork.CommitAsync();
@@ -100,6 +101,29 @@ public class CategoryDeleteService
                 DateTime.UtcNow
             )
       );
+    }
+
+    public override async Task<Result<bool>> SoftBodyDeleteAsync(
+        Category entity,
+        CancellationToken cancellationToken = default)
+    {
+        var body = await base.SoftBodyDeleteAsync(entity,
+            cancellationToken);
+
+        if (!body.IsSuccess)
+            Result<bool>.Fail(body.Error);
+
+        if(entity.CategoryImage is not null)
+        {
+            var imageDelete = await _imageDeleteService
+                .SoftDeleteRecordAsync(entity.CategoryImage, 
+                    cancellationToken);
+
+            if (!imageDelete.IsSuccess)
+                Result<bool>.Fail(imageDelete.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 
     public override async Task InvalidateCache(

@@ -89,7 +89,8 @@ public class CategoryUpdateService
             return Result<UpdateResponse>.Fail(validation.Error);
 
 
-        var updatedCount = CategoryUpdater.ApplyUpdates(category.Value!, request);
+        var updatedCount = CategoryUpdater
+            .ApplyUpdates(category.Value!, request);
 
         var result = new UpdateResponse(
             updatedCount,

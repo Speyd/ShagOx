@@ -1,6 +1,7 @@
 using ShagOxServer.Application.DTOs.Verifications.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.Application.Resources.EntityNames;
@@ -15,7 +16,8 @@ namespace ShagOxServer.Application.Services.Verifications.Confirmation;
 public class VerificationService
     : IVerificationService
 {
-    private readonly IUserQueryRepository _userRepository;
+    private readonly IRepository<User> _userRepository;
+    private readonly IUserQueryRepository _userQueryRepository;
     private readonly IUserVerificationService _userVerifyService;
 
     private readonly IVerificationCodeService
@@ -24,12 +26,14 @@ public class VerificationService
     private readonly IUnitOfWork _unitOfWork;
 
     public VerificationService(
-        IUserQueryRepository userRepository,
+        IRepository<User> userRepository,
+        IUserQueryRepository userQueryRepository,
         IUserVerificationService userVerifyService,
         IVerificationCodeService verificationCodeService,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
+        _userQueryRepository = userQueryRepository;
         _userVerifyService = userVerifyService;
         _verificationCodeService = verificationCodeService;
         _unitOfWork = unitOfWork;
@@ -38,7 +42,7 @@ public class VerificationService
     public async Task<Result<bool>> VerifyAsync(
         VerificationRequest request)
     {
-        var user = await _userRepository
+        var user = await _userQueryRepository
             .GetByIdAsync(request.UserId!.Value);
 
         if (user is null)
@@ -56,6 +60,8 @@ public class VerificationService
         var resultApply = ApplyVerification(user, resultVerify.Code);
         if (!resultApply.IsSuccess)
             return Result<bool>.Fail(resultApply.Error);
+
+        _userRepository.Update(user);
 
         await _unitOfWork.SaveChangesAsync();
 

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,18 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="VerificationBody" xml:space="preserve">
-    <value>Hello!
-
-Your verification code:
-
-{0}
-
-The code is valid for {1} minutes.
-
-If you did not register for Marketly, simply ignore this email.</value>
+  <data name="ConfirmationMessage" xml:space="preserve">
+    <value>Ihre Bestellung wurde erfolgreich bestätigt.</value>
   </data>
-  <data name="VerificationSubject" xml:space="preserve">
-    <value>Marketly -  Email verification</value>
+  <data name="DeliveryMessage" xml:space="preserve">
+    <value>Ihre Bestellung wird in Kürze an den Versanddienstleister übergeben.</value>
+  </data>
+  <data name="Footer" xml:space="preserve">
+    <value>Vielen Dank, dass Sie sich für uns entschieden haben! Bei Fragen können Sie uns gerne kontaktieren.</value>
+  </data>
+  <data name="OrderConfirmed" xml:space="preserve">
+    <value>Bestellung bestätigt!</value>
+  </data>
+  <data name="OrderTitle" xml:space="preserve">
+    <value>Bestellung</value>
+  </data>
+  <data name="ViewOrder" xml:space="preserve">
+    <value>Bestellung ansehen</value>
   </data>
 </root>

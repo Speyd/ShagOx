@@ -129,8 +129,8 @@
   <data name="Order" xml:space="preserve">
     <value>Bestellung</value>
   </data>
-  <data name="PaymentSuccess" xml:space="preserve">
-    <value>Zahlung erfolgreich!</value>
+  <data name="OrderSuccess" xml:space="preserve">
+    <value>Bestellung erfolgreich aufgegeben!</value>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Produkte</value>

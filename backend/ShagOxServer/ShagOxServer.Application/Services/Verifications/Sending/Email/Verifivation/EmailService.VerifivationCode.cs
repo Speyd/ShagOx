@@ -1,7 +1,8 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
-using ShagOxServer.Application.Resources.Messaging.Email;
 using ShagOxServer.Application.Resources.Verifications.Core;
+using ShagOxServer.Application.Resources.Verifications.Email;
+using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Net;
 using System.Net.Mail;
@@ -10,6 +11,9 @@ namespace ShagOxServer.Application.Services.Verifications.Sending.Email;
 public partial class EmailService
     : IEmailService
 {
+    private const string VerificationEmailFileName = "Verification/EmailVerification.cshtml";
+
+
     public async Task<Result<bool>> SendVerificationCodeAsync(
         string email,
         string code)
@@ -40,18 +44,21 @@ public partial class EmailService
                     smtpPassword)
             };
 
-            var subject = EmailTemplatesResources.VerificationSubject;
+            var dynamicModel = EmailViewModelFactory
+                .Create(code, _codeOptions.ExpirationMinutes);
 
-            var body = string.Format(
-                EmailTemplatesResources.VerificationBody,
-                code, _codeOptions.ExpirationMinutes);
+            var htmlBody = await _renderer.RenderAsync(
+                VerificationEmailFileName,
+                dynamicModel);
+
+            var subject = EmailVerificationEmailResources.Title;
 
             using var message = new MailMessage
             {
                 From = new MailAddress(fromEmail),
                 Subject = subject,
-                Body = body,
-                IsBodyHtml = false
+                Body = htmlBody,
+                IsBodyHtml = true
             };
 
             message.To.Add(email);

@@ -129,8 +129,8 @@
   <data name="Order" xml:space="preserve">
     <value>Заказ</value>
   </data>
-  <data name="PaymentSuccess" xml:space="preserve">
-    <value>Оплата прошла успешно!</value>
+  <data name="OrderSuccess" xml:space="preserve">
+    <value>Заказ успешно оформлен!</value>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Товары</value>

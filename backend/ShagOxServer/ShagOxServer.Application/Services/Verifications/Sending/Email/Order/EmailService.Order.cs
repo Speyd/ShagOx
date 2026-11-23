@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.DTOs.Orders.Core.Query.Email;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Orders.OrderPaidEmail;
 using ShagOxServer.Application.Resources.Verifications.Core;
-using ShagOxServer.Application.Services.Verifications.Sending.Email.Mapping;
+using ShagOxServer.Application.Services.Verifications.Sending.Email.Mapping.Order.Create;
+using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using System.Net;
@@ -13,7 +13,7 @@ namespace ShagOxServer.Application.Services.Verifications.Sending.Email;
 public partial class EmailService
     : IEmailService
 {
-    private const string OrderPaidEmailFileName = "OrderPaid.cshtml";
+    private const string OrderPaidEmailFileName = "Order/OrderPaid.cshtml";
 
 
     public async Task<Result<bool>> SendOrderPaidEmailAsync(
@@ -51,14 +51,13 @@ public partial class EmailService
                 order,
                 _urlBuilder.BuildOrderDetailsUrl(order.Id));
 
-            model = EmailTemplateRenderer
-                .PopulateLocalizedFields(model);
+            var dynamicModel = EmailViewModelFactory.Create(model);
 
             var htmlBody = await _renderer.RenderAsync(
                 OrderPaidEmailFileName,
-                model);
+                dynamicModel);
 
-            var subject = OrderPaidEmailResources.PaymentSuccess;
+            var subject = OrderPaidEmailResources.OrderSuccess;
 
             using var message = new MailMessage
             {

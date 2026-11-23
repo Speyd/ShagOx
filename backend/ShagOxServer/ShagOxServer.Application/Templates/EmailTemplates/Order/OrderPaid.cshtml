@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@Model.PaymentSuccess</title>
+    <title>@Model.OrderSuccess</title>
 </head>
 
 <body style="margin:0; padding:0; background:#f4f4f4;
@@ -20,11 +20,11 @@
                    style="max-width:600px; background:#ffffff;
                           border-radius:12px;">
 
-                <!-- Header -->
+
                 <tr>
                     <td align="center" style="padding:35px 20px;">
                         <h1 style="color:#222;">
-                            @Model.PaymentSuccess
+                            @Model.OrderSuccess
                         </h1>
 
                         <p style="color:#777;">
@@ -33,7 +33,7 @@
                     </td>
                 </tr>
 
-                <!-- Order information -->
+
                 <tr>
                     <td style="padding:0 30px;">
 
@@ -47,7 +47,7 @@
 
                         <h3>@Model.YourProducts</h3>
 
-                        <!-- Products -->
+
                         @foreach (var item in Model.Items)
                         {
                             <table width="100%" cellpadding="10"
@@ -83,7 +83,7 @@
                             </table>
                         }
 
-                        <!-- Totals -->
+
                         <table width="100%" cellpadding="8"
                                cellspacing="0"
                                style="margin-top:20px;">
@@ -130,7 +130,7 @@
                             </tr>
                         </table>
 
-                        <!-- Order button -->
+
                         <p style="text-align:center; padding:25px;">
                             <a href="@Model.OrderUrl"
                                style="display:inline-block;
@@ -146,7 +146,7 @@
                     </td>
                 </tr>
 
-                <!-- Footer -->
+
                 <tr>
                     <td align="center"
                         style="padding:25px; color:#999;">

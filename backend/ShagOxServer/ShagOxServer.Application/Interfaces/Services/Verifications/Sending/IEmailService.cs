@@ -1,4 +1,3 @@
-using ShagOxServer.Application.DTOs.Orders.Core.Query.Email;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -10,5 +9,8 @@ public interface IEmailService
         string code);
 
     Task<Result<bool>> SendOrderPaidEmailAsync(
+        Order order);
+
+    Task<Result<bool>> SendOrderConfirmedEmailAsync(
         Order order);
 }

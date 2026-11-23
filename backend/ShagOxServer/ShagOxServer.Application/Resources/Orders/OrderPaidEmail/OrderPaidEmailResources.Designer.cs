@@ -97,11 +97,11 @@ namespace ShagOxServer.Application.Resources.Orders.OrderPaidEmail {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Payment successful!.
+        ///   Ищет локализованную строку, похожую на Order placed successfully!.
         /// </summary>
-        public static string PaymentSuccess {
+        public static string OrderSuccess {
             get {
-                return ResourceManager.GetString("PaymentSuccess", resourceCulture);
+                return ResourceManager.GetString("OrderSuccess", resourceCulture);
             }
         }
         

@@ -1,4 +1,4 @@
-namespace ShagOxServer.Application.DTOs.Orders.Core.Query.Email;
+namespace ShagOxServer.Application.DTOs.Orders.Core.Query.Email.Create;
 public sealed record OrderEmailItem
 (
     string Name,

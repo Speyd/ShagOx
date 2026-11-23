@@ -20,7 +20,7 @@ public class UserContext
             var value = _http.HttpContext?.User
                 .FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            return 22;// long.TryParse(value, out var id) ? id : null;
+            return long.TryParse(value, out var id) ? id : null;
         }
     }
 }

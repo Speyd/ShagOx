@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,18 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="VerificationBody" xml:space="preserve">
-    <value>Вітаємо!
-
-Ваш код підтвердження:
-
-{0}
-
-Код дійсний протягом {1} хвилин.
-
-Якщо ви не реєструвалися в Marketly, просто проігноруйте цей лист.</value>
+  <data name="ConfirmationMessage" xml:space="preserve">
+    <value>Ваш заказ успешно подтверждён.</value>
   </data>
-  <data name="VerificationSubject" xml:space="preserve">
-    <value>Marketly - підтвердження електронної пошти</value>
+  <data name="DeliveryMessage" xml:space="preserve">
+    <value>В ближайшее время ваш заказ будет передан службе доставки.</value>
+  </data>
+  <data name="Footer" xml:space="preserve">
+    <value>Спасибо, что выбрали нас! Если у вас возникнут вопросы, свяжитесь с нами.</value>
+  </data>
+  <data name="OrderConfirmed" xml:space="preserve">
+    <value>Заказ подтверждён!</value>
+  </data>
+  <data name="OrderTitle" xml:space="preserve">
+    <value>Заказ</value>
+  </data>
+  <data name="ViewOrder" xml:space="preserve">
+    <value>Посмотреть заказ</value>
   </data>
 </root>

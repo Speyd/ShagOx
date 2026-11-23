@@ -1,11 +1,10 @@
-using ShagOxServer.Application.DTOs.Orders.Core.Query.Email;
-using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.Application.DTOs.Orders.Core.Query.Email.Create;
 
-namespace ShagOxServer.Application.Services.Verifications.Sending.Email.Mapping;
+namespace ShagOxServer.Application.Services.Verifications.Sending.Email.Mapping.Order.Create;
 public static class OrderPaidModelMapper
 {
     public static OrderPaidEmailModel ToDto(
-        Order order,
+        ShagOxServer.Domain.Entities.Orders.Order order,
         string orderUrl)
     {
         return new OrderPaidEmailModel(

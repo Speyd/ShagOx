@@ -1,9 +1,9 @@
-using CloudinaryDotNet;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Builders;
 using ShagOxServer.Application.Common.Options.Verifivations;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing;
 
 namespace ShagOxServer.Application.Services.Verifications.Sending.Email;
 public partial class EmailService 

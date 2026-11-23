@@ -100,20 +100,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>EntityNamesResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Messaging\Email\EmailTemplatesResources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>EmailTemplatesResources.resx</DependentUpon>
-    </Compile>
     <Compile Update="Resources\EntityErrorResourcess\EntityErrorResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EntityErrorResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Messaging\Sms\SmsTemplatesResources.Designer.cs">
+    <Compile Update="Resources\Verifications\Sms\SmsTemplatesResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SmsTemplatesResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Orders\OrderConfirmedEmail\OrderConfirmedEmailResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrderConfirmedEmailResources.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Orders\OrderPaidEmail\OrderPaidEmailResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -149,6 +149,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>VerificationResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Verifications\Email\EmailVerificationEmailResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EmailVerificationEmailResources.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Verifications\Mappers\VerificationMapperResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -210,17 +215,17 @@
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>EntityNamesResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Messaging\Email\EmailTemplatesResources.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>EmailTemplatesResources.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\EntityErrorResourcess\EntityErrorResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>EntityErrorResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Messaging\Sms\SmsTemplatesResources.resx">
+		<EmbeddedResource Update="Resources\Verifications\Sms\SmsTemplatesResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>SmsTemplatesResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Orders\OrderConfirmedEmail\OrderConfirmedEmailResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>OrderConfirmedEmailResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Orders\OrderPaidEmail\OrderPaidEmailResources.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
@@ -250,6 +255,10 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>VerificationResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\Email\EmailVerificationEmailResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>EmailVerificationEmailResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Verifications\Mappers\VerificationMapperResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>VerificationMapperResources.Designer.cs</LastGenOutput>
@@ -259,6 +268,7 @@
 	<ItemGroup>
 	  <Folder Include="Common\Context\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
+	  <Folder Include="Templates\EmailTemplates\Verification\" />
 	</ItemGroup>
 	
 </Project>

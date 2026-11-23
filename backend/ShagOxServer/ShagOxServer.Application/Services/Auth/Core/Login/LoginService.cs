@@ -10,8 +10,8 @@ using ShagOxServer.Application.Resources.Auth.Contacts.Passwords;
 using ShagOxServer.Application.Resources.Auth.Logins;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Auth.Enum;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Core.Login;

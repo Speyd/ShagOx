@@ -1,4 +1,4 @@
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Application.Interfaces.Services.Jwt;
 public interface IJwtService

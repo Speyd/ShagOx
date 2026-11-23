@@ -4,7 +4,7 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Filters.Auth.Users;
+using ShagOxServer.Domain.Filters.Auth.Users.Core;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 

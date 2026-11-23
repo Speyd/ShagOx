@@ -19,7 +19,7 @@ using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Update;

@@ -14,7 +14,7 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Roles;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Register;

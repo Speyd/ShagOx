@@ -6,7 +6,7 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Core;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Statistics;
 
-namespace ShagOxServer.Infrastructure.DependencyInjections.Auth;
+namespace ShagOxServer.Infrastructure.DependencyInjections.Auth.Users;
 public static class UserDependencyInjection
 {
     public static IServiceCollection AddUserInfrastructure(
@@ -20,7 +20,10 @@ public static class UserDependencyInjection
 
         services.AddScoped<IUserStatisticsRepository,
             UserStatisticsRepository>();
-        
+
+        services.AddUserDeviceInfrastructure();
+
+
 
         return services;
     }

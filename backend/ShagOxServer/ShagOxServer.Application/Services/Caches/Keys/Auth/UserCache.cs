@@ -1,5 +1,5 @@
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Application.Services.Caches.Keys.Auth;
 public static class UserCache

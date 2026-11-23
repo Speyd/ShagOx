@@ -1,8 +1,8 @@
 using ShagOxServer.Application.DTOs.Dashboards.Advertisements;
 using ShagOxServer.Application.DTOs.Dashboards.Users;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dashboards.Admin.Extensions;
 public static class DashboardAdminQueryExtensions

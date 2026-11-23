@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Update;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Update;
 public static class UserUpdater

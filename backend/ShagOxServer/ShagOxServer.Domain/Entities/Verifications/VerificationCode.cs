@@ -1,5 +1,5 @@
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 
 namespace ShagOxServer.Domain.Entities.Verifications;

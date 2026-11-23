@@ -5,7 +5,6 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.UserRoles.Extens
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.UserRoles.Query;
-
 public partial class UserRoleQueryRepository
     : SearchRepository<UserRole, UserRoleSearchFilter>,
       IUserRoleQueryRepository

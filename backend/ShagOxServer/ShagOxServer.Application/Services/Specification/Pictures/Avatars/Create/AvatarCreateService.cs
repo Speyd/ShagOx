@@ -11,7 +11,7 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictu
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

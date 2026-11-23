@@ -7,7 +7,7 @@ using ShagOxServer.Application.DTOs.Auth.Users.Statistics;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Statistics;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Domain.Filters.Auth.Users;
+using ShagOxServer.Domain.Filters.Auth.Users.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Auth.Users;

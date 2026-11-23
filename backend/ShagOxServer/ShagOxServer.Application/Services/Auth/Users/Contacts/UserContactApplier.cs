@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Resources.Auth.Registrations;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Contacts;

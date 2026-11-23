@@ -20,7 +20,7 @@ using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;
 using ShagOxServer.Application.Services.Caches.Keys.Specification;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 public class UserInvalidationService

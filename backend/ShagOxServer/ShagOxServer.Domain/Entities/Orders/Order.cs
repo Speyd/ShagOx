@@ -1,5 +1,5 @@
 using ShagOxServer.Domain.Base.Owner;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
 using ShagOxServer.Domain.Entities.Orders.Enum;

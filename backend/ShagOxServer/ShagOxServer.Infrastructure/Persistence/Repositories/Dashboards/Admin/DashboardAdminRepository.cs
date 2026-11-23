@@ -2,11 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.DTOs.Dashboards;
 using ShagOxServer.Application.Interfaces.Repositories.Dashboards;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
+using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dashboards.Admin;
 public partial class DashboardAdminRepository

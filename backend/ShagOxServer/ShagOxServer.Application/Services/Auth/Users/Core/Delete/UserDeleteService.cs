@@ -9,7 +9,7 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Core.Delete;

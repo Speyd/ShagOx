@@ -7,7 +7,7 @@ using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
-namespace ShagOxServer.Domain.Entities.Auth;
+namespace ShagOxServer.Domain.Entities.Auth.Users;
 public class User 
     : BaseEntity
 {

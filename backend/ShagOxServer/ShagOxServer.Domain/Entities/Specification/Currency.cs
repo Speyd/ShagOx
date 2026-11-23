@@ -1,5 +1,5 @@
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 namespace ShagOxServer.Domain.Entities.Specification;
 
 public class Currency 

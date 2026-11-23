@@ -1,7 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Auth;
-using ShagOxServer.Domain.Filters.Auth.Users;
+using ShagOxServer.Domain.Entities.Auth.Users;
+using ShagOxServer.Domain.Filters.Auth.Users.Core;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;

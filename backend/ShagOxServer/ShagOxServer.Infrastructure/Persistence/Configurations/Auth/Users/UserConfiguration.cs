@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
-namespace ShagOxServer.Infrastructure.Persistence.Configurations.Auth;
-
+namespace ShagOxServer.Infrastructure.Persistence.Configurations.Auth.Users;
 public class UserConfiguration 
     : IEntityTypeConfiguration<User>
 {

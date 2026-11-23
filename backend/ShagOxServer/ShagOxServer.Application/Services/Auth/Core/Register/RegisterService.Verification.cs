@@ -1,7 +1,7 @@
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Resources.Auth.Registrations;
-using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Auth.Enum;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

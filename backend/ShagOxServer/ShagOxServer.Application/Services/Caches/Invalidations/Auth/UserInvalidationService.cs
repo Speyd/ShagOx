@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Comments.Core.Cache;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Cache;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
@@ -11,11 +12,13 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Av
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
+using ShagOxServer.Application.Services.Caches.Keys.Baskets;
 using ShagOxServer.Application.Services.Caches.Keys.Specification;
 using ShagOxServer.Domain.Entities.Auth;
 
@@ -38,6 +41,9 @@ public class UserInvalidationService
     private readonly ICurrencyQueryRepository _currencyRepository;
     private readonly CurrencyInvalidationService _currencyInvalid;
 
+    private readonly IBasketQueryRepository _basketRepository;
+    private readonly BasketInvalidationService _basketInvalid;
+
     private readonly IDataCacheService _cache;
 
 
@@ -52,6 +58,8 @@ public class UserInvalidationService
         ReviewRepliCommentInvalidationService reviewRepliInvalid,
         ICurrencyQueryRepository currencyRepository,
         CurrencyInvalidationService currencyInvalid,
+        IBasketQueryRepository basketRepository,
+        BasketInvalidationService basketInvalid,
         IDataCacheService cache)
     {
         _advertRepository = advertRepository;
@@ -64,6 +72,8 @@ public class UserInvalidationService
         _reviewRepliInvalid = reviewRepliInvalid;
         _currencyRepository = currencyRepository;
         _currencyInvalid = currencyInvalid;
+        _basketRepository = basketRepository;
+        _basketInvalid = basketInvalid;
         _cache = cache;
     }
 
@@ -150,6 +160,9 @@ public class UserInvalidationService
 
         await _cache.RemoveByPatternAsync(CurrencyCache.
             ByUser(entityInfo.Id));
+
+        await _cache.RemoveByPatternAsync(BasketCache.
+            ByUserPattern(entityInfo.Id));
 
         await InvalidateContactAsync(entityInfo);
 

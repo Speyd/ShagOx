@@ -180,7 +180,7 @@
 		  <LastGenOutput>GoogleAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Auth\Logins\LoginAuthResources.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
+		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>LoginAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Auth\Contacts\Passwords\PasswordAuthResources.resx">

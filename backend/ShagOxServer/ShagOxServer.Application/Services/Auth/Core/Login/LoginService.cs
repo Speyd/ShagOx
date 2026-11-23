@@ -3,18 +3,20 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
-using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Jwt;
 using ShagOxServer.Application.Resources.Auth.Contacts.Passwords;
 using ShagOxServer.Application.Resources.Auth.Logins;
 using ShagOxServer.Application.Resources.EntityNames;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth;
+using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Core.Login;
-public class LoginService : ILoginService
+public class LoginService 
+    : ILoginService
 {
     private readonly IUserQueryRepository _userQueryRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
@@ -39,16 +41,29 @@ public class LoginService : ILoginService
     } 
 
 
-    public async Task<Result<LoginResponse>> LoginAsync(LoginRequest request)
+    public async Task<Result<LoginResponse>> LoginAsync(
+        LoginRequest request)
     {
         try
         {
-            var type = _contactValidator.Detect(request.EmailOrPhoneOrUserName);
+            var type = _contactValidator.Detect(
+                request.EmailOrPhoneOrUserName);
 
-            var user = await GetUserAsync(request.EmailOrPhoneOrUserName, type);
+            var user = await GetUserAsync(
+                request.EmailOrPhoneOrUserName, 
+                type);
+
             if (user is null)
-                return Result<LoginResponse>
-                    .NotFound(EntityNamesResources.User);
+            {
+                return Result<LoginResponse>.NotFound(
+                    EntityNamesResources.User);
+            }
+
+            if (!CanLogin(user))
+            {
+                return Result<LoginResponse>.Fail(
+                    LoginAuthResources.LoginNotAllowed);
+            }
 
             var result = _passwordHasher.VerifyHashedPassword(
                 user,
@@ -82,6 +97,12 @@ public class LoginService : ILoginService
         }
     }
 
+    public bool CanLogin(
+        User user)
+    {
+        return user.EntityStatus == EntityStatus.Active &&
+               user.Status != UserStatus.Blocked;
+    }
 
     private async Task<User?> GetUserAsync(
         string data,

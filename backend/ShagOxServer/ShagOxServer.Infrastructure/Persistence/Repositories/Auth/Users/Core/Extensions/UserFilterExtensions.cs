@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.Users;
 
-namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Extensions;
+namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Core.Extensions;
 public static class UserFilterExtensions
 {
     public static IQueryable<User> Filter(

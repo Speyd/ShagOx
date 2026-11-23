@@ -21,7 +21,7 @@ public partial class GoogleLoginService
     private readonly IUserQueryRepository _userQueryRepository;
     private readonly IUserNameService _userNameService;
     private readonly UserCreater _userCreater;
-    private readonly IBasketCreateService _basketService;
+    private readonly ILoginService _login;
 
     private readonly IJwtService _jwtService;
     private readonly IUnitOfWork _unitOfWork;
@@ -31,20 +31,20 @@ public partial class GoogleLoginService
     public GoogleLoginService(
         IOptions<GoogleOptions> googleOptions,
         IRegisterService register,
-        IBasketCreateService basketService,
         IUserQueryRepository userQueryRepository,
         IUserNameService userNameService,
         UserCreater userCreater,
+        ILoginService login,
         IJwtService jwtService,
         IUnitOfWork unitOfWork,
         ILogger<GoogleLoginService> logger)
     {
         _googleOptions = googleOptions.Value;
         _register = register;
-        _basketService = basketService; 
         _userQueryRepository = userQueryRepository;
         _userNameService = userNameService;
         _userCreater = userCreater;
+        _login = login;
         _jwtService = jwtService;
         _unitOfWork = unitOfWork;
         _logger = logger;

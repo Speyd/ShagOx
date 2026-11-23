@@ -5,12 +5,14 @@ using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Statistics;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Services.Auth.UserRoles.Query;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 using ShagOxServer.Application.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Application.Services.Auth.Users.Statistics;
 using ShagOxServer.Application.Services.Auth.Users.Update;
 using ShagOxServer.Domain.Entities.Auth;
 
@@ -20,21 +22,41 @@ public static class UserDependencyInjection
     public static IServiceCollection AddUsersApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<IUserContext, UserContext>();
+        services.AddScoped<IUserContext, 
+            UserContext>();
 
-        services.AddScoped<IUserQueryService, UserQueryService>();
-        services.AddScoped<IUserAdminQueryService, UserAdminQueryService>();
-        services.AddScoped<IUserUpdateService, UserUpdateService>();
-        services.AddScoped<IUserDeleteService, UserDeleteService>();
+        services.AddScoped<IUserQueryService,
+            UserQueryService>();
 
-        services.AddScoped<IUserRoleQueryService, UserRoleQueryService>();
+        services.AddScoped<IUserAdminQueryService,
+            UserAdminQueryService>();
 
-        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+        services.AddScoped<IUserUpdateService,
+            UserUpdateService>();
+
+        services.AddScoped<IUserDeleteService,
+            UserDeleteService>();
+
+
+
+        services.AddScoped<IUserRoleQueryService,
+            UserRoleQueryService>();
+
+        services.AddScoped<IPasswordHasher<User>,
+            PasswordHasher<User>>();
 
         services.AddScoped<UserValidator>();
 
         services.AddScoped<UserCreater>();
-        services.AddScoped<IUserRoleQueryService, UserRoleQueryService>();
+
+        services.AddScoped<IUserRoleQueryService,
+            UserRoleQueryService>();
+
+
+
+        services.AddScoped<IUserStatisticsService,
+            UserStatisticsService>();
+
 
         return services;
     }

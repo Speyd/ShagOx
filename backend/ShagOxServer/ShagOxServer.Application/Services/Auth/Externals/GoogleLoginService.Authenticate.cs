@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
 using ShagOxServer.Application.Resources.Auth.External.Google;
+using ShagOxServer.Application.Resources.Auth.Logins;
 using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -27,6 +28,7 @@ public partial class GoogleLoginService
             {
                 var userName = await _userNameService
                     .GenerateUniqueAsync(name);
+
                 if (!userName.IsSuccess)
                     return Result<LoginResponse>.Fail(userName.Error);
 
@@ -61,6 +63,11 @@ public partial class GoogleLoginService
                     return Result<LoginResponse>
                         .Fail(GoogleAuthResources.GoogleUserCreationFailed);
                 }
+            }
+            else if (!_login.CanLogin(user))
+            {
+                return Result<LoginResponse>.Fail(
+                    LoginAuthResources.LoginNotAllowed);
             }
 
             return Result<LoginResponse>.Success(

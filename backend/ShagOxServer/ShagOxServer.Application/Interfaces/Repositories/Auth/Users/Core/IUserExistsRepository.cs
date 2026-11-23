@@ -2,7 +2,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth;
 
-namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users;
+namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Core;
 public interface IUserExistsRepository 
     : IExistsRepository<User>
 {

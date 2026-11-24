@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
+using ShagOxServer.Application.Services.Auth.Users.UserDevices;
 using ShagOxServer.Application.Services.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Services.Auth.Users.UserDevices.Validator;
 
@@ -11,7 +13,10 @@ public static class UserDeviceDependencyInjection
     {
         services.AddScoped<IUserDeviceCreateService,
             UserDeviceCreateService>();
-        
+
+        services.AddScoped<IUserDeviceAuthenticationService,
+            UserDeviceAuthenticationService>();
+
         services.AddScoped<UserDeviceValidator>();   
 
         return services;

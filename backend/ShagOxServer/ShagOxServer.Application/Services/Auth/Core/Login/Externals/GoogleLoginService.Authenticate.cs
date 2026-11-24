@@ -4,6 +4,7 @@ using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
 using ShagOxServer.Application.Resources.Auth.External.Google;
 using ShagOxServer.Application.Resources.Auth.Logins;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -44,7 +45,22 @@ public partial class GoogleLoginService
                 LoginAuthResources.LoginNotAllowed);
         }
 
-        return await _sessionService.CreateSessionAsync(user);
+        var device = await _deviceProvider
+            .GetDeviceAsync();
+
+        if(device is null)
+        {
+            return Result<LoginResponse>.Fail(
+                EntityNamesResources.UserDevice);
+        }
+
+        if (!device.IsTrusted)
+        {
+            await _deviceCommands.MarkAsTrasteAsync(device.Id);
+        }
+
+        return await _sessionService
+            .CreateSessionAsync(user, device.Id);
     }
 
 

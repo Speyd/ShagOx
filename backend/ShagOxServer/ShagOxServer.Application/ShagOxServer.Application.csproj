@@ -161,10 +161,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>VerificationMapperResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Verifications\TwoFactor\Disable\DisableTwoFactorResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DisableTwoFactorResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Verifications\TwoFactor\Enable\EnableTwoFactorResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EnableTwoFactorResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Verifications\TwoFactor\Initiate\InitiateTwoFactorResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>InitiateTwoFactorResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -226,7 +236,7 @@
 		  <LastGenOutput>EntityErrorResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Verifications\Sms\SmsTemplatesResources.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
+		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>SmsTemplatesResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Orders\OrderConfirmedEmail\OrderConfirmedEmailResources.resx">
@@ -269,16 +279,23 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>VerificationMapperResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\TwoFactor\Disable\DisableTwoFactorResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>DisableTwoFactorResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Verifications\TwoFactor\Enable\EnableTwoFactorResources.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>EnableTwoFactorResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\TwoFactor\Initiate\InitiateTwoFactorResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>InitiateTwoFactorResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="Common\Context\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
-	  <Folder Include="Templates\EmailTemplates\TwoFactor\" />
 	  <Folder Include="Templates\EmailTemplates\Verification\" />
 	</ItemGroup>
 	

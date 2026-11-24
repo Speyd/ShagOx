@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Verifications.Create;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation.UserVerification;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Domain.Entities.Auth.Users;
@@ -9,14 +10,14 @@ namespace ShagOxServer.Application.Services.Verifications.Confirmation.UserVerif
 public partial class UserVerificationService
     : IUserVerificationService
 {
-    public async Task<Result<bool>> ChangePassword(
+    public async Task<Result<VerificationResponse>> ChangePasswordAsync(
         User user,
         VerificationCode verificationCode)
     {
         if (string.IsNullOrWhiteSpace(
                   verificationCode.PendingValue))
         {
-            return Result<bool>.Fail(
+            return Result<VerificationResponse>.Fail(
                 VerificationResources.PendingPasswordNotFound);
         }
 
@@ -31,6 +32,7 @@ public partial class UserVerificationService
             user,
             SessionRevocationReason.PasswordChanged);
 
-        return Result<bool>.Success(true);
+        return Result<VerificationResponse>.Success(
+            new VerificationResultResponse(true));
     }
 }

@@ -118,22 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CodeInstruction" xml:space="preserve">
-    <value>Введіть наведений нижче код підтвердження, щоб підтвердити та увімкнути двофакторну автентифікацію.</value>
+    <value>Щоб підтвердити та увімкнути двофакторну автентифікацію, введіть наведений нижче код підтвердження:</value>
   </data>
   <data name="ExpirationMessage" xml:space="preserve">
-    <value>Термін дії цього коду підтвердження закінчиться через {0} хвилин.</value>
+    <value>Термін дії цього коду становить {0} хвилин. Будь ласка, нікому не повідомляйте його.</value>
   </data>
   <data name="Footer" xml:space="preserve">
     <value>Це автоматичне повідомлення системи безпеки. Будь ласка, не відповідайте на нього.</value>
   </data>
   <data name="Heading" xml:space="preserve">
-    <value>Увімкнення двофакторної автентифікації</value>
+    <value>Захистіть свій обліковий запис</value>
   </data>
   <data name="Message" xml:space="preserve">
     <value>Ви надіслали запит на увімкнення двофакторної автентифікації для свого облікового запису.</value>
   </data>
   <data name="SecurityMessage" xml:space="preserve">
-    <value>Якщо ви не надсилали цей запит, негайно вживіть заходів для захисту свого облікового запису.</value>
+    <value>Якщо ви не запитували увімкнення двофакторної автентифікації, проігноруйте цей лист і зверніться до служби підтримки, якщо підозрюєте несанкціонований доступ до облікового запису.</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Увімкнення двофакторної автентифікації</value>

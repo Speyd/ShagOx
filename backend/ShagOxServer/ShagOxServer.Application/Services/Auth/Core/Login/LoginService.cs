@@ -6,10 +6,14 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.TwoFactor;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Resources.Auth.Logins;
+using ShagOxServer.Application.Services.Auth.Users.Contacts.TwoFactor;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using UAParser;
 
 namespace ShagOxServer.Application.Services.Auth.Core.Login;
 public class LoginService 
@@ -20,6 +24,9 @@ public class LoginService
 
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
+
+    private readonly ITwoFactorService _twoFactorService;
+    private readonly IUserDeviceAuthenticationService _deviceAuthentication;
 
     private readonly ILoginPolicy _loginPolicy;
     private readonly ILoginSessionService _sessionService;
@@ -33,6 +40,8 @@ public class LoginService
         IUserQueryRepository userQueryRepository,
         IPasswordHasher<User> passwordHasher,
         IContactValidator contactValidator,
+        ITwoFactorService twoFactorService,
+        IUserDeviceAuthenticationService deviceAuthentication,
         ILoginPolicy loginPolicy,
         ILoginSessionService sessionService,
         ILogger<LoginService> logger,
@@ -42,6 +51,8 @@ public class LoginService
         _userQueryRepository = userQueryRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
+        _twoFactorService = twoFactorService;
+        _deviceAuthentication = deviceAuthentication;
         _loginPolicy = loginPolicy;
         _sessionService = sessionService;
         _logger = logger;
@@ -89,7 +100,24 @@ public class LoginService
                 await _unitOfWork.SaveChangesAsync();
             }
 
-            return await _sessionService.CreateSessionAsync(user);
+            var deviceResult = await _deviceAuthentication
+                .AuthenticateDeviceAsync(user);
+
+            if (!deviceResult.IsSuccess)
+                return Result<LoginResponse>.Fail(deviceResult.Error);
+
+            var device = deviceResult.Value!;
+
+            if (user.TwoFactorEnabled && !device.IsTrusted)
+            {
+                return await _twoFactorService
+                    .InitiateAsync(
+                        user,
+                        device.DeviceId);
+            }
+
+            return await _sessionService
+                .CreateSessionAsync(user, device.DeviceId);
         }
         catch (Exception ex)
         {

@@ -4,15 +4,12 @@ using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Resources.Verifications.Email;
 using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing.Models;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System.Net;
-using System.Net.Mail;
 
 namespace ShagOxServer.Application.Services.Verifications.Sending.Email;
 public partial class EmailService
     : IEmailService
 {
     private const string VerificationEmailFileName = "Verification/EmailVerification.cshtml";
-
 
 
     public async Task<Result<bool>> SendVerificationCodeAsync(

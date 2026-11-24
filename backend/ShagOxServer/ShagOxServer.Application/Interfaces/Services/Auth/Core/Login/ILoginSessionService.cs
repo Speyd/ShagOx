@@ -6,5 +6,6 @@ namespace ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
 public interface ILoginSessionService
 {
     Task<Result<LoginResponse>> CreateSessionAsync(
-        User user);
+        User user,
+        long deviceId);
 }

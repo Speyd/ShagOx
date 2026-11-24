@@ -2,7 +2,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Auth;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Providers.User;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
@@ -10,7 +12,6 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 
 namespace ShagOxServer.Application.Services.Auth.Login.Externals;
-
 public partial class GoogleLoginService 
     : IGoogleLoginService
 {
@@ -21,6 +22,8 @@ public partial class GoogleLoginService
     private readonly IUserNameService _userNameService;
     private readonly UserCreater _userCreater;
 
+    private readonly IDeviceProvider _deviceProvider;
+    private readonly IUserDeviceCommandsRepository _deviceCommands;
     private readonly ILoginPolicy _loginPolicy;
     private readonly ILoginSessionService _sessionService;
 
@@ -35,6 +38,8 @@ public partial class GoogleLoginService
         IUserQueryRepository userQueryRepository,
         IUserNameService userNameService,
         UserCreater userCreater,
+        IDeviceProvider deviceProvider,
+        IUserDeviceCommandsRepository deviceCommands,
         ILoginPolicy loginPolicy,
         ILoginSessionService sessionService,
         IUnitOfWork unitOfWork,
@@ -48,6 +53,8 @@ public partial class GoogleLoginService
         _userNameService = userNameService;
         _userCreater = userCreater;
 
+        _deviceCommands = deviceCommands;
+        _deviceProvider = deviceProvider;
         _loginPolicy = loginPolicy;
         _sessionService = sessionService;
 

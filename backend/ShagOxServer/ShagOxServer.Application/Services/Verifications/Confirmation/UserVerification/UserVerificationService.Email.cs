@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Verifications.Create;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation.UserVerification;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Domain.Entities.Auth.Users;
@@ -9,13 +10,13 @@ namespace ShagOxServer.Application.Services.Verifications.Confirmation.UserVerif
 public partial class UserVerificationService
     : IUserVerificationService
 {
-    public async Task<Result<bool>> ConfirmEmail(
+    public async Task<Result<VerificationResponse>> ConfirmEmailAsync(
        User user,
        VerificationCode verificationCode)
     {
         if (user.EmailConfirmed)
         {
-            return Result<bool>.Fail(
+            return Result<VerificationResponse>.Fail(
                 VerificationResources.EmailAlreadyConfirmed);
         }
 
@@ -33,17 +34,18 @@ public partial class UserVerificationService
             user,
             SessionRevocationReason.ContactChanged);
 
-        return Result<bool>.Success(true);
+        return Result<VerificationResponse>.Success(
+            new VerificationResultResponse(true));
     }
 
-    public async Task<Result<bool>> ChangeEmail(
+    public async Task<Result<VerificationResponse>> ChangeEmailAsync(
         User user,
         VerificationCode verificationCode)
     {
         if (string.IsNullOrWhiteSpace(
                    verificationCode.PendingValue))
         {
-            return Result<bool>.Fail(
+            return Result<VerificationResponse>.Fail(
                 VerificationResources.PendingEmailNotFound);
         }
 
@@ -58,6 +60,7 @@ public partial class UserVerificationService
             user,
             SessionRevocationReason.ContactChanged);
 
-        return Result<bool>.Success(true);
+        return Result<VerificationResponse>.Success(
+            new VerificationResultResponse(true));
     }
 }

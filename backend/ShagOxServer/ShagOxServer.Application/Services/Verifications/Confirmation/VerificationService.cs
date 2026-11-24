@@ -40,14 +40,17 @@ public class VerificationService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<bool>> VerifyAsync(
+    public async Task<Result<VerificationResponse>> VerifyAsync(
         VerificationRequest request)
     {
         var user = await _userQueryRepository
             .GetByIdAsync(request.UserId!.Value);
 
         if (user is null)
-            return Result<bool>.NotFound(EntityNamesResources.User);
+        {
+            return Result<VerificationResponse>
+                .NotFound(EntityNamesResources.User);
+        }
 
         var resultVerify = await _verificationCodeService
             .VerifyCodeAsync(user.Id, request.Code);
@@ -55,21 +58,28 @@ public class VerificationService
         var mapResult = VerificationResultMapper
             .MapVerificationResult(resultVerify.Result);
 
-        if(!mapResult.IsSuccess)
-            return Result<bool>.Fail(mapResult.Error);
+        if (!mapResult.IsSuccess)
+        {
+            return Result<VerificationResponse>
+                .Fail(mapResult.Error);
+        }
+
 
         var resultApply = await ApplyVerification(user, resultVerify.Code);
         if (!resultApply.IsSuccess)
-            return Result<bool>.Fail(resultApply.Error);
+        {
+            return Result<VerificationResponse>
+                .Fail(resultApply.Error);
+        }
 
         _userRepository.Update(user);
 
         await _unitOfWork.SaveChangesAsync();
 
-        return Result<bool>.Success(true);
+        return resultApply;
     }
 
-    private async Task<Result<bool>> ApplyVerification(
+    private async Task<Result<VerificationResponse>> ApplyVerification(
         User user,
         VerificationCode? verificationCode)
     {
@@ -78,22 +88,22 @@ public class VerificationService
             case VerificationCodePurpose.RegistrationEmail:
 
                 return await _userVerifyService
-                    .ConfirmEmail(user, verificationCode);
+                    .ConfirmEmailAsync(user, verificationCode);
 
             case VerificationCodePurpose.RegistrationPhone:
 
                 return await _userVerifyService
-                    .ConfirmPhone(user, verificationCode);
+                    .ConfirmPhoneAsync(user, verificationCode);
 
             case VerificationCodePurpose.ChangeEmail:
 
                 return await _userVerifyService
-                     .ChangeEmail(user, verificationCode);
+                     .ChangeEmailAsync(user, verificationCode);
 
             case VerificationCodePurpose.ChangePhone:
 
                 return await _userVerifyService
-                     .ChangePhone(user, verificationCode);
+                     .ChangePhoneAsync(user, verificationCode);
 
             case VerificationCodePurpose.ChangePasswordEmail:
             case VerificationCodePurpose.ChangePasswordPhone:
@@ -101,21 +111,29 @@ public class VerificationService
             case VerificationCodePurpose.ResetPasswordPhone:
 
                 return await _userVerifyService
-                    .ChangePassword(user, verificationCode);
+                    .ChangePasswordAsync(user, verificationCode);
 
 
-            case VerificationCodePurpose.EnableTwoFactor:
-
-                return await _userVerifyService
-                     .EnableTwoFactor(user, verificationCode);
-
-            case VerificationCodePurpose.DisableTwoFactor:
+            case VerificationCodePurpose.EnableTwoFactorEmail:
+            case VerificationCodePurpose.EnableTwoFactorPhone:
 
                 return await _userVerifyService
-                     .DisableTwoFactor(user, verificationCode);
+                     .EnableTwoFactorAsync(user, verificationCode);
+
+            case VerificationCodePurpose.DisableTwoFactorEmail:
+            case VerificationCodePurpose.DisableTwoFactorPhone:
+
+                return await _userVerifyService
+                     .DisableTwoFactorAsync(user, verificationCode);
+
+            case VerificationCodePurpose.InitiateTwoFactorEmail:
+            case VerificationCodePurpose.InitiateTwoFactorPhone:
+
+                return await _userVerifyService
+                     .InitiateTwoFactorAsync(user, verificationCode);
 
             default:
-                return Result<bool>.Fail(
+                return Result<VerificationResponse>.Fail(
                     VerificationResources.UnsupportedVerificationPurpose);
         }
     }

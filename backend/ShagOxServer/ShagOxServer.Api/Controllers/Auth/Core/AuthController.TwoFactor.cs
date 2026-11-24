@@ -4,7 +4,6 @@ using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Auth.Core;
-
 public partial class AuthController
     : ApiCookieController
 {
@@ -13,7 +12,19 @@ public partial class AuthController
     public async Task<IActionResult> EnableTwoFactor(
         CancellationToken cancellationToken)
     {
-        var result = await _twoFactor.Enable();
+        var result = await _twoFactor
+            .EnableAsync(cancellationToken);
+
+        return result.ToActionResult();
+    }
+
+    [HttpPost("two-factor/disable")]
+    [Authorize]
+    public async Task<IActionResult> DisableTwoFactor(
+        CancellationToken cancellationToken)
+    {
+        var result = await _twoFactor
+            .EnableAsync(cancellationToken);
 
         return result.ToActionResult();
     }

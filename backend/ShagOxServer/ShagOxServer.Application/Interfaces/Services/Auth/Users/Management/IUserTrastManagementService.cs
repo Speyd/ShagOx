@@ -8,6 +8,7 @@ public interface IUserTrastManagementService
         User user,
         bool resetUsedSession = false);
 
+
     Task RevokeSessionByUserAsync(
         User user,
         SessionRevocationReason reason,

@@ -62,7 +62,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Enable {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Enter the verification code below to confirm and enable two-factor authentication..
+        ///   Ищет локализованную строку, похожую на To confirm and enable two-factor authentication, enter the verification code below:.
         /// </summary>
         public static string CodeInstruction {
             get {
@@ -71,7 +71,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Enable {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на This verification code will expire in {0} minutes..
+        ///   Ищет локализованную строку, похожую на This verification code is valid for {0}minutes. Please do not share it with anyone..
         /// </summary>
         public static string ExpirationMessage {
             get {
@@ -89,7 +89,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Enable {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Enable Two-Factor Authentication.
+        ///   Ищет локализованную строку, похожую на Secure Your Account.
         /// </summary>
         public static string Heading {
             get {
@@ -107,7 +107,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Enable {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на If you did not request this change, please secure your account immediately..
+        ///   Ищет локализованную строку, похожую на If you did not request to enable two-factor authentication, please ignore this email and contact our support team if you suspect unauthorized activity..
         /// </summary>
         public static string SecurityMessage {
             get {

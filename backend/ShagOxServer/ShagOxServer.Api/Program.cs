@@ -32,6 +32,7 @@ try
         .AddDelivery(builder.Configuration)
         .AddPayments(builder.Configuration)
         .AddDevice()
+        .AddUserSession()
         .AddFrontendPolicy()
         .AddControllersWithJson()
         .AddSwaggerDocumentation()

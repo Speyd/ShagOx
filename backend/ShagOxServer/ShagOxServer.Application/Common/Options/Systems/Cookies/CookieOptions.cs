@@ -12,4 +12,5 @@ public abstract class CookieOptions
 
     public string AccessTokenKey { get; set; } = "access_token";
     public string RefreshTokenKey { get; set; } = "refresh_token";
+    public string DeviceIdentifierKey { get; set; } = "X-Device-Identifier";
 }

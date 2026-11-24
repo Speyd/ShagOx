@@ -1,7 +1,7 @@
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification;
 
-namespace ShagOxServer.Application.Interfaces.Providers;
+namespace ShagOxServer.Application.Interfaces.Providers.Payment;
 public interface ICurrencyProvider
 {
     Task<Currency?> GetCurrencyAsync(

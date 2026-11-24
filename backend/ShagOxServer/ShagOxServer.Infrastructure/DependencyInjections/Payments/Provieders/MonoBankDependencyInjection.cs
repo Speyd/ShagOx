@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.Payment;
 using ShagOxServer.Infrastructure.ExternalServices.Payments.Providers.MonoBank;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Payments.Provieders;

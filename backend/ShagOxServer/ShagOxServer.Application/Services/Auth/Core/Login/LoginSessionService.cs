@@ -1,7 +1,7 @@
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.DTOs.Auth.Users.UserSessions.Create;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.User;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Tokens.Jwt;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;

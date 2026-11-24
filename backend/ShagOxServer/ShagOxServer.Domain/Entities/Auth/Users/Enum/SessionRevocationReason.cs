@@ -5,7 +5,8 @@ public enum SessionRevocationReason
     UserRevoked = 2,
     AdminRevoked = 3,
     SecurityViolation = 4,
-    PasswordChanged = 5,
-    AccountBlocked = 6,
-    TokenReuseDetected = 7
+    ContactChanged = 5,
+    PasswordChanged = 6,
+    AccountBlocked = 7,
+    TokenReuseDetected = 8
 }

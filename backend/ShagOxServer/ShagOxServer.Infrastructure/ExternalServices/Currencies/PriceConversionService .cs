@@ -1,6 +1,6 @@
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.Payment;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Domain.Entities.Specification;

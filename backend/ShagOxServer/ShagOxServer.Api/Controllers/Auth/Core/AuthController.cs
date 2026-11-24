@@ -72,7 +72,7 @@ public class AuthController
     public async Task<IActionResult> Refresh(
         CancellationToken cancellationToken)
     {
-        var refreshToken = Request.Cookies["refresh_token"];
+        var refreshToken = UserContext.RefreshToken;
 
         if (string.IsNullOrWhiteSpace(refreshToken))
             return Unauthorized();
@@ -92,7 +92,8 @@ public class AuthController
     public async Task<IActionResult> Logout(
         CancellationToken cancellationToken)
     {
-        var refreshToken = Request.Cookies["refresh_token"];
+        var refreshToken = UserContext.RefreshToken;
+
         if (refreshToken is not null)
         {
             await _logoutService.LogoutAsync(

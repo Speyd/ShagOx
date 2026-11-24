@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Payments.Providers;
 using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.Payment;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Payments;
 using ShagOxServer.Application.Resources.Payment;

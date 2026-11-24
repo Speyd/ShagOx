@@ -1,7 +1,6 @@
-using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Query;
 
-namespace ShagOxServer.Application.Interfaces.Providers;
+namespace ShagOxServer.Application.Interfaces.Providers.User;
 public interface IDeviceInfoProvider
 {
     UserDeviceInfo GetDeviceInfo(

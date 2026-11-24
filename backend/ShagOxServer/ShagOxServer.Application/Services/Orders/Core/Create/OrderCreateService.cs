@@ -6,7 +6,7 @@ using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.Orders.Core.Create;
 using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.Payment;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Base;

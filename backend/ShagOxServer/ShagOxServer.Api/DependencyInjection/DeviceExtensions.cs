@@ -1,5 +1,5 @@
 using ShagOxServer.Api.Providers;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.User;
 
 namespace ShagOxServer.Api.DependencyInjection;
 public static class DeviceExtensions

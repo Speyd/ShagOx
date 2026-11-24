@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.Payment;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Base;

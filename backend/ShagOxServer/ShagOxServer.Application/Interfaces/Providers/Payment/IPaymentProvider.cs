@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Interfaces.Providers;
+namespace ShagOxServer.Application.Interfaces.Providers.Payment;
 public interface IPaymentProvider
 {
     Task<Result<PaymentResponse>> PaymentRequest(

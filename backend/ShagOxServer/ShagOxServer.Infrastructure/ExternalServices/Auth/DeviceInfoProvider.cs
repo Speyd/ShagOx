@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Query;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.User;
 using System.Net;
 using UAParser;
 

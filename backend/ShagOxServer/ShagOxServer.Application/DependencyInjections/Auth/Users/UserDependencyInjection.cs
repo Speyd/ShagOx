@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Statistics;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Services.Auth.UserRoles.Query;
+using ShagOxServer.Application.Services.Auth.Users;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 using ShagOxServer.Application.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Services.Auth.Users.Core.Query;
@@ -56,6 +58,9 @@ public static class UserDependencyInjection
 
         services.AddScoped<IUserStatisticsService,
             UserStatisticsService>();
+
+        services.AddScoped<IUserTrastManagementService,
+            UserTrastManagementService>();
 
         services.AddUserDeviceApplication();
 

@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.User;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Resources.EntityErrors;

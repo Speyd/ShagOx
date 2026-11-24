@@ -1,10 +1,10 @@
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
 
-namespace ShagOxServer.Application.Interfaces.Providers;
-public interface IDeviceProvider
+namespace ShagOxServer.Application.Interfaces.Providers.User;
+public interface ISessionProvider
 {
-    Task<UserDevice?> GetDeviceAsync(
+    Task<UserSession?> GetSessionAsync(
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 }

@@ -1,9 +1,9 @@
-using ShagOxServer.Application.Interfaces.Providers;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.Domain.Entities.Verifications;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -11,18 +11,13 @@ namespace ShagOxServer.Application.Services.Verifications.Confirmation;
 public class UserVerificationService
     : IUserVerificationService
 {
-    private readonly IDeviceProvider _deviceProvider;
-    private readonly IUserDeviceCommandRepository _deviceCommandRepository;
-    private readonly IUserDeviceQueryRepository _deviceQueryRepository;
+    private readonly IUserTrastManagementService _trastManagement;
+
 
     public UserVerificationService(
-        IDeviceProvider deviceProvider,
-        IUserDeviceCommandRepository deviceCommandRepository,
-        IUserDeviceQueryRepository deviceQueryRepository)
+        IUserTrastManagementService trastManagement)
     {
-        _deviceProvider = deviceProvider;
-        _deviceCommandRepository = deviceCommandRepository;
-        _deviceQueryRepository = deviceQueryRepository;
+        _trastManagement = trastManagement;
     }
 
     public async Task<Result<bool>> ConfirmEmail(
@@ -42,7 +37,12 @@ public class UserVerificationService
         user.EmailConfirmed = true;
         user.Status = UserStatus.Active;
 
-        await TrastDevice(user);
+        await _trastManagement
+            .TrustDeviceAsync(user);
+
+        await _trastManagement.TrustSessionAsync(
+            user, 
+            SessionRevocationReason.ContactChanged);
 
         return Result<bool>.Success(true);
     }
@@ -62,7 +62,12 @@ public class UserVerificationService
         user.EmailConfirmed = true;
         user.Status = UserStatus.Active;
 
-        await TrastDevice(user);
+        await _trastManagement
+            .TrustDeviceAsync(user);
+
+        await _trastManagement.TrustSessionAsync(
+            user,
+            SessionRevocationReason.ContactChanged);
 
         return Result<bool>.Success(true);
     }
@@ -84,7 +89,8 @@ public class UserVerificationService
         user.PhoneConfirmed = true;
         user.Status = UserStatus.Active;
 
-        await TrastDevice(user);
+        await _trastManagement
+            .TrustDeviceAsync(user);
 
         return Result<bool>.Success(true);
     }
@@ -105,7 +111,8 @@ public class UserVerificationService
         user.PhoneConfirmed = true;
         user.Status = UserStatus.Active;
 
-        await TrastDevice(user);
+        await _trastManagement
+            .TrustDeviceAsync(user);
 
         return Result<bool>.Success(true);
     }
@@ -125,33 +132,13 @@ public class UserVerificationService
             verificationCode.PendingValue
             ?? user.PasswordHash;
 
-        await TrastDevice(user);
+        await _trastManagement
+            .TrustDeviceAsync(user);
+
+        await _trastManagement.TrustSessionAsync(
+            user,
+            SessionRevocationReason.PasswordChanged);
 
         return Result<bool>.Success(true);
-    }
-
-    private async Task TrastDevice(
-        User user)
-    {
-        var usedDevice = await _deviceProvider
-            .GetDeviceAsync();
-
-        if (usedDevice is not null)
-        {
-            await _deviceCommandRepository
-                .MarkAsTrasteAsync(usedDevice.Id);
-        }
-
-        var userDevices = await _deviceQueryRepository
-            .GetAllByUserAsync(user.Id);
-
-        foreach(var device in userDevices)
-        {
-            if (device.Id == usedDevice?.Id)
-                continue;
-
-            await _deviceCommandRepository
-                .UnmarkAsTrasteAsync(device.Id);
-        }
     }
 }

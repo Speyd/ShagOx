@@ -1,6 +1,7 @@
-﻿namespace ShagOxServer.Application.DTOs.Auth.Register;
+namespace ShagOxServer.Application.DTOs.Auth.Register;
 public sealed record RegisterRequest(
     string EmailOrPhone,
     string UserName,
-    string Password
+    string Password,
+    string DeviceIdentifier
 );

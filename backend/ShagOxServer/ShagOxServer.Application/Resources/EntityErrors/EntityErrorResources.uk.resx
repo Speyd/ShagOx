@@ -474,4 +474,13 @@
   <data name="ProoductNotAvailable" xml:space="preserve">
     <value>Товар «{0}» більше недоступний.</value>
   </data>
+  <data name="UserDeviceCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити пристрій користувача.</value>
+  </data>
+  <data name="UserDeviceDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити пристрій користувача.</value>
+  </data>
+  <data name="UserDeviceUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити пристрій користувача.</value>
+  </data>
 </root>

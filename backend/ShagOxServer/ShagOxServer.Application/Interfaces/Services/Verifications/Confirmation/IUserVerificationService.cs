@@ -5,23 +5,23 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 public interface IUserVerificationService
 {
-    public Result<bool> ConfirmEmail(
+    public Task<Result<bool>> ConfirmEmail(
         User user,
         VerificationCode verificationCode);
 
-    public Result<bool> ChangeEmail(
+    public Task<Result<bool>> ChangeEmail(
         User user,
         VerificationCode verificationCode);
 
-    public Result<bool> ConfirmPhone(
+    public Task<Result<bool>> ConfirmPhone(
         User user,
         VerificationCode verificationCode);
 
-    public Result<bool> ChangePhone(
+    public Task<Result<bool>> ChangePhone(
         User user,
         VerificationCode verificationCode);
 
-    public Result<bool> ChangePassword(
+    public Task<Result<bool>> ChangePassword(
         User user,
         VerificationCode verificationCode);
 }

@@ -67,4 +67,16 @@ public partial class UserDeviceQueryRepository
                 x => x.Id,
                 cancellationToken);
     }
+
+    public async Task<List<UserDevice>> GetAllByUserAsync(
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.UserDevices
+            .WithIncludes()
+            .WithStatusFilter(status)
+            .Where(x => x.OwnerId == userId)
+            .ToListAsync(cancellationToken);
+    }
 }

@@ -61,6 +61,15 @@ namespace ShagOxServer.Application.Resources.Auth.Logins {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid username or password..
+        /// </summary>
+        public static string InvalidCredentials {
+            get {
+                return ResourceManager.GetString("InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Login failed..
         /// </summary>
         public static string LoginFailed {

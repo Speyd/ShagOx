@@ -6,7 +6,6 @@ using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Register;
-
 public partial class RegisterService
     : IRegisterService
 {

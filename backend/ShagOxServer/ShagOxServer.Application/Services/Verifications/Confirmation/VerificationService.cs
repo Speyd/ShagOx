@@ -57,7 +57,7 @@ public class VerificationService
         if(!mapResult.IsSuccess)
             return Result<bool>.Fail(mapResult.Error);
 
-        var resultApply = ApplyVerification(user, resultVerify.Code);
+        var resultApply = await ApplyVerification(user, resultVerify.Code);
         if (!resultApply.IsSuccess)
             return Result<bool>.Fail(resultApply.Error);
 
@@ -68,7 +68,7 @@ public class VerificationService
         return Result<bool>.Success(true);
     }
 
-    private Result<bool> ApplyVerification(
+    private async Task<Result<bool>> ApplyVerification(
         User user,
         VerificationCode? verificationCode)
     {
@@ -76,22 +76,22 @@ public class VerificationService
         {
             case VerificationCodePurpose.RegistrationEmail:
 
-                return _userVerifyService
+                return await _userVerifyService
                     .ConfirmEmail(user, verificationCode);
 
             case VerificationCodePurpose.RegistrationPhone:
 
-                return _userVerifyService
+                return await _userVerifyService
                     .ConfirmPhone(user, verificationCode);
 
             case VerificationCodePurpose.ChangeEmail:
 
-                return _userVerifyService
+                return await _userVerifyService
                      .ChangeEmail(user, verificationCode);
 
             case VerificationCodePurpose.ChangePhone:
 
-                return _userVerifyService
+                return await _userVerifyService
                      .ChangePhone(user, verificationCode);
 
             case VerificationCodePurpose.ChangePasswordEmail:
@@ -99,7 +99,7 @@ public class VerificationService
             case VerificationCodePurpose.ResetPasswordEmail:
             case VerificationCodePurpose.ResetPasswordPhone:
 
-                return _userVerifyService
+                return await _userVerifyService
                     .ChangePassword(user, verificationCode);
 
             default:

@@ -14,6 +14,11 @@ public partial interface IUserDeviceQueryRepository
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
+    Task<List<UserDevice>> GetAllByUserAsync(
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<UserDevice?> GetByIdentifierAsync(
         string deviceIdentifier,
         CancellationToken cancellationToken = default,

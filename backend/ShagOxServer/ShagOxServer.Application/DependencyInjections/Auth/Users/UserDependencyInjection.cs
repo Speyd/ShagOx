@@ -16,7 +16,7 @@ using ShagOxServer.Application.Services.Auth.Users.Statistics;
 using ShagOxServer.Application.Services.Auth.Users.Update;
 using ShagOxServer.Domain.Entities.Auth.Users;
 
-namespace ShagOxServer.Application.DependencyInjections.Auth;
+namespace ShagOxServer.Application.DependencyInjections.Auth.Users;
 public static class UserDependencyInjection
 {
     public static IServiceCollection AddUsersApplication(
@@ -56,6 +56,8 @@ public static class UserDependencyInjection
 
         services.AddScoped<IUserStatisticsService,
             UserStatisticsService>();
+
+        services.AddUserDeviceApplication();
 
 
         return services;

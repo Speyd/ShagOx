@@ -21,6 +21,7 @@
     <PackageReference Include="StackExchange.Redis" Version="3.3.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
     <PackageReference Include="Twilio" Version="8.0.1" />
+    <PackageReference Include="UAParser" Version="3.1.47" />
   </ItemGroup>
 
   <ItemGroup>
@@ -176,7 +177,7 @@
 		  <LastGenOutput>UserNameAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Auth\External\Google\GoogleAuthResources.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
+		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>GoogleAuthResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Auth\Logins\LoginAuthResources.resx">

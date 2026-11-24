@@ -23,4 +23,9 @@ public class UserContext
             return long.TryParse(value, out var id) ? id : null;
         }
     }
+
+    public string? DeviceIdentifier =>
+        _http.HttpContext?
+            .Request.Headers["X-Device-Identifier"]
+            .FirstOrDefault();
 }

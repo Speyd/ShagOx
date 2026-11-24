@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
-using ShagOxServer.Application.Services.Auth.Externals;
+using ShagOxServer.Application.Services.Auth.Login.Externals;
 namespace ShagOxServer.Application.DependencyInjections.Auth;
 public static class AuthExternalDependencyInjection
 {

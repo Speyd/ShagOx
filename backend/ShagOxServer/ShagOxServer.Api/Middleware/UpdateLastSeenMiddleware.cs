@@ -10,7 +10,7 @@ public class UpdateLastSeenMiddleware
     private readonly UpdateLastSeenOptions _updaterOptions;
     private readonly RequestDelegate _next;
 
-    
+
     public UpdateLastSeenMiddleware(
         IOptions<UpdateLastSeenOptions> updaterOptions,
         RequestDelegate next)
@@ -18,6 +18,7 @@ public class UpdateLastSeenMiddleware
         _next = next;
         _updaterOptions = updaterOptions.Value;
     }
+
 
     public async Task InvokeAsync(
         HttpContext context,
@@ -41,6 +42,22 @@ public class UpdateLastSeenMiddleware
                             u => u.LastSeenAt,
                             now),
                         context.RequestAborted);
+
+                var deviceIdentifier = context.Request.Headers["X-Device-Identifier"]
+                    .FirstOrDefault();
+
+                if (!string.IsNullOrWhiteSpace(deviceIdentifier))
+                {
+                    await dbContext.UserDevices
+                        .Where(u =>
+                            u.DeviceIdentifier == deviceIdentifier &&
+                            u.OwnerId == userId)
+                        .ExecuteUpdateAsync(
+                            setters => setters.SetProperty(
+                                u => u.LastActiveAt,
+                                now),
+                            context.RequestAborted);
+                }
             }
         }
 

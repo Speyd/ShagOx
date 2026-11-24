@@ -237,4 +237,7 @@
   <data name="Webhook" xml:space="preserve">
     <value>Webhook</value>
   </data>
+  <data name="UserDevice" xml:space="preserve">
+    <value>User device</value>
+  </data>
 </root>

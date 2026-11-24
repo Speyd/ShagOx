@@ -6,6 +6,7 @@ using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Services.Auth;
+using ShagOxServer.Application.Interfaces.Services.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 

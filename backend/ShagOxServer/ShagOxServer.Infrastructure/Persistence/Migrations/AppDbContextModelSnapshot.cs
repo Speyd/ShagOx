@@ -550,14 +550,14 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<long>("UserId")
+                    b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId", "DeviceIdentifier")
+                    b.HasIndex("OwnerId", "DeviceIdentifier")
                         .IsUnique()
-                        .HasDatabaseName("IX_UserDevices_UserId_DeviceIdentifier")
+                        .HasDatabaseName("IX_UserDevices_OwnerId_DeviceIdentifier")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("UserDevices");
@@ -589,6 +589,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamptz");
 
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("RefreshTokenHash")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -597,17 +600,14 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("RevokedAt")
                         .HasColumnType("timestamptz");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DeviceId")
                         .HasDatabaseName("IX_UserSessions_DeviceId");
 
-                    b.HasIndex("UserId", "DeviceId")
+                    b.HasIndex("OwnerId", "DeviceId")
                         .IsUnique()
-                        .HasDatabaseName("IX_UserSessions_UserId_DeviceId")
+                        .HasDatabaseName("IX_UserSessions_OwnerId_DeviceId")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("UserSessions");
@@ -2403,14 +2403,14 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.UserDevice", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "User")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_UserDevices_Users_UserId");
+                        .HasConstraintName("FK_UserDevices_Users_OwnerId");
 
-                    b.Navigation("User");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.UserSession", b =>
@@ -2422,16 +2422,16 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_UserSessions_UserDevices_DeviceId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "User")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_UserSessions_Users_UserId");
+                        .HasConstraintName("FK_UserSessions_Users_OwnerId");
 
                     b.Navigation("Device");
 
-                    b.Navigation("User");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.Basket", b =>

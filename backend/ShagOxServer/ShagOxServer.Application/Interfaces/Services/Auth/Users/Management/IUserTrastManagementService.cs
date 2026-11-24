@@ -4,15 +4,16 @@ using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 namespace ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
 public interface IUserTrastManagementService
 {
-    Task TrustDeviceAsync(
-        User user);
+    Task RevokeDeviceAsync(
+        User user,
+        bool resetUsedSession = false);
 
-    Task TrustSessionByUserAsync(
+    Task RevokeSessionByUserAsync(
         User user,
         SessionRevocationReason reason,
         bool resetUsedSession = false);
 
-    Task TrustSessionByDeviceAsync(
+    Task RevokeSessionByDeviceAsync(
         UserDevice user,
         SessionRevocationReason reason,
         bool resetUsedSession = false);

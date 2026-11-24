@@ -23,6 +23,8 @@ public class User
     public string? Phone { get; set; }
     public string? Email { get; set; }
 
+    public bool TwoFactorEnabled { get; set; } = false;
+
     public UserStatus Status { get; set; } 
         = UserStatus.PendingVerification;
 

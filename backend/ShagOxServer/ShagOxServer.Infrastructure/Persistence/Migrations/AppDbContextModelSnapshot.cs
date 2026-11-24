@@ -467,6 +467,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(40)

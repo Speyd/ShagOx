@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
@@ -23,16 +26,25 @@ public class UpdateLastSeenMiddleware
 
     public async Task InvokeAsync(
         HttpContext context,
-        AppDbContext dbContext)
+        AppDbContext dbContext,
+        IUserContext userContext,
+        IRefreshTokenService refreshTokenService)
     {
+        var endpoint = context.GetEndpoint();
+
+        var requiresAuthorization = endpoint?
+            .Metadata
+            .GetOrderedMetadata<IAuthorizeData>()
+            .Any() == true;
+
         if (context.User.Identity?.IsAuthenticated == true)
         {
             var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier);
 
             if (int.TryParse(userIdClaim?.Value, out var userId))
             {
-                var deviceIdentifier = context.Request.Headers[
-                    "X-Device-Identifier"].FirstOrDefault();
+                var deviceIdentifier = userContext.DeviceIdentifier;
+                var refreshToken = userContext.RefreshToken;
 
                 if (!string.IsNullOrWhiteSpace(deviceIdentifier))
                 {
@@ -53,6 +65,34 @@ public class UpdateLastSeenMiddleware
                             new
                             {
                                 message = "This device has been blocked."
+                            },
+                            context.RequestAborted);
+
+                        return;
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(refreshToken) && requiresAuthorization)
+                {
+                    var tokenHash = refreshTokenService.Hash(refreshToken);
+
+                    var isRevokedSession = await dbContext.UserSessions
+                        .AsNoTracking()
+                        .AnyAsync(
+                            d => d.OwnerId == userId &&
+                                 d.RefreshTokenHash == tokenHash &&
+                                 d.RevokedAt != null,
+                            context.RequestAborted);
+
+                    if (isRevokedSession)
+                    {
+                        context.Response.StatusCode =
+                            StatusCodes.Status403Forbidden;
+
+                        await context.Response.WriteAsJsonAsync(
+                            new
+                            {
+                                message = "This session has been revoked."
                             },
                             context.RequestAborted);
 

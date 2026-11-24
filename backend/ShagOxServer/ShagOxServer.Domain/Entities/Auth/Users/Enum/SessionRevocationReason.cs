@@ -8,5 +8,7 @@ public enum SessionRevocationReason
     ContactChanged = 5,
     PasswordChanged = 6,
     AccountBlocked = 7,
-    TokenReuseDetected = 8
+    TokenReuseDetected = 8,
+    TwoFactorEnabled = 9,
+    TwoFactorDisabled = 10,
 }

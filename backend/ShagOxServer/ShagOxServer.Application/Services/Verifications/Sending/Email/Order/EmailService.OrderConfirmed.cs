@@ -1,13 +1,11 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
-using ShagOxServer.Application.Resources.Orders.OrderPaidEmail;
+using ShagOxServer.Application.Resources.Orders.OrderConfirmedEmail;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Verifications.Sending.Email.Mapping.Order.Confirmed;
-using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing;
+using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing.Models;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System.Net;
-using System.Net.Mail;
 
 namespace ShagOxServer.Application.Services.Verifications.Sending.Email;
 public partial class EmailService
@@ -16,63 +14,29 @@ public partial class EmailService
     private const string OrderConfirmedEmailFileName = "Order/OrderConfirmed.cshtml";
 
 
-    public async Task<Result<bool>> SendOrderConfirmedEmailAsync(
+    public async Task<Result<bool>> SendOrderConfirmedAsync(
         Order order)
     {
         try
-        {
-            var smtpHost = _emailOptions.SmtpHost
-                ?? throw new InvalidOperationException(
-                    "SMTP host is not configured.");
-
-            var smtpUser = _emailOptions.Username
-                ?? throw new InvalidOperationException(
-                    "SMTP username is not configured.");
-
-            var smtpPassword = _emailOptions.Password
-                ?? throw new InvalidOperationException(
-                    "SMTP password is not configured.");
-
-            var fromEmail = _emailOptions.From
-                ?? throw new InvalidOperationException(
-                    "Sender email is not configured.");
-
-            var client = new SmtpClient(
-                smtpHost,
-                _emailOptions.SmtpPort)
-            {
-                EnableSsl = true,
-                Credentials = new NetworkCredential(
-                    smtpUser,
-                    smtpPassword)
-            };
-
+        {    
             var model = OrderConfirmedMapper.ToDto(
                 order,
                 _urlBuilder.BuildOrderDetailsUrl(order.Id));
 
-            var dynamicModel = EmailViewModelFactory.Create(model);
+            var dynamicModel = EmailViewModelFactory.CreateOrderConfirmed(model);
 
             var htmlBody = await _renderer.RenderAsync(
                 OrderConfirmedEmailFileName,
                 dynamicModel);
 
-            var subject = OrderPaidEmailResources.OrderSuccess;
+            await SendEmailAsync(
+                model.CustomerEmail,
+                OrderConfirmedEmailResources.OrderConfirmed,
+                htmlBody);
 
-            using var message = new MailMessage
-            {
-                From = new MailAddress(fromEmail),
-                Subject = subject,
-                Body = htmlBody,
-                IsBodyHtml = true
-            };
-
-            message.To.Add(model.CustomerEmail);
-
-            await client.SendMailAsync(message);
 
             _logger.LogInformation(
-                "Order paid email sent. Order: {OrderNumber}",
+                "Order confirmed email sent. Order: {OrderNumber}",
                 model.OrderNumber);
 
             return Result<bool>.Success(true);
@@ -81,7 +45,7 @@ public partial class EmailService
         {
             _logger.LogError(
                 ex,
-                "Failed to send order paid email.");
+                "Failed to send order confirmed email.");
 
             return Result<bool>.Fail(
                 VerificationResources.FailedToSendVerificationEmail);

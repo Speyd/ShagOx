@@ -5,12 +5,13 @@ using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using CookieOptions = ShagOxServer.Application.Common.Options.Systems.Cookies.CookieOptions;
 
 namespace ShagOxServer.Api.Controllers.Api;
 public abstract class ApiCookieController
     : ApiController
 {
-    private readonly Application.Common.Options.Systems.Cookies.CookieOptions _cookieOptions;
+    private readonly CookieOptions _cookieOptions;
     private readonly JwtOptions _jwtOptions;
     private readonly RefreshTokenOptions _refreshOptions;
 
@@ -18,7 +19,7 @@ public abstract class ApiCookieController
 
 
     public ApiCookieController(
-        IOptions<Application.Common.Options.Systems.Cookies.CookieOptions> cookieOptions,
+        IOptions<CookieOptions> cookieOptions,
         IOptions<JwtOptions> jwtOptions,
         IOptions<RefreshTokenOptions> refreshOptions,
         ILogger<ApiCookieController> logger,

@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Providers.User;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 
@@ -12,6 +13,7 @@ public class LogoutService
 {
     private readonly IRepository<UserSession> _sessionRepository;
     private readonly ISessionProvider _sessionProvider;
+    private readonly IRefreshTokenService _refreshTokenProvider;
     private readonly IUserSessionQueryRepository _sessionQueryRepository;
     private readonly IUnitOfWork _unitOfWork;
 
@@ -19,10 +21,12 @@ public class LogoutService
     public LogoutService(
         IRepository<UserSession> sessionRepository,
         ISessionProvider sessionProvider,
+        IRefreshTokenService refreshTokenProvider,
         IUserSessionQueryRepository sessionQueryRepository,
         IUnitOfWork unitOfWork)
     {
         _sessionRepository = sessionRepository;
+        _refreshTokenProvider = refreshTokenProvider;
         _sessionProvider = sessionProvider;
         _sessionQueryRepository = sessionQueryRepository;
         _unitOfWork = unitOfWork;
@@ -35,13 +39,13 @@ public class LogoutService
     {
         var session = await _sessionQueryRepository
             .GetByRefreshTokenHashAsync(
-                refreshToken, 
+                _refreshTokenProvider.Hash(refreshToken), 
                 cancellationToken);
 
         if (session is null)
             return;
 
-        session.ExpiresAt = DateTime.UtcNow;
+        session.RevokedAt = DateTime.UtcNow;
         session.RevocationReason = SessionRevocationReason.Logout;
 
         _sessionRepository.Update(session);
@@ -60,7 +64,7 @@ public class LogoutService
 
         foreach(var session in sessions)
         {
-            session.ExpiresAt = DateTime.UtcNow;
+            session.RevokedAt = DateTime.UtcNow;
             session.RevocationReason = SessionRevocationReason.Logout;
 
             _sessionRepository.Update(session);
@@ -86,7 +90,7 @@ public class LogoutService
             if (userSession?.Id == session.Id)
                 continue;
 
-            session.ExpiresAt = DateTime.UtcNow;
+            session.RevokedAt = DateTime.UtcNow;
             session.RevocationReason = SessionRevocationReason.Logout;
 
             _sessionRepository.Update(session);

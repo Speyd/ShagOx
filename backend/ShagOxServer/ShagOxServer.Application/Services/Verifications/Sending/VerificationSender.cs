@@ -103,6 +103,14 @@ public class VerificationSender
 
                 break;
 
+            case VerificationCodePurpose.EnableTwoFactor:
+
+                var enableTwoFactor = await SendCodeEmail(user, user.Email, code.Value!);
+                if (!enableTwoFactor.IsSuccess)
+                    return Result<bool>.Fail(enableTwoFactor.Error);
+
+                break;
+
             default:
                 return Result<bool>.Fail(VerificationResources
                     .UnsupportedVerificationPurpose);

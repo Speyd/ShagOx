@@ -19,7 +19,7 @@ public partial class OrderCreateService
         if (order.PaymentMethod != PaymentMethod.Online)
         {
             var emailResult =  await _emailService
-                .SendOrderPaidEmailAsync(order);
+                .SendOrderPaidAsync(order);
 
             if (!emailResult.IsSuccess)
             {

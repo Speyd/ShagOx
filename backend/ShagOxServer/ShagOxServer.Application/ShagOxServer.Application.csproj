@@ -161,6 +161,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>VerificationMapperResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Verifications\TwoFactor\Enable\EnableTwoFactorResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EnableTwoFactorResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 	<ItemGroup>
@@ -264,11 +269,16 @@
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>VerificationMapperResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\TwoFactor\Enable\EnableTwoFactorResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>EnableTwoFactorResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="Common\Context\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
+	  <Folder Include="Templates\EmailTemplates\TwoFactor\" />
 	  <Folder Include="Templates\EmailTemplates\Verification\" />
 	</ItemGroup>
 	

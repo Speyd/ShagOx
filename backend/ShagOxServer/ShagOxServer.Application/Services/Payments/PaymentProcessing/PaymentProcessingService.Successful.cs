@@ -93,7 +93,7 @@ public partial class PaymentProcessingService
             await _unitOfWork.CommitAsync();
 
             return await _emailService
-                .SendOrderPaidEmailAsync(order);
+                .SendOrderPaidAsync(order);
         }
         catch
         {

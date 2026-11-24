@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation.UserVerification;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Verifications.Mappers;
@@ -101,6 +102,17 @@ public class VerificationService
 
                 return await _userVerifyService
                     .ChangePassword(user, verificationCode);
+
+
+            case VerificationCodePurpose.EnableTwoFactor:
+
+                return await _userVerifyService
+                     .EnableTwoFactor(user, verificationCode);
+
+            case VerificationCodePurpose.DisableTwoFactor:
+
+                return await _userVerifyService
+                     .DisableTwoFactor(user, verificationCode);
 
             default:
                 return Result<bool>.Fail(

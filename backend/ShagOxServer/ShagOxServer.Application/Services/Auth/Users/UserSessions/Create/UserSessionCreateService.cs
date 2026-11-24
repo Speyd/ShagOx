@@ -61,9 +61,8 @@ public class UserSessionCreateService
         try
         {
             string token = _toketService.Generate();
-            string tokenHash = _toketService.Hash(token);
 
-            var sessionResult = await CreateInternalAsync(request, tokenHash);
+            var sessionResult = await CreateInternalAsync(request, token);
 
             if (!sessionResult.IsSuccess ||
                 sessionResult.Value is null)
@@ -104,6 +103,9 @@ public class UserSessionCreateService
         string token,
         CancellationToken cancellationToken = default)
     {
+
+        var tokenHash = _toketService.Hash(token);
+        
         var userValidation = await _userValidator
            .ExistsByIdAsync(request.OwnerId);
 
@@ -118,8 +120,8 @@ public class UserSessionCreateService
 
         var session = UserSessionCreater.Create(
             request, 
-            _refreshTokenOption.ExpireDays, 
-            token);
+            _refreshTokenOption.ExpireDays,
+            tokenHash);
 
         _sessionRepository.Add(session);
 

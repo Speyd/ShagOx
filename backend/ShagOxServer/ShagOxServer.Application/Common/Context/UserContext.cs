@@ -30,12 +30,12 @@ public class UserContext
         }
     }
 
-    public string? DeviceIdentifier =>
+    public string? DeviceIdentifier => 
         _http.HttpContext?
             .Request.Headers[_cookieOptions.DeviceIdentifierKey]
             .FirstOrDefault();
 
-    public string? RefreshToken =>
+    public string? RefreshToken => 
         _http.HttpContext?
             .Request.Cookies[_cookieOptions.RefreshTokenKey];
 }

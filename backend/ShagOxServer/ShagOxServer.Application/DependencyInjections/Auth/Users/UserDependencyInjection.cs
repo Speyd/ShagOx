@@ -14,6 +14,8 @@ public static class UserDependencyInjection
         services.AddUserDeviceApplication();
         services.AddUserSessionApplication();
 
+        services.AddUserTwoFactorApplication();
+
         return services;
     }
 }

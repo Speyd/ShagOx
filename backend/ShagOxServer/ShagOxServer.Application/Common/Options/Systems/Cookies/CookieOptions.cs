@@ -1,7 +1,7 @@
 using Microsoft.Net.Http.Headers;
 
 namespace ShagOxServer.Application.Common.Options.Systems.Cookies;
-public abstract class CookieOptions
+public class CookieOptions
 {
     public const string SectionName = "Cookie";
 

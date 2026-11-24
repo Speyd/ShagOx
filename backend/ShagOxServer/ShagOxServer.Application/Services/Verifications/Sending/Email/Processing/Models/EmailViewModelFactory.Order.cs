@@ -2,12 +2,11 @@ using ShagOxServer.Application.DTOs.Orders.Core.Query.Email.Confirmed;
 using ShagOxServer.Application.DTOs.Orders.Core.Query.Email.Create;
 using ShagOxServer.Application.Resources.Orders.OrderConfirmedEmail;
 using ShagOxServer.Application.Resources.Orders.OrderPaidEmail;
-using ShagOxServer.Application.Resources.Verifications.Email;
 
-namespace ShagOxServer.Application.Services.Verifications.Sending.Email.Processing;
-public static class EmailViewModelFactory
+namespace ShagOxServer.Application.Services.Verifications.Sending.Email.Processing.Models;
+public static partial class EmailViewModelFactory
 {
-    public static dynamic Create(
+    public static dynamic CreateOrderPaid(
         OrderPaidEmailModel model)
     {
         return new
@@ -42,7 +41,7 @@ public static class EmailViewModelFactory
         };
     }
 
-    public static dynamic Create(
+    public static dynamic CreateOrderConfirmed(
         OrderConfirmedEmailModel model)
     {
         return new
@@ -57,25 +56,6 @@ public static class EmailViewModelFactory
             OrderTitle = OrderConfirmedEmailResources.OrderTitle,
             ViewOrder = OrderConfirmedEmailResources.ViewOrder,
             Footer = OrderConfirmedEmailResources.Footer
-        };
-    }
-
-    public static dynamic Create(
-        string code,
-        int expirationMinutes)
-    {
-        return new
-        {
-            Code = code,
-
-            Title = EmailVerificationEmailResources.Title,
-            SecurityMessage = EmailVerificationEmailResources.SecurityMessage,
-            Message = EmailVerificationEmailResources.Message,
-            Heading = EmailVerificationEmailResources.Heading,
-            Footer = EmailVerificationEmailResources.Footer,
-            ExpirationMessage = string.Format(EmailVerificationEmailResources.ExpirationMessage,
-                expirationMinutes),
-            CodeInstruction = EmailVerificationEmailResources.CodeInstruction,
         };
     }
 }

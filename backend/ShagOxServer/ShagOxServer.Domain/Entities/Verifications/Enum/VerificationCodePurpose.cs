@@ -1,4 +1,4 @@
-﻿namespace ShagOxServer.Domain.Entities.Verifications.Enum;
+namespace ShagOxServer.Domain.Entities.Verifications.Enum;
 public enum VerificationCodePurpose
 {
     RegistrationEmail = 0,
@@ -12,5 +12,8 @@ public enum VerificationCodePurpose
     ChangePasswordPhone = 5,
 
     ResetPasswordEmail = 6,
-    ResetPasswordPhone = 7
+    ResetPasswordPhone = 7,
+
+    EnableTwoFactor = 8,
+    DisableTwoFactor = 9
 }

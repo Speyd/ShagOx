@@ -8,9 +8,13 @@ public interface IEmailService
         string email,
         string code);
 
-    Task<Result<bool>> SendOrderPaidEmailAsync(
+    Task<Result<bool>> SendOrderPaidAsync(
         Order order);
 
-    Task<Result<bool>> SendOrderConfirmedEmailAsync(
+    Task<Result<bool>> SendOrderConfirmedAsync(
         Order order);
+
+    Task<Result<bool>> SendEnableTwoFactorCodeAsync(
+        string email,
+        string code);
 }

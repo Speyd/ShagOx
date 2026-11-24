@@ -2,7 +2,7 @@ using ShagOxServer.Domain.Entities.Orders.Enum;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
-public interface IOrderCommandRepository
+public interface IOrderCommandsRepository
 {
     Task<bool> TryMarkAsPaidAsync(
         long orderId,

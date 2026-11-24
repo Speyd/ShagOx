@@ -1,4 +1,4 @@
-using ShagOxServer.Application.Interfaces.Services.Auth.Users;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Domain.Entities.Auth.Enum;

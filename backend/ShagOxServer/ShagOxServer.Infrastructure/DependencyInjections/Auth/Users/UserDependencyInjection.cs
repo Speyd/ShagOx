@@ -18,6 +18,9 @@ public static class UserDependencyInjection
         services.AddScoped<IUserExistsRepository,
             UserExistsRepository>();
 
+        services.AddScoped<IUserCommandsRepository,
+            UserCommandsRepository>();
+
         services.AddScoped<IUserStatisticsRepository,
             UserStatisticsRepository>();
 

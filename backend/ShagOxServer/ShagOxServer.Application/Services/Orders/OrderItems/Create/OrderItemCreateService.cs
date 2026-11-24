@@ -39,7 +39,7 @@ public class OrderItemCreateService
     private readonly OrderItemInvalidationService _itemInvalidation;
 
     private readonly IAdvertisementCommandRepository _advertCommand;
-    private readonly IAdvertisementVariantCommandRepository _variantCommand;
+    private readonly IAdvertisementVariantCommandsRepository _variantCommand;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<OrderItemCreateService> _logger;
@@ -54,7 +54,7 @@ public class OrderItemCreateService
         AdvertisementValidator advertValidator,
         OrderItemOrderInvalidationService orderInvalidation, 
         IAdvertisementCommandRepository advertCommand,
-        IAdvertisementVariantCommandRepository variantCommand,
+        IAdvertisementVariantCommandsRepository variantCommand,
         OrderItemInvalidationService itemInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<OrderItemCreateService> logger,

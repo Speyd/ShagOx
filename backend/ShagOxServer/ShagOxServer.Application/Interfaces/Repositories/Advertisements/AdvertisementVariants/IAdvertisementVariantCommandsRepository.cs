@@ -1,5 +1,5 @@
 namespace ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
-public interface IAdvertisementVariantCommandRepository
+public interface IAdvertisementVariantCommandsRepository
 {
     Task<bool> DecreaseStockAsync(
         long variantId,

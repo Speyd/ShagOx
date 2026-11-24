@@ -9,14 +9,30 @@ public static class BackgroundServiceDependencyInjection
     public static IServiceCollection AddBackgroundServiceInfrastructure(
         this IServiceCollection services)
     {
-        services.AddHostedService<ReplicaHealthCheckeService>();
+        #region Auth
 
         services.AddHostedService<VerificationCodeCleanupService>();
 
         services.AddHostedService<PendingUserCleanupService>();
-   
+
+        services.AddHostedService<UserBanBackgroundService>();
+
+        #endregion
+
+        #region Currencies
+        #endregion
+
+        #region Db
+
+        services.AddHostedService<ReplicaHealthCheckeService>();
+
+        #endregion
+
+        #region Payments
 
         services.AddHostedService<PaymentExpirationWorker>();
+
+        #endregion
 
 
         return services;

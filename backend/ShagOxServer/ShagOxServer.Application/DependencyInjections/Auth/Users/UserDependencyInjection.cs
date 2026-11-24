@@ -1,22 +1,4 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Common.Context;
-using ShagOxServer.Application.Interfaces.Services.Auth.UserRoles.Query;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Statistics;
-using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Application.Services.Auth.UserRoles.Query;
-using ShagOxServer.Application.Services.Auth.Users;
-using ShagOxServer.Application.Services.Auth.Users.Core.Create;
-using ShagOxServer.Application.Services.Auth.Users.Core.Delete;
-using ShagOxServer.Application.Services.Auth.Users.Core.Query;
-using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Application.Services.Auth.Users.Statistics;
-using ShagOxServer.Application.Services.Auth.Users.Update;
-using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Application.DependencyInjections.Auth.Users;
 public static class UserDependencyInjection
@@ -24,46 +6,12 @@ public static class UserDependencyInjection
     public static IServiceCollection AddUsersApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<IUserContext, 
-            UserContext>();
-
-        services.AddScoped<IUserQueryService,
-            UserQueryService>();
-
-        services.AddScoped<IUserAdminQueryService,
-            UserAdminQueryService>();
-
-        services.AddScoped<IUserUpdateService,
-            UserUpdateService>();
-
-        services.AddScoped<IUserDeleteService,
-            UserDeleteService>();
-
-
-
-        services.AddScoped<IUserRoleQueryService,
-            UserRoleQueryService>();
-
-        services.AddScoped<IPasswordHasher<User>,
-            PasswordHasher<User>>();
-
-        services.AddScoped<UserValidator>();
-
-        services.AddScoped<UserCreater>();
-
-        services.AddScoped<IUserRoleQueryService,
-            UserRoleQueryService>();
-
-
-
-        services.AddScoped<IUserStatisticsService,
-            UserStatisticsService>();
-
-        services.AddScoped<IUserTrastManagementService,
-            UserTrastManagementService>();
+        services.AddUserCoreApplication();
+        services.AddUserManagementApplication();
+        services.AddUserStatisticsApplication();
+        services.AddUserRolesApplication();
 
         services.AddUserDeviceApplication();
-
         services.AddUserSessionApplication();
 
         return services;

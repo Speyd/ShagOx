@@ -8,11 +8,11 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Orders.Core;
-public class OrderCommandRepository
+public class OrderCommandsRepository
     : CommandRepository<Order>,
-    IOrderCommandRepository
+    IOrderCommandsRepository
 {
-    public OrderCommandRepository(
+    public OrderCommandsRepository(
         AppDbContext db,
         IUserContext userContext
     )

@@ -1,7 +1,7 @@
 using ShagOxServer.Domain.Entities.Payments.Enum;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
-public interface IPaymentWebhookCommandRepository
+public interface IPaymentWebhookCommandsRepository
 {
     Task MarkAsProcessedAsync(
         long webhookId,

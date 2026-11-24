@@ -20,14 +20,14 @@ public partial class PaymentProcessingService
     private readonly IBasketItemDeleteService _itemDeleteService;
 
     private readonly IPaymentQueryRepository _paymentRepository;
-    private readonly IPaymentCommandRepository _paymentCommandRepository;
+    private readonly IPaymentCommandsRepository _paymentCommandRepository;
 
-    private readonly IOrderCommandRepository _orderCommandRepository;
+    private readonly IOrderCommandsRepository _orderCommandRepository;
 
-    private readonly IPaymentWebhookCommandRepository _webhookCommandRepository;
+    private readonly IPaymentWebhookCommandsRepository _webhookCommandRepository;
     private readonly IPaymentWebhookQueryRepository _webhookQueryRepository;
 
-    private readonly IAdvertisementVariantCommandRepository _variantCommand;
+    private readonly IAdvertisementVariantCommandsRepository _variantCommand;
     private readonly IAdvertisementCommandRepository _advertCommand;
 
     private readonly IEmailService _emailService;
@@ -38,12 +38,12 @@ public partial class PaymentProcessingService
         IBasketQueryRepository basketRepository,
         IBasketItemQueryRepository itemRepository,
         IBasketItemDeleteService itemDeleteService,
-        IOrderCommandRepository orderCommandRepository,
-        IPaymentCommandRepository paymentCommandRepository,
+        IOrderCommandsRepository orderCommandRepository,
+        IPaymentCommandsRepository paymentCommandRepository,
         IPaymentQueryRepository paymentRepository,
-        IPaymentWebhookCommandRepository webhookCommandRepository,
+        IPaymentWebhookCommandsRepository webhookCommandRepository,
         IPaymentWebhookQueryRepository webhookQueryRepository,
-        IAdvertisementVariantCommandRepository variantCommand,
+        IAdvertisementVariantCommandsRepository variantCommand,
         IAdvertisementCommandRepository advertCommand,
         IEmailService emailService,
         IUnitOfWork unitOfWork)

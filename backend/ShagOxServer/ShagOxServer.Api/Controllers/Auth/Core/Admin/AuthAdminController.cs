@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Common.Options.Systems.Cookies;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using CookieOptions = ShagOxServer.Application.Common.Options.Systems.Cookies.CookieOptions;
 namespace ShagOxServer.Api.Controllers.Auth.Core;
@@ -15,10 +16,12 @@ public class AuthAdminController
     : ApiCookieController
 {
     private readonly ILogoutService _logoutService;
+    private readonly IUserModerationService _moderationService;
 
 
     public AuthAdminController(
         ILogoutService logoutService,
+        IUserModerationService moderationService,
         IOptions<CookieOptions> cookieOptions,
         IOptions<JwtOptions> jwtOptions,
         IOptions<RefreshTokenOptions> refreshOptions,
@@ -32,6 +35,7 @@ public class AuthAdminController
             userContext)
     {
         _logoutService = logoutService;
+        _moderationService = moderationService;
     }
 
 
@@ -63,5 +67,39 @@ public class AuthAdminController
         DeleteTokens(Response);
 
         return Ok(new { message = "Logged out from other devices successfully" });
+    }
+
+    [HttpPost("{userId:long}/ban")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> BanUser(
+        [FromRoute] long userId,
+        CancellationToken cancellationToken,
+        [FromQuery] DateTime? blockedUntil = null)
+    {
+        await _moderationService.Ban(
+            userId,
+            blockedUntil,
+            cancellationToken);
+
+        return Ok(new
+        {
+            message = "User has been banned successfully"
+        });
+    }
+
+    [HttpPost("{userId:long}/unban")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Unban(
+        [FromRoute] long userId,
+        CancellationToken cancellationToken)
+    {
+        await _moderationService.Unban(
+            userId,
+            cancellationToken);
+
+        return Ok(new
+        {
+            message = "User has been unbanned successfully"
+        });
     }
 }

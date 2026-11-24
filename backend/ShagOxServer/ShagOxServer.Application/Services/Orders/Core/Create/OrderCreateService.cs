@@ -43,7 +43,7 @@ public partial class OrderCreateService
     private readonly ICurrencyProvider _currencyProvider;
 
     private readonly IAdvertisementCommandRepository _advertCommand;
-    private readonly IAdvertisementVariantCommandRepository _variantProvider;
+    private readonly IAdvertisementVariantCommandsRepository _variantProvider;
 
 
     private readonly OrderInvalidationService _orderInvalidation;
@@ -64,7 +64,7 @@ public partial class OrderCreateService
         IPaymentProvider paymentProvider,
         IPaymentWebhookProcessor webhookProcessor,
         IAdvertisementCommandRepository advertCommand,
-        IAdvertisementVariantCommandRepository variantProvider,
+        IAdvertisementVariantCommandsRepository variantProvider,
         OrderInvalidationService orderInvalidation,
         IOrderNumberGenerator orderNumberGenerator,
         ICurrencyProvider currencyProvider,

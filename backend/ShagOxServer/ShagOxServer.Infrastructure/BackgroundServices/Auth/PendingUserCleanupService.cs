@@ -68,6 +68,8 @@ public class PendingUserCleanupService
             {
                 _logger.LogInformation(
                     "Pending user cleanup service stopped.");
+
+                break;
             }
             catch (Exception ex)
             {

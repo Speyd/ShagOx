@@ -1,5 +1,5 @@
 namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
-public interface IUserDeviceCommandRepository
+public interface IUserDeviceCommandsRepository
 {
     Task<bool> MarkAsTrasteAsync(
         long deviceId,

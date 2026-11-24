@@ -1,29 +1,29 @@
 using ShagOxServer.Application.Interfaces.Providers.User;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 
-namespace ShagOxServer.Application.Services.Auth.Users;
+namespace ShagOxServer.Application.Services.Auth.Users.Management;
 public class UserTrastManagementService
     : IUserTrastManagementService
 {
     private readonly IDeviceProvider _deviceProvider;
-    private readonly IUserDeviceCommandRepository _deviceCommandRepository;
+    private readonly IUserDeviceCommandsRepository _deviceCommandRepository;
     private readonly IUserDeviceQueryRepository _deviceQueryRepository;
 
     private readonly ISessionProvider _sessionProvider;
-    private readonly IUserSessionCommandRepository _sessionCommandRepository;
+    private readonly IUserSessionCommandsRepository _sessionCommandRepository;
     private readonly IUserSessionQueryRepository _sessionQueryRepository;
 
 
     public UserTrastManagementService(
         IDeviceProvider deviceProvider,
-        IUserDeviceCommandRepository deviceCommandRepository,
+        IUserDeviceCommandsRepository deviceCommandRepository,
         IUserDeviceQueryRepository deviceQueryRepository,
         ISessionProvider sessionProvider,
-        IUserSessionCommandRepository sessionCommandRepository,
+        IUserSessionCommandsRepository sessionCommandRepository,
         IUserSessionQueryRepository sessionQueryRepository)
     {
         _deviceProvider = deviceProvider;

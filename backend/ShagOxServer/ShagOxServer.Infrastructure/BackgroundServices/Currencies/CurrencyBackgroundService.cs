@@ -67,6 +67,7 @@ public class CurrencyBackgroundService
         {
             _logger.LogInformation(
                 "Currency background service stopped.");
+
         }
         catch (Exception ex)
         {

@@ -8,11 +8,11 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserSessions;
-public class UserSessionCommandRepository
-    : CommandRepository<UserDevice>,
-    IUserSessionCommandRepository
+public class UserSessionCommandsRepository
+    : CommandRepository<UserSession>,
+    IUserSessionCommandsRepository
 {
-    public UserSessionCommandRepository(
+    public UserSessionCommandsRepository(
         AppDbContext db,
         IUserContext userContext
     )

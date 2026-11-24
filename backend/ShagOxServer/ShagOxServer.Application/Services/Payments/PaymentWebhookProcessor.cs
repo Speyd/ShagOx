@@ -13,7 +13,7 @@ public class PaymentWebhookProcessor
     : IPaymentWebhookProcessor
 {
     private readonly IRepository<PaymentWebhook> _webhookRepository;
-    private readonly IPaymentWebhookCommandRepository _webhookCommandRepository;
+    private readonly IPaymentWebhookCommandsRepository _webhookCommandRepository;
     private readonly IPaymentWebhookQueryRepository _webhookQueryRepository;
     private readonly IPaymentProcessingService _paymentProcessingService;
 
@@ -22,7 +22,7 @@ public class PaymentWebhookProcessor
 
     public PaymentWebhookProcessor(
         IRepository<PaymentWebhook> webhookRepository,
-        IPaymentWebhookCommandRepository webhookCommandRepository,
+        IPaymentWebhookCommandsRepository webhookCommandRepository,
         IPaymentWebhookQueryRepository webhookQueryRepository,
         IPaymentProcessingService paymentProcessingService,
         IUnitOfWork unitOfWork)

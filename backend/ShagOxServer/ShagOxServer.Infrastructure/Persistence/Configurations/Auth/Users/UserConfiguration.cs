@@ -35,13 +35,16 @@ public class UserConfiguration
             .IsRequired();
 
         builder.Property(x => x.PasswordHash)
-                 .HasColumnType("text");
+            .HasColumnType("text");
 
         builder.Property(x => x.LastSeenAt)
-                .HasColumnType("timestamptz");
+            .HasColumnType("timestamptz");
 
         builder.Property(x => x.RegisteredAt)
-                .HasColumnType("timestamptz");
+            .HasColumnType("timestamptz");
+
+        builder.Property(x => x.BlockedAt)
+            .HasColumnType("timestamptz");
 
         builder.HasOne(x => x.Currency)
             .WithMany(x => x.Users)

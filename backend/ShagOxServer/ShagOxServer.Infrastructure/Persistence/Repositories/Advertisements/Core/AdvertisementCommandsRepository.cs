@@ -6,11 +6,11 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core;
-public class AdvertisementCommandRepository
+public class AdvertisementCommandsRepository
     : CommandRepository<Advertisement>,
     IAdvertisementCommandRepository
 {
-    public AdvertisementCommandRepository(
+    public AdvertisementCommandsRepository(
         AppDbContext db,
         IUserContext userContext
     )

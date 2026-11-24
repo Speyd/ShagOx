@@ -7,11 +7,11 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Payments.PaymentWebhooks;
-public class PaymentWebhookCommandRepository 
+public class PaymentWebhookCommandsRepository 
     : CommandRepository<PaymentWebhook>,
-    IPaymentWebhookCommandRepository
+    IPaymentWebhookCommandsRepository
 {
-    public PaymentWebhookCommandRepository(
+    public PaymentWebhookCommandsRepository(
         AppDbContext db,
         IUserContext userContext
     )

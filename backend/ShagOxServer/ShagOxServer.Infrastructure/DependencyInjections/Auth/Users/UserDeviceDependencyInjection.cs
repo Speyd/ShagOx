@@ -15,8 +15,8 @@ public static class UserDeviceDependencyInjection
         services.AddScoped<IUserDeviceExistsRepository,
             UserDeviceExistsRepository>();
 
-        services.AddScoped<IUserDeviceCommandRepository,
-            UserDeviceCommandRepository>();
+        services.AddScoped<IUserDeviceCommandsRepository,
+            UserDeviceCommandsRepository>();
 
         return services;
     }

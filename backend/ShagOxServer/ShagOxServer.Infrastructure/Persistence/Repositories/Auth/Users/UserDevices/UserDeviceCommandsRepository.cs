@@ -6,11 +6,11 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserDevices;
-public class UserDeviceCommandRepository
+public class UserDeviceCommandsRepository
     : CommandRepository<UserDevice>,
-    IUserDeviceCommandRepository
+    IUserDeviceCommandsRepository
 {
-    public UserDeviceCommandRepository(
+    public UserDeviceCommandsRepository(
         AppDbContext db,
         IUserContext userContext
     )

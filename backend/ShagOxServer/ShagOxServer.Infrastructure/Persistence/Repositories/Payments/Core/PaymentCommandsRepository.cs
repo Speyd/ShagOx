@@ -7,11 +7,11 @@ using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Payments.Core;
-public class PaymentCommandRepository
+public class PaymentCommandsRepository
     : CommandRepository<Payment>,
-    IPaymentCommandRepository
+    IPaymentCommandsRepository
 {
-    public PaymentCommandRepository(
+    public PaymentCommandsRepository(
         AppDbContext db,
         IUserContext userContext
     )

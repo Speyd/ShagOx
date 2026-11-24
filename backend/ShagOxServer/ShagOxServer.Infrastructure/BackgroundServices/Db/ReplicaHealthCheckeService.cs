@@ -50,6 +50,8 @@ public class ReplicaHealthCheckeService
             {
                 _logger.LogInformation(
                     "Replica health checke service stopped.");
+
+                break;
             }
             catch (Exception ex)
             {

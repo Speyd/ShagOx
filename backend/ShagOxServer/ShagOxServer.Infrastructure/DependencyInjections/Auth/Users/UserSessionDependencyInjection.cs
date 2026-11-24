@@ -15,8 +15,8 @@ public static class UserSessionDependencyInjection
         services.AddScoped<IUserSessionExistsRepository,
             UserSessionExistsRepository>();
 
-        services.AddScoped<IUserSessionCommandRepository,
-            UserSessionCommandRepository>();
+        services.AddScoped<IUserSessionCommandsRepository,
+            UserSessionCommandsRepository>();
 
         return services;
     }

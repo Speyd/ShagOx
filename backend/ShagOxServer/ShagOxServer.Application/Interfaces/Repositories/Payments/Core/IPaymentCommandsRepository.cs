@@ -1,7 +1,7 @@
 using ShagOxServer.Domain.Entities.Payments.Enum;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Payments.Core;
-public interface IPaymentCommandRepository
+public interface IPaymentCommandsRepository
 {
     Task<bool> TryMarkAsPaidAsync(
         string invoiceId,

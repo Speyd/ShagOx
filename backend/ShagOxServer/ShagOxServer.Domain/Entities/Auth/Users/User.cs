@@ -26,6 +26,9 @@ public class User
     public UserStatus Status { get; set; } 
         = UserStatus.PendingVerification;
 
+    public DateTime? BlockedAt { get; set; }
+    public DateTime? BlockedUntil { get; set; }
+
     public bool EmailConfirmed { get; set; } = false;
     public bool PhoneConfirmed { get; set; } = false;
 

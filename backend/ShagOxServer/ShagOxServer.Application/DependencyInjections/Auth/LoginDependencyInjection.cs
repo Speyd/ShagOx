@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Services.Auth.Login;
+using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
 using ShagOxServer.Application.Services.Auth.Core.Login;
 
 namespace ShagOxServer.Application.DependencyInjections.Auth;

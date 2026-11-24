@@ -2,6 +2,7 @@ using ShagOxServer.Application.Common.Options.Auth;
 using ShagOxServer.Application.Common.Options.Pictures;
 using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
+using ShagOxServer.Application.Common.Options.Systems.Cookies;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Common.Options.Verifivations;
 
@@ -23,6 +24,12 @@ public static class OptionsConfigurationExtensions
 
         services.Configure<FrontendOptions>(
             config.GetSection(FrontendOptions.SectionName));
+
+        services.Configure<Application.Common.Options.Systems.Cookies.CookieOptions>(
+            config.GetSection(Application.Common.Options.Systems.Cookies.CookieOptions.SectionName));
+
+        services.Configure<RefreshTokenOptions>(
+            config.GetSection(RefreshTokenOptions.SectionName));
 
         #endregion
 

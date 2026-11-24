@@ -20,6 +20,7 @@ public class UserDeviceExistsRepository
     {
     }
 
+
     public async Task<bool> ExistsAsync(
         long userId,
         string deviceIdentifier,
@@ -31,6 +32,21 @@ public class UserDeviceExistsRepository
            .AnyAsync(x =>
                 x.OwnerId == userId &&
                 x.DeviceIdentifier == deviceIdentifier,
+                cancellationToken
+       );
+    }
+
+    public async Task<bool> ExistsAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.UserDevices
+           .WithStatusFilter(status)
+           .AnyAsync(x =>
+                x.OwnerId == userId &&
+                x.Id == deviceId,
                 cancellationToken
        );
     }

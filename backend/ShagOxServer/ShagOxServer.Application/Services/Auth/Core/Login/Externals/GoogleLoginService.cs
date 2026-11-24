@@ -4,8 +4,8 @@ using ShagOxServer.Application.Common.Options.Auth;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth;
+using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Externals;
-using ShagOxServer.Application.Interfaces.Services.Auth.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.UserNames;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 

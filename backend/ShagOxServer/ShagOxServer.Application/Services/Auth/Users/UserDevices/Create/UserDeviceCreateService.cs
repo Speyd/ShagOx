@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.UserDevices.Validator;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -16,6 +17,7 @@ public class UserDeviceCreateService
 {
     private readonly IRepository<UserDevice> _deviceRepository;
     private readonly UserDeviceValidator _deviceValidator;
+    private readonly UserValidator _userValidator;
 
     //private readonly RoleInvalidationService _roleInvalid;
     private readonly IDeviceInfoProvider _deviceInfo;
@@ -26,6 +28,7 @@ public class UserDeviceCreateService
     public UserDeviceCreateService(
         IRepository<UserDevice> deviceRepository,
         UserDeviceValidator deviceValidator,
+        UserValidator userValidator,
         IDeviceInfoProvider deviceInfo,
         //RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
@@ -33,6 +36,7 @@ public class UserDeviceCreateService
     {
         _deviceRepository = deviceRepository;
         _deviceValidator = deviceValidator;
+        _userValidator = userValidator;
         _deviceInfo = deviceInfo;
         //_roleInvalid = roleInvalid;
         _unitOfWork = unitOfWork;
@@ -46,8 +50,6 @@ public class UserDeviceCreateService
     {
         await _unitOfWork.BeginTransactionAsync();
 
-        UserDevice device;
-
         try
         {
             var deviceResult  = await CreateInternalAsync(request);
@@ -55,12 +57,17 @@ public class UserDeviceCreateService
             if (!deviceResult.IsSuccess ||
                 deviceResult.Value is null)
             {
-                throw new Exception("Device is null");
+                return Result<CreateResponse>
+                    .Fail(deviceResult.Error);
             }
 
-            device = deviceResult.Value;
-
             await _unitOfWork.CommitAsync();
+
+            return Result<CreateResponse>.Success(
+            new CreateResponse(
+                deviceResult.Value.Id,
+                DateTime.UtcNow
+        ));
         }
         catch (Exception ex)
         {
@@ -77,18 +84,19 @@ public class UserDeviceCreateService
 
         //await _roleInvalid.InvalidateCreateAsync(
         //    RoleCacheMapper.ToInfo(role));
-
-        return Result<CreateResponse>.Success(
-            new CreateResponse(
-                device.Id,
-                DateTime.UtcNow
-        ));
+        
     }
 
     public async Task<Result<UserDevice>> CreateInternalAsync(
         UserDeviceCreateRequest request,
         CancellationToken cancellationToken = default)
     {
+        var userValidation = await _userValidator
+            .ExistsByIdAsync(request.OwnerId);
+
+        if (!userValidation.IsSuccess)
+            return Result<UserDevice>.Fail(userValidation.Error);
+
         var validation = await _deviceValidator
             .NotExistsAsync(request.OwnerId,
                 request.DeviceIdentifier,

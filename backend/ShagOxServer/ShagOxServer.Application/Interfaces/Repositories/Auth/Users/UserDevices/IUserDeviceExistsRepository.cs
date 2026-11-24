@@ -12,5 +12,11 @@ public interface IUserDeviceExistsRepository
         long userId,
         string deviceIdentifier,
         CancellationToken cancellationToken = default,
-        EntityStatus? status = null); 
+        EntityStatus? status = null);
+
+    Task<bool> ExistsAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

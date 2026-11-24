@@ -23,7 +23,7 @@ public static class UserDependencyInjection
 
         services.AddUserDeviceInfrastructure();
 
-
+        services.AddUserSessionInfrastructure();
 
         return services;
     }

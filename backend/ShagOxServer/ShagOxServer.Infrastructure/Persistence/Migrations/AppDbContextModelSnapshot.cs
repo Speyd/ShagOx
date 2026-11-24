@@ -589,13 +589,19 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamptz");
 
+                    b.Property<DateTime>("LastUsedAt")
+                        .HasColumnType("timestamptz");
+
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("RefreshTokenHash")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("RevocationReason")
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("RevokedAt")
                         .HasColumnType("timestamptz");
@@ -605,10 +611,12 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("DeviceId")
                         .HasDatabaseName("IX_UserSessions_DeviceId");
 
-                    b.HasIndex("OwnerId", "DeviceId")
+                    b.HasIndex("RefreshTokenHash")
                         .IsUnique()
-                        .HasDatabaseName("IX_UserSessions_OwnerId_DeviceId")
-                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+                        .HasDatabaseName("IX_UserSessions_RefreshTokenHash");
+
+                    b.HasIndex("OwnerId", "RevokedAt")
+                        .HasDatabaseName("IX_UserSessions_OwnerId_RevokedAt");
 
                     b.ToTable("UserSessions");
                 });
@@ -2418,7 +2426,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.UserDevice", "Device")
                         .WithMany()
                         .HasForeignKey("DeviceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_UserSessions_UserDevices_DeviceId");
 

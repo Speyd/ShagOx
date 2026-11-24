@@ -60,4 +60,36 @@ public class UserDeviceValidator
 
         return Result<bool>.Success(true);
     }
+
+    public async Task<Result<bool>> ExistsAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default)
+    {
+        if (!await _deviceExistsRepository
+            .ExistsAsync(userId, deviceId,
+                cancellationToken))
+        {
+            return Result<bool>.NotFound(
+                EntityNamesResources.UserDevice);
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> NotExistsAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default)
+    {
+        if (await _deviceExistsRepository
+            .ExistsAsync(userId, deviceId,
+                cancellationToken))
+        {
+            return Result<bool>.NotFound(
+                EntityNamesResources.UserDevice);
+        }
+
+        return Result<bool>.Success(true);
+    }
 }

@@ -59,6 +59,7 @@ public static class UserDependencyInjection
 
         services.AddUserDeviceApplication();
 
+        services.AddUserSessionApplication();
 
         return services;
     }

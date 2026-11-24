@@ -240,4 +240,7 @@
   <data name="UserDevice" xml:space="preserve">
     <value>Benutzergerät</value>
   </data>
+  <data name="UserSession" xml:space="preserve">
+    <value>Benutzersitzung</value>
+  </data>
 </root>

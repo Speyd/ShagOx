@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShagOxServer.Domain.Entities.Auth.Users;
-using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Auth.Users;
 public class UserSessionConfiguration
@@ -11,16 +10,23 @@ public class UserSessionConfiguration
         EntityTypeBuilder<UserSession> builder)
     {
         builder.Property(x => x.RefreshTokenHash)
-            .HasMaxLength(50)
+            .HasMaxLength(64)
             .IsRequired();
 
+        builder.Property(x => x.RevocationReason)
+            .HasConversion<string>()
+            .IsRequired(false);
+
         builder.Property(x => x.CreatedAt)
-        .HasColumnType("timestamptz");
+            .HasColumnType("timestamptz");
 
         builder.Property(x => x.ExpiresAt)
-        .HasColumnType("timestamptz");
+            .HasColumnType("timestamptz");
 
         builder.Property(x => x.RevokedAt)
+            .HasColumnType("timestamptz");
+
+        builder.Property(x => x.LastUsedAt)
             .HasColumnType("timestamptz");
 
 
@@ -32,13 +38,18 @@ public class UserSessionConfiguration
         builder.HasOne(x => x.Device)
             .WithMany()
             .HasForeignKey(x => x.DeviceId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
 
 
-        builder.HasUniqueActiveIndex(x => new
+        builder.HasIndex(x => x.RefreshTokenHash)
+            .IsUnique();
+
+        builder.HasIndex(x => x.DeviceId);
+
+        builder.HasIndex(x => new
         {
             x.OwnerId,
-            x.DeviceId
-        }); 
+            x.RevokedAt
+        });
     }
 }

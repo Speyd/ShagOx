@@ -1,4 +1,4 @@
-using ShagOxServer.Application.Interfaces.Services.Auth.Login;
+using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;

@@ -1,8 +1,9 @@
 using ShagOxServer.Domain.Entities.Auth.Users;
 
-namespace ShagOxServer.Application.Interfaces.Services.Jwt;
+namespace ShagOxServer.Application.Interfaces.Services.Auth.Tokens.Jwt;
 public interface IJwtService
 {
     public string GenerateToken(
-        User user);
+        User user,
+        long sessionId);
 }

@@ -1150,6 +1150,33 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create user session..
+        /// </summary>
+        internal static string UserSessionCreateFailed {
+            get {
+                return ResourceManager.GetString("UserSessionCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete user session..
+        /// </summary>
+        internal static string UserSessionDeleteFailed {
+            get {
+                return ResourceManager.GetString("UserSessionDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update user session..
+        /// </summary>
+        internal static string UserSessionUpdateFailed {
+            get {
+                return ResourceManager.GetString("UserSessionUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update user..
         /// </summary>
         internal static string UserUpdateFailed {

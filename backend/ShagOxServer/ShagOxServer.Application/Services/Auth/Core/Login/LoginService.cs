@@ -5,7 +5,7 @@ using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Services.Auth.Login;
+using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Resources.Auth.Logins;
 using ShagOxServer.Domain.Entities.Auth.Users;

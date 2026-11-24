@@ -1,8 +1,7 @@
-namespace ShagOxServer.Application.Common.Options.Systems;
+namespace ShagOxServer.Application.Common.Options.Systems.Cookies;
 public sealed class JwtOptions
-    : CookieOptions
 {
-    public new const string SectionName = "Jwt";
+    public const string SectionName = "Jwt";
 
     public string Key { get; set; } = null!;
     public string Issuer { get; set; } = null!;

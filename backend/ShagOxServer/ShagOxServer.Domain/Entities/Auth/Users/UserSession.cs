@@ -1,4 +1,5 @@
 using ShagOxServer.Domain.Base.Owner;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 
 namespace ShagOxServer.Domain.Entities.Auth.Users;
 public class UserSession
@@ -14,6 +15,12 @@ public class UserSession
     public DateTime ExpiresAt { get; set; }
 
     public DateTime? RevokedAt { get; set; }
+
+    public SessionRevocationReason? RevocationReason { get; set; }
+    public DateTime LastUsedAt { get; set; }
+
+    public bool IsActive =>
+        RevokedAt == null && ExpiresAt > DateTime.UtcNow;
 
     public override string ToString()
     {

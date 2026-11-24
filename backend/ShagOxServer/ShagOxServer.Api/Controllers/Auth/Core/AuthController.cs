@@ -11,6 +11,8 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions.Refresh;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+using CookieOptions = ShagOxServer.Application.Common.Options.Systems.Cookies.CookieOptions;
+
 namespace ShagOxServer.Api.Controllers.Auth.Core;
 
 [ApiController]
@@ -29,7 +31,7 @@ public class AuthController
         ILoginService loginService,
         ILogoutService logoutService,
         IUserSessionRefreshService refreshService,
-        IOptions<Application.Common.Options.Systems.Cookies.CookieOptions> cookieOptions,
+        IOptions<CookieOptions> cookieOptions,
         IOptions<JwtOptions> jwtOptions,
         IOptions<RefreshTokenOptions> refreshOptions,
         ILogger<ApiCookieController> logger,
@@ -69,6 +71,7 @@ public class AuthController
     }
 
     [HttpPost("refresh")]
+    [Authorize]
     public async Task<IActionResult> Refresh(
         CancellationToken cancellationToken)
     {
@@ -104,5 +107,43 @@ public class AuthController
         DeleteTokens(Response);
 
         return Ok(new { message = "Logged out successfully" });
+    }
+
+    [HttpPost("logout-all")]
+    [Authorize]
+    public async Task<IActionResult> LogoutAll(
+    CancellationToken cancellationToken)
+    {
+        var userId = UserContext.UserId;
+
+        if (userId is null)
+            return Unauthorized();
+
+        await _logoutService.LogoutAllAsync(
+            userId.Value,
+            cancellationToken);
+
+        DeleteTokens(Response);
+
+        return Ok(new { message = "Logged out from all devices successfully" });
+    }
+
+    [HttpPost("logout-other")]
+    [Authorize]
+    public async Task<IActionResult> LogoutOther(
+    CancellationToken cancellationToken)
+    {
+        var userId = UserContext.UserId;
+
+        if (userId is null)
+            return Unauthorized();
+
+        await _logoutService.LogoutOtherSessions(
+            userId.Value,
+            cancellationToken);
+
+        DeleteTokens(Response);
+
+        return Ok(new { message = "Logged out from other devices successfully" });
     }
 }

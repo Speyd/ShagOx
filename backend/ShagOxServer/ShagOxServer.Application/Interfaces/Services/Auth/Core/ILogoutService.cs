@@ -4,4 +4,12 @@ public interface ILogoutService
     Task LogoutAsync(
         string refreshToken,
         CancellationToken cancellationToken);
+
+    Task LogoutAllAsync(
+        long userId,
+        CancellationToken cancellationToken);
+
+    Task LogoutOtherSessions(
+        long userId,
+        CancellationToken cancellationToken);
 }

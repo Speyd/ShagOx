@@ -8,6 +8,11 @@ public interface IUserDeviceExistsRepository
     : IExistsRepository<UserDevice>,
     IExistsOwnerRepository
 {
+    Task<bool> IsBlockedAsync(
+        int userId,
+        string deviceIdentifier,
+        CancellationToken cancellationToken = default);
+
     Task<bool> ExistsAsync(
         long userId,
         string deviceIdentifier,

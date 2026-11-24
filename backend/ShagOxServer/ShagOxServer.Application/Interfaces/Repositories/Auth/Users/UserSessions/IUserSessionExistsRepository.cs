@@ -7,4 +7,8 @@ public interface IUserSessionExistsRepository
     : IExistsRepository<UserSession>,
     IExistsOwnerRepository
 {
+    Task<bool> IsRevokedAsync(
+        int userId,
+        string refreshToken,
+        CancellationToken cancellationToken = default);
 }

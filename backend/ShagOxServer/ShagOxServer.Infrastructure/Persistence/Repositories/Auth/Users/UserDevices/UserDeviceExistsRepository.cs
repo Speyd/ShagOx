@@ -3,6 +3,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
@@ -20,6 +21,19 @@ public class UserDeviceExistsRepository
     {
     }
 
+    public async Task<bool> IsBlockedAsync(
+        int userId,
+        string deviceIdentifier,
+        CancellationToken cancellationToken)
+    {
+        return await _db.UserDevices
+            .AsNoTracking()
+            .AnyAsync(
+                d => d.OwnerId == userId &&
+                     d.DeviceIdentifier == deviceIdentifier &&
+                     d.Status == UserDeviceStatus.Blocked,
+                cancellationToken);
+    }
 
     public async Task<bool> ExistsAsync(
         long userId,

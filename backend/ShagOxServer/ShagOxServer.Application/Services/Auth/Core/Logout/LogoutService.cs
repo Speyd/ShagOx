@@ -83,7 +83,7 @@ public class LogoutService
 
         foreach (var session in sessions)
         {
-            if (userSession.Id == session.Id)
+            if (userSession?.Id == session.Id)
                 continue;
 
             session.ExpiresAt = DateTime.UtcNow;

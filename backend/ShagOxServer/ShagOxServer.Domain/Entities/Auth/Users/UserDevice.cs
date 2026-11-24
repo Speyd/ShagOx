@@ -1,4 +1,5 @@
 using ShagOxServer.Domain.Base.Owner;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 
 namespace ShagOxServer.Domain.Entities.Auth.Users;
 public class UserDevice
@@ -19,6 +20,10 @@ public class UserDevice
     public DateTime CreatedAt { get; set; }
 
     public DateTime LastActiveAt { get; set; }
+
+    public UserDeviceStatus Status { get; set; }
+    public DateTime? BlockedAt { get; set; }
+    public DateTime? BlockedUntil { get; set; }
 
     public bool IsTrusted { get; set; }
 

@@ -511,6 +511,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<DateTime?>("BlockedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("BlockedUntil")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Browser")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
@@ -558,6 +564,9 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

@@ -8,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Tokens.Jwt;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions.Refresh;
+using ShagOxServer.Application.Resources.Auth.Logins;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -63,13 +64,13 @@ public class UserSessionRefreshService
         if (session.RevokedAt != null)
         {
             return Result<LoginResponse>.Fail(
-                "Session has been revoked.");
+                LoginAuthResources.SessionRevoked);
         }
 
         if (session.ExpiresAt <= now)
         {
             return Result<LoginResponse>.Fail(
-                "Refresh token expired.");
+               LoginAuthResources.RefreshTokenExpired);
         }
 
 

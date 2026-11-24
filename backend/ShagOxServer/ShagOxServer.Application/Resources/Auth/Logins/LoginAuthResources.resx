@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DeviceBlocked" xml:space="preserve">
+    <value>This device has been blocked.</value>
+  </data>
+  <data name="DeviceIdentifierRequired" xml:space="preserve">
+    <value>Device identifier is required.</value>
+  </data>
   <data name="InvalidCredentials" xml:space="preserve">
     <value>Invalid username or password.</value>
   </data>
@@ -125,5 +131,11 @@
   </data>
   <data name="LoginNotAllowed" xml:space="preserve">
     <value>Login is not allowed for this user.</value>
+  </data>
+  <data name="RefreshTokenExpired" xml:space="preserve">
+    <value>Refresh token has expired.</value>
+  </data>
+  <data name="SessionRevoked" xml:space="preserve">
+    <value>Session has been revoked.</value>
   </data>
 </root>

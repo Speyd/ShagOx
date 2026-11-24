@@ -61,6 +61,24 @@ namespace ShagOxServer.Application.Resources.Auth.Logins {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на This device has been blocked..
+        /// </summary>
+        public static string DeviceBlocked {
+            get {
+                return ResourceManager.GetString("DeviceBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Device identifier is required..
+        /// </summary>
+        public static string DeviceIdentifierRequired {
+            get {
+                return ResourceManager.GetString("DeviceIdentifierRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Invalid username or password..
         /// </summary>
         public static string InvalidCredentials {
@@ -84,6 +102,24 @@ namespace ShagOxServer.Application.Resources.Auth.Logins {
         public static string LoginNotAllowed {
             get {
                 return ResourceManager.GetString("LoginNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Refresh token has expired..
+        /// </summary>
+        public static string RefreshTokenExpired {
+            get {
+                return ResourceManager.GetString("RefreshTokenExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Session has been revoked..
+        /// </summary>
+        public static string SessionRevoked {
+            get {
+                return ResourceManager.GetString("SessionRevoked", resourceCulture);
             }
         }
     }

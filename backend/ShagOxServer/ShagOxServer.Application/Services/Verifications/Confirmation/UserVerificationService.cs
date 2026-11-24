@@ -1,7 +1,6 @@
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation;
 using ShagOxServer.Application.Resources.Verifications.Core;
-using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.Domain.Entities.Verifications;
@@ -40,7 +39,7 @@ public class UserVerificationService
         await _trastManagement
             .TrustDeviceAsync(user);
 
-        await _trastManagement.TrustSessionAsync(
+        await _trastManagement.TrustSessionByUserAsync(
             user, 
             SessionRevocationReason.ContactChanged);
 
@@ -65,7 +64,7 @@ public class UserVerificationService
         await _trastManagement
             .TrustDeviceAsync(user);
 
-        await _trastManagement.TrustSessionAsync(
+        await _trastManagement.TrustSessionByUserAsync(
             user,
             SessionRevocationReason.ContactChanged);
 
@@ -135,7 +134,7 @@ public class UserVerificationService
         await _trastManagement
             .TrustDeviceAsync(user);
 
-        await _trastManagement.TrustSessionAsync(
+        await _trastManagement.TrustSessionByUserAsync(
             user,
             SessionRevocationReason.PasswordChanged);
 

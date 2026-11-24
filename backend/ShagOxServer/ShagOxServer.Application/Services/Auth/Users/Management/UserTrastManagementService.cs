@@ -59,7 +59,7 @@ public class UserTrastManagementService
         }
     }
 
-    public async Task TrustSessionAsync(
+    public async Task TrustSessionByUserAsync(
         User user,
         SessionRevocationReason reason,
         bool resetUsedSession = false)
@@ -75,6 +75,33 @@ public class UserTrastManagementService
 
         var userSessions = await _sessionQueryRepository
             .GetAllByUserAsync(user.Id);
+
+        foreach (var session in userSessions)
+        {
+            if (session.Id == usedSession?.Id)
+                continue;
+
+            await _sessionCommandRepository
+                .RevokeSessionAsync(session.Id, reason);
+        }
+    }
+
+    public async Task TrustSessionByDeviceAsync(
+        UserDevice device,
+        SessionRevocationReason reason,
+        bool resetUsedSession = false)
+    {
+        var usedSession = await _sessionProvider
+            .GetSessionAsync();
+
+        if (usedSession is not null && !resetUsedSession)
+        {
+            await _sessionCommandRepository
+                .RevokeSessionAsync(usedSession.Id, reason);
+        }
+
+        var userSessions = await _sessionQueryRepository
+            .GetAllByDeviceAsync(device.Id);
 
         foreach (var session in userSessions)
         {

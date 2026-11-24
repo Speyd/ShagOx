@@ -2,6 +2,7 @@ using ShagOxServer.Application.Common.Options.Auth;
 using ShagOxServer.Application.Common.Options.Pictures;
 using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
+using ShagOxServer.Application.Common.Options.Systems.BackgroundServices.User;
 using ShagOxServer.Application.Common.Options.Systems.Cookies;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Common.Options.Verifivations;
@@ -67,7 +68,13 @@ public static class OptionsConfigurationExtensions
 
         services.Configure<PaymentExpirationWorkerOptions>(
             config.GetSection(PaymentExpirationWorkerOptions.SectionName));
-        
+
+        services.Configure<UserBanOptions>(
+            config.GetSection(UserBanOptions.SectionName));
+
+        services.Configure<UserDeviceBanOptions>(
+            config.GetSection(UserDeviceBanOptions.SectionName));
+
         #endregion
 
         #region Middleware

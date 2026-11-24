@@ -17,6 +17,8 @@ public static class BackgroundServiceDependencyInjection
 
         services.AddHostedService<UserBanBackgroundService>();
 
+        services.AddHostedService<UserDeviceBanBackgroundService>();
+
         #endregion
 
         #region Currencies

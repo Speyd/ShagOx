@@ -7,7 +7,9 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Tokens.Jwt;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions.Create;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Application.Resources.Auth.Logins;
 using ShagOxServer.Domain.Entities.Auth.Users;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Core.Login;
@@ -50,7 +52,7 @@ public class LoginSessionService
             if (string.IsNullOrWhiteSpace(identifier))
             {
                 return Result<LoginResponse>.Fail(
-                    "Device identifier is required.");
+                    LoginAuthResources.DeviceIdentifierRequired);
             }
 
             var result = await _deviceService.CreateAsync(
@@ -69,6 +71,12 @@ public class LoginSessionService
         }
         else
         {
+            if(device.Status != UserDeviceStatus.Active)
+            {
+                return Result<LoginResponse>.Fail(
+                    LoginAuthResources.DeviceBlocked);
+            }
+
             deviceId = device.Id;
         }
 

@@ -4,6 +4,8 @@ public sealed class IpRateLimitState
     public string Ip { get; }
 
     public int RemainingTokens { get; set; } = 0;
+    public int BanLevel { get; set; } = 0;
+
 
     public int HttpRequest { get; set; } = 0;
 

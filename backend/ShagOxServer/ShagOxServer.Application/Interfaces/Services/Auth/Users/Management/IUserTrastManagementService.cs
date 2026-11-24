@@ -7,8 +7,13 @@ public interface IUserTrastManagementService
     Task TrustDeviceAsync(
         User user);
 
-    Task TrustSessionAsync(
+    Task TrustSessionByUserAsync(
         User user,
+        SessionRevocationReason reason,
+        bool resetUsedSession = false);
+
+    Task TrustSessionByDeviceAsync(
+        UserDevice user,
         SessionRevocationReason reason,
         bool resetUsedSession = false);
 }

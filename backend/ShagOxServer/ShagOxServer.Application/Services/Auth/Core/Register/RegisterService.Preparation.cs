@@ -1,8 +1,8 @@
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Register;

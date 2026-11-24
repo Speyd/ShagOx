@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Caches.Keys.Security;
 using ShagOxServer.Domain.Entities.Security;
@@ -9,26 +10,25 @@ namespace ShagOxServer.Api.Middleware;
 public sealed class RequestTrackingMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IUserCacheService _userCache;
     private readonly RequestTrackingOptions _trackingOptions;
 
     
     public RequestTrackingMiddleware(
         RequestDelegate next,
-        IUserCacheService userCache,
         IOptions<RequestTrackingOptions> trackingOptions)
     {
         _next = next;
-        _userCache = userCache;
         _trackingOptions = trackingOptions.Value;
     }
 
 
     public async Task InvokeAsync(
-        HttpContext context)
+        HttpContext context,
+        IUserCacheService userCache,
+        IUserDeviceCommandsRepository deviceCommands)
     {
         var cfIp = context.Request.Headers["CF-Connecting-IP"]
-                .ToString();
+            .ToString();
 
         IPAddress? userIp = null;
 
@@ -50,7 +50,7 @@ public sealed class RequestTrackingMiddleware
         }
         var cacheKey = IpRateLimitStateKeys.ByIp(ipAddress);
 
-        var state = await _userCache
+        var state = await userCache
             .GetAsync<IpRateLimitState>(cacheKey);
 
         state ??= new IpRateLimitState(ipAddress);
@@ -65,9 +65,9 @@ public sealed class RequestTrackingMiddleware
 
         ResetExpiredBan(state, now);
 
-        UpdateRequestState(state, now);
+        await UpdateRequestState(state, now, deviceCommands);
 
-        await _userCache.SetAsync(
+        await userCache.SetAsync(
             cacheKey,
             state,
             _trackingOptions.CacheDuration);
@@ -96,9 +96,10 @@ public sealed class RequestTrackingMiddleware
         }
     }
 
-    private void UpdateRequestState(
+    private async Task UpdateRequestState(
         IpRateLimitState state,
-        DateTime now)
+        DateTime now,
+        IUserDeviceCommandsRepository deviceCommands)
     {
         state.HttpRequest++;
 
@@ -107,18 +108,27 @@ public sealed class RequestTrackingMiddleware
 
         state.RemainingTokens++;
 
-        for(int i = 1; i <= _trackingOptions.BanLevelCount; i++)
+        if (state.RemainingTokens < _trackingOptions.MaxTokens)
+            return;
+
+        state.RemainingTokens = 0;
+
+        var previousLevel = state.BanLevel;
+
+        state.BanLevel = Math.Min(
+            state.BanLevel + 1,
+            _trackingOptions.BanLevelCount);
+
+        state.BannedUntil = now.Add(
+            TimeSpan.FromTicks(
+                _trackingOptions.BanDuration.Ticks * state.BanLevel));
+
+        if (previousLevel < _trackingOptions.BanLevelCount &&
+            state.BanLevel == _trackingOptions.BanLevelCount)
         {
-            var tokenThreshold = Math.Ceiling(
-                (double)_trackingOptions.MaxTokens / i);
-
-            if (state.RemainingTokens >= tokenThreshold)
-            {
-                state.BannedUntil = now.Add(
-                    _trackingOptions.BanDuration / i);
-
-                break;
-            }
+            await deviceCommands.BanDeviceByIpAsync(
+                state.Ip,
+                null);
         }
     }
 

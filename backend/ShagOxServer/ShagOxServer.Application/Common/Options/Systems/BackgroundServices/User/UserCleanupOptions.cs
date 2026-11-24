@@ -1,4 +1,4 @@
-namespace ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
+namespace ShagOxServer.Application.Common.Options.Systems.BackgroundServices.User;
 public sealed class UserCleanupOptions
 {
     public const string SectionName = "UserCleanup";

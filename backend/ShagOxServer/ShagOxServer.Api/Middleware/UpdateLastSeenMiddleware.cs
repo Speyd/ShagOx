@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
 
@@ -30,6 +31,35 @@ public class UpdateLastSeenMiddleware
 
             if (int.TryParse(userIdClaim?.Value, out var userId))
             {
+                var deviceIdentifier = context.Request.Headers[
+                    "X-Device-Identifier"].FirstOrDefault();
+
+                if (!string.IsNullOrWhiteSpace(deviceIdentifier))
+                {
+                    var isBlocked = await dbContext.UserDevices
+                        .AsNoTracking()
+                        .AnyAsync(
+                            d => d.OwnerId == userId &&
+                                 d.DeviceIdentifier == deviceIdentifier &&
+                                 d.Status == UserDeviceStatus.Blocked,
+                            context.RequestAborted);
+
+                    if (isBlocked)
+                    {
+                        context.Response.StatusCode =
+                            StatusCodes.Status403Forbidden;
+
+                        await context.Response.WriteAsJsonAsync(
+                            new
+                            {
+                                message = "This device has been blocked."
+                            },
+                            context.RequestAborted);
+
+                        return;
+                    }
+                }
+
                 var now = DateTime.UtcNow;
                 var cutoff = now - _updaterOptions.UpdateLastSeen;
 
@@ -43,18 +73,15 @@ public class UpdateLastSeenMiddleware
                             now),
                         context.RequestAborted);
 
-                var deviceIdentifier = context.Request.Headers["X-Device-Identifier"]
-                    .FirstOrDefault();
-
                 if (!string.IsNullOrWhiteSpace(deviceIdentifier))
                 {
                     await dbContext.UserDevices
-                        .Where(u =>
-                            u.DeviceIdentifier == deviceIdentifier &&
-                            u.OwnerId == userId)
+                        .Where(d =>
+                            d.DeviceIdentifier == deviceIdentifier &&
+                            d.OwnerId == userId)
                         .ExecuteUpdateAsync(
                             setters => setters.SetProperty(
-                                u => u.LastActiveAt,
+                                d => d.LastActiveAt,
                                 now),
                             context.RequestAborted);
                 }

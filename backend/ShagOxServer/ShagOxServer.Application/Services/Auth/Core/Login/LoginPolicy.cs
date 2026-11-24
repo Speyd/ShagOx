@@ -1,7 +1,7 @@
 using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Auth.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 
 namespace ShagOxServer.Application.Services.Auth.Core.Login;
 public class LoginPolicy 

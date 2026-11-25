@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
-using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Auth;
+using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.UserRoles.Extensions;
@@ -14,7 +14,7 @@ public partial class UserRoleQueryRepository
     : SearchRepository<UserRole, UserRoleSearchFilter>,
       IUserRoleQueryRepository
 {
-    public async Task<List<RoleCacheInfo>> GetRoleCacheInfoByUserAsync(
+    public async Task<List<RoleCacheContext>> GetRoleCacheInfoByUserAsync(
         long userId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -27,7 +27,7 @@ public partial class UserRoleQueryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<UserCacheInfo>> GetUserCacheInfoByRoleAsync(
+    public async Task<List<UserCacheContext>> GetUserCacheInfoByRoleAsync(
         long roleId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)

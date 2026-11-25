@@ -1,8 +1,3 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
-using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
-using ShagOxServer.Application.DTOs.Comments.Core.Cache;
-using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
@@ -15,12 +10,16 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Cache.Advertisements;
+using ShagOxServer.Domain.Cache.Comments;
+using ShagOxServer.Domain.Cache.LineItems;
+using ShagOxServer.Domain.Cache.Specification;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 public class AdvertisementInvalidationService
     : ICacheInvalidationService<Advertisement, 
-        AdvertisementCacheInfo>
+        AdvertisementCacheContext>
 {
     private readonly IFavoriteQueryRepository _favoriteRepository;
     private readonly FavoriteInvalidationService _favoriteInvalid;
@@ -68,11 +67,11 @@ public class AdvertisementInvalidationService
     }
 
     public async Task InvalidateCreateAsync(
-        AdvertisementCacheInfo entityInfo)
+        AdvertisementCacheContext entityInfo)
     { }
 
     public async Task InvalidateDeleteAsync(
-        AdvertisementCacheInfo entityInfo)
+        AdvertisementCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -126,7 +125,7 @@ public class AdvertisementInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        AdvertisementCacheInfo entityInfo)
+        AdvertisementCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -156,7 +155,7 @@ public class AdvertisementInvalidationService
     }
 
     private async Task InvalidateAsync(
-        AdvertisementCacheInfo entityInfo)
+        AdvertisementCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
             .EntityLanguagePattern<Advertisement>(entityInfo.Id));
@@ -171,28 +170,28 @@ public class AdvertisementInvalidationService
         }
     }
 
-    private async Task<List<FavoriteCacheInfo>> GetFavoriteInfos(
+    private async Task<List<FavoriteCacheContext>> GetFavoriteInfos(
         long entityId)
     {
         return await _favoriteRepository
             .GetCacheInfosByAdvertisementAsync(entityId);
     }
 
-    private async Task<List<LineItemCacheInfo>> GetBasketItemInfos(
+    private async Task<List<LineItemCacheContext>> GetBasketItemInfos(
        long entityId)
     {
         return await _basketItemRepository
             .GetCacheInfosByAdvertisementVariantAsync(entityId);
     }
 
-    private async Task<List<PictureCacheInfo>> GetImageInfos(
+    private async Task<List<PictureCacheContext>> GetImageInfos(
       long entityId)
     {
         return await _imageRepository
             .GetCacheInfosByOwnerAsync(entityId);
     }
 
-    private async Task<List<CommentCacheInfo>> GetCommentInfos(
+    private async Task<List<CommentCacheContext>> GetCommentInfos(
         long entityId)
     {
         return await _commentRepository

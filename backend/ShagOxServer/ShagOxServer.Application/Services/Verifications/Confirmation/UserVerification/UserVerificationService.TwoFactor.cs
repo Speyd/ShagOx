@@ -16,12 +16,12 @@ public partial class UserVerificationService
     {
         user.TwoFactorEnabled = true;
 
-        await _trastManagement.RevokeSessionByUserAsync(
+        await _trastManagement.RevokeSessionsByUserAsync(
             user,
             SessionRevocationReason.TwoFactorEnabled);
 
         await _trastManagement
-            .RevokeDeviceAsync(user);
+            .UntrustDevicesAsync(user);
 
         return Result<VerificationResponse>.Success(
             new VerificationResultResponse(true));
@@ -33,12 +33,12 @@ public partial class UserVerificationService
     {
         user.TwoFactorEnabled = false;
 
-        await _trastManagement.RevokeSessionByUserAsync(
+        await _trastManagement.RevokeSessionsByUserAsync(
             user,
             SessionRevocationReason.TwoFactorDisabled);
 
         await _trastManagement
-            .RevokeDeviceAsync(user);
+            .UntrustDevicesAsync(user);
 
         return Result<VerificationResponse>.Success(
             new VerificationResultResponse(true));

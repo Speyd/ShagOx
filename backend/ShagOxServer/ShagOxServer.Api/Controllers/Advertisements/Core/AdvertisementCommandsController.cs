@@ -15,7 +15,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Core;
 
 [ApiController]
 [Route("api/advertisements")]
-[Authorize]
+//[Authorize]
 public class AdvertisementCommandsController 
     : ApiOwnerExistsController
 {
@@ -71,8 +71,8 @@ public class AdvertisementCommandsController
     {
         var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)
-
             return forbidden;
+
         var result = await _deleteService
             .SoftDeleteAsync(id);
 

@@ -45,9 +45,6 @@ public partial class OrderCreateService
     private readonly IAdvertisementCommandRepository _advertCommand;
     private readonly IAdvertisementVariantCommandsRepository _variantProvider;
 
-
-    private readonly OrderInvalidationService _orderInvalidation;
-
     private readonly IEmailService _emailService;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -65,7 +62,6 @@ public partial class OrderCreateService
         IPaymentWebhookProcessor webhookProcessor,
         IAdvertisementCommandRepository advertCommand,
         IAdvertisementVariantCommandsRepository variantProvider,
-        OrderInvalidationService orderInvalidation,
         IOrderNumberGenerator orderNumberGenerator,
         ICurrencyProvider currencyProvider,
         IEmailService emailService,
@@ -88,8 +84,6 @@ public partial class OrderCreateService
 
         _advertCommand = advertCommand;
         _variantProvider = variantProvider;
-
-        _orderInvalidation = orderInvalidation;
 
         _emailService = emailService;
 
@@ -151,9 +145,6 @@ public partial class OrderCreateService
             }
 
             await _unitOfWork.CommitAsync();
-
-            await _orderInvalidation.InvalidateCreateAsync(
-                OrderCacheMapper.ToInfo(order));
         }
         catch (Exception ex)
         {

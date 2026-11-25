@@ -49,7 +49,7 @@ public class UserModerationService
                 EntityNamesResources.User);
         }
 
-        await _trastManagement.RevokeSessionByUserAsync(user,
+        await _trastManagement.RevokeSessionsByUserAsync(user,
             SessionRevocationReason.AccountBlocked,
             true);
 
@@ -97,7 +97,7 @@ public class UserModerationService
                 EntityNamesResources.UserDevice);
         }
 
-        await _trastManagement.RevokeSessionByDeviceAsync(device,
+        await _trastManagement.RevokeSessionsByDeviceAsync(device,
             SessionRevocationReason.AccountBlocked,
             true);
 

@@ -8,9 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.Attri
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
-using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Delete;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
@@ -25,9 +22,6 @@ public class AttributeDictionaryValueTranslationUpdateService
 {
     private readonly IRepository<AttributeDictionaryValueTranslation> _attributeRepository;
     private readonly AttributeDictionaryValueTranslationValidator _attributeTranslationValidator;
-
-    private readonly AttributeDictionaryValueTranslationInvalidationService _transInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDictionaryValueTranslationUpdateService> _logger;
 
@@ -36,7 +30,6 @@ public class AttributeDictionaryValueTranslationUpdateService
         IRepository<AttributeDictionaryValueTranslation> attributeRepository,
         AttributeDictionaryValueTranslationValidator attributeTranslationValidator,
         IAttributeDictionaryValueTranslationDeleteService transDeleteService,
-        AttributeDictionaryValueTranslationInvalidationService transInvalid,
         AttributeDictionaryValueValidator attributeValidator,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryValueTranslationUpdateService> logger
@@ -49,7 +42,6 @@ public class AttributeDictionaryValueTranslationUpdateService
     {
         _attributeRepository = attributeRepository;
         _attributeTranslationValidator = attributeTranslationValidator;
-        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -119,9 +111,6 @@ public class AttributeDictionaryValueTranslationUpdateService
             return Result<UpdateResponse>.Fail(
                 EntityErrorResources.AttributeDictionaryValueTranslationUpdateFailed);
         }
-
-        await _transInvalid.InvalidateUpdateAsync(
-            BaseTranslationCacheMapper.ToInfo(attribute.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

@@ -1,8 +1,11 @@
+using ShagOxServer.Domain.Base.Cache;
+using ShagOxServer.Domain.Cache.LineItems;
 using ShagOxServer.Domain.Entities.LineItems.Core;
 
 namespace ShagOxServer.Domain.Entities.Orders;
 public class OrderItem
-    : LineItem<Order>
+    : LineItem<Order>,
+    IEntityCache<OrderItem, LineItemCacheContext>
 {
     public decimal TotalWeight { get; set; }
     public decimal TotalPrice { get; set; }
@@ -12,8 +15,23 @@ public class OrderItem
         : 0m;
 
 
+    public LineItemCacheContext GetCacheContext()
+    {
+        return new LineItemCacheContext(
+            Id, 
+            ParentId, 
+            AdvertisementId, 
+            AdvertisementVariantId, 
+            EntityStatus);
+    }
+
     public override string ToString()
     {
-        throw new NotImplementedException();
+        return Id.ToString();
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

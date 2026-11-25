@@ -1,15 +1,13 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
-using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
-using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Cache.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 public class ReviewRepliImageInvalidationService
     : ICacheInvalidationService<ReviewRepliImage,
-        PictureCacheInfo>
+        PictureCacheContext>
 {
     private readonly IDataCacheService _cache;
 
@@ -22,24 +20,24 @@ public class ReviewRepliImageInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        PictureCacheInfo entityInfo)
+        PictureCacheContext entityInfo)
     {
     }
 
     public async Task InvalidateDeleteAsync(
-        PictureCacheInfo entityInfo)
+        PictureCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateUpdateAsync(
-        PictureCacheInfo entityInfo)
+        PictureCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        PictureCacheInfo entityInfo)
+        PictureCacheContext entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
             .Entity<ReviewRepliImage>(entityInfo.Id));

@@ -1,8 +1,3 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
-using ShagOxServer.Application.DTOs.Base.Cache;
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
-using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
@@ -15,11 +10,16 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Transl
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Dictionaries;
+using ShagOxServer.Domain.Cache.Advertisements;
+using ShagOxServer.Domain.Cache.Dictionaries;
+using ShagOxServer.Domain.Cache.Dictionaries.Attributes;
+using ShagOxServer.Domain.Cache.Specification;
+using ShagOxServer.Domain.Cache.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 public class CategoryInvalidationService
-    : ICacheInvalidationService<Category, CategoryCacheInfo>
+    : ICacheInvalidationService<Category, CategoryCacheContext>
 {
 
     private readonly IAttributeDefinitionQueryRepository _attributeRepository;
@@ -62,13 +62,13 @@ public class CategoryInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-       CategoryCacheInfo entityInfo)
+       CategoryCacheContext entityInfo)
     {
         await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        CategoryCacheInfo entityInfo)
+        CategoryCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -113,7 +113,7 @@ public class CategoryInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        CategoryCacheInfo entityInfo)
+        CategoryCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -139,7 +139,7 @@ public class CategoryInvalidationService
     }
 
     private async Task InvalidateAsync(
-        CategoryCacheInfo entityInfo)
+        CategoryCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePattern<Category>(entityInfo.Id));
@@ -148,7 +148,7 @@ public class CategoryInvalidationService
     }
 
     private async Task InvalidatePatternAsync(
-        CategoryCacheInfo entityInfo)
+        CategoryCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CategoryCache.
             ByProductTypePattern(entityInfo.ProductTypeId));
@@ -162,7 +162,7 @@ public class CategoryInvalidationService
                 entityInfo.Status));
     }
 
-    private async Task<List<AttributeDefinitionCacheInfo>> 
+    private async Task<List<AttributeDefinitionCacheContext>> 
         GetAttributeDefinitionCacheInfos(
         long entityId)
     {
@@ -170,21 +170,21 @@ public class CategoryInvalidationService
             .GetCacheInfosByAttributeDictionaryAsync(entityId);
     }
 
-    private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(
+    private async Task<List<AdvertisementCacheContext>> GetAdvertisementInfos(
         long entityId)
     {
         return await _advertRepository
             .GetCacheInfosByCategoryAsync(entityId);
     }
 
-    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+    private async Task<List<TranslationCacheContext>> GetTranslationInfos(
         long entityId)
     {
         return await _transRepository
             .GetCacheInfosByTranslatableAsync(entityId);
     }
 
-    private async Task<PictureCacheInfo?> GetImageInfo(
+    private async Task<PictureCacheContext?> GetImageInfo(
        long entityId)
     {
         return await _imageRepository

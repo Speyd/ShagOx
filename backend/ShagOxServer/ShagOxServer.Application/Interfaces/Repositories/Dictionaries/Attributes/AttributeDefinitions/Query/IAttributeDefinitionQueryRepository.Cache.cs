@@ -1,6 +1,6 @@
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions;
 
@@ -10,7 +10,7 @@ public partial interface IAttributeDefinitionQueryRepository
         AttributeDefinitionSearchFilter>
 {
   
-    Task<List<AttributeDefinitionCacheInfo>> GetCacheInfosByAttributeDictionaryAsync(
+    Task<List<AttributeDefinitionCacheContext>> GetCacheInfosByAttributeDictionaryAsync(
         long dictionaryId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);

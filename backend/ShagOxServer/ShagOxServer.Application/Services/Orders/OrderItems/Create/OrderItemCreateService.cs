@@ -15,9 +15,7 @@ using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Resources.Orders.Order;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
 using ShagOxServer.Application.Services.LineItems.Core.Create;
-using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Application.Services.Orders.OrderItems.Validator;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -35,9 +33,6 @@ public class OrderItemCreateService
     private readonly ICurrencyQueryRepository _currencyRepository;
 
 
-    private readonly OrderItemOrderInvalidationService _orderInvalidation;
-    private readonly OrderItemInvalidationService _itemInvalidation;
-
     private readonly IAdvertisementCommandRepository _advertCommand;
     private readonly IAdvertisementVariantCommandsRepository _variantCommand;
 
@@ -52,10 +47,8 @@ public class OrderItemCreateService
         ICurrencyQueryRepository currencyRepository,
         AdvertisementVariantValidator advertVariantValidator,
         AdvertisementValidator advertValidator,
-        OrderItemOrderInvalidationService orderInvalidation, 
         IAdvertisementCommandRepository advertCommand,
         IAdvertisementVariantCommandsRepository variantCommand,
-        OrderItemInvalidationService itemInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<OrderItemCreateService> logger,
         IUserContext userContext
@@ -71,9 +64,6 @@ public class OrderItemCreateService
         _converter = converter;
         _currencyProvider = currencyProvider;
         _currencyRepository = currencyRepository;
-
-        _orderInvalidation = orderInvalidation;
-        _itemInvalidation = itemInvalidation;
 
         _advertCommand = advertCommand;
         _variantCommand = variantCommand;
@@ -119,8 +109,6 @@ public class OrderItemCreateService
         }
 
         LogCreationSuccess(item, request);
-
-        await InvalidateItemCacheAsync(item);
 
         return Result<OrderItem>.Success(item);
     }
@@ -252,15 +240,6 @@ public class OrderItemCreateService
         }
 
         return -1;
-    }
-
-    private async Task InvalidateItemCacheAsync(OrderItem item)
-    {
-        var cacheInfo = LineItemCacheMapper.ToInfo(item);
-
-        await _orderInvalidation.InvalidateCreateAsync(cacheInfo);
-
-        await _itemInvalidation.InvalidateCreateAsync(cacheInfo);
     }
 
     private void LogCreationSuccess(

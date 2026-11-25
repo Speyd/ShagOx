@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.LineItems.LineItemAttributes.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.LineItems;
 using ShagOxServer.Domain.Entities.LineItems;
 using ShagOxServer.Domain.Filters.LineItems.LineItemAttributes;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
@@ -13,7 +13,7 @@ public partial class LineItemAttributeQueryRepository
     : SearchRepository<LineItemAttribute, LineItemAttributeSearchFilter>,
       ILineItemAttributeQueryRepository
 {
-    public async Task<List<LineItemAttributeCacheInfo>> GetCacheInfosByCategoryAsync(
+    public async Task<List<LineItemAttributeCacheContext>> GetCacheInfosByCategoryAsync(
         long categoryId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -27,7 +27,7 @@ public partial class LineItemAttributeQueryRepository
             .SelectCacheInfo(status)
             .ToListAsync(cancellationToken);
     }
-    public async Task<LineItemAttributeCacheInfo?> GetCacheInfoByAttributeDefinitionAsync(
+    public async Task<LineItemAttributeCacheContext?> GetCacheInfoByAttributeDefinitionAsync(
         long attributeDefinitionId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)

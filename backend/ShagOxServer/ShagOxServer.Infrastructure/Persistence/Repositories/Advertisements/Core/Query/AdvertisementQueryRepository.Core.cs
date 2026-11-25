@@ -54,7 +54,6 @@ public partial class AdvertisementQueryRepository
         EntityStatus? status = null)
     {
         return await _db.Advertisements
-            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x =>
                 x.OwnerId == _userContext.UserId ||

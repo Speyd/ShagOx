@@ -6,10 +6,8 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
-using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Validator;
-using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -18,15 +16,11 @@ public class ReviewImageDeleteService
     : PictureDeleteService<ReviewImage>,
     IReviewImageDeleteService
 {
-    private readonly ReviewImageInvalidationService _imageInvalid;
-
-
     public ReviewImageDeleteService(
         IRepository<ReviewImage> imageRepository,
         ICommandRepository<ReviewImage> imageCommand,
         ReviewImageValidator imageValidator,
         PictureValidator pictureValidator,
-        ReviewImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ReviewImageDeleteService> logger
     )
@@ -37,7 +31,6 @@ public class ReviewImageDeleteService
             unitOfWork,
             logger)
     {
-        _imageInvalid = imageInvalid;
     }
 
 
@@ -70,13 +63,5 @@ public class ReviewImageDeleteService
             return Result<DeleteResponse>
                 .Fail(EntityErrorResources.ReviewImageDeleteFailed);
         }
-    }
-
-
-    public override async Task InvalidateCache(
-        ReviewImage picture)
-    {
-        await _imageInvalid.InvalidateDeleteAsync(
-            PictureCacheMapper.ToInfo(picture));
     }
 }

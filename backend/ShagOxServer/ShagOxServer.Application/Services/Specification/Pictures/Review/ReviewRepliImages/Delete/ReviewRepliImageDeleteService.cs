@@ -4,12 +4,9 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
-using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Validator;
-using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -18,15 +15,11 @@ public class ReviewRepliImageDeleteService
     : PictureDeleteService<ReviewRepliImage>,
     IReviewRepliImageDeleteService
 {
-    private readonly ReviewRepliImageInvalidationService _imageInvalid;
-
-
     public ReviewRepliImageDeleteService(
         IRepository<ReviewRepliImage> imageRepository,
         ICommandRepository<ReviewRepliImage> imageCommand,
         ReviewRepliImageValidator imageValidator,
         PictureValidator pictureValidator,
-        ReviewRepliImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ReviewRepliImageDeleteService> logger
     )
@@ -37,7 +30,6 @@ public class ReviewRepliImageDeleteService
             unitOfWork,
             logger)
     {
-        _imageInvalid = imageInvalid;
     }
 
 
@@ -70,13 +62,5 @@ public class ReviewRepliImageDeleteService
             return Result<DeleteResponse>
                 .Fail(EntityErrorResources.ReviewRepliImageDeleteFailed);
         }
-    }
-
-
-    public override async Task InvalidateCache(
-        ReviewRepliImage picture)
-    {
-        await _imageInvalid.InvalidateDeleteAsync(
-           PictureCacheMapper.ToInfo(picture));
     }
 }

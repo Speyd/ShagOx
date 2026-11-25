@@ -46,7 +46,7 @@ public class ReviewCommentQueryService
         var avatar = entity.Owner.Avatar is null ? null :
             await _avatarService.ApplyMapperAsync(entity.Owner.Avatar);
 
-        var user = CommentCacheMapper
+        var user = CommentMapper
             .ToUserCommentDto(entity, avatar);
 
         return ReviewCommentMapper.ToDto(entity, user);

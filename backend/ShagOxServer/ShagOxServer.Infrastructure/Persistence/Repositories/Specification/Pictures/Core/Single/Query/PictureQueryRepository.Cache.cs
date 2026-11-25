@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Core.Single;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Base.Pictures;
-using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Cache.Specification;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -16,7 +15,7 @@ public partial class PictureQueryRepository<TEntity, TFilter>
     where TEntity : BasePicture
     where TFilter : BaseFilter
 {
-    public virtual async Task<PictureCacheInfo?> GetCacheInfoByOwnerAsync(
+    public virtual async Task<PictureCacheContext?> GetCacheInfoByOwnerAsync(
         long ownerId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)

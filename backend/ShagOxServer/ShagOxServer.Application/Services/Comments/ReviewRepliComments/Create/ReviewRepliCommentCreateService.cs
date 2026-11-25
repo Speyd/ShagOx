@@ -7,8 +7,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
-using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Create;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
@@ -23,8 +21,6 @@ public class ReviewRepliCommentCreateService
     private readonly CommentValidator<ReviewComment> _commentValidator;
     private readonly ReviewRepliCommentValidator _repliValidator;
 
-    private readonly ReviewRepliCommentInvalidationService _commInvalid;
-
     private readonly IReviewRepliImageCreateService _imageCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -34,7 +30,6 @@ public class ReviewRepliCommentCreateService
     public ReviewRepliCommentCreateService(
         IRepository<ReviewRepliComment> commentRepository,
         CommentValidator<ReviewComment> commentValidator,
-        ReviewRepliCommentInvalidationService commInvalid,
         ReviewRepliCommentValidator repliValidator,
         IReviewRepliImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
@@ -42,7 +37,6 @@ public class ReviewRepliCommentCreateService
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
-        _commInvalid = commInvalid;
         _repliValidator = repliValidator;
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
@@ -109,9 +103,6 @@ public class ReviewRepliCommentCreateService
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.ReviewRepliCommentCreateFailed);
         }
-
-        await _commInvalid.InvalidateCreateAsync(
-             CommentCacheMapper.ToInfo(comment));
 
         return Result<CreateResponse>.Success(
            new CreateResponse(

@@ -18,8 +18,6 @@ public class CurrencyCreateService
     private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyValidator _currencyValidator;
 
-    private readonly CurrencyInvalidationService _currencyInvalidation;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CurrencyCreateService> _logger;
 
@@ -27,13 +25,11 @@ public class CurrencyCreateService
     public CurrencyCreateService(
         IRepository<Currency> currencyRepository,
         CurrencyValidator currencyValidator,
-        CurrencyInvalidationService currencyInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<CurrencyCreateService> logger)
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;
-        _currencyInvalidation = currencyInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -78,9 +74,6 @@ public class CurrencyCreateService
             return Result<CreateResponse>
                  .Fail(EntityErrorResources.CurrencyCreateFailed);
         }
-
-        await _currencyInvalidation.InvalidateCreateAsync(
-            CurrencyCacheMapper.ToInfo(currency));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

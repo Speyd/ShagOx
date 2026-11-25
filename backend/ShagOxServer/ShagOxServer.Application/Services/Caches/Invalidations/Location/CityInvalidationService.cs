@@ -1,8 +1,3 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
-using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
-using ShagOxServer.Application.DTOs.Base.Cache;
-using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Cache;
-using ShagOxServer.Application.DTOs.Location.Cities.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -11,12 +6,14 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Location;
-using ShagOxServer.Domain.Entities.Dictionaries;
+using ShagOxServer.Domain.Cache.Auth.User;
+using ShagOxServer.Domain.Cache.Location;
+using ShagOxServer.Domain.Cache.Translations;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Location;
 public class CityInvalidationService
-    : ICacheInvalidationService<City, CityCacheInfo>
+    : ICacheInvalidationService<City, CityCacheContext>
 {
 
     private readonly IUserQueryRepository _userRepository;
@@ -45,13 +42,13 @@ public class CityInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-       CityCacheInfo entityInfo)
+       CityCacheContext entityInfo)
     {
         await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        CityCacheInfo entityInfo)
+        CityCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -76,7 +73,7 @@ public class CityInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        CityCacheInfo entityInfo)
+        CityCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -92,7 +89,7 @@ public class CityInvalidationService
     }
 
     private async Task InvalidateAsync(
-        CityCacheInfo entityInfo)
+        CityCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
             .EntityLanguagePattern<City>(entityInfo.Id));
@@ -101,7 +98,7 @@ public class CityInvalidationService
     }
 
     private async Task InvalidatePatternAsync(
-        CityCacheInfo entityInfo)
+        CityCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CityCache
             .ByRegionPattern(entityInfo.RegionId));
@@ -115,14 +112,14 @@ public class CityInvalidationService
                 entityInfo.Status));
     }
 
-    private async Task<List<UserCacheInfo>> GetUserInfos(
+    private async Task<List<UserCacheContext>> GetUserInfos(
         long entityId)
     {
         return await _userRepository
             .GetCacheInfosByCityAsync(entityId);
     }
 
-    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+    private async Task<List<TranslationCacheContext>> GetTranslationInfos(
         long entityId)
     {
         return await _transRepository

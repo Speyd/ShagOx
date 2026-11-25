@@ -5,11 +5,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries.Translations;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Validator;
 using ShagOxServer.Domain.Entities.Deliveries.Translations;
-using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Delete;
@@ -20,8 +17,6 @@ public class DeliveryProviderTranslationDeleteService
     private readonly IRepository<DeliveryProviderTranslation> _deliveryRepository;
     private readonly DeliveryProviderTranslationValidator _deliveryValidator;
 
-    private readonly DeliveryProviderTranslationInvalidationService _transInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeliveryProviderTranslationDeleteService> _logger;
 
@@ -29,7 +24,6 @@ public class DeliveryProviderTranslationDeleteService
         IRepository<DeliveryProviderTranslation> deliveryRepository,
         ICommandRepository<DeliveryProviderTranslation> deliveryCommand,
         DeliveryProviderTranslationValidator deliveryValidator,
-        DeliveryProviderTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderTranslationDeleteService> logger
     )
@@ -37,7 +31,6 @@ public class DeliveryProviderTranslationDeleteService
     {
         _deliveryRepository = deliveryRepository;
         _deliveryValidator = deliveryValidator;
-        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -74,20 +67,11 @@ public class DeliveryProviderTranslationDeleteService
                 .Fail(EntityErrorResources.DeliveryProviderTranslationDeleteFailed);
         }
 
-        await InvalidateCache(delivery.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                delivery.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        DeliveryProviderTranslation entity)
-    {
-        await _transInvalid.InvalidateDeleteAsync(
-            BaseTranslationCacheMapper.ToInfo(entity));
     }
 }

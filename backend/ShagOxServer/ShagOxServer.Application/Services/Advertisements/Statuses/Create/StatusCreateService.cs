@@ -18,8 +18,6 @@ public class StatusCreateService
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
 
-    private readonly StatusInvalidationService _statusInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusCreateService> _logger;
 
@@ -27,13 +25,11 @@ public class StatusCreateService
     public StatusCreateService(
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
-        StatusInvalidationService statusInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusCreateService> logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
-        _statusInvalid = statusInvalid;
         _logger = logger;
         _unitOfWork = unitOfWork;
     }
@@ -74,9 +70,6 @@ public class StatusCreateService
             return Result<CreateResponse>
                     .Fail(EntityErrorResources.AdvertStatusCreateFailed);
         }
-
-        await _statusInvalid.InvalidateCreateAsync(
-            StatusCacheMapper.ToInfo(status));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

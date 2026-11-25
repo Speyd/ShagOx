@@ -30,8 +30,6 @@ public partial class RegisterService
 
     private readonly IVerificationSender _senderVerification;
 
-    private readonly UserInvalidationService _userInvalid;
-
     private readonly UserCreater _userCreater;
     private readonly UserRoleService _roleService;
     private readonly UserPasswordService _passwordService;
@@ -48,7 +46,6 @@ public partial class RegisterService
         IUserQueryRepository userQueryRepository,
         IBasketCreateService basketService,
         UserCreater userCreater,
-        UserInvalidationService userInvalid,
         UserRoleService roleService,
         UserPasswordService passwordService,
         UserContactApplier contactApplier,
@@ -61,7 +58,6 @@ public partial class RegisterService
         _userQueryRepository = userQueryRepository;
         _basketService = basketService;
         _userCreater = userCreater;
-        _userInvalid = userInvalid;
         _roleService = roleService;
         _passwordService = passwordService;
         _contactApplier = contactApplier;
@@ -147,9 +143,6 @@ public partial class RegisterService
             _logger.LogInformation(
                 "User registered successfully. UserId: {UserId}",
                 user.Id);
-
-            await _userInvalid.InvalidateCreateAsync(
-                UserCacheMapper.ToInfo(user));
 
             return Result<RegisterResponse>.Success(
                new RegisterResponse(user)

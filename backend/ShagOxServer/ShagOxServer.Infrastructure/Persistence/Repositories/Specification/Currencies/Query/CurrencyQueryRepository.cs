@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Specification.Currencies.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Specification;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Filters.Specification.Currencies;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
@@ -58,7 +58,7 @@ public partial class CurrencyQueryRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<CurrencyCacheInfo?> GetCahceInfoByUserAsync(
+    public async Task<CurrencyCacheContext?> GetCahceInfoByUserAsync(
         long userId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null)

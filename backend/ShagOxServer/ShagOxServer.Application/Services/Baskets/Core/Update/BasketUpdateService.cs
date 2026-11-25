@@ -22,9 +22,6 @@ public class BasketUpdateService
 {
     private readonly IRepository<Basket> _basketRepository;
     private readonly BasketValidator _basketValidator;
-
-    private readonly BasketInvalidationService _basketInvalid;
-
     private readonly UserValidator _userValidator;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -35,7 +32,6 @@ public class BasketUpdateService
         IRepository<Basket> basketRepository,
         BasketValidator basketValidator,
         IBasketDeleteService basketDeleteService,
-        BasketInvalidationService basketInvalid,
         UserValidator userValidator,
         IUnitOfWork unitOfWork,
         ILogger<BasketUpdateService> logger
@@ -44,7 +40,6 @@ public class BasketUpdateService
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;
-        _basketInvalid = basketInvalid;
         _userValidator = userValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -110,9 +105,6 @@ public class BasketUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.BasketUpdateFailed);
         }
-
-        await _basketInvalid.InvalidateUpdateAsync(
-            BasketCacheMapper.ToInfo(basket.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

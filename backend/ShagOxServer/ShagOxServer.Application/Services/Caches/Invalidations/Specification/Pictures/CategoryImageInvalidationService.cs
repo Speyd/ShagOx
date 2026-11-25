@@ -1,13 +1,13 @@
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Specification.Pictures;
+using ShagOxServer.Domain.Cache.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 public class CategoryImageInvalidationService
-    : ICacheInvalidationService<CategoryImage, PictureCacheInfo>
+    : ICacheInvalidationService<CategoryImage, PictureCacheContext>
 {
     private readonly IDataCacheService _cache;
 
@@ -20,24 +20,24 @@ public class CategoryImageInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        PictureCacheInfo entityInfo)
+        PictureCacheContext entityInfo)
     {
     }
 
     public async Task InvalidateDeleteAsync(
-        PictureCacheInfo entityInfo)
+        PictureCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateUpdateAsync(
-        PictureCacheInfo entityInfo)
+        PictureCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        PictureCacheInfo entityInfo)
+        PictureCacheContext entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
             .Entity<CategoryImage>(entityInfo.Id));

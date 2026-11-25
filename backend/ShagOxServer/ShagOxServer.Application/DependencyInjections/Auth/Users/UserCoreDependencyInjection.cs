@@ -4,12 +4,15 @@ using ShagOxServer.Application.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 using ShagOxServer.Application.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Update;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
+using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Application.DependencyInjections.Auth.Users;
@@ -26,6 +29,10 @@ public static class UserCoreDependencyInjection
         services.AddScoped<IUserDeleteService, UserDeleteService>();
 
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+        services.AddScoped<
+            ICacheInvalidationService<User, UserCacheContext>,
+            UserInvalidationService>();
 
         services.AddScoped<UserValidator>();
         services.AddScoped<UserCreater>();

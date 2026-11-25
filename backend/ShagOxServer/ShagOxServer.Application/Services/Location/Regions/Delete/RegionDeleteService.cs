@@ -9,7 +9,6 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Location;
 using ShagOxServer.Application.Services.Location.Regions.Mapping;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
-using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Location.Regions.Delete;
@@ -20,8 +19,6 @@ public class RegionDeleteService
     private readonly IRepository<Region> _regionRepository;
     private readonly RegionValidator _regionValidator;
 
-    private readonly RegionInvalidationService _regionInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RegionDeleteService> _logger;
 
@@ -30,7 +27,6 @@ public class RegionDeleteService
         IRepository<Region> regionRepository,
         ICommandRepository<Region> regionCommand,
         RegionValidator regionValidator,
-        RegionInvalidationService regionInvalid,
         IUnitOfWork unitOfWork,
         ILogger<RegionDeleteService> logger
     )
@@ -38,7 +34,6 @@ public class RegionDeleteService
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;
-        _regionInvalid = regionInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -74,20 +69,11 @@ public class RegionDeleteService
                  .Fail(EntityErrorResources.RegionDeleteFailed);
         }
 
-        await InvalidateCache(region.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                region.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        Region entity)
-    {
-         await _regionInvalid.InvalidateDeleteAsync(
-             RegionCacheMapper.ToInfo(entity));
     }
 }

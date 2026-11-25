@@ -53,7 +53,6 @@ public class QueryRepository<TEntity>
         IQueryable<TEntity> query = _db.Set<TEntity>();
 
         return await query
-            .AsNoTracking()
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(x => x.Id == id, 
                 cancellationToken);

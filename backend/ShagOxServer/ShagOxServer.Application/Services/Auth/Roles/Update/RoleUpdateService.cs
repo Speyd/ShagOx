@@ -22,8 +22,6 @@ public class RoleUpdateService
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;
 
-    private readonly RoleInvalidationService _roleInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RoleUpdateService> _logger;
 
@@ -32,7 +30,6 @@ public class RoleUpdateService
         IRepository<Role> roleRepository,
         RoleValidator roleValidator,
         IRoleDeleteService roleDeleteService,
-        RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
         ILogger<RoleUpdateService> logger
     )
@@ -40,7 +37,6 @@ public class RoleUpdateService
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
-        _roleInvalid = roleInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -107,9 +103,6 @@ public class RoleUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.RoleUpdateFailed);
         }
-
-        await _roleInvalid.InvalidateUpdateAsync(
-            RoleCacheMapper.ToInfo(role.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

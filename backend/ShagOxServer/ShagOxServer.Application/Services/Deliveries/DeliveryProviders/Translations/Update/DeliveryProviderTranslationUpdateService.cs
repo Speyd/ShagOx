@@ -8,8 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries.Translations;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Validator;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
 using ShagOxServer.Domain.Entities.Deliveries;
@@ -25,8 +23,6 @@ public class DeliveryProviderTranslationUpdateService
     private readonly IRepository<DeliveryProviderTranslation> _deliveryRepository;
     private readonly DeliveryProviderTranslationValidator _deliveryTranslationValidator;
 
-    private readonly DeliveryProviderTranslationInvalidationService _transInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeliveryProviderTranslationUpdateService> _logger;
 
@@ -36,7 +32,6 @@ public class DeliveryProviderTranslationUpdateService
         IDeliveryProviderTranslationDeleteService deleteService,
         DeliveryProviderTranslationValidator deliveryTranslationValidator,
         DeliveryProviderValidator deliveryValidator,
-        DeliveryProviderTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderTranslationUpdateService> logger
     )
@@ -48,7 +43,6 @@ public class DeliveryProviderTranslationUpdateService
     {
         _deliveryRepository = deliveryRepository;
         _deliveryTranslationValidator = deliveryTranslationValidator;
-        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -118,9 +112,6 @@ public class DeliveryProviderTranslationUpdateService
                 EntityErrorResources.DeliveryProviderTranslationUpdateFailed);
 
         }
-
-        await _transInvalid.InvalidateUpdateAsync(
-            BaseTranslationCacheMapper.ToInfo(delivery.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

@@ -1,19 +1,16 @@
-using CloudinaryDotNet.Actions;
-using ShagOxServer.Application.DTOs.Base.Cache;
-using ShagOxServer.Application.DTOs.Location.Cities.Cache;
-using ShagOxServer.Application.DTOs.Location.Regions.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
-using ShagOxServer.Application.Services.Caches.Keys.Location;
+using ShagOxServer.Domain.Cache.Location;
+using ShagOxServer.Domain.Cache.Translations;
 using ShagOxServer.Domain.Entities.Location;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Location;
 public class RegionInvalidationService
-    : ICacheInvalidationService<Region, RegionCacheInfo>
+    : ICacheInvalidationService<Region, RegionCacheContext>
 {
 
     private readonly ICityQueryRepository _cityRepository;
@@ -42,13 +39,13 @@ public class RegionInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-       RegionCacheInfo entityInfo)
+       RegionCacheContext entityInfo)
     {
         await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        RegionCacheInfo entityInfo)
+        RegionCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -73,7 +70,7 @@ public class RegionInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        RegionCacheInfo entityInfo)
+        RegionCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -89,7 +86,7 @@ public class RegionInvalidationService
     }
 
     private async Task InvalidateAsync(
-        RegionCacheInfo entityInfo)
+        RegionCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
             .EntityLanguagePattern<Region>(entityInfo.Id));
@@ -98,7 +95,7 @@ public class RegionInvalidationService
     }
 
     private async Task InvalidatePatternAsync(
-        RegionCacheInfo entityInfo)
+        RegionCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
            EntityLanguagePagedPattern<Region>(
@@ -109,14 +106,14 @@ public class RegionInvalidationService
                 entityInfo.Status));
     }
 
-    private async Task<List<CityCacheInfo>> GetCityInfos(
+    private async Task<List<CityCacheContext>> GetCityInfos(
         long entityId)
     {
         return await _cityRepository
             .GetCacheInfoByRegionAsync(entityId);
     }
 
-    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+    private async Task<List<TranslationCacheContext>> GetTranslationInfos(
         long entityId)
     {
         return await _transRepository

@@ -22,8 +22,6 @@ public class StatusUpdateService
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
 
-    private readonly StatusInvalidationService _statusInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusUpdateService> _logger;
 
@@ -32,7 +30,6 @@ public class StatusUpdateService
         IRepository<Status> statusRepository,
         StatusValidator statusValidator,
         IStatusDeleteService deleteService,
-        StatusInvalidationService statusInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusUpdateService> logger
     )
@@ -40,7 +37,6 @@ public class StatusUpdateService
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
-        _statusInvalid = statusInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -113,8 +109,6 @@ public class StatusUpdateService
                      .Fail(EntityErrorResources.AdvertStatusUpdateFailed);
         }
 
-        await _statusInvalid.InvalidateUpdateAsync(
-            StatusCacheMapper.ToInfo(status.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

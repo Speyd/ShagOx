@@ -4,12 +4,10 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Validator;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Favorites.Delete;
@@ -19,8 +17,6 @@ public class FavoriteDeleteService
 {
     private readonly IRepository<Favorite> _favoriteRepository;
     private readonly FavoriteValidator _favoriteValidator;
-
-    private readonly FavoriteInvalidationService _favoriteInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<FavoriteDeleteService> _logger;
@@ -38,7 +34,6 @@ public class FavoriteDeleteService
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;
-        _favoriteInvalid = favoriteInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -81,20 +76,11 @@ public class FavoriteDeleteService
             "Favorite delete successfully. Id: {Id}",
             favorite.Value!.Id);
 
-        await InvalidateCache(favorite.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                favorite.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        Favorite entity)
-    {
-        await _favoriteInvalid.InvalidateDeleteAsync(
-            FavoriteCacheMapper.ToInfo(entity));
     }
 }

@@ -8,9 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatar
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Auth.Users;
@@ -24,16 +22,12 @@ public class AvatarUpdateService
         PictureUpdateRequest>,
     IAvatarUpdateService
 {
-    private readonly AvatarInvalidationService _avatarInvalid;
-
-
     public AvatarUpdateService(
         IRepository<Avatar> avatarRepository,
         PictureValidator pictureLoadValidator,
         AvatarValidator avatarValidator,
         IAvatarDeleteService avatarDeleteService,
         UserValidator advertisementValidator,
-        AvatarInvalidationService avatarInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AvatarUpdateService> logger
     )
@@ -45,7 +39,6 @@ public class AvatarUpdateService
             unitOfWork,
             logger)
     {
-        _avatarInvalid = avatarInvalid;
     }
 
 
@@ -66,14 +59,6 @@ public class AvatarUpdateService
                 EntityErrorResources.AvatarUpdateFailed);
         }
     }
-
-    public override async Task InvalidateCache(
-        Avatar picture)
-    {
-        await _avatarInvalid.InvalidateUpdateAsync(
-           PictureCacheMapper.ToInfo(picture));
-    }
-
     protected override int ApplyUpdates(
         Avatar picture,
         PictureUpdateRequest request,

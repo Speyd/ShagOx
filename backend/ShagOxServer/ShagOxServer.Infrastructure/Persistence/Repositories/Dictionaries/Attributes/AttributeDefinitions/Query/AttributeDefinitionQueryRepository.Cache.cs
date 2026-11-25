@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
@@ -13,7 +13,7 @@ public partial class AttributeDefinitionQueryRepository
     : SearchRepository<AttributeDefinition, AttributeDefinitionSearchFilter>,
       IAttributeDefinitionQueryRepository
 {
-    public async Task<List<AttributeDefinitionCacheInfo>>
+    public async Task<List<AttributeDefinitionCacheContext>>
         GetCacheInfosByAttributeDictionaryAsync(
         long dictionaryId,
         CancellationToken cancellationToken = default,

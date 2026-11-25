@@ -21,7 +21,6 @@ public class AttributeDictionaryUpdateService
 {
     private readonly IRepository<AttributeDictionary> _dictionaryRepository;
     private readonly AttributeDictionaryValidator _dictionaryValidator;
-    private readonly AttributeDictionaryInvalidationService _dictInvalid;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDictionaryUpdateService> _logger;
 
@@ -30,7 +29,6 @@ public class AttributeDictionaryUpdateService
         IRepository<AttributeDictionary> dictionaryRepository,
         AttributeDictionaryValidator dictionaryValidator,
         IAttributeDictionaryDeleteService dictionaryDeleteService,
-        AttributeDictionaryInvalidationService dictInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryUpdateService> logger
     )
@@ -38,7 +36,6 @@ public class AttributeDictionaryUpdateService
     {
         _dictionaryRepository = dictionaryRepository;
         _dictionaryValidator = dictionaryValidator;
-        _dictInvalid = dictInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -106,9 +103,6 @@ public class AttributeDictionaryUpdateService
             return Result<UpdateResponse>.Fail(
                 EntityErrorResources.AttributeDictionaryUpdateFailed);
         }
-
-        await _dictInvalid.InvalidateUpdateAsync(
-            AttributeDictionaryCacheMapper.ToInfo(dictionary.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

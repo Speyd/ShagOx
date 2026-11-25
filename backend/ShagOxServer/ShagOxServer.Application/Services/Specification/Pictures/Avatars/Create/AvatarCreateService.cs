@@ -7,9 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
-using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -22,13 +20,10 @@ public partial class AvatarCreateService
         PictureCreateRequest>,
     IAvatarCreateService
 {
-    private protected AvatarInvalidationService _avatarInvalidation;
-
     public AvatarCreateService(
         IRepository<Avatar> imageRepository,
         PictureValidator pictureValidator,
         UserValidator advertValidator,
-        AvatarInvalidationService avatarInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<AvatarCreateService> logger
     )
@@ -38,7 +33,6 @@ public partial class AvatarCreateService
             unitOfWork,
             logger)
     {
-        _avatarInvalidation = avatarInvalidation;
     }
 
 
@@ -79,11 +73,5 @@ public partial class AvatarCreateService
     {
         return AvatarCreater
             .Create(request, response);
-    }
-    public override async Task InvalidateCache(
-        Avatar avatar)
-    {
-        await _avatarInvalidation.InvalidateCreateAsync(
-            PictureCacheMapper.ToInfo(avatar));
     }
 }

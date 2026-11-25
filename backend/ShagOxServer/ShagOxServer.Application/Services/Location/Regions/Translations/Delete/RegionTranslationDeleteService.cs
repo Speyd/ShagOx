@@ -5,10 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Validator;
-using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,8 +17,6 @@ public class RegionTranslationDeleteService
     private readonly IRepository<RegionTranslation> _regionRepository;
     private readonly RegionTranslationValidator _regionValidator;
 
-    private readonly RegionTranslationInvalidationService _trnsInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RegionTranslationDeleteService> _logger;
 
@@ -30,7 +25,6 @@ public class RegionTranslationDeleteService
         IRepository<RegionTranslation> regionRepository,
         ICommandRepository<RegionTranslation> regionCommand,
         RegionTranslationValidator regionValidator,
-        RegionTranslationInvalidationService trnsInvalid,
         IUnitOfWork unitOfWork,
         ILogger<RegionTranslationDeleteService> logger
     )
@@ -38,7 +32,6 @@ public class RegionTranslationDeleteService
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;
-        _trnsInvalid = trnsInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -75,20 +68,11 @@ public class RegionTranslationDeleteService
                   .Fail(EntityErrorResources.RegionTranslationDeleteFailed);
         }
 
-        await InvalidateCache(region.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                region.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        RegionTranslation entity)
-    {
-        await _trnsInvalid.InvalidateCreateAsync(
-            BaseTranslationCacheMapper.ToInfo(entity));
     }
 }

@@ -24,8 +24,6 @@ public class CityUpdateService
     private readonly CityValidator _cityValidator;
     private readonly CityUpdateValidator _cityUpdateValidator;
 
-    private readonly CityInvalidationService _cityInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CityUpdateService> _logger;
 
@@ -35,7 +33,6 @@ public class CityUpdateService
         CityValidator cityValidator,
         ICityDeleteService cityDeleteService,
         CityUpdateValidator cityUpdateValidator,
-        CityInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityUpdateService> logger
     )
@@ -44,7 +41,6 @@ public class CityUpdateService
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
         _cityUpdateValidator = cityUpdateValidator;
-        _cityInvalid = cityInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -126,9 +122,6 @@ public class CityUpdateService
             return Result<UpdateResponse>
                  .Fail(EntityErrorResources.CityUpdateFailed);
         }
-
-        await _cityInvalid.InvalidateUpdateAsync(
-            CityCacheMapper.ToInfo(city.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

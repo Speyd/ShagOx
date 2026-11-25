@@ -5,10 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Validator;
-using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,8 +17,6 @@ public class AttributeDefinitionTranslationDeleteService
     private readonly IRepository<AttributeDefinitionTranslation> _attributeRepository;
     private readonly AttributeDefinitionTranslationValidator _attributeValidator;
 
-    private readonly AttributeDefinitionTranslationInvalidationService _transInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionTranslationDeleteService> _logger;
 
@@ -30,7 +25,6 @@ public class AttributeDefinitionTranslationDeleteService
         IRepository<AttributeDefinitionTranslation> attributeRepository,
         ICommandRepository<AttributeDefinitionTranslation> attributeCommand,
         AttributeDefinitionTranslationValidator attributeValidator,
-        AttributeDefinitionTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionTranslationDeleteService> logger
     )
@@ -38,7 +32,6 @@ public class AttributeDefinitionTranslationDeleteService
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
-        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -75,20 +68,11 @@ public class AttributeDefinitionTranslationDeleteService
                 EntityErrorResources.AttributeDefinitionTranslationDeleteFailed);
         }
 
-        await InvalidateCache(attributeTrans.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                attributeTrans.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        AttributeDefinitionTranslation entity)
-    {
-        await _transInvalid.InvalidateDeleteAsync(
-            BaseTranslationCacheMapper.ToInfo(entity));
     }
 }

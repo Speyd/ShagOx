@@ -1,16 +1,16 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
-using ShagOxServer.Application.DTOs.Specification.Currencies.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Specification;
+using ShagOxServer.Domain.Cache.Advertisements;
+using ShagOxServer.Domain.Cache.Specification;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 public class CurrencyInvalidationService
-    : ICacheInvalidationService<Condition, CurrencyCacheInfo>
+    : ICacheInvalidationService<Currency, CurrencyCacheContext>
 {
     private readonly IAdvertisementQueryRepository _advertRepository;
     private readonly AdvertisementInvalidationService _advertInvalid;
@@ -30,13 +30,13 @@ public class CurrencyInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-       CurrencyCacheInfo entityInfo)
+       CurrencyCacheContext entityInfo)
     {
         await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        CurrencyCacheInfo entityInfo)
+        CurrencyCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -52,7 +52,7 @@ public class CurrencyInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        CurrencyCacheInfo entityInfo)
+        CurrencyCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -68,7 +68,7 @@ public class CurrencyInvalidationService
     }
 
     private async Task InvalidateAsync(
-        CurrencyCacheInfo entityInfo)
+        CurrencyCacheContext entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
             .Entity<Currency>(entityInfo.Id));
@@ -86,7 +86,7 @@ public class CurrencyInvalidationService
     }
 
     private async Task InvalidatePatternAsync(
-        CurrencyCacheInfo entityInfo)
+        CurrencyCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
            SearchPattern<Currency>(
@@ -97,7 +97,7 @@ public class CurrencyInvalidationService
                 entityInfo.Status));
     }
 
-    private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(
+    private async Task<List<AdvertisementCacheContext>> GetAdvertisementInfos(
         long entityId)
     {
         return await _advertRepository

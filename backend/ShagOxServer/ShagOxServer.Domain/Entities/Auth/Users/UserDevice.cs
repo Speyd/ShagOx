@@ -1,9 +1,12 @@
+using ShagOxServer.Domain.Base.Cache;
 using ShagOxServer.Domain.Base.Owner;
+using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 
 namespace ShagOxServer.Domain.Entities.Auth.Users;
 public class UserDevice
-    : OwnedEntity<User>
+    : OwnedEntity<User>//,
+    //IEntityCache<UserDevice, UserDeviceCacheContext>
 {
     public string DeviceName { get; set; } = null!;
 

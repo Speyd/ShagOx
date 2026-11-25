@@ -1,7 +1,7 @@
-using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
@@ -28,7 +28,7 @@ public interface IQueryTranslationRepository<TEntity, TTranslation>
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
-    Task<List<BaseTranslationCacheInfo>> GetCacheInfosByTranslatableAsync(
+    Task<List<TranslationCacheContext>> GetCacheInfosByTranslatableAsync(
         long translatableId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);

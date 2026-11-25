@@ -1,13 +1,18 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Interfaces.Services.Orders;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Query;
+using ShagOxServer.Application.Services.Caches.Invalidations.Location;
+using ShagOxServer.Application.Services.Caches.Invalidations.Orders;
 using ShagOxServer.Application.Services.Orders;
 using ShagOxServer.Application.Services.Orders.Core.Create;
 using ShagOxServer.Application.Services.Orders.Core.Delete;
 using ShagOxServer.Application.Services.Orders.Core.Query;
 using ShagOxServer.Application.Services.Orders.Core.Validator;
+using ShagOxServer.Domain.Cache.Orders;
+using ShagOxServer.Domain.Entities.Orders;
 
 namespace ShagOxServer.Application.DependencyInjections.Orders;
 public static class OrdersDependencyInjection
@@ -21,8 +26,9 @@ public static class OrdersDependencyInjection
         services.AddScoped<IOrderCreateService,
             OrderCreateService>();
 
-        //services.AddScoped<IBasketItemUpdateService,
-        //    BasketItemUpdateService>();
+        services.AddScoped<
+            ICacheInvalidationService<Order, OrderCacheContext>,
+            OrderInvalidationService>();
 
         services.AddScoped<IOrderDeleteService,
             OrderDeleteService>();

@@ -1,11 +1,11 @@
-using ShagOxServer.Application.DTOs.Comments.Core.Cache;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Comments;
 using ShagOxServer.Domain.Entities.Comments;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Comments.Core.Extensions;
 public static class CommentQueryExtensions
 {
-    public static IQueryable<CommentCacheInfo> SelectCacheInfo(
+    public static IQueryable<CommentCacheContext> SelectCacheInfo(
         this IQueryable<Comment> query,
         EntityStatus status = EntityStatus.Active)
     {
@@ -13,11 +13,11 @@ public static class CommentQueryExtensions
             x => x.SelectCacheInfo(status));
     }
 
-    public static CommentCacheInfo SelectCacheInfo(
+    public static CommentCacheContext SelectCacheInfo(
         this Comment x,
         EntityStatus status = EntityStatus.Active)
     {
-        return new CommentCacheInfo(
+        return new CommentCacheContext(
             x.Id,
             x.CommentableEntityId,
             status);

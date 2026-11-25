@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Translations.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -90,7 +90,7 @@ public class QueryTranslationRepository<TEntity, Translation>
         return query;
     }
 
-    public virtual async Task<List<BaseTranslationCacheInfo>> GetCacheInfosByTranslatableAsync(
+    public virtual async Task<List<TranslationCacheContext>> GetCacheInfosByTranslatableAsync(
         long translatableId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null)
@@ -100,7 +100,7 @@ public class QueryTranslationRepository<TEntity, Translation>
         return await query
             .WithStatusFilter(status)
             .Where(x => x.TranslatableId == translatableId)
-            .Select(x => new BaseTranslationCacheInfo(
+            .Select(x => new TranslationCacheContext(
                 x.Id,
                 x.Language))
             .ToListAsync(cancellationToken);

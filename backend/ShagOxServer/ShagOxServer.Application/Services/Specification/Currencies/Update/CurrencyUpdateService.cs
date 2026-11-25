@@ -9,8 +9,6 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Upda
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
-using ShagOxServer.Application.Services.Specification.Currencies.Delete;
-using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -23,8 +21,6 @@ public class CurrencyUpdateService
     private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyValidator _currencyValidator;
 
-    private readonly CurrencyInvalidationService _currencyInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CurrencyUpdateService> _logger;
 
@@ -33,7 +29,6 @@ public class CurrencyUpdateService
         IRepository<Currency> currencyRepository,
         CurrencyValidator currencyValidator,
         ICurrencyDeleteService currencyDeleteService,
-        CurrencyInvalidationService currencyInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CurrencyUpdateService> logger
     )
@@ -41,7 +36,6 @@ public class CurrencyUpdateService
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;
-        _currencyInvalid = currencyInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -114,9 +108,6 @@ public class CurrencyUpdateService
             return Result<UpdateResponse>
                  .Fail(EntityErrorResources.CurrencyUpdateFailed);
         }
-
-        await _currencyInvalid.InvalidateUpdateAsync(
-            CurrencyCacheMapper.ToInfo(currency.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

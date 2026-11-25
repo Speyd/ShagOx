@@ -1,11 +1,21 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Cache;
+using ShagOxServer.Domain.Cache.Translations;
 
 namespace ShagOxServer.Domain.Entities.Location.Translations;
 public class RegionTranslation 
-    : BaseTranslation<Region>
+    : BaseTranslation<Region>,
+    IEntityCache<RegionTranslation,
+        TranslationCacheContext>
 {
     public string Name { get; set; } = null!;
 
+
+    public TranslationCacheContext GetCacheContext()
+    {
+        return new TranslationCacheContext(
+            Id, Language);
+    }
 
     public override string GetTranslationValue()
     {
@@ -15,5 +25,10 @@ public class RegionTranslation
     public override string ToString()
     {
         return $"{Name}";
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

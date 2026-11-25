@@ -1,13 +1,13 @@
-using ShagOxServer.Application.DTOs.Advertisements.Favorites.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Cache.Advertisements;
 using ShagOxServer.Domain.Caches.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 public class FavoriteInvalidationService
-    : ICacheInvalidationService<Favorite, FavoriteCacheInfo>
+    : ICacheInvalidationService<Favorite, FavoriteCacheContext>
 {
     private readonly IDataCacheService _cache;
 
@@ -19,25 +19,25 @@ public class FavoriteInvalidationService
     }
 
     public async Task InvalidateCreateAsync(
-        FavoriteCacheInfo entityInfo)
+        FavoriteCacheContext entityInfo)
     {
         await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        FavoriteCacheInfo entityInfo)
+        FavoriteCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateUpdateAsync(
-        FavoriteCacheInfo entityInfo)
+        FavoriteCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-       FavoriteCacheInfo entityInfo)
+       FavoriteCacheContext entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys.
              Entity<Favorite>(entityInfo.Id));
@@ -46,7 +46,7 @@ public class FavoriteInvalidationService
     }
 
     private async Task InvalidatePatternAsync(
-        FavoriteCacheInfo entityInfo)
+        FavoriteCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(
            FavoriteCache.ByUserPattern(entityInfo.UserId));

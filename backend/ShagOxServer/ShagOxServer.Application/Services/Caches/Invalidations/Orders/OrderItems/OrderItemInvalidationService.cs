@@ -1,13 +1,13 @@
-using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.LineItems;
+using ShagOxServer.Domain.Cache.LineItems;
 using ShagOxServer.Domain.Entities.Orders;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
 public class OrderItemInvalidationService
-    : ICacheInvalidationService<OrderItem, LineItemCacheInfo>
+    : ICacheInvalidationService<OrderItem, LineItemCacheContext>
 {
     private readonly IDataCacheService _cache;
 
@@ -20,24 +20,24 @@ public class OrderItemInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        LineItemCacheInfo entityInfo)
+        LineItemCacheContext entityInfo)
     {
     }
 
     public async Task InvalidateDeleteAsync(
-        LineItemCacheInfo entityInfo)
+        LineItemCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateUpdateAsync(
-        LineItemCacheInfo entityInfo)
+        LineItemCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        LineItemCacheInfo entityInfo)
+        LineItemCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
            .EntityLanguagePattern<OrderItem>(entityInfo.Id));

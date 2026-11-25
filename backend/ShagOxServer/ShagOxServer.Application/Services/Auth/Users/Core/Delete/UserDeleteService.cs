@@ -22,8 +22,6 @@ public class UserDeleteService
 
     private readonly IAvatarDeleteService _avatarDeleteService;
 
-    private readonly UserInvalidationService _userInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UserDeleteService> _logger;
 
@@ -43,7 +41,6 @@ public class UserDeleteService
         _userRepository = userRepository;
         _userValidator = userValidator;
         _avatarDeleteService = avatarDeleteService;
-        _userInvalid = userInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -94,8 +91,6 @@ public class UserDeleteService
                 .Fail(EntityErrorResources.UserDeleteFailed);
         }
 
-        await InvalidateCache(user.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                user.Value!.Id,
@@ -123,12 +118,5 @@ public class UserDeleteService
         }
 
         return Result<bool>.Success(true);
-    }
-
-    public override async Task InvalidateCache(
-        User entity)
-    {
-        await _userInvalid.InvalidateDeleteAsync(
-            UserCacheMapper.ToInfo(entity));
     }
 }

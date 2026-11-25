@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Filters.Auth.Users.Core;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Core.Extensions;
@@ -13,7 +13,7 @@ public partial class UserQueryRepository
     : SearchRepository<User, UserSearchFilter>,
       IUserQueryRepository
 {
-    public async Task<List<UserCacheInfo>> GetCacheInfosByCityAsync(
+    public async Task<List<UserCacheContext>> GetCacheInfosByCityAsync(
         long cityId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -25,7 +25,7 @@ public partial class UserQueryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<UserCacheInfo?> GetCacheInfoByIdAsync(
+    public async Task<UserCacheContext?> GetCacheInfoByIdAsync(
         long id,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)

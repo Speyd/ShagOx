@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
@@ -13,7 +13,7 @@ public partial class AdvertisementQueryRepository
     : SearchRepository<Advertisement, AdvertisementSearchFilter>,
       IAdvertisementQueryRepository
 {
-    public async Task<AdvertisementCacheInfo?> GetCacheInfoByIdAsync(
+    public async Task<AdvertisementCacheContext?> GetCacheInfoByIdAsync(
         long id,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -25,7 +25,7 @@ public partial class AdvertisementQueryRepository
         return advert?.SelectCacheInfo(status);
     }
 
-    public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByStatusAsync(
+    public async Task<List<AdvertisementCacheContext>> GetCacheInfosByStatusAsync(
         long statusId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -37,7 +37,7 @@ public partial class AdvertisementQueryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByUserAsync(
+    public async Task<List<AdvertisementCacheContext>> GetCacheInfosByUserAsync(
         long userId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -50,7 +50,7 @@ public partial class AdvertisementQueryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByCategoryAsync(
+    public async Task<List<AdvertisementCacheContext>> GetCacheInfosByCategoryAsync(
         long categoryId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -62,7 +62,7 @@ public partial class AdvertisementQueryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<AdvertisementCacheInfo>> GetCacheInfosByConditionAsync(
+    public async Task<List<AdvertisementCacheContext>> GetCacheInfosByConditionAsync(
         long conditionId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)

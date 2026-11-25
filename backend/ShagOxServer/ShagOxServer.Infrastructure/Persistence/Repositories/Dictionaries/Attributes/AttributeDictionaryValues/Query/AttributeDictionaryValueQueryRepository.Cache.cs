@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Cache.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitionValues;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
@@ -15,7 +14,7 @@ public partial class AttributeDictionaryValueQueryRepository
         AttributeDictionaryValueSearchFilter>,
       IAttributeDictionaryValueQueryRepository
 {
-    public async Task<List<AttributeDictionaryValueCacheInfo>> GetCacheInfosByDictionaryAsync(
+    public async Task<List<AttributeDictionaryValueCacheContext>> GetCacheInfosByDictionaryAsync(
         long dictionaryId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)

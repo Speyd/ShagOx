@@ -5,10 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Validator;
-using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,8 +17,6 @@ public class ProductTypeTranslationDeleteService
     private readonly IRepository<ProductTypeTranslation> _typeRepository;
     private readonly ProductTypeTranslationValidator _typeValidator;
 
-    private readonly CategoryTranslationInvalidationService _transInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ProductTypeTranslationDeleteService> _logger;
 
@@ -30,7 +25,6 @@ public class ProductTypeTranslationDeleteService
         IRepository<ProductTypeTranslation> typeRepository,
         ICommandRepository<ProductTypeTranslation> typeCommand,
         ProductTypeTranslationValidator typeValidator,
-        CategoryTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeTranslationDeleteService> logger
     )
@@ -38,7 +32,6 @@ public class ProductTypeTranslationDeleteService
     {
         _typeRepository = typeRepository;
         _typeValidator = typeValidator;
-        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -75,20 +68,11 @@ public class ProductTypeTranslationDeleteService
                 EntityErrorResources.ProductTypeTranslationDeleteFailed);
         }
 
-        await InvalidateCache(attributeType.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                attributeType.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        ProductTypeTranslation entity)
-    {
-        await _transInvalid.InvalidateDeleteAsync(
-             BaseTranslationCacheMapper.ToInfo(entity));
     }
 }

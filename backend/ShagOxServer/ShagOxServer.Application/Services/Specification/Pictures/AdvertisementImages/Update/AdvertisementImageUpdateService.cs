@@ -8,8 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
-using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Images.Validator;
@@ -24,16 +22,12 @@ public class AdvertisementImageUpdateService
         PictureOrderUpdateRequest>,
     IAdvertisementImageUpdateService
 {
-    private readonly AdvertisementImageInvalidationService _imageInvalid;
-
-
     public AdvertisementImageUpdateService(
         IRepository<AdvertisementImage> imageRepository,
         PictureValidator pictureLoadValidator,
         AdvertisementImageValidator imageValidator,
         IAdvertisementImageDeleteService imageDeleteService,
         AdvertisementValidator advertisementValidator,
-        AdvertisementImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageUpdateService> logger
     )
@@ -45,7 +39,6 @@ public class AdvertisementImageUpdateService
             unitOfWork, 
             logger)
     {
-        _imageInvalid = imageInvalid;
     }
 
    
@@ -65,13 +58,6 @@ public class AdvertisementImageUpdateService
             return Result<PictureUpdateResponse>.Fail(
                 EntityErrorResources.AdvertImageUpdateFailed);
         }
-    }
-
-    public override async Task InvalidateCache(
-        AdvertisementImage picture)
-    {
-        await _imageInvalid.InvalidateUpdateAsync(
-           PictureCacheMapper.ToInfo(picture));
     }
 
     protected override int ApplyUpdates(

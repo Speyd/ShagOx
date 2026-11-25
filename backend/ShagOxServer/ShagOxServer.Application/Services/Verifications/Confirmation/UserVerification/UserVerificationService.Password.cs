@@ -26,9 +26,9 @@ public partial class UserVerificationService
             ?? user.PasswordHash;
 
         await _trastManagement
-            .RevokeDeviceAsync(user);
+            .UntrustDevicesAsync(user);
 
-        await _trastManagement.RevokeSessionByUserAsync(
+        await _trastManagement.RevokeSessionsByUserAsync(
             user,
             SessionRevocationReason.PasswordChanged);
 

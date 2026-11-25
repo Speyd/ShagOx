@@ -19,8 +19,6 @@ public class AttributeDictionaryDeleteService
     private readonly IRepository<AttributeDictionary> _dictionaryRepository;
     private readonly AttributeDictionaryValidator _dictionaryValidator;
 
-    private readonly AttributeDictionaryInvalidationService _dictInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDictionaryDeleteService> _logger;
 
@@ -29,7 +27,6 @@ public class AttributeDictionaryDeleteService
         IRepository<AttributeDictionary> dictionaryRepository,
         ICommandRepository<AttributeDictionary> dictionaryCommand,
         AttributeDictionaryValidator dictionaryValidator,
-        AttributeDictionaryInvalidationService dictInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryDeleteService> logger
     )
@@ -37,7 +34,6 @@ public class AttributeDictionaryDeleteService
     {
         _dictionaryRepository = dictionaryRepository;
         _dictionaryValidator = dictionaryValidator;
-        _dictInvalid = dictInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -74,20 +70,11 @@ public class AttributeDictionaryDeleteService
                 EntityErrorResources.AttributeDictionaryDeleteFailed);
         }
 
-        await InvalidateCache(dictionary.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                dictionary.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        AttributeDictionary entity)
-    {
-        await _dictInvalid.InvalidateDeleteAsync(
-            AttributeDictionaryCacheMapper.ToInfo(entity));
     }
 }

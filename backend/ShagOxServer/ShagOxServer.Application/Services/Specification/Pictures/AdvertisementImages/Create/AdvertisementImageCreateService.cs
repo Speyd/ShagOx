@@ -8,11 +8,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
-using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Images.Mapping;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -24,13 +21,10 @@ public partial class AdvertisementImageCreateService
         PictureOrderCreateRequest>,
     IAdvertisementImageCreateService
 {
-    private protected AdvertisementImageInvalidationService _imageInvalidation;
-
     public AdvertisementImageCreateService(
         IRepository<AdvertisementImage> imageRepository,
         PictureValidator pictureValidator,
         AdvertisementValidator advertValidator,
-        AdvertisementImageInvalidationService imageInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageCreateService> logger
     )
@@ -40,7 +34,6 @@ public partial class AdvertisementImageCreateService
             unitOfWork, 
             logger)
     {
-        _imageInvalidation = imageInvalidation;
     }
 
 
@@ -110,12 +103,5 @@ public partial class AdvertisementImageCreateService
             ownerId,
             order
         );
-    }
-
-    public override async Task InvalidateCache(
-        AdvertisementImage image)
-    {
-        await _imageInvalidation.InvalidateCreateAsync(
-            PictureCacheMapper.ToInfo(image));
     }
 }

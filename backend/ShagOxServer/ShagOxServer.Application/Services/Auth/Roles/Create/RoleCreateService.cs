@@ -18,8 +18,6 @@ public class RoleCreateService
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;
 
-    private readonly RoleInvalidationService _roleInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RoleCreateService> _logger;
 
@@ -27,13 +25,11 @@ public class RoleCreateService
     public RoleCreateService(
         IRepository<Role> roleRepository,
         RoleValidator roleValidator,
-        RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
         ILogger<RoleCreateService> logger)
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
-        _roleInvalid = roleInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -71,9 +67,6 @@ public class RoleCreateService
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.RoleCreateFailed);
         }
-
-        await _roleInvalid.InvalidateCreateAsync(
-            RoleCacheMapper.ToInfo(role));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

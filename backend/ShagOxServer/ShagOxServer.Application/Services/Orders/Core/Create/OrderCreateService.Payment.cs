@@ -3,7 +3,6 @@ using ShagOxServer.Application.DTOs.Orders.Core.Create;
 using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Orders.Core.Mapping;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -46,8 +45,6 @@ public partial class OrderCreateService
                     .Fail(paymentResult.Error);
             }
 
-            await _orderInvalidation.InvalidateCreateAsync(
-                OrderCacheMapper.ToInfo(order));
 
             return Result<OrderCreateResponse>.Success(
                 new OrderCreateResponse(

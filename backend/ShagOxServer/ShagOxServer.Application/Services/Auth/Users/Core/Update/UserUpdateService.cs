@@ -36,9 +36,6 @@ public class UserUpdateService
     private readonly IAvatarUpdateService _avatarUploadService;
     private readonly IAvatarCreateService _avatarCreateService;
 
-
-    private readonly UserInvalidationService _userInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UserUpdateService> _logger;
 
@@ -51,7 +48,6 @@ public class UserUpdateService
         CurrencyValidator currencyValidator,
         IAvatarUpdateService avatarUploadService,
         IAvatarCreateService avatarCreateService,
-        UserInvalidationService userInvalid,
         IUnitOfWork unitOfWork,
         ILogger<UserUpdateService> logger
     )
@@ -63,7 +59,6 @@ public class UserUpdateService
         _currencyValidator = currencyValidator;
         _avatarUploadService = avatarUploadService;
         _avatarCreateService = avatarCreateService;
-        _userInvalid = userInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -170,9 +165,6 @@ public class UserUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.UserUpdateFailed);
         }
-
-        await _userInvalid.InvalidateUpdateAsync(
-            UserCacheMapper.ToInfo(user.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

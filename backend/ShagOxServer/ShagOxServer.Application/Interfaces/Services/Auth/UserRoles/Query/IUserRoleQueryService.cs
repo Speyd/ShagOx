@@ -1,10 +1,10 @@
-using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
-using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Auth;
+using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
@@ -20,7 +20,7 @@ public interface IUserRoleQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
-    Task<Result<List<UserCacheInfo>>> GetUserCacheInfoByRoleAsync(
+    Task<Result<List<UserCacheContext>>> GetUserCacheInfoByRoleAsync(
        long roleId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
@@ -31,7 +31,7 @@ public interface IUserRoleQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
-    Task<Result<List<RoleCacheInfo>>> GetRolesCacheInfoByUserAsync(
+    Task<Result<List<RoleCacheContext>>> GetRolesCacheInfoByUserAsync(
        long userId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);

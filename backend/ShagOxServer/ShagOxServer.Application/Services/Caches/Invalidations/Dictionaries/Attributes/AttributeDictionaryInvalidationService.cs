@@ -1,17 +1,15 @@
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDefinitions.Cache;
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaries.Cache;
-using ShagOxServer.Application.DTOs.Dictionaries.Attributes.AttributeDictionaryValues.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Cache.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 public class AttributeDictionaryInvalidationService
     : ICacheInvalidationService<AttributeDictionary,
-        AttributeDictionaryCacheInfo>
+        AttributeDictionaryCacheContext>
 {
 
     private readonly IAttributeDefinitionQueryRepository _attributeRepository;
@@ -40,13 +38,13 @@ public class AttributeDictionaryInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        AttributeDictionaryCacheInfo entityInfo)
+        AttributeDictionaryCacheContext entityInfo)
     {
         await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        AttributeDictionaryCacheInfo entityInfo)
+        AttributeDictionaryCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -70,13 +68,13 @@ public class AttributeDictionaryInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        AttributeDictionaryCacheInfo entityInfo)
+        AttributeDictionaryCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        AttributeDictionaryCacheInfo entityInfo)
+        AttributeDictionaryCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePattern<AttributeDictionary>(
@@ -86,7 +84,7 @@ public class AttributeDictionaryInvalidationService
     }
 
     private async Task InvalidatePatternAsync(
-        AttributeDictionaryCacheInfo entityInfo)
+        AttributeDictionaryCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePagedPattern<AttributeDictionary>(
@@ -97,14 +95,14 @@ public class AttributeDictionaryInvalidationService
                 entityInfo.Status));
     }
 
-    private async Task<List<AttributeDefinitionCacheInfo>> GetAttributeDefinitionIds(
+    private async Task<List<AttributeDefinitionCacheContext>> GetAttributeDefinitionIds(
         long entityId)
     {
         return await _attributeRepository
             .GetCacheInfosByAttributeDictionaryAsync(entityId);
     }
 
-    private async Task<List<AttributeDictionaryValueCacheInfo>> GetValueInfos(
+    private async Task<List<AttributeDictionaryValueCacheContext>> GetValueInfos(
         long entityId)
     {
         return await _valueRepository

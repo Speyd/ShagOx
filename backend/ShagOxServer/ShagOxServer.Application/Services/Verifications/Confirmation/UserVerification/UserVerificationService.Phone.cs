@@ -28,7 +28,7 @@ public partial class UserVerificationService
         user.Status = UserStatus.Active;
 
         await _trastManagement
-            .RevokeDeviceAsync(user);
+            .UntrustDevicesAsync(user);
 
         return Result<VerificationResponse>.Success(
             new VerificationResultResponse(true));
@@ -51,7 +51,7 @@ public partial class UserVerificationService
         user.Status = UserStatus.Active;
 
         await _trastManagement
-            .RevokeDeviceAsync(user);
+            .UntrustDevicesAsync(user);
 
         return Result<VerificationResponse>.Success(
             new VerificationResultResponse(true));

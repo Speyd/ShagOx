@@ -6,10 +6,8 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Trans
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
-using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Delete;
@@ -19,8 +17,6 @@ public class StatusTranslationDeleteService
 {
     private readonly IRepository<StatusTranslation> _statusRepository;
     private readonly StatusTranslationValidator _statusValidator;
-
-    private readonly StatusTranslationInvalidationService _transInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusTranslationDeleteService> _logger;
@@ -37,7 +33,6 @@ public class StatusTranslationDeleteService
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
-        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -74,20 +69,11 @@ public class StatusTranslationDeleteService
                 .Fail(EntityErrorResources.AdvertStatusTranslationDeleteFailed);
         }
 
-        await InvalidateCache(status.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                status.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        StatusTranslation entity)
-    {
-        await _transInvalid.InvalidateDeleteAsync(
-            BaseTranslationCacheMapper.ToInfo(entity));
     }
 }

@@ -19,8 +19,6 @@ public class RoleDeleteService
     private readonly IRepository<Role> _roleRepository;
     private readonly RoleValidator _roleValidator;
 
-    private readonly RoleInvalidationService _roleInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RoleDeleteService> _logger;
 
@@ -29,7 +27,6 @@ public class RoleDeleteService
         IRepository<Role> roleRepository,
         ICommandRepository<Role> roleCommand,
         RoleValidator roleValidator,
-        RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
         ILogger<RoleDeleteService> logger
     )
@@ -37,7 +34,6 @@ public class RoleDeleteService
     {
         _roleRepository = roleRepository;
         _roleValidator = roleValidator;
-        _roleInvalid = roleInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -74,20 +70,11 @@ public class RoleDeleteService
                 .Fail(EntityErrorResources.RoleDeleteFailed);
         }
 
-        await InvalidateCache(role.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                role.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-       Role entity)
-    {
-        await _roleInvalid.InvalidateDeleteAsync(
-            RoleCacheMapper.ToInfo(entity));
     }
 }

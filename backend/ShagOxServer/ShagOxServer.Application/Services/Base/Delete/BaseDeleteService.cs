@@ -7,6 +7,7 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.EntityNames.Extensions;
 using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Base.Delete;
@@ -32,9 +33,6 @@ public abstract class BaseDeleteService<TEntity>
         _logger = logger;
     }
 
-    public abstract Task InvalidateCache(
-        TEntity entity);
-
     public virtual async Task<Result<DeleteResponse>> SoftDeleteAsync(
         long id,
         CancellationToken cancellationToken = default)
@@ -50,6 +48,10 @@ public abstract class BaseDeleteService<TEntity>
             return Result<DeleteResponse>.NotFound(
                 EntityNameExtensions.GetLocalizedName<TEntity>());
         }
+
+        if (entity.Value.EntityStatus == EntityStatus.Deleted)
+            return Result<DeleteResponse>.Success(
+                new DeleteResponse(entity.Value.Id, DateTime.UtcNow));
 
         return await SoftDeleteInternalAsync(entity.Value, 
             cancellationToken);
@@ -82,8 +84,6 @@ public abstract class BaseDeleteService<TEntity>
                 EntityErrorResources.LineItemAttributeDeleteFailed);
         }
 
-        await InvalidateCache(entity);
-
         return Result<DeleteResponse>.Success(
             new DeleteResponse(entity.Id, DateTime.UtcNow));
     }
@@ -113,8 +113,6 @@ public abstract class BaseDeleteService<TEntity>
             return Result<DeleteResponse>.Fail(
                 EntityErrorResources.LineItemAttributeDeleteFailed);
         }
-
-        await InvalidateCache(entity);
 
         return Result<DeleteResponse>.Success(
             new DeleteResponse(entity.Id, DateTime.UtcNow));

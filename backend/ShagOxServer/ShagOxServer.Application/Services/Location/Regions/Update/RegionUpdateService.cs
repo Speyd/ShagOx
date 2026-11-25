@@ -9,7 +9,6 @@ using ShagOxServer.Application.Interfaces.Services.Location.Regions.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
-using ShagOxServer.Application.Services.Location.Regions.Mapping;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -22,8 +21,6 @@ public class RegionUpdateService
     private readonly IRepository<Region> _regionRepository;
     private readonly RegionValidator _regionValidator;
 
-    private readonly RegionInvalidationService _regionInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RegionUpdateService> _logger;
 
@@ -32,7 +29,6 @@ public class RegionUpdateService
         IRepository<Region> regionRepository,
         RegionValidator regionValidator,
         IRegionDeleteService regionDeleteService,
-        RegionInvalidationService regionInvalid,
         IUnitOfWork unitOfWork,
         ILogger<RegionUpdateService> logger
     )
@@ -40,7 +36,6 @@ public class RegionUpdateService
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;
-        _regionInvalid = regionInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -109,9 +104,6 @@ public class RegionUpdateService
             return Result<UpdateResponse>
                  .Fail(EntityErrorResources.RegionUpdateFailed);
         }
-
-        await _regionInvalid.InvalidateUpdateAsync(
-            RegionCacheMapper.ToInfo(region.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

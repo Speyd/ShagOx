@@ -5,8 +5,6 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -18,8 +16,6 @@ public class AttributeDefinitionTranslationCreateService
     private readonly IRepository<AttributeDefinitionTranslation> _attributeRepository;
     private readonly AttributeDefinitionTranslationValidator _attributeValidator;
 
-    private readonly AttributeDefinitionTranslationInvalidationService _trnsInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionTranslationCreateService> _logger;
 
@@ -27,13 +23,11 @@ public class AttributeDefinitionTranslationCreateService
     public AttributeDefinitionTranslationCreateService(
         IRepository<AttributeDefinitionTranslation> attributeRepository,
         AttributeDefinitionTranslationValidator attributeValidator,
-        AttributeDefinitionTranslationInvalidationService trnsInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionTranslationCreateService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
-        _trnsInvalid = trnsInvalid;
 
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -75,9 +69,6 @@ public class AttributeDefinitionTranslationCreateService
             return Result<CreateResponse>.Fail(
                 EntityErrorResources.AttributeDefinitionTranslationCreateFailed);
         }
-
-        await _trnsInvalid.InvalidateCreateAsync(
-            BaseTranslationCacheMapper.ToInfo(attribute));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

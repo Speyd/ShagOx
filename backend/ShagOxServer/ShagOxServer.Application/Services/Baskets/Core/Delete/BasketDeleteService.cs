@@ -6,10 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Baskets.Core.Mapping;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
-using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -21,7 +18,6 @@ public class BasketDeleteService
     private readonly IRepository<Basket> _basketRepository;
     private readonly BasketValidator _basketValidator;
 
-    private readonly BasketInvalidationService _basketInvalid;
     private readonly IBasketItemDeleteService _itemDeleteService;
 
 
@@ -33,7 +29,6 @@ public class BasketDeleteService
         IRepository<Basket> basketRepository,
         ICommandRepository<Basket> basketCommand,
         BasketValidator basketValidator,
-        BasketInvalidationService basketInvalid,
         IBasketItemDeleteService itemDeleteService,
         IUnitOfWork unitOfWork,
         ILogger<BasketDeleteService> logger
@@ -42,7 +37,6 @@ public class BasketDeleteService
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;
-        _basketInvalid = basketInvalid;
         _itemDeleteService = itemDeleteService;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -80,8 +74,6 @@ public class BasketDeleteService
                 .Fail(EntityErrorResources.BasketDeleteFailed);
         }
 
-        await InvalidateCache(basket.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                basket.Value!.Id,
@@ -110,12 +102,5 @@ public class BasketDeleteService
         }
 
         return Result<bool>.Success(true);
-    }
-
-    public override async Task InvalidateCache(
-        Basket entity)
-    {
-        await _basketInvalid.InvalidateDeleteAsync(
-            BasketCacheMapper.ToInfo(entity));
     }
 }

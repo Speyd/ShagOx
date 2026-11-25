@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Core.Extensions;
@@ -19,7 +19,7 @@ public static class UserQueryExtensions
                 .ThenInclude(r => r.Role);
     }
 
-    public static IQueryable<UserCacheInfo> SelectCacheInfo(
+    public static IQueryable<UserCacheContext> SelectCacheInfo(
         this IQueryable<User> query,
         EntityStatus status = EntityStatus.Active)
     {
@@ -27,11 +27,11 @@ public static class UserQueryExtensions
             x => SelectCacheInfo(x, status));
     }
 
-    public static UserCacheInfo SelectCacheInfo(
+    public static UserCacheContext SelectCacheInfo(
         this User x,
         EntityStatus status = EntityStatus.Active)
     {
-        return new UserCacheInfo(
+        return new UserCacheContext(
             x.Id,
             x.Email,
             x.Phone,

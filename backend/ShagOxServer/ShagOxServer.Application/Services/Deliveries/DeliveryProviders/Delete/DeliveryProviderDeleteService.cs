@@ -9,7 +9,6 @@ using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Mapping;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
 using ShagOxServer.Domain.Entities.Deliveries;
-using ShagOxServer.Domain.Entities.LineItems;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Delete;
@@ -20,8 +19,6 @@ public class DeliveryProviderDeleteService
     private readonly IRepository<DeliveryProvider> _deliveryRepository;
     private readonly DeliveryProviderValidator _deliveryValidator;
 
-    private readonly DeliveryProviderInvalidationService _deliveryInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeliveryProviderDeleteService> _logger;
 
@@ -30,7 +27,6 @@ public class DeliveryProviderDeleteService
         IRepository<DeliveryProvider> deliveryRepository,
         ICommandRepository<DeliveryProvider> deliveryCommand,
         DeliveryProviderValidator deliveryValidator,
-        DeliveryProviderInvalidationService deliveryInvalid,
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderDeleteService> logger
     )
@@ -38,7 +34,6 @@ public class DeliveryProviderDeleteService
     {
         _deliveryRepository = deliveryRepository;
         _deliveryValidator = deliveryValidator;
-        _deliveryInvalid = deliveryInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -75,20 +70,11 @@ public class DeliveryProviderDeleteService
                      .Fail(EntityErrorResources.DeliveryProviderDeleteFailed);
         }
 
-        await InvalidateCache(delivery.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                delivery.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        DeliveryProvider entity)
-    {
-        await _deliveryInvalid.InvalidateDeleteAsync(
-           DeliveryProviderCacheMapper.ToInfo(entity));
     }
 }

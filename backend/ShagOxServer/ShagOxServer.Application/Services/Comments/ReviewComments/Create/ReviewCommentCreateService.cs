@@ -7,8 +7,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
-using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Comments.Review;
@@ -21,8 +19,6 @@ public class ReviewCommentCreateService
     private readonly IRepository<ReviewComment> _commentRepository;
     private readonly CommentValidator<Advertisement> _commentValidator;
 
-    private readonly ReviewCommentInvalidationService _commInvalid;
-
     private readonly IReviewImageCreateService _imageCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -32,14 +28,12 @@ public class ReviewCommentCreateService
     public ReviewCommentCreateService(
         IRepository<ReviewComment> commentRepository,
         CommentValidator<Advertisement> commentValidator,
-        ReviewCommentInvalidationService commInvalid,
         IReviewImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
         ILogger<ReviewCommentCreateService> logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
-        _commInvalid = commInvalid;
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -105,9 +99,6 @@ public class ReviewCommentCreateService
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.ReviewCommentCreateFailed);
         }
-
-        await _commInvalid.InvalidateCreateAsync(
-            CommentCacheMapper.ToInfo(comment));
 
         return Result<CreateResponse>.Success(
            new CreateResponse(

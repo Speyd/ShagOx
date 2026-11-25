@@ -1,15 +1,18 @@
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Cache;
+using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Advertisements;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
-using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 
 namespace ShagOxServer.Domain.Entities.Auth.Users;
 public class User 
-    : BaseEntity
+    : BaseEntity,
+    IEntityCache<User, UserCacheContext>
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
@@ -67,6 +70,7 @@ public class User
     public ICollection<OrderItem> OrderItems { get; set; }
         = [];
 
+
     public User()
     {
     }
@@ -99,5 +103,20 @@ public class User
     public override string ToString()
     {
         return $"{FirstName} {LastName} | {UserName}";
+    }
+
+    public UserCacheContext GetCacheContext()
+    {
+        return new UserCacheContext(
+            Id, 
+            Email, 
+            Phone, 
+            UserName, 
+            EntityStatus);
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

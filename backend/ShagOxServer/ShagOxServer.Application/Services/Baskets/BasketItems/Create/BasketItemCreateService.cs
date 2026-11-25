@@ -1,6 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
@@ -11,9 +9,7 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 using ShagOxServer.Application.Services.LineItems.Core.Create;
-using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -24,10 +20,6 @@ public class BasketItemCreateService
 {
     private readonly IRepository<BasketItem> _itemRepository;
 
-    private readonly BasketItemBasketInvalidationService _basketInvalidation;
-
-    private readonly BasketItemInvalidationService _itemInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketItemCreateService> _logger;
 
@@ -37,8 +29,6 @@ public class BasketItemCreateService
         BasketItemValidator itemValidator,
         AdvertisementVariantValidator advertVariantValidator,
         AdvertisementValidator advertValidator,
-        BasketItemBasketInvalidationService basketInvalidation,
-        BasketItemInvalidationService itemInvalid,
         IUnitOfWork unitOfWork,
         ILogger<BasketItemCreateService> logger,
         IUserContext userContext
@@ -49,8 +39,6 @@ public class BasketItemCreateService
             advertValidator)
     {
         _itemRepository = itemRepository;
-        _basketInvalidation = basketInvalidation;
-        _itemInvalid = itemInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -100,14 +88,6 @@ public class BasketItemCreateService
             item.Id,
             request.ParentId,
             request.AdvertisementVariantId);
-
-        var caheInfo = LineItemCacheMapper.ToInfo(item);
-
-        await _basketInvalidation.InvalidateCreateAsync(
-            caheInfo);
-
-        await _itemInvalid.InvalidateCreateAsync(
-            caheInfo);
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

@@ -28,9 +28,9 @@ public partial class UserVerificationService
         user.Status = UserStatus.Active;
 
         await _trastManagement
-            .RevokeDeviceAsync(user);
+            .UntrustDevicesAsync(user);
 
-        await _trastManagement.RevokeSessionByUserAsync(
+        await _trastManagement.RevokeSessionsByUserAsync(
             user,
             SessionRevocationReason.ContactChanged);
 
@@ -54,9 +54,9 @@ public partial class UserVerificationService
         user.Status = UserStatus.Active;
 
         await _trastManagement
-            .RevokeDeviceAsync(user);
+            .UntrustDevicesAsync(user);
 
-        await _trastManagement.RevokeSessionByUserAsync(
+        await _trastManagement.RevokeSessionsByUserAsync(
             user,
             SessionRevocationReason.ContactChanged);
 

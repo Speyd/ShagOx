@@ -5,10 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
-using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,8 +17,6 @@ public class CityTranslationDeleteService
     private readonly IRepository<CityTranslation> _cityRepository;
     private readonly CityTranslationValidator _cityValidator;
 
-    private readonly CityTranslationInvalidationService _cityInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CityTranslationDeleteService> _logger;
 
@@ -30,7 +25,6 @@ public class CityTranslationDeleteService
         IRepository<CityTranslation> cityRepository,
         ICommandRepository<CityTranslation> cityCommand,
         CityTranslationValidator cityValidator,
-        CityTranslationInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityTranslationDeleteService> logger
     )
@@ -38,7 +32,6 @@ public class CityTranslationDeleteService
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
-        _cityInvalid = cityInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -75,20 +68,11 @@ public class CityTranslationDeleteService
                  .Fail(EntityErrorResources.CityTranslationDeleteFailed);
         }
 
-        await InvalidateCache(city.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                city.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        CityTranslation entity)
-    {
-        await _cityInvalid.InvalidateDeleteAsync(
-            BaseTranslationCacheMapper.ToInfo(entity)); ;
     }
 }

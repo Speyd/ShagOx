@@ -1,9 +1,12 @@
-﻿using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Cache;
+using ShagOxServer.Domain.Cache.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries;
 public class ProductType 
-    : BaseTranslatable
+    : BaseTranslatable,
+    IEntityCache<ProductType, ProductTypeCacheContext>
 {
     public string Code { get; set; } = null!;
     public string Description { get; set; } = "";
@@ -15,6 +18,12 @@ public class ProductType
         = [];
 
 
+    public ProductTypeCacheContext GetCacheContext()
+    {
+        return new ProductTypeCacheContext(
+            Id, EntityStatus);
+    }
+
     public override string GetIdentificator()
     {
         return Code;
@@ -23,5 +32,10 @@ public class ProductType
     public override string ToString()
     {
         return Code;
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

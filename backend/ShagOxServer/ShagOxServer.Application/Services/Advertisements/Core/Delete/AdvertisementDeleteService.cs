@@ -6,7 +6,6 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Advertisements.Core.Mapping.Cache;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
@@ -23,7 +22,6 @@ public class AdvertisementDeleteService
 
     private readonly IAdvertisementImageDeleteService _imageDeleteService;
     private readonly IPictureLoaderService _loaderService;
-    private readonly AdvertisementInvalidationService _advertInvalid;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementDeleteService> _logger;
@@ -35,7 +33,6 @@ public class AdvertisementDeleteService
         AdvertisementValidator advertValidator,
         IAdvertisementImageDeleteService imageDeleteService,
         IPictureLoaderService loaderService,
-        AdvertisementInvalidationService advertInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementDeleteService> logger
     )
@@ -45,7 +42,6 @@ public class AdvertisementDeleteService
         _advertValidator = advertValidator;
         _imageDeleteService = imageDeleteService;
         _loaderService = loaderService;
-        _advertInvalid = advertInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -99,7 +95,6 @@ public class AdvertisementDeleteService
             "Advertisement deleted successfully. Id: {Id}",
             advert.Value!.Id);
 
-        await InvalidateCache(advert.Value!);
 
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
@@ -129,12 +124,5 @@ public class AdvertisementDeleteService
         }
 
         return Result<bool>.Success(true);
-    }
-
-    public override async Task InvalidateCache(
-        Advertisement entity)
-    {
-        await _advertInvalid.InvalidateDeleteAsync(
-            AdvertisementCacheMapper.ToInfo(entity));
     }
 }

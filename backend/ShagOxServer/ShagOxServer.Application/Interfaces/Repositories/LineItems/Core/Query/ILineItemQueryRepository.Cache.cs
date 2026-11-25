@@ -1,7 +1,6 @@
-using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Query;
-using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.LineItems;
 using ShagOxServer.Domain.Entities.LineItems.Core;
 using ShagOxServer.Domain.Filters;
 
@@ -12,17 +11,17 @@ public partial interface ILineItemQueryRepository<TEntity, TFilter>
     where TEntity : LineItem
     where TFilter : BaseFilter
 {
-    Task<List<LineItemCacheInfo>> GetCacheInfosByParentAsync(
+    Task<List<LineItemCacheContext>> GetCacheInfosByParentAsync(
         long parentId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
-    Task<List<LineItemCacheInfo>> GetCacheInfosByAdvertisementAsync(
+    Task<List<LineItemCacheContext>> GetCacheInfosByAdvertisementAsync(
         long advertisementId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
-    Task<List<LineItemCacheInfo>> GetCacheInfosByAdvertisementVariantAsync(
+    Task<List<LineItemCacheContext>> GetCacheInfosByAdvertisementVariantAsync(
         long advertisementVariantId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);

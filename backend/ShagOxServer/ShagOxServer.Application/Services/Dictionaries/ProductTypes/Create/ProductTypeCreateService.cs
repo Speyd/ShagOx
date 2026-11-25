@@ -19,8 +19,6 @@ public class ProductTypeCreateService
     private readonly IRepository<ProductType> _productTypeRepository;
     private readonly ProductTypeValidator _validator;
 
-    private readonly ProductTypeInvalidationService _typeInvalidation;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ProductTypeCreateService> _logger;
 
@@ -28,13 +26,11 @@ public class ProductTypeCreateService
     public ProductTypeCreateService(
         IRepository<ProductType> productTypeRepository,
         ProductTypeValidator validator,
-        ProductTypeInvalidationService typeInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeCreateService> logger)
     {
         _productTypeRepository = productTypeRepository;
         _validator = validator;
-        _typeInvalidation = typeInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -73,9 +69,6 @@ public class ProductTypeCreateService
             return Result<CreateResponse>.Fail(
                 EntityErrorResources.ProductTypeCreateFailed);
         }
-
-        await _typeInvalidation.InvalidateCreateAsync(
-            ProductTypeCacheMapper.ToInfo(productType));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

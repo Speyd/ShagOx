@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Db;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Core.Invalidation;
+using ShagOxServer.Domain.Cache;
 using ShagOxServer.Domain.Entities.Db;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
@@ -17,15 +21,40 @@ public static class DatabaseExtensions
           config.GetSection(DatabaseHealthCheckOptions.SectionName));
 
 
-        services.AddDbContext<AppDbContext>(options =>
-             options.UseNpgsql(
-                 config.GetConnectionString("PrimaryConnection"),
-                 npgsql => npgsql.UseQuerySplittingBehavior(
-                     QuerySplittingBehavior.SplitQuery
-                 )
-             )
-         );
+        #region Primary and Cache
 
+        services.AddScoped<ICacheInvalidationState,
+            CacheInvalidationState>();
+
+        services.AddTransient(typeof(CacheInvalidationHandler<,>));
+
+        services.AddScoped<ICacheInvalidationDispatcher,
+            CacheInvalidationDispatcher>();
+
+        services.AddScoped<ICacheInvalidationDispatcher,
+            CacheInvalidationDispatcher>();
+
+        services.AddScoped<CacheInvalidationInterceptor>();
+        services.AddScoped<CacheTransactionInterceptor>();
+
+        services.AddDbContext<AppDbContext>((sp, options) =>
+        {
+            options.UseNpgsql(
+                config.GetConnectionString("PrimaryConnection"),
+                npgsql => npgsql.UseQuerySplittingBehavior(
+                    QuerySplittingBehavior.SplitQuery
+                )
+            );
+
+            options.AddInterceptors(
+                sp.GetRequiredService<CacheInvalidationInterceptor>(),
+                sp.GetRequiredService<CacheTransactionInterceptor>()
+            );
+        });
+
+        #endregion
+
+        #region Replica
 
         var connectionSection = config
             .GetSection("ConnectionStrings:ReplicaConnections");
@@ -54,6 +83,8 @@ public static class DatabaseExtensions
             .ToList();
 
         services.AddSingleton<IReadOnlyList<Replica>>(replicas);
+
+        #endregion
 
         return services;
     }

@@ -14,7 +14,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
 public abstract class PictureOrderCreateService<TOwner, TPicture, TRequest>
     : PictureCreateService<TOwner, TPicture, TRequest>,
-    IPictureOrderCreateService<TPicture, TRequest>
+        IPictureOrderCreateService<TPicture, TRequest>
     where TOwner : BaseEntity
     where TPicture : BasePictureOrder
     where TRequest : PictureOrderCreateRequest

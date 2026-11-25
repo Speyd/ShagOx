@@ -11,7 +11,6 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Catego
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
-using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Update.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -28,8 +27,6 @@ public class CategoryUpdateService
 
     private readonly ICategoryImageUpdateService _imageUploadService;
 
-    private readonly CategoryInvalidationService _categoryInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CategoryUpdateService> _logger;
 
@@ -40,7 +37,6 @@ public class CategoryUpdateService
         ICategoryDeleteService categoryDeleteValidator,
         CategoryUpdateValidator categoryUpdateValidator,
         ICategoryImageUpdateService imageUploadService,
-        CategoryInvalidationService categoryInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CategoryUpdateService> logger
     )
@@ -50,7 +46,6 @@ public class CategoryUpdateService
         _categoryValidator = categoryValidator;
         _categoryUpdateValidator = categoryUpdateValidator;
         _imageUploadService = imageUploadService;
-        _categoryInvalid = categoryInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -149,9 +144,6 @@ public class CategoryUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.CategoryUpdateFailed);
         }
-
-        await _categoryInvalid.InvalidateUpdateAsync(
-            CategoryCacheMapper.ToInfo(category.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

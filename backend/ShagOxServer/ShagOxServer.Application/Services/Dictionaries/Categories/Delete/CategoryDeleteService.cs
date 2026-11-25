@@ -20,8 +20,6 @@ public class CategoryDeleteService
     private readonly IRepository<Category> _categoryRepository;
     private readonly CategoryValidator _categoryValidator;
 
-    private readonly CategoryInvalidationService _categoryInvalid;
-
     private readonly ICategoryImageDeleteService _imageDeleteService;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -32,7 +30,6 @@ public class CategoryDeleteService
         IRepository<Category> categoryRepository,
         ICommandRepository<Category> categoryCommand,
         CategoryValidator categoryValidator,
-        CategoryInvalidationService categoryInvalid,
         ICategoryImageDeleteService imageDeleteService,
         IUnitOfWork unitOfWork,
         ILogger<CategoryDeleteService> logger
@@ -41,7 +38,6 @@ public class CategoryDeleteService
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
-        _categoryInvalid = categoryInvalid;
         _imageDeleteService = imageDeleteService;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -93,8 +89,6 @@ public class CategoryDeleteService
                 .Fail(EntityErrorResources.CategoryDeleteFailed);
         }
 
-        await InvalidateCache(category.Value!);
-
         return Result<DeleteResponse>.Success(
             new DeleteResponse(
                 category.Value!.Id,
@@ -124,12 +118,5 @@ public class CategoryDeleteService
         }
 
         return Result<bool>.Success(true);
-    }
-
-    public override async Task InvalidateCache(
-        Category entity)
-    {
-        await _categoryInvalid.InvalidateDeleteAsync(
-            CategoryCacheMapper.ToInfo(entity));
     }
 }

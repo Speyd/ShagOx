@@ -1,13 +1,14 @@
-using ShagOxServer.Application.DTOs.Base.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Localized;
 using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Cache.Translations;
 using ShagOxServer.Domain.Entities.Location.Translations;
+using ShagOxServer.Domain.Entities.Specification.Translations;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification.Translations;
 public class ConditionTranslationInvalidationService
-    : ITranslationCacheInvalidationService<CityTranslation>
+    : ITranslationCacheInvalidationService<ConditionTranslation>
 {
     private readonly IDataCacheService _cache;
 
@@ -24,7 +25,7 @@ public class ConditionTranslationInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-     BaseTranslationCacheInfo cacheDto)
+        TranslationCacheContext cacheDto)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              SearchPattern<CityTranslation>());
@@ -34,19 +35,19 @@ public class ConditionTranslationInvalidationService
     }
 
     public async Task InvalidateDeleteAsync(
-        BaseTranslationCacheInfo cacheDto)
+        TranslationCacheContext cacheDto)
     {
         await InvalidateAsync(cacheDto);
     }
 
     public async Task InvalidateUpdateAsync(
-        BaseTranslationCacheInfo cacheDto)
+        TranslationCacheContext cacheDto)
     {
         await InvalidateAsync(cacheDto);
     }
 
     private async Task InvalidateAsync(
-        BaseTranslationCacheInfo cacheDto)
+        TranslationCacheContext cacheDto)
     {
         await _cache.RemoveAsync(CacheKeys
              .Entity<CityTranslation>(cacheDto.Id));

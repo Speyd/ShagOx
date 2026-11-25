@@ -21,8 +21,6 @@ public class BasketCreateService
     private readonly BasketValidator _basketValidator;
     private readonly UserValidator _userValidator;
 
-    private readonly BasketInvalidationService _basketInvalidation;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketCreateService> _logger;
 
@@ -31,14 +29,12 @@ public class BasketCreateService
         IRepository<Basket> basketRepository,
         BasketValidator basketValidator,
         UserValidator userValidator,
-        BasketInvalidationService basketInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<BasketCreateService> logger)
     {
         _basketRepository = basketRepository;
         _basketValidator = basketValidator;
         _userValidator = userValidator;
-        _basketInvalidation = basketInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -110,9 +106,6 @@ public class BasketCreateService
         _basketRepository.Add(basket);
 
         await _unitOfWork.SaveChangesAsync();
-
-        await _basketInvalidation.InvalidateCreateAsync(
-            BasketCacheMapper.ToInfo(basket));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

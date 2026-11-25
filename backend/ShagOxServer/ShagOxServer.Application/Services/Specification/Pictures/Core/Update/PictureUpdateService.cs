@@ -20,8 +20,8 @@ using ShagOxServer.SharedKernel.Abstractions.Results;
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
     : BaseUpdateService<TPicture>,
-    IPictureUpdateService<TPicture, TRequest>,
-    IPictureCache<TPicture>
+        IPictureUpdateService<TPicture, TRequest>,
+        IPictureCache<TPicture>
     where TOwner : BaseEntity
     where TPicture : BasePicture
     where TRequest : PictureUpdateRequest
@@ -57,10 +57,6 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
-
-
-    public abstract Task InvalidateCache(
-       TPicture picture);
 
     protected abstract int ApplyUpdates(
         TPicture picture,
@@ -114,8 +110,6 @@ public abstract class PictureUpdateService<TOwner, TPicture, TRequest>
             }
 
             await _unitOfWork.CommitAsync();
-
-            await InvalidateCache(picture.Value!);
 
             return result;
         }

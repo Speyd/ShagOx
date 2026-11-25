@@ -6,10 +6,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Create;
-using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -22,13 +20,10 @@ public partial class CategoryImageCreateService
         PictureCreateRequest>,
     ICategoryImageCreateService
 {
-    private protected CategoryImageInvalidationService _imageInvalidation;
-
     public CategoryImageCreateService(
         IRepository<CategoryImage> imageRepository,
         PictureValidator pictureValidator,
         CategoryValidator categoryValidator,
-        CategoryImageInvalidationService imageInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<CategoryImageCreateService> logger
     )
@@ -38,7 +33,6 @@ public partial class CategoryImageCreateService
             unitOfWork,
             logger)
     {
-        _imageInvalidation = imageInvalidation;
     }
 
 
@@ -79,11 +73,5 @@ public partial class CategoryImageCreateService
     {
         return CategoryImageCreater
             .Create(request, response);
-    }
-    public override async Task InvalidateCache(
-        CategoryImage image)
-    {
-        await _imageInvalidation.InvalidateCreateAsync(
-            PictureCacheMapper.ToInfo(image));
     }
 }

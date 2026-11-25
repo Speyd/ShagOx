@@ -9,6 +9,7 @@ using ShagOxServer.Application.DependencyInjections.Comments;
 using ShagOxServer.Application.DependencyInjections.Dashboards;
 using ShagOxServer.Application.DependencyInjections.Deliveries;
 using ShagOxServer.Application.DependencyInjections.Dictionary;
+using ShagOxServer.Application.DependencyInjections.LineItems;
 using ShagOxServer.Application.DependencyInjections.Location;
 using ShagOxServer.Application.DependencyInjections.Orders;
 using ShagOxServer.Application.DependencyInjections.Payments;
@@ -33,6 +34,7 @@ public static class DependencyInjection
             .AddDictionariesApplication()
             .AddSpecificationApplication()
             .AddCommonApplication()
+            .AddLineItemsApplication()
             .AddDeliveriesApplication()
             .AddOrdersItemApplication()
             .AddPaymentsApplication()

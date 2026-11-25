@@ -5,7 +5,6 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDictionaryValues.Query;
-
 public partial class AttributeDictionaryValueQueryRepository
     : SearchRepository<AttributeDictionaryValue,
         AttributeDictionaryValueSearchFilter>,

@@ -7,10 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Common.ImageLoaders;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
-using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
-using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -21,8 +18,6 @@ public class ReviewCommentDeleteService
 {
     private readonly IRepository<ReviewComment> _commentRepository;
     private readonly ReviewCommentValidator _commentValidator;
-
-    private readonly ReviewCommentInvalidationService _commInvalid;
 
     private readonly IAdvertisementImageDeleteService _imageDeleteService;
     private readonly IPictureLoaderService _loaderService;
@@ -35,7 +30,6 @@ public class ReviewCommentDeleteService
         IRepository<ReviewComment> commentRepository,
         ICommandRepository<ReviewComment> commentCommand,
         ReviewCommentValidator commentValidator,
-        ReviewCommentInvalidationService commInvalid,
         IAdvertisementImageDeleteService imageDeleteService,
         IPictureLoaderService loaderService,
         IUnitOfWork unitOfWork,
@@ -45,7 +39,6 @@ public class ReviewCommentDeleteService
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
-        _commInvalid = commInvalid;
         _imageDeleteService = imageDeleteService;
         _loaderService = loaderService;
         _unitOfWork = unitOfWork;
@@ -97,20 +90,11 @@ public class ReviewCommentDeleteService
                 .Fail(EntityErrorResources.ReviewCommentDeleteFailed);
         }
 
-        await InvalidateCache(comment.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                comment.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        ReviewComment entity)
-    {
-        await _commInvalid.InvalidateDeleteAsync(
-            CommentCacheMapper.ToInfo(entity));
     }
 }

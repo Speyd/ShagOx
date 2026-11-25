@@ -10,22 +10,22 @@ public static class CacheExtensions
         IConfiguration configuration)
     {
         services.Configure<RedisOptions>(
-            configuration.GetSection("Redis"));
+            configuration.GetSection(RedisOptions.SectionDataName));
 
         services.Configure<RedisOptions>(
-            configuration.GetSection("UserRedis"));
+            configuration.GetSection(RedisOptions.SectionUserName));
 
         services.Configure<CacheOptions>(
-            configuration.GetSection("Cache"));
+            configuration.GetSection(CacheOptions.SectionName));
 
         var dataOptions = configuration
-            .GetSection("Redis")
+            .GetSection(RedisOptions.SectionDataName)
             .Get<RedisOptions>()
             ?? throw new InvalidOperationException(
                 "Redis options are not configured.");
 
         var userOptions = configuration
-            .GetSection("UserRedis")
+            .GetSection(RedisOptions.SectionUserName)
             .Get<RedisOptions>()
             ?? throw new InvalidOperationException(
                 "UserRedis options are not configured.");

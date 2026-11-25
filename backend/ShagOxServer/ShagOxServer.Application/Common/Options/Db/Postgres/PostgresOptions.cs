@@ -1,6 +1,8 @@
 namespace ShagOxServer.Application.Common.Options.Db.Postgres;
 public sealed class PostgresOptions
 {
+    public const string SectionName = "Postgres";
+
     public required string User { get; init; }
     public required string Password { get; init; }
     public required string Database { get; init; }

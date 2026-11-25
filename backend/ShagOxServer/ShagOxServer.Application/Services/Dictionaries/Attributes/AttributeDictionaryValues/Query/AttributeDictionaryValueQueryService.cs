@@ -53,7 +53,7 @@ public class AttributeDictionaryValueQueryService
         AttributeDictionaryValue entity)
     {
         var translation = await _translation
-            .GetByIdentificatorAsync(entity.Id, _language.Language);
+            .GetByIdentificatorAsync(entity.Code, _language.Language);
 
         return AttributeDictionaryValueMapper.ToDto(entity, translation?.Name);
     }
@@ -84,7 +84,7 @@ public class AttributeDictionaryValueQueryService
                 return await values.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

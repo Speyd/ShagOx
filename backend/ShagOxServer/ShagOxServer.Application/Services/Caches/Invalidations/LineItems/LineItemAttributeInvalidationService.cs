@@ -1,14 +1,14 @@
-using ShagOxServer.Application.DTOs.LineItems.LineItemAttributes.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.LineItems;
+using ShagOxServer.Domain.Cache.LineItems;
 using ShagOxServer.Domain.Entities.LineItems;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.LineItems;
 public class LineItemAttributeInvalidationService
     : ICacheInvalidationService<LineItemAttribute,
-        LineItemAttributeCacheInfo>
+        LineItemAttributeCacheContext>
 {
     private readonly IDataCacheService _cache;
 
@@ -21,25 +21,25 @@ public class LineItemAttributeInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        LineItemAttributeCacheInfo entityInfo)
+        LineItemAttributeCacheContext entityInfo)
     {
         await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        LineItemAttributeCacheInfo entityInfo)
+        LineItemAttributeCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateUpdateAsync(
-        LineItemAttributeCacheInfo entityInfo)
+        LineItemAttributeCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        LineItemAttributeCacheInfo entityInfo)
+        LineItemAttributeCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
            .EntityLanguagePattern<LineItemAttribute>(entityInfo.Id));
@@ -48,7 +48,7 @@ public class LineItemAttributeInvalidationService
     }
 
     private async Task InvalidatePatternAsync(
-        LineItemAttributeCacheInfo entityInfo)
+        LineItemAttributeCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
             LanguageSearchPattern<LineItemAttribute>(

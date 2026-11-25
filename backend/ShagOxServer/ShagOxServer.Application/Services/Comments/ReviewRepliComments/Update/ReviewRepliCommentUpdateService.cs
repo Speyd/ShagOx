@@ -7,10 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Delete;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Resources.Validations;
 using ShagOxServer.Application.Services.Base.Update;
-using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
-using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.PictureOrdering;
 using ShagOxServer.Domain.Entities.Comments.Review;
@@ -25,8 +22,6 @@ public class ReviewRepliCommentUpdateService
     private readonly IRepository<ReviewRepliComment> _commitRepository;
     private readonly ReviewRepliCommentValidator _commitValidator;
 
-    private readonly ReviewRepliCommentInvalidationService _commInvalid;
-
 
     private readonly PictureOrderSyncExecutor<ReviewRepliComment,
         ReviewRepliImage> _executor;
@@ -39,7 +34,6 @@ public class ReviewRepliCommentUpdateService
         IRepository<ReviewRepliComment> commitRepository,
         ReviewRepliCommentValidator commitValidator,
         IReviewRepliCommentDeleteService commitDeleteService,
-        ReviewRepliCommentInvalidationService commInvalid,
         PictureOrderSyncExecutor<ReviewRepliComment,
         ReviewRepliImage> executor,
         IUnitOfWork unitOfWork,
@@ -49,7 +43,6 @@ public class ReviewRepliCommentUpdateService
     {
         _commitRepository = commitRepository;
         _commitValidator = commitValidator;
-        _commInvalid = commInvalid;
         _executor = executor;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -61,15 +54,8 @@ public class ReviewRepliCommentUpdateService
         ReviewRepliCommentUpdateRequest request,
         CancellationToken cancellationToken = default)
     {
-        if (request.Text is not null &&
-            string.IsNullOrWhiteSpace(request.Text))
-        {
-            return Result<UpdateResponse>
-                .Fail(ValidationResources.CommentTextRequired);
-        }
-
         var comment = await _commitValidator
-            .GetByIdAttachAsync(commentId, cancellationToken);
+            .GetByIdIncludeAsync(commentId, cancellationToken);
         if (!comment.IsSuccess)
             return Result<UpdateResponse>.Fail(comment.Error);
 
@@ -88,6 +74,8 @@ public class ReviewRepliCommentUpdateService
 
         try
         {
+            _commitRepository.Update(comment.Value!);
+
             var imagesResult = await _executor.SyncAsync(
                 comment.Value!,
                 request.Pictures,
@@ -130,9 +118,6 @@ public class ReviewRepliCommentUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.ReviewRepliCommentUpdateFailed);
         }
-
-        await _commInvalid.InvalidateUpdateAsync(
-            CommentCacheMapper.ToInfo(comment.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

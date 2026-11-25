@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Base.Items.Query;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.LineItems;
 using ShagOxServer.Domain.Entities.LineItems.Core;
 using ShagOxServer.Domain.Filters;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
@@ -15,7 +15,7 @@ public abstract partial class LineItemQueryRepository<TEntity, TFilter>
     where TEntity : LineItem
     where TFilter : BaseFilter
 {
-    public async Task<List<LineItemCacheInfo>> GetCacheInfosByParentAsync(
+    public async Task<List<LineItemCacheContext>> GetCacheInfosByParentAsync(
         long parentId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -27,7 +27,7 @@ public abstract partial class LineItemQueryRepository<TEntity, TFilter>
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<LineItemCacheInfo>> GetCacheInfosByAdvertisementAsync(
+    public async Task<List<LineItemCacheContext>> GetCacheInfosByAdvertisementAsync(
         long advertisementId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -40,7 +40,7 @@ public abstract partial class LineItemQueryRepository<TEntity, TFilter>
            .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<LineItemCacheInfo>> GetCacheInfosByAdvertisementVariantAsync(
+    public async Task<List<LineItemCacheContext>> GetCacheInfosByAdvertisementVariantAsync(
         long advertisementVariantId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)

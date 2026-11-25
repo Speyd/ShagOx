@@ -45,12 +45,5 @@ public sealed record OrderDto
     DateTime? ConfirmedAt,
     DateTime CreatedAt,
     DateTime? UpdatedAt,
-    DateTime? CancelledAt,
-    // Коли закінчується діюче посилання на оплату (null — посилання немає).
-    DateTime? PaymentExpiresAt,
-    // До якого моменту замовлення ще можна оплатити онлайн
-    // (null — оплата неможлива або не потрібна).
-    DateTime? PaymentDeadline,
-    // Продавець замовлення (null — старе замовлення з товарами кількох продавців).
-    long? SellerId
+    DateTime? CancelledAt
 ) : BaseDto(Id, EntityStatus);

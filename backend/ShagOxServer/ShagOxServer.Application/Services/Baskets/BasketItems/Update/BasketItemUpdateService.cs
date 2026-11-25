@@ -8,10 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Update;
-using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
-using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -23,9 +20,6 @@ public class BasketItemUpdateService
     private readonly IRepository<BasketItem> _itemRepository;
     private readonly BasketItemValidator _itemValidator;
 
-    private readonly BasketItemInvalidationService _itemInvalidation;
-    private readonly BasketItemBasketInvalidationService _basketInvalidation;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<BasketItemUpdateService> _logger;
 
@@ -34,8 +28,6 @@ public class BasketItemUpdateService
         IRepository<BasketItem> itemRepository,
         BasketItemValidator itemValidator,
         IBasketItemDeleteService itemDeleteService,
-        BasketItemInvalidationService itemInvalidation,
-        BasketItemBasketInvalidationService basketInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<BasketItemUpdateService> logger
     )
@@ -43,8 +35,6 @@ public class BasketItemUpdateService
     {
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;
-        _itemInvalidation = itemInvalidation;
-        _basketInvalidation = basketInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -110,21 +100,6 @@ public class BasketItemUpdateService
            "Basket item update successfully. BasketItemId: {BasketItemId}",
            item.Value!.Id);
 
-        await ApplyInvalidation(item.Value!);
-
         return Result<UpdateResponse>.Success(result);
-    }
-
-    private async Task ApplyInvalidation(
-        BasketItem item)
-    {
-        var info = LineItemCacheMapper
-            .ToInfo(item);
-
-        await _itemInvalidation
-            .InvalidateUpdateAsync(info);
-
-        await _basketInvalidation
-            .InvalidateUpdateAsync(info);
     }
 }

@@ -1,9 +1,5 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
-using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
-using ShagOxServer.Application.DTOs.Comments.Core.Cache;
-using ShagOxServer.Application.DTOs.Specification.Currencies.Cache;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
@@ -11,17 +7,23 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Av
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
+using ShagOxServer.Application.Services.Caches.Keys.Baskets;
 using ShagOxServer.Application.Services.Caches.Keys.Specification;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Cache.Advertisements;
+using ShagOxServer.Domain.Cache.Auth.User;
+using ShagOxServer.Domain.Cache.Comments;
+using ShagOxServer.Domain.Cache.Specification;
+using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 public class UserInvalidationService
-    : ICacheInvalidationService<User, UserCacheInfo>
+    : ICacheInvalidationService<User, UserCacheContext>
 {
     private readonly IAdvertisementQueryRepository _advertRepository;
     private readonly AdvertisementInvalidationService _advertInvalid;
@@ -38,6 +40,9 @@ public class UserInvalidationService
     private readonly ICurrencyQueryRepository _currencyRepository;
     private readonly CurrencyInvalidationService _currencyInvalid;
 
+    private readonly IBasketQueryRepository _basketRepository;
+    private readonly BasketInvalidationService _basketInvalid;
+
     private readonly IDataCacheService _cache;
 
 
@@ -52,6 +57,8 @@ public class UserInvalidationService
         ReviewRepliCommentInvalidationService reviewRepliInvalid,
         ICurrencyQueryRepository currencyRepository,
         CurrencyInvalidationService currencyInvalid,
+        IBasketQueryRepository basketRepository,
+        BasketInvalidationService basketInvalid,
         IDataCacheService cache)
     {
         _advertRepository = advertRepository;
@@ -64,16 +71,18 @@ public class UserInvalidationService
         _reviewRepliInvalid = reviewRepliInvalid;
         _currencyRepository = currencyRepository;
         _currencyInvalid = currencyInvalid;
+        _basketRepository = basketRepository;
+        _basketInvalid = basketInvalid;
         _cache = cache;
     }
 
     public async Task InvalidateCreateAsync(
-        UserCacheInfo entityInfo)
+        UserCacheContext entityInfo)
     {
     }
 
     public async Task InvalidateDeleteAsync(
-        UserCacheInfo entityInfo)
+        UserCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -128,7 +137,7 @@ public class UserInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        UserCacheInfo entityInfo)
+        UserCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -143,7 +152,7 @@ public class UserInvalidationService
     }
 
     private async Task InvalidateAsync(
-        UserCacheInfo entityInfo)
+        UserCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              EntityLanguagePattern<User>(entityInfo.Id));
@@ -151,13 +160,16 @@ public class UserInvalidationService
         await _cache.RemoveByPatternAsync(CurrencyCache.
             ByUser(entityInfo.Id));
 
+        await _cache.RemoveByPatternAsync(BasketCache.
+            ByUserPattern(entityInfo.Id));
+
         await InvalidateContactAsync(entityInfo);
 
         await InvalidateUserRoleAsync(entityInfo);
     }
 
     private async Task InvalidateUserRoleAsync(
-        UserCacheInfo entityInfo)
+        UserCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(
             UserRoleCache.RolesByUserPattern(entityInfo.Id));
@@ -167,7 +179,7 @@ public class UserInvalidationService
     }
 
     private async Task InvalidateContactAsync(
-        UserCacheInfo entityInfo)
+        UserCacheContext entityInfo)
     {
         if (!string.IsNullOrEmpty(entityInfo.Phone))
         {
@@ -185,35 +197,35 @@ public class UserInvalidationService
             ByContactPattern(entityInfo.UserName));
     }
 
-    private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(
+    private async Task<List<AdvertisementCacheContext>> GetAdvertisementInfos(
         long entityId)
     {
         return await _advertRepository
             .GetCacheInfosByUserAsync(entityId);
     }
 
-    private async Task<PictureCacheInfo?> GetAvatarInfo(
+    private async Task<PictureCacheContext?> GetAvatarInfo(
         long entityId)
     {
         return await _avatarRepository
             .GetCacheInfoByOwnerAsync(entityId);
     }
 
-    private async Task<List<CommentCacheInfo>> GetReviewInfos(
+    private async Task<List<CommentCacheContext>> GetReviewInfos(
         long entityId)
     {
         return await _reviewRepository
             .GetCacheInfosByOwnerAsync(entityId);
     }
 
-    private async Task<List<CommentCacheInfo>> GetReviewRepliInfos(
+    private async Task<List<CommentCacheContext>> GetReviewRepliInfos(
         long entityId)
     {
         return await _reviewRepliRepository
             .GetCacheInfosByOwnerAsync(entityId);
     }
     
-    private async Task<CurrencyCacheInfo?> GetCurrencyInfo(
+    private async Task<CurrencyCacheContext?> GetCurrencyInfo(
         long entityId)
     {
         return await _currencyRepository

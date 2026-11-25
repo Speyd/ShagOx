@@ -18,167 +18,10 @@ namespace ShagOxServer.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.8")
+                .HasAnnotation("ProductVersion", "10.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.Role", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("EntityStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("Active");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.User", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long?>("AvatarId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Bio")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<long?>("CityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("CurrencyId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(254)
-                        .HasColumnType("character varying(254)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("EntityStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("Active");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(35)
-                        .HasColumnType("character varying(35)");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(35)
-                        .HasColumnType("character varying(35)");
-
-                    b.Property<DateTime?>("LastSeenAt")
-                        .HasColumnType("timestamptz");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<bool>("PhoneConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("RegisteredAt")
-                        .HasColumnType("timestamptz");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("character varying(40)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CityId")
-                        .HasDatabaseName("IX_Users_CityId");
-
-                    b.HasIndex("CurrencyId")
-                        .HasDatabaseName("IX_Users_CurrencyId");
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Users_Email")
-                        .HasFilter("\"Email\" IS NOT NULL");
-
-                    b.HasIndex("Phone")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Users_Phone")
-                        .HasFilter("\"Phone\" IS NOT NULL");
-
-                    b.HasIndex("UserName")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Users_UserName")
-                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.UserRole", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("EntityStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("Active");
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("IX_UserRoles_RoleId");
-
-                    b.ToTable("UserRoles");
-                });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
                 {
@@ -254,41 +97,55 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId")
-                        .HasDatabaseName("IX_Advertisements_BuyerId");
-
                     b.HasIndex("CategoryId")
-                        .HasDatabaseName("IX_Advertisements_CategoryId");
+                        .HasDatabaseName("IX_Advertisements_CategoryId")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.HasIndex("ConditionId")
                         .HasDatabaseName("IX_Advertisements_ConditionId");
-
-                    b.HasIndex("CreatedAt")
-                        .HasDatabaseName("IX_Advertisements_CreatedAt");
 
                     b.HasIndex("CurrencyId")
                         .HasDatabaseName("IX_Advertisements_CurrencyId");
 
                     b.HasIndex("OwnerId")
-                        .HasDatabaseName("IX_Advertisements_OwnerId");
+                        .HasDatabaseName("IX_Advertisements_OwnerId")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.HasIndex("Popularity")
                         .HasDatabaseName("IX_Advertisements_Popularity");
 
+                    b.HasIndex("SoldAt")
+                        .HasDatabaseName("IX_Advertisements_SoldAt")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden') AND \"SoldAt\" IS NOT NULL");
+
                     b.HasIndex("StatusId")
                         .HasDatabaseName("IX_Advertisements_StatusId");
+
+                    b.HasIndex("BuyerId", "EntityStatus")
+                        .HasDatabaseName("IX_Advertisements_BuyerId_EntityStatus");
 
                     b.HasIndex("CategoryId", "CreatedAt")
                         .HasDatabaseName("IX_Advertisements_CategoryId_CreatedAt");
 
+                    b.HasIndex("CategoryId", "EntityStatus")
+                        .HasDatabaseName("IX_Advertisements_CategoryId_EntityStatus");
+
                     b.HasIndex("CategoryId", "Popularity")
                         .HasDatabaseName("IX_Advertisements_CategoryId_Popularity");
+
+                    b.HasIndex("CreatedAt", "Id")
+                        .IsDescending()
+                        .HasDatabaseName("IX_Advertisements_CreatedAt_Id")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.HasIndex("OwnerId", "CreatedAt")
                         .HasDatabaseName("IX_Advertisements_OwnerId_CreatedAt");
 
-                    b.HasIndex("CategoryId", "ConditionId", "CreatedAt")
-                        .HasDatabaseName("IX_Advertisements_CategoryId_ConditionId_CreatedAt");
+                    b.HasIndex("OwnerId", "EntityStatus")
+                        .HasDatabaseName("IX_Advertisements_OwnerId_EntityStatus");
+
+                    b.HasIndex("StatusId", "EntityStatus")
+                        .HasDatabaseName("IX_Advertisements_StatusId_EntityStatus");
 
                     b.ToTable("Advertisements");
                 });
@@ -337,7 +194,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AdvertisementId")
-                        .HasDatabaseName("IX_AdvertisementVariants_AdvertisementId");
+                        .HasDatabaseName("IX_AdvertisementVariants_AdvertisementId")
+                        .HasFilter("\"EntityStatus\" <> 'Deleted'");
+
+                    b.HasIndex("AdvertisementId", "EntityStatus")
+                        .HasDatabaseName("IX_AdvertisementVariants_AdvertisementId_EntityStatus");
 
                     b.ToTable("AdvertisementVariants");
                 });
@@ -367,13 +228,16 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdvertisementId")
-                        .HasDatabaseName("IX_Favorites_AdvertisementId");
+                    b.HasIndex("AdvertisementId", "EntityStatus")
+                        .HasDatabaseName("IX_Favorites_AdvertisementId_EntityStatus");
 
                     b.HasIndex("OwnerId", "AdvertisementId")
                         .IsUnique()
                         .HasDatabaseName("IX_Favorites_OwnerId_AdvertisementId")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.HasIndex("OwnerId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_Favorites_OwnerId_EntityStatus_Id");
 
                     b.ToTable("Favorites");
                 });
@@ -406,6 +270,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Statuses_Code")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.HasIndex("Code", "EntityStatus")
+                        .HasDatabaseName("IX_Statuses_Code_EntityStatus");
 
                     b.ToTable("Statuses");
                 });
@@ -458,6 +325,318 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("StatusTranslations");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Role", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Roles_Name")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.UserRole", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId")
+                        .HasDatabaseName("IX_UserRoles_RoleId");
+
+                    b.HasIndex("UserId", "EntityStatus", "RoleId")
+                        .HasDatabaseName("IX_UserRoles_UserId_EntityStatus_RoleId");
+
+                    b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.User", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("AvatarId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Bio")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime?>("BlockedAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<DateTime?>("BlockedUntil")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("CityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("CurrencyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(254)
+                        .HasColumnType("character varying(254)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(35)
+                        .HasColumnType("character varying(35)");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(35)
+                        .HasColumnType("character varying(35)");
+
+                    b.Property<DateTime?>("LastSeenAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<bool>("PhoneConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("RegisteredAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId")
+                        .HasDatabaseName("IX_Users_CityId");
+
+                    b.HasIndex("CurrencyId")
+                        .HasDatabaseName("IX_Users_CurrencyId");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_Email")
+                        .HasFilter("\"Email\" IS NOT NULL");
+
+                    b.HasIndex("Phone")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_Phone")
+                        .HasFilter("\"Phone\" IS NOT NULL");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_UserName")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.HasIndex("RegisteredAt", "Id")
+                        .IsDescending()
+                        .HasDatabaseName("IX_Users_RegisteredAt_Id")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.UserDevice", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("BlockedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("BlockedUntil")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Browser")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeviceIdentifier")
+                        .IsRequired()
+                        .HasMaxLength(45)
+                        .HasColumnType("character varying(45)");
+
+                    b.Property<string>("DeviceName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("DeviceType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(45)
+                        .HasColumnType("character varying(45)");
+
+                    b.Property<bool>("IsTrusted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastActiveAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<string>("OperatingSystem")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId", "DeviceIdentifier")
+                        .IsUnique()
+                        .HasDatabaseName("IX_UserDevices_OwnerId_DeviceIdentifier")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.ToTable("UserDevices");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.UserSession", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("DeviceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<DateTime>("LastUsedAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("RefreshTokenHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("RevocationReason")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("timestamptz");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId")
+                        .HasDatabaseName("IX_UserSessions_DeviceId");
+
+                    b.HasIndex("RefreshTokenHash")
+                        .IsUnique()
+                        .HasDatabaseName("IX_UserSessions_RefreshTokenHash");
+
+                    b.HasIndex("OwnerId", "RevokedAt")
+                        .HasDatabaseName("IX_UserSessions_OwnerId_RevokedAt");
+
+                    b.ToTable("UserSessions");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.Basket", b =>
@@ -523,12 +702,6 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdvertisementId")
-                        .HasDatabaseName("IX_BasketItems_AdvertisementId");
-
-                    b.HasIndex("AdvertisementVariantId")
-                        .HasDatabaseName("IX_BasketItems_AdvertisementVariantId");
-
                     b.HasIndex("ParentId", "AdvertisementId")
                         .IsUnique()
                         .HasDatabaseName("IX_BasketItems_ParentId_AdvertisementId")
@@ -538,6 +711,15 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_BasketItems_ParentId_AdvertisementVariantId")
                         .HasFilter("(\"EntityStatus\" IN ('Active', 'Hidden')) AND (\"AdvertisementVariantId\" IS NOT NULL)");
+
+                    b.HasIndex("AdvertisementId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_BasketItems_AdvertisementId_EntityStatus_Id");
+
+                    b.HasIndex("AdvertisementVariantId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_BasketItems_AdvertisementVariantId_EntityStatus_Id");
+
+                    b.HasIndex("ParentId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_BasketItems_ParentId_EntityStatus_Id");
 
                     b.ToTable("BasketItems");
                 });
@@ -583,14 +765,15 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentableEntityId")
-                        .HasDatabaseName("IX_ReviewComments_CommentableEntityId");
+                    b.HasIndex("Grade")
+                        .HasDatabaseName("IX_ReviewComments_Grade")
+                        .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
-                    b.HasIndex("OwnerId")
-                        .HasDatabaseName("IX_ReviewComments_OwnerId");
+                    b.HasIndex("CommentableEntityId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_ReviewComments_CommentableEntityId_EntityStatus_Id");
 
-                    b.HasIndex("CommentableEntityId", "CreatedAt")
-                        .HasDatabaseName("IX_ReviewComments_CommentableEntityId_CreatedAt");
+                    b.HasIndex("OwnerId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_ReviewComments_OwnerId_EntityStatus_Id");
 
                     b.ToTable("ReviewComments", t =>
                         {
@@ -639,20 +822,14 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentableEntityId")
-                        .HasDatabaseName("IX_ReviewRepliComments_CommentableEntityId");
+                    b.HasIndex("CommentableEntityId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_ReviewRepliComments_CommentableEntityId_EntityStatus_Id");
 
-                    b.HasIndex("OwnerId")
-                        .HasDatabaseName("IX_ReviewRepliComments_OwnerId");
+                    b.HasIndex("OwnerId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_ReviewRepliComments_OwnerId_EntityStatus_Id");
 
-                    b.HasIndex("ParentReplyId")
-                        .HasDatabaseName("IX_ReviewRepliComments_ParentReplyId");
-
-                    b.HasIndex("CommentableEntityId", "CreatedAt")
-                        .HasDatabaseName("IX_ReviewRepliComments_CommentableEntityId_CreatedAt");
-
-                    b.HasIndex("ParentReplyId", "CreatedAt")
-                        .HasDatabaseName("IX_ReviewRepliComments_ParentReplyId_CreatedAt");
+                    b.HasIndex("ParentReplyId", "EntityStatus", "CreatedAt")
+                        .HasDatabaseName("IX_ReviewRepliComments_ParentReplyId_EntityStatus_CreatedAt");
 
                     b.ToTable("ReviewRepliComments");
                 });
@@ -784,13 +961,16 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DictionaryId")
-                        .HasDatabaseName("IX_AttributeDefinitions_DictionaryId");
+                    b.HasIndex("CategoryId", "EntityStatus")
+                        .HasDatabaseName("IX_AttributeDefinitions_CategoryId_EntityStatus");
 
                     b.HasIndex("CategoryId", "Key")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDefinitions_CategoryId_Key")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.HasIndex("DictionaryId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_AttributeDefinitions_DictionaryId_EntityStatus_Id");
 
                     b.ToTable("AttributeDefinitions");
                 });
@@ -857,10 +1037,16 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Code", "EntityStatus")
+                        .HasDatabaseName("IX_AttributeDictionaryValues_Code_EntityStatus");
+
                     b.HasIndex("DictionaryId", "Code")
                         .IsUnique()
                         .HasDatabaseName("IX_AttributeDictionaryValues_DictionaryId_Code")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.HasIndex("DictionaryId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_AttributeDictionaryValues_DictionaryId_EntityStatus_Id");
 
                     b.ToTable("AttributeDictionaryValues");
                 });
@@ -965,7 +1151,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CategoryImageId")
+                    b.Property<long?>("CategoryImageId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Code")
@@ -987,13 +1173,13 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductTypeId")
-                        .HasDatabaseName("IX_Categories_ProductTypeId");
-
                     b.HasIndex("ProductTypeId", "Code")
                         .IsUnique()
                         .HasDatabaseName("IX_Categories_ProductTypeId_Code")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
+
+                    b.HasIndex("ProductTypeId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_Categories_ProductTypeId_EntityStatus_Id");
 
                     b.ToTable("Categories");
                 });
@@ -1156,6 +1342,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasDatabaseName("IX_LineItemAttributes_AttributeDefinitionId")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
+                    b.HasIndex("Order", "EntityStatus")
+                        .HasDatabaseName("IX_LineItemAttributes_Order_EntityStatus");
+
                     b.ToTable("LineItemAttributes");
                 });
 
@@ -1191,8 +1380,8 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasDatabaseName("IX_Cities_Code")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
-                    b.HasIndex("RegionId")
-                        .HasDatabaseName("IX_Cities_RegionId");
+                    b.HasIndex("RegionId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_Cities_RegionId_EntityStatus_Id");
 
                     b.ToTable("Cities");
                 });
@@ -1491,25 +1680,34 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.HasIndex("DeliveryProviderId")
                         .HasDatabaseName("IX_Orders_DeliveryProviderId");
 
-                    b.HasIndex("DeliveryType")
-                        .HasDatabaseName("IX_Orders_DeliveryType");
-
                     b.HasIndex("OrderNumber")
                         .IsUnique()
                         .HasDatabaseName("IX_Orders_OrderNumber")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
-                    b.HasIndex("OrderStatus", "CreatedAt")
-                        .HasDatabaseName("IX_Orders_OrderStatus_CreatedAt");
+                    b.HasIndex("OwnerId")
+                        .HasDatabaseName("IX_Orders_OwnerId");
 
-                    b.HasIndex("OwnerId", "CreatedAt")
-                        .HasDatabaseName("IX_Orders_OwnerId_CreatedAt");
+                    b.HasIndex("EntityStatus", "DeliveryProviderId")
+                        .HasDatabaseName("IX_Orders_EntityStatus_DeliveryProviderId");
 
-                    b.HasIndex("PaymentMethod", "PaymentStatus")
-                        .HasDatabaseName("IX_Orders_PaymentMethod_PaymentStatus");
+                    b.HasIndex("EntityStatus", "DeliveryTrackingNumber")
+                        .HasDatabaseName("IX_Orders_EntityStatus_DeliveryTrackingNumber");
 
-                    b.HasIndex("PaymentProvider", "PaymentTransactionId")
-                        .HasDatabaseName("IX_Orders_PaymentProvider_PaymentTransactionId");
+                    b.HasIndex("EntityStatus", "DeliveryType")
+                        .HasDatabaseName("IX_Orders_EntityStatus_DeliveryType");
+
+                    b.HasIndex("EntityStatus", "OrderStatus", "CreatedAt")
+                        .HasDatabaseName("IX_Orders_EntityStatus_OrderStatus_CreatedAt");
+
+                    b.HasIndex("EntityStatus", "OwnerId", "CreatedAt")
+                        .HasDatabaseName("IX_Orders_EntityStatus_OwnerId_CreatedAt");
+
+                    b.HasIndex("EntityStatus", "PaymentMethod", "PaymentStatus")
+                        .HasDatabaseName("IX_Orders_EntityStatus_PaymentMethod_PaymentStatus");
+
+                    b.HasIndex("EntityStatus", "PaymentProvider", "PaymentTransactionId")
+                        .HasDatabaseName("IX_Orders_EntityStatus_PaymentProvider_PaymentTransactionId");
 
                     b.ToTable("Orders");
                 });
@@ -1555,17 +1753,17 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdvertisementId")
-                        .HasDatabaseName("IX_OrderItems_AdvertisementId");
-
-                    b.HasIndex("AdvertisementVariantId")
-                        .HasDatabaseName("IX_OrderItems_AdvertisementVariantId");
-
-                    b.HasIndex("ParentId")
-                        .HasDatabaseName("IX_OrderItems_ParentId");
-
                     b.HasIndex("UserId")
                         .HasDatabaseName("IX_OrderItems_UserId");
+
+                    b.HasIndex("AdvertisementId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_OrderItems_AdvertisementId_EntityStatus_Id");
+
+                    b.HasIndex("AdvertisementVariantId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_OrderItems_AdvertisementVariantId_EntityStatus_Id");
+
+                    b.HasIndex("ParentId", "EntityStatus", "Id")
+                        .HasDatabaseName("IX_OrderItems_ParentId_EntityStatus_Id");
 
                     b.ToTable("OrderItems");
                 });
@@ -1679,6 +1877,14 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasDatabaseName("IX_PaymentWebhooks_InvoiceId")
                         .HasFilter("(\"EntityStatus\" IN ('Active', 'Hidden')) AND (\"Status\" = 'Succeeded')");
 
+                    b.HasIndex("ReceivedAt")
+                        .HasDatabaseName("IX_PaymentWebhooks_ReceivedAt")
+                        .HasFilter("\"EntityStatus\" = 'Active' AND \"IsProcessed\" = false");
+
+                    b.HasIndex("InvoiceId", "Status")
+                        .HasDatabaseName("IX_PaymentWebhooks_InvoiceId_Status")
+                        .HasFilter("\"EntityStatus\" = 'Active'");
+
                     b.ToTable("PaymentWebhooks");
                 });
 
@@ -1722,9 +1928,6 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("Ccy")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(3)
@@ -1746,6 +1949,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<int>("NumericCode")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Symbol")
                         .IsRequired()
@@ -1796,6 +2002,9 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EntityStatus", "OwnerId")
+                        .HasDatabaseName("IX_AdvertisementImages_EntityStatus_OwnerId");
+
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
                         .HasDatabaseName("IX_AdvertisementImages_OwnerId_Order")
@@ -1840,6 +2049,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasDatabaseName("IX_Avatars_OwnerId")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
+                    b.HasIndex("EntityStatus", "OwnerId")
+                        .HasDatabaseName("IX_Avatars_EntityStatus_OwnerId");
+
                     b.ToTable("Avatars");
                 });
 
@@ -1879,6 +2091,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasDatabaseName("IX_CategoryImages_OwnerId")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
+                    b.HasIndex("EntityStatus", "OwnerId")
+                        .HasDatabaseName("IX_CategoryImages_EntityStatus_OwnerId");
+
                     b.ToTable("CategoryImages");
                 });
 
@@ -1915,6 +2130,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EntityStatus", "OwnerId")
+                        .HasDatabaseName("IX_ReviewImages_EntityStatus_OwnerId");
 
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
@@ -1957,6 +2175,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EntityStatus", "OwnerId")
+                        .HasDatabaseName("IX_ReviewRepliImages_EntityStatus_OwnerId");
 
                     b.HasIndex("OwnerId", "Order")
                         .IsUnique()
@@ -2065,49 +2286,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("VerificationCodes");
                 });
 
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.User", b =>
-                {
-                    b.HasOne("ShagOxServer.Domain.Entities.Location.City", "City")
-                        .WithMany("Users")
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("FK_Users_Cities_CityId");
-
-                    b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
-                        .WithMany("Users")
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("FK_Users_Currencies_CurrencyId");
-
-                    b.Navigation("City");
-
-                    b.Navigation("Currency");
-                });
-
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.UserRole", b =>
-                {
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserRoles_Roles_RoleId");
-
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserRoles_Users_UserId");
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Buyer")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Buyer")
                         .WithMany("BoughtAdvertisements")
                         .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2134,7 +2315,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Advertisements_Currencies_CurrencyId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithMany("SoldAdvertisements")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2182,7 +2363,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Favorites_Advertisements_AdvertisementId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithMany("Favorites")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2206,9 +2387,82 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Translatable");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.UserRole", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserRoles_Roles_RoleId");
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserRoles_Users_UserId");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.User", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Location.City", "City")
+                        .WithMany("Users")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Users_Cities_CityId");
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Specification.Currency", "Currency")
+                        .WithMany("Users")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Users_Currencies_CurrencyId");
+
+                    b.Navigation("City");
+
+                    b.Navigation("Currency");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.UserDevice", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserDevices_Users_OwnerId");
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.UserSession", b =>
+                {
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.UserDevice", "Device")
+                        .WithMany()
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserSessions_UserDevices_DeviceId");
+
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserSessions_Users_OwnerId");
+
+                    b.Navigation("Device");
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.Basket", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithOne("Basket")
                         .HasForeignKey("ShagOxServer.Domain.Entities.Baskets.Basket", "OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2256,7 +2510,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_ReviewComments_Advertisements_CommentableEntityId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2277,7 +2531,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_ReviewRepliComments_ReviewComments_CommentableEntityId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2464,7 +2718,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .HasConstraintName("FK_Orders_DeliveryProviders_DeliveryProviderId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithMany("Orders")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2500,7 +2754,7 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_OrderItems_Orders_ParentId");
 
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", null)
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_OrderItems_Users_UserId");
@@ -2538,7 +2792,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Specification.Pictures.Avatar", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "Owner")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithOne("Avatar")
                         .HasForeignKey("ShagOxServer.Domain.Entities.Specification.Pictures.Avatar", "OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2598,7 +2852,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Verifications.VerificationCode", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Account.User", "User")
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2606,31 +2860,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasConstraintName("FK_VerificationCodes_Users_UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.Role", b =>
-                {
-                    b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("ShagOxServer.Domain.Entities.Account.User", b =>
-                {
-                    b.Navigation("Avatar");
-
-                    b.Navigation("Basket")
-                        .IsRequired();
-
-                    b.Navigation("BoughtAdvertisements");
-
-                    b.Navigation("Favorites");
-
-                    b.Navigation("OrderItems");
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("SoldAdvertisements");
-
-                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Advertisements.Advertisement", b =>
@@ -2660,6 +2889,31 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Navigation("Advertisements");
 
                     b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.User", b =>
+                {
+                    b.Navigation("Avatar");
+
+                    b.Navigation("Basket")
+                        .IsRequired();
+
+                    b.Navigation("BoughtAdvertisements");
+
+                    b.Navigation("Favorites");
+
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("SoldAdvertisements");
+
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.Basket", b =>
@@ -2713,8 +2967,7 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Navigation("Attributes");
 
-                    b.Navigation("CategoryImage")
-                        .IsRequired();
+                    b.Navigation("CategoryImage");
 
                     b.Navigation("Translations");
                 });

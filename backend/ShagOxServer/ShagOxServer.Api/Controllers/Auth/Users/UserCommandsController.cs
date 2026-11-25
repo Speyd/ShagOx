@@ -16,6 +16,7 @@ namespace ShagOxServer.Api.Controllers.Auth.Users;
 
 [ApiController]
 [Route("api/users")]
+[Authorize]
 public class UserCommandsController
     : ApiController
 {
@@ -43,7 +44,7 @@ public class UserCommandsController
         _resetPasswordService = resetPasswordService;
     }
 
-    [Authorize]
+    
     [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
         [FromRoute] long id,
@@ -58,7 +59,6 @@ public class UserCommandsController
         return result.ToActionResult();
     }
 
-    [Authorize]
     [HttpPut("me")]
     public async Task<IActionResult> UpdateMe(
         [FromForm] UserUpdateRequest request)
@@ -69,7 +69,6 @@ public class UserCommandsController
         return result.ToActionResult();
     }
 
-    [Authorize]
     [HttpPut("email")]
     public async Task<IActionResult> ChangeEmail(
         [FromBody] ChangeEmailRequest request)
@@ -80,7 +79,6 @@ public class UserCommandsController
         return result.ToActionResult();
     }
 
-    [Authorize]
     [HttpPut("phone")]
     public async Task<IActionResult> ChangePhone(
         [FromBody] ChangePhoneRequest request)
@@ -91,7 +89,6 @@ public class UserCommandsController
         return result.ToActionResult();
     }
 
-    [Authorize]
     [HttpPut("password")]
     public async Task<IActionResult> ChangePassword(
         [FromBody] ChangePasswordRequest request)
@@ -102,6 +99,7 @@ public class UserCommandsController
         return result.ToActionResult();
     }
 
+    [AllowAnonymous]
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword(
         [FromBody] ResetPasswordRequest request)

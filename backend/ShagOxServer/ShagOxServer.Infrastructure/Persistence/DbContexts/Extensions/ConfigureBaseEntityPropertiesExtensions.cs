@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 namespace ShagOxServer.Infrastructure.Persistence.DbContexts;
-
 public static class ConfigureBaseEntityPropertiesExtensions
 {
     public static void ConfigureBaseEntityProperties(

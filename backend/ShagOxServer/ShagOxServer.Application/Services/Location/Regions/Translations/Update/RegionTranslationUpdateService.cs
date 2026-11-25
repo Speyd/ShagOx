@@ -8,8 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations
 using ShagOxServer.Application.Interfaces.Services.Location.Regions.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Location.Regions.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Regions.Validator;
 using ShagOxServer.Domain.Entities.Location;
@@ -24,8 +22,6 @@ public class RegionTranslationUpdateService
     private readonly IRepository<RegionTranslation> _regionRepository;
     private readonly RegionTranslationValidator _regionTranslationValidator;
 
-    private readonly RegionTranslationInvalidationService _trnsInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RegionTranslationUpdateService> _logger;
 
@@ -34,7 +30,6 @@ public class RegionTranslationUpdateService
         IRepository<RegionTranslation> regionRepository,
         RegionTranslationValidator regionTranslationValidator,
         IRegionTranslationDeleteService regionTranslationDeleteService,
-        RegionTranslationInvalidationService trnsInvalid,
         RegionValidator regionValidator,
         IUnitOfWork unitOfWork,
         ILogger<RegionTranslationUpdateService> logger
@@ -47,7 +42,6 @@ public class RegionTranslationUpdateService
     {
         _regionRepository = regionRepository;
         _regionTranslationValidator = regionTranslationValidator;
-        _trnsInvalid = trnsInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -117,9 +111,6 @@ public class RegionTranslationUpdateService
             return Result<UpdateResponse>
                    .Fail(EntityErrorResources.RegionTranslationUpdateFailed);
         }
-
-        await _trnsInvalid.InvalidateCreateAsync(
-            BaseTranslationCacheMapper.ToInfo(region.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

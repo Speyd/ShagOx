@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Model.Title</title>
+</head>
+
+<body style="margin:0; padding:0; background:#f4f4f4;
+             font-family:Arial,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0"
+       style="background:#f4f4f4; padding:30px 10px;">
+    <tr>
+        <td align="center">
+
+            <table width="600" cellpadding="0" cellspacing="0"
+                   style="max-width:600px; background:#ffffff;
+                          border-radius:12px;">
+
+                <tr>
+                    <td align="center" style="padding:45px 30px;">
+
+                        <div style="width:65px; height:65px;
+                                    line-height:65px;
+                                    background:#e0f2f1;
+                                    color:#00897b;
+                                    border-radius:50%;
+                                    font-size:32px;
+                                    font-weight:bold;">
+                            &#10003;
+                        </div>
+
+                        <h1 style="color:#222; margin-top:25px;">
+                            @Model.Heading
+                        </h1>
+
+                        <p style="color:#777; line-height:1.6;">
+                            @Model.Message
+                        </p>
+
+                        <p style="color:#555; line-height:1.6;">
+                            @Model.CodeInstruction
+                        </p>
+
+                        <table cellpadding="0" cellspacing="0"
+                               style="margin:30px auto;">
+                            <tr>
+                                <td align="center"
+                                    style="background:#e0f2f1;
+                                           border:1px dashed #80cbc4;
+                                           border-radius:8px;
+                                           padding:20px 35px;">
+
+                                    <span style="font-size:32px;
+                                                 font-weight:bold;
+                                                 letter-spacing:8px;
+                                                 color:#222;">
+                                        @Model.Code
+                                    </span>
+
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="color:#999; line-height:1.6;">
+                            @Model.ExpirationMessage
+                        </p>
+
+                        <p style="color:#999; font-size:13px;
+                                  line-height:1.6; margin-top:30px;">
+                            @Model.SecurityMessage
+                        </p>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="center"
+                        style="padding:25px; color:#999;
+                               font-size:13px;">
+                        @Model.Footer
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

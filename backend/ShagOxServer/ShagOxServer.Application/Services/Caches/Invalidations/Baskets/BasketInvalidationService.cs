@@ -1,16 +1,16 @@
-using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
-using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;
+using ShagOxServer.Domain.Cache.Baskets;
+using ShagOxServer.Domain.Cache.LineItems;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 public class BasketInvalidationService
-    : ICacheInvalidationService<Basket, BasketCacheInfo>
+    : ICacheInvalidationService<Basket, BasketCacheContext>
 {
     private readonly IBasketItemQueryRepository _itemRepository;
     private readonly BasketItemInvalidationService _itemInvalid;
@@ -30,12 +30,12 @@ public class BasketInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        BasketCacheInfo entityInfo)
+        BasketCacheContext entityInfo)
     {
     }
 
     public async Task InvalidateDeleteAsync(
-       BasketCacheInfo entityInfo)
+       BasketCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -50,13 +50,13 @@ public class BasketInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        BasketCacheInfo entityInfo)
+        BasketCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        BasketCacheInfo entityInfo)
+        BasketCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
            .EntityLanguagePattern<Basket>(entityInfo.Id));
@@ -65,7 +65,7 @@ public class BasketInvalidationService
           .ByUserPattern(entityInfo.UserId));
     }
 
-    private async Task<List<LineItemCacheInfo>> GetBasketItemInfos(
+    private async Task<List<LineItemCacheContext>> GetBasketItemInfos(
         long basketId)
     {
         return await _itemRepository

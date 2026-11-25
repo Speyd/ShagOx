@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Entities.Account;
+using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.Roles;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles.Extensions;

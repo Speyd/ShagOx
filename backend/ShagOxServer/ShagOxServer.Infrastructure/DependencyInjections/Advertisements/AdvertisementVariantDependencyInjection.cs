@@ -16,8 +16,8 @@ public static class AdvertisementVariantDependencyInjection
         services.AddScoped<IAdvertisementVariantExistsRepository,
             AdvertisementVariantExistsRepository>();
 
-        services.AddScoped<IAdvertisementVariantCommandRepository,
-            AdvertisementVariantCommandRepository>();
+        services.AddScoped<IAdvertisementVariantCommandsRepository,
+            AdvertisementVariantCommandsRepository>();
        
 
         return services;

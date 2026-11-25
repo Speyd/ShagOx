@@ -10,8 +10,6 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Translations.Validator;
 using ShagOxServer.Application.Services.Advertisements.Statuses.Validator;
 using ShagOxServer.Application.Services.Base.Translations;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -24,8 +22,6 @@ public class StatusTranslationUpdateService
     private readonly IRepository<StatusTranslation> _statusRepository;
     private readonly StatusTranslationValidator _statusTranslationValidator;
 
-    private readonly StatusTranslationInvalidationService _transInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusTranslationUpdateService> _logger;
 
@@ -34,7 +30,6 @@ public class StatusTranslationUpdateService
         IStatusTranslationDeleteService deleteService,
         StatusTranslationValidator statusTranslationValidator,
         StatusValidator statusValidator,
-        StatusTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusTranslationUpdateService> logger
     ) 
@@ -42,7 +37,6 @@ public class StatusTranslationUpdateService
     {
         _statusRepository = statusRepository;
         _statusTranslationValidator = statusTranslationValidator;
-        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -112,9 +106,6 @@ public class StatusTranslationUpdateService
                 EntityErrorResources.AdvertStatusTranslationUpdateFailed);
 
         }
-
-        await _transInvalid.InvalidateUpdateAsync(
-            BaseTranslationCacheMapper.ToInfo(status.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

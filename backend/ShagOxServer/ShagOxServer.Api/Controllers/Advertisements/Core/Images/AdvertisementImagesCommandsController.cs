@@ -6,7 +6,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
-using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Images.Create;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -22,12 +21,8 @@ public class AdvertisementImagesCommandsController
     private readonly IPictureOrderingService<Advertisement,
         AdvertisementImage> _imageService;
 
-    private readonly IAdvertisementImageCreateService _imageCreate;
-
-
     public AdvertisementImagesCommandsController(
         IPictureOrderingService<Advertisement,AdvertisementImage> imageService,
-        IAdvertisementImageCreateService imageCreate,
         IAdvertisementExistsRepository existsAdvertRepository, 
         IUserAdminQueryService userQueryService,
         IUserContext userContext
@@ -35,7 +30,6 @@ public class AdvertisementImagesCommandsController
         : base(existsAdvertRepository, userQueryService, userContext)
     {
         _imageService = imageService;
-        _imageCreate = imageCreate;
     }
 
 

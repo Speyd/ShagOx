@@ -6,7 +6,6 @@ using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Create;
-
 public partial class OrderCreateService 
     : IOrderCreateService
 {

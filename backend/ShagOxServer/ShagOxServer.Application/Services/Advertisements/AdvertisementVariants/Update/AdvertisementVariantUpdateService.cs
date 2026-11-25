@@ -8,11 +8,9 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping.Cache;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Base.Update;
-using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -24,10 +22,6 @@ public partial class AdvertisementVariantUpdateService
     private readonly IRepository<AdvertisementVariant> _variantRepository;
     private readonly AdvertisementVariantValidator _variantValidator;
 
-    private readonly AdvertisementValidator _advertValidator;
-
-    private readonly AdvertisementVariantInvalidationService _variantInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementVariantUpdateService> _logger;
 
@@ -35,20 +29,18 @@ public partial class AdvertisementVariantUpdateService
     public AdvertisementVariantUpdateService(
         IRepository<AdvertisementVariant> variantRepository,
         AdvertisementVariantValidator variantValidator,
-        AdvertisementValidator advertValidator,
-        AdvertisementVariantInvalidationService variantInvalid,
-        IAdvertisementVariantDeleteService deleteService,
+        IAdvertisementVariantDeleteService variantService,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantUpdateService> logger,
         IDataCacheService cache
     )
-        : base(deleteService, variantValidator,
-            logger, unitOfWork)
+        : base(variantService, 
+            variantValidator, 
+            logger, 
+            unitOfWork)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;
-        _advertValidator = advertValidator;
-        _variantInvalid = variantInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -108,7 +100,7 @@ public partial class AdvertisementVariantUpdateService
         CancellationToken cancellationToken = default)
     {
         var variant = await _variantValidator
-            .GetByIdAttachAsync(variantId, cancellationToken);
+            .GetByIdAsync(variantId, cancellationToken);
 
         if (!variant.IsSuccess)
         {
@@ -140,9 +132,6 @@ public partial class AdvertisementVariantUpdateService
         }
 
         _variantRepository.Update(variant.Value!);
-
-        await _variantInvalid.InvalidateUpdateAsync(
-            AdvertisementVariantCacheMapper.ToInfo(variant.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

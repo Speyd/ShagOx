@@ -78,8 +78,7 @@ public class OrderItemQueryService
             .ApplyMapperAsync(entity.Advertisement.Status);
 
         var advertDto = AdvertisementItemMapper
-            .ToDto(entity.Advertisement, converts, statusDto,
-                entity.AdvertisementVariant);
+            .ToDto(entity.Advertisement, converts, statusDto);
 
         return OrderItemMapper.ToDto(entity, advertDto);
     }

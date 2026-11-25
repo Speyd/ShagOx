@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Comments.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Comments;
 using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Domain.Filters.Comments;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
@@ -14,7 +14,7 @@ public partial class ReviewRepliCommentQueryRepository
         ReviewRepliCommentSearchFilter>,
       IReviewRepliCommentQueryRepository
 {
-    public async Task<List<CommentCacheInfo>> GetCacheInfoByRepliAsync(
+    public async Task<List<CommentCacheContext>> GetCacheInfoByRepliAsync(
        long repliId,
        CancellationToken cancellationToken = default,
        EntityStatus? status = null)

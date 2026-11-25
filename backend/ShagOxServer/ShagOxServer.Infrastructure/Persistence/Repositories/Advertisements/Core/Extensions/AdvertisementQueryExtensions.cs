@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Cache;
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
@@ -35,7 +34,7 @@ public static class AdvertisementQueryExtensions
             .Include(x => x.Status);
     }
 
-    public static IQueryable<AdvertisementCacheInfo> SelectCacheInfo(
+    public static IQueryable<AdvertisementCacheContext> SelectCacheInfo(
         this IQueryable<Advertisement> query,
         EntityStatus status = EntityStatus.Active)
     {
@@ -43,16 +42,16 @@ public static class AdvertisementQueryExtensions
             x => x.SelectCacheInfo(status));
     }
 
-    public static AdvertisementCacheInfo SelectCacheInfo(
+    public static AdvertisementCacheContext SelectCacheInfo(
         this Advertisement x,
         EntityStatus status = EntityStatus.Active)
     {
-        return new AdvertisementCacheInfo(
+        return new AdvertisementCacheContext(
             x.Id,
             x.OwnerId,
             x.BuyerId,
             x.Variants
-                .Select(v => new AdvertisementVariantCacheInfo(
+                .Select(v => new AdvertisementVariantCacheContext(
                     v.Id, status))
                 .ToList());
     }

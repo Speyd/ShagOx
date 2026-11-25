@@ -7,9 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewComments.Validator;
@@ -24,16 +22,12 @@ public class ReviewImageUpdateService
         PictureOrderUpdateRequest>,
     IReviewImageUpdateService
 {
-    private readonly ReviewImageInvalidationService _imageInvalid;
-
-
     public ReviewImageUpdateService(
         IRepository<ReviewImage> imageRepository,
         PictureValidator pictureLoadValidator,
         IReviewImageDeleteService pictureDeleteService,
         ReviewImageValidator imageValidator,
         ReviewCommentValidator commentValidator,
-        ReviewImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ReviewImageUpdateService> logger
     )
@@ -45,7 +39,6 @@ public class ReviewImageUpdateService
             unitOfWork, 
             logger)
     {
-        _imageInvalid = imageInvalid;
     }
 
 
@@ -64,13 +57,6 @@ public class ReviewImageUpdateService
             return Result<PictureUpdateResponse>.Fail(
                 EntityErrorResources.ReviewCommentUpdateFailed);
         }
-    }
-
-    public override async Task InvalidateCache(
-        ReviewImage picture)
-    {
-        await _imageInvalid.InvalidateUpdateAsync(
-           PictureCacheMapper.ToInfo(picture));
     }
 
     protected override int ApplyUpdates(

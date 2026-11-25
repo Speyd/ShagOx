@@ -38,23 +38,6 @@ public partial class OrderQueryRepository
         return basketId?.Id;
     }
 
-    public async Task<bool> IsSellerAsync(
-        long orderId,
-        long userId,
-        CancellationToken cancellationToken = default)
-    {
-        return await _db.Orders
-            .Where(x => x.Id == orderId)
-            .AnyAsync(x =>
-                x.OrderItems.Any(i =>
-                    i.EntityStatus == EntityStatus.Active &&
-                    i.Advertisement.OwnerId == userId) &&
-                x.OrderItems.All(i =>
-                    i.EntityStatus != EntityStatus.Active ||
-                    i.Advertisement.OwnerId == userId),
-                cancellationToken);
-    }
-
     public async Task<Order?> GetByDeliveryTrackingNumberAsync(
         string trackingNumber,
         CancellationToken cancellationToken = default,

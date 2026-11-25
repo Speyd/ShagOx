@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,13 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DeviceBlocked" xml:space="preserve">
+    <value>Цей пристрій заблоковано.</value>
+  </data>
+  <data name="DeviceIdentifierRequired" xml:space="preserve">
+    <value>Ідентифікатор пристрою обов'язковий.</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Неправильне ім’я користувача або пароль.</value>
+  </data>
   <data name="LoginFailed" xml:space="preserve">
     <value>Не вдалося увійти.</value>
   </data>
-  <data name="AccountNotVerified" xml:space="preserve">
-    <value>Акаунт не підтверджено. Введіть код підтвердження.</value>
+  <data name="LoginNotAllowed" xml:space="preserve">
+    <value>Вхід до системи для цього користувача неможливий.</value>
   </data>
-  <data name="AccountBlocked" xml:space="preserve">
-    <value>Акаунт заблоковано.</value>
+  <data name="RefreshTokenExpired" xml:space="preserve">
+    <value>Термін дії токена оновлення минув.</value>
+  </data>
+  <data name="SessionRevoked" xml:space="preserve">
+    <value>Сесію було відкликано.</value>
   </data>
 </root>

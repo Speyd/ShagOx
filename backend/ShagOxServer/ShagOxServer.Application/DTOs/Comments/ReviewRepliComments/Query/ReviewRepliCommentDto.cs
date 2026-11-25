@@ -13,7 +13,6 @@ public sealed record ReviewRepliCommentDto
     string Text,
     DateTime CreatedAt,
     DateTime? UpdatedAt,
-    long? ParentReplyId,
     List<long> RepliComments,
     List<ReviewRepliImageDto> Pictures
 ) : CommentDto(Id,

@@ -1123,6 +1123,60 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create user device..
+        /// </summary>
+        internal static string UserDeviceCreateFailed {
+            get {
+                return ResourceManager.GetString("UserDeviceCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete user device..
+        /// </summary>
+        internal static string UserDeviceDeleteFailed {
+            get {
+                return ResourceManager.GetString("UserDeviceDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update user device..
+        /// </summary>
+        internal static string UserDeviceUpdateFailed {
+            get {
+                return ResourceManager.GetString("UserDeviceUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create user session..
+        /// </summary>
+        internal static string UserSessionCreateFailed {
+            get {
+                return ResourceManager.GetString("UserSessionCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete user session..
+        /// </summary>
+        internal static string UserSessionDeleteFailed {
+            get {
+                return ResourceManager.GetString("UserSessionDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update user session..
+        /// </summary>
+        internal static string UserSessionUpdateFailed {
+            get {
+                return ResourceManager.GetString("UserSessionUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update user..
         /// </summary>
         internal static string UserUpdateFailed {

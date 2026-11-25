@@ -63,7 +63,7 @@ public abstract partial class LineItemQueryRepository<TEntity, TFilter>
 
         var variantIds = dependencies
             .Where(x => x.VariantId.HasValue)
-            .Select(x => x.VariantId.Value)
+            .Select(x => x.VariantId!.Value)
             .Distinct()
             .ToArray();
 

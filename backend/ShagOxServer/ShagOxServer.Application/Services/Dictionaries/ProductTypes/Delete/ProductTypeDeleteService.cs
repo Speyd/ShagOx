@@ -6,7 +6,6 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Del
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
-using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -19,8 +18,6 @@ public class ProductTypeDeleteService
     private readonly IRepository<ProductType> _productTypeRepository;
     private readonly ProductTypeValidator _productTypeValidator;
 
-    private readonly ProductTypeInvalidationService _productInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ProductTypeDeleteService> _logger;
 
@@ -29,7 +26,6 @@ public class ProductTypeDeleteService
         IRepository<ProductType> productTypeRepository,
         ICommandRepository<ProductType> productTypeCommand,
         ProductTypeValidator productTypeValidator,
-        ProductTypeInvalidationService productInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeDeleteService> logger
     )
@@ -37,7 +33,6 @@ public class ProductTypeDeleteService
     {
         _productTypeRepository = productTypeRepository;
         _productTypeValidator = productTypeValidator;
-        _productInvalid = productInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -74,20 +69,11 @@ public class ProductTypeDeleteService
                 EntityErrorResources.ProductTypeDeleteFailed);
         }
 
-        await InvalidateCache(productType.Value!);
-
         return Result<DeleteResponse>.Success(
             new DeleteResponse(
                 productType.Value!.Id,
                 DateTime.UtcNow
             )
         );
-    }
-
-    public override async Task InvalidateCache(
-        ProductType entity)
-    {
-        await _productInvalid.InvalidateDeleteAsync(
-            ProductTypeCacheMapper.ToInfo(entity));
     }
 }

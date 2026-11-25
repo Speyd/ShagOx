@@ -3,7 +3,6 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.PictureOrdering;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core;
-using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.PictureOrdering;
@@ -16,18 +15,13 @@ public partial class PictureOrderingService<TOwner, TPicture>
         CancellationToken cancellationToken = default)
     {
         var owner = await _ownerValidator
-            .GetByIdAttachAsync(ownerId, cancellationToken);
+            .GetByIdAsync(ownerId, cancellationToken);
 
         if (!owner.IsSuccess)
         {
             return Result<PictureSyncResponce<TPicture>>
                 .Fail(owner.Error);
         }
-
-        await _ownerRepository.LoadCollectionAsync(
-            owner.Value!,
-            nameof(IHasPictures<TOwner, TPicture>.Pictures),
-            cancellationToken);
 
         return await SyncPicturesAsync(
             owner.Value!,
@@ -66,7 +60,7 @@ public partial class PictureOrderingService<TOwner, TPicture>
 
             foreach (var picture in request)
             {
-                await SyncPictureAsync(
+                var result = await SyncPictureAsync(
                     owner,
                     picture,
                     loadedPictures,
@@ -74,6 +68,12 @@ public partial class PictureOrderingService<TOwner, TPicture>
                     updatePictures,
                     cancellationToken
                  );
+
+                if (!result.IsSuccess)
+                {
+                    return Result<PictureSyncResponce<TPicture>>
+                        .Fail(result.Error);
+                }
             }
 
             return Result<PictureSyncResponce<TPicture>>
@@ -156,14 +156,15 @@ public partial class PictureOrderingService<TOwner, TPicture>
             }
             else
             {
-                result = Result<bool>.Fail("");
+                result = Result<bool>
+                    .Fail(updateResult.Error);
             }
         }
 
         if (result is not null &&
             !result.IsSuccess)
         {
-            throw new Exception("Handle image sync errors and rollback");
+            return result;
         }
 
         return Result<bool>.Success(true);

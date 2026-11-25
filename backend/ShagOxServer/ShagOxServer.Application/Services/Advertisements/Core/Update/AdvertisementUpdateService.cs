@@ -9,13 +9,10 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
-using ShagOxServer.Application.Services.Advertisements.Core.Mapping.Cache;
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Base.Update;
-using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.PictureOrdering;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
@@ -38,8 +35,6 @@ public partial class AdvertisementUpdateService
 
     private readonly IAdvertisementVariantUpdateService _variantUpdateService;
 
-    private readonly AdvertisementInvalidationService _advertInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementUpdateService> _logger;
 
@@ -53,7 +48,6 @@ public partial class AdvertisementUpdateService
         AdvertisementVariantValidator variantValidator,
         IAdvertisementDeleteService deleteService,
         IAdvertisementVariantUpdateService variantUpdateService,
-        AdvertisementInvalidationService advertInvalid,
         IFavoriteQueryRepository favoriteRepository,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementUpdateService> logger
@@ -66,7 +60,6 @@ public partial class AdvertisementUpdateService
         _variantValidator = variantValidator;
         _executor = executor;
         _variantUpdateService = variantUpdateService;
-        _advertInvalid = advertInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -95,20 +88,6 @@ public partial class AdvertisementUpdateService
                 .Fail(variantsResult.Error!);
         }
 
-        var foreignVariant = variantsResult.Value?.Keys
-            .Any(id => advert.Value!.Variants.All(v => v.Id != id)) ?? false;
-
-        if (foreignVariant)
-        {
-            return Result<UpdateResponse>.NotFound(
-                EntityNamesResources.AdvertisementVariant);
-        }
-
-        var tracked = await _validator
-            .GetByIdAttachAsync(advertId, cancellationToken);
-        if (!tracked.IsSuccess)
-            return Result<UpdateResponse>.Fail(tracked.Error);
-
         await _unitOfWork.BeginTransactionAsync();
 
         int updatedCount = 0;
@@ -116,10 +95,10 @@ public partial class AdvertisementUpdateService
         try
         {
             updatedCount = AdvertisementUpdater
-                .ApplyUpdates(tracked.Value!, request);
+                .ApplyUpdates(advert.Value!, request);
 
             var imagesResult = await _executor.SyncAsync(
-                tracked.Value!,
+                advert.Value!,
                 request.Pictures,
                 cancellationToken
             );
@@ -140,6 +119,8 @@ public partial class AdvertisementUpdateService
                 return Result<UpdateResponse>
                     .Fail(updateResult.Error!);
             }
+
+            _advertRepository.Update(advert.Value!);
 
             await _executor.CommitAndDeleteAsync(
                 imagesResult.Value!
@@ -174,9 +155,6 @@ public partial class AdvertisementUpdateService
         _logger.LogInformation(
                 "Advertisement updated successfully. Id: {Id}",
                 advert.Value!.Id);
-
-        await _advertInvalid.InvalidateUpdateAsync(
-            AdvertisementCacheMapper.ToInfo(advert.Value!));
 
         return Result<UpdateResponse>.Success(
             new UpdateResponse(

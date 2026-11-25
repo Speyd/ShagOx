@@ -29,6 +29,7 @@ public class BasketItemConfiguration
                .HasForeignKey(x => x.AdvertisementVariantId)
                .OnDelete(DeleteBehavior.Cascade);
 
+
         builder.HasUniqueActiveIndex(
             x => new { x.ParentId, x.AdvertisementId },
             "\"AdvertisementVariantId\" IS NULL");
@@ -36,5 +37,26 @@ public class BasketItemConfiguration
         builder.HasUniqueActiveIndex(
             x => new { x.ParentId, x.AdvertisementVariantId },
             "\"AdvertisementVariantId\" IS NOT NULL");
+
+        builder.HasIndex(x => new
+        {
+            x.ParentId,
+            x.EntityStatus,
+            x.Id
+        });
+
+        builder.HasIndex(x => new
+        {
+            x.AdvertisementId,
+            x.EntityStatus,
+            x.Id
+        });
+
+        builder.HasIndex(x => new
+        {
+            x.AdvertisementVariantId,
+            x.EntityStatus,
+            x.Id
+        });
     }
 }

@@ -19,8 +19,6 @@ public class StatusDeleteService
     private readonly IRepository<Status> _statusRepository;
     private readonly StatusValidator _statusValidator;
 
-    private readonly StatusInvalidationService _statusInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<StatusDeleteService> _logger;
 
@@ -29,7 +27,6 @@ public class StatusDeleteService
         IRepository<Status> statusRepository,
         ICommandRepository<Status> statusCommand,
         StatusValidator statusValidator,
-        StatusInvalidationService statusInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusDeleteService> logger
     )
@@ -37,7 +34,6 @@ public class StatusDeleteService
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;
-        _statusInvalid = statusInvalid;
          _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -74,20 +70,11 @@ public class StatusDeleteService
                      .Fail(EntityErrorResources.AdvertStatusDeleteFailed);
         }
 
-        await InvalidateCache(status.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                status.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        Status entity)
-    {
-        await _statusInvalid.InvalidateDeleteAsync(
-           StatusCacheMapper.ToInfo(entity));
     }
 }

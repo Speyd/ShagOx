@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -119,6 +119,9 @@
   </resheader>
   <data name="FailedToSendVerificationEmail" xml:space="preserve">
     <value>Не удалось отправить электронное письмо для подтверждения.</value>
+  </data>
+  <data name="FailedToSendVerificationTwoFactor" xml:space="preserve">
+    <value>Не удалось отправить код двухфакторной аутентификации.</value>
   </data>
   <data name="InvalidEmail" xml:space="preserve">
     <value>Электронный адрес указан неправильно.</value>

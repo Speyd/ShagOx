@@ -8,8 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Trans
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -24,8 +22,6 @@ public class CategoryTranslationUpdateService
     private readonly IRepository<CategoryTranslation> _categoryRepository;
     private readonly CategoryTranslationValidator _categoryTranslationValidator;
 
-    private readonly CategoryTranslationInvalidationService _transInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CategoryTranslationUpdateService> _logger;
 
@@ -34,7 +30,6 @@ public class CategoryTranslationUpdateService
         IRepository<CategoryTranslation> categoryRepository,
         CategoryTranslationValidator categoryTranslationValidator,
         CategoryValidator categoryValidator,
-        CategoryTranslationInvalidationService transInvalid,
         ICategoryTranslationDeleteService categoryTranslationDeleteService,
         IUnitOfWork unitOfWork,
         ILogger<CategoryTranslationUpdateService> logger
@@ -46,7 +41,6 @@ public class CategoryTranslationUpdateService
     {
         _categoryRepository = categoryRepository;
         _categoryTranslationValidator = categoryTranslationValidator;
-        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -116,9 +110,6 @@ public class CategoryTranslationUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.CategoryTranslationUpdateFailed);
         }
-
-        await _transInvalid.InvalidateUpdateAsync(
-            BaseTranslationCacheMapper.ToInfo(category.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

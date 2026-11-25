@@ -8,9 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Del
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Update;
-using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
-using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Delete;
-using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -23,8 +20,6 @@ public class ProductTypeUpdateService
     private readonly IRepository<ProductType> _productTypeRepository;
     private readonly ProductTypeValidator _productTypeValidator;
 
-    private readonly ProductTypeInvalidationService _productInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ProductTypeUpdateService> _logger;
 
@@ -32,7 +27,6 @@ public class ProductTypeUpdateService
     public ProductTypeUpdateService(
         IRepository<ProductType> productTypeRepository,
         ProductTypeValidator productTypeValidator,
-        ProductTypeInvalidationService productInvalid,
         IProductTypeDeleteService productDeleteService,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeUpdateService> logger
@@ -41,7 +35,6 @@ public class ProductTypeUpdateService
     {
         _productTypeRepository = productTypeRepository;
         _productTypeValidator = productTypeValidator;
-        _productInvalid = productInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -112,9 +105,6 @@ public class ProductTypeUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.ProductTypeUpdateFailed);
         }
-
-        await _productInvalid.InvalidateUpdateAsync(
-            ProductTypeCacheMapper.ToInfo(productType.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

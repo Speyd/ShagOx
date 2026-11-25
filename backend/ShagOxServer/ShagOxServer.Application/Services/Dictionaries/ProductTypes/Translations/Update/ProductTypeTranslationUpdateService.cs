@@ -8,9 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Tra
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.ProductTypes.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
-using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Delete;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Translations.Validator;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -25,8 +22,6 @@ public class ProductTypeTranslationUpdateService
     private readonly IRepository<ProductTypeTranslation> _typeRepository;
     private readonly ProductTypeTranslationValidator _typeTranslationValidator;
 
-    private readonly CategoryTranslationInvalidationService _transInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ProductTypeTranslationUpdateService> _logger;
 
@@ -36,7 +31,6 @@ public class ProductTypeTranslationUpdateService
         ProductTypeTranslationValidator typeTranslationValidator,
         IProductTypeTranslationDeleteService typeTranslationDeleteService,
         ProductTypeValidator typeValidator,
-        CategoryTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeTranslationUpdateService> logger
     ) 
@@ -48,7 +42,6 @@ public class ProductTypeTranslationUpdateService
     {
         _typeRepository = typeRepository;
         _typeTranslationValidator = typeTranslationValidator;
-        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -118,9 +111,6 @@ public class ProductTypeTranslationUpdateService
             return Result<UpdateResponse>.Fail(
                 EntityErrorResources.ProductTypeTranslationUpdateFailed);
         }
-
-        await _transInvalid.InvalidateUpdateAsync(
-            BaseTranslationCacheMapper.ToInfo(productType.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

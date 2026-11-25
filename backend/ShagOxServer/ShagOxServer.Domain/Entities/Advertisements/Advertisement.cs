@@ -1,5 +1,7 @@
+using ShagOxServer.Domain.Base.Cache;
 using ShagOxServer.Domain.Base.Owner;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Cache.Advertisements;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -11,7 +13,8 @@ using System.Text.Json;
 namespace ShagOxServer.Domain.Entities.Advertisements;
 public class Advertisement 
     : OwnedEntity<User>, 
-    IHasPictures<Advertisement, AdvertisementImage>
+    IHasPictures<Advertisement, AdvertisementImage>,
+    IEntityCache<Advertisement, AdvertisementCacheContext>
 {
     public string Title { get; set; } = "";
     public string Description { get; set; } = "";
@@ -92,8 +95,23 @@ public class Advertisement
         = [];
 
 
+    public AdvertisementCacheContext GetCacheContext()
+    {
+        return new AdvertisementCacheContext(
+            Id,
+            OwnerId,
+            BuyerId,
+            Variants.Select(x => new AdvertisementVariantCacheContext(x.Id, x.EntityStatus)).ToList(),
+            EntityStatus);
+    }
+
     public override string ToString()
     {
         return Title ?? string.Empty;
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

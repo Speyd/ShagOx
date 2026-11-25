@@ -8,7 +8,6 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Base.Pictures;
-using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Specification.Pictures.Core.Delete;
@@ -69,8 +68,6 @@ public abstract class PictureDeleteService<TPicture>
 
             await _unitOfWork.CommitAsync();
 
-            await InvalidateCache(picture.Value!);
-
             return result;
         }
         catch (Exception ex)
@@ -130,8 +127,6 @@ public abstract class PictureDeleteService<TPicture>
                 $"{typeof(TPicture).Name} deleted successfully. " +
                 "Id: {Id}",
                 picture.Value!.Id);
-
-            await InvalidateCache(picture.Value!);
 
             return Result<DeleteResponse>.Success(
                new DeleteResponse(

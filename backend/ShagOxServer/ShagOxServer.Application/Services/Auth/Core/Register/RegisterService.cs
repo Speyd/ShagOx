@@ -1,10 +1,12 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Register;
+using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.DTOs.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Auth.Registrations;
@@ -14,7 +16,7 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Roles;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Register;
@@ -28,12 +30,12 @@ public partial class RegisterService
 
     private readonly IVerificationSender _senderVerification;
 
-    private readonly UserInvalidationService _userInvalid;
-
     private readonly UserCreater _userCreater;
     private readonly UserRoleService _roleService;
     private readonly UserPasswordService _passwordService;
     private readonly UserContactApplier _contactApplier;
+
+    private readonly IUserDeviceCreateService _userDeviceService;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RegisterService> _logger;
@@ -44,11 +46,11 @@ public partial class RegisterService
         IUserQueryRepository userQueryRepository,
         IBasketCreateService basketService,
         UserCreater userCreater,
-        UserInvalidationService userInvalid,
         UserRoleService roleService,
         UserPasswordService passwordService,
         UserContactApplier contactApplier,
         IVerificationSender senderVerification,
+        IUserDeviceCreateService userDeviceService,
         IUnitOfWork unitOfWork,
         ILogger<RegisterService> logger)
     {
@@ -60,9 +62,9 @@ public partial class RegisterService
         _passwordService = passwordService;
         _contactApplier = contactApplier;
         _senderVerification = senderVerification;
+        _userDeviceService = userDeviceService;
         _unitOfWork = unitOfWork;
         _logger = logger;
-        _userInvalid = userInvalid;
     }
 
 
@@ -94,9 +96,25 @@ public partial class RegisterService
 
                     if (!createResult.IsSuccess)
                     {
+                        await _unitOfWork.RollbackAsync();
+
                         return Result<RegisterResponse>
                             .Fail(createResult.Error);
                     }
+                }
+
+                var deviceResult = await _userDeviceService.CreateInternalAsync(
+                    new UserDeviceCreateRequest(
+                        user.Id, 
+                        request.DeviceIdentifier
+                ));
+
+                if (!deviceResult.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+
+                    return Result<RegisterResponse>
+                        .Fail(deviceResult.Error);
                 }
 
                 await _userCreater.SetDefaultName(user);
@@ -114,18 +132,17 @@ public partial class RegisterService
             }
 
             await _unitOfWork.CommitAsync();
-  
+
+
             var verificationResult = await SendVerification(user);
 
             if (!verificationResult.IsSuccess)
                 return Result<RegisterResponse>.Fail(verificationResult.Error);
 
+
             _logger.LogInformation(
                 "User registered successfully. UserId: {UserId}",
                 user.Id);
-
-            await _userInvalid.InvalidateCreateAsync(
-                UserCacheMapper.ToInfo(user));
 
             return Result<RegisterResponse>.Success(
                new RegisterResponse(user)
@@ -141,37 +158,5 @@ public partial class RegisterService
             return Result<RegisterResponse>.Fail(
                 RegistrationAuthResources.RegistrationFailed);
         }
-    }
-
-    public async Task<Result<bool>> CreateUserAggregateAsync(
-        User user)
-    {
-        _userRepository.Add(user);
-
-        await _unitOfWork.SaveChangesAsync();
-
-        var basketResult = await _basketService.CreateInternalAsync(
-            new BasketCreateRequest(),
-            user.Id);
-
-
-        if (!basketResult.IsSuccess)
-        {
-            return Result<bool>
-                .Fail(basketResult.Error);
-        }
-
-        var roleResult = await _roleService
-            .AddDefaultRoleAsync(user);
-
-        if (!roleResult.IsSuccess)
-        {
-            return Result<bool>
-                .Fail(roleResult.Error);
-        }
-
-        await _unitOfWork.SaveChangesAsync();
-
-        return Result<bool>.Success(true);
     }
 }

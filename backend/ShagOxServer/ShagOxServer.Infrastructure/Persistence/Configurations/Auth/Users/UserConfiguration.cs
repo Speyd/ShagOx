@@ -1,0 +1,85 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ShagOxServer.Domain.Entities.Auth.Users;
+using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
+
+namespace ShagOxServer.Infrastructure.Persistence.Configurations.Auth.Users;
+public class UserConfiguration 
+    : IEntityTypeConfiguration<User>
+{
+    public void Configure(
+        EntityTypeBuilder<User> builder)
+    {
+        builder.Property(x => x.FirstName)
+               .HasMaxLength(35);
+
+        builder.Property(x => x.LastName)
+               .HasMaxLength(35);
+
+        builder.Property(x => x.UserName)
+            .IsRequired()
+            .HasMaxLength(40);
+
+        builder.Property(x => x.Bio)
+               .HasMaxLength(500);
+
+        builder.Property(x => x.Phone)
+               .HasMaxLength(20);             
+
+        builder.Property(x => x.Email)
+               .HasMaxLength(254);
+
+        builder.Property(x => x.Status)
+            .HasConversion<string>()
+            .HasMaxLength(50)
+            .IsRequired();
+
+        builder.Property(x => x.PasswordHash)
+            .HasColumnType("text");
+
+        builder.Property(x => x.LastSeenAt)
+            .HasColumnType("timestamptz");
+
+        builder.Property(x => x.RegisteredAt)
+            .HasColumnType("timestamptz");
+
+        builder.Property(x => x.BlockedAt)
+            .HasColumnType("timestamptz");
+
+        builder.HasOne(x => x.Currency)
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.CurrencyId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.City)
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.CityId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany(x => x.UserRoles)
+               .WithOne(x => x.User)
+               .HasForeignKey(x => x.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+
+
+        builder.HasIndex(x => x.CityId);
+
+        builder.HasUniqueActiveIndex(x => x.UserName);
+
+        builder.HasUniqueActiveIndex(x => x.Email)
+               .HasFilter("\"Email\" IS NOT NULL");
+
+        builder.HasUniqueActiveIndex(x => x.Phone)
+               .HasFilter("\"Phone\" IS NOT NULL");
+
+        builder.HasIndex(x => new
+        {
+            x.RegisteredAt,
+            x.Id
+        })
+        .IsDescending(true, true)
+        .HasFilter(
+            "\"EntityStatus\" IN ('Active', 'Hidden')");
+    }
+}

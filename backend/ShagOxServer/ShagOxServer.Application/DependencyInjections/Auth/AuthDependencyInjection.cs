@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.DependencyInjections.Auth.Users;
 using ShagOxServer.Application.Interfaces.Services.Auth;
-using ShagOxServer.Application.Services.Auth.Core.Login;
+using ShagOxServer.Application.Interfaces.Services.Auth.Core;
+using ShagOxServer.Application.Services.Auth.Core.Logout;
 using ShagOxServer.Application.Services.Auth.Register;
 
 namespace ShagOxServer.Application.DependencyInjections.Auth;
@@ -9,8 +11,13 @@ public static class AuthDependencyInjection
     public static IServiceCollection AddAuthApplication(
         this IServiceCollection services)
     {
-        services.AddScoped<IRegisterService, RegisterService>();
-        services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<IRegisterService,
+            RegisterService>();
+
+        services.AddScoped<ILogoutService,
+            LogoutService>();
+
+        services.AddLoginApplication();
 
         services.AddUsersApplication();
 

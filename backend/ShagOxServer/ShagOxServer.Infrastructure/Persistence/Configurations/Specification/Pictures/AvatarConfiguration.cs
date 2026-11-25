@@ -24,5 +24,11 @@ public class AvatarConfiguration
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasUniqueActiveIndex(x => x.OwnerId);
+
+        builder.HasIndex(x => new
+        {
+            x.EntityStatus,
+            x.OwnerId
+        });
     }
 }

@@ -474,4 +474,22 @@
   <data name="ProoductNotAvailable" xml:space="preserve">
     <value>Der Artikel "{0}" ist nicht mehr verfügbar.</value>
   </data>
+  <data name="UserDeviceCreateFailed" xml:space="preserve">
+    <value>Das Benutzergerät konnte nicht erstellt werden.</value>
+  </data>
+  <data name="UserDeviceDeleteFailed" xml:space="preserve">
+    <value>Das Benutzergerät konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="UserDeviceUpdateFailed" xml:space="preserve">
+    <value>Das Benutzergerät konnte nicht aktualisiert werden.</value>
+  </data>
+  <data name="UserSessionCreateFailed" xml:space="preserve">
+    <value>Benutzersitzung konnte nicht erstellt werden.</value>
+  </data>
+  <data name="UserSessionDeleteFailed" xml:space="preserve">
+    <value>Benutzersitzung konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="UserSessionUpdateFailed" xml:space="preserve">
+    <value>Benutzersitzung konnte nicht aktualisiert werden.</value>
+  </data>
 </root>

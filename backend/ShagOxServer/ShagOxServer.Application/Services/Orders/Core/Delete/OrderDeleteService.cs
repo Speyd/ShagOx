@@ -20,7 +20,6 @@ public class OrderDeleteService
     private readonly IRepository<Order> _orderRepository;
     private readonly OrderValidator _orderValidator;
 
-    private readonly OrderInvalidationService _orderInvalidation;
     private readonly IOrderItemDeleteService _itemDeleteService;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -31,7 +30,6 @@ public class OrderDeleteService
         IRepository<Order> orderRepository,
         ICommandRepository<Order> orderCommand,
         OrderValidator orderValidator,
-        OrderInvalidationService orderInvalidation,
         IOrderItemDeleteService itemDeleteService,
         IUnitOfWork unitOfWork,
         ILogger<OrderDeleteService> logger
@@ -40,7 +38,6 @@ public class OrderDeleteService
     {
         _orderRepository = orderRepository;
         _orderValidator = orderValidator;
-        _orderInvalidation = orderInvalidation;
         _itemDeleteService = itemDeleteService;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -82,8 +79,6 @@ public class OrderDeleteService
             "Order deleted successfully. BasketItemId: {BasketItemId}",
             order.Value!.Id);
 
-        await InvalidateCache(order.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                order.Value!.Id,
@@ -112,12 +107,5 @@ public class OrderDeleteService
         }
 
         return Result<bool>.Success(true);
-    }
-
-    public override async Task InvalidateCache(
-        Order entity)
-    {
-        await _orderInvalidation.InvalidateDeleteAsync(
-            OrderCacheMapper.ToInfo(entity));
     }
 }

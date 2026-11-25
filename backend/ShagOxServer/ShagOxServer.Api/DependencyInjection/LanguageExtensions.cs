@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
 using ShagOxServer.Api.Providers;
 using ShagOxServer.Application.Interfaces.Providers;
 using System.Globalization;
+using Twilio.Types;
 
 namespace ShagOxServer.Api.DependencyInjection;
 public static class LanguageExtensions
@@ -28,9 +30,13 @@ public static class LanguageExtensions
 
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
+
+            options.RequestCultureProviders.Clear();
+
+            options.RequestCultureProviders.Add(
+                new AcceptLanguageHeaderRequestCultureProvider()
+            );
         });
-
-
 
         services.AddSingleton<ILanguageProvider, LanguageProvider>();
 

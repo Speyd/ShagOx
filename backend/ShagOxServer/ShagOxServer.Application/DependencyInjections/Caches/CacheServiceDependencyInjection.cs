@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Caches;
-using ShagOxServer.Application.Services.Caches.Core;
+using ShagOxServer.Application.Services.Caches.Core.Services;
 
 namespace ShagOxServer.Application.DependencyInjections.Caches;
 public static class CacheServiceDependencyInjection

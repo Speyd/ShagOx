@@ -13,8 +13,8 @@ public static class PaymentsDependencyInjection
         services.AddScoped<IPaymentQueryRepository,
             PaymentQueryRepository>();
 
-        services.AddScoped<IPaymentCommandRepository,
-            PaymentCommandRepository>();
+        services.AddScoped<IPaymentCommandsRepository,
+            PaymentCommandsRepository>();
 
         services.AddPaymentProviedersInfrastructure();
 

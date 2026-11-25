@@ -132,19 +132,4 @@
   <data name="WebhookInvalidPayload" xml:space="preserve">
     <value>Die Webhook-Anfrage enthält ungültige Daten.</value>
   </data>
-  <data name="OrderPaymentNotRequired" xml:space="preserve">
-    <value>Diese Bestellung wird bei Lieferung bezahlt und erfordert keine Online-Zahlung.</value>
-  </data>
-  <data name="OrderAlreadyPaid" xml:space="preserve">
-    <value>Die Bestellung wurde bereits bezahlt.</value>
-  </data>
-  <data name="OrderPaymentUnavailable" xml:space="preserve">
-    <value>Diese Bestellung kann nicht mehr bezahlt werden. Bitte geben Sie eine neue Bestellung auf.</value>
-  </data>
-  <data name="OrderPaymentInProgress" xml:space="preserve">
-    <value>Die Zahlung wird von der Bank verarbeitet. Bitte aktualisieren Sie die Seite in einigen Minuten.</value>
-  </data>
-  <data name="PaymentRefundFailed" xml:space="preserve">
-    <value>Die Rückerstattung an den Käufer ist fehlgeschlagen. Der Bestellstatus wurde nicht geändert. Bitte versuchen Sie es später erneut.</value>
-  </data>
 </root>

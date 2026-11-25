@@ -1,13 +1,13 @@
-using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Cache.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 public class AdvertisementVariantInvalidationService
-    : ICacheInvalidationService<AdvertisementVariant, 
-        AdvertisementVariantCacheInfo>
+    : ICacheInvalidationService<AdvertisementVariant,
+        AdvertisementVariantCacheContext>
 {
     private readonly IDataCacheService _cache;
 
@@ -20,23 +20,23 @@ public class AdvertisementVariantInvalidationService
     }
 
     public async Task InvalidateCreateAsync(
-        AdvertisementVariantCacheInfo entityInfo)
+        AdvertisementVariantCacheContext entityInfo)
     { }
 
     public async Task InvalidateDeleteAsync(
-        AdvertisementVariantCacheInfo entityInfo)
+        AdvertisementVariantCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     public async Task InvalidateUpdateAsync(
-        AdvertisementVariantCacheInfo entityInfo)
+        AdvertisementVariantCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-       AdvertisementVariantCacheInfo entityInfo)
+       AdvertisementVariantCacheContext entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys
             .Entity<AdvertisementVariant>(entityInfo.Id));

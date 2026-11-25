@@ -21,7 +21,14 @@ public partial class PictureOrderingService<TOwner, TPicture>
                 picture.Id));
         }
 
-        _pictureRepository.Delete(getPicture);
+        var result = await _pictureDeleteService
+            .DeleteRecordAsync(picture.Id!.Value, cancellationToken);
+
+        if (!result.IsSuccess)
+        {
+            return Result<bool>
+                .Fail(result.Error!);
+        }
 
         await _unitOfWork.SaveChangesAsync();
 

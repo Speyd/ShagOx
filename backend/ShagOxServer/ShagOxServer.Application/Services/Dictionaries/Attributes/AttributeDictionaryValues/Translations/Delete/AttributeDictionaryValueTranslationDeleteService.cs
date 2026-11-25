@@ -5,10 +5,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Translations.Validator;
-using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,8 +17,6 @@ public class AttributeDictionaryValueTranslationDeleteService
     private readonly IRepository<AttributeDictionaryValueTranslation> _attributeRepository;
     private readonly AttributeDictionaryValueTranslationValidator _attributeValidator;
 
-    private readonly AttributeDictionaryValueTranslationInvalidationService _transInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDictionaryValueTranslationDeleteService> _logger;
 
@@ -30,7 +25,6 @@ public class AttributeDictionaryValueTranslationDeleteService
         IRepository<AttributeDictionaryValueTranslation> attributeRepository,
         ICommandRepository<AttributeDictionaryValueTranslation> attributeCommand,
         AttributeDictionaryValueTranslationValidator attributeValidator,
-        AttributeDictionaryValueTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryValueTranslationDeleteService> logger
     )
@@ -38,7 +32,6 @@ public class AttributeDictionaryValueTranslationDeleteService
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
-        _transInvalid = transInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -76,20 +69,11 @@ public class AttributeDictionaryValueTranslationDeleteService
                 EntityErrorResources.AttributeDictionaryValueTranslationDeleteFailed);
         }
 
-        await InvalidateCache(attribute.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                attribute.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        AttributeDictionaryValueTranslation entity)
-    {
-        await _transInvalid.InvalidateDeleteAsync(
-            BaseTranslationCacheMapper.ToInfo(entity));
     }
 }

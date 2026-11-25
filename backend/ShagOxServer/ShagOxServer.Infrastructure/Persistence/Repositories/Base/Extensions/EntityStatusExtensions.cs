@@ -46,7 +46,8 @@ public static class EntityStatusExtensions
                 query.Where(x => x.EntityStatus == EntityStatus.Deleted),
 
             EntityStatus.ActiveAndHidden =>
-                query.Where(x => x.EntityStatus == EntityStatus.Active ||
+                query.Where(
+                    x => x.EntityStatus == EntityStatus.Active ||
                     x.EntityStatus == EntityStatus.Hidden),
 
             EntityStatus.All => query,

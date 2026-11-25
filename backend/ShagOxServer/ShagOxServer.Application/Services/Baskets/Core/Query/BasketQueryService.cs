@@ -86,7 +86,7 @@ public class BasketQueryService
 
                 return await basket.ToResultAsync(ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

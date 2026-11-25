@@ -22,8 +22,6 @@ public class FavoriteCreateService
 
     private readonly AdvertisementValidator _advertValidator;
 
-    private readonly FavoriteInvalidationService _favoriteInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<FavoriteCreateService> _logger;
 
@@ -32,14 +30,12 @@ public class FavoriteCreateService
         IRepository<Favorite> favoriteRepository,
         UserValidator userValidator,
         AdvertisementValidator advertValidator,
-        FavoriteInvalidationService favoriteInvalid,
         IUnitOfWork unitOfWork,
         ILogger<FavoriteCreateService> logger)
     {
         _favoriteRepository = favoriteRepository;
         _userValidator = userValidator;
         _advertValidator = advertValidator;
-        _favoriteInvalid = favoriteInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -93,9 +89,6 @@ public class FavoriteCreateService
         _logger.LogInformation(
             "Favorite create successfully. Id: {Id}",
             favorite.Id);
-
-        await _favoriteInvalid.InvalidateCreateAsync(
-            FavoriteCacheMapper.ToInfo(favorite));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

@@ -1,6 +1,6 @@
-﻿using CloudinaryDotNet;
+using CloudinaryDotNet;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Infrastructure.Options;
+using ShagOxServer.Application.Common.Options.Pictures;
 
 namespace ShagOxServer.Api.DependencyInjection;
 public static class CloudinaryExstensions
@@ -10,7 +10,7 @@ public static class CloudinaryExstensions
        IConfiguration configuration)
     {
         services.Configure<CloudinaryOptions>(
-            configuration.GetSection("Cloudinary"));
+            configuration.GetSection(CloudinaryOptions.SectionName));
 
 
         services.AddSingleton(sp =>

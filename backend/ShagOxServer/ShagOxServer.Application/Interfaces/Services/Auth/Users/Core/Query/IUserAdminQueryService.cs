@@ -1,6 +1,6 @@
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Filters.Auth.Users;
+using ShagOxServer.Domain.Filters.Auth.Users.Core;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

@@ -55,7 +55,7 @@ public class NovaPoshtaTypeResolver
                 var json = JsonSerializer.Serialize(body);
 
                 using var response = await _httpClient.PostAsync(
-                    "https://api.novaposhta.ua/v2.0/json/",
+                    "",
                     new StringContent(json, Encoding.UTF8, "application/json"),
                     cancellationToken);
 
@@ -90,7 +90,7 @@ public class NovaPoshtaTypeResolver
                 return Result<IReadOnlyList<NovaPoshtaWarehouseTypeDto>>
                     .Success(result.Data ?? []);
             },
-            _cacheOptions.KeyExpiration);
+            _cacheOptions.DefaultExpiration);
     }
 
     public string GetWarehouseTypeRef(

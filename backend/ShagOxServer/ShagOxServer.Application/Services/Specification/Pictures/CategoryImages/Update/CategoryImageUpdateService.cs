@@ -7,10 +7,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.CategoryImages.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
@@ -24,16 +22,12 @@ public class CategoryImageUpdateService
         PictureUpdateRequest>,
     ICategoryImageUpdateService
 {
-    private readonly CategoryImageInvalidationService _imageInvalid;
-
-
     public CategoryImageUpdateService(
         IRepository<CategoryImage> imageRepository,
         PictureValidator pictureLoadValidator,
         CategoryImageValidator imageValidator,
         ICategoryImageDeleteService imageDeleteService,
         CategoryValidator advertisementValidator,
-        CategoryImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CategoryImageUpdateService> logger
     )
@@ -45,7 +39,6 @@ public class CategoryImageUpdateService
             unitOfWork,
             logger)
     {
-        _imageInvalid = imageInvalid;
     }
 
 
@@ -65,13 +58,6 @@ public class CategoryImageUpdateService
             return Result<PictureUpdateResponse>.Fail(
                 EntityErrorResources.CategoryImageUpdateFailed);
         }
-    }
-
-    public override async Task InvalidateCache(
-        CategoryImage picture)
-    {
-        await _imageInvalid.InvalidateUpdateAsync(
-           PictureCacheMapper.ToInfo(picture));
     }
 
     protected override int ApplyUpdates(

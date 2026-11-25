@@ -8,7 +8,6 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Currencies.Validator;
-using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,8 +19,6 @@ public class CurrencyDeleteService
     private readonly IRepository<Currency> _currencyRepository;
     private readonly CurrencyValidator _currencyValidator;
 
-    private readonly CurrencyInvalidationService _currencyInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CurrencyDeleteService> _logger;
 
@@ -30,7 +27,6 @@ public class CurrencyDeleteService
         IRepository<Currency> currencyRepository,
         ICommandRepository<Currency> currencyCommand,
         CurrencyValidator currencyValidator,
-        CurrencyInvalidationService currencyInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CurrencyDeleteService> logger
     )
@@ -38,7 +34,6 @@ public class CurrencyDeleteService
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;
-        _currencyInvalid = currencyInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -75,20 +70,11 @@ public class CurrencyDeleteService
                  .Fail(EntityErrorResources.CurrencyDeleteFailed);
         }
 
-        await InvalidateCache(currency.Value!);
-
         return Result<DeleteResponse>.Success(
           new DeleteResponse(
               currency.Value!.Id,
               DateTime.UtcNow
           )
       );
-    }
-
-    public override async Task InvalidateCache(
-        Currency entity)
-    {
-        await _currencyInvalid.InvalidateDeleteAsync(
-            CurrencyCacheMapper.ToInfo(entity));
     }
 }

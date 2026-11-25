@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
@@ -14,7 +14,7 @@ public partial class CategoryQueryRepository
     : SearchRepository<Category, CategorySearchFilter>,
       ICategoryQueryRepository
 {
-    public async Task<List<CategoryCacheInfo>> GetCacheInfosByProductTypeAsync(
+    public async Task<List<CategoryCacheContext>> GetCacheInfosByProductTypeAsync(
         long productTypeId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)

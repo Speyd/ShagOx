@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Dictionaries.Categories.Query;
-using ShagOxServer.Application.DTOs.Specification.Pictures.CategoryImages.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Translations;
@@ -59,15 +58,14 @@ public class CategoryQueryService
         var translation = await _translationRepository
             .GetByIdentificatorAsync(entity.Code, _language.Language);
 
-        CategoryImageDto? imageDto = null;
-
-        if (entity.CategoryImage is not null)
-        {
-            imageDto = await _imageQueryService
+        var imageDto = entity.CategoryImage is null ? null 
+            : await _imageQueryService
                 .ApplyMapperAsync(entity.CategoryImage);
-        }
 
-        return CategoryMapper.ToDto(entity, imageDto, translation?.Name);
+        return CategoryMapper.ToDto(
+            entity, 
+            imageDto, 
+            translation?.Name);
     }
 
     public async Task<Result<PagedResult<CategoryDto>>> GetByProductTypeAsync(
@@ -94,7 +92,7 @@ public class CategoryQueryService
                 return await categories.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

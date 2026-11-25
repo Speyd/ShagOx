@@ -1,6 +1,6 @@
 using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.Payment;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Domain.Entities.Specification;
@@ -31,20 +31,15 @@ public class PriceConversionService
         var convertedPrice = price;
         var coefficient = 1m;
 
-        if (userCurrency is not null
-            && _currencyConverter.TryConvert(
+        if (userCurrency is not null)
+        {
+            var result = _currencyConverter.Convert(
                 price,
                 sourceCurrency.Code,
-                userCurrency.Code,
-                out var converted,
-                out var rate))
-        {
-            convertedPrice = converted;
-            coefficient = rate;
-        }
-        else
-        {
-            userCurrency = null;
+                userCurrency.Code);
+
+            convertedPrice = result.ConvertedAmount;
+            coefficient = result.Coefficient;
         }
 
         return CurrencyConvertMapper.ToDto(

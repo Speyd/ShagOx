@@ -58,6 +58,8 @@ public class VerificationCodeCleanupService
             {
                 _logger.LogInformation(
                     "Verification code cleanup service stopped.");
+
+                break;
             }
             catch (Exception ex)
             {

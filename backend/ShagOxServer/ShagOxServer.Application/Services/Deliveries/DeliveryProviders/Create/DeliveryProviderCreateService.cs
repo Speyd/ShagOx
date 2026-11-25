@@ -5,8 +5,6 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries;
-using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Mapping;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -18,8 +16,6 @@ public class DeliveryProviderCreateService
     private readonly IRepository<DeliveryProvider> _deliveryRepository;
     private readonly DeliveryProviderValidator _deliveryValidator;
 
-    private readonly DeliveryProviderInvalidationService _deliveryInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeliveryProviderCreateService> _logger;
 
@@ -27,13 +23,11 @@ public class DeliveryProviderCreateService
     public DeliveryProviderCreateService(
         IRepository<DeliveryProvider> deliveryRepository,
         DeliveryProviderValidator deliveryValidator,
-        DeliveryProviderInvalidationService deliveryInvalid,
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderCreateService> logger)
     {
         _deliveryRepository = deliveryRepository;
         _deliveryValidator = deliveryValidator;
-        _deliveryInvalid = deliveryInvalid;
         _logger = logger;
         _unitOfWork = unitOfWork;
     }
@@ -74,9 +68,6 @@ public class DeliveryProviderCreateService
             return Result<CreateResponse>
                     .Fail(EntityErrorResources.DeliveryProviderCreateFailed);
         }
-
-        await _deliveryInvalid.InvalidateCreateAsync(
-            DeliveryProviderCacheMapper.ToInfo(delivery));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

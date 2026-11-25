@@ -1,5 +1,7 @@
+using ShagOxServer.Domain.Base.Cache;
 using ShagOxServer.Domain.Base.Owner;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Cache.Orders;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
 using ShagOxServer.Domain.Entities.Orders.Enum;
@@ -8,7 +10,8 @@ using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Domain.Entities.Orders;
 public class Order
-    : OwnedEntity<User>
+    : OwnedEntity<User>,
+    IEntityCache<Order, OrderCacheContext>
 {
     public string OrderNumber { get; set; } = null!;
 
@@ -93,9 +96,24 @@ public class Order
     public DateTime? CancelledAt { get; set; }
 
 
+    public OrderCacheContext GetCacheContext()
+    {
+        return new OrderCacheContext(
+            Id, 
+            OwnerId,
+            OrderNumber, 
+            PaymentTransactionId,
+            DeliveryTrackingNumber, 
+            EntityStatus);
+    }
 
     public override string ToString()
     {
         return $"OwnerId: {OwnerId}";
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

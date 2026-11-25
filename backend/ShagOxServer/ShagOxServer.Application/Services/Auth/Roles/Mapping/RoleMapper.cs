@@ -1,5 +1,5 @@
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Application.Services.Auth.Roles.Mapping;
 public static class RoleMapper

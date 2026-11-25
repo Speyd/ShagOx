@@ -17,10 +17,9 @@ public static class BasketItemQueryExtensions
                     .Take(1))
             .Include(x => x.Advertisement)
                 .ThenInclude(x => x.Status)
+
             .Include(x => x.Advertisement)
                 .ThenInclude(x => x.Currency)
-            .Include(x => x.Advertisement)
-                .ThenInclude(x => x.Variants)
 
             .Include(x => x.Parent);
     }

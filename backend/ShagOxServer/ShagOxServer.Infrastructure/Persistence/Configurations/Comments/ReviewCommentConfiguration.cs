@@ -36,15 +36,23 @@ public class ReviewCommentConfiguration
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        builder.HasIndex(x => x.CommentableEntityId);
-
-        builder.HasIndex(x => x.OwnerId);
+        builder.HasIndex(x => new
+        {
+            x.OwnerId,
+            x.EntityStatus,
+            x.Id
+        });
 
         builder.HasIndex(x => new
         {
             x.CommentableEntityId,
-            x.CreatedAt
+            x.EntityStatus,
+            x.Id
         });
+
+        builder.HasIndex(x => x.Grade)
+            .HasFilter(
+                "\"EntityStatus\" IN ('Active', 'Hidden')");
 
 
         builder.ToTable(table =>

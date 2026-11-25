@@ -9,9 +9,7 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.CategoryImages.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
-using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
@@ -22,10 +20,7 @@ public class CategoryDeleteService
     private readonly IRepository<Category> _categoryRepository;
     private readonly CategoryValidator _categoryValidator;
 
-    private readonly CategoryInvalidationService _categoryInvalid;
-
     private readonly ICategoryImageDeleteService _imageDeleteService;
-    private readonly CategoryImageValidator _imageValidator;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CategoryDeleteService> _logger;
@@ -35,9 +30,7 @@ public class CategoryDeleteService
         IRepository<Category> categoryRepository,
         ICommandRepository<Category> categoryCommand,
         CategoryValidator categoryValidator,
-        CategoryInvalidationService categoryInvalid,
         ICategoryImageDeleteService imageDeleteService,
-        CategoryImageValidator imageValidator,
         IUnitOfWork unitOfWork,
         ILogger<CategoryDeleteService> logger
     )
@@ -45,9 +38,7 @@ public class CategoryDeleteService
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
-        _categoryInvalid = categoryInvalid;
         _imageDeleteService = imageDeleteService;
-        _imageValidator = imageValidator;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -63,40 +54,25 @@ public class CategoryDeleteService
         if (!category.IsSuccess)
             return Result<DeleteResponse>.Fail(category.Error);
 
-        // `category` comes from the replica with its whole graph (all advertisements);
-        // delete tracked primary copies instead of attaching that graph.
-        var tracked = await _categoryValidator
-            .GetByIdAttachAsync(id, cancellationToken);
-
-        if (!tracked.IsSuccess)
-            return Result<DeleteResponse>.Fail(tracked.Error);
-
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            // The picture is optional (categories can be created without one).
-            if (category.Value!.CategoryImage is { } image)
+            _categoryRepository.Delete(category.Value!);
+
+            if (category.Value!.CategoryImage is not null)
             {
-                var trackedImage = await _imageValidator
-                    .GetByIdAttachAsync(image.Id, cancellationToken);
+                var imageResult = await _imageDeleteService
+                    .DeleteInternalAsync(category.Value!.CategoryImage);
 
-                if (trackedImage.IsSuccess)
+                if (!imageResult.IsSuccess)
                 {
-                    var imageResult = await _imageDeleteService
-                        .DeleteInternalAsync(trackedImage.Value!);
+                    await _unitOfWork.RollbackAsync();
 
-                    if (!imageResult.IsSuccess)
-                    {
-                        await _unitOfWork.RollbackAsync();
-
-                        return Result<DeleteResponse>
-                            .Fail(imageResult.Error);
-                    }
+                    return Result<DeleteResponse>
+                        .Fail(imageResult.Error);
                 }
             }
-
-            _categoryRepository.Delete(tracked.Value!);
 
             await _unitOfWork.CommitAsync();
         }
@@ -113,8 +89,6 @@ public class CategoryDeleteService
                 .Fail(EntityErrorResources.CategoryDeleteFailed);
         }
 
-        await InvalidateCache(category.Value!);
-
         return Result<DeleteResponse>.Success(
             new DeleteResponse(
                 category.Value!.Id,
@@ -123,10 +97,26 @@ public class CategoryDeleteService
       );
     }
 
-    public override async Task InvalidateCache(
-        Category entity)
+    public override async Task<Result<bool>> SoftBodyDeleteAsync(
+        Category entity,
+        CancellationToken cancellationToken = default)
     {
-        await _categoryInvalid.InvalidateDeleteAsync(
-            CategoryCacheMapper.ToInfo(entity));
+        var body = await base.SoftBodyDeleteAsync(entity,
+            cancellationToken);
+
+        if (!body.IsSuccess)
+            Result<bool>.Fail(body.Error);
+
+        if(entity.CategoryImage is not null)
+        {
+            var imageDelete = await _imageDeleteService
+                .SoftDeleteRecordAsync(entity.CategoryImage, 
+                    cancellationToken);
+
+            if (!imageDelete.IsSuccess)
+                Result<bool>.Fail(imageDelete.Error);
+        }
+
+        return Result<bool>.Success(true);
     }
 }

@@ -68,12 +68,6 @@ public static class AdvertisementUpdater
             count++;
         }
 
-        if (request.StatusId.HasValue)
-        {
-            advert.StatusId = request.StatusId.Value;
-            count++;
-        }
-
         if (request.BuyerId.HasValue)
         {
             advert.BuyerId = request.BuyerId.Value;

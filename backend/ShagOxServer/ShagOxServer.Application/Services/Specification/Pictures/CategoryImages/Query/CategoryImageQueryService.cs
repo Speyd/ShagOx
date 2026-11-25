@@ -71,7 +71,7 @@ public class CategoryImageQueryService
                 return await image.ToResultAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

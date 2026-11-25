@@ -1,12 +1,12 @@
-using ShagOxServer.Application.DTOs.Baskets.Core.Cache;
-using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Domain.Cache.Baskets;
+using ShagOxServer.Domain.Cache.LineItems;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 public class BasketItemBasketInvalidationService
-    : ICacheInvalidationService<BasketItem, LineItemCacheInfo>
+    : ICacheInvalidationService<BasketItem, LineItemCacheContext>
 {
     private readonly IBasketQueryRepository _basketRepository;
     private readonly BasketInvalidationService _basketInvalid;
@@ -22,7 +22,7 @@ public class BasketItemBasketInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-       LineItemCacheInfo entityInfo)
+       LineItemCacheContext entityInfo)
     {
         var basketInfo = await GetBasketInfos(
             entityInfo.ParentId);
@@ -35,7 +35,7 @@ public class BasketItemBasketInvalidationService
 
 
     public async Task InvalidateDeleteAsync(
-        LineItemCacheInfo entityInfo)
+        LineItemCacheContext entityInfo)
     {
         var basketInfo = await GetBasketInfos(
              entityInfo.ParentId);
@@ -47,7 +47,7 @@ public class BasketItemBasketInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        LineItemCacheInfo entityInfo)
+        LineItemCacheContext entityInfo)
     {
         var basketInfo = await GetBasketInfos(
              entityInfo.ParentId);
@@ -58,7 +58,7 @@ public class BasketItemBasketInvalidationService
         await _basketInvalid.InvalidateUpdateAsync(basketInfo);
     }
 
-    private async Task<BasketCacheInfo?> GetBasketInfos(
+    private async Task<BasketCacheContext?> GetBasketInfos(
         long basketId)
     {
         var userId = await _basketRepository
@@ -67,7 +67,7 @@ public class BasketItemBasketInvalidationService
         if (!userId.HasValue)
             return null;
 
-        return new BasketCacheInfo(
+        return new BasketCacheContext(
             basketId,
             userId.Value);
     }

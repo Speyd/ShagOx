@@ -1,6 +1,3 @@
-using ShagOxServer.Application.DTOs.Advertisements.Core.Cache;
-using ShagOxServer.Application.DTOs.Base.Cache;
-using ShagOxServer.Application.DTOs.Specification.Conditions.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
@@ -8,11 +5,14 @@ using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Translations;
 using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Cache.Advertisements;
+using ShagOxServer.Domain.Cache.Specification;
+using ShagOxServer.Domain.Cache.Translations;
 using ShagOxServer.Domain.Entities.Specification;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 public class ConditionInvalidationService
-    : ICacheInvalidationService<Condition, ConditionCacheInfo>
+    : ICacheInvalidationService<Condition, ConditionCacheContext>
 {
 
     private readonly IAdvertisementQueryRepository _advertRepository;
@@ -41,13 +41,13 @@ public class ConditionInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-       ConditionCacheInfo entityInfo)
+       ConditionCacheContext entityInfo)
     {
         await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        ConditionCacheInfo entityInfo)
+        ConditionCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -72,7 +72,7 @@ public class ConditionInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        ConditionCacheInfo entityInfo)
+        ConditionCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -88,7 +88,7 @@ public class ConditionInvalidationService
     }
 
     private async Task InvalidateAsync(
-        ConditionCacheInfo entityInfo)
+        ConditionCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
             .EntityLanguagePattern<Condition>(entityInfo.Id));
@@ -97,7 +97,7 @@ public class ConditionInvalidationService
     }
 
     private async Task InvalidatePatternAsync(
-        ConditionCacheInfo entityInfo)
+        ConditionCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
            EntityLanguagePagedPattern<Condition>(
@@ -108,14 +108,14 @@ public class ConditionInvalidationService
                 entityInfo.Status));
     }
 
-    private async Task<List<AdvertisementCacheInfo>> GetAdvertisementInfos(
+    private async Task<List<AdvertisementCacheContext>> GetAdvertisementInfos(
         long entityId)
     {
         return await _advertRepository
             .GetCacheInfosByConditionAsync(entityId);
     }
 
-    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+    private async Task<List<TranslationCacheContext>> GetTranslationInfos(
         long entityId)
     {
         return await _transRepository

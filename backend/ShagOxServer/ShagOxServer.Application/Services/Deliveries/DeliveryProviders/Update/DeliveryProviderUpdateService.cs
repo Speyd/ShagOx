@@ -22,8 +22,6 @@ public class DeliveryProviderUpdateService
     private readonly IRepository<DeliveryProvider> _deliveryRepository;
     private readonly DeliveryProviderValidator _deliveryValidator;
 
-    private readonly DeliveryProviderInvalidationService _deliveryInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeliveryProviderUpdateService> _logger;
 
@@ -32,7 +30,6 @@ public class DeliveryProviderUpdateService
         IRepository<DeliveryProvider> deliveryRepository,
         DeliveryProviderValidator deliveryValidator,
         IDeliveryProviderDeleteService deleteService,
-        DeliveryProviderInvalidationService deliveryInvalid,
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderUpdateService> logger
     )
@@ -40,7 +37,6 @@ public class DeliveryProviderUpdateService
     {
         _deliveryRepository = deliveryRepository;
         _deliveryValidator = deliveryValidator;
-        _deliveryInvalid = deliveryInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -112,9 +108,6 @@ public class DeliveryProviderUpdateService
             return Result<UpdateResponse>
                      .Fail(EntityErrorResources.DeliveryProviderUpdateFailed);
         }
-
-        await _deliveryInvalid.InvalidateUpdateAsync(
-            DeliveryProviderCacheMapper.ToInfo(delivery.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

@@ -15,7 +15,7 @@ public class LineItemAttributeAdminQueriesController
     : BaseAdminQueryController<LineItemAttributeDto,
         LineItemAttributeSearchFilter>
 {
-    private readonly ILineItemAttributeQueryService _queryService;
+    private readonly ILineItemAttributeQueryService _itemService;
 
 
     public LineItemAttributeAdminQueriesController(
@@ -24,7 +24,7 @@ public class LineItemAttributeAdminQueriesController
     )
         : base(queryService, userContext)
     {
-        _queryService = queryService;
+        _itemService = queryService;
     }
 
 
@@ -35,7 +35,7 @@ public class LineItemAttributeAdminQueriesController
         [FromQuery] EntityStatus status,
         CancellationToken cancellationToken)
     {
-        var result = await _queryService
+        var result = await _itemService
             .GetByCategoryAsync(id, pagination,
                 cancellationToken, status);
 
@@ -48,7 +48,7 @@ public class LineItemAttributeAdminQueriesController
         [FromQuery] EntityStatus status,
         CancellationToken cancellationToken)
     {
-        var result = await _queryService
+        var result = await _itemService
             .GetByAttributeDefinitionAsync(id,
                 cancellationToken, status);
 

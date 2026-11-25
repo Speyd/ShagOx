@@ -18,8 +18,6 @@ public class AttributeDictionaryCreateService
     private readonly IRepository<AttributeDictionary> _dictionaryRepository;
     private readonly AttributeDictionaryValidator _dictionaryValidator;
 
-    private readonly AttributeDictionaryInvalidationService _attributeInvalidation;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDictionaryCreateService> _logger;
 
@@ -27,13 +25,11 @@ public class AttributeDictionaryCreateService
     public AttributeDictionaryCreateService(
         IRepository<AttributeDictionary> dictionaryRepository,
         AttributeDictionaryValidator dictionaryValidator,
-        AttributeDictionaryInvalidationService attributeInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryCreateService> logger)
     {
         _dictionaryRepository = dictionaryRepository;
         _dictionaryValidator = dictionaryValidator;
-        _attributeInvalidation = attributeInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -73,9 +69,6 @@ public class AttributeDictionaryCreateService
             return Result<CreateResponse>.Fail(
                 EntityErrorResources.AttributeDictionaryCreateFailed);
         }
-
-        await _attributeInvalidation.InvalidateCreateAsync(
-            AttributeDictionaryCacheMapper.ToInfo(dictionary));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

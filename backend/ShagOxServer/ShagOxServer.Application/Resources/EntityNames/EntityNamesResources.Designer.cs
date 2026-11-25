@@ -403,6 +403,24 @@ namespace ShagOxServer.Application.Resources.EntityNames {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на User device.
+        /// </summary>
+        public static string UserDevice {
+            get {
+                return ResourceManager.GetString("UserDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на User session.
+        /// </summary>
+        public static string UserSession {
+            get {
+                return ResourceManager.GetString("UserSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Verification code.
         /// </summary>
         public static string VerificationCode {

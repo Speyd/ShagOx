@@ -3,14 +3,13 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Payments.Providers;
 using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.Payment;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Payments;
 using ShagOxServer.Application.Resources.Payment;
 using ShagOxServer.Domain.Entities.Payments;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Abstractions.Results.Enum;
 using System.Text;
 using System.Text.Json;
 
@@ -21,7 +20,6 @@ public class MonoBankPaymentProvider
     private readonly IPaymentWebhookProcessor _webhookProcessor;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly MonoWebhookDeserializer _deserializer;
-    private readonly MonoBankSignatureVerifier _signatureVerifier;
     private readonly HttpClient _httpClient;
     private readonly MonoBankOptions _options;
     private readonly IUnitOfWork _unitOfWork;
@@ -37,7 +35,6 @@ public class MonoBankPaymentProvider
         IPaymentWebhookProcessor webhookProcessor,
         IRepository<Payment> paymentRepository,
         MonoWebhookDeserializer deserializer,
-        MonoBankSignatureVerifier signatureVerifier,
         HttpClient httpClient,
         IOptions<MonoBankOptions> options,
         IUnitOfWork unitOfWork)
@@ -45,7 +42,6 @@ public class MonoBankPaymentProvider
         _webhookProcessor = webhookProcessor;
         _paymentRepository = paymentRepository;
         _deserializer = deserializer;
-        _signatureVerifier = signatureVerifier;
         _httpClient = httpClient;
         _options = options.Value;
         _unitOfWork = unitOfWork;
@@ -59,18 +55,12 @@ public class MonoBankPaymentProvider
             request.Amount, 
             request.DecimalPlaces);
 
-        var expiresIn = _options.PaymentExpiresAt;
-
-        // Монобанк сам закриває рахунок після validity (за замовчуванням
-        // 24 год). Синхронізуємо з нашим терміном, щоб після закінчення
-        // посилання оплатити старий рахунок було вже неможливо.
         var data = new
         {
             amount = trueAmount,
             ccy = request.Ccy,
-            redirectUrl = BuildRedirectUrl(request.OrderId),
-            webHookUrl = _options.WebHookUrl,
-            validity = (long)expiresIn.TotalSeconds
+            redirectUrl = _options.RedirectUrl,
+            webHookUrl = _options.WebHookUrl
         };
 
         var json = JsonSerializer.Serialize(data);
@@ -110,7 +100,7 @@ public class MonoBankPaymentProvider
             InvoiceId = responce.InvoiceId,
             PaymentUrl = responce.PaymentUrl,
             Amount = request.Amount,
-            ExpiresAt = DateTime.UtcNow + expiresIn,
+            ExpiresAt = DateTime.UtcNow + _options.PaymentExpiresAt,
             Status = PaymentStatus.Pending
         };
 
@@ -119,19 +109,6 @@ public class MonoBankPaymentProvider
         await _unitOfWork.SaveChangesAsync();
 
         return Result<PaymentResponse>.Success(responce);
-    }
-
-    /// <summary>
-    /// RedirectUrl може містити плейсхолдер {orderId}, наприклад
-    /// https://site/orders/{orderId} — тоді після оплати користувач
-    /// повертається на сторінку свого замовлення.
-    /// </summary>
-    private string BuildRedirectUrl(long orderId)
-    {
-        return _options.RedirectUrl.Replace(
-            "{orderId}",
-            orderId.ToString(),
-            StringComparison.OrdinalIgnoreCase);
     }
 
     public async Task<Result<bool>> WebHook(
@@ -146,21 +123,6 @@ public class MonoBankPaymentProvider
         {
             return Result<bool>.Fail(
                 PaymentResources.WebhookEmptyBody);
-        }
-
-        // Приймаємо лише вебхуки, підписані банком.
-        var signature = request.Headers["X-Sign"].FirstOrDefault();
-
-        var isSigned = await _signatureVerifier.VerifyAsync(
-            body,
-            signature,
-            cancellationToken);
-
-        if (!isSigned)
-        {
-            return Result<bool>.Fail(
-                PaymentResources.WebhookInvalidPayload,
-                ResultErrorType.Unauthorized);
         }
 
         var payment = _deserializer.Deserialize(body);

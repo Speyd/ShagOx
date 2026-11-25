@@ -1,14 +1,15 @@
 using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Advertisements;
-using ShagOxServer.Domain.Entities.Orders;
-namespace ShagOxServer.Domain.Entities.Specification;
+using ShagOxServer.Domain.Base.Cache;
+using ShagOxServer.Domain.Cache.Specification;
+using ShagOxServer.Domain.Entities.Auth.Users;
 
+namespace ShagOxServer.Domain.Entities.Specification;
 public class Currency 
-    : BaseEntity
+    : BaseEntity,
+    IEntityCache<Currency, CurrencyCacheContext>
 {
     public string Code { get; set; } = "";
-    public int Ccy { get; set; }
+    public int NumericCode { get; set; }
     public int DecimalPlaces { get; set; }
     public string Symbol { get; set; } = "";
     public string Name { get; set; } = "";
@@ -17,8 +18,19 @@ public class Currency
         = [];
 
 
+    public CurrencyCacheContext GetCacheContext()
+    {
+        return new CurrencyCacheContext(
+            Id, Code, Symbol, EntityStatus);
+    }
+
     public override string ToString()
     {
         return Name;
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

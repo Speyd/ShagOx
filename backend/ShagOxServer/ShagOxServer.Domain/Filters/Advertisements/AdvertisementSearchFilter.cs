@@ -1,7 +1,6 @@
 using System.Text.Json;
 
 namespace ShagOxServer.Domain.Filters.Advertisements;
-
 public sealed record AdvertisementSearchFilter(
     string? Title,
     string? Description,
@@ -9,7 +8,6 @@ public sealed record AdvertisementSearchFilter(
     bool? Discounts,
     long? CategoryId,
     string? Attributes,
-    string? VariantAttributes = null,
     decimal? MinPrice = null,
     decimal? MaxPrice = null) : BaseFilter
 {
@@ -23,7 +21,6 @@ public sealed record AdvertisementSearchFilter(
             filter.Discounts,
             filter.CategoryId,
             NormalizeAttributes(filter.Attributes),
-            NormalizeAttributes(filter.VariantAttributes),
             filter.MinPrice,
             filter.MaxPrice);
     }

@@ -5,4 +5,5 @@ public interface IUnitOfWork
     Task CommitAsync();
     Task RollbackAsync();
     Task<int> SaveChangesAsync();
+    void DebugTrackedEntities();
 }

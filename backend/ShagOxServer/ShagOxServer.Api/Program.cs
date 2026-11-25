@@ -31,12 +31,13 @@ try
         .AddOptionsConfiguration(builder.Configuration)
         .AddDelivery(builder.Configuration)
         .AddPayments(builder.Configuration)
+        .AddDevice()
+        .AddUserSession()
         .AddFrontendPolicy()
         .AddControllersWithJson()
         .AddSwaggerDocumentation()
         .AddApplication()
-        .AddInfrastructure()
-        .AddDevelopmentEmailFallback(builder.Configuration, builder.Environment)
+        .AddInfrastructure()   
         .AddHttpContextAccessor();
 
 

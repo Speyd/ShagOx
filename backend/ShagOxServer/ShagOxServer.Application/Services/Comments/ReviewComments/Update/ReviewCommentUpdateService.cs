@@ -8,8 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Delet
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Update;
-using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
-using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.PictureOrdering;
 using ShagOxServer.Domain.Entities.Comments.Review;
@@ -24,8 +22,6 @@ public class ReviewCommentUpdateService
     private readonly IRepository<ReviewComment> _commitRepository;
     private readonly ReviewCommentValidator _commitValidator;
 
-    private readonly ReviewCommentInvalidationService _commInvalid;
-
 
     private readonly PictureOrderSyncExecutor<ReviewComment,
         ReviewImage> _executor;
@@ -38,7 +34,6 @@ public class ReviewCommentUpdateService
         IRepository<ReviewComment> commitRepository,
         ReviewCommentValidator commitValidator,
         IReviewCommentDeleteService commitDeleteService,
-        ReviewCommentInvalidationService commInvalid,
         PictureOrderSyncExecutor<ReviewComment,
         ReviewImage> executor,
         IUnitOfWork unitOfWork,
@@ -48,7 +43,6 @@ public class ReviewCommentUpdateService
     {
         _commitRepository = commitRepository;
         _commitValidator = commitValidator;
-        _commInvalid = commInvalid;
         _executor = executor;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -60,43 +54,30 @@ public class ReviewCommentUpdateService
         ReviewCommentUpdateRequest request,
         CancellationToken cancellationToken = default)
     {
-        if (request.Grade.HasValue)
-        {
-            var grade = ReviewGrade.Validate(request.Grade.Value);
-
-            if (!grade.IsSuccess)
-                return Result<UpdateResponse>.Fail(grade.Error);
-        }
-
         var comment = await _commitValidator
             .GetByIdIncludeAsync(commentId, cancellationToken);
         if (!comment.IsSuccess)
             return Result<UpdateResponse>.Fail(comment.Error);
 
-        var tracked = await _commitValidator
-            .GetByIdAttachAsync(commentId, cancellationToken);
-        if (!tracked.IsSuccess)
-            return Result<UpdateResponse>.Fail(tracked.Error);
-
         var updatedCount = ReviewCommentUpdater
-            .ApplyUpdates(tracked.Value!, request);
-
-        var hasPictureChanges = request.Pictures is { Count: > 0 };
+            .ApplyUpdates(comment.Value!, request);
 
         var result = new UpdateResponse(
-            updatedCount + (hasPictureChanges ? request.Pictures!.Count : 0),
+            updatedCount,
             DateTime.UtcNow
         );
 
-        if (updatedCount == 0 && !hasPictureChanges)
+        if (updatedCount == 0)
             return Result<UpdateResponse>.Success(result);
 
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
+            _commitRepository.Update(comment.Value!);
+
             var imagesResult = await _executor.SyncAsync(
-                tracked.Value!,
+                comment.Value!,
                 request.Pictures,
                 cancellationToken
             );
@@ -137,9 +118,6 @@ public class ReviewCommentUpdateService
             return Result<UpdateResponse>
                 .Fail(EntityErrorResources.ReviewCommentUpdateFailed);
         }
-
-        await _commInvalid.InvalidateUpdateAsync(
-            CommentCacheMapper.ToInfo(comment.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

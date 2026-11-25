@@ -4,10 +4,8 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Delete;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping.Cache;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,8 +18,6 @@ public class AdvertisementVariantDeleteService
     private readonly IRepository<AdvertisementVariant> _variantRepository;
     private readonly AdvertisementVariantValidator _variantValidator;
 
-    private readonly AdvertisementVariantInvalidationService _variantInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementVariantDeleteService> _logger;
 
@@ -30,7 +26,6 @@ public class AdvertisementVariantDeleteService
         IRepository<AdvertisementVariant> variantRepository,
         ICommandRepository<AdvertisementVariant> variantCommand,
         AdvertisementVariantValidator variantValidator,
-        AdvertisementVariantInvalidationService variantInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantDeleteService> logger
     )
@@ -38,7 +33,6 @@ public class AdvertisementVariantDeleteService
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;
-        _variantInvalid = variantInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -72,8 +66,6 @@ public class AdvertisementVariantDeleteService
 
             await _unitOfWork.CommitAsync();
 
-            await InvalidateCache(variant.Value!);
-
             return result;
         }
         catch (Exception ex)
@@ -102,12 +94,5 @@ public class AdvertisementVariantDeleteService
             new DeleteResponse(
                 variant.Id,
                 DateTime.UtcNow));
-    }
-
-    public override async Task InvalidateCache(
-        AdvertisementVariant entity)
-    {
-        await _variantInvalid.InvalidateDeleteAsync(
-            AdvertisementVariantCacheMapper.ToInfo(entity));
     }
 }

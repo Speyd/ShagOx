@@ -132,19 +132,4 @@
   <data name="WebhookInvalidPayload" xml:space="preserve">
     <value>Webhook-запит містить некоректні дані.</value>
   </data>
-  <data name="OrderPaymentNotRequired" xml:space="preserve">
-    <value>Це замовлення оплачується при отриманні й не потребує онлайн-оплати.</value>
-  </data>
-  <data name="OrderAlreadyPaid" xml:space="preserve">
-    <value>Замовлення вже оплачено.</value>
-  </data>
-  <data name="OrderPaymentUnavailable" xml:space="preserve">
-    <value>Це замовлення більше не можна оплатити. Будь ласка, оформіть нове замовлення.</value>
-  </data>
-  <data name="OrderPaymentInProgress" xml:space="preserve">
-    <value>Платіж обробляється банком. Оновіть сторінку за кілька хвилин.</value>
-  </data>
-  <data name="PaymentRefundFailed" xml:space="preserve">
-    <value>Не вдалося повернути кошти покупцю, тому статус замовлення не змінено. Спробуйте пізніше.</value>
-  </data>
 </root>

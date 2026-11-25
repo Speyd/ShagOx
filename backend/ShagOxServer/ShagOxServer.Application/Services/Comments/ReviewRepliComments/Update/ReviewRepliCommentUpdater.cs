@@ -10,21 +10,12 @@ public static class ReviewRepliCommentUpdater
     {
         int countUpdated = 0;
 
-        var text = request.Text?.Trim();
-
-        if (!string.IsNullOrEmpty(text) &&
-            text != comment.Text)
+        if (!string.IsNullOrWhiteSpace(request.Text))
         {
-            comment.Text = text;
+            comment.Text = request.Text;
 
             countUpdated++;
         }
-
-        if (request.Pictures is { Count: > 0 })
-            countUpdated++;
-
-        if (countUpdated > 0)
-            comment.UpdatedAt = DateTime.UtcNow;
 
         return countUpdated;
     }

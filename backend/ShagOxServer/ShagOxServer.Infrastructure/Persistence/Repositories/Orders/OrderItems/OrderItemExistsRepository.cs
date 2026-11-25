@@ -5,7 +5,9 @@ using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.LineItems.Core;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Orders.OrderItems.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Orders.OrderItems;
 public class OrderItemExistsRepository
@@ -29,10 +31,10 @@ public class OrderItemExistsRepository
     {
         var result = await _db.OrderItems
             .WithStatusFilter(status)
+            .WithIncludes()
             .AnyAsync(x =>
                 x.Id == enityId &&
-                x.Parent.OwnerId == userId,
-                cancellationToken);
+                x.Parent.OwnerId == userId);
 
         return result;
     }

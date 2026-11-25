@@ -18,7 +18,7 @@ public static class AdvertisementsDependencyInjection
             AdvertisementExistsRepository>();
 
         services.AddScoped<IAdvertisementCommandRepository,
-            AdvertisementCommandRepository>();
+            AdvertisementCommandsRepository>();
 
 
         services.AddFavoriteInfrastructure();

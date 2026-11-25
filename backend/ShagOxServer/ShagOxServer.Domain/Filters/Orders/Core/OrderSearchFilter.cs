@@ -35,11 +35,5 @@ public sealed record OrderSearchFilter
     DateTime? ShippedFrom,
     DateTime? ShippedTo,
     DateTime? DeliveredFrom,
-    DateTime? DeliveredTo,
-
-    // Замовлення, усі товари яких належать цьому продавцю.
-    long? SellerId = null,
-    // Приховати онлайн-замовлення, які ще не оплачені (продавець бачить
-    // онлайн-замовлення лише після оплати).
-    bool? HideUnpaidOnline = null
+    DateTime? DeliveredTo
 ) : BaseFilter();

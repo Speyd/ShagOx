@@ -7,9 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
-using ShagOxServer.Application.Services.Specification.Pictures.Core.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.Validator;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Validator;
@@ -24,16 +22,12 @@ public class ReviewRepliImageUpdateService
         PictureOrderUpdateRequest>,
     IReviewRepliImageUpdateService
 {
-    private readonly ReviewRepliImageInvalidationService _imageInvalid;
-
-
     public ReviewRepliImageUpdateService(
         IRepository<ReviewRepliImage> imageRepository,
         PictureValidator pictureLoadValidator,
         ReviewRepliImageValidator imageValidator,
         IReviewRepliImageDeleteService pictureDeleteService,
         ReviewRepliCommentValidator commentValidator,
-        ReviewRepliImageInvalidationService imageInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ReviewRepliImageUpdateService> logger
     )
@@ -45,7 +39,6 @@ public class ReviewRepliImageUpdateService
             unitOfWork,
             logger)
     {
-        _imageInvalid = imageInvalid;
     }
 
 
@@ -64,13 +57,6 @@ public class ReviewRepliImageUpdateService
             return Result<PictureUpdateResponse>.Fail(
                 EntityErrorResources.ReviewRepliCommentUpdateFailed);
         }
-    }
-
-    public override async Task InvalidateCache(
-        ReviewRepliImage picture)
-    {
-        await _imageInvalid.InvalidateUpdateAsync(
-           PictureCacheMapper.ToInfo(picture));
     }
 
     protected override int ApplyUpdates(

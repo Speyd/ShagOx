@@ -1,4 +1,7 @@
-﻿namespace ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Cache;
+using ShagOxServer.Domain.Cache.Translations;
+
+namespace ShagOxServer.Domain.Base;
 /// <summary>
 /// Represents a translation associated with a translatable entity.
 /// </summary>
@@ -13,7 +16,6 @@ public abstract class BaseTranslation<T>
     public T Translatable { get; set; } = null!;
 
     public string Language { get; set; } = null!;
-
 
     public abstract string GetTranslationValue();
 }

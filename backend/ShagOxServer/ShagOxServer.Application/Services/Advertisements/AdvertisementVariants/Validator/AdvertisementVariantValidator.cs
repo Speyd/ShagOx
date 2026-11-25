@@ -75,7 +75,7 @@ public class AdvertisementVariantValidator
         CancellationToken cancellationToken = default)
     {
         var advert = await _advertValidator
-            .GetByIdAttachAsync(advertId, cancellationToken);
+            .GetByIdAsync(advertId, cancellationToken);
 
         if (!advert.IsSuccess)
             return Result<bool>.Fail(advert.Error);

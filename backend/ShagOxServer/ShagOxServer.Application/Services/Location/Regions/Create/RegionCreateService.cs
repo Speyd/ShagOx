@@ -18,8 +18,6 @@ public class RegionCreateService
     private readonly IRepository<Region> _regionRepository;
     private readonly RegionValidator _regionValidator;
 
-    private readonly RegionInvalidationService _regionInvalidation;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RegionCreateService> _logger;
 
@@ -27,13 +25,11 @@ public class RegionCreateService
     public RegionCreateService(
         IRepository<Region> regionRepository,
         RegionValidator regionValidator,
-        RegionInvalidationService regionInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<RegionCreateService> logger)
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;
-        _regionInvalidation = regionInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -71,9 +67,6 @@ public class RegionCreateService
             return Result<CreateResponse>
                  .Fail(EntityErrorResources.RegionCreateFailed);
         }
-
-        await _regionInvalidation.InvalidateCreateAsync(
-            RegionCacheMapper.ToInfo(region));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

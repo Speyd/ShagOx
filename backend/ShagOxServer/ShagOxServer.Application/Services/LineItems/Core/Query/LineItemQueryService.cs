@@ -71,7 +71,7 @@ public abstract class LineItemQueryService<TDto, TEntity, TFilter>
                 return await items.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 

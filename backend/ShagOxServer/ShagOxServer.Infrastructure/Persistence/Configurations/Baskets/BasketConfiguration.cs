@@ -17,5 +17,6 @@ public class BasketConfiguration
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasUniqueActiveIndex(x => x.OwnerId);
+
     }
 }

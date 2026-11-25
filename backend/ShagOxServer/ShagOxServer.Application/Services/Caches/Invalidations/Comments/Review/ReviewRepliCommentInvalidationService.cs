@@ -1,17 +1,16 @@
-using ShagOxServer.Application.DTOs.Comments.Core.Cache;
-using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Review.ReviewRepliImages;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Comments.Review;
-using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Comments;
+using ShagOxServer.Domain.Cache.Specification;
 using ShagOxServer.Domain.Entities.Comments.Review;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 public class ReviewRepliCommentInvalidationService
-    : ICacheInvalidationService<ReviewRepliComment, CommentCacheInfo>
+    : ICacheInvalidationService<ReviewRepliComment, CommentCacheContext>
 {
     private readonly IReviewRepliImageQueryRepository _imageRepository;
     private readonly ReviewRepliImageInvalidationService _imageInvalid;
@@ -31,14 +30,12 @@ public class ReviewRepliCommentInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        CommentCacheInfo entityInfo)
+        CommentCacheContext entityInfo)
     {
-        await _cache.RemoveByPatternAsync(ReviewRepliCommentCache.
-             ByReviewCommentPattern(entityInfo.CommentableEntityId));
     }
 
     public async Task InvalidateDeleteAsync(
-        CommentCacheInfo entityInfo)
+        CommentCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -54,20 +51,16 @@ public class ReviewRepliCommentInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        CommentCacheInfo entityInfo)
+        CommentCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        CommentCacheInfo entityInfo)
+        CommentCacheContext entityInfo)
     {
         await _cache.RemoveAsync(CacheKeys.
              Entity<ReviewRepliComment>(entityInfo.Id));
-
-        await _cache.RemoveAsync(CacheKeys.
-             Entity<ReviewRepliComment>(entityInfo.Id,
-                EntityStatus.ActiveAndHidden));
 
         await _cache.RemoveByPatternAsync(ReviewRepliCommentCache.
              ByReviewCommentPattern(entityInfo.CommentableEntityId));
@@ -76,7 +69,7 @@ public class ReviewRepliCommentInvalidationService
              ByReviewRepliCommentPattern(entityInfo.Id));
     }
 
-    private async Task<List<PictureCacheInfo>> GetImageInfos(
+    private async Task<List<PictureCacheContext>> GetImageInfos(
         long entityId)
     {
         return await _imageRepository

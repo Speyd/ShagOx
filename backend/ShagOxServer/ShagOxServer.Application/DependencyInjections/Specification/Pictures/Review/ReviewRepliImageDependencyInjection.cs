@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Core.Update;
@@ -8,11 +9,13 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Delete;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Query;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Update;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures.Review;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Create;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Delete;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Query;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Update;
 using ShagOxServer.Application.Services.Specification.Pictures.Review.ReviewRepliImages.Validator;
+using ShagOxServer.Domain.Cache.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 
 namespace ShagOxServer.Application.DependencyInjections.Specification.Pictures.Review;
@@ -49,6 +52,9 @@ public static class ReviewRepliImageDependencyInjection
                 PictureOrderCreateRequest>,
            ReviewRepliImageCreateService>();
 
+        services.AddScoped<
+            ICacheInvalidationService<ReviewRepliImage, PictureCacheContext>,
+            ReviewRepliImageInvalidationService>();
 
         services.AddScoped<ReviewRepliImageValidator>();
 

@@ -1,10 +1,8 @@
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.DTOs.LineItems.Core.Create;
 using ShagOxServer.Application.DTOs.LineItems.Core.Query;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.Payment;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -12,16 +10,12 @@ using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
-using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Application.Resources.EntityNames.Extensions;
-using ShagOxServer.Application.Resources.Order;
+using ShagOxServer.Application.Resources.Orders.Order;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
 using ShagOxServer.Application.Services.LineItems.Core.Create;
-using ShagOxServer.Application.Services.LineItems.Core.Mapping;
 using ShagOxServer.Application.Services.Orders.OrderItems.Validator;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -39,11 +33,8 @@ public class OrderItemCreateService
     private readonly ICurrencyQueryRepository _currencyRepository;
 
 
-    private readonly OrderItemOrderInvalidationService _orderInvalidation;
-    private readonly OrderItemInvalidationService _itemInvalidation;
-
     private readonly IAdvertisementCommandRepository _advertCommand;
-    private readonly IAdvertisementVariantCommandRepository _variantCommand;
+    private readonly IAdvertisementVariantCommandsRepository _variantCommand;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<OrderItemCreateService> _logger;
@@ -56,10 +47,8 @@ public class OrderItemCreateService
         ICurrencyQueryRepository currencyRepository,
         AdvertisementVariantValidator advertVariantValidator,
         AdvertisementValidator advertValidator,
-        OrderItemOrderInvalidationService orderInvalidation, 
         IAdvertisementCommandRepository advertCommand,
-        IAdvertisementVariantCommandRepository variantCommand,
-        OrderItemInvalidationService itemInvalidation,
+        IAdvertisementVariantCommandsRepository variantCommand,
         IUnitOfWork unitOfWork,
         ILogger<OrderItemCreateService> logger,
         IUserContext userContext
@@ -75,9 +64,6 @@ public class OrderItemCreateService
         _converter = converter;
         _currencyProvider = currencyProvider;
         _currencyRepository = currencyRepository;
-
-        _orderInvalidation = orderInvalidation;
-        _itemInvalidation = itemInvalidation;
 
         _advertCommand = advertCommand;
         _variantCommand = variantCommand;
@@ -124,8 +110,6 @@ public class OrderItemCreateService
 
         LogCreationSuccess(item, request);
 
-        await InvalidateItemCacheAsync(item);
-
         return Result<OrderItem>.Success(item);
     }
 
@@ -145,8 +129,9 @@ public class OrderItemCreateService
 
         var details = validationResult.Value!;
 
-        var currency = await _currencyRepository
-            .GetByIdAsync(request.CurrencyId);
+        var currency = request.CurrencyId is null ? null 
+            : await _currencyRepository
+                .GetByIdAsync(request.CurrencyId.Value);
 
         if (currency is null)
         {
@@ -161,21 +146,12 @@ public class OrderItemCreateService
         }
 
 
-        var (price, code, reserved) = await GetPriceAndCurrencyCode(details, request);
+        var (price, code) = await GetPriceAndCurrencyCode(details, request);
 
         if(!price.HasValue)
         {
             return Result<OrderItem>
                 .Fail(OrderResources.InvalidPrice);
-        }
-
-        // Списання атомарне (UPDATE ... WHERE Stock >= qty). Якщо між
-        // перевіркою і списанням товар викупили, не продаємо понад залишок.
-        if (!reserved)
-        {
-            return Result<OrderItem>.Fail(string.Format(
-                OrderResources.InsufficientStock,
-                details.Variant?.Advertisement?.Title ?? details.Advertisement?.Title));
         }
 
         var convertedPrice = currency is null? price:
@@ -195,15 +171,20 @@ public class OrderItemCreateService
             convertedPrice.Value);
 
         item.TotalWeight = CalculateItemWeight(details, request);
+        
 
         _itemRepository.Add(item);
 
+        item.Advertisement = validationResult.Value?.Advertisement!;
+        item.AdvertisementVariant = validationResult.Value?.Variant;
+
         await _unitOfWork.SaveChangesAsync();
+
 
         return Result<OrderItem>.Success(item);
     }
 
-    private async Task<(decimal? Price, string CurrencyCode, bool Reserved)>
+    private async Task<(decimal? Price, string CurrencyCode)>
         GetPriceAndCurrencyCode(
             LineItemDetails details,
             LineItemCreateRequest request)
@@ -214,35 +195,32 @@ public class OrderItemCreateService
         {
             currencyCode = details.Variant.Advertisement.Currency.Code;
 
-            var reserved = await _variantCommand.DecreaseStockAsync(
+            await _variantCommand.DecreaseStockAsync(
                 details.Variant.Id,
                 request.Quantity);
 
             return (
                 details.Price!.Value,
-                details.Variant.Advertisement.Currency.Code,
-                reserved
+                currencyCode
             );
         }
         else if (details.Advertisement is not null)
         {
             currencyCode = details.Advertisement.Currency.Code;
 
-            var reserved = await _advertCommand.DecreaseStockAsync(
+            await _advertCommand.DecreaseStockAsync(
                 details.Advertisement.Id,
                 request.Quantity);
 
             return (
-                details.Price,
-                currencyCode,
-                reserved
+                details.Price!.Value,
+                currencyCode
             );
         }
 
         return (
             null,
-            currencyCode,
-            false
+            currencyCode
         );
     }
 
@@ -262,15 +240,6 @@ public class OrderItemCreateService
         }
 
         return -1;
-    }
-
-    private async Task InvalidateItemCacheAsync(OrderItem item)
-    {
-        var cacheInfo = LineItemCacheMapper.ToInfo(item);
-
-        await _orderInvalidation.InvalidateCreateAsync(cacheInfo);
-
-        await _itemInvalidation.InvalidateCreateAsync(cacheInfo);
     }
 
     private void LogCreationSuccess(

@@ -1,9 +1,11 @@
 using ShagOxServer.Application.Common.Options.Auth;
+using ShagOxServer.Application.Common.Options.Pictures;
 using ShagOxServer.Application.Common.Options.Systems;
 using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
+using ShagOxServer.Application.Common.Options.Systems.BackgroundServices.User;
+using ShagOxServer.Application.Common.Options.Systems.Cookies;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Common.Options.Verifivations;
-using ShagOxServer.Infrastructure.Options;
 
 namespace ShagOxServer.Api.DependencyInjection;
 public static class OptionsConfigurationExtensions
@@ -15,61 +17,80 @@ public static class OptionsConfigurationExtensions
         #region Verification Options
 
         services.Configure<VerificationCodeOptions>(
-            config.GetSection("VerificationCode"));
+            config.GetSection(VerificationCodeOptions.SectionName));
+
+        #endregion
+
+        #region System Options
+
+        services.Configure<FrontendOptions>(
+            config.GetSection(FrontendOptions.SectionName));
+
+        services.Configure<Application.Common.Options.Systems.Cookies.CookieOptions>(
+            config.GetSection(Application.Common.Options.Systems.Cookies.CookieOptions.SectionName));
+
+        services.Configure<RefreshTokenOptions>(
+            config.GetSection(RefreshTokenOptions.SectionName));
 
         #endregion
 
         #region Notification Options
 
         services.Configure<EmailOptions>(
-            config.GetSection("Email"));
+            config.GetSection(EmailOptions.SectionName));
 
         services.Configure<SmsOptions>(
-            config.GetSection("Twilio"));
+            config.GetSection(SmsOptions.SectionTwilioName));
 
         #endregion
 
         #region Cleanup Options
 
         services.Configure<UserCleanupOptions>(
-            config.GetSection("UserCleanup"));
+            config.GetSection(UserCleanupOptions.SectionName));
 
         services.Configure<VerificationCodeCleanupOptions>(
-            config.GetSection("VerificationCodeCleanup"));
+            config.GetSection(VerificationCodeCleanupOptions.SectionName));
 
         #endregion
 
         #region Authentication Options
 
         services.Configure<GoogleOptions>(
-            config.GetSection("Google"));
+            config.GetSection(GoogleOptions.SectionName));
 
         #endregion
 
         #region Worker Options
 
         services.Configure<WebhookWorkerOptions>(
-            config.GetSection("WebhookWorker"));
+            config.GetSection(WebhookWorkerOptions.SectionName));
 
         services.Configure<PaymentExpirationWorkerOptions>(
-            config.GetSection("PaymentExpirationWorker"));
-        
+            config.GetSection(PaymentExpirationWorkerOptions.SectionName));
+
+        services.Configure<UserBanOptions>(
+            config.GetSection(UserBanOptions.SectionName));
+
+        services.Configure<UserDeviceBanOptions>(
+            config.GetSection(UserDeviceBanOptions.SectionName));
+
         #endregion
 
         #region Middleware
 
         services.Configure<RequestTrackingOptions>(
-            config.GetSection("RequestTracking"));
+            config.GetSection(RequestTrackingOptions.SectionName));
 
         services.Configure<UpdateLastSeenOptions>(
-            config.GetSection("UpdateLastSeen"));
+            config.GetSection(UpdateLastSeenOptions.SectionName));
 
         #endregion
 
         #region Picture Options
 
         services.Configure<PictureLoadeOptions>(
-            config.GetSection("PictureLoade"));
+            config.GetSection(PictureLoadeOptions.SectionName));
 
         #endregion
 

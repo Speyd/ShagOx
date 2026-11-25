@@ -7,10 +7,6 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Resources.Validations;
-using ShagOxServer.Application.Services.Comments.ReviewComments.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
-using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Comments.Review;
@@ -23,8 +19,6 @@ public class ReviewCommentCreateService
     private readonly IRepository<ReviewComment> _commentRepository;
     private readonly CommentValidator<Advertisement> _commentValidator;
 
-    private readonly ReviewCommentInvalidationService _commInvalid;
-
     private readonly IReviewImageCreateService _imageCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -34,14 +28,12 @@ public class ReviewCommentCreateService
     public ReviewCommentCreateService(
         IRepository<ReviewComment> commentRepository,
         CommentValidator<Advertisement> commentValidator,
-        ReviewCommentInvalidationService commInvalid,
         IReviewImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
         ILogger<ReviewCommentCreateService> logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
-        _commInvalid = commInvalid;
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -53,17 +45,6 @@ public class ReviewCommentCreateService
         long ownerId,
         CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(request.Text))
-        {
-            return Result<CreateResponse>
-                .Fail(ValidationResources.CommentTextRequired);
-        }
-
-        var grade = ReviewGrade.Validate(request.Grade);
-
-        if (!grade.IsSuccess)
-            return Result<CreateResponse>.Fail(grade.Error);
-
         var exists = await _commentValidator
             .ValidateCommentAsync(
                 ownerId, 
@@ -86,25 +67,21 @@ public class ReviewCommentCreateService
         {
             _commentRepository.Add(comment);
 
-            await _unitOfWork.SaveChangesAsync();
 
-            if (request.Pictures is { Count: > 0 })
+            var imagesResult = await _imageCreateService
+               .CreateAsync(
+                   new PicturesCreateRequest(
+                       request.CommentableEntityId,
+                       request.Pictures
+                   ), cancellationToken
+           );
+
+            if (!imagesResult.IsSuccess)
             {
-                var imagesResult = await _imageCreateService
-                    .CreateAsync(
-                        new PicturesCreateRequest(
-                            comment.Id,
-                            request.Pictures
-                        ), cancellationToken
-                    );
+                await _unitOfWork.RollbackAsync();
 
-                if (!imagesResult.IsSuccess)
-                {
-                    await _unitOfWork.RollbackAsync();
-
-                    return Result<CreateResponse>
-                        .Fail(imagesResult.Error!);
-                }
+                return Result<CreateResponse>
+                    .Fail(imagesResult.Error!);
             }
 
 
@@ -122,9 +99,6 @@ public class ReviewCommentCreateService
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.ReviewCommentCreateFailed);
         }
-
-        await _commInvalid.InvalidateCreateAsync(
-            CommentCacheMapper.ToInfo(comment));
 
         return Result<CreateResponse>.Success(
            new CreateResponse(

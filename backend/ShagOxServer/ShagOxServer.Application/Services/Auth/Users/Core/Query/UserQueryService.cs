@@ -15,8 +15,8 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Filters.Auth.Users;
+using ShagOxServer.Domain.Entities.Auth.Users;
+using ShagOxServer.Domain.Filters.Auth.Users.Core;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -95,7 +95,7 @@ public class UserQueryService
 
                 return user.ToResult(UserShortMapper.ToDto);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -117,7 +117,7 @@ public class UserQueryService
 
                 return await user.ToResultAsync(ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -142,7 +142,7 @@ public class UserQueryService
 
                 return roles.ToResultPaged(RoleMapper.ToDto);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

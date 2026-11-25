@@ -1,22 +1,25 @@
+using ShagOxServer.Application.DTOs.Common.Currencies.Fx;
+
 namespace ShagOxServer.Infrastructure.ExternalServices.Currencies;
 public class CurrencyRateStore
 {
-    private volatile CurrencyRatesSnapshot? _snapshot;
+    private Dictionary<string, decimal> _rates = new();
 
-    public CurrencyRatesSnapshot? Snapshot => _snapshot;
+    public IReadOnlyDictionary<string, decimal> Rates => _rates;
 
-    public void Update(CurrencyRatesSnapshot snapshot)
+    public void Update(FxApiResponse response)
     {
-        _snapshot = snapshot;
+        _rates = response.Data.ToDictionary(
+            x => x.Key,
+            x => x.Value.Value);
     }
 
-    public bool TryGetRate(string currencyCode, out decimal rate)
+    public decimal GetRate(string currencyCode)
     {
-        rate = default;
+        if (!_rates.TryGetValue(currencyCode, out var rate))
+            throw new KeyNotFoundException(
+                $"Rate for {currencyCode} not found.");
 
-        var snapshot = _snapshot;
-
-        return snapshot is not null
-            && snapshot.Rates.TryGetValue(currencyCode, out rate);
+        return rate;
     }
 }

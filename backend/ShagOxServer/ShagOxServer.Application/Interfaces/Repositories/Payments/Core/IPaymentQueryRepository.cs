@@ -8,9 +8,4 @@ public interface IPaymentQueryRepository
     Task<Payment?> GetByInvoiceIdAsync(
         string invoiceId,
         CancellationToken cancellationToken = default);
-
-    Task<Payment?> GetActiveByOrderIdAsync(
-        long orderId,
-        DateTime now,
-        CancellationToken cancellationToken = default);
 }

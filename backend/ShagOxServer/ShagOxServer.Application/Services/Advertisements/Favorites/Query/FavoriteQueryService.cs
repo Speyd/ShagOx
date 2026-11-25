@@ -107,7 +107,7 @@ public class FavoriteQueryService
                 return await favorites.ToResultPagedAsync(
                     ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

@@ -1,17 +1,16 @@
-using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
-using ShagOxServer.Application.DTOs.Orders.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.OrderItems;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Orders;
-using ShagOxServer.Domain.Entities.Baskets;
+using ShagOxServer.Domain.Cache.LineItems;
+using ShagOxServer.Domain.Cache.Orders;
 using ShagOxServer.Domain.Entities.Orders;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Orders;
 public class OrderInvalidationService
-    : ICacheInvalidationService<Order, OrderCacheInfo>
+    : ICacheInvalidationService<Order, OrderCacheContext>
 {
     private readonly IOrderItemQueryRepository _itemRepository;
     private readonly OrderItemInvalidationService _itemInvalid;
@@ -31,12 +30,12 @@ public class OrderInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-        OrderCacheInfo entityInfo)
+        OrderCacheContext entityInfo)
     {
     }
 
     public async Task InvalidateDeleteAsync(
-       OrderCacheInfo entityInfo)
+       OrderCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -51,13 +50,13 @@ public class OrderInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        OrderCacheInfo entityInfo)
+        OrderCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        OrderCacheInfo entityInfo)
+        OrderCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys
            .EntityLanguagePattern<Order>(entityInfo.Id));
@@ -81,7 +80,7 @@ public class OrderInvalidationService
         }
     }
 
-    private async Task<List<LineItemCacheInfo>> GetOrderItemInfos(
+    private async Task<List<LineItemCacheContext>> GetOrderItemInfos(
         long basketId)
     {
         return await _itemRepository

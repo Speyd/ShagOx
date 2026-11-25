@@ -2,30 +2,37 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Login;
+using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Services.Auth;
+using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.TwoFactor;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
-using ShagOxServer.Application.Interfaces.Services.Jwt;
-using ShagOxServer.Application.Resources.Auth.Contacts.Passwords;
 using ShagOxServer.Application.Resources.Auth.Logins;
-using ShagOxServer.Application.Resources.EntityNames;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Account.Enum;
+using ShagOxServer.Application.Services.Auth.Users.Contacts.TwoFactor;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using ShagOxServer.SharedKernel.Abstractions.Results.Enum;
+using UAParser;
 
 namespace ShagOxServer.Application.Services.Auth.Core.Login;
-
-public class LoginService : ILoginService
+public class LoginService 
+    : ILoginService
 {
     private readonly IRepository<User> _userRepository;
     private readonly IUserQueryRepository _userQueryRepository;
+
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IContactValidator _contactValidator;
-    private readonly IJwtService _jwtService;
 
+    private readonly ITwoFactorService _twoFactorService;
+    private readonly IUserDeviceAuthenticationService _deviceAuthentication;
+
+    private readonly ILoginPolicy _loginPolicy;
+    private readonly ILoginSessionService _sessionService;
+    
     private readonly ILogger<LoginService> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
 
     public LoginService(
@@ -33,86 +40,119 @@ public class LoginService : ILoginService
         IUserQueryRepository userQueryRepository,
         IPasswordHasher<User> passwordHasher,
         IContactValidator contactValidator,
-        IJwtService jwtService,
-
-        ILogger<LoginService> logger)
+        ITwoFactorService twoFactorService,
+        IUserDeviceAuthenticationService deviceAuthentication,
+        ILoginPolicy loginPolicy,
+        ILoginSessionService sessionService,
+        ILogger<LoginService> logger,
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _userQueryRepository = userQueryRepository;
         _passwordHasher = passwordHasher;
         _contactValidator = contactValidator;
-        _jwtService = jwtService;
+        _twoFactorService = twoFactorService;
+        _deviceAuthentication = deviceAuthentication;
+        _loginPolicy = loginPolicy;
+        _sessionService = sessionService;
         _logger = logger;
-    } 
+        _unitOfWork = unitOfWork;
+    }
 
 
-    public async Task<Result<LoginResponse>> LoginAsync(LoginRequest request)
+    public async Task<Result<LoginResponse>> LoginAsync(
+        LoginRequest request)
     {
         try
         {
-            var type = _contactValidator.Detect(request.EmailOrPhoneOrUserName);
+            var user = await FindUserAsync(
+                request.EmailOrPhoneOrUserName);
 
-            var user = await GetUserAsync(request.EmailOrPhoneOrUserName, type);
             if (user is null)
-                return Result<LoginResponse>
-                    .NotFound(EntityNamesResources.User);
+                return InvalidCredentials();
 
-            var result = _passwordHasher.VerifyHashedPassword(
-                user,
-                user.PasswordHash,
-                request.Password
-            );
-
-            if (result == PasswordVerificationResult.Failed)
-            {
-                return Result<LoginResponse>
-                    .Fail(PasswordAuthResources.InvalidPassword);
-            }
-
-            if (user.Status == UserStatus.Blocked)
-            {
-                return Result<LoginResponse>
-                    .Fail(LoginAuthResources.AccountBlocked);
-            }
-
-            if (user.Status == UserStatus.PendingVerification)
+            if (!_loginPolicy.CanLogin(user))
             {
                 return Result<LoginResponse>.Fail(
-                    LoginAuthResources.AccountNotVerified,
-                    ResultErrorType.Forbidden);
+                    LoginAuthResources.LoginNotAllowed);
             }
 
-            _logger.LogInformation(
-                 "User logged in successfully. UserId: {UserId}",
-                 user.Id);
+            var verification = _passwordHasher
+                .VerifyHashedPassword(
+                    user,
+                    user.PasswordHash,
+                    request.Password);
 
-            return Result<LoginResponse>.Success(
-                new LoginResponse(_jwtService.GenerateToken(user))
-            );
+            if (verification == PasswordVerificationResult.Failed)
+                return InvalidCredentials();
+
+            if (verification ==
+                PasswordVerificationResult.SuccessRehashNeeded)
+            {
+                var newHash = _passwordHasher.HashPassword(
+                    user,
+                    request.Password);
+
+                user.PasswordHash = newHash;
+
+                _userRepository.Add(user);
+
+                await _unitOfWork.SaveChangesAsync();
+            }
+
+            var deviceResult = await _deviceAuthentication
+                .AuthenticateDeviceAsync(user);
+
+            if (!deviceResult.IsSuccess)
+                return Result<LoginResponse>.Fail(deviceResult.Error);
+
+            var device = deviceResult.Value!;
+
+            if (user.TwoFactorEnabled && !device.IsTrusted)
+            {
+                return await _twoFactorService
+                    .InitiateAsync(
+                        user,
+                        device.DeviceId);
+            }
+
+            return await _sessionService
+                .CreateSessionAsync(user, device.DeviceId);
         }
         catch (Exception ex)
         {
             _logger.LogError(
                 ex,
-                "Login failed. Contact: {Contact}",
-                request.EmailOrPhoneOrUserName);
+                "Login operation failed.");
 
-            return Result<LoginResponse>
-                .Fail(LoginAuthResources.LoginFailed);
+            return Result<LoginResponse>.Fail(
+                LoginAuthResources.LoginFailed);
         }
     }
 
-
-    private async Task<User?> GetUserAsync(
-        string data,
-        UserContactType type)
+    private async Task<User?> FindUserAsync(
+        string contact)
     {
+        var type = _contactValidator.Detect(contact);
+
         return type switch
         {
-            UserContactType.Email => await _userQueryRepository.GetByEmailAsync(data),
-            UserContactType.Phone => await _userQueryRepository.GetByPhoneAsync(data),
-            UserContactType.UserName => await _userQueryRepository.GetByUserNameAsync(data),
+            UserContactType.Email =>
+                await _userQueryRepository.GetByEmailAsync(contact),
+
+            UserContactType.Phone =>
+                await _userQueryRepository.GetByPhoneAsync(contact),
+
+            UserContactType.UserName =>
+                await _userQueryRepository.GetByUserNameAsync(contact),
+
             _ => null
         };
+    }
+
+    private static Result<LoginResponse> InvalidCredentials()
+    {
+        return Result<LoginResponse>.Fail(
+            LoginAuthResources.InvalidCredentials);
     }
 }

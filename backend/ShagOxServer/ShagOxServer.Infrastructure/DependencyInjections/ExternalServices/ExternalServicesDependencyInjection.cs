@@ -13,6 +13,8 @@ public static class ExternalServicesDependencyInjection
 
         services.AddDeliveryInfrastructure();
 
+        services.AddDeviceInfosInfrastructure();
+
         return services;
     }
 }

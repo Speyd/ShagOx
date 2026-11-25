@@ -46,7 +46,7 @@ public class DeliveriesQueriesController
 
     [HttpGet("streets")]
     public async Task<IActionResult> GetStreets(
-        [FromQuery] string providerCode,
+        string providerCode,
         [FromQuery] DeliveryStreetSearchRequest request,
         [FromQuery] PaginationParams pagination,
         CancellationToken cancellationToken)

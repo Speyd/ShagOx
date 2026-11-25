@@ -33,10 +33,25 @@ public class OrderItemConfiguration
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        builder.HasIndex(x => x.ParentId);
+        builder.HasIndex(x => new
+        {
+            x.ParentId,
+            x.EntityStatus,
+            x.Id
+        });
 
-        builder.HasIndex(x => x.AdvertisementId);
+        builder.HasIndex(x => new
+        {
+            x.AdvertisementId,
+            x.EntityStatus,
+            x.Id
+        });
 
-        builder.HasIndex(x => x.AdvertisementVariantId);
+        builder.HasIndex(x => new
+        {
+            x.AdvertisementVariantId,
+            x.EntityStatus,
+            x.Id
+        });
     }
 }

@@ -1,10 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Infrastructure.DependencyInjections.Admin;
+using ShagOxServer.Domain.Cache;
 using ShagOxServer.Infrastructure.DependencyInjections.Advertisements;
 using ShagOxServer.Infrastructure.DependencyInjections.Auth;
 using ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
 using ShagOxServer.Infrastructure.DependencyInjections.Baskets;
 using ShagOxServer.Infrastructure.DependencyInjections.Comments;
+using ShagOxServer.Infrastructure.DependencyInjections.Dashboards;
 using ShagOxServer.Infrastructure.DependencyInjections.Db;
 using ShagOxServer.Infrastructure.DependencyInjections.Deliveries;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
@@ -17,6 +18,7 @@ using ShagOxServer.Infrastructure.DependencyInjections.Payments;
 using ShagOxServer.Infrastructure.DependencyInjections.Specification;
 using ShagOxServer.Infrastructure.DependencyInjections.Verifications;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
+using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Base;
@@ -27,6 +29,8 @@ public static class DependencyInjection
     {
         services.AddScoped<BaseAppDbContext>(
             provider => provider.GetRequiredService<ReplicaDbContext>());
+        
+
 
         return services
             .AddMonitoring()
@@ -40,13 +44,13 @@ public static class DependencyInjection
             .AddLocationInfrastructure()
             .AddCommentsInfrastructure()
             .AddAdvertisementsInfrastructure()
-            .AddAdminInfrastructure()
             .AddUnitOfWorkInfrastructure()
             .AddSpecificationInfrastructure()
             .AddDictionariesInfrastructure()
             .AddDeliveriesInfrastructure()
             .AddExternalServicesInfrastructure()
             .AddOrdersInfrastructure()
-            .AddPaymentsInfrastructure();
+            .AddPaymentsInfrastructure()
+            .AddDashboardsInfrastructure();
     }
 }

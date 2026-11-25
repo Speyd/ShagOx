@@ -8,12 +8,8 @@ using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Translations;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
-using ShagOxServer.Application.Services.Location.Cities.Translations.Delete;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
-using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -25,8 +21,6 @@ public class CityTranslationUpdateService
 {
     private readonly IRepository<CityTranslation> _cityRepository;
 
-    private readonly CityTranslationInvalidationService _cityInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CityTranslationUpdateService> _logger;
 
@@ -36,7 +30,6 @@ public class CityTranslationUpdateService
         CityTranslationValidator cityTranslationValidator,
         ICityTranslationDeleteService cityTranslationDeleteService,
         CityValidator cityValidator,
-        CityTranslationInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityTranslationUpdateService> logger
     ) 
@@ -47,7 +40,6 @@ public class CityTranslationUpdateService
             unitOfWork)
     {
         _cityRepository = cityRepository;
-        _cityInvalid = cityInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -117,9 +109,6 @@ public class CityTranslationUpdateService
             return Result<UpdateResponse>
                  .Fail(EntityErrorResources.CityTranslationUpdateFailed);
         }
-
-        await _cityInvalid.InvalidateUpdateAsync(
-            BaseTranslationCacheMapper.ToInfo(city.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

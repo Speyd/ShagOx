@@ -2,7 +2,6 @@ using ShagOxServer.Application.DTOs.Deliveries.DeliveryProviders.Query;
 using ShagOxServer.Application.DTOs.Orders.Core.Query;
 using ShagOxServer.Application.DTOs.Orders.OrderItems.Query;
 using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
-using ShagOxServer.Application.Services.Orders.Core.Payment;
 using ShagOxServer.Domain.Entities.Orders;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Mapping;
@@ -12,13 +11,8 @@ public static class OrderMapper
         Order order,
         List<OrderItemDto> items,
         CurrencyDto currency,
-        DeliveryProviderDto? delivery,
-        DateTime? paymentExpiresAt = null)
+        DeliveryProviderDto? delivery)
     {
-        DateTime? paymentDeadline = OrderPaymentPolicy.IsAwaitingPayment(order)
-            ? OrderPaymentPolicy.GetPaymentDeadline(order)
-            : null;
-
         return new OrderDto(
             order.Id,
             order.EntityStatus,
@@ -54,22 +48,7 @@ public static class OrderMapper
             order.ConfirmedAt,
             order.CreatedAt,
             order.UpdatedAt,
-            order.CancelledAt,
-            paymentExpiresAt,
-            paymentDeadline,
-            GetSellerId(order)
+            order.CancelledAt
         );
-    }
-
-    private static long? GetSellerId(Order order)
-    {
-        var sellerIds = order.OrderItems
-            .Where(i => i.Advertisement is not null)
-            .Select(i => i.Advertisement.OwnerId)
-            .Distinct()
-            .Take(2)
-            .ToList();
-
-        return sellerIds.Count == 1 ? sellerIds[0] : null;
     }
 }

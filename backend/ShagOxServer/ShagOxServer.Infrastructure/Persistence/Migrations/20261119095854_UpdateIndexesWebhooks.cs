@@ -10,12 +10,13 @@ namespace ShagOxServer.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // IF EXISTS: databases that already applied 20261119124028_SyncCurrencyCcyAndWebhookIndexes
-            // (an earlier version of it) have these indexes changed/dropped already.
-            migrationBuilder.Sql("""
-                DROP INDEX IF EXISTS "IX_PaymentWebhooks_InvoiceId";
-                DROP INDEX IF EXISTS "IX_PaymentWebhooks_IsProcessed_ReceivedAt";
-                """);
+            migrationBuilder.DropIndex(
+                name: "IX_PaymentWebhooks_InvoiceId",
+                table: "PaymentWebhooks");
+
+            migrationBuilder.DropIndex(
+                name: "IX_PaymentWebhooks_IsProcessed_ReceivedAt",
+                table: "PaymentWebhooks");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PaymentWebhooks_InvoiceId",

@@ -1,16 +1,16 @@
-using ShagOxServer.Application.DTOs.Base.Cache;
-using ShagOxServer.Application.DTOs.Deliveries.DeliveryProviders.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Deliveries.DeliveryProviders.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries.Translations;
 using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Cache.Deliveries;
+using ShagOxServer.Domain.Cache.Translations;
 using ShagOxServer.Domain.Entities.Deliveries;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Deliveries;
 public class DeliveryProviderInvalidationService
-    : ICacheInvalidationService<DeliveryProvider, 
-        DeliveryProviderCacheInfo>
+    : ICacheInvalidationService<DeliveryProvider,
+        DeliveryProviderCacheContext>
 {
     private readonly IDeliveryProviderTranslationQueryRepository _transRepository;
 
@@ -31,12 +31,12 @@ public class DeliveryProviderInvalidationService
     }
 
     public async Task InvalidateCreateAsync(
-        DeliveryProviderCacheInfo entityInfo)
+        DeliveryProviderCacheContext entityInfo)
     {
     }
 
     public async Task InvalidateDeleteAsync(
-        DeliveryProviderCacheInfo entityInfo)
+        DeliveryProviderCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -51,13 +51,13 @@ public class DeliveryProviderInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        DeliveryProviderCacheInfo entityInfo)
+        DeliveryProviderCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
     }
 
     private async Task InvalidateAsync(
-        DeliveryProviderCacheInfo entityInfo)
+        DeliveryProviderCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
              EntityLanguagePattern<DeliveryProvider>(entityInfo.Id));
@@ -66,7 +66,7 @@ public class DeliveryProviderInvalidationService
     }
 
     private async Task InvalidatePatternAsync(
-        DeliveryProviderCacheInfo entityInfo)
+        DeliveryProviderCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePagedPattern<DeliveryProvider>(
@@ -77,7 +77,7 @@ public class DeliveryProviderInvalidationService
                 entityInfo.Status));
     }
 
-    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+    private async Task<List<TranslationCacheContext>> GetTranslationInfos(
         long entityId)
     {
         return await _transRepository

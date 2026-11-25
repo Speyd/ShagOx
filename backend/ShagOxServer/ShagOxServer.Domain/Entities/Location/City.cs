@@ -1,10 +1,13 @@
-﻿using ShagOxServer.Domain.Base;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Cache;
+using ShagOxServer.Domain.Cache.Location;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Location.Translations;
 
 namespace ShagOxServer.Domain.Entities.Location;
 public class City
-    : BaseTranslatable
+    : BaseTranslatable,
+    IEntityCache<City, CityCacheContext>
 {
     public string Code { get; set; } = "";
 
@@ -16,6 +19,13 @@ public class City
     public ICollection<CityTranslation> Translations { get; set; }
         = [];
 
+
+    public CityCacheContext GetCacheContext()
+    {
+        return new CityCacheContext(
+            Id, RegionId, EntityStatus);
+    }
+
     public override string GetIdentificator()
     {
         return Code;
@@ -24,5 +34,10 @@ public class City
     public override string ToString()
     {
         return $"{Code}";
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

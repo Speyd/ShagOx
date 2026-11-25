@@ -104,50 +104,5 @@ namespace ShagOxServer.Application.Resources.Payment {
                 return ResourceManager.GetString("WebhookInvalidPayload", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This order is paid upon delivery and does not require online payment..
-        /// </summary>
-        public static string OrderPaymentNotRequired {
-            get {
-                return ResourceManager.GetString("OrderPaymentNotRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The order has already been paid..
-        /// </summary>
-        public static string OrderAlreadyPaid {
-            get {
-                return ResourceManager.GetString("OrderAlreadyPaid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This order can no longer be paid. Please place a new order..
-        /// </summary>
-        public static string OrderPaymentUnavailable {
-            get {
-                return ResourceManager.GetString("OrderPaymentUnavailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The payment is being processed by the bank. Please refresh the page in a few minutes..
-        /// </summary>
-        public static string OrderPaymentInProgress {
-            get {
-                return ResourceManager.GetString("OrderPaymentInProgress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to refund the buyer. The order status has not been changed. Please try again later..
-        /// </summary>
-        public static string PaymentRefundFailed {
-            get {
-                return ResourceManager.GetString("PaymentRefundFailed", resourceCulture);
-            }
-        }
     }
 }

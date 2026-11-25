@@ -1,17 +1,16 @@
-using ShagOxServer.Application.DTOs.Base.Cache;
-using ShagOxServer.Application.DTOs.Dictionaries.Categories.Cache;
-using ShagOxServer.Application.DTOs.Dictionaries.ProductTypes.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Caches.Keys;
+using ShagOxServer.Domain.Cache.Dictionaries;
+using ShagOxServer.Domain.Cache.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 public class ProductTypeInvalidationService
-    : ICacheInvalidationService<ProductType, ProductTypeCacheInfo>
+    : ICacheInvalidationService<ProductType, ProductTypeCacheContext>
 {
     private readonly ICategoryQueryRepository _categoryRepository;
     private readonly CategoryInvalidationService _categoryInvalid;
@@ -39,13 +38,13 @@ public class ProductTypeInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-       ProductTypeCacheInfo entityInfo)
+       ProductTypeCacheContext entityInfo)
     {
         await InvalidatePatternAsync(entityInfo);
     }
 
     public async Task InvalidateDeleteAsync(
-        ProductTypeCacheInfo entityInfo)
+        ProductTypeCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -71,7 +70,7 @@ public class ProductTypeInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        ProductTypeCacheInfo entityInfo)
+        ProductTypeCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
 
@@ -87,7 +86,7 @@ public class ProductTypeInvalidationService
     }
 
     private async Task InvalidateAsync(
-        ProductTypeCacheInfo entityInfo)
+        ProductTypeCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePattern<ProductType>(entityInfo.Id));
@@ -96,7 +95,7 @@ public class ProductTypeInvalidationService
     }
 
     private async Task InvalidatePatternAsync(
-        ProductTypeCacheInfo entityInfo)
+        ProductTypeCacheContext entityInfo)
     {
         await _cache.RemoveByPatternAsync(CacheKeys.
             EntityLanguagePagedPattern<ProductType>(
@@ -107,14 +106,14 @@ public class ProductTypeInvalidationService
                 entityInfo.Status));
     }
 
-    private async Task<List<CategoryCacheInfo>> GetCategoryInfos(
+    private async Task<List<CategoryCacheContext>> GetCategoryInfos(
         long entityId)
     {
         return await _categoryRepository
             .GetCacheInfosByProductTypeAsync(entityId);
     }
 
-    private async Task<List<BaseTranslationCacheInfo>> GetTranslationInfos(
+    private async Task<List<TranslationCacheContext>> GetTranslationInfos(
         long entityId)
     {
         return await _transRepository

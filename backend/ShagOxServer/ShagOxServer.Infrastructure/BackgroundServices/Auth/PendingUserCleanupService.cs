@@ -3,8 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ShagOxServer.Application.Common.Options.Systems.BackgroundServices;
-using ShagOxServer.Domain.Entities.Account.Enum;
+using ShagOxServer.Application.Common.Options.Systems.BackgroundServices.User;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 
 namespace ShagOxServer.Infrastructure.BackgroundServices.Auth;
@@ -51,7 +52,13 @@ public class PendingUserCleanupService
 
                 if (pendingUsers.Count > 0)
                 {
-                    db.Users.RemoveRange(pendingUsers);
+                    var deletedAt = DateTime.UtcNow;
+
+                    foreach (var user in pendingUsers)
+                    {
+                        user.EntityStatus = EntityStatus.Deleted;
+                        user.DeletedAt = deletedAt;
+                    }
 
                     await db.SaveChangesAsync(stoppingToken);
                 }
@@ -61,6 +68,8 @@ public class PendingUserCleanupService
             {
                 _logger.LogInformation(
                     "Pending user cleanup service stopped.");
+
+                break;
             }
             catch (Exception ex)
             {

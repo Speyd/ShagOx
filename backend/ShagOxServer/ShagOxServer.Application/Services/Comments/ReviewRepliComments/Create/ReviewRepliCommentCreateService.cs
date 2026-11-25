@@ -7,17 +7,13 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewRepliComments.Create;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Review.ReviewRepliImages.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Resources.EntityNames.Extensions;
-using ShagOxServer.Application.Resources.Validations;
-using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
-using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
+using ShagOxServer.Application.Services.Comments.ReviewComments.Create;
 using ShagOxServer.Application.Services.Comments.ReviewRepliComments.Validator;
 using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewRepliComments.Create;
-
 public class ReviewRepliCommentCreateService
     : IReviewRepliCommentCreateService
 {
@@ -25,26 +21,22 @@ public class ReviewRepliCommentCreateService
     private readonly CommentValidator<ReviewComment> _commentValidator;
     private readonly ReviewRepliCommentValidator _repliValidator;
 
-    private readonly ReviewRepliCommentInvalidationService _commInvalid;
-
     private readonly IReviewRepliImageCreateService _imageCreateService;
 
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<ReviewRepliCommentCreateService> _logger;
+    private readonly ILogger<ReviewCommentCreateService> _logger;
 
 
     public ReviewRepliCommentCreateService(
         IRepository<ReviewRepliComment> commentRepository,
         CommentValidator<ReviewComment> commentValidator,
-        ReviewRepliCommentInvalidationService commInvalid,
         ReviewRepliCommentValidator repliValidator,
         IReviewRepliImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
-        ILogger<ReviewRepliCommentCreateService> logger)
+        ILogger<ReviewCommentCreateService> logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;
-        _commInvalid = commInvalid;
         _repliValidator = repliValidator;
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
@@ -57,16 +49,16 @@ public class ReviewRepliCommentCreateService
         long ownerId,
         CancellationToken cancellationToken = default)
     {
-        var validation = await ValidationAsync(
-            request,
+        var exists = await ValidationAsync(
+            request, 
             ownerId,
             cancellationToken
         );
 
-        if (!validation.IsSuccess)
+        if (!exists.IsSuccess)
         {
             return Result<CreateResponse>
-                .Fail(validation.Error);
+                .Fail(exists.Error);
         }
 
         var comment = ReviewRepliCommentCreater
@@ -78,26 +70,23 @@ public class ReviewRepliCommentCreateService
         {
             _commentRepository.Add(comment);
 
-            await _unitOfWork.SaveChangesAsync();
 
-            if (request.Pictures is { Count: > 0 })
+            var imagesResult = await _imageCreateService
+               .CreateAsync(
+                   new PicturesCreateRequest(
+                       request.CommentableEntityId,
+                       request.Pictures
+                   )
+           );
+
+            if (!imagesResult.IsSuccess)
             {
-                var imagesResult = await _imageCreateService
-                    .CreateAsync(
-                        new PicturesCreateRequest(
-                            comment.Id,
-                            request.Pictures
-                        ), cancellationToken
-                    );
+                await _unitOfWork.RollbackAsync();
 
-                if (!imagesResult.IsSuccess)
-                {
-                    await _unitOfWork.RollbackAsync();
-
-                    return Result<CreateResponse>
-                        .Fail(imagesResult.Error!);
-                }
+                return Result<CreateResponse>
+                    .Fail(imagesResult.Error!);
             }
+
 
             await _unitOfWork.CommitAsync();
         }
@@ -115,9 +104,6 @@ public class ReviewRepliCommentCreateService
                 .Fail(EntityErrorResources.ReviewRepliCommentCreateFailed);
         }
 
-        await _commInvalid.InvalidateCreateAsync(
-             CommentCacheMapper.ToInfo(comment));
-
         return Result<CreateResponse>.Success(
            new CreateResponse(
                comment.Id,
@@ -129,15 +115,9 @@ public class ReviewRepliCommentCreateService
         long ownerId,
         CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(request.Text))
-        {
-            return Result<bool>
-                .Fail(ValidationResources.CommentTextRequired);
-        }
-
         var existsComment = await _commentValidator
             .ValidateCommentAsync(
-                ownerId,
+                 ownerId,
                 request.CommentableEntityId,
                 cancellationToken
         );
@@ -150,22 +130,14 @@ public class ReviewRepliCommentCreateService
 
         if (request.RepliId.HasValue)
         {
-            var parent = await _repliValidator
-                .GetByIdAttachAsync(request.RepliId.Value,
-                    cancellationToken);
+            var existsRepli = await _repliValidator
+               .ExistsByIdAsync(request.RepliId.Value,
+                cancellationToken);
 
-            if (!parent.IsSuccess)
+            if (!existsRepli.IsSuccess)
             {
                 return Result<bool>
-                    .Fail(parent.Error);
-            }
-
-            if (parent.Value!.CommentableEntityId !=
-                request.CommentableEntityId)
-            {
-                return Result<bool>.NotFound(
-                    EntityNameExtensions
-                        .GetLocalizedName<ReviewRepliComment>());
+                    .Fail(existsComment.Error);
             }
         }
 

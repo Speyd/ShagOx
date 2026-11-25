@@ -16,6 +16,7 @@ public sealed record UserDto
     string? Bio,
     string? Phone,
     string? Email,
+    bool HasLocalPassword,
     CurrencyDto? Currency,
     AvatarDto? Avatar,
     CityDto? City,

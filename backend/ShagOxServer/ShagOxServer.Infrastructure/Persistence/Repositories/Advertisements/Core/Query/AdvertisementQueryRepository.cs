@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Advertisements.Core.Query.Catalog;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Enum;
 using ShagOxServer.Domain.Filters.Advertisements;
@@ -49,7 +49,8 @@ public partial class AdvertisementQueryRepository
         return await _db.Advertisements
             .WithIncludes()
             .WithStatusFilter(status)
-            .Where(x => x.Status.Code == AdvertisementStatus.Active &&
+            .Where(x => (x.OwnerId == _userContext.UserId || 
+                x.Status.Code == AdvertisementStatus.Active) &&
                 ids.Contains(x.Id))
             .ToListAsync(cancellationToken);
     }
@@ -63,12 +64,10 @@ public partial class AdvertisementQueryRepository
         return await _db.Advertisements
             .WithIncludes()
             .WithStatusFilter(status)
-            .Where(x => x.OwnerId == userId &&
-                x.Status.Code == AdvertisementStatus.Active)
+            .Where(x => x.OwnerId == userId)
             .ToPagedResultAsync(pagination,
-                (x => x.Id),
-                cancellationToken,
-                descending: true);
+                (x => x.Popularity),
+                cancellationToken);
     }
     public async Task<PagedResult<Advertisement>> GetPurchasedByUserAsync(
         long userId,
@@ -94,10 +93,11 @@ public partial class AdvertisementQueryRepository
         return await _db.Advertisements
             .ShortWithIncludes()
             .WithStatusFilter(status)
-            .Where(x => x.OwnerId == _userContext.UserId &&
+            .Where(x => x.OwnerId == _userContext.UserId ||
                 x.Status.Code == AdvertisementStatus.Active)
             .Filter(filter)
-            .ToSearchPagedResultAsync(filter, pagination,
+            .ToPagedResultAsync(pagination,
+                (x => x.Popularity),
                 cancellationToken);
     }
 
@@ -112,12 +112,13 @@ public partial class AdvertisementQueryRepository
             .AsNoTracking()
             .ShortWithIncludes()
             .WithStatusFilter(status)
-            .Where(x => x.Status.Code == AdvertisementStatus.Active);
+            .Where(x => x.OwnerId == _userContext.UserId ||
+                x.Status.Code == AdvertisementStatus.Active);
 
         return await GetCatalogResultAsync(
             userId,
-            query,
-            pagination,
+            query, 
+            pagination, 
             cancellationToken
         );
     }
@@ -133,15 +134,15 @@ public partial class AdvertisementQueryRepository
             .AsNoTracking()
             .ShortWithIncludes()
             .WithStatusFilter(status)
-            .Where(x => x.Status.Code == AdvertisementStatus.Active)
+            .Where(x => x.OwnerId == _userContext.UserId ||
+                x.Status.Code == AdvertisementStatus.Active)
             .Filter(filter);
 
         return await GetCatalogResultAsync(
             userId,
-            query,
-            pagination,
-            cancellationToken,
-            filter
+            query, 
+            pagination, 
+            cancellationToken
         );
     }
 
@@ -149,12 +150,11 @@ public partial class AdvertisementQueryRepository
         long? userId,
         IQueryable<Advertisement> query,
         PaginationParams pagination,
-        CancellationToken cancellationToken,
-        AdvertisementSearchFilter? filter = null)
+        CancellationToken cancellationToken)
     {
-        var result = await query.ToSearchPagedResultAsync(
-            filter,
+        var result = await query.ToPagedResultAsync(
             pagination,
+            x => x.Popularity,
             cancellationToken);
 
         var ids = result.Items.Select(x => x.Id).ToList();

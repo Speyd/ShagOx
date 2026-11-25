@@ -8,7 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementV
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Delete;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Update;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Advertisements.AdvertisementVariants.Admin;
@@ -36,6 +35,7 @@ public class AdvertisementVariantAdminCommandsController
         _updateService = updateService;
         _deleteService = deleteService;
     }
+
 
     [HttpPost]
     public async Task<IActionResult> Create(

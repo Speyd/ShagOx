@@ -19,8 +19,6 @@ public class CityCreateService
     private readonly IRepository<City> _cityRepository;
     private readonly CityValidator _cityValidator;
 
-    private readonly CityInvalidationService _cityInvalidation;
-
     private readonly RegionValidator _regionValidator;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -31,14 +29,12 @@ public class CityCreateService
         IRepository<City> cityRepository,
         CityValidator cityValidator,
         RegionValidator regionValidator,
-        CityInvalidationService cityInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<CityCreateService> logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
         _regionValidator = regionValidator;
-        _cityInvalidation = cityInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -88,9 +84,6 @@ public class CityCreateService
             return Result<CreateResponse>
                  .Fail(EntityErrorResources.CityCreateFailed);
         }
-
-        await _cityInvalidation.InvalidateCreateAsync(
-            CityCacheMapper.ToInfo(city));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

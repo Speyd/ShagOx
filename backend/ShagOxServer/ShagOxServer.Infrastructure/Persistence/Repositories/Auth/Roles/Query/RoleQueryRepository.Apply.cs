@@ -1,5 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Roles;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.Roles;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Roles.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;

@@ -20,8 +20,6 @@ public class AttributeDefinitionDeleteService
     private readonly IRepository<AttributeDefinition> _attributeRepository;
     private readonly AttributeDefinitionValidator _attributeValidator;
 
-    private readonly AttributeDefinitionInvalidationService _attribureInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionDeleteService> _logger;
 
@@ -38,7 +36,6 @@ public class AttributeDefinitionDeleteService
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
-        _attribureInvalid = attribureInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -75,20 +72,11 @@ public class AttributeDefinitionDeleteService
                 EntityErrorResources.AttributeDefinitionDeleteFailed);
         }
 
-        await InvalidateCache(attribute.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                attribute.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        AttributeDefinition entity)
-    {
-        await _attribureInvalid.InvalidateDeleteAsync(
-            AttributeDefinitionCacheMapper.ToInfo(entity));
     }
 }

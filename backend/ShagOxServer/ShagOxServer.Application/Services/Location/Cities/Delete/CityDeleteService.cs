@@ -8,7 +8,6 @@ using ShagOxServer.Application.Services.Base.Delete;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
 using ShagOxServer.Application.Services.Location.Cities.Mapping;
 using ShagOxServer.Application.Services.Location.Cities.Validator;
-using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,8 +19,6 @@ public class CityDeleteService
     private readonly IRepository<City> _cityRepository;
     private readonly CityValidator _cityValidator;
 
-    private readonly CityInvalidationService _cityInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CityDeleteService> _logger;
 
@@ -30,7 +27,6 @@ public class CityDeleteService
         IRepository<City> cityRepository,
         ICommandRepository<City> cityCommand,
         CityValidator cityValidator,
-        CityInvalidationService cityInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityDeleteService> logger
     )
@@ -38,7 +34,6 @@ public class CityDeleteService
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
-        _cityInvalid = cityInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -74,20 +69,11 @@ public class CityDeleteService
                  .Fail(EntityErrorResources.CityDeleteFailed);
         }
 
-        await InvalidateCache(city.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                city.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-        City entity)
-    {
-        await _cityInvalid.InvalidateDeleteAsync(
-           CityCacheMapper.ToInfo(entity));
     }
 }

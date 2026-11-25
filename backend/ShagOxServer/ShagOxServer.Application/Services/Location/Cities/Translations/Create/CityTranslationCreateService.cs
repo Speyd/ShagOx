@@ -5,8 +5,6 @@ using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Translations.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Base.Translations.Query.Mapping;
-using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Location.Cities.Translations.Validator;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -18,8 +16,6 @@ public class CityTranslationCreateService
     private readonly IRepository<CityTranslation> _cityRepository;
     private readonly CityTranslationValidator _cityValidator;
 
-    private readonly CityTranslationInvalidationService _trnsInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CityTranslationCreateService> _logger;
 
@@ -27,13 +23,11 @@ public class CityTranslationCreateService
     public CityTranslationCreateService(
         IRepository<CityTranslation> cityRepository,
         CityTranslationValidator cityValidator,
-        CityTranslationInvalidationService trnsInvalid,
         IUnitOfWork unitOfWork,
         ILogger<CityTranslationCreateService> logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;
-        _trnsInvalid = trnsInvalid;
 
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -75,9 +69,6 @@ public class CityTranslationCreateService
             return Result<CreateResponse>
                  .Fail(EntityErrorResources.CityTranslationCreateFailed);
         }
-
-        await _trnsInvalid.InvalidateCreateAsync(
-            BaseTranslationCacheMapper.ToInfo(city));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

@@ -1,9 +1,7 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Caches;
-using ShagOxServer.Application.DTOs.Auth.Roles.Cache;
 using ShagOxServer.Application.DTOs.Auth.Roles.Query;
 using ShagOxServer.Application.DTOs.Auth.UserRoles;
-using ShagOxServer.Application.DTOs.Auth.Users.Core.Cache;
 using ShagOxServer.Application.DTOs.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
@@ -14,7 +12,9 @@ using ShagOxServer.Application.Services.Auth.UserRoles.Mapping;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Base.Enum;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Cache.Auth;
+using ShagOxServer.Domain.Cache.Auth.User;
+using ShagOxServer.Domain.Entities.Auth;
 using ShagOxServer.Domain.Filters.Auth.UserRoles;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -80,11 +80,11 @@ public class UserRoleQueryService
                 return await roles.ToResultPagedAsync(
                     _roleService.ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
-    public async Task<Result<List<RoleCacheInfo>>> GetRolesCacheInfoByUserAsync(
+    public async Task<Result<List<RoleCacheContext>>> GetRolesCacheInfoByUserAsync(
         long userId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -101,9 +101,9 @@ public class UserRoleQueryService
                     .GetRoleCacheInfoByUserAsync(userId,
                         cancellationToken, status);
 
-                return Result<List<RoleCacheInfo>>.Success(roles);
+                return Result<List<RoleCacheContext>>.Success(roles);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
@@ -130,11 +130,11 @@ public class UserRoleQueryService
                 return await users.ToResultPagedAsync(
                     _userService.ApplyMapperAsync);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 
-    public async Task<Result<List<UserCacheInfo>>> GetUserCacheInfoByRoleAsync(
+    public async Task<Result<List<UserCacheContext>>> GetUserCacheInfoByRoleAsync(
         long roleId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active)
@@ -151,9 +151,9 @@ public class UserRoleQueryService
                     .GetUserCacheInfoByRoleAsync(roleId,
                         cancellationToken, status);
 
-                return Result<List<UserCacheInfo>>.Success(users);
+                return Result<List<UserCacheContext>>.Success(users);
             },
-            _cacheOptions.KeyExpiration
+            _cacheOptions.DefaultExpiration
         );
     }
 }

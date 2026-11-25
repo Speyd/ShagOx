@@ -29,8 +29,6 @@ public class NovaPoshtaDeliveryClient
     public string ProviderCode { get; init; }
     public string CurrencyCode { get; init; }
 
-    private const decimal MinWeight = 0.1m;
-
 
     public NovaPoshtaDeliveryClient(
         NovaPoshtaApiClient apiClient,
@@ -58,12 +56,14 @@ public class NovaPoshtaDeliveryClient
             ? "WarehouseDoors"
             : "WarehouseWarehouse";
 
+        var weight = Math.Max(request.Weight, 0.1m);
+
 
         var methodProperties = new Dictionary<string, object>
         {
             ["CitySender"] = _deliveryOptions.WarehouseCityId,
             ["CityRecipient"] = request.RecipientCityExternalId,
-            ["Weight"] = Math.Max(request.Weight, MinWeight).ToString(
+            ["Weight"] = weight.ToString(
                 System.Globalization.CultureInfo.InvariantCulture),
             ["ServiceType"] = serviceType,
             ["Cost"] = request.DeclaredValue,
@@ -130,7 +130,7 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _casheOptions.KeyExpiration);
+            _casheOptions.DefaultExpiration);
     }
 
     public async Task<Result<IEnumerable<DeliveryStreetDto>>> GetStreetsAsync(
@@ -174,7 +174,7 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _casheOptions.KeyExpiration);
+            _casheOptions.DefaultExpiration);
     }
 
 
@@ -239,6 +239,6 @@ public class NovaPoshtaDeliveryClient
                         .ToList()
                 );
             },
-            _casheOptions.KeyExpiration);
+            _casheOptions.DefaultExpiration);
     }
 }

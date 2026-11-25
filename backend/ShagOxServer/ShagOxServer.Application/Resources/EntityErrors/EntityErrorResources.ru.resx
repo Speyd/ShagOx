@@ -474,4 +474,22 @@
   <data name="ProoductNotAvailable" xml:space="preserve">
     <value>Товар «{0}» больше недоступен.</value>
   </data>
+  <data name="UserDeviceCreateFailed" xml:space="preserve">
+    <value>Не удалось создать устройство пользователя.</value>
+  </data>
+  <data name="UserDeviceDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить устройство пользователя.</value>
+  </data>
+  <data name="UserDeviceUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить устройство пользователя.</value>
+  </data>
+  <data name="UserSessionCreateFailed" xml:space="preserve">
+    <value>Не удалось создать пользовательскую сессию.</value>
+  </data>
+  <data name="UserSessionDeleteFailed" xml:space="preserve">
+    <value>Не удалось удалить пользовательскую сессию.</value>
+  </data>
+  <data name="UserSessionUpdateFailed" xml:space="preserve">
+    <value>Не удалось обновить пользовательскую сессию.</value>
+  </data>
 </root>

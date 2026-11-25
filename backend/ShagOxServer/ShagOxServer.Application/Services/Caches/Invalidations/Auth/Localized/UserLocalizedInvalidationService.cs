@@ -1,7 +1,7 @@
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Localized;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth.Localized;
 public class UserLocalizedInvalidationService

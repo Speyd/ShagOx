@@ -12,8 +12,8 @@ public static class PaymentWebhookDependencyInjection
         services.AddScoped<IPaymentWebhookQueryRepository,
             PaymentWebhookQueryRepository>();
 
-        services.AddScoped<IPaymentWebhookCommandRepository,
-            PaymentWebhookCommandRepository>();
+        services.AddScoped<IPaymentWebhookCommandsRepository,
+            PaymentWebhookCommandsRepository>();
 
 
         services.AddScoped<MonoWebhookDeserializer>();

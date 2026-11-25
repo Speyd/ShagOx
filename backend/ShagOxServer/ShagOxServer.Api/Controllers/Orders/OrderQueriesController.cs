@@ -10,7 +10,6 @@ using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Orders;
-
 [ApiController]
 [Route("api/orders")]
 [Authorize]
@@ -18,12 +17,10 @@ public class OrderQueriesController
     : ApiOwnerExistsController
 {
     private readonly IOrderQueryService _queryService;
-    private readonly IOrderQueryRepository _orderQueryRepository;
 
 
     public OrderQueriesController(
         IOrderQueryService queryService,
-        IOrderQueryRepository orderQueryRepository,
         IOrderExistsRepository orderExistsRepository,
         IUserAdminQueryService userQueryService,
         IUserContext userContext
@@ -31,7 +28,6 @@ public class OrderQueriesController
         : base(orderExistsRepository, userQueryService, userContext)
     {
         _queryService = queryService;
-        _orderQueryRepository = orderQueryRepository;
     }
 
 
@@ -41,34 +37,14 @@ public class OrderQueriesController
         [FromQuery] PaginationParams pagination,
         CancellationToken cancellationToken)
     {
-        var myFilter = filter with { OwnerId = UserId };
+        var myFilter = filter with 
+        {
+            OwnerId = UserId 
+        };
+
 
         var result = await _queryService
             .SearchAsync(myFilter, pagination,
-                cancellationToken);
-
-        return result.ToActionResult();
-    }
-
-    /// <summary>
-    /// Продажі поточного користувача: замовлення його товарів.
-    /// Неоплачені онлайн-замовлення не показуються — продавець бачить їх після оплати.
-    /// </summary>
-    [HttpGet("sales")]
-    public async Task<IActionResult> GetMySales(
-        [FromQuery] OrderSearchFilter filter,
-        [FromQuery] PaginationParams pagination,
-        CancellationToken cancellationToken)
-    {
-        var salesFilter = filter with
-        {
-            OwnerId = null,
-            SellerId = UserId,
-            HideUnpaidOnline = true
-        };
-
-        var result = await _queryService
-            .SearchAsync(salesFilter, pagination,
                 cancellationToken);
 
         return result.ToActionResult();
@@ -79,13 +55,9 @@ public class OrderQueriesController
         [FromRoute] long id,
         CancellationToken cancellationToken)
     {
-        // Замовлення бачать покупець і продавець.
         var forbidden = await CheckOwnershipAsync(id);
-        if (forbidden is not null &&
-            !await _orderQueryRepository.IsSellerAsync(id, UserId!.Value, cancellationToken))
-        {
+        if (forbidden is not null)
             return forbidden;
-        }
 
         var result = await _queryService
             .GetByIdAsync(id, cancellationToken);

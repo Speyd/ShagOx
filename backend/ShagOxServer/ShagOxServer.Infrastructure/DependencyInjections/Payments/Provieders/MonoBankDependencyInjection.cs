@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Application.Interfaces.Providers;
+using ShagOxServer.Application.Interfaces.Providers.Payment;
 using ShagOxServer.Infrastructure.ExternalServices.Payments.Providers.MonoBank;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Payments.Provieders;
@@ -10,12 +10,6 @@ public static class MonoBankDependencyInjection
     {
         services.AddScoped<IPaymentProvider,
             MonoBankPaymentProvider>();
-
-        services.AddScoped<IPaymentGateway,
-            MonoBankPaymentGateway>();
-
-        // Singleton: кешує публічний ключ банку між запитами.
-        services.AddSingleton<MonoBankSignatureVerifier>();
 
         return services;
     }

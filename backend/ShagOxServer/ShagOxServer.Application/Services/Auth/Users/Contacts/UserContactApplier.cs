@@ -1,9 +1,9 @@
-﻿using ShagOxServer.Application.Common.Validators.Enum;
+using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Resources.Auth.Registrations;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Contacts;

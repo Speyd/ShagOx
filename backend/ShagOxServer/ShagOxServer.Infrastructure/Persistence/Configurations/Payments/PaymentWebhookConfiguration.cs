@@ -39,8 +39,21 @@ public class PaymentWebhookConfiguration
             .IsRequired(false)
             .HasColumnType("timestamp with time zone");
 
+
+
         builder.HasUniqueActiveIndex(
             x => x.InvoiceId,
             "\"Status\" = 'Succeeded'");
+
+        builder.HasIndex(x => new
+        {
+            x.InvoiceId,
+            x.Status
+        })
+        .HasFilter("\"EntityStatus\" = 'Active'");
+
+        builder.HasIndex(x => x.ReceivedAt)
+            .HasFilter(
+                "\"EntityStatus\" = 'Active' AND \"IsProcessed\" = false");
     }
 }

@@ -144,10 +144,4 @@
   <data name="UnsupportedAttributeType" xml:space="preserve">
     <value>Неподдерживаемый тип атрибута: {0}.</value>
   </data>
-  <data name="ReviewGradeOutOfRange" xml:space="preserve">
-    <value>Оценка должна быть от {0} до {1}.</value>
-  </data>
-  <data name="CommentTextRequired" xml:space="preserve">
-    <value>Текст комментария обязателен.</value>
-  </data>
 </root>

@@ -24,8 +24,6 @@ public class AttributeDefinitionUpdateService
     private readonly AttributeDefinitionValidator _attributeValidator;
     private readonly AttributeDefinitionUpdateValidator _attributeUpdateValidator;
 
-    private readonly AttributeDefinitionInvalidationService _attribureInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionUpdateService> _logger;
 
@@ -35,7 +33,6 @@ public class AttributeDefinitionUpdateService
         AttributeDefinitionValidator attributeValidator,
         IAttributeDefinitionDeleteService attributeDeleteService,
         AttributeDefinitionUpdateValidator attributeUpdateValidator,
-        AttributeDefinitionInvalidationService attribureInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionUpdateService> logger
     )
@@ -44,7 +41,6 @@ public class AttributeDefinitionUpdateService
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _attributeUpdateValidator = attributeUpdateValidator;
-        _attribureInvalid = attribureInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -124,9 +120,6 @@ public class AttributeDefinitionUpdateService
             return Result<UpdateResponse>.Fail(
                 EntityErrorResources.AttributeDefinitionUpdateFailed);
         }
-
-        await _attribureInvalid.InvalidateUpdateAsync(
-            AttributeDefinitionCacheMapper.ToInfo(attribute.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

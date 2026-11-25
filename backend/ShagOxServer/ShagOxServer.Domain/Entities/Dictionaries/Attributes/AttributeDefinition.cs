@@ -1,11 +1,14 @@
 using ShagOxServer.Domain.Base;
+using ShagOxServer.Domain.Base.Cache;
+using ShagOxServer.Domain.Cache.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Domain.Entities.Dictionaries.Enum;
 using ShagOxServer.Domain.Entities.LineItems;
 
 namespace ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 public class AttributeDefinition 
-    : BaseTranslatable
+    : BaseTranslatable,
+    IEntityCache<AttributeDefinition, AttributeDefinitionCacheContext>
 {
     public long CategoryId { get; set; }
     public Category Category { get; set; } = null!;
@@ -28,6 +31,11 @@ public class AttributeDefinition
     public ICollection<AttributeDefinitionTranslation> Translations { get; set; }
        = [];
 
+    public AttributeDefinitionCacheContext GetCacheContext()
+    {
+        return new AttributeDefinitionCacheContext(
+            Id, CategoryId, EntityStatus);
+    }
 
     public override string GetIdentificator()
     {
@@ -37,5 +45,10 @@ public class AttributeDefinition
     public override string ToString()
     {
         return $"{Key}(type: {Type} | req: {Required} | min: {Min} | max: {Max})";
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

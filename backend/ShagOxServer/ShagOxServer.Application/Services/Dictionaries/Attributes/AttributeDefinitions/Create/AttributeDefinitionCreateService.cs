@@ -22,8 +22,6 @@ public class AttributeDefinitionCreateService
 
     private readonly CategoryValidator _categoryValidator;
 
-    private readonly AttributeDefinitionInvalidationService _attributeInvalidation;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDefinitionCreateService> _logger;
 
@@ -32,14 +30,12 @@ public class AttributeDefinitionCreateService
         IRepository<AttributeDefinition> attributeRepository,
         AttributeDefinitionValidator attributeValidator,
         CategoryValidator categoryValidator,
-        AttributeDefinitionInvalidationService attributeInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionCreateService> logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;
         _categoryValidator = categoryValidator;
-        _attributeInvalidation = attributeInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -88,9 +84,6 @@ public class AttributeDefinitionCreateService
             return Result<CreateResponse>.Fail(
                 EntityErrorResources.AttributeDefinitionCreateFailed);
         }
-
-        await _attributeInvalidation.InvalidateCreateAsync(
-            AttributeDefinitionCacheMapper.ToInfo(attribute));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

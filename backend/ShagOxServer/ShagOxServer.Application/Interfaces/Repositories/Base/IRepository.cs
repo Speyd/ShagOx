@@ -17,9 +17,4 @@ public interface IRepository<T>
     void Delete(T entity);
 
     bool Update(T entity);
-
-    Task LoadCollectionAsync(
-        T entity,
-        string navigation,
-        CancellationToken cancellationToken = default);
 }

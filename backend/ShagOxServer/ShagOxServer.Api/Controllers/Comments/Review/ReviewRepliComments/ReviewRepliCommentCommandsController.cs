@@ -53,7 +53,7 @@ public class ReviewRepliCommentCommandsController
     [HttpPut("{id:long}")]
     public async Task<IActionResult> Update(
         [FromRoute] long id,
-        [FromBody] ReviewRepliCommentUpdateRequest request)
+        [FromForm] ReviewRepliCommentUpdateRequest request)
     {
         var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)

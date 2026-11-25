@@ -11,6 +11,18 @@ public static class PaymentQueryExtensions
             .AsSplitQuery()
             .Include(x => x.Order)
                 .ThenInclude(x => x.OrderItems)
+                    .ThenInclude(x => x.Advertisement)
+                        .ThenInclude(x => x.Pictures
+                            .OrderBy(p => p.Order)
+                            .Take(1))
+
+            .Include(x => x.Order)
+                .ThenInclude(x => x.OrderItems)
+                    .ThenInclude(x => x.AdvertisementVariant)
+                        .ThenInclude(x => x.Advertisement)
+                            .ThenInclude(x => x.Pictures
+                                .OrderBy(p => p.Order)
+                                .Take(1))
 
             .Include(x => x.Order)
                 .ThenInclude(x => x.Currency);

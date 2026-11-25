@@ -1,12 +1,11 @@
-﻿using ShagOxServer.Application.Interfaces.Services.Auth;
+using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Resources.Auth.Registrations;
-using ShagOxServer.Domain.Entities.Account;
-using ShagOxServer.Domain.Entities.Account.Enum;
+using ShagOxServer.Domain.Entities.Auth.Users;
+using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Register;
-
 public partial class RegisterService
     : IRegisterService
 {

@@ -14,7 +14,6 @@ public sealed record ReviewCommentDto
     DateTime CreatedAt,
     DateTime? UpdatedAt,
     int Grade,
-    int RepliesCount,
     List<ReviewImageDto> Pictures
 ) : CommentDto(Id,
     EntityStatus,

@@ -6,10 +6,8 @@ using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Mapping.Cache;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -20,8 +18,6 @@ public class AdvertisementVariantCreateService
     private readonly IRepository<AdvertisementVariant> _variantRepository;
     private readonly AdvertisementVariantValidator _variantValidator;
 
-    private readonly AdvertisementVariantInvalidationService _variantInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementVariantCreateService> _logger;
 
@@ -30,14 +26,12 @@ public class AdvertisementVariantCreateService
         IRepository<AdvertisementVariant> variantRepository,
         AdvertisementVariantValidator variantValidator,
         AdvertisementValidator advertValidator,
-        AdvertisementVariantInvalidationService variantInvalid,
         IAttributeDefinitionQueryRepository attributeRepository,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantCreateService> logger)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;
-        _variantInvalid = variantInvalid;
         _logger = logger;
         _unitOfWork = unitOfWork;
     }
@@ -113,9 +107,6 @@ public class AdvertisementVariantCreateService
         _variantRepository.Add(variant);
 
         await _unitOfWork.SaveChangesAsync();
-
-        await _variantInvalid.InvalidateCreateAsync(
-            AdvertisementVariantCacheMapper.ToInfo(variant));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

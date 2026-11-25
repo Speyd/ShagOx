@@ -1,12 +1,12 @@
-using ShagOxServer.Application.DTOs.LineItems.Core.Cache;
-using ShagOxServer.Application.DTOs.Orders.Core.Cache;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Domain.Cache.LineItems;
+using ShagOxServer.Domain.Cache.Orders;
 using ShagOxServer.Domain.Entities.Orders;
 
 namespace ShagOxServer.Application.Services.Caches.Invalidations.Orders.OrderItems;
 public class OrderItemOrderInvalidationService
-    : ICacheInvalidationService<OrderItem, LineItemCacheInfo>
+    : ICacheInvalidationService<OrderItem, LineItemCacheContext>
 {
     private readonly IOrderQueryRepository _orderRepository;
     private readonly OrderInvalidationService _orderInvalid;
@@ -22,7 +22,7 @@ public class OrderItemOrderInvalidationService
 
 
     public async Task InvalidateCreateAsync(
-       LineItemCacheInfo entityInfo)
+       LineItemCacheContext entityInfo)
     {
         var orderInfo = await GetOrderInfos(
             entityInfo.ParentId);
@@ -35,7 +35,7 @@ public class OrderItemOrderInvalidationService
 
 
     public async Task InvalidateDeleteAsync(
-        LineItemCacheInfo entityInfo)
+        LineItemCacheContext entityInfo)
     {
         var orderInfo = await GetOrderInfos(
              entityInfo.ParentId);
@@ -47,7 +47,7 @@ public class OrderItemOrderInvalidationService
     }
 
     public async Task InvalidateUpdateAsync(
-        LineItemCacheInfo entityInfo)
+        LineItemCacheContext entityInfo)
     {
         var orderInfo = await GetOrderInfos(
              entityInfo.ParentId);
@@ -58,7 +58,7 @@ public class OrderItemOrderInvalidationService
         await _orderInvalid.InvalidateUpdateAsync(orderInfo);
     }
 
-    private async Task<OrderCacheInfo?> GetOrderInfos(
+    private async Task<OrderCacheContext?> GetOrderInfos(
         long orderId)
     {
         var order = await _orderRepository
@@ -67,7 +67,7 @@ public class OrderItemOrderInvalidationService
         if (order is null)
             return null;
 
-        return new OrderCacheInfo(
+        return new OrderCacheContext(
             order.Id,
             order.OwnerId,
             order.OrderNumber,

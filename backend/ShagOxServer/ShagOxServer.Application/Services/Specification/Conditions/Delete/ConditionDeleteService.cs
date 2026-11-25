@@ -19,8 +19,6 @@ public class ConditionDeleteService
     private readonly IRepository<Condition> _conditionRepository;
     private readonly ConditionValidator _conditionValidator;
 
-    private readonly ConditionInvalidationService _conditionInvalid;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ConditionDeleteService> _logger;
 
@@ -29,7 +27,6 @@ public class ConditionDeleteService
         IRepository<Condition> conditionRepository,
         ICommandRepository<Condition> conditionCommand,
         ConditionValidator conditionValidator,
-        ConditionInvalidationService conditionInvalid,
         IUnitOfWork unitOfWork,
         ILogger<ConditionDeleteService> logger
     )
@@ -37,7 +34,6 @@ public class ConditionDeleteService
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;
-        _conditionInvalid = conditionInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -73,20 +69,11 @@ public class ConditionDeleteService
                  .Fail(EntityErrorResources.ConditionDeleteFailed);
         }
 
-        await InvalidateCache(condition.Value!);
-
         return Result<DeleteResponse>.Success(
            new DeleteResponse(
                condition.Value!.Id,
                DateTime.UtcNow
            )
        );
-    }
-
-    public override async Task InvalidateCache(
-       Condition entity)
-    {
-        await _conditionInvalid.InvalidateDeleteAsync(
-            ConditionCacheMapper.ToInfo(entity));
     }
 }

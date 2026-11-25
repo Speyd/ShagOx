@@ -3,7 +3,7 @@ using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Avatars.Query;
 using ShagOxServer.Application.Services.Specification.Currencies.Mapping;
 using ShagOxServer.Application.Services.Specification.Pictures.Avatars.Mapping;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 

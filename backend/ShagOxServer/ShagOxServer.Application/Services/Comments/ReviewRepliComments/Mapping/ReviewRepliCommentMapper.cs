@@ -18,7 +18,6 @@ public static class ReviewRepliCommentMapper
             comment.Text,
             comment.CreatedAt,
             comment.UpdatedAt,
-            comment.ParentReplyId,
             comment.Replies
                 .Select(x => x.Id)
                 .ToList(),

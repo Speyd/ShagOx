@@ -17,6 +17,10 @@ public static class AdvertisementCache
         EntityStatus status = EntityStatus.Active)
             => $"{Prefix}:{language}:status:{status}:seller:{sellerId}:page:{page}:size:{pageSize}";
 
+    public static string FacetByCategory(
+      long categoryId)
+        => $"{Prefix}:facet:category:{categoryId}";
+
     public static string ByBuyer(
         long buyerId,
         string language,

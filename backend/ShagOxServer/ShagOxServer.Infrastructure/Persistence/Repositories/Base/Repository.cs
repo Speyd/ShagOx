@@ -67,14 +67,4 @@ public  class Repository<TEntity>
             return false;
         }     
     }
-
-    public virtual async Task LoadCollectionAsync(
-        TEntity entity,
-        string navigation,
-        CancellationToken cancellationToken = default)
-    {
-        await _db.Entry(entity)
-            .Collection(navigation)
-            .LoadAsync(cancellationToken);
-    }
 }

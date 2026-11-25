@@ -5,18 +5,14 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Create;
-using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
-using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Create;
-using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.Avatars.Update;
 using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Create;
-using ShagOxServer.Application.Interfaces.Services.Specification.Pictures.CategoryImages.Update;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
-using ShagOxServer.Application.Services.Dictionaries.Categories.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Validator;
 using ShagOxServer.Application.Services.Dictionaries.ProductTypes.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using Twilio.Http;
 
 
 namespace ShagOxServer.Application.Services.Dictionaries.Categories.Create;
@@ -29,9 +25,6 @@ public class CategoryCreateService
 
     private readonly ICategoryImageCreateService _imageCreateService;
 
-
-    private readonly CategoryInvalidationService _categoryInvalidation;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CategoryCreateService> _logger;
 
@@ -40,7 +33,6 @@ public class CategoryCreateService
         IRepository<Category> categoryRepository,
         CategoryValidator categoryValidator,
         ProductTypeValidator productTypeValidator,
-        CategoryInvalidationService categoryInvalidation,
         ICategoryImageCreateService imageCreateService,
         IUnitOfWork unitOfWork,
         ILogger<CategoryCreateService> logger)
@@ -48,7 +40,6 @@ public class CategoryCreateService
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;
         _productTypeValidator = productTypeValidator;
-        _categoryInvalidation = categoryInvalidation;
         _imageCreateService = imageCreateService;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -63,7 +54,10 @@ public class CategoryCreateService
            .ExistsByIdAsync(request.ProductTypeId, cancellationToken);
 
         if (!typeValidator.IsSuccess)
-            return Result<CreateResponse>.Fail(typeValidator.Error);
+        {
+            return Result<CreateResponse>
+                .Fail(typeValidator.Error);
+        }
 
 
         var nameValidator = await _categoryValidator
@@ -71,7 +65,10 @@ public class CategoryCreateService
                 request.ProductTypeId, cancellationToken);
 
         if (!nameValidator.IsSuccess)
-            return Result<CreateResponse>.Fail(nameValidator.Error);
+        {
+            return Result<CreateResponse>
+                .Fail(nameValidator.Error);
+        }
 
 
         var category = CategoryCreater.Create(request);
@@ -79,18 +76,17 @@ public class CategoryCreateService
         await _unitOfWork.BeginTransactionAsync();
 
         try
-        {
-            
+        {   
             _categoryRepository.Add(category);
 
             await _unitOfWork.SaveChangesAsync();
 
-            // The picture is optional: a category can be created first and get an image later.
             if (request.Picture is not null)
             {
+
                 var imageResult = await _imageCreateService.CreateInternalAsync(
-                    new PictureCreateRequest(category.Id, request.Picture),
-                    cancellationToken);
+                       new PictureCreateRequest(category.Id, request.Picture),
+                       cancellationToken);
 
                 if (!imageResult.IsSuccess)
                 {
@@ -115,9 +111,6 @@ public class CategoryCreateService
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.CategoryCreateFailed);
         }
-
-        await _categoryInvalidation.InvalidateCreateAsync(
-            CategoryCacheMapper.ToInfo(category));
 
         return Result<CreateResponse>.Success(
             new CreateResponse(

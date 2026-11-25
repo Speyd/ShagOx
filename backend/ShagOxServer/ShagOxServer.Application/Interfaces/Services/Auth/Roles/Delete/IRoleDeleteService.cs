@@ -1,6 +1,6 @@
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Services.Base.Delete;
-using ShagOxServer.Domain.Entities.Account;
+using ShagOxServer.Domain.Entities.Auth;
 
 namespace ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
 public interface IRoleDeleteService

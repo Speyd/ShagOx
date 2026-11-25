@@ -4,7 +4,6 @@ using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Infrastructure.Persistence.Configurations.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Configurations.Dictionaries;
-
 public class CategoryConfiguration 
     : IEntityTypeConfiguration<Category>
 {
@@ -29,7 +28,12 @@ public class CategoryConfiguration
             .OnDelete(DeleteBehavior.Cascade);
 
 
-        builder.HasIndex(x => x.ProductTypeId);
+        builder.HasIndex(x => new
+        {
+            x.ProductTypeId,
+            x.EntityStatus,
+            x.Id
+        });
 
         builder.HasUniqueActiveIndex(x => 
             new { x.ProductTypeId, x.Code });

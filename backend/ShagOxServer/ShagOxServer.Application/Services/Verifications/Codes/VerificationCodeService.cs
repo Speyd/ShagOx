@@ -43,7 +43,8 @@ public class VerificationCodeService
         VerificationCodePurpose purpose,
         string? pendingValue = null)
     {
-        var oldCode = await GetActiveCodeAsync(userId);
+        var oldCode = await _queryRepository
+            .GetActiveByUserIdAsync(userId);
 
         if (oldCode is not null)
             oldCode.InvalidatedAt = DateTime.UtcNow;
@@ -68,6 +69,9 @@ public class VerificationCodeService
 
         try
         {
+            if (oldCode is not null)
+                _repository.Update(oldCode);
+
             _repository.Add(verificationCode);
 
             await _unitOfWork.CommitAsync();
@@ -96,7 +100,8 @@ public class VerificationCodeService
         long userId,
         string hashCode)
     {
-        var code = await GetActiveCodeAsync(userId);
+        var code =
+            await _queryRepository.GetActiveByUserIdAsync(userId);
 
         if (code is null)
             return new (VerificationCodeResult.NotFound, code);
@@ -138,17 +143,5 @@ public class VerificationCodeService
             userId);
 
         return new(VerificationCodeResult.Success, code);
-    }
-
-    private async Task<VerificationCode?> GetActiveCodeAsync(
-        long userId)
-    {
-        var code = await _queryRepository
-            .GetActiveByUserIdAsync(userId);
-
-        if (code is null)
-            return null;
-
-        return await _repository.GetByIdAsync(code.Id);
     }
 }

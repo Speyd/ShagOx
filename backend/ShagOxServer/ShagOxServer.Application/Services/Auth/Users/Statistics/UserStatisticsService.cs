@@ -15,12 +15,13 @@ public class UserStatisticsService
         _repository = repository;
     }
 
-    public async Task<Result<UserStatisticsDto>> GetAsync(
+    public async Task<Result<UserStatisticsDto>> GetByUserAsync(
         long userId,
+        UserStatisticQueryOptions options,
         CancellationToken cancellationToken = default)
     {
         var statistics = await _repository
-            .GetAsync(userId, cancellationToken);
+            .GetByUserAsync(userId, options, cancellationToken);
 
         return Result<UserStatisticsDto>.Success(statistics);
     }

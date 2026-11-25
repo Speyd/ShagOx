@@ -1,12 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
-using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Filters.Orders.Core;
-using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Orders.Core.Extensions;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Orders.Core.Query;
 public partial class OrderQueryRepository
@@ -24,24 +20,5 @@ public partial class OrderQueryRepository
         OrderSearchFilter filter)
     {
         return query.Filter(filter);
-    }
-
-    public override async Task<PagedResult<Order>> SearchAsync(
-        OrderSearchFilter filter,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
-    {
-        var query = ApplyFilter(
-            ApplyIncludes(_db.Orders),
-            filter);
-
-        return await query
-            .AsNoTracking()
-            .WithStatusFilter(status)
-            .ToPagedResultAsync(pagination,
-                x => x.Id,
-                cancellationToken,
-                descending: true);
     }
 }

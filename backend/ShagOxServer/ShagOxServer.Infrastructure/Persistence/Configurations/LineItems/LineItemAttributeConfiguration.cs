@@ -13,11 +13,19 @@ public class LineItemAttributeConfiguration
         builder.Property(x => x.Order)
             .IsRequired();
 
+
         builder.HasOne(x => x.AttributeDefinition)
                .WithOne(x => x.BasketAttribute)
                .HasForeignKey<LineItemAttribute>(x => x.AttributeDefinitionId)
                .OnDelete(DeleteBehavior.Cascade);
 
+
         builder.HasUniqueActiveIndex(x => x.AttributeDefinitionId);
+
+        builder.HasIndex(x => new
+        {
+            x.Order,
+            x.EntityStatus
+        });
     }
 }

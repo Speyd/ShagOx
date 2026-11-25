@@ -10,7 +10,6 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Base.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaries.Validator;
-using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Mapping;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDictionaryValues.Validator;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -25,8 +24,6 @@ public class AttributeDictionaryValueUpdateService
 
     private readonly AttributeDictionaryValidator _dictionaryValidator;
 
-    private readonly AttributeDictionaryValueInvalidationService _valueInvalidation;
-
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AttributeDictionaryValueUpdateService> _logger;
 
@@ -36,7 +33,6 @@ public class AttributeDictionaryValueUpdateService
         AttributeDictionaryValueValidator valueValidator,
         IAttributeDictionaryValueDeleteService valueDeleteService,
         AttributeDictionaryValidator dictionaryValidator,
-        AttributeDictionaryValueInvalidationService valueInvalidation,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDictionaryValueUpdateService> logger
     )
@@ -45,7 +41,6 @@ public class AttributeDictionaryValueUpdateService
         _valueRepository = valueRepository;
         _valueValidator = valueValidator;
         _dictionaryValidator = dictionaryValidator;
-        _valueInvalidation = valueInvalidation;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -116,9 +111,6 @@ public class AttributeDictionaryValueUpdateService
             return Result<UpdateResponse>.Fail(
                 EntityErrorResources.AttributeDictionaryValueUpdateFailed);
         }
-
-        await _valueInvalidation.InvalidateUpdateAsync(
-            AttributeDictionaryValueCacheMapper.ToInfo(value.Value!));
 
         return Result<UpdateResponse>.Success(result);
     }

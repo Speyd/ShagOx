@@ -1,5 +1,4 @@
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Webp;
+using SkiaSharp;
 
 namespace ShagOxServer.Infrastructure.ExternalServices.ImageStorage;
 public static class PictureConverter
@@ -23,20 +22,38 @@ public static class PictureConverter
         Stream input,
         CancellationToken cancellationToken = default)
     {
-        using var image = await Image.LoadAsync(input, cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        using var bitmap = SKBitmap.Decode(input)
+            ?? throw new InvalidOperationException(
+                "Unable to decode image.");
+
+        using var image = SKImage.FromBitmap(bitmap);
+
+        using var data = image.Encode(
+            SKEncodedImageFormat.Webp,
+            80);
+
+        if (data is null)
+            throw new InvalidOperationException(
+                "Unable to encode image to WebP.");
 
         var output = new MemoryStream();
 
-        await image.SaveAsWebpAsync(
-            output,
-            new WebpEncoder
-            {
-                Quality = 80
-            },
-            cancellationToken);
+        try
+        {
+            await data.AsStream().CopyToAsync(
+                output,
+                cancellationToken);
 
-        output.Position = 0;
+            output.Position = 0;
 
-        return output;
+            return output;
+        }
+        catch
+        {
+            await output.DisposeAsync();
+            throw;
+        }
     }
 }

@@ -1,21 +1,29 @@
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
 public interface IUserTrastManagementService
 {
-    Task RevokeDeviceAsync(
+    Task<Result<bool>> UntrustDeviceAsync(
+        long deviceId,
+        CancellationToken cancellationToken);
+
+    Task UntrustDevicesAsync(
         User user,
-        bool resetUsedSession = false);
+        bool resetUsedSession = false,
+        CancellationToken cancellationToken = default);
 
 
-    Task RevokeSessionByUserAsync(
+    Task RevokeSessionsByUserAsync(
         User user,
         SessionRevocationReason reason,
-        bool resetUsedSession = false);
+        bool resetUsedSession = false,
+        CancellationToken cancellationToken = default);
 
-    Task RevokeSessionByDeviceAsync(
+    Task RevokeSessionsByDeviceAsync(
         UserDevice user,
         SessionRevocationReason reason,
-        bool resetUsedSession = false);
+        bool resetUsedSession = false,
+        CancellationToken cancellationToken = default);
 }

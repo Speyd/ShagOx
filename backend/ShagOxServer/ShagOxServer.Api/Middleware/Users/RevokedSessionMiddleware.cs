@@ -3,6 +3,7 @@ using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Application.Resources.Auth.Security;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
@@ -57,7 +58,7 @@ public class RevokedSessionMiddleware
                         await context.Response.WriteAsJsonAsync(
                             new
                             {
-                                message = "This session has been revoked."
+                                message = SecurityResources.SessionRevoked
                             },
                             context.RequestAborted);
 

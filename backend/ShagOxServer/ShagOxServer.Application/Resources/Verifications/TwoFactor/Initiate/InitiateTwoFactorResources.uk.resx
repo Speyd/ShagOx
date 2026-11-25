@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CodeInstruction" xml:space="preserve">
-    <value>Використайте наведений нижче код підтвердження, щоб розпочати налаштування двофакторної автентифікації:</value>
+    <value>Щоб завершити вхід до облікового запису, введіть наведений нижче код двофакторної автентифікації:</value>
   </data>
   <data name="ExpirationMessage" xml:space="preserve">
-    <value>Код дійсний протягом {0} хвилин.</value>
+    <value>Термін дії цього коду підтвердження становить {0} хвилин. Не повідомляйте його нікому.</value>
   </data>
   <data name="Footer" xml:space="preserve">
-    <value>Дякуємо, що обираєте Marketly!</value>
+    <value>Це автоматичне повідомлення безпеки. Будь ласка, не відповідайте на цей лист.</value>
   </data>
   <data name="Heading" xml:space="preserve">
-    <value>Захистіть свій обліковий запис</value>
+    <value>Підтвердьте свою особу</value>
   </data>
   <data name="Message" xml:space="preserve">
-    <value>Ви запросили ввімкнення двофакторної автентифікації для свого облікового запису Marketly.</value>
+    <value>Для входу до вашого облікового запису потрібна двофакторна автентифікація. Введіть наведений нижче код підтвердження, щоб підтвердити свою особу та безпечно увійти до облікового запису.</value>
   </data>
   <data name="SecurityMessage" xml:space="preserve">
-    <value>Якщо ви не запитували ввімкнення двофакторної автентифікації для свого облікового запису Marketly, просто проігноруйте це повідомлення.</value>
+    <value>Якщо ви не намагалися увійти до облікового запису, проігноруйте цей лист і зверніться до нашої служби підтримки, якщо підозрюєте несанкціонований доступ.</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Увімкнення двофакторної автентифікації</value>
+    <value>Підтвердження двофакторної автентифікації</value>
   </data>
 </root>

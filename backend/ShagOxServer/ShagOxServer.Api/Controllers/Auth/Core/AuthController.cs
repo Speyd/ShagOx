@@ -10,6 +10,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.TwoFactor;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions.Refresh;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -26,6 +27,7 @@ public partial class AuthController
     private readonly ILoginService _loginService;
     private readonly ILogoutService _logoutService;
     private readonly IUserSessionRefreshService _refreshService;
+    private readonly IUserTrastManagementService _trastManagement;
     private readonly ITwoFactorService _twoFactor;
 
 
@@ -35,6 +37,7 @@ public partial class AuthController
         ILoginService loginService,
         ILogoutService logoutService,
         IUserSessionRefreshService refreshService,
+        IUserTrastManagementService trastManagement,
         ITwoFactorService twoFactor,
         IOptions<CookieOptions> cookieOptions,
         IOptions<JwtOptions> jwtOptions,
@@ -52,6 +55,7 @@ public partial class AuthController
         _loginService = loginService;
         _logoutService = logoutService;
         _refreshService = refreshService;
+        _trastManagement = trastManagement;
         _twoFactor = twoFactor;
     }
 

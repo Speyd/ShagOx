@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CodeInstruction" xml:space="preserve">
-    <value>Используйте следующий код подтверждения, чтобы начать настройку двухфакторной аутентификации:</value>
+    <value>Чтобы завершить вход в аккаунт, введите приведённый ниже код двухфакторной аутентификации:</value>
   </data>
   <data name="ExpirationMessage" xml:space="preserve">
-    <value>Срок действия кода  {0}минут.</value>
+    <value>Срок действия этого кода подтверждения составляет {0} минут. Никому не сообщайте его.</value>
   </data>
   <data name="Footer" xml:space="preserve">
-    <value>Спасибо, что выбираете Marketly!</value>
+    <value>Это автоматическое уведомление безопасности. Пожалуйста, не отвечайте на это письмо.</value>
   </data>
   <data name="Heading" xml:space="preserve">
-    <value>Защитите свой аккаунт</value>
+    <value>Подтвердите свою личность</value>
   </data>
   <data name="Message" xml:space="preserve">
-    <value>Вы запросили включение двухфакторной аутентификации для своей учётной записи Marketly.</value>
+    <value>Для входа в ваш аккаунт требуется двухфакторная аутентификация. Введите приведённый ниже код подтверждения, чтобы подтвердить свою личность и безопасно войти в аккаунт.</value>
   </data>
   <data name="SecurityMessage" xml:space="preserve">
-    <value>Если вы не запрашивали включение двухфакторной аутентификации для своей учётной записи Marketly, просто проигнорируйте это сообщение.</value>
+    <value>Если вы не пытались войти в аккаунт, проигнорируйте это письмо и свяжитесь с нашей службой поддержки, если подозреваете несанкционированный доступ.</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Включение двухфакторной аутентификации</value>
+    <value>Подтверждение двухфакторной аутентификации</value>
   </data>
 </root>

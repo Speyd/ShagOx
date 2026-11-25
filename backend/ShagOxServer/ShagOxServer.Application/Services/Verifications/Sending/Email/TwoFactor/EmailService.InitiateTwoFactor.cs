@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Resources.Verifications.TwoFactor.Enable;
+using ShagOxServer.Application.Resources.Verifications.TwoFactor.Initiate;
 using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing.Models;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -24,12 +25,12 @@ public partial class EmailService
                     _codeOptions.ExpirationMinutes);
 
             var htmlBody = await _renderer.RenderAsync(
-                EnableTwoFactorFileName,
+                InitiateTwoFactorFileName,
                 model);
 
             await SendEmailAsync(
                 email,
-                EnableTwoFactorResources.Title,
+                InitiateTwoFactorResources.Title,
                 htmlBody);
 
             _logger.LogInformation(

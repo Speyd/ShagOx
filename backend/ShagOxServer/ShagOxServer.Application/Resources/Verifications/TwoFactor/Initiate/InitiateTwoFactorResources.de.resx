@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CodeInstruction" xml:space="preserve">
-    <value>Verwenden Sie den folgenden Bestätigungscode, um die Einrichtung der Zwei-Faktor-Authentifizierung zu starten:</value>
+    <value>Um die Anmeldung abzuschließen, geben Sie bitte den folgenden Zwei-Faktor-Authentifizierungscode ein:</value>
   </data>
   <data name="ExpirationMessage" xml:space="preserve">
-    <value>Dieser Code ist {0} Minuten lang gültig.</value>
+    <value>Dieser Bestätigungscode ist {0} Minuten gültig. Bitte geben Sie ihn nicht an andere Personen weiter.</value>
   </data>
   <data name="Footer" xml:space="preserve">
-    <value>Vielen Dank, dass Sie sich für Marketly entschieden haben!</value>
+    <value>Dies ist eine automatisch generierte Sicherheitsnachricht. Bitte antworten Sie nicht auf diese E-Mail.</value>
   </data>
   <data name="Heading" xml:space="preserve">
-    <value>Schützen Sie Ihr Konto</value>
+    <value>Identität bestätigen</value>
   </data>
   <data name="Message" xml:space="preserve">
-    <value>Sie haben die Aktivierung der Zwei-Faktor-Authentifizierung für Ihr Marketly-Konto angefordert.</value>
+    <value>Für die Anmeldung bei Ihrem Konto ist eine Zwei-Faktor-Authentifizierung erforderlich. Geben Sie den folgenden Bestätigungscode ein, um Ihre Identität zu bestätigen und sicher auf Ihr Konto zuzugreifen.</value>
   </data>
   <data name="SecurityMessage" xml:space="preserve">
-    <value>Wenn Sie die Aktivierung der Zwei-Faktor-Authentifizierung für Ihr Marketly-Konto nicht angefordert haben, ignorieren Sie bitte diese Nachricht.</value>
+    <value>Wenn Sie keine Anmeldung versucht haben, ignorieren Sie bitte diese E-Mail und kontaktieren Sie unseren Support, wenn Sie einen unbefugten Zugriff vermuten.</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Zwei-Faktor-Authentifizierung aktivieren</value>
+    <value>Zwei-Faktor-Authentifizierung bestätigen</value>
   </data>
 </root>

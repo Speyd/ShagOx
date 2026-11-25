@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Application.Resources.Auth.Security;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
 
@@ -43,7 +44,7 @@ public class BlockedDeviceMiddleware
                         await context.Response.WriteAsJsonAsync(
                             new
                             {
-                                message = "This device has been blocked."
+                                message = SecurityResources.DeviceBlocked
                             },
                             context.RequestAborted);
 

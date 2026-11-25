@@ -71,6 +71,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RegistrationAuthResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Auth\Security\SecurityResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SecurityResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Dashboard\DashboardResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -206,6 +211,10 @@
 		<EmbeddedResource Update="Resources\Auth\Registrations\RegistrationAuthResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>RegistrationAuthResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Auth\Security\SecurityResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>SecurityResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Dashboard\DashboardResources.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>

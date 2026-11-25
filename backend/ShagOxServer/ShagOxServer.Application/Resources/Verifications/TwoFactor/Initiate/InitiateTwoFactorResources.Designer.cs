@@ -62,7 +62,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Initiate {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Use the following verification code to initiate the Two-Factor Authentication setup:.
+        ///   Ищет локализованную строку, похожую на To complete your sign-in, enter the two-factor authentication code below:.
         /// </summary>
         public static string CodeInstruction {
             get {
@@ -71,7 +71,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Initiate {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на This code is valid for {0} minutes..
+        ///   Ищет локализованную строку, похожую на This verification code is valid for {0} minutes. Please do not share it with anyone..
         /// </summary>
         public static string ExpirationMessage {
             get {
@@ -80,7 +80,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Initiate {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Thank you for choosing Marketly!.
+        ///   Ищет локализованную строку, похожую на This is an automated security message. Please do not reply to this email..
         /// </summary>
         public static string Footer {
             get {
@@ -89,7 +89,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Initiate {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Secure Your Account.
+        ///   Ищет локализованную строку, похожую на Verify Your Identity.
         /// </summary>
         public static string Heading {
             get {
@@ -98,7 +98,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Initiate {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You have requested to enable Two-Factor Authentication for your Marketly account..
+        ///   Ищет локализованную строку, похожую на A sign-in attempt to your account requires two-factor authentication. Enter the verification code below to confirm your identity and securely access your account..
         /// </summary>
         public static string Message {
             get {
@@ -107,7 +107,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Initiate {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на If you did not request to enable Two-Factor Authentication for your Marketly account, please ignore this message..
+        ///   Ищет локализованную строку, похожую на If you did not attempt to sign in, please ignore this email and contact our support team if you suspect unauthorized activity..
         /// </summary>
         public static string SecurityMessage {
             get {
@@ -116,7 +116,7 @@ namespace ShagOxServer.Application.Resources.Verifications.TwoFactor.Initiate {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Enable Two-Factor Authentication.
+        ///   Ищет локализованную строку, похожую на Two-Factor Authentication Verification.
         /// </summary>
         public static string Title {
             get {

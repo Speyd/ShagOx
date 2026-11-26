@@ -15,13 +15,18 @@ public interface IUserTrastManagementService
         CancellationToken cancellationToken = default);
 
 
-    Task RevokeSessionsByUserAsync(
+    Task<Result<bool>> RevokeSessionAsync(
+        long sessionId,
+        SessionRevocationReason reason,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<bool>> RevokeSessionsByUserAsync(
         long userId,
         SessionRevocationReason reason,
         bool resetUsedSession = false,
         CancellationToken cancellationToken = default);
 
-    Task RevokeSessionsByDeviceAsync(
+    Task<Result<bool>> RevokeSessionsByDeviceAsync(
         long deviceId,
         SessionRevocationReason reason,
         bool resetUsedSession = false,

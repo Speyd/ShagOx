@@ -7,7 +7,7 @@ using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Auth.Users.Advertisements;
+namespace ShagOxServer.Api.Controllers.Auth.Users.Core.Advertisements;
 
 [ApiController]
 [Route("api/users/{userId:int}/advertisements")]

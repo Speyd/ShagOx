@@ -18,9 +18,19 @@ public interface IUserSessionQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
+    Task<Result<List<UserSessionDto>>> GetAllByUserAsync(
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
     Task<Result<PagedResult<UserSessionDto>>> GetByUserDeviceAsync(
         long deviceId,
         PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
+    Task<Result<List<UserSessionDto>>> GetAllByUserDeviceAsync(
+        long deviceId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 

@@ -7,6 +7,7 @@ public sealed record UserSessionDto
 (
     long Id,
     EntityStatus EntityStatus,
+    long OwnerId,
     long UserDeviceId,
     string Browser,
     string? BrowserVersion,

@@ -9,7 +9,7 @@ using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Auth.Users.Currencies;
+namespace ShagOxServer.Api.Controllers.Auth.Users.Core.Currencies;
 [ApiController]
 [Route("api/users")]
 public class UserCurrenciesController

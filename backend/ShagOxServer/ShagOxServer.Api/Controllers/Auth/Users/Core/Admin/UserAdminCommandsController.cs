@@ -9,7 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Auth.Users.Admin;
+namespace ShagOxServer.Api.Controllers.Auth.Users.Core.Admin;
 
 [ApiController]
 [Route("api/admin/users")]

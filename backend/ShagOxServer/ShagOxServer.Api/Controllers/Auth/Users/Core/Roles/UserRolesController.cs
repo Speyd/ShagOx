@@ -8,7 +8,7 @@ using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Auth.Users.Roles;
+namespace ShagOxServer.Api.Controllers.Auth.Users.Core.Roles;
 
 [ApiController]
 [Route("api/users")]

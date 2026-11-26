@@ -2,10 +2,10 @@ using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Providers.User;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Management.Trast;
@@ -21,7 +21,7 @@ public partial class UserTrastManagementService
 
     private readonly ISessionProvider _sessionProvider;
     private readonly IUserSessionCommandsRepository _sessionCommandRepository;
-    private readonly IUserSessionQueryRepository _sessionQueryRepository;
+    private readonly IUserSessionQueryService _sessionQueryService;
 
 
     public UserTrastManagementService(
@@ -32,7 +32,7 @@ public partial class UserTrastManagementService
         IUserDeviceQueryService deviceQueryService,
         ISessionProvider sessionProvider,
         IUserSessionCommandsRepository sessionCommandRepository,
-        IUserSessionQueryRepository sessionQueryRepository)
+        IUserSessionQueryService sessionQueryService)
     {
         _userContext = userContext;
         _userService = userService;
@@ -41,6 +41,6 @@ public partial class UserTrastManagementService
         _deviceQueryService = deviceQueryService;
         _sessionProvider = sessionProvider;
         _sessionCommandRepository = sessionCommandRepository;
-        _sessionQueryRepository = sessionQueryRepository;
+        _sessionQueryService = sessionQueryService;
     }
 }

@@ -64,6 +64,14 @@ public class UserSessionInvalidationService
         await _cache.RemoveByPatternAsync(UserSessionCache.
              ByUserDevicePattern(entityInfo.UserDeviceId));
 
+
+        await _cache.RemoveByPatternAsync(UserSessionCache.
+            AllByUserPattern(entityInfo.OwnerId));
+
+        await _cache.RemoveByPatternAsync(UserSessionCache.
+             AllByUserDevicePattern(entityInfo.UserDeviceId));
+
+
         if (!string.IsNullOrWhiteSpace(entityInfo.IpAddress))
         {
             await _cache.RemoveByPatternAsync(UserSessionCache.

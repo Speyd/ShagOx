@@ -8,7 +8,7 @@ using ShagOxServer.Domain.Filters.Auth.Users.Core;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Auth.Users.Admin;
+namespace ShagOxServer.Api.Controllers.Auth.Users.Core.Admin;
 
 [ApiController]
 [Route("api/admin/users")]

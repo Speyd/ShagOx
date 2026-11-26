@@ -25,6 +25,18 @@ public static class UserSessionCache
 
 
 
+    public static string AllByUser(
+       long userId,
+       EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:status:{status}:user:{userId}";
+
+    public static string AllByUserPattern(
+        long userId)
+            => $"{Prefix}:*:user:{userId}";
+
+
+
+
     public static string ByUserDevice(
        long deviceId,
        int page,
@@ -40,6 +52,17 @@ public static class UserSessionCache
     public static string ByUserDevicePattern(
         long deviceId)
             => $"{Prefix}:*:device:{deviceId}:page:*";
+
+
+
+    public static string AllByUserDevice(
+      long deviceId,
+      EntityStatus status = EntityStatus.Active)
+          => $"{Prefix}:status:{status}:device:{deviceId}";
+
+    public static string AllByUserDevicePattern(
+        long deviceId)
+            => $"{Prefix}:*:device:{deviceId}";
 
 
 

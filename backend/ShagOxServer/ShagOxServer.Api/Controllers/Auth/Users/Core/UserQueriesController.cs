@@ -10,7 +10,7 @@ using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Filters.Auth.Users.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Api.Controllers.Auth.Users;
+namespace ShagOxServer.Api.Controllers.Auth.Users.Core;
 
 [ApiController]
 [Route("api/users")]

@@ -7,6 +7,51 @@ public static class UserDeviceCache
     public static readonly string Prefix =
        CacheKeys.Prefix<UserDevice>();
 
+    public static string ByUserAndDevice(
+      long userId,
+      long deviceId,
+      EntityStatus status = EntityStatus.Active)
+          => $"{Prefix}:status:{status}:user:{userId}:device:{deviceId}";
+
+    public static string ByUserAndDevicePattern(
+       long userId,
+       long deviceId)
+            => $"{Prefix}:*:user:{userId}:device:{deviceId}";
+
+    public static string ByUserIdAndDevicePattern(
+        long userId)
+            => $"{Prefix}:*:user:{userId}:*";
+
+    public static string ByUserAndDeviceIdPattern(
+        long deviceId)
+            => $"{Prefix}:*:device:{deviceId}";
+
+
+
+
+    public static string EntityByUserAndDevice(
+      long userId,
+      long deviceId,
+      EntityStatus status = EntityStatus.Active)
+          => $"{Prefix}:status:{status}:user:{userId}:device:{deviceId}";
+
+    public static string EntityByUserAndDevicePattern(
+        long userId,
+       long deviceId)
+            => $"{Prefix}:*:user:{userId}:device:{deviceId}";
+
+    public static string EntityByUserIdAndDevicePattern(
+        long userId)
+            => $"{Prefix}:*:user:{userId}:*";
+
+    public static string EntityByUserAndDeviceIdPattern(
+        long deviceId)
+            => $"{Prefix}:*:device:{deviceId}";
+
+
+
+
+
 
     public static string ByUser(
        long userId,
@@ -35,38 +80,31 @@ public static class UserDeviceCache
             => $"{Prefix}:*:user:{userId}";
 
 
-    public static string ByIpAddress(
-       string ipAddress,
+
+    public static string ByDevice(
+       long deviceId,
        int page,
        int pageSize,
        EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:status:{status}:ipAddress:{ipAddress}:page:{page}:size:{pageSize}";
+           => $"{Prefix}:status:{status}:device:{deviceId}:page:{page}:size:{pageSize}";
 
-    public static string ByIpAddressPattern(
-        string ipAddress,
+    public static string ByDevicePattern(
+        long deviceId,
         EntityStatus status)
-            => $"{Prefix}:status:{status}:ipAddress:{ipAddress}:page:*";
+            => $"{Prefix}:status:{status}:device:{deviceId}:page:*";
 
-    public static string ByIpAddressPattern(
-        string ipAddress)
-            => $"{Prefix}:*:ipAddress:{ipAddress}:page:*";
+    public static string ByDevicePattern(
+        long deviceId)
+            => $"{Prefix}:*:device:{deviceId}:page:*";
 
 
-    public static string ByIdentifier(
-       string identifier,
-       EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:status:{status}:identifier:{identifier}";
+    public static string AllByDevice(
+        long deviceId,
+        EntityStatus status)
+            => $"{Prefix}:status:{status}:device:{deviceId}";
 
-    public static string ByIdentifierPattern(
-        string identifier)
-            => $"{Prefix}:*:identifier:{identifier}";
+    public static string AllByDevicePattern(
+        long deviceId)
+            => $"{Prefix}:*:device:{deviceId}";
 
-    public static string EntityByIdentifier(
-       string identifier,
-       EntityStatus status = EntityStatus.Active)
-           => $"{Prefix}:status:{status}:entity:identifier:{identifier}";
-
-    public static string EntityByIdentifierPattern(
-        string identifier)
-            => $"{Prefix}:*:entity:identifier:{identifier}";
 }

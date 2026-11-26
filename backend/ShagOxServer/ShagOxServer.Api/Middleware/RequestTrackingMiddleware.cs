@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Devices;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Caches.Keys.Security;
 using ShagOxServer.Domain.Entities.Security;
@@ -25,7 +27,7 @@ public sealed class RequestTrackingMiddleware
     public async Task InvokeAsync(
         HttpContext context,
         IUserCacheService userCache,
-        IUserDeviceCommandsRepository deviceCommands)
+        IDeviceCommandsRepository deviceCommands)
     {
         var cfIp = context.Request.Headers["CF-Connecting-IP"]
             .ToString();
@@ -99,7 +101,7 @@ public sealed class RequestTrackingMiddleware
     private async Task UpdateRequestState(
         IpRateLimitState state,
         DateTime now,
-        IUserDeviceCommandsRepository deviceCommands)
+        IDeviceCommandsRepository deviceCommands)
     {
         state.HttpRequest++;
 

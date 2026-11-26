@@ -1,3 +1,4 @@
+using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Providers.User;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices.Query;
@@ -177,7 +178,7 @@ public class UserTrastManagementService
         }
 
         var userSessions = await _sessionQueryRepository
-            .GetAllByDeviceAsync(deviceId, cancellationToken);
+            .GetAllByUserDeviceAsync(deviceId, cancellationToken);
 
         foreach (var session in userSessions)
         {

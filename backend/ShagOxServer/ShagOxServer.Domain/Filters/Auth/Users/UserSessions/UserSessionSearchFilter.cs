@@ -4,7 +4,7 @@ namespace ShagOxServer.Domain.Filters.Auth.Users.UserSessions;
 public sealed record UserSessionSearchFilter
 (
     long? UserId,
-    long? DeviceId,
+    long? UserDeviceId,
     SessionRevocationReason? RevocationReason,
     bool? IsActive
 ) : BaseFilter();

@@ -45,6 +45,59 @@ public class UserDeviceQueryService
         return UserDeviceMapper.ToDto(entity);
     }
 
+
+    public async Task<Result<UserDeviceDto>> GetByUserAndDeviceAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+        var cacheKey = UserDeviceCache.ByUserAndDevice(
+          userId,
+          deviceId,
+          status);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var devices = await _deviceQueryRepository
+                    .GetByUserAndDeviceAsync(userId, deviceId,
+                        cancellationToken, status);
+
+                return await devices.ToResultAsync(
+                    ApplyMapperAsync);
+            },
+            _cacheOptions.DefaultExpiration
+        );
+    }
+
+    public async Task<Result<UserDevice?>> GetEntityByUserAndDeviceAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+        var cacheKey = UserDeviceCache.EntityByUserAndDevice(
+          userId,
+          deviceId,
+          status);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var devices = await _deviceQueryRepository
+                    .GetByUserAndDeviceAsync(userId, deviceId,
+                        cancellationToken, status);
+
+                return Result<UserDevice?>.Success(devices);
+            },
+            _cacheOptions.DefaultExpiration
+        );
+    }
+
+
     public async Task<Result<PagedResult<UserDeviceDto>>> GetByUserAsync(
         long userId,
         PaginationParams pagination,
@@ -96,61 +149,14 @@ public class UserDeviceQueryService
         );
     }
 
-    public async Task<Result<UserDeviceDto>> GetByIdentifierAsync(
-        string identifier,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active)
+    public async Task<Result<PagedResult<UserDeviceDto>>> GetByDeviceAsync(
+       long deviceId,
+       PaginationParams pagination,
+       CancellationToken cancellationToken = default,
+       EntityStatus status = EntityStatus.Active)
     {
-        var cacheKey = UserDeviceCache.ByIdentifier(
-          identifier,
-          status);
-
-        return await _cache.GetOrCreateAsync(
-            cacheKey,
-            async () =>
-            {
-                var device = await _deviceQueryRepository
-                    .GetByIdentifierAsync(identifier,
-                        cancellationToken, status);
-
-                return await device.ToResultAsync(
-                    ApplyMapperAsync);
-            },
-            _cacheOptions.DefaultExpiration
-        );
-    }
-
-    public async Task<Result<UserDevice?>> GetEntityByIdentifierAsync(
-        string identifier,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active)
-    {
-        var cacheKey = UserDeviceCache.EntityByIdentifier(
-          identifier,
-          status);
-
-        return await _cache.GetOrCreateAsync(
-            cacheKey,
-            async () =>
-            {
-                var device = await _deviceQueryRepository
-                    .GetByIdentifierAsync(identifier,
-                        cancellationToken, status);
-
-                return Result<UserDevice?>.Success(device);
-            },
-            _cacheOptions.DefaultExpiration
-        );
-    }
-
-    public async Task<Result<PagedResult<UserDeviceDto>>> GetByIpAsync(
-        string ipAddress,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active)
-    {
-        var cacheKey = UserDeviceCache.ByIpAddress(
-          ipAddress,
+        var cacheKey = UserDeviceCache.ByDevice(
+          deviceId,
           pagination.Page,
           pagination.PageSize,
           status);
@@ -159,11 +165,35 @@ public class UserDeviceQueryService
             cacheKey,
             async () =>
             {
-                var device = await _deviceQueryRepository
-                    .GetByIpAsync(ipAddress, pagination,
+                var devices = await _deviceQueryRepository
+                    .GetByDeviceAsync(deviceId, pagination,
                         cancellationToken, status);
 
-                return await device.ToResultPagedAsync(
+                return await devices.ToResultPagedAsync(
+                    ApplyMapperAsync);
+            },
+            _cacheOptions.DefaultExpiration
+        );
+    }
+
+    public async Task<Result<List<UserDeviceDto>>> GetAllByDeviceAsync(
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+        var cacheKey = UserDeviceCache.AllByDevice(
+          deviceId,
+          status);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var devices = await _deviceQueryRepository
+                    .GetAllByDeviceAsync(deviceId,
+                        cancellationToken, status);
+
+                return await devices.ToResultListAsync(
                     ApplyMapperAsync);
             },
             _cacheOptions.DefaultExpiration

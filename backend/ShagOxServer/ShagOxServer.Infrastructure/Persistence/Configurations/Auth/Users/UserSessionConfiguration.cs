@@ -17,10 +17,13 @@ public class UserSessionConfiguration
             .HasMaxLength(100);
 
         builder.Property(x => x.BrowserVersion)
-           .HasMaxLength(100);
+           .HasMaxLength(100)
+           .IsRequired(false);
 
         builder.Property(x => x.IpAddress)
-            .HasMaxLength(45);
+            .HasMaxLength(45)
+           .IsRequired(false);
+
 
         builder.Property(x => x.RevocationReason)
             .HasConversion<string>()
@@ -33,7 +36,8 @@ public class UserSessionConfiguration
             .HasColumnType("timestamptz");
 
         builder.Property(x => x.RevokedAt)
-            .HasColumnType("timestamptz");
+            .HasColumnType("timestamptz")
+            .IsRequired(false);
 
         builder.Property(x => x.LastUsedAt)
             .HasColumnType("timestamptz");
@@ -44,16 +48,16 @@ public class UserSessionConfiguration
             .HasForeignKey(x => x.OwnerId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(x => x.Device)
+        builder.HasOne(x => x.UserDevice)
             .WithMany()
-            .HasForeignKey(x => x.DeviceId)
+            .HasForeignKey(x => x.UserDeviceId)
             .OnDelete(DeleteBehavior.Restrict);
 
 
         builder.HasIndex(x => x.RefreshTokenHash)
             .IsUnique();
 
-        builder.HasIndex(x => x.DeviceId);
+        builder.HasIndex(x => x.UserDeviceId);
 
         builder.HasIndex(x => new
         {

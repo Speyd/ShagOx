@@ -18,28 +18,10 @@ public static class UserDeviceFilterExtensions
                 u.OwnerId == filter.UserId.Value);
         }
 
-        if (!string.IsNullOrWhiteSpace(filter.DeviceName))
-        {
-            query = query.Where(u => 
-                EF.Functions.ILike(u.DeviceName, $"%{filter.DeviceName}%"));
-        }
-
-        if (!string.IsNullOrWhiteSpace(filter.DeviceType))
+        if (filter.DeviceId.HasValue)
         {
             query = query.Where(u =>
-                EF.Functions.ILike(u.DeviceType, $"%{filter.DeviceType}%"));
-        }
-
-        if (!string.IsNullOrWhiteSpace(filter.Browser))
-        {
-            query = query.Where(u => u.Browser != null &&
-                EF.Functions.ILike(u.Browser, $"%{filter.Browser}%"));
-        }
-
-        if (!string.IsNullOrWhiteSpace(filter.OperatingSystem))
-        {
-            query = query.Where(u => u.OperatingSystem != null &&
-                EF.Functions.ILike(u.OperatingSystem, $"%{filter.OperatingSystem}%"));
+                u.DeviceId == filter.DeviceId.Value);
         }
 
         if (filter.IsTrusted.HasValue)

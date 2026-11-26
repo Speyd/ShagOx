@@ -1,5 +1,5 @@
+using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
-using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Resources.Auth.Security;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
@@ -19,8 +19,7 @@ public class BlockedDeviceMiddleware
 
     public async Task InvokeAsync(
         HttpContext context,
-        AppDbContext dbContext,
-        IUserContext userContext,
+        IDeviceProvider deviceProvider,
         IUserDeviceExistsRepository deviceExists)
     {
         if (context.User.Identity?.IsAuthenticated == true)
@@ -29,12 +28,15 @@ public class BlockedDeviceMiddleware
 
             if (int.TryParse(userIdClaim?.Value, out var userId))
             {
-                var deviceIdentifier = userContext.DeviceIdentifier;
+                var deviceIdentifier = await deviceProvider
+                    .GetUserDeviceAsync();
 
-                if (!string.IsNullOrWhiteSpace(deviceIdentifier))
+                var deviceId = deviceIdentifier?.Id;
+
+                if (deviceId.HasValue)
                 {
                     var isBlocked = await deviceExists
-                        .IsBlockedAsync(userId, deviceIdentifier);
+                        .IsBlockedAsync(userId, deviceId.Value);
 
                     if (isBlocked)
                     {

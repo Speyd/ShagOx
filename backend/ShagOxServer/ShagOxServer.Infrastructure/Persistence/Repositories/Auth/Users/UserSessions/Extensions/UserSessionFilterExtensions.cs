@@ -17,10 +17,10 @@ public static class UserSessionFilterExtensions
                 u.OwnerId == filter.UserId.Value);
         }
 
-        if (filter.DeviceId.HasValue)
+        if (filter.UserDeviceId.HasValue)
         {
             query = query.Where(u =>
-                u.DeviceId == filter.DeviceId.Value);
+                u.UserDeviceId == filter.DeviceId.Value);
         }
 
         if (filter.RevocationReason.HasValue)

@@ -10,11 +10,22 @@ public class UserDeviceConfiguration
     public void Configure(
         EntityTypeBuilder<UserDevice> builder)
     { 
+        builder.Property(x => x.Status)
+            .HasConversion<string>();
+
         builder.Property(x => x.CreatedAt)
             .HasColumnType("timestamptz");
 
         builder.Property(x => x.LastActiveAt)
             .HasColumnType("timestamptz");
+
+        builder.Property(x => x.BlockedAt)
+            .HasColumnType("timestamptz")
+            .IsRequired(false);
+
+        builder.Property(x => x.BlockedUntil)
+            .HasColumnType("timestamptz")
+            .IsRequired(false);
 
 
         builder.HasOne(x => x.Owner)

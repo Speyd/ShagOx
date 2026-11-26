@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
+using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;
-using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
 
@@ -25,7 +25,7 @@ public class UpdateLastSeenMiddleware
     public async Task InvokeAsync(
         HttpContext context,
         AppDbContext dbContext,
-        IUserContext userContext,
+        IDeviceProvider deviceProvier,
         IRefreshTokenService refreshTokenService)
     {
 
@@ -35,7 +35,8 @@ public class UpdateLastSeenMiddleware
 
             if (int.TryParse(userIdClaim?.Value, out var userId))
             {
-                var deviceIdentifier = userContext.DeviceIdentifier;
+                var device = await deviceProvier
+                    .GetDeviceAsync();
                 
                 var now = DateTime.UtcNow;
                 var cutoff = now - _updaterOptions.UpdateLastSeen;
@@ -50,11 +51,11 @@ public class UpdateLastSeenMiddleware
                             now),
                         context.RequestAborted);
 
-                if (!string.IsNullOrWhiteSpace(deviceIdentifier))
+                if (device is not null)
                 {
                     await dbContext.UserDevices
                         .Where(d =>
-                            d.DeviceIdentifier == deviceIdentifier &&
+                            d.DeviceId == device.Id &&
                             d.OwnerId == userId)
                         .ExecuteUpdateAsync(
                             setters => setters.SetProperty(

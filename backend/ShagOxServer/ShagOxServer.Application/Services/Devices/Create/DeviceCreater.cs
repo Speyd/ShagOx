@@ -15,10 +15,10 @@ public static class DeviceCreater
         {
             DeviceName = deviceInfo.DeviceName,
             DeviceType = deviceInfo.DeviceType,
-            Browser = deviceInfo.Browser,
             OperatingSystem = deviceInfo.OperatingSystem,
             DeviceIdentifier = deviceInfo.DeviceIdentifier,
             CreatedAt = DateTime.UtcNow,
+            LastActiveAt = DateTime.UtcNow,
             Status = DeviceStatus.Active,
         };
     }

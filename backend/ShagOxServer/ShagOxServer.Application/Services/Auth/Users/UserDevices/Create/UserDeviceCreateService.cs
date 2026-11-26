@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Providers.User;
+using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
@@ -95,24 +95,21 @@ public class UserDeviceCreateService
             return Result<UserDevice>.Fail(userValidation.Error);
 
         var deviceValidation = await _deviceValidator
-            .ExistsAsync(request.DeviceIdentifier);
+            .ExistsByIdAsync(request.DeviceId);
 
         if (!deviceValidation.IsSuccess)
             return Result<UserDevice>.Fail(deviceValidation.Error);
 
         var validation = await _userDeviceValidator
             .NotExistsAsync(request.OwnerId,
-                request.DeviceIdentifier,
+                request.DeviceId,
                 cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UserDevice>.Fail(validation.Error);
 
-        var deviceInfo = _deviceInfo
-            .GetUserDeviceInfo(request.DeviceIdentifier);
-
         var device = UserDeviceCreater
-            .Create(request, deviceInfo);
+            .Create(request);
 
         _deviceRepository.Add(device);
 

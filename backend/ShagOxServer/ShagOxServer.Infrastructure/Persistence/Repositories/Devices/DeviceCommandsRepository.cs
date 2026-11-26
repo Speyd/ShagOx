@@ -20,6 +20,27 @@ public class DeviceCommandsRepository
     }
 
 
+    public async Task<bool> BanDeviceByIpAsync(
+        string ipAddress,
+        DateTime? blockedUntil,
+        CancellationToken cancellationToken = default)
+    {
+        var now = DateTime.UtcNow;
+
+        var affected = await _db.UserSessions
+            .Where(x => x.IpAddress == ipAddress)
+            .Include(x => x.UserDevice)
+                .ThenInclude(x => x.Device)
+            .ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(x => x.UserDevice.Device.Status, DeviceStatus.Blocked)
+                    .SetProperty(x => x.UserDevice.Device.BlockedAt, now)
+                    .SetProperty(x => x.UserDevice.Device.BlockedUntil, blockedUntil),
+                cancellationToken);
+
+        return affected > 0;
+    }
+
     public async Task<bool> BanDeviceAsync(
         long deviceId,
         DateTime? blockedUntil,
@@ -69,5 +90,21 @@ public class DeviceCommandsRepository
                     .SetProperty(x => x.BlockedAt, (DateTime?)null)
                     .SetProperty(x => x.BlockedUntil, (DateTime?)null),
                 cancellationToken);
+    }
+
+    public async Task<bool> UpdateLastSeenAsync(
+        long deviceId,
+        CancellationToken cancellationToken = default)
+    {
+        var now = DateTime.UtcNow;
+
+        await _db.Devices
+            .Where(x => x.Id == deviceId)
+            .ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(x => x.LastActiveAt, now),
+                cancellationToken);
+
+        return true;
     }
 }

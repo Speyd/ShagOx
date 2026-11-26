@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.DTOs.Devices.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Providers.User;
+using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Devices.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
@@ -81,7 +81,7 @@ public class DeviceCreateService
         DeviceCreateRequest request,
         CancellationToken cancellationToken = default)
     {
-        var idenExists = await _deviceValidator.ExistsAsync(
+        var idenExists = await _deviceValidator.NotExistsAsync(
             request.DeviceIdentifier, cancellationToken);
 
         if (!idenExists.IsSuccess)

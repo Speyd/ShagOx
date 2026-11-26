@@ -520,30 +520,14 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("BlockedUntil")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Browser")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamptz");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("DeviceIdentifier")
-                        .IsRequired()
-                        .HasMaxLength(45)
-                        .HasColumnType("character varying(45)");
-
-                    b.Property<string>("DeviceName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("DeviceType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                    b.Property<long>("DeviceId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("EntityStatus")
                         .IsRequired()
@@ -551,19 +535,11 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasDefaultValue("Active");
 
-                    b.Property<string>("IpAddress")
-                        .HasMaxLength(45)
-                        .HasColumnType("character varying(45)");
-
                     b.Property<bool>("IsTrusted")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastActiveAt")
                         .HasColumnType("timestamptz");
-
-                    b.Property<string>("OperatingSystem")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
 
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
@@ -573,9 +549,12 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId", "DeviceIdentifier")
+                    b.HasIndex("DeviceId")
+                        .HasDatabaseName("IX_UserDevices_DeviceId");
+
+                    b.HasIndex("OwnerId", "DeviceId")
                         .IsUnique()
-                        .HasDatabaseName("IX_UserDevices_OwnerId_DeviceIdentifier")
+                        .HasDatabaseName("IX_UserDevices_OwnerId_DeviceId")
                         .HasFilter("\"EntityStatus\" IN ('Active', 'Hidden')");
 
                     b.ToTable("UserDevices");
@@ -588,6 +567,15 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Browser")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("BrowserVersion")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamptz");
@@ -606,6 +594,10 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamptz");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(45)
+                        .HasColumnType("character varying(45)");
 
                     b.Property<DateTime>("LastUsedAt")
                         .HasColumnType("timestamptz");
@@ -926,10 +918,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("BlockedUntil")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Browser")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamptz");
 
@@ -956,10 +944,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text")
                         .HasDefaultValue("Active");
-
-                    b.Property<string>("IpAddress")
-                        .HasMaxLength(45)
-                        .HasColumnType("character varying(45)");
 
                     b.Property<DateTime>("LastActiveAt")
                         .HasColumnType("timestamptz");
@@ -2493,12 +2477,21 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.UserDevice", b =>
                 {
+                    b.HasOne("ShagOxServer.Domain.Entities.Devices.Device", "Device")
+                        .WithMany()
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserDevices_Devices_DeviceId");
+
                     b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_UserDevices_Users_OwnerId");
+
+                    b.Navigation("Device");
 
                     b.Navigation("Owner");
                 });

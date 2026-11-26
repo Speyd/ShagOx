@@ -26,4 +26,17 @@ public partial class UserDeviceQueryRepository
             .SelectCacheInfo()
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<List<UserDeviceCacheContext>> GetCacheContextByDeviceAsync(
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.UserDevices
+            .WithIncludes()
+            .WithStatusFilter(status)
+            .Where(x => x.DeviceId == deviceId)
+            .SelectCacheInfo()
+            .ToListAsync(cancellationToken);
+    }
 }

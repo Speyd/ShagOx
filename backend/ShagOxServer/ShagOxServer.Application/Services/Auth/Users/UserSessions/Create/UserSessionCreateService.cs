@@ -6,6 +6,7 @@ using ShagOxServer.Application.DTOs.Auth.Users.UserSessions.Create;
 using ShagOxServer.Application.DTOs.Auth.Users.UserSessions.Create.Response;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Providers.Sessions;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions.Create;
@@ -23,7 +24,7 @@ public class UserSessionCreateService
     private readonly UserDeviceValidator _deviceValidator;
     private readonly UserValidator _userValidator;
 
-    //private readonly RoleInvalidationService _roleInvalid;
+    private readonly ISessionInfoProvider _sessionInfoProvider;
     private readonly IRefreshTokenService _toketService;
     private readonly RefreshTokenOptions _refreshTokenOption;
 
@@ -35,18 +36,18 @@ public class UserSessionCreateService
         IRepository<UserSession> sessionRepository,
         UserDeviceValidator deviceValidator,
         UserValidator userValidator,
+        ISessionInfoProvider sessionInfoProvider,
         IRefreshTokenService toketService,
         IOptions<RefreshTokenOptions> refreshTokenOption,
-        //RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
         ILogger<UserSessionCreateService> logger)
     {
         _sessionRepository = sessionRepository;
         _deviceValidator = deviceValidator;
         _userValidator = userValidator;
+        _sessionInfoProvider = sessionInfoProvider;
         _toketService = toketService;
         _refreshTokenOption = refreshTokenOption.Value;
-        //_roleInvalid = roleInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -93,9 +94,6 @@ public class UserSessionCreateService
             return Result<UserSessionCreateResponse>
                 .Fail(EntityErrorResources.UserSessionCreateFailed);
         }
-
-        //await _roleInvalid.InvalidateCreateAsync(
-        //    RoleCacheMapper.ToInfo(role));
     }
 
     public async Task<Result<UserSession>> CreateInternalAsync(
@@ -113,13 +111,16 @@ public class UserSessionCreateService
             return Result<UserSession>.Fail(userValidation.Error);
 
         var deviceValidation = await _deviceValidator
-           .ExistsAsync(request.OwnerId, request.DeviceId);
+           .ExistsAsync(request.OwnerId, request.UserDeviceId);
 
         if (!deviceValidation.IsSuccess)
             return Result<UserSession>.Fail(deviceValidation.Error);
 
+        var info = _sessionInfoProvider.GetSessionInfo();
+
         var session = UserSessionCreater.Create(
-            request, 
+            request,
+            info,
             _refreshTokenOption.ExpireDays,
             tokenHash);
 

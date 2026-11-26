@@ -9,6 +9,8 @@ public static class MiddlewareExstension
     {
         app.UseMiddleware<RequestTrackingMiddleware>();
 
+        app.UseMiddleware<DeviceAccessMiddleware>();
+
         app.UseMiddleware<BlockedDeviceMiddleware>();
 
         app.UseMiddleware<RevokedSessionMiddleware>();

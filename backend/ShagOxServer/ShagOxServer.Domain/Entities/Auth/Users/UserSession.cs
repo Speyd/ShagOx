@@ -5,8 +5,8 @@ namespace ShagOxServer.Domain.Entities.Auth.Users;
 public class UserSession
     : OwnedEntity<User>
 {
-    public long DeviceId { get; set; }
-    public UserDevice Device { get; set; } = null!;
+    public long UserDeviceId { get; set; }
+    public UserDevice UserDevice { get; set; } = null!;
 
     public string RefreshTokenHash { get; set; } = null!;
 
@@ -31,6 +31,6 @@ public class UserSession
 
     public override string ToString()
     {
-        return $"User: {OwnerId} | Device: {DeviceId}";
+        return $"User: {OwnerId} | UserDevice: {UserDeviceId}";
     }
 }

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
-using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Query;
-using ShagOxServer.Application.Interfaces.Providers.User;
-using System.Net;
+using ShagOxServer.Application.DTOs.Devices;
+using ShagOxServer.Application.Interfaces.Providers.Devices;
 using UAParser;
 
 namespace ShagOxServer.Infrastructure.ExternalServices.Auth;
@@ -19,7 +18,7 @@ public sealed class DeviceInfoProvider
     }
 
 
-    public UserDeviceInfo GetDeviceInfo(
+    public DeviceInfo GetDeviceInfo(
         string deviceIdentifier)
     {
         var context = _httpContextAccessor.HttpContext;
@@ -28,26 +27,10 @@ public sealed class DeviceInfoProvider
 
         var client = _parser.Parse(userAgent);
 
-        var cfIp = context?.Request.Headers["CF-Connecting-IP"]
-                .ToString();
-
-        IPAddress? userIp = null;
-
-        if (IPAddress.TryParse(cfIp, out var parsedIp))
-        {
-            userIp = parsedIp;
-        }
-        else
-        {
-            userIp = context?.Connection.RemoteIpAddress;
-        }
-
-        return new UserDeviceInfo(
+        return new DeviceInfo(
             client.Device.Family,
             client.Device.Family,
-            client.UA.Family,
             client.OS.Family,
-            userIp?.ToString() ?? "",
             deviceIdentifier
         );
     }

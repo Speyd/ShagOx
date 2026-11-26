@@ -1,12 +1,14 @@
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices;
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
-using ShagOxServer.Application.Interfaces.Providers.User;
+using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Resources.Auth.Logins;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
+using ShagOxServer.Domain.Entities.Devices.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.UserDevices;
@@ -34,9 +36,25 @@ public class UserDeviceAuthenticationService
     {
         var device = await _deviceProvider.GetDeviceAsync();
 
-        if (device is not null)
+        if (device is null)
         {
-            if (device.Status != UserDeviceStatus.Active)
+            return Result<UserDeviceAuthenticationResponse>.NotFound(
+                EntityNamesResources.Device);
+        }
+        else if (device.Status != DeviceStatus.Active)
+        {
+            return Result<UserDeviceAuthenticationResponse>.Fail(
+                LoginAuthResources.DeviceBlocked);
+        }
+
+
+
+        var userDevice = await _deviceProvider.GetUserDeviceAsync();
+
+        if (userDevice is not null)
+        {
+            if (userDevice.Status != UserDeviceStatus.Active ||
+                userDevice.DeviceId != device.Id)
             {
                 return Result<UserDeviceAuthenticationResponse>.Fail(
                     LoginAuthResources.DeviceBlocked);
@@ -44,9 +62,10 @@ public class UserDeviceAuthenticationService
 
             return Result<UserDeviceAuthenticationResponse>.Success(
                 new UserDeviceAuthenticationResponse(
-                    device.Id,
-                    device.IsTrusted));
-        }
+                    userDevice.Id,
+                    userDevice.IsTrusted));
+        }      
+
 
         var identifier = _userContext.DeviceIdentifier;
 
@@ -59,7 +78,7 @@ public class UserDeviceAuthenticationService
         var result = await _deviceCreateService.CreateAsync(
             new UserDeviceCreateRequest(
                 user.Id,
-                identifier));
+                device.Id));
 
         if (!result.IsSuccess)
         {

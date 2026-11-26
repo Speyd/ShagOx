@@ -25,12 +25,6 @@ public static class DeviceFilterExtensions
                 EF.Functions.ILike(u.DeviceType, $"%{filter.DeviceType}%"));
         }
 
-        if (!string.IsNullOrWhiteSpace(filter.Browser))
-        {
-            query = query.Where(u => u.Browser != null &&
-                EF.Functions.ILike(u.Browser, $"%{filter.Browser}%"));
-        }
-
         if (!string.IsNullOrWhiteSpace(filter.OperatingSystem))
         {
             query = query.Where(u => u.OperatingSystem != null &&

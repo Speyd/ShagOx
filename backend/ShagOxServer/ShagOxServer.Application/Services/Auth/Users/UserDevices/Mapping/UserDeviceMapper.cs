@@ -10,13 +10,16 @@ public static class UserDeviceMapper
         return new UserDeviceDto(
             device.Id,
             device.EntityStatus,
+            device.Status,
             device.OwnerId,
-            device.DeviceName,
-            device.DeviceType,
-            device.Browser,
-            device.OperatingSystem,
-            device.IpAddress,
-            device.DeviceIdentifier
+            device.DeviceId,
+            device.Device.DeviceName,
+            device.Device.DeviceType,
+            device.Device.OperatingSystem,
+            device.Device.DeviceIdentifier,
+            device.CreatedAt,
+            device.LastActiveAt,
+            device.IsTrusted
         );
     }
 }

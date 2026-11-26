@@ -27,13 +27,11 @@ public class UserDevice
 
     public UserDeviceCacheContext GetCacheContext()
     {
-        throw new Exception();
-        //return new UserDeviceCacheContext(
-        //    Id,
-        //    OwnerId,
-        //    IpAddress,
-        //    DeviceIdentifier,
-        //    EntityStatus);
+        return new UserDeviceCacheContext(
+            Id,
+            OwnerId,
+            DeviceId,
+            EntityStatus);
     }
 
     public override string ToString()

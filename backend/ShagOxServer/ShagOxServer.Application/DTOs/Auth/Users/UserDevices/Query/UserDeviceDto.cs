@@ -16,7 +16,7 @@ public sealed record UserDeviceDto
     string? OperatingSystem,
     string DeviceIdentifier,
 
-    DateTime FirstSeenAt,
+    DateTime CreatedAt,
     DateTime LastSeenAt,
     bool IsTrusted
 ) : BaseDto(Id, EntityStatus);

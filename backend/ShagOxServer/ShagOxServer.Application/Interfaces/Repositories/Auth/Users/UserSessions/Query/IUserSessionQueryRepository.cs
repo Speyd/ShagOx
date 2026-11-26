@@ -19,13 +19,13 @@ public partial interface IUserSessionQueryRepository
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
-    Task<PagedResult<UserSession>> GetByDeviceAsync(
+    Task<PagedResult<UserSession>> GetByUserDeviceAsync(
         long deviceId,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
-    Task<List<UserSession>> GetAllByDeviceAsync(
+    Task<List<UserSession>> GetAllByUserDeviceAsync(
         long deviceId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);

@@ -20,13 +20,4 @@ public interface IUserDeviceCommandsRepository
 
     Task UnbanExpiredDevicesAsync(
         CancellationToken cancellationToken = default);
-
-    Task<bool> BanDeviceByIpAsync(
-        string ip,
-        DateTime? blockedUntil,
-        CancellationToken cancellationToken = default);
-
-    Task<bool> UnbanDeviceByIpAsync(
-        string ip,
-        CancellationToken cancellationToken = default);
 }

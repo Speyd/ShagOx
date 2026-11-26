@@ -45,12 +45,6 @@ public class UserDeviceInvalidationService
         await _cache.RemoveAsync(CacheKeys.
              Entity<UserDevice>(id));
 
-        await _cache.RemoveByPatternAsync(UserDeviceCache.
-            ByIdentifierPattern(entityInfo.Identifier));
-
-        await _cache.RemoveByPatternAsync(UserDeviceCache.
-            ByIdentifierPattern(entityInfo.Identifier));
-
         await InvalidatePatternAsync(entityInfo);
     }
 
@@ -63,16 +57,28 @@ public class UserDeviceInvalidationService
         await _cache.RemoveByPatternAsync(CacheKeys.
              EntityPagedPattern<UserDevice>(entityInfo.Status));
 
-        if (entityInfo.IpAddress is not null)
-        {
-            await _cache.RemoveByPatternAsync(UserDeviceCache.
-                ByIpAddressPattern(entityInfo.IpAddress));
-        }
+
+        await _cache.RemoveByPatternAsync(UserDeviceCache.
+             ByUserAndDevicePattern(
+                entityInfo.OwnerId, entityInfo.DeviceId));
+
+        await _cache.RemoveByPatternAsync(UserDeviceCache.
+             EntityByUserAndDevicePattern(
+                entityInfo.OwnerId, entityInfo.DeviceId));
+
+
 
         await _cache.RemoveByPatternAsync(UserDeviceCache.
              ByUserPattern(entityInfo.OwnerId));
 
         await _cache.RemoveByPatternAsync(UserDeviceCache.
              AllByUserPattern(entityInfo.OwnerId));
+
+
+        await _cache.RemoveByPatternAsync(UserDeviceCache.
+             ByDevicePattern(entityInfo.DeviceId));
+
+        await _cache.RemoveByPatternAsync(UserDeviceCache.
+             AllByDevicePattern(entityInfo.DeviceId));
     }
 }

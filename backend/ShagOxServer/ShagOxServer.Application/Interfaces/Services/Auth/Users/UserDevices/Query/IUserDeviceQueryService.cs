@@ -12,6 +12,19 @@ public interface IUserDeviceQueryService
         UserDevice, 
         UserDeviceSearchFilter>
 {
+    Task<Result<UserDeviceDto>> GetByUserAndDeviceAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
+    Task<Result<UserDevice?>> GetEntityByUserAndDeviceAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
+
     Task<Result<PagedResult<UserDeviceDto>>> GetByUserAsync(
         long userId,
         PaginationParams pagination,
@@ -23,19 +36,14 @@ public interface IUserDeviceQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
-    Task<Result<UserDeviceDto>> GetByIdentifierAsync(
-        string identifier,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active);
-
-    Task<Result<UserDevice?>> GetEntityByIdentifierAsync(
-        string identifier,
-        CancellationToken cancellationToken = default,
-        EntityStatus status = EntityStatus.Active);
-
-    Task<Result<PagedResult<UserDeviceDto>>> GetByIpAsync(
-        string ipAddress,
+    Task<Result<PagedResult<UserDeviceDto>>> GetByDeviceAsync(
+        long deviceId,
         PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
+    Task<Result<List<UserDeviceDto>>> GetAllByDeviceAsync(
+        long deviceId,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 }

@@ -52,7 +52,7 @@ public partial class UserSessionQueryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<PagedResult<UserSession>> GetByDeviceAsync(
+    public async Task<PagedResult<UserSession>> GetByUserDeviceAsync(
         long deviceId,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
@@ -61,13 +61,13 @@ public partial class UserSessionQueryRepository
         return await _db.UserSessions
             .WithIncludes()
             .WithStatusFilter(status)
-            .Where(x => x.DeviceId == deviceId)
+            .Where(x => x.UserDeviceId == deviceId)
             .ToPagedResultAsync(pagination,
                 x => x.Id,
                 cancellationToken);
     }
 
-    public async Task<List<UserSession>> GetAllByDeviceAsync(
+    public async Task<List<UserSession>> GetAllByUserDeviceAsync(
         long deviceId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null)
@@ -75,7 +75,7 @@ public partial class UserSessionQueryRepository
         return await _db.UserSessions
            .WithIncludes()
            .WithStatusFilter(status)
-           .Where(x => x.DeviceId == deviceId)
+           .Where(x => x.UserDeviceId == deviceId)
            .ToListAsync(cancellationToken);
     }
 

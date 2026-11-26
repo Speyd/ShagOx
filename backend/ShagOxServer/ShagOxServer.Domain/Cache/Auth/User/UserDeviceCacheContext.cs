@@ -5,7 +5,6 @@ public sealed record UserDeviceCacheContext
 (
     long Id,
     long OwnerId,
-    string? IpAddress,
-    string Identifier,
+    long DeviceId,
     EntityStatus Status = EntityStatus.Active
 );

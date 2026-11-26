@@ -8,6 +8,12 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevice
 public partial interface IUserDeviceQueryRepository
     : ISearchRepository<UserDevice, UserDeviceSearchFilter>
 {
+    Task<UserDevice?> GetByUserAndDeviceAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<PagedResult<UserDevice>> GetByUserAsync(
         long userId,
         PaginationParams pagination,
@@ -19,14 +25,14 @@ public partial interface IUserDeviceQueryRepository
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
-    Task<UserDevice?> GetByIdentifierAsync(
-        string deviceIdentifier,
+    Task<PagedResult<UserDevice>> GetByDeviceAsync(
+        long deviceId,
+        PaginationParams pagination,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
-    Task<PagedResult<UserDevice>> GetByIpAsync(
-        string ipAddress,
-        PaginationParams pagination,
+    Task<List<UserDevice>> GetAllByDeviceAsync(
+        long deviceId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 }

@@ -10,7 +10,9 @@ public static class UserDeviceQueryExtensions
         this IQueryable<UserDevice> query)
     {
         return query
-            .AsSplitQuery();
+            .AsSplitQuery()
+            .Include(x => x.Device);
+            
     }
     
      public static IQueryable<UserDeviceCacheContext> SelectCacheInfo(
@@ -21,8 +23,7 @@ public static class UserDeviceQueryExtensions
             x => new UserDeviceCacheContext(
                 x.Id,
                 x.OwnerId,
-                x.IpAddress,
-                x.DeviceIdentifier,
+                x.DeviceId,
                 x.EntityStatus
             ));
     }

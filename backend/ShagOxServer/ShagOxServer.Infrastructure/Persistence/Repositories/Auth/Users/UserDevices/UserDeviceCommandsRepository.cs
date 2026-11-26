@@ -49,42 +49,6 @@ public class UserDeviceCommandsRepository
 
         return affected > 0;
     }
-
-    public async Task<bool> BanDeviceByIpAsync(
-        string ip,
-        DateTime? blockedUntil,
-        CancellationToken cancellationToken = default)
-    {
-        var now = DateTime.UtcNow;
-
-        var affected = await _db.UserDevices
-            .Where(x => x.IpAddress == ip)
-            .ExecuteUpdateAsync(
-                setters => setters
-                    .SetProperty(x => x.Status, UserDeviceStatus.Blocked)
-                    .SetProperty(x => x.BlockedAt, now)
-                    .SetProperty(x => x.BlockedUntil, blockedUntil),
-                cancellationToken);
-
-        return affected > 0;
-    }
-
-    public async Task<bool> UnbanDeviceByIpAsync(
-        string ip,
-        CancellationToken cancellationToken = default)
-    {
-        var affected = await _db.UserDevices
-            .Where(x => x.IpAddress == ip)
-            .ExecuteUpdateAsync(
-                setters => setters
-                    .SetProperty(x => x.Status, UserDeviceStatus.Active)
-                    .SetProperty(x => x.BlockedAt, (DateTime?)null)
-                    .SetProperty(x => x.BlockedUntil, (DateTime?)null),
-                cancellationToken);
-
-        return affected > 0;
-    }
-
     public async Task<bool> BanDeviceAsync(
         long deviceId,
         DateTime? blockedUntil,

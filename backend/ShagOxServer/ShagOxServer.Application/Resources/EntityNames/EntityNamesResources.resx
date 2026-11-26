@@ -243,4 +243,7 @@
   <data name="UserSession" xml:space="preserve">
     <value>User session</value>
   </data>
+  <data name="Device" xml:space="preserve">
+    <value>Device</value>
+  </data>
 </root>

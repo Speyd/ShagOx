@@ -492,4 +492,13 @@
   <data name="UserSessionUpdateFailed" xml:space="preserve">
     <value>Benutzersitzung konnte nicht aktualisiert werden.</value>
   </data>
+  <data name="DeviceCreateFailed" xml:space="preserve">
+    <value>Das Ergerät konnte nicht erstellt werden.</value>
+  </data>
+  <data name="DeviceDeleteFailed" xml:space="preserve">
+    <value>Das Ergerät konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="DeviceUpdateFailed" xml:space="preserve">
+    <value>Das Ergerät konnte nicht aktualisiert werden.</value>
+  </data>
 </root>

@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Domain.Cache;
 using ShagOxServer.Infrastructure.DependencyInjections.Advertisements;
 using ShagOxServer.Infrastructure.DependencyInjections.Auth;
 using ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
@@ -8,6 +7,7 @@ using ShagOxServer.Infrastructure.DependencyInjections.Comments;
 using ShagOxServer.Infrastructure.DependencyInjections.Dashboards;
 using ShagOxServer.Infrastructure.DependencyInjections.Db;
 using ShagOxServer.Infrastructure.DependencyInjections.Deliveries;
+using ShagOxServer.Infrastructure.DependencyInjections.Devices;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
 using ShagOxServer.Infrastructure.DependencyInjections.ExternalServices;
 using ShagOxServer.Infrastructure.DependencyInjections.LineItems;
@@ -40,6 +40,7 @@ public static class DependencyInjection
             .AddBaseRepositoryInfrastructure()
             .AddLineItemsInfrastructure()
             .AddBasketInfrastructure()
+            .AddDeviceInfrastructure()
             .AddAuthInfrastructure()
             .AddLocationInfrastructure()
             .AddCommentsInfrastructure()

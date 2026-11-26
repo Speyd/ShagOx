@@ -492,4 +492,13 @@
   <data name="UserSessionUpdateFailed" xml:space="preserve">
     <value>Failed to update user session.</value>
   </data>
+  <data name="DeviceCreateFailed" xml:space="preserve">
+    <value>Failed to create device.</value>
+  </data>
+  <data name="DeviceDeleteFailed" xml:space="preserve">
+    <value>Failed to delete device.</value>
+  </data>
+  <data name="DeviceUpdateFailed" xml:space="preserve">
+    <value>Failed to update device.</value>
+  </data>
 </root>

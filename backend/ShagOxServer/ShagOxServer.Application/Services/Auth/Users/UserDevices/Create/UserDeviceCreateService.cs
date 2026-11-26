@@ -19,7 +19,6 @@ public class UserDeviceCreateService
     private readonly UserDeviceValidator _deviceValidator;
     private readonly UserValidator _userValidator;
 
-    //private readonly RoleInvalidationService _roleInvalid;
     private readonly IDeviceInfoProvider _deviceInfo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UserDeviceCreateService> _logger;
@@ -30,7 +29,6 @@ public class UserDeviceCreateService
         UserDeviceValidator deviceValidator,
         UserValidator userValidator,
         IDeviceInfoProvider deviceInfo,
-        //RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
         ILogger<UserDeviceCreateService> logger)
     {
@@ -38,7 +36,6 @@ public class UserDeviceCreateService
         _deviceValidator = deviceValidator;
         _userValidator = userValidator;
         _deviceInfo = deviceInfo;
-        //_roleInvalid = roleInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -81,10 +78,6 @@ public class UserDeviceCreateService
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.UserDeviceCreateFailed);
         }
-
-        //await _roleInvalid.InvalidateCreateAsync(
-        //    RoleCacheMapper.ToInfo(role));
-        
     }
 
     public async Task<Result<UserDevice>> CreateInternalAsync(

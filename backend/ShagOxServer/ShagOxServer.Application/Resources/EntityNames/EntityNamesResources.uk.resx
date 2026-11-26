@@ -243,4 +243,7 @@
   <data name="UserSession" xml:space="preserve">
     <value>Сесія користувача</value>
   </data>
+  <data name="Device" xml:space="preserve">
+    <value>Пристрій</value>
+  </data>
 </root>

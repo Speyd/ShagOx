@@ -22,7 +22,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EntityErrorResources {
+    public class EntityErrorResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ShagOxServer.Application.Resources.EntityErrors.EntityErrorResources", typeof(EntityErrorResources).Assembly);
@@ -51,7 +51,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create image..
         /// </summary>
-        internal static string AdvertImageCreateFailed {
+        public static string AdvertImageCreateFailed {
             get {
                 return ResourceManager.GetString("AdvertImageCreateFailed", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete image..
         /// </summary>
-        internal static string AdvertImageDeleteFailed {
+        public static string AdvertImageDeleteFailed {
             get {
                 return ResourceManager.GetString("AdvertImageDeleteFailed", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update image..
         /// </summary>
-        internal static string AdvertImageUpdateFailed {
+        public static string AdvertImageUpdateFailed {
             get {
                 return ResourceManager.GetString("AdvertImageUpdateFailed", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create advertisement..
         /// </summary>
-        internal static string AdvertisementCreateFailed {
+        public static string AdvertisementCreateFailed {
             get {
                 return ResourceManager.GetString("AdvertisementCreateFailed", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete advertisement.
         /// </summary>
-        internal static string AdvertisementDeleteFailed {
+        public static string AdvertisementDeleteFailed {
             get {
                 return ResourceManager.GetString("AdvertisementDeleteFailed", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update advertisement..
         /// </summary>
-        internal static string AdvertisementUpdateFailed {
+        public static string AdvertisementUpdateFailed {
             get {
                 return ResourceManager.GetString("AdvertisementUpdateFailed", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create advertisement variant..
         /// </summary>
-        internal static string AdvertisementVariantCreateFailed {
+        public static string AdvertisementVariantCreateFailed {
             get {
                 return ResourceManager.GetString("AdvertisementVariantCreateFailed", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete advertisement variant..
         /// </summary>
-        internal static string AdvertisementVariantDeleteFailed {
+        public static string AdvertisementVariantDeleteFailed {
             get {
                 return ResourceManager.GetString("AdvertisementVariantDeleteFailed", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update advertisement variant..
         /// </summary>
-        internal static string AdvertisementVariantUpdateFailed {
+        public static string AdvertisementVariantUpdateFailed {
             get {
                 return ResourceManager.GetString("AdvertisementVariantUpdateFailed", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create status..
         /// </summary>
-        internal static string AdvertStatusCreateFailed {
+        public static string AdvertStatusCreateFailed {
             get {
                 return ResourceManager.GetString("AdvertStatusCreateFailed", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete status..
         /// </summary>
-        internal static string AdvertStatusDeleteFailed {
+        public static string AdvertStatusDeleteFailed {
             get {
                 return ResourceManager.GetString("AdvertStatusDeleteFailed", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create status translation..
         /// </summary>
-        internal static string AdvertStatusTranslationCreateFailed {
+        public static string AdvertStatusTranslationCreateFailed {
             get {
                 return ResourceManager.GetString("AdvertStatusTranslationCreateFailed", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete status translation..
         /// </summary>
-        internal static string AdvertStatusTranslationDeleteFailed {
+        public static string AdvertStatusTranslationDeleteFailed {
             get {
                 return ResourceManager.GetString("AdvertStatusTranslationDeleteFailed", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update status translation..
         /// </summary>
-        internal static string AdvertStatusTranslationUpdateFailed {
+        public static string AdvertStatusTranslationUpdateFailed {
             get {
                 return ResourceManager.GetString("AdvertStatusTranslationUpdateFailed", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update status..
         /// </summary>
-        internal static string AdvertStatusUpdateFailed {
+        public static string AdvertStatusUpdateFailed {
             get {
                 return ResourceManager.GetString("AdvertStatusUpdateFailed", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create attribute definition..
         /// </summary>
-        internal static string AttributeDefinitionCreateFailed {
+        public static string AttributeDefinitionCreateFailed {
             get {
                 return ResourceManager.GetString("AttributeDefinitionCreateFailed", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete attribute definition..
         /// </summary>
-        internal static string AttributeDefinitionDeleteFailed {
+        public static string AttributeDefinitionDeleteFailed {
             get {
                 return ResourceManager.GetString("AttributeDefinitionDeleteFailed", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create attribute definition translation..
         /// </summary>
-        internal static string AttributeDefinitionTranslationCreateFailed {
+        public static string AttributeDefinitionTranslationCreateFailed {
             get {
                 return ResourceManager.GetString("AttributeDefinitionTranslationCreateFailed", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete attribute definition translation..
         /// </summary>
-        internal static string AttributeDefinitionTranslationDeleteFailed {
+        public static string AttributeDefinitionTranslationDeleteFailed {
             get {
                 return ResourceManager.GetString("AttributeDefinitionTranslationDeleteFailed", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update attribute definition translation..
         /// </summary>
-        internal static string AttributeDefinitionTranslationUpdateFailed {
+        public static string AttributeDefinitionTranslationUpdateFailed {
             get {
                 return ResourceManager.GetString("AttributeDefinitionTranslationUpdateFailed", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update attribute definition..
         /// </summary>
-        internal static string AttributeDefinitionUpdateFailed {
+        public static string AttributeDefinitionUpdateFailed {
             get {
                 return ResourceManager.GetString("AttributeDefinitionUpdateFailed", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create attribute dictionary..
         /// </summary>
-        internal static string AttributeDictionaryCreateFailed {
+        public static string AttributeDictionaryCreateFailed {
             get {
                 return ResourceManager.GetString("AttributeDictionaryCreateFailed", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete attribute dictionary..
         /// </summary>
-        internal static string AttributeDictionaryDeleteFailed {
+        public static string AttributeDictionaryDeleteFailed {
             get {
                 return ResourceManager.GetString("AttributeDictionaryDeleteFailed", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update attribute dictionary..
         /// </summary>
-        internal static string AttributeDictionaryUpdateFailed {
+        public static string AttributeDictionaryUpdateFailed {
             get {
                 return ResourceManager.GetString("AttributeDictionaryUpdateFailed", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create attribute dictionary value..
         /// </summary>
-        internal static string AttributeDictionaryValueCreateFailed {
+        public static string AttributeDictionaryValueCreateFailed {
             get {
                 return ResourceManager.GetString("AttributeDictionaryValueCreateFailed", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete attribute dictionary value..
         /// </summary>
-        internal static string AttributeDictionaryValueDeleteFailed {
+        public static string AttributeDictionaryValueDeleteFailed {
             get {
                 return ResourceManager.GetString("AttributeDictionaryValueDeleteFailed", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create attribute dictionary value translation..
         /// </summary>
-        internal static string AttributeDictionaryValueTranslationCreateFailed {
+        public static string AttributeDictionaryValueTranslationCreateFailed {
             get {
                 return ResourceManager.GetString("AttributeDictionaryValueTranslationCreateFailed", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete attribute dictionary value translation..
         /// </summary>
-        internal static string AttributeDictionaryValueTranslationDeleteFailed {
+        public static string AttributeDictionaryValueTranslationDeleteFailed {
             get {
                 return ResourceManager.GetString("AttributeDictionaryValueTranslationDeleteFailed", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update attribute dictionary value translation..
         /// </summary>
-        internal static string AttributeDictionaryValueTranslationUpdateFailed {
+        public static string AttributeDictionaryValueTranslationUpdateFailed {
             get {
                 return ResourceManager.GetString("AttributeDictionaryValueTranslationUpdateFailed", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update attribute dictionary value..
         /// </summary>
-        internal static string AttributeDictionaryValueUpdateFailed {
+        public static string AttributeDictionaryValueUpdateFailed {
             get {
                 return ResourceManager.GetString("AttributeDictionaryValueUpdateFailed", resourceCulture);
             }
@@ -333,7 +333,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create avatar..
         /// </summary>
-        internal static string AvatarCreateFailed {
+        public static string AvatarCreateFailed {
             get {
                 return ResourceManager.GetString("AvatarCreateFailed", resourceCulture);
             }
@@ -342,7 +342,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete avatar..
         /// </summary>
-        internal static string AvatarDeleteFailed {
+        public static string AvatarDeleteFailed {
             get {
                 return ResourceManager.GetString("AvatarDeleteFailed", resourceCulture);
             }
@@ -351,7 +351,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update avatar..
         /// </summary>
-        internal static string AvatarUpdateFailed {
+        public static string AvatarUpdateFailed {
             get {
                 return ResourceManager.GetString("AvatarUpdateFailed", resourceCulture);
             }
@@ -360,7 +360,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create basket..
         /// </summary>
-        internal static string BasketCreateFailed {
+        public static string BasketCreateFailed {
             get {
                 return ResourceManager.GetString("BasketCreateFailed", resourceCulture);
             }
@@ -369,7 +369,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete basket..
         /// </summary>
-        internal static string BasketDeleteFailed {
+        public static string BasketDeleteFailed {
             get {
                 return ResourceManager.GetString("BasketDeleteFailed", resourceCulture);
             }
@@ -378,7 +378,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create basket item..
         /// </summary>
-        internal static string BasketItemCreateFailed {
+        public static string BasketItemCreateFailed {
             get {
                 return ResourceManager.GetString("BasketItemCreateFailed", resourceCulture);
             }
@@ -387,7 +387,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete basket item..
         /// </summary>
-        internal static string BasketItemDeleteFailed {
+        public static string BasketItemDeleteFailed {
             get {
                 return ResourceManager.GetString("BasketItemDeleteFailed", resourceCulture);
             }
@@ -396,7 +396,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update basket item..
         /// </summary>
-        internal static string BasketItemUpdateFailed {
+        public static string BasketItemUpdateFailed {
             get {
                 return ResourceManager.GetString("BasketItemUpdateFailed", resourceCulture);
             }
@@ -405,7 +405,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update basket..
         /// </summary>
-        internal static string BasketUpdateFailed {
+        public static string BasketUpdateFailed {
             get {
                 return ResourceManager.GetString("BasketUpdateFailed", resourceCulture);
             }
@@ -414,7 +414,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на You cannot add your own advertisement..
         /// </summary>
-        internal static string CannotAddOwnAdvertisement {
+        public static string CannotAddOwnAdvertisement {
             get {
                 return ResourceManager.GetString("CannotAddOwnAdvertisement", resourceCulture);
             }
@@ -423,7 +423,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create category..
         /// </summary>
-        internal static string CategoryCreateFailed {
+        public static string CategoryCreateFailed {
             get {
                 return ResourceManager.GetString("CategoryCreateFailed", resourceCulture);
             }
@@ -432,7 +432,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create category..
         /// </summary>
-        internal static string CategoryDeleteFailed {
+        public static string CategoryDeleteFailed {
             get {
                 return ResourceManager.GetString("CategoryDeleteFailed", resourceCulture);
             }
@@ -441,7 +441,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create category image..
         /// </summary>
-        internal static string CategoryImageCreateFailed {
+        public static string CategoryImageCreateFailed {
             get {
                 return ResourceManager.GetString("CategoryImageCreateFailed", resourceCulture);
             }
@@ -450,7 +450,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete category image..
         /// </summary>
-        internal static string CategoryImageDeleteFailed {
+        public static string CategoryImageDeleteFailed {
             get {
                 return ResourceManager.GetString("CategoryImageDeleteFailed", resourceCulture);
             }
@@ -459,7 +459,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update category image..
         /// </summary>
-        internal static string CategoryImageUpdateFailed {
+        public static string CategoryImageUpdateFailed {
             get {
                 return ResourceManager.GetString("CategoryImageUpdateFailed", resourceCulture);
             }
@@ -468,7 +468,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create category translation..
         /// </summary>
-        internal static string CategoryTranslationCreateFailed {
+        public static string CategoryTranslationCreateFailed {
             get {
                 return ResourceManager.GetString("CategoryTranslationCreateFailed", resourceCulture);
             }
@@ -477,7 +477,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete category translation..
         /// </summary>
-        internal static string CategoryTranslationDeleteFailed {
+        public static string CategoryTranslationDeleteFailed {
             get {
                 return ResourceManager.GetString("CategoryTranslationDeleteFailed", resourceCulture);
             }
@@ -486,7 +486,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update category translation..
         /// </summary>
-        internal static string CategoryTranslationUpdateFailed {
+        public static string CategoryTranslationUpdateFailed {
             get {
                 return ResourceManager.GetString("CategoryTranslationUpdateFailed", resourceCulture);
             }
@@ -495,7 +495,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update category..
         /// </summary>
-        internal static string CategoryUpdateFailed {
+        public static string CategoryUpdateFailed {
             get {
                 return ResourceManager.GetString("CategoryUpdateFailed", resourceCulture);
             }
@@ -504,7 +504,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create city..
         /// </summary>
-        internal static string CityCreateFailed {
+        public static string CityCreateFailed {
             get {
                 return ResourceManager.GetString("CityCreateFailed", resourceCulture);
             }
@@ -513,7 +513,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete city..
         /// </summary>
-        internal static string CityDeleteFailed {
+        public static string CityDeleteFailed {
             get {
                 return ResourceManager.GetString("CityDeleteFailed", resourceCulture);
             }
@@ -522,7 +522,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create city translation..
         /// </summary>
-        internal static string CityTranslationCreateFailed {
+        public static string CityTranslationCreateFailed {
             get {
                 return ResourceManager.GetString("CityTranslationCreateFailed", resourceCulture);
             }
@@ -531,7 +531,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete city translation..
         /// </summary>
-        internal static string CityTranslationDeleteFailed {
+        public static string CityTranslationDeleteFailed {
             get {
                 return ResourceManager.GetString("CityTranslationDeleteFailed", resourceCulture);
             }
@@ -540,7 +540,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update city translation..
         /// </summary>
-        internal static string CityTranslationUpdateFailed {
+        public static string CityTranslationUpdateFailed {
             get {
                 return ResourceManager.GetString("CityTranslationUpdateFailed", resourceCulture);
             }
@@ -549,7 +549,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update city..
         /// </summary>
-        internal static string CityUpdateFailed {
+        public static string CityUpdateFailed {
             get {
                 return ResourceManager.GetString("CityUpdateFailed", resourceCulture);
             }
@@ -558,7 +558,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на This record has been modified or deleted by another operation. Please refresh the data and try again..
         /// </summary>
-        internal static string ConcurrencyConflictMessage {
+        public static string ConcurrencyConflictMessage {
             get {
                 return ResourceManager.GetString("ConcurrencyConflictMessage", resourceCulture);
             }
@@ -567,7 +567,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create condition..
         /// </summary>
-        internal static string ConditionCreateFailed {
+        public static string ConditionCreateFailed {
             get {
                 return ResourceManager.GetString("ConditionCreateFailed", resourceCulture);
             }
@@ -576,7 +576,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete condition..
         /// </summary>
-        internal static string ConditionDeleteFailed {
+        public static string ConditionDeleteFailed {
             get {
                 return ResourceManager.GetString("ConditionDeleteFailed", resourceCulture);
             }
@@ -585,7 +585,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create condition translation..
         /// </summary>
-        internal static string ConditionTranslationCreateFailed {
+        public static string ConditionTranslationCreateFailed {
             get {
                 return ResourceManager.GetString("ConditionTranslationCreateFailed", resourceCulture);
             }
@@ -594,7 +594,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete condition translation..
         /// </summary>
-        internal static string ConditionTranslationDeleteFailed {
+        public static string ConditionTranslationDeleteFailed {
             get {
                 return ResourceManager.GetString("ConditionTranslationDeleteFailed", resourceCulture);
             }
@@ -603,7 +603,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update condition translation..
         /// </summary>
-        internal static string ConditionTranslationUpdateFailed {
+        public static string ConditionTranslationUpdateFailed {
             get {
                 return ResourceManager.GetString("ConditionTranslationUpdateFailed", resourceCulture);
             }
@@ -612,7 +612,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update condition..
         /// </summary>
-        internal static string ConditionUpdateFailed {
+        public static string ConditionUpdateFailed {
             get {
                 return ResourceManager.GetString("ConditionUpdateFailed", resourceCulture);
             }
@@ -621,7 +621,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create currency..
         /// </summary>
-        internal static string CurrencyCreateFailed {
+        public static string CurrencyCreateFailed {
             get {
                 return ResourceManager.GetString("CurrencyCreateFailed", resourceCulture);
             }
@@ -630,7 +630,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete currency..
         /// </summary>
-        internal static string CurrencyDeleteFailed {
+        public static string CurrencyDeleteFailed {
             get {
                 return ResourceManager.GetString("CurrencyDeleteFailed", resourceCulture);
             }
@@ -639,7 +639,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update currency..
         /// </summary>
-        internal static string CurrencyUpdateFailed {
+        public static string CurrencyUpdateFailed {
             get {
                 return ResourceManager.GetString("CurrencyUpdateFailed", resourceCulture);
             }
@@ -648,7 +648,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create delivery provider..
         /// </summary>
-        internal static string DeliveryProviderCreateFailed {
+        public static string DeliveryProviderCreateFailed {
             get {
                 return ResourceManager.GetString("DeliveryProviderCreateFailed", resourceCulture);
             }
@@ -657,7 +657,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete delivery provider..
         /// </summary>
-        internal static string DeliveryProviderDeleteFailed {
+        public static string DeliveryProviderDeleteFailed {
             get {
                 return ResourceManager.GetString("DeliveryProviderDeleteFailed", resourceCulture);
             }
@@ -666,7 +666,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create delivery provider translation..
         /// </summary>
-        internal static string DeliveryProviderTranslationCreateFailed {
+        public static string DeliveryProviderTranslationCreateFailed {
             get {
                 return ResourceManager.GetString("DeliveryProviderTranslationCreateFailed", resourceCulture);
             }
@@ -675,7 +675,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete delivery provider translation..
         /// </summary>
-        internal static string DeliveryProviderTranslationDeleteFailed {
+        public static string DeliveryProviderTranslationDeleteFailed {
             get {
                 return ResourceManager.GetString("DeliveryProviderTranslationDeleteFailed", resourceCulture);
             }
@@ -684,7 +684,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update delivery provider translation..
         /// </summary>
-        internal static string DeliveryProviderTranslationUpdateFailed {
+        public static string DeliveryProviderTranslationUpdateFailed {
             get {
                 return ResourceManager.GetString("DeliveryProviderTranslationUpdateFailed", resourceCulture);
             }
@@ -693,16 +693,43 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update delivery provider..
         /// </summary>
-        internal static string DeliveryProviderUpdateFailed {
+        public static string DeliveryProviderUpdateFailed {
             get {
                 return ResourceManager.GetString("DeliveryProviderUpdateFailed", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to create device..
+        /// </summary>
+        public static string DeviceCreateFailed {
+            get {
+                return ResourceManager.GetString("DeviceCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to delete device..
+        /// </summary>
+        public static string DeviceDeleteFailed {
+            get {
+                return ResourceManager.GetString("DeviceDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to update device..
+        /// </summary>
+        public static string DeviceUpdateFailed {
+            get {
+                return ResourceManager.GetString("DeviceUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete image from the external service..
         /// </summary>
-        internal static string ExternalImageDeleteFailed {
+        public static string ExternalImageDeleteFailed {
             get {
                 return ResourceManager.GetString("ExternalImageDeleteFailed", resourceCulture);
             }
@@ -711,7 +738,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to upload image to the external service..
         /// </summary>
-        internal static string ExternalImageUploadFailed {
+        public static string ExternalImageUploadFailed {
             get {
                 return ResourceManager.GetString("ExternalImageUploadFailed", resourceCulture);
             }
@@ -720,7 +747,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create favorite..
         /// </summary>
-        internal static string FavoriteCreateFailed {
+        public static string FavoriteCreateFailed {
             get {
                 return ResourceManager.GetString("FavoriteCreateFailed", resourceCulture);
             }
@@ -729,7 +756,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete favorite..
         /// </summary>
-        internal static string FavoriteDeleteFailed {
+        public static string FavoriteDeleteFailed {
             get {
                 return ResourceManager.GetString("FavoriteDeleteFailed", resourceCulture);
             }
@@ -738,7 +765,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update favorite..
         /// </summary>
-        internal static string FavoriteUpdateFailed {
+        public static string FavoriteUpdateFailed {
             get {
                 return ResourceManager.GetString("FavoriteUpdateFailed", resourceCulture);
             }
@@ -747,7 +774,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to upload image..
         /// </summary>
-        internal static string ImageUploadFailed {
+        public static string ImageUploadFailed {
             get {
                 return ResourceManager.GetString("ImageUploadFailed", resourceCulture);
             }
@@ -756,7 +783,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на The specified status value is invalid..
         /// </summary>
-        internal static string InvalidStatusValue {
+        public static string InvalidStatusValue {
             get {
                 return ResourceManager.GetString("InvalidStatusValue", resourceCulture);
             }
@@ -765,7 +792,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create line item attribute..
         /// </summary>
-        internal static string LineItemAttributeCreateFailed {
+        public static string LineItemAttributeCreateFailed {
             get {
                 return ResourceManager.GetString("LineItemAttributeCreateFailed", resourceCulture);
             }
@@ -774,7 +801,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete line item attribute..
         /// </summary>
-        internal static string LineItemAttributeDeleteFailed {
+        public static string LineItemAttributeDeleteFailed {
             get {
                 return ResourceManager.GetString("LineItemAttributeDeleteFailed", resourceCulture);
             }
@@ -783,7 +810,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update line item attribute..
         /// </summary>
-        internal static string LineItemAttributeUpdateFailed {
+        public static string LineItemAttributeUpdateFailed {
             get {
                 return ResourceManager.GetString("LineItemAttributeUpdateFailed", resourceCulture);
             }
@@ -792,7 +819,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create order..
         /// </summary>
-        internal static string OrderCreateFailed {
+        public static string OrderCreateFailed {
             get {
                 return ResourceManager.GetString("OrderCreateFailed", resourceCulture);
             }
@@ -801,7 +828,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete order..
         /// </summary>
-        internal static string OrderDeleteFailed {
+        public static string OrderDeleteFailed {
             get {
                 return ResourceManager.GetString("OrderDeleteFailed", resourceCulture);
             }
@@ -810,7 +837,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create order item..
         /// </summary>
-        internal static string OrderItemCreateFailed {
+        public static string OrderItemCreateFailed {
             get {
                 return ResourceManager.GetString("OrderItemCreateFailed", resourceCulture);
             }
@@ -819,7 +846,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete order item..
         /// </summary>
-        internal static string OrderItemDeleteFailed {
+        public static string OrderItemDeleteFailed {
             get {
                 return ResourceManager.GetString("OrderItemDeleteFailed", resourceCulture);
             }
@@ -828,7 +855,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на  Failed to update order item..
         /// </summary>
-        internal static string OrderItemUpdateFailed {
+        public static string OrderItemUpdateFailed {
             get {
                 return ResourceManager.GetString("OrderItemUpdateFailed", resourceCulture);
             }
@@ -837,7 +864,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update order..
         /// </summary>
-        internal static string OrderUpdateFailed {
+        public static string OrderUpdateFailed {
             get {
                 return ResourceManager.GetString("OrderUpdateFailed", resourceCulture);
             }
@@ -846,7 +873,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create product type..
         /// </summary>
-        internal static string ProductTypeCreateFailed {
+        public static string ProductTypeCreateFailed {
             get {
                 return ResourceManager.GetString("ProductTypeCreateFailed", resourceCulture);
             }
@@ -855,7 +882,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete product type..
         /// </summary>
-        internal static string ProductTypeDeleteFailed {
+        public static string ProductTypeDeleteFailed {
             get {
                 return ResourceManager.GetString("ProductTypeDeleteFailed", resourceCulture);
             }
@@ -864,7 +891,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create product type translation..
         /// </summary>
-        internal static string ProductTypeTranslationCreateFailed {
+        public static string ProductTypeTranslationCreateFailed {
             get {
                 return ResourceManager.GetString("ProductTypeTranslationCreateFailed", resourceCulture);
             }
@@ -873,7 +900,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete product type translation..
         /// </summary>
-        internal static string ProductTypeTranslationDeleteFailed {
+        public static string ProductTypeTranslationDeleteFailed {
             get {
                 return ResourceManager.GetString("ProductTypeTranslationDeleteFailed", resourceCulture);
             }
@@ -882,7 +909,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update product type translation..
         /// </summary>
-        internal static string ProductTypeTranslationUpdateFailed {
+        public static string ProductTypeTranslationUpdateFailed {
             get {
                 return ResourceManager.GetString("ProductTypeTranslationUpdateFailed", resourceCulture);
             }
@@ -891,7 +918,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update product type..
         /// </summary>
-        internal static string ProductTypeUpdateFailed {
+        public static string ProductTypeUpdateFailed {
             get {
                 return ResourceManager.GetString("ProductTypeUpdateFailed", resourceCulture);
             }
@@ -900,7 +927,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на The product &quot;{0}&quot; is no longer available..
         /// </summary>
-        internal static string ProoductNotAvailable {
+        public static string ProoductNotAvailable {
             get {
                 return ResourceManager.GetString("ProoductNotAvailable", resourceCulture);
             }
@@ -909,7 +936,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create region..
         /// </summary>
-        internal static string RegionCreateFailed {
+        public static string RegionCreateFailed {
             get {
                 return ResourceManager.GetString("RegionCreateFailed", resourceCulture);
             }
@@ -918,7 +945,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete region..
         /// </summary>
-        internal static string RegionDeleteFailed {
+        public static string RegionDeleteFailed {
             get {
                 return ResourceManager.GetString("RegionDeleteFailed", resourceCulture);
             }
@@ -927,7 +954,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create region translation..
         /// </summary>
-        internal static string RegionTranslationCreateFailed {
+        public static string RegionTranslationCreateFailed {
             get {
                 return ResourceManager.GetString("RegionTranslationCreateFailed", resourceCulture);
             }
@@ -936,7 +963,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete region translation..
         /// </summary>
-        internal static string RegionTranslationDeleteFailed {
+        public static string RegionTranslationDeleteFailed {
             get {
                 return ResourceManager.GetString("RegionTranslationDeleteFailed", resourceCulture);
             }
@@ -945,7 +972,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update region translation..
         /// </summary>
-        internal static string RegionTranslationUpdateFailed {
+        public static string RegionTranslationUpdateFailed {
             get {
                 return ResourceManager.GetString("RegionTranslationUpdateFailed", resourceCulture);
             }
@@ -954,7 +981,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update region..
         /// </summary>
-        internal static string RegionUpdateFailed {
+        public static string RegionUpdateFailed {
             get {
                 return ResourceManager.GetString("RegionUpdateFailed", resourceCulture);
             }
@@ -963,7 +990,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create review..
         /// </summary>
-        internal static string ReviewCommentCreateFailed {
+        public static string ReviewCommentCreateFailed {
             get {
                 return ResourceManager.GetString("ReviewCommentCreateFailed", resourceCulture);
             }
@@ -972,7 +999,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete review..
         /// </summary>
-        internal static string ReviewCommentDeleteFailed {
+        public static string ReviewCommentDeleteFailed {
             get {
                 return ResourceManager.GetString("ReviewCommentDeleteFailed", resourceCulture);
             }
@@ -981,7 +1008,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update review..
         /// </summary>
-        internal static string ReviewCommentUpdateFailed {
+        public static string ReviewCommentUpdateFailed {
             get {
                 return ResourceManager.GetString("ReviewCommentUpdateFailed", resourceCulture);
             }
@@ -990,7 +1017,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create review image..
         /// </summary>
-        internal static string ReviewImageCreateFailed {
+        public static string ReviewImageCreateFailed {
             get {
                 return ResourceManager.GetString("ReviewImageCreateFailed", resourceCulture);
             }
@@ -999,7 +1026,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete review image..
         /// </summary>
-        internal static string ReviewImageDeleteFailed {
+        public static string ReviewImageDeleteFailed {
             get {
                 return ResourceManager.GetString("ReviewImageDeleteFailed", resourceCulture);
             }
@@ -1008,7 +1035,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to upload review image..
         /// </summary>
-        internal static string ReviewImageUploadFailed {
+        public static string ReviewImageUploadFailed {
             get {
                 return ResourceManager.GetString("ReviewImageUploadFailed", resourceCulture);
             }
@@ -1017,7 +1044,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create review repli..
         /// </summary>
-        internal static string ReviewRepliCommentCreateFailed {
+        public static string ReviewRepliCommentCreateFailed {
             get {
                 return ResourceManager.GetString("ReviewRepliCommentCreateFailed", resourceCulture);
             }
@@ -1026,7 +1053,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete review repli..
         /// </summary>
-        internal static string ReviewRepliCommentDeleteFailed {
+        public static string ReviewRepliCommentDeleteFailed {
             get {
                 return ResourceManager.GetString("ReviewRepliCommentDeleteFailed", resourceCulture);
             }
@@ -1035,7 +1062,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update review repli..
         /// </summary>
-        internal static string ReviewRepliCommentUpdateFailed {
+        public static string ReviewRepliCommentUpdateFailed {
             get {
                 return ResourceManager.GetString("ReviewRepliCommentUpdateFailed", resourceCulture);
             }
@@ -1044,7 +1071,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create review repli image..
         /// </summary>
-        internal static string ReviewRepliImageCreateFailed {
+        public static string ReviewRepliImageCreateFailed {
             get {
                 return ResourceManager.GetString("ReviewRepliImageCreateFailed", resourceCulture);
             }
@@ -1053,7 +1080,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete review repli image..
         /// </summary>
-        internal static string ReviewRepliImageDeleteFailed {
+        public static string ReviewRepliImageDeleteFailed {
             get {
                 return ResourceManager.GetString("ReviewRepliImageDeleteFailed", resourceCulture);
             }
@@ -1062,7 +1089,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update review repli image..
         /// </summary>
-        internal static string ReviewRepliImageUpdateFailed {
+        public static string ReviewRepliImageUpdateFailed {
             get {
                 return ResourceManager.GetString("ReviewRepliImageUpdateFailed", resourceCulture);
             }
@@ -1071,7 +1098,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create role..
         /// </summary>
-        internal static string RoleCreateFailed {
+        public static string RoleCreateFailed {
             get {
                 return ResourceManager.GetString("RoleCreateFailed", resourceCulture);
             }
@@ -1080,7 +1107,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete role..
         /// </summary>
-        internal static string RoleDeleteFailed {
+        public static string RoleDeleteFailed {
             get {
                 return ResourceManager.GetString("RoleDeleteFailed", resourceCulture);
             }
@@ -1089,7 +1116,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update role..
         /// </summary>
-        internal static string RoleUpdateFailed {
+        public static string RoleUpdateFailed {
             get {
                 return ResourceManager.GetString("RoleUpdateFailed", resourceCulture);
             }
@@ -1098,7 +1125,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete the record..
         /// </summary>
-        internal static string SoftDeleteFailed {
+        public static string SoftDeleteFailed {
             get {
                 return ResourceManager.GetString("SoftDeleteFailed", resourceCulture);
             }
@@ -1107,7 +1134,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на An unexpected error occurred while changing the status..
         /// </summary>
-        internal static string StatusChangeFailed {
+        public static string StatusChangeFailed {
             get {
                 return ResourceManager.GetString("StatusChangeFailed", resourceCulture);
             }
@@ -1116,7 +1143,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete user..
         /// </summary>
-        internal static string UserDeleteFailed {
+        public static string UserDeleteFailed {
             get {
                 return ResourceManager.GetString("UserDeleteFailed", resourceCulture);
             }
@@ -1125,7 +1152,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create user device..
         /// </summary>
-        internal static string UserDeviceCreateFailed {
+        public static string UserDeviceCreateFailed {
             get {
                 return ResourceManager.GetString("UserDeviceCreateFailed", resourceCulture);
             }
@@ -1134,7 +1161,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete user device..
         /// </summary>
-        internal static string UserDeviceDeleteFailed {
+        public static string UserDeviceDeleteFailed {
             get {
                 return ResourceManager.GetString("UserDeviceDeleteFailed", resourceCulture);
             }
@@ -1143,7 +1170,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update user device..
         /// </summary>
-        internal static string UserDeviceUpdateFailed {
+        public static string UserDeviceUpdateFailed {
             get {
                 return ResourceManager.GetString("UserDeviceUpdateFailed", resourceCulture);
             }
@@ -1152,7 +1179,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to create user session..
         /// </summary>
-        internal static string UserSessionCreateFailed {
+        public static string UserSessionCreateFailed {
             get {
                 return ResourceManager.GetString("UserSessionCreateFailed", resourceCulture);
             }
@@ -1161,7 +1188,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to delete user session..
         /// </summary>
-        internal static string UserSessionDeleteFailed {
+        public static string UserSessionDeleteFailed {
             get {
                 return ResourceManager.GetString("UserSessionDeleteFailed", resourceCulture);
             }
@@ -1170,7 +1197,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update user session..
         /// </summary>
-        internal static string UserSessionUpdateFailed {
+        public static string UserSessionUpdateFailed {
             get {
                 return ResourceManager.GetString("UserSessionUpdateFailed", resourceCulture);
             }
@@ -1179,7 +1206,7 @@ namespace ShagOxServer.Application.Resources.EntityErrors {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update user..
         /// </summary>
-        internal static string UserUpdateFailed {
+        public static string UserUpdateFailed {
             get {
                 return ResourceManager.GetString("UserUpdateFailed", resourceCulture);
             }

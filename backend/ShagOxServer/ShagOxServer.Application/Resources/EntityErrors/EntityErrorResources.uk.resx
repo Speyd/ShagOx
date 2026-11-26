@@ -492,4 +492,13 @@
   <data name="UserSessionUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити сесію користувача.</value>
   </data>
+  <data name="DeviceCreateFailed" xml:space="preserve">
+    <value>Не вдалося створити пристрій користувача.</value>
+  </data>
+  <data name="DeviceDeleteFailed" xml:space="preserve">
+    <value>Не вдалося видалити пристрій користувача.</value>
+  </data>
+  <data name="DeviceUpdateFailed" xml:space="preserve">
+    <value>Не вдалося оновити пристрій користувача.</value>
+  </data>
 </root>

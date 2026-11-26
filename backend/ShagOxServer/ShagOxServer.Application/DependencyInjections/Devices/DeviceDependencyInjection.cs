@@ -1,11 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
-using ShagOxServer.Application.Interfaces.Services.Devices.Create;
-using ShagOxServer.Application.Interfaces.Services.Devices.Query;
+using ShagOxServer.Application.Interfaces.Services.Devices.Core.Create;
+using ShagOxServer.Application.Interfaces.Services.Devices.Core.Query;
 using ShagOxServer.Application.Services.Caches.Invalidations.Devices;
-using ShagOxServer.Application.Services.Devices.Create;
-using ShagOxServer.Application.Services.Devices.Query;
-using ShagOxServer.Application.Services.Devices.Validator;
+using ShagOxServer.Application.Services.Devices.Core.Create;
+using ShagOxServer.Application.Services.Devices.Core.Query;
+using ShagOxServer.Application.Services.Devices.Core.Validator;
 using ShagOxServer.Domain.Cache.Devices;
 using ShagOxServer.Domain.Entities.Devices;
 

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
-using ShagOxServer.Application.Services.Auth.Users.Management;
+using ShagOxServer.Application.Services.Auth.Users.Management.Moderation;
+using ShagOxServer.Application.Services.Auth.Users.Management.Trast;
 
 namespace ShagOxServer.Application.DependencyInjections.Auth.Users;
 public static class UserManagementDependencyInjection

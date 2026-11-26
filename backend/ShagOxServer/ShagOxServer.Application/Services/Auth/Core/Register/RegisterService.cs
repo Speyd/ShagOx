@@ -14,7 +14,7 @@ using ShagOxServer.Application.Services.Auth.Users.Contacts;
 using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 using ShagOxServer.Application.Services.Auth.Users.Roles;
-using ShagOxServer.Application.Services.Devices.Validator;
+using ShagOxServer.Application.Services.Devices.Core.Validator;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

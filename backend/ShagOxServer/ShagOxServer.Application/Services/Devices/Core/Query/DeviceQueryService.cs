@@ -3,17 +3,17 @@ using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Devices.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Devices.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
-using ShagOxServer.Application.Interfaces.Services.Devices.Query;
+using ShagOxServer.Application.Interfaces.Services.Devices.Core.Query;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Application.Services.Caches.Keys.Devices;
-using ShagOxServer.Application.Services.Devices.Mapping;
+using ShagOxServer.Application.Services.Devices.Core.Mapping;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Devices;
 using ShagOxServer.Domain.Filters.Devices;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
-namespace ShagOxServer.Application.Services.Devices.Query;
+namespace ShagOxServer.Application.Services.Devices.Core.Query;
 public class DeviceQueryService
     : BaseQueryService<
         DeviceDto,

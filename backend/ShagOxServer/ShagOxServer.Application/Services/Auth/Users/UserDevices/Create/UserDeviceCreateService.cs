@@ -8,7 +8,7 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.UserDevices.Validator;
-using ShagOxServer.Application.Services.Devices.Validator;
+using ShagOxServer.Application.Services.Devices.Core.Validator;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

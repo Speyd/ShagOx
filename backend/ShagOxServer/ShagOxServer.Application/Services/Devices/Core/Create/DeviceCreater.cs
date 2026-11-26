@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Devices;
 using ShagOxServer.Application.DTOs.Devices.Create;
 using ShagOxServer.Domain.Entities.Devices;
 using ShagOxServer.Domain.Entities.Devices.Enum;
-namespace ShagOxServer.Application.Services.Devices.Create;
+namespace ShagOxServer.Application.Services.Devices.Core.Create;
 public static class DeviceCreater
 {
     public static Device Create(

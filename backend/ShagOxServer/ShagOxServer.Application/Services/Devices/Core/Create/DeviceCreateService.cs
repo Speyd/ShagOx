@@ -4,13 +4,13 @@ using ShagOxServer.Application.DTOs.Devices.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
-using ShagOxServer.Application.Interfaces.Services.Devices.Create;
+using ShagOxServer.Application.Interfaces.Services.Devices.Core.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
-using ShagOxServer.Application.Services.Devices.Validator;
+using ShagOxServer.Application.Services.Devices.Core.Validator;
 using ShagOxServer.Domain.Entities.Devices;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Devices.Create;
+namespace ShagOxServer.Application.Services.Devices.Core.Create;
 public class DeviceCreateService
     : IDeviceCreateService
 {

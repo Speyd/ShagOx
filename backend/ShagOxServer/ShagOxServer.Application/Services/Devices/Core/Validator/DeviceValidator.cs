@@ -10,7 +10,7 @@ using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Devices;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Services.Devices.Validator;
+namespace ShagOxServer.Application.Services.Devices.Core.Validator;
 public class DeviceValidator
     : BaseValidator<Device>
 {

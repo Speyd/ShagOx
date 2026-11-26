@@ -5,7 +5,7 @@ using ShagOxServer.Domain.Entities.Devices;
 using ShagOxServer.Domain.Filters.Devices;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
-namespace ShagOxServer.Application.Interfaces.Services.Devices.Query;
+namespace ShagOxServer.Application.Interfaces.Services.Devices.Core.Query;
 public interface IDeviceQueryService
     : IQueryService<DeviceDto,
         Device,

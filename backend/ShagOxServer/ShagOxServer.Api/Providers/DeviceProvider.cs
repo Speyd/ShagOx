@@ -1,7 +1,7 @@
 using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Application.Interfaces.Services.Devices.Query;
+using ShagOxServer.Application.Interfaces.Services.Devices.Core.Query;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Devices;

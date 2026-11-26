@@ -41,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Admin\Dashboard\" />
     <Folder Include="Controllers\AttributeDefinitions\Translations\" />
     <Folder Include="Controllers\Avatars\" />
     <Folder Include="Controllers\BasketAttributes\" />

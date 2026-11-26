@@ -1,7 +1,7 @@
 using ShagOxServer.Application.DTOs.Devices.Query;
 using ShagOxServer.Domain.Entities.Devices;
 
-namespace ShagOxServer.Application.Services.Devices.Mapping;
+namespace ShagOxServer.Application.Services.Devices.Core.Mapping;
 public static class DeviceMapper
 {
     public static DeviceDto ToDto(

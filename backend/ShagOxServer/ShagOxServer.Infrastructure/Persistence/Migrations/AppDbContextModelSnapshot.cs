@@ -515,10 +515,10 @@ namespace ShagOxServer.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime?>("BlockedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.Property<DateTime?>("BlockedUntil")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamptz");
@@ -544,8 +544,9 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -583,9 +584,6 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("DeviceId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("EntityStatus")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -616,14 +614,17 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.Property<DateTime?>("RevokedAt")
                         .HasColumnType("timestamptz");
 
-                    b.HasKey("Id");
+                    b.Property<long>("UserDeviceId")
+                        .HasColumnType("bigint");
 
-                    b.HasIndex("DeviceId")
-                        .HasDatabaseName("IX_UserSessions_DeviceId");
+                    b.HasKey("Id");
 
                     b.HasIndex("RefreshTokenHash")
                         .IsUnique()
                         .HasDatabaseName("IX_UserSessions_RefreshTokenHash");
+
+                    b.HasIndex("UserDeviceId")
+                        .HasDatabaseName("IX_UserSessions_UserDeviceId");
 
                     b.HasIndex("OwnerId", "RevokedAt")
                         .HasDatabaseName("IX_UserSessions_OwnerId_RevokedAt");
@@ -2498,13 +2499,6 @@ namespace ShagOxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Auth.Users.UserSession", b =>
                 {
-                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.UserDevice", "Device")
-                        .WithMany()
-                        .HasForeignKey("DeviceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserSessions_UserDevices_DeviceId");
-
                     b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.User", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId")
@@ -2512,9 +2506,16 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_UserSessions_Users_OwnerId");
 
-                    b.Navigation("Device");
+                    b.HasOne("ShagOxServer.Domain.Entities.Auth.Users.UserDevice", "UserDevice")
+                        .WithMany()
+                        .HasForeignKey("UserDeviceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserSessions_UserDevices_UserDeviceId");
 
                     b.Navigation("Owner");
+
+                    b.Navigation("UserDevice");
                 });
 
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Baskets.Basket", b =>

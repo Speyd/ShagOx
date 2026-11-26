@@ -20,7 +20,7 @@ public static class UserSessionFilterExtensions
         if (filter.UserDeviceId.HasValue)
         {
             query = query.Where(u =>
-                u.UserDeviceId == filter.DeviceId.Value);
+                u.UserDeviceId == filter.UserDeviceId.Value);
         }
 
         if (filter.RevocationReason.HasValue)

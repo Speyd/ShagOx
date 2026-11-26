@@ -2,7 +2,7 @@ using ShagOxServer.Application.DTOs.Devices.Create;
 using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Repositories.Devices;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Application.Interfaces.Services.Devices.Create;
+using ShagOxServer.Application.Interfaces.Services.Devices.Core.Create;
 using ShagOxServer.Application.Resources.Auth.Security;
 
 namespace ShagOxServer.Api.Middleware;

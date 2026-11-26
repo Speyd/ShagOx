@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserSessions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserSessions.Query;
 

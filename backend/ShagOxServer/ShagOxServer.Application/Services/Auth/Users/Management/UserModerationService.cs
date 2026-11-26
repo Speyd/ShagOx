@@ -1,34 +1,38 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using UAParser;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Management;
 public class UserModerationService
     : IUserModerationService
 {
-    private readonly IUserQueryRepository _userRepository;
+    private readonly IUserQueryService _userService;
     private readonly IUserCommandsRepository _userCommandsRepository;
 
-    private readonly IUserDeviceQueryRepository _deviceRepository;
+    private readonly IUserDeviceQueryService _deviceService;
     private readonly IUserDeviceCommandsRepository _deviceCommandsRepository;
 
     private readonly IUserTrastManagementService _trastManagement;
 
 
     public UserModerationService(
-        IUserQueryRepository userRepository,
+        IUserQueryService userService,
         IUserCommandsRepository userCommandsRepository,
-        IUserDeviceQueryRepository deviceRepository,
+        IUserDeviceQueryService deviceService,
         IUserDeviceCommandsRepository deviceCommandsRepository,
         IUserTrastManagementService trastManagement)
     {
-        _userRepository = userRepository;
+        _userService = userService;
         _userCommandsRepository = userCommandsRepository;
-        _deviceRepository = deviceRepository;
+        _deviceService = deviceService;
         _deviceCommandsRepository = deviceCommandsRepository;
         _trastManagement = trastManagement;
     }
@@ -39,17 +43,19 @@ public class UserModerationService
         DateTime? blockedUntil,
         CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(
+        var user = await _userService.GetByIdAsync(
             userId, 
             cancellationToken);
 
-        if (user is null)
+        if (!user.IsSuccess ||
+            user.Value is null)
         {
             return Result<bool>.Fail(
-                EntityNamesResources.User);
+               user.Error ?? EntityNamesResources.User);
         }
 
-        await _trastManagement.RevokeSessionsByUserAsync(user,
+        await _trastManagement.RevokeSessionsByUserAsync(
+            user.Value.Id,
             SessionRevocationReason.AccountBlocked,
             true);
 
@@ -65,14 +71,15 @@ public class UserModerationService
         long userId,
         CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(
+        var user = await _userService.GetByIdAsync(
             userId,
             cancellationToken);
 
-        if (user is null)
+        if (!user.IsSuccess ||
+           user.Value is null)
         {
             return Result<bool>.Fail(
-                EntityNamesResources.User);
+               user.Error ?? EntityNamesResources.User);
         }
 
         await _userCommandsRepository.UnbanUserAsync(
@@ -87,17 +94,19 @@ public class UserModerationService
         DateTime? blockedUntil,
         CancellationToken cancellationToken)
     {
-        var device = await _deviceRepository.GetByIdAsync(
+        var device = await _deviceService.GetByIdAsync(
             deviceId,
             cancellationToken);
 
-        if (device is null)
+        if (!device.IsSuccess || 
+            device.Value is null)
         {
             return Result<bool>.Fail(
-                EntityNamesResources.UserDevice);
+                device.Error ?? EntityNamesResources.UserDevice);
         }
 
-        await _trastManagement.RevokeSessionsByDeviceAsync(device,
+        await _trastManagement.RevokeSessionsByDeviceAsync(
+            device.Value!.Id,
             SessionRevocationReason.AccountBlocked,
             true);
 
@@ -113,7 +122,7 @@ public class UserModerationService
         long deviceId,
         CancellationToken cancellationToken)
     {
-        var device = await _deviceRepository.GetByIdAsync(
+        var device = await _deviceService.GetByIdAsync(
            deviceId,
            cancellationToken);
 

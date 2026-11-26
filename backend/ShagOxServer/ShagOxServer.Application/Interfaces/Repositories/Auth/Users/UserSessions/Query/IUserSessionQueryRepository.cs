@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Filters.Auth.Users.UserSessions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
-namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
+namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
 public partial interface IUserSessionQueryRepository
     : ISearchRepository<UserSession, UserSessionSearchFilter>
 {

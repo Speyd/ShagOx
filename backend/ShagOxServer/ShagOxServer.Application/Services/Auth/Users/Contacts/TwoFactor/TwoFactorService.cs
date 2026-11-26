@@ -1,7 +1,8 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Login;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.TwoFactor;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Auth.Contacts.Emails;
@@ -18,7 +19,7 @@ public class TwoFactorService
     private readonly UserValidator _userValidator;
     private readonly IUserContext _userContext;
 
-    private readonly IUserDeviceQueryRepository _userRepository;
+    private readonly IUserDeviceQueryService _deviceService;
 
     private readonly IVerificationSender _verificationSender;
     private readonly ILogger<TwoFactorService> _logger;
@@ -27,13 +28,13 @@ public class TwoFactorService
     public TwoFactorService(
         UserValidator userValidator,
         IUserContext userContext,
-        IUserDeviceQueryRepository userRepository,
+        IUserDeviceQueryService deviceService,
         IVerificationSender verificationSender,
         ILogger<TwoFactorService> logger)
     {
         _userValidator = userValidator;
         _userContext = userContext;
-        _userRepository = userRepository;
+        _deviceService = deviceService;
         _verificationSender = verificationSender;
         _logger = logger;
     }
@@ -63,7 +64,7 @@ public class TwoFactorService
         User user,
         long deviceId)
     {
-        var device = await _userRepository
+        var device = await _deviceService
             .GetByIdAsync(deviceId);
 
         if(device is null)

@@ -912,6 +912,70 @@ namespace ShagOxServer.Infrastructure.Migrations
                     b.ToTable("DeliveryProviderTranslations");
                 });
 
+            modelBuilder.Entity("ShagOxServer.Domain.Entities.Devices.Device", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("BlockedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("BlockedUntil")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Browser")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeviceIdentifier")
+                        .IsRequired()
+                        .HasMaxLength(45)
+                        .HasColumnType("character varying(45)");
+
+                    b.Property<string>("DeviceName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("DeviceType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("EntityStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(45)
+                        .HasColumnType("character varying(45)");
+
+                    b.Property<DateTime>("LastActiveAt")
+                        .HasColumnType("timestamptz");
+
+                    b.Property<string>("OperatingSystem")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Devices");
+                });
+
             modelBuilder.Entity("ShagOxServer.Domain.Entities.Dictionaries.Attributes.AttributeDefinition", b =>
                 {
                     b.Property<long>("Id")

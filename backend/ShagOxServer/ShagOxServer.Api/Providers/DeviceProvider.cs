@@ -1,5 +1,5 @@
 using ShagOxServer.Application.Interfaces.Providers.User;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
@@ -8,12 +8,12 @@ namespace ShagOxServer.Api.Providers;
 public class DeviceProvider
     : IDeviceProvider
 {
-    private readonly IUserDeviceQueryRepository _deviceService;
+    private readonly IUserDeviceQueryService _deviceService;
     private readonly IUserContext _userContext;
 
 
     public DeviceProvider(
-        IUserDeviceQueryRepository deviceService,
+        IUserDeviceQueryService deviceService,
         IUserContext userContext)
     {
         _deviceService = deviceService;
@@ -29,9 +29,9 @@ public class DeviceProvider
             return null;
 
         var result = await _deviceService
-            .GetByIdentifierAsync(_userContext.DeviceIdentifier,
+            .GetEntityByIdentifierAsync(_userContext.DeviceIdentifier,
                 cancellationToken, status);
 
-        return result;
+        return result.IsSuccess ? result.Value : null;
     }
 }

@@ -17,7 +17,7 @@ public partial class UserVerificationService
         user.TwoFactorEnabled = true;
 
         await _trastManagement.RevokeSessionsByUserAsync(
-            user,
+            user.Id,
             SessionRevocationReason.TwoFactorEnabled);
 
         await _trastManagement
@@ -34,7 +34,7 @@ public partial class UserVerificationService
         user.TwoFactorEnabled = false;
 
         await _trastManagement.RevokeSessionsByUserAsync(
-            user,
+            user.Id,
             SessionRevocationReason.TwoFactorDisabled);
 
         await _trastManagement

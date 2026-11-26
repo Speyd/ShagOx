@@ -1,5 +1,5 @@
 using ShagOxServer.Application.Interfaces.Providers.User;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;

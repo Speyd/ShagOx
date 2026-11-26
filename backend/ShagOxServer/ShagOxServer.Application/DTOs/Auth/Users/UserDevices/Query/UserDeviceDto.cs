@@ -9,8 +9,8 @@ public sealed record UserDeviceDto
     long OwnerId,
     string DeviceName,
     string DeviceType,
-    string Browser,
-    string OperatingSystem,
-    string IpAddress,
+    string? Browser,
+    string? OperatingSystem,
+    string? IpAddress,
     string DeviceIdentifier
 ) : BaseDto(Id, EntityStatus);

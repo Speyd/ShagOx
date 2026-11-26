@@ -4,7 +4,7 @@ using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Filters.Auth.Users.UserDevices;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 
-namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
+namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices.Query;
 public partial interface IUserDeviceQueryRepository
     : ISearchRepository<UserDevice, UserDeviceSearchFilter>
 {

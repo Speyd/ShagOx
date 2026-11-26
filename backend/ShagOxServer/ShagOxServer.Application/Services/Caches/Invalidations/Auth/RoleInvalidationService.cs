@@ -1,6 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth.UserInvalid;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Cache.Auth;

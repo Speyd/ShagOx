@@ -9,20 +9,20 @@ public interface IUserTrastManagementService
         long deviceId,
         CancellationToken cancellationToken);
 
-    Task UntrustDevicesAsync(
+    Task<Result<bool>> UntrustDevicesAsync(
         User user,
         bool resetUsedSession = false,
         CancellationToken cancellationToken = default);
 
 
     Task RevokeSessionsByUserAsync(
-        User user,
+        long userId,
         SessionRevocationReason reason,
         bool resetUsedSession = false,
         CancellationToken cancellationToken = default);
 
     Task RevokeSessionsByDeviceAsync(
-        UserDevice user,
+        long deviceId,
         SessionRevocationReason reason,
         bool resetUsedSession = false,
         CancellationToken cancellationToken = default);

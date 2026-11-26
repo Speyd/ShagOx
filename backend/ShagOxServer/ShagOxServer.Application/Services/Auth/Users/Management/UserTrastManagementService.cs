@@ -1,8 +1,11 @@
 using ShagOxServer.Application.Interfaces.Providers.User;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Auth.Users;
@@ -18,7 +21,7 @@ public class UserTrastManagementService
 
     private readonly IDeviceProvider _deviceProvider;
     private readonly IUserDeviceCommandsRepository _deviceCommandRepository;
-    private readonly IUserDeviceQueryRepository _deviceQueryRepository;
+    private readonly IUserDeviceQueryService _deviceQueryService;
 
     private readonly ISessionProvider _sessionProvider;
     private readonly IUserSessionCommandsRepository _sessionCommandRepository;
@@ -30,7 +33,7 @@ public class UserTrastManagementService
         IUserQueryService userService,
         IDeviceProvider deviceProvider,
         IUserDeviceCommandsRepository deviceCommandRepository,
-        IUserDeviceQueryRepository deviceQueryRepository,
+        IUserDeviceQueryService deviceQueryService,
         ISessionProvider sessionProvider,
         IUserSessionCommandsRepository sessionCommandRepository,
         IUserSessionQueryRepository sessionQueryRepository)
@@ -39,7 +42,7 @@ public class UserTrastManagementService
         _userService = userService;
         _deviceProvider = deviceProvider;
         _deviceCommandRepository = deviceCommandRepository;
-        _deviceQueryRepository = deviceQueryRepository;
+        _deviceQueryService = deviceQueryService;
         _sessionProvider = sessionProvider;
         _sessionCommandRepository = sessionCommandRepository;
         _sessionQueryRepository = sessionQueryRepository;
@@ -65,27 +68,27 @@ public class UserTrastManagementService
                 EntityNamesResources.User);
         }
 
-        var usedDevice = await _deviceQueryRepository
+        var usedDevice = await _deviceQueryService
             .GetByIdAsync(
                 deviceId,
                 cancellationToken);
 
-        if (usedDevice is null || 
-            userDto.Value!.Id == usedDevice!.OwnerId)
+        if (!usedDevice.IsSuccess || 
+            userDto.Value!.Id == usedDevice.Value!.OwnerId)
         {
-            return Result<bool>.NotFound(
+            return Result<bool>.NotFound(usedDevice.Error ??
                 EntityNamesResources.UserDevice);
         }
 
         await _deviceCommandRepository
             .UnmarkAsTrasteAsync(
-                usedDevice.Id,
+                usedDevice.Value!.Id,
                 cancellationToken);
 
         return Result<bool>.Success(true);
     }
 
-    public async Task UntrustDevicesAsync(
+    public async Task<Result<bool>> UntrustDevicesAsync(
         User user,
         bool resetUsedDevice = false,
         CancellationToken cancellationToken = default)
@@ -101,10 +104,17 @@ public class UserTrastManagementService
                     cancellationToken);
         }
 
-        var userDevices = await _deviceQueryRepository
+        var userDevices = await _deviceQueryService
             .GetAllByUserAsync(user.Id, cancellationToken);
 
-        foreach (var device in userDevices)
+        if (!userDevices.IsSuccess || 
+            userDevices.Value is null)
+        {
+            return Result<bool>.Fail(
+                userDevices.Error ?? EntityNamesResources.UserDevice);
+        }
+
+        foreach (var device in userDevices.Value)
         {
             if (device.Id == usedDevice?.Id)
                 continue;
@@ -114,10 +124,12 @@ public class UserTrastManagementService
                     device.Id,
                     cancellationToken);
         }
+
+        return Result<bool>.Success(true);
     }
 
     public async Task RevokeSessionsByUserAsync(
-        User user,
+        long userId,
         SessionRevocationReason reason,
         bool resetUsedSession = false,
         CancellationToken cancellationToken = default)
@@ -132,7 +144,7 @@ public class UserTrastManagementService
         }
 
         var userSessions = await _sessionQueryRepository
-            .GetAllByUserAsync(user.Id, cancellationToken);
+            .GetAllByUserAsync(userId, cancellationToken);
 
         foreach (var session in userSessions)
         {
@@ -148,7 +160,7 @@ public class UserTrastManagementService
     }
 
     public async Task RevokeSessionsByDeviceAsync(
-        UserDevice device,
+        long deviceId,
         SessionRevocationReason reason,
         bool resetUsedSession = false,
         CancellationToken cancellationToken = default)
@@ -165,7 +177,7 @@ public class UserTrastManagementService
         }
 
         var userSessions = await _sessionQueryRepository
-            .GetAllByDeviceAsync(device.Id, cancellationToken);
+            .GetAllByDeviceAsync(deviceId, cancellationToken);
 
         foreach (var session in userSessions)
         {

@@ -1,6 +1,6 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Providers.User;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;

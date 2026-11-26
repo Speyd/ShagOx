@@ -11,7 +11,7 @@ using ShagOxServer.Application.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.Update;
-using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth.UserInvalid;
 using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth.Users;
 

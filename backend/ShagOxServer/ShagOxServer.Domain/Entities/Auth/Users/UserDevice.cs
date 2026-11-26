@@ -5,8 +5,8 @@ using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 
 namespace ShagOxServer.Domain.Entities.Auth.Users;
 public class UserDevice
-    : OwnedEntity<User>//,
-    //IEntityCache<UserDevice, UserDeviceCacheContext>
+    : OwnedEntity<User>,
+    IEntityCache<UserDevice, UserDeviceCacheContext>
 {
     public string DeviceName { get; set; } = null!;
 
@@ -31,8 +31,23 @@ public class UserDevice
     public bool IsTrusted { get; set; }
 
 
+    public UserDeviceCacheContext GetCacheContext()
+    {
+        return new UserDeviceCacheContext(
+            Id,
+            OwnerId,
+            IpAddress,
+            DeviceIdentifier,
+            EntityStatus);
+    }
+
     public override string ToString()
     {
         return $"User: {OwnerId} | IsTrusted:{IsTrusted}";
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

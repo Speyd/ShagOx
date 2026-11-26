@@ -8,7 +8,7 @@ using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Base.Delete;
-using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth.UserInvalid;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

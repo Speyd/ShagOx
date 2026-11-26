@@ -1,4 +1,4 @@
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices.Query;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Filters.Auth.Users.UserDevices;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserDevices.Extensions;

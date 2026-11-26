@@ -3,7 +3,7 @@ using ShagOxServer.Application.Interfaces.Providers.User;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management.Trast;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;

@@ -1,6 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management.Trast;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation.UserVerification;
 
 namespace ShagOxServer.Application.Services.Verifications.Confirmation.UserVerification;

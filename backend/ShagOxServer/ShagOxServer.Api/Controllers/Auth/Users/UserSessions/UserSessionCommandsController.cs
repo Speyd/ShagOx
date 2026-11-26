@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShagOxServer.Api.Controllers.Api;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management.Trast;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;

@@ -1,7 +1,8 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management.Moderation;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management.Trast;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Management.Moderation;

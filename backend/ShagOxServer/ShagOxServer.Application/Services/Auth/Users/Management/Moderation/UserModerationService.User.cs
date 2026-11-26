@@ -1,4 +1,4 @@
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management.Moderation;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;

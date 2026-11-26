@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Api.Controllers.Api;
 using ShagOxServer.Application.Common.Options.Systems.Cookies;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core;
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management.Moderation;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Interfaces.Services.Devices.Management;
 using CookieOptions = ShagOxServer.Application.Common.Options.Systems.Cookies.CookieOptions;

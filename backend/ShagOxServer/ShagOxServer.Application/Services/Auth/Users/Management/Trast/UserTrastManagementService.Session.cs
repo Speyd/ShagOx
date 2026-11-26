@@ -1,4 +1,4 @@
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management.Trast;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -12,34 +12,59 @@ public partial class UserTrastManagementService
         SessionRevocationReason reason,
         CancellationToken cancellationToken = default)
     {
+        return await RevokeSessionInternalAsync(
+            sessionId,
+            reason,
+            checkOwner: true,
+            cancellationToken);
+    }
+
+    public async Task<Result<bool>> RevokeSessionByAdminAsync(
+        long sessionId,
+        SessionRevocationReason reason,
+        CancellationToken cancellationToken = default)
+    {
+        return await RevokeSessionInternalAsync(
+            sessionId,
+            reason,
+            checkOwner: false,
+            cancellationToken);
+    }
+
+    private async Task<Result<bool>> RevokeSessionInternalAsync(
+        long sessionId,
+        SessionRevocationReason reason,
+        bool checkOwner,
+        CancellationToken cancellationToken)
+    {
         if (!_userContext.UserId.HasValue)
         {
-            return Result<bool>.NotFound(
-                EntityNamesResources.User);
+            return Result<bool>.NotFound(EntityNamesResources.User);
         }
 
-        var userSessions = await _sessionQueryService
+        var userSession = await _sessionQueryService
             .GetByIdAsync(sessionId, cancellationToken);
 
-        if (!userSessions.IsSuccess)
+        if (!userSession.IsSuccess)
         {
-            return Result<bool>.Fail(
-                userSessions.Error);
-        }
-        else if(userSessions.Value!.OwnerId != _userContext.UserId.Value)
-        {
-            return Result<bool>.NotFound(
-                EntityNamesResources.UserSession);
+            return Result<bool>.Fail(userSession.Error);
         }
 
-        await _sessionCommandRepository
-            .RevokeSessionAsync(
-                sessionId,
-                reason,
-                cancellationToken);
+        if (checkOwner &&
+            userSession.Value!.OwnerId != _userContext.UserId.Value)
+        {
+            return Result<bool>.NotFound(EntityNamesResources.UserSession);
+        }
+
+        await _sessionCommandRepository.RevokeSessionAsync(
+            sessionId,
+            reason,
+            cancellationToken);
 
         return Result<bool>.Success(true);
     }
+
+
 
     public async Task<Result<bool>> RevokeSessionsByUserAsync(
         long userId,

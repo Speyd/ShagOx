@@ -4,6 +4,7 @@ using ShagOxServer.Api.Controllers.Base.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Filters.Auth.Users.UserSessions;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
@@ -34,11 +35,12 @@ public class UserSessionAdminQueriesController
     public async Task<IActionResult> GetByUser(
         [FromRoute] long userId,
         [FromQuery] PaginationParams pagination,
+        [FromQuery] EntityStatus status,
         CancellationToken cancellationToken)
     {
         var result = await _sessionQueryService
             .GetByUserAsync(userId, pagination,
-                cancellationToken);
+                cancellationToken, status);
 
         return result.ToActionResult();
     }
@@ -47,11 +49,12 @@ public class UserSessionAdminQueriesController
     public async Task<IActionResult> GetByUserDevice(
         [FromRoute] long deviceId,
         [FromQuery] PaginationParams pagination,
+        [FromQuery] EntityStatus status,
         CancellationToken cancellationToken)
     {
         var result = await _sessionQueryService
            .GetByUserDeviceAsync(deviceId, pagination,
-               cancellationToken);
+               cancellationToken, status);
 
         return result.ToActionResult();
     }

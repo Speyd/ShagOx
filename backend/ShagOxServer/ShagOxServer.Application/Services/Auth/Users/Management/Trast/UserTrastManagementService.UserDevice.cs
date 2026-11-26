@@ -1,4 +1,4 @@
-using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management.Trast;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -9,6 +9,27 @@ public partial class UserTrastManagementService
 {
     public async Task<Result<bool>> UntrustDeviceAsync(
         long deviceId,
+        CancellationToken cancellationToken = default)
+    {
+        return await UntrustDeviceInternalAsync(
+            deviceId,
+            checkOwner: true,
+            cancellationToken);
+    }
+
+    public async Task<Result<bool>> UntrustDeviceByAdminAsync(
+        long deviceId,
+        CancellationToken cancellationToken = default)
+    {
+        return await UntrustDeviceInternalAsync(
+            deviceId,
+            checkOwner: false,
+            cancellationToken);
+    }
+
+    private async Task<Result<bool>> UntrustDeviceInternalAsync(
+        long deviceId,
+        bool checkOwner,
         CancellationToken cancellationToken)
     {
         if (_userContext.UserId is null)
@@ -28,21 +49,23 @@ public partial class UserTrastManagementService
         }
 
         var usedDevice = await _deviceQueryService
-            .GetByIdAsync(
-                deviceId,
-                cancellationToken);
+            .GetByIdAsync(deviceId, cancellationToken);
 
-        if (!usedDevice.IsSuccess ||
-            userDto.Value!.Id == usedDevice.Value!.OwnerId)
+        if (!usedDevice.IsSuccess)
         {
-            return Result<bool>.NotFound(usedDevice.Error ??
+            return Result<bool>.Fail(usedDevice.Error);
+        }
+
+        if (checkOwner &&
+            userDto.Value!.Id != usedDevice.Value!.OwnerId)
+        {
+            return Result<bool>.NotFound(
                 EntityNamesResources.UserDevice);
         }
 
-        await _deviceCommandRepository
-            .UnmarkAsTrasteAsync(
-                usedDevice.Value!.Id,
-                cancellationToken);
+        await _deviceCommandRepository.UnmarkAsTrasteAsync(
+            usedDevice.Value!.Id,
+            cancellationToken);
 
         return Result<bool>.Success(true);
     }

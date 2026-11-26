@@ -128,7 +128,7 @@ public sealed class RequestTrackingMiddleware
         if (previousLevel < _trackingOptions.BanLevelCount &&
             state.BanLevel == _trackingOptions.BanLevelCount)
         {
-            await deviceCommands.BanDeviceByIpAsync(
+            await deviceCommands.BanDeviceByIpAddressAsync(
                 state.Ip,
                 null);
         }

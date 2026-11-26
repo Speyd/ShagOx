@@ -15,7 +15,7 @@ public static class UserDeviceQueryExtensions
             
     }
     
-     public static IQueryable<UserDeviceCacheContext> SelectCacheInfo(
+    public static IQueryable<UserDeviceCacheContext> SelectCacheInfo(
         this IQueryable<UserDevice> query,
         EntityStatus status = EntityStatus.Active)
     {

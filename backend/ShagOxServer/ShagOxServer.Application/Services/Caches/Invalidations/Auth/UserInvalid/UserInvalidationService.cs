@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices.Query;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewRepliComments;
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Currencies;
@@ -35,6 +36,9 @@ public partial class UserInvalidationService
     private readonly IUserDeviceQueryRepository _deviceRepository;
     private readonly UserDeviceInvalidationService _deviceInvalid;
 
+    private readonly IUserSessionQueryRepository _sessionRepository;
+    private readonly UserSessionInvalidationService _sessionInvalid;
+
     private readonly IDataCacheService _cache;
 
 
@@ -51,20 +55,31 @@ public partial class UserInvalidationService
         CurrencyInvalidationService currencyInvalid,
         IUserDeviceQueryRepository deviceRepository,
         UserDeviceInvalidationService deviceInvalid,
+        IUserSessionQueryRepository sessionRepository,
+        UserSessionInvalidationService sessionInvalid,
         IDataCacheService cache)
     {
         _advertRepository = advertRepository;
         _advertInvalid = advertInvalid;
+
         _avatarRepository = avatarRepository;
         _avatarInvalid = avatarInvalid;
+
         _reviewRepository = reviewRepository;
         _reviewInvalid = reviewInvalid;
+
         _reviewRepliRepository = reviewRepliRepository;
         _reviewRepliInvalid = reviewRepliInvalid;
+
         _currencyRepository = currencyRepository;
         _currencyInvalid = currencyInvalid;
+
         _deviceRepository = deviceRepository;
         _deviceInvalid = deviceInvalid;
+
+        _sessionRepository = sessionRepository;
+        _sessionInvalid = sessionInvalid;
+
         _cache = cache;
     }
 }

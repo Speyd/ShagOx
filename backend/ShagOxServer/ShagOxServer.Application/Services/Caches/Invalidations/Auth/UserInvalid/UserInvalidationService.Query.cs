@@ -44,10 +44,17 @@ public partial class UserInvalidationService
             .GetCahceInfoByUserAsync(entityId);
     }
 
-    private async Task<List<UserDeviceCacheContext>> GetUserDeviceInfo(
+    private async Task<List<UserDeviceCacheContext>> GetUserDeviceContexts(
         long entityId)
     {
         return await _deviceRepository
             .GetCacheContextByUserAsync(entityId);
+    }
+
+    private async Task<List<UserSessionCacheContext>> GetUserSessionContexts(
+       long entityId)
+    {
+        return await _sessionRepository
+            .GetCacheContextByUserDeviceAsync(entityId);
     }
 }

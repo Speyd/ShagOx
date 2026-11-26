@@ -69,13 +69,22 @@ public partial class UserInvalidationService
                 .InvalidateDeleteAsync(reviewRepliInfo);
         }
 
-        var userDeviceContexts = await GetUserDeviceInfo(
+        var userDeviceContexts = await GetUserDeviceContexts(
             entityInfo.Id);
 
         foreach (var userDeviceContext in userDeviceContexts)
         {
             await _deviceInvalid
                 .InvalidateDeleteAsync(userDeviceContext);
+        }
+
+        var userSessionContexts = await GetUserSessionContexts(
+            entityInfo.Id);
+
+        foreach (var userSessionContext in userSessionContexts)
+        {
+            await _sessionInvalid
+                .InvalidateDeleteAsync(userSessionContext);
         }
     }
 

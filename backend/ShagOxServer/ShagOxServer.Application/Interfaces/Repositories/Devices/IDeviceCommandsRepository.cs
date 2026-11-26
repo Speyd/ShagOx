@@ -1,7 +1,7 @@
 namespace ShagOxServer.Application.Interfaces.Repositories.Devices;
 public interface IDeviceCommandsRepository
 {
-    Task<bool> BanDeviceByIpAsync(
+    Task<bool> BanDeviceByIpAddressAsync(
        string ipAddress,
        DateTime? blockedUntil,
        CancellationToken cancellationToken = default);

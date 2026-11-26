@@ -1,4 +1,5 @@
 using ShagOxServer.Application.DTOs.Base;
+using ShagOxServer.Application.DTOs.Devices.Query;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 
@@ -10,11 +11,7 @@ public sealed record UserDeviceDto
     UserDeviceStatus Status,
     long OwnerId,
 
-    long DeviceId,
-    string DeviceName,
-    string DeviceType,
-    string? OperatingSystem,
-    string DeviceIdentifier,
+    DeviceDto Device,
 
     DateTime CreatedAt,
     DateTime LastSeenAt,

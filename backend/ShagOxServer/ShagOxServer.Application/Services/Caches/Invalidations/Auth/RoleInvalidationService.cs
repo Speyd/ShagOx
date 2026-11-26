@@ -37,7 +37,7 @@ public class RoleInvalidationService
     public async Task InvalidateDeleteAsync(
         RoleCacheContext entityInfo)
     {
-        var userInfos = await GetUserInfos(
+        var userInfos = await GetUserContexts(
             entityInfo.Id);
 
         foreach (var userInfo in userInfos)
@@ -55,7 +55,7 @@ public class RoleInvalidationService
     public async Task InvalidateUpdateAsync(
         RoleCacheContext entityInfo)
     {
-        var userInfos = await GetUserInfos(
+        var userInfos = await GetUserContexts(
             entityInfo.Id);
 
         foreach (var userInfo in userInfos)
@@ -96,7 +96,7 @@ public class RoleInvalidationService
         await InvalidateUserRoleAsync(entityInfo);
     }
 
-    private async Task<List<UserCacheContext>> GetUserInfos(
+    private async Task<List<UserCacheContext>> GetUserContexts(
         long entityId)
     {
         return await _userRoleRepository

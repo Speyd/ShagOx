@@ -1,25 +1,23 @@
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Query;
+using ShagOxServer.Application.DTOs.Devices.Query;
 using ShagOxServer.Domain.Entities.Auth.Users;
 
 namespace ShagOxServer.Application.Services.Auth.Users.UserDevices.Mapping;
 public static class UserDeviceMapper
 {
     public static UserDeviceDto ToDto(
-        UserDevice device)
+        UserDevice userDevice,
+        DeviceDto deviceDto)
     {
         return new UserDeviceDto(
-            device.Id,
-            device.EntityStatus,
-            device.Status,
-            device.OwnerId,
-            device.DeviceId,
-            device.Device.DeviceName,
-            device.Device.DeviceType,
-            device.Device.OperatingSystem,
-            device.Device.DeviceIdentifier,
-            device.CreatedAt,
-            device.LastActiveAt,
-            device.IsTrusted
+            userDevice.Id,
+            userDevice.EntityStatus,
+            userDevice.Status,
+            userDevice.OwnerId,
+            deviceDto,
+            userDevice.CreatedAt,
+            userDevice.LastActiveAt,
+            userDevice.IsTrusted
         );
     }
 }

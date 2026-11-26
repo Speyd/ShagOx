@@ -30,6 +30,12 @@ public partial interface IUserSessionQueryRepository
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
+    Task<PagedResult<UserSession>> GetByIpAddressAsync(
+        string ipAddress,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<UserSession?> GetByRefreshTokenHashAsync(
         string refreshTokenHash,
         CancellationToken cancellationToken = default,

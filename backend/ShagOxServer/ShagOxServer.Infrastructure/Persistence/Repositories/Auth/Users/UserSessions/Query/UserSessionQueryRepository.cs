@@ -79,6 +79,20 @@ public partial class UserSessionQueryRepository
            .ToListAsync(cancellationToken);
     }
 
+    public async Task<PagedResult<UserSession>> GetByIpAddressAsync(
+       string ipAddress,
+       PaginationParams pagination,
+       CancellationToken cancellationToken = default,
+       EntityStatus? status = null)
+    {
+        return await _db.UserSessions
+            .WithIncludes()
+            .WithStatusFilter(status)
+            .Where(x => x.IpAddress == ipAddress)
+            .ToPagedResultAsync(pagination,
+                x => x.Id,
+                cancellationToken);
+    }
     public async Task<UserSession?> GetByRefreshTokenHashAsync(
         string refreshTokenHash,
         CancellationToken cancellationToken = default,

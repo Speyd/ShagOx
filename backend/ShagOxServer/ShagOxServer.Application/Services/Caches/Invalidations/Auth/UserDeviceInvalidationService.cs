@@ -1,3 +1,4 @@
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Services.Caches.Keys;
@@ -9,12 +10,18 @@ namespace ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 public class UserDeviceInvalidationService
     : ICacheInvalidationService<UserDevice, UserDeviceCacheContext>
 {
+    private readonly IUserSessionQueryRepository _sessionRepository;
+    private readonly UserSessionInvalidationService _sessionInvalid;
     private readonly IDataCacheService _cache;
 
 
     public UserDeviceInvalidationService(
+        IUserSessionQueryRepository sessionRepository,
+        UserSessionInvalidationService sessionInvalid,
         IDataCacheService cache)
     {
+        _sessionRepository = sessionRepository;
+        _sessionInvalid = sessionInvalid;
         _cache = cache;
     }
 
@@ -29,6 +36,15 @@ public class UserDeviceInvalidationService
         UserDeviceCacheContext entityInfo)
     {
         await InvalidateAsync(entityInfo);
+
+        var sessionContexts = await GetUserSessionContexts(
+            entityInfo.Id);
+
+        foreach (var sessionContext in sessionContexts)
+        {
+            await _sessionInvalid
+                .InvalidateDeleteAsync(sessionContext);
+        }
     }
 
     public async Task InvalidateUpdateAsync(
@@ -80,5 +96,12 @@ public class UserDeviceInvalidationService
 
         await _cache.RemoveByPatternAsync(UserDeviceCache.
              AllByDevicePattern(entityInfo.DeviceId));
+    }
+
+    private async Task<List<UserSessionCacheContext>> GetUserSessionContexts(
+       long entityId)
+    {
+        return await _sessionRepository
+            .GetCacheContextByUserDeviceAsync(entityId);
     }
 }

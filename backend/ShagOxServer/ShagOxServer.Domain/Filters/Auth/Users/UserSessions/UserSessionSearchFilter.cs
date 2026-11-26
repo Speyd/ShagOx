@@ -5,6 +5,8 @@ public sealed record UserSessionSearchFilter
 (
     long? UserId,
     long? UserDeviceId,
+    string? Browser,
+    string? BrowserVersion,
     SessionRevocationReason? RevocationReason,
     bool? IsActive
 ) : BaseFilter();

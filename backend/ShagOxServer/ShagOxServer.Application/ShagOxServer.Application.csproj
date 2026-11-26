@@ -314,7 +314,6 @@
 	  <Folder Include="Common\Settings\Systems\Middleware\" />
 	  <Folder Include="Common\Settings\Verifivations\" />
 	  <Folder Include="DependencyInjections\Advertisement\Translations\" />
-	  <Folder Include="DTOs\Auth\Users\UserSessions\Query\" />
 	  <Folder Include="Interfaces\Repositories\Admin\Dashboard\" />
 	  <Folder Include="Interfaces\Services\Admin\Dashboard\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />

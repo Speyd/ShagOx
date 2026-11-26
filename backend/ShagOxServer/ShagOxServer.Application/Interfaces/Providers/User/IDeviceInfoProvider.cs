@@ -4,7 +4,7 @@ using ShagOxServer.Application.DTOs.Devices;
 namespace ShagOxServer.Application.Interfaces.Providers.User;
 public interface IDeviceInfoProvider
 {
-    UserDeviceInfo GetDeviceUserInfo(
+    UserDeviceInfo GetUserDeviceInfo(
         string deviceIdentifier);
 
     DeviceInfo GetDeviceInfo(

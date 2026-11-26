@@ -12,4 +12,9 @@ public partial interface IUserDeviceQueryRepository
         long userId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
+
+    Task<List<UserDeviceCacheContext>> GetCacheContextByDeviceAsync(
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
 }

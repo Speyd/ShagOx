@@ -10,6 +10,12 @@ public class UserSession
 
     public string RefreshTokenHash { get; set; } = null!;
 
+
+    public string Browser { get; set; } = "";
+    public string? BrowserVersion { get; set; }
+    public string? IpAddress { get; set; }
+
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime ExpiresAt { get; set; }
@@ -21,6 +27,7 @@ public class UserSession
 
     public bool IsActive =>
         RevokedAt == null && ExpiresAt > DateTime.UtcNow;
+
 
     public override string ToString()
     {

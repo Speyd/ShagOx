@@ -9,25 +9,7 @@ public class UserDeviceConfiguration
 {
     public void Configure(
         EntityTypeBuilder<UserDevice> builder)
-    {
-        builder.Property(x => x.DeviceName)
-            .HasMaxLength(100);
-
-        builder.Property(x => x.DeviceType)
-            .HasMaxLength(50);
-
-        builder.Property(x => x.Browser)
-            .HasMaxLength(100);
-
-        builder.Property(x => x.OperatingSystem)
-            .HasMaxLength(100);
-
-        builder.Property(x => x.IpAddress)
-            .HasMaxLength(45);
-
-        builder.Property(x => x.DeviceIdentifier)
-            .HasMaxLength(45);
-
+    { 
         builder.Property(x => x.CreatedAt)
             .HasColumnType("timestamptz");
 
@@ -40,12 +22,17 @@ public class UserDeviceConfiguration
             .HasForeignKey(x => x.OwnerId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(x => x.Device)
+            .WithMany()
+            .HasForeignKey(x => x.DeviceId)
+            .OnDelete(DeleteBehavior.Cascade);
+
 
 
         builder.HasUniqueActiveIndex(x => new
         {
             x.OwnerId,
-            x.DeviceIdentifier
+            x.DeviceId
         });
     }
 }

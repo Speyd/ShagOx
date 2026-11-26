@@ -233,7 +233,7 @@
 		  <LastGenOutput>NovaPoshtaErrors.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\EntityErrors\EntityErrorResources.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
+		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>EntityErrorResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.resx">

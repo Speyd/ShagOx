@@ -15,14 +15,8 @@ public class DeviceConfiguration
         builder.Property(x => x.DeviceType)
             .HasMaxLength(50);
 
-        builder.Property(x => x.Browser)
-            .HasMaxLength(100);
-
         builder.Property(x => x.OperatingSystem)
             .HasMaxLength(100);
-
-        builder.Property(x => x.IpAddress)
-            .HasMaxLength(45);
 
         builder.Property(x => x.DeviceIdentifier)
             .HasMaxLength(45);

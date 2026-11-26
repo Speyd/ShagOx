@@ -12,8 +12,6 @@ public class Device
 
     public string DeviceType { get; set; } = null!;
 
-    public string? Browser { get; set; }
-
     public string? OperatingSystem { get; set; }
 
     public string DeviceIdentifier { get; set; } = null!;
@@ -30,7 +28,6 @@ public class Device
     {
         return new DeviceCacheContext(
             Id,
-            IpAddress,
             DeviceIdentifier,
             EntityStatus);
     }

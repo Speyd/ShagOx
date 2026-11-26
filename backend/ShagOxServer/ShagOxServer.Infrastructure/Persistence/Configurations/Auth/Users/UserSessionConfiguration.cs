@@ -13,6 +13,15 @@ public class UserSessionConfiguration
             .HasMaxLength(64)
             .IsRequired();
 
+        builder.Property(x => x.Browser)
+            .HasMaxLength(100);
+
+        builder.Property(x => x.BrowserVersion)
+           .HasMaxLength(100);
+
+        builder.Property(x => x.IpAddress)
+            .HasMaxLength(45);
+
         builder.Property(x => x.RevocationReason)
             .HasConversion<string>()
             .IsRequired(false);

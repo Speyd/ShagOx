@@ -1,24 +1,29 @@
 using Microsoft.Extensions.DependencyInjection;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Interfaces.Services.Devices.Create;
+using ShagOxServer.Application.Interfaces.Services.Devices.Query;
+using ShagOxServer.Application.Services.Caches.Invalidations.Devices;
 using ShagOxServer.Application.Services.Devices.Create;
+using ShagOxServer.Application.Services.Devices.Query;
 using ShagOxServer.Application.Services.Devices.Validator;
+using ShagOxServer.Domain.Cache.Devices;
+using ShagOxServer.Domain.Entities.Devices;
 
 namespace ShagOxServer.Application.DependencyInjections.Devices;
-
 public static class DeviceDependencyInjection
 {
     public static IServiceCollection AddDeviceApplication(
             this IServiceCollection services)
     {
-        //services.AddScoped<IUserDeviceQueryService,
-        //    UserDeviceQueryService>();
+        services.AddScoped<IDeviceQueryService,
+            DeviceQueryService>();
 
         services.AddScoped<IDeviceCreateService,
             DeviceCreateService>();
   
-        //services.AddScoped<
-        //    ICacheInvalidationService<UserDevice, UserDeviceCacheContext>,
-        //    UserDeviceInvalidationService>();
+        services.AddScoped<
+            ICacheInvalidationService<Device, DeviceCacheContext>,
+            DeviceInvalidationService>();
 
         services.AddScoped<DeviceValidator>();
 

@@ -77,10 +77,77 @@
   flex-shrink: 0;
 }
 
-.avatarWrapper {
+.avatarButton {
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.avatarButton:disabled {
+  cursor: default;
+}
+
+.avatarButton:focus-visible {
+  outline: 2px solid #0f2238;
+  outline-offset: 3px;
+}
+
+.avatarOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 50%;
+  background-color: rgba(15, 34, 56, 0.55);
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.avatarButton:not(:disabled):hover .avatarOverlay,
+.avatarButton:focus-visible .avatarOverlay {
+  opacity: 1;
+}
+
+.avatarOverlayIcon {
+  width: calc(var(--avatar-overlay-size, 180px) * 0.16);
+  height: calc(var(--avatar-overlay-size, 180px) * 0.16);
+  min-width: 20px;
+  min-height: 20px;
+}
+
+.avatarOverlayText {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.resetAvatarButton {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475467;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.resetAvatarButton:hover {
+  color: #101828;
+}
+
+.resetAvatarButton:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .avatar {
@@ -90,14 +157,6 @@
 .avatarPlaceholder {
   font-size: calc(var(--avatar-size) * 0.27) !important;
   font-weight: 700 !important;
-}
-
-.cameraButton {
-  position: absolute !important;
-  bottom: 6px !important;
-  right: 6px !important;
-  border: 1px solid #eaecf0 !important;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05) !important;
 }
 
 .avatarActions {
@@ -230,9 +289,12 @@
     --avatar-size: 104px !important;
   }
 
-  .cameraButton {
-    bottom: 0 !important;
-    right: 0 !important;
+  .avatarButton {
+    --avatar-overlay-size: 104px;
+  }
+
+  .avatarOverlayText {
+    display: none;
   }
 
   .avatarActions {
@@ -309,7 +371,12 @@
     font-size: 16px !important;
   }
 
-  .cameraButton {
-    --ai-size: 36px !important;
+  .avatarButton:not(:disabled) .avatarOverlay {
+    opacity: 1;
+    background-color: rgba(15, 34, 56, 0.3);
+  }
+
+  .avatarOverlayText {
+    display: none;
   }
 }

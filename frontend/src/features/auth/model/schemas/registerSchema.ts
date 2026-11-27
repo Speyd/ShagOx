@@ -1,8 +1,6 @@
 import { z } from "zod";
 import { passwordSchema } from "./passwordSchema";
-
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const phoneRegex = /^\+?[0-9]{10,15}$/;
+import { emailRegex, phoneRegex } from "./contactPatterns";
 
 export const registerSchema = z.object({
   userName: z

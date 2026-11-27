@@ -19,7 +19,7 @@ export default function useUpdateProfile() {
     mutationFn: async ({ id, data }: UpdateProfileRequest) => {
       await updateUser({
         firstName: data.firstName,
-        lastName: data.lastName,
+        lastName: data.lastName || undefined,
         userName: data.userName,
         bio: data.bio,
         cityId: data.cityId ?? undefined,

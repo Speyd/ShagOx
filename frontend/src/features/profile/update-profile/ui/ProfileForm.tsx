@@ -1,12 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import {
   Avatar,
   TextInput,
   Textarea,
   Text,
-  ActionIcon,
-  Autocomplete,
   Select,
   Loader,
 } from "@mantine/core";
@@ -20,12 +18,14 @@ import Button from "@/shared/ui/buttons/button";
 import { useGetCurrencies } from "@/entities/currency/model/hooks/useGetCurrencies";
 import { getCityLabel } from "@/entities/city/lib/getCityLabel";
 import { useSearchCities } from "@/entities/city/model/hooks/useSearchCities";
+import type { City } from "@/shared/lib/types/city";
 
 type ProfileFormProps = {
   close: () => void;
 };
 
 const BIO_MAX_LENGTH = 160;
+const CITY_SEARCH_MIN_LENGTH = 2;
 
 export default function ProfileForm({ close }: ProfileFormProps) {
   const user = useAuthStore((state) => state.user);
@@ -38,12 +38,42 @@ export default function ProfileForm({ close }: ProfileFormProps) {
     label: `${c.symbol} ${c.code} — ${c.name}`,
   }));
 
-  const [cityQuery, setCityQuery] = useState(() =>
+  const [selectedCity, setSelectedCity] = useState<City | null>(
+    user?.city ?? null,
+  );
+  const [citySearch, setCitySearch] = useState(() =>
     user?.city ? getCityLabel(user.city) : "",
   );
-  const { data: cityOptions = [], isFetching: cityLoading } =
-    useSearchCities(cityQuery);
-  const cityAutocompleteData = cityOptions.map(getCityLabel);
+  
+  const isShowingSelected =
+    selectedCity != null && citySearch === getCityLabel(selectedCity);
+  const citySearchTerm = isShowingSelected ? "" : citySearch;
+
+  const { data: cityResults = [], isFetching: cityLoading } =
+    useSearchCities(citySearchTerm);
+
+  const cityById = useMemo(() => {
+    const map = new Map<string, City>();
+    if (selectedCity) map.set(String(selectedCity.id), selectedCity);
+    for (const city of cityResults) map.set(String(city.id), city);
+    return map;
+  }, [selectedCity, cityResults]);
+
+  const cityOptions = useMemo(
+    () =>
+      Array.from(cityById.values()).map((city) => ({
+        value: String(city.id),
+        label: getCityLabel(city),
+      })),
+    [cityById],
+  );
+
+  const cityNothingFound =
+    citySearchTerm.trim().length < CITY_SEARCH_MIN_LENGTH
+      ? `Введіть щонайменше ${CITY_SEARCH_MIN_LENGTH} символи`
+      : cityLoading
+        ? "Пошук…"
+        : "Місто не знайдено";
 
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -53,6 +83,7 @@ export default function ProfileForm({ close }: ProfileFormProps) {
     handleSubmit,
     control,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useUpdateProfileForm(user);
 
@@ -69,6 +100,11 @@ export default function ProfileForm({ close }: ProfileFormProps) {
   };
 
   const openFilePicker = () => fileInputRef.current?.click();
+
+  const resetAvatar = () => {
+    setValue("avatar", null);
+    setAvatarPreview(null);
+  };
 
   const isBusy = isSubmitting || mutation.isPending;
   const watchedBio = watch("bio") ?? "";
@@ -100,7 +136,14 @@ export default function ProfileForm({ close }: ProfileFormProps) {
             control={control}
             render={({ field }) => (
               <>
-                <div className={styles.avatarWrapper}>
+                <button
+                  type="button"
+                  className={styles.avatarButton}
+                  onClick={openFilePicker}
+                  disabled={isBusy}
+                  aria-label="Змінити фото профілю"
+                  title="Змінити фото"
+                >
                   <Avatar
                     src={avatarPreview ?? user?.avatar?.url ?? null}
                     name={displayName}
@@ -112,17 +155,13 @@ export default function ProfileForm({ close }: ProfileFormProps) {
                       placeholder: styles.avatarPlaceholder,
                     }}
                   />
-                  <ActionIcon
-                    className={styles.cameraButton}
-                    radius="xl"
-                    variant="default"
-                    type="button"
-                    aria-label="Змінити фото"
-                    onClick={openFilePicker}
-                  >
-                    <Camera size={16} />
-                  </ActionIcon>
-                </div>
+                  <span className={styles.avatarOverlay} aria-hidden="true">
+                    <Camera className={styles.avatarOverlayIcon} />
+                    <span className={styles.avatarOverlayText}>
+                      Змінити фото
+                    </span>
+                  </span>
+                </button>
 
                 <input
                   ref={fileInputRef}
@@ -142,12 +181,21 @@ export default function ProfileForm({ close }: ProfileFormProps) {
           />
 
           <div className={styles.avatarActions}>
-            <Button variant="outline" type="button" onClick={openFilePicker}>
-              Змінити фото
-            </Button>
             <Text className={styles.fileHint}>
+              Натисніть на фото, щоб змінити.
+              <br />
               JPG, PNG або WEBP. Макс. 5 МБ
             </Text>
+            {avatarPreview && (
+              <button
+                type="button"
+                className={styles.resetAvatarButton}
+                onClick={resetAvatar}
+                disabled={isBusy}
+              >
+                Скасувати вибір
+              </button>
+            )}
             {errors.avatar?.message && (
               <Text className={styles.fileError}>
                 {String(errors.avatar.message)}
@@ -169,7 +217,7 @@ export default function ProfileForm({ close }: ProfileFormProps) {
             />
             <TextInput
               label="Прізвище"
-              placeholder="Введіть прізвище"
+              placeholder="Необов'язково"
               radius="md"
               autoComplete="family-name"
               classNames={{ label: styles.label, input: styles.input }}
@@ -245,26 +293,41 @@ export default function ProfileForm({ close }: ProfileFormProps) {
             name="cityId"
             control={control}
             render={({ field, fieldState }) => (
-              <Autocomplete
+              <Select
                 label="Місто"
-                value={cityQuery}
+                placeholder="Почніть вводити назву міста"
+                searchable
+                searchValue={citySearch}
+                onSearchChange={setCitySearch}
+                filter={({ options }) => options}
+                data={cityOptions}
+                value={field.value != null ? String(field.value) : null}
                 onChange={(val) => {
-                  setCityQuery(val);
-                  if (!val) field.onChange(null);
+                  const city = val ? cityById.get(val) : undefined;
+                  if (!city) return;
+                  setSelectedCity(city);
+                  setCitySearch(getCityLabel(city));
+                  field.onChange(city.id);
                 }}
-                onOptionSubmit={(val) => {
-                  const found = cityOptions.find(
-                    (c) => getCityLabel(c) === val,
+                onBlur={field.onBlur}
+                renderOption={({ option }) => {
+                  const region = cityById.get(option.value)?.region;
+                  const regionLabel = region?.label ?? region?.name;
+                  return (
+                    <div>
+                      <Text size="sm">{option.label}</Text>
+                      {regionLabel && (
+                        <Text size="xs" c="dimmed">
+                          {regionLabel}
+                        </Text>
+                      )}
+                    </div>
                   );
-                  if (found) {
-                    field.onChange(found.id);
-                    setCityQuery(getCityLabel(found));
-                  }
                 }}
-                data={cityAutocompleteData}
+                nothingFoundMessage={cityNothingFound}
+                allowDeselect={false}
+                rightSection={cityLoading ? <Loader size={14} /> : undefined}
                 radius="md"
-                placeholder="Введіть код міста…"
-                rightSection={cityLoading ? <Loader size={14} /> : null}
                 comboboxProps={{ zIndex: 1002 }}
                 classNames={{ label: styles.label, input: styles.input }}
                 error={fieldState.error?.message}

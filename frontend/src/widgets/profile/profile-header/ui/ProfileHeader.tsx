@@ -3,8 +3,9 @@ import { Avatar, Button, Text } from "@mantine/core";
 import { Link, Mail, MapPin } from "lucide-react";
 import { useDisclosure } from "@mantine/hooks";
 import ProfileDrawer from "../../../../features/profile/update-profile/ui/ProfileDrawer";
-import { ChangePasswordModal, useAuthStore } from "@/features/auth";
+import { useAuthStore } from "@/features/auth";
 import OwnButton from "@/shared/ui/buttons/button";
+import { useNavigate } from "react-router-dom";
 
 type ProfileHeaderProps = {
   orientation?: "horizontal" | "vertical";
@@ -14,15 +15,11 @@ export default function ProfileHeader({
   orientation = "horizontal",
 }: ProfileHeaderProps) {
   const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
 
   const [
     userProfileOpened,
     { open: openUserProfile, close: closeUserProfile },
-  ] = useDisclosure(false);
-
-  const [
-    changePasswordOpened,
-    { open: openChangePassword, close: closeChangePassword },
   ] = useDisclosure(false);
 
   const displayName =
@@ -65,7 +62,7 @@ export default function ProfileHeader({
             </Text>
           )}
 
-          <div
+          {/* <div
             className={
               orientation === "horizontal"
                 ? styles.statsBlockHorizontal
@@ -106,7 +103,7 @@ export default function ProfileHeader({
                 </Text>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
 
         <div className={styles.rightBlock}>
@@ -148,7 +145,7 @@ export default function ProfileHeader({
             <OwnButton
               variant="outline"
               className={styles.editButton}
-              onClick={openChangePassword}
+              onClick={() => navigate("/settings")}
             >
               Змінити пароль
             </OwnButton>
@@ -157,10 +154,6 @@ export default function ProfileHeader({
       </div>
 
       <ProfileDrawer opened={userProfileOpened} close={closeUserProfile} />
-      <ChangePasswordModal
-        opened={changePasswordOpened}
-        onClose={closeChangePassword}
-      />
     </section>
   );
 }

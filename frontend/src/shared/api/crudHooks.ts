@@ -5,14 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
-import {
-  changeEntityStatus,
-  deleteEntity,
-  fetchAll,
-  fetchPage,
-  type EntityStatus,
-  type ListParams,
-} from "./crud";
+import { deleteEntity, fetchAll, fetchPage, type ListParams } from "./crud";
 import { getErrorMessage } from "./getErrorMessage";
 
 export const ADMIN_KEY = "admin";
@@ -64,12 +57,4 @@ export function useAdminDelete(path: string, entityName = "запис") {
     success: `Видалено ${entityName}`,
     error: `Не вдалося видалити ${entityName}`,
   });
-}
-
-export function useAdminVisibility(path: string) {
-  return useAdminAction(
-    ({ id, hidden }: { id: number; hidden: boolean }) =>
-      changeEntityStatus(path, id, (hidden ? "Active" : "Hidden") as EntityStatus),
-    { success: "Видимість змінено", error: "Не вдалося змінити видимість" },
-  );
 }

@@ -4,21 +4,43 @@ import { Navigate, Routes, Route } from "react-router-dom";
 import NotFoundPage from "@/pages/not-found";
 import UserUpdateAdvertisementPage from "@/pages/advertisement/update-advertisement-page";
 import { AdminLayout, MainLayout } from "../layouts";
-const DashboardPage = lazy(() => import("@/pages/admin/dashboard/DashboardPage"));
-const AdvertisementsPage = lazy(() => import("@/pages/admin/advertisements/AdvertisementsPage"));
-const AdvertisementCreatePage = lazy(() => import("@/pages/admin/advertisements/AdvertisementCreatePage"));
-const AdvertisementEditPage = lazy(() => import("@/pages/admin/advertisements/AdvertisementEditPage"));
+const DashboardPage = lazy(
+  () => import("@/pages/admin/dashboard/DashboardPage"),
+);
+const AdvertisementsPage = lazy(
+  () => import("@/pages/admin/advertisements/AdvertisementsPage"),
+);
+const AdvertisementCreatePage = lazy(
+  () => import("@/pages/admin/advertisements/AdvertisementCreatePage"),
+);
+const AdvertisementEditPage = lazy(
+  () => import("@/pages/admin/advertisements/AdvertisementEditPage"),
+);
 const UsersPage = lazy(() => import("@/pages/admin/users/UsersPage"));
 const UserEditPage = lazy(() => import("@/pages/admin/users/UserEditPage"));
 const ReviewsPage = lazy(() => import("@/pages/admin/reviews/ReviewsPage"));
-const ProductTypesPage = lazy(() => import("@/pages/admin/product-types/ProductTypesPage"));
-const CategoriesPage = lazy(() => import("@/pages/admin/categories/CategoriesPage"));
-const CategoryDetailsPage = lazy(() => import("@/pages/admin/categories/CategoryDetailsPage"));
-const DictionariesPage = lazy(() => import("@/pages/admin/dictionaries/DictionariesPage"));
-const DictionaryDetailsPage = lazy(() => import("@/pages/admin/dictionaries/DictionaryDetailsPage"));
-const ConditionsPage = lazy(() => import("@/pages/admin/conditions/ConditionsPage"));
+const ProductTypesPage = lazy(
+  () => import("@/pages/admin/product-types/ProductTypesPage"),
+);
+const CategoriesPage = lazy(
+  () => import("@/pages/admin/categories/CategoriesPage"),
+);
+const CategoryDetailsPage = lazy(
+  () => import("@/pages/admin/categories/CategoryDetailsPage"),
+);
+const DictionariesPage = lazy(
+  () => import("@/pages/admin/dictionaries/DictionariesPage"),
+);
+const DictionaryDetailsPage = lazy(
+  () => import("@/pages/admin/dictionaries/DictionaryDetailsPage"),
+);
+const ConditionsPage = lazy(
+  () => import("@/pages/admin/conditions/ConditionsPage"),
+);
 const StatusesPage = lazy(() => import("@/pages/admin/statuses/StatusesPage"));
-const CurrenciesPage = lazy(() => import("@/pages/admin/currencies/CurrenciesPage"));
+const CurrenciesPage = lazy(
+  () => import("@/pages/admin/currencies/CurrenciesPage"),
+);
 const RegionsPage = lazy(() => import("@/pages/admin/regions/RegionsPage"));
 const CitiesPage = lazy(() => import("@/pages/admin/cities/CitiesPage"));
 const RolesPage = lazy(() => import("@/pages/admin/roles/RolesPage"));
@@ -56,11 +78,13 @@ import { CategoryAdvertisementsPage } from "@/pages/catalog/advertisements-page"
 import CreateAdvertisementPage from "@/pages/advertisement/create-advertisement-page";
 import ComparisonPage from "@/pages/compare";
 import AboutPage from "@/pages/info/about";
+import ContactsPage from "@/pages/info/contacts";
 import WarrantyPage from "@/pages/info/warranty/WarrantyPage";
 import PrivacyPolicyPage from "@/pages/info/privacy-policy/PrivacyPolicyPage";
 import { AdvertisementPage } from "@/pages/advertisement/advertisement-page";
 import { AdminRoute, ProtectedRoute, PublicRoute } from "./routes";
 import { HomePage } from "@/pages/home";
+import { Settings } from "@/pages/settings";
 
 export default function Router() {
   return (
@@ -75,8 +99,14 @@ export default function Router() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="advertisements" element={<AdvertisementsPage />} />
-          <Route path="advertisements/new" element={<AdvertisementCreatePage />} />
-          <Route path="advertisements/:id" element={<AdvertisementEditPage />} />
+          <Route
+            path="advertisements/new"
+            element={<AdvertisementCreatePage />}
+          />
+          <Route
+            path="advertisements/:id"
+            element={<AdvertisementEditPage />}
+          />
           <Route path="users" element={<UsersPage />} />
           <Route path="users/:id" element={<UserEditPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
@@ -132,6 +162,7 @@ export default function Router() {
             path="/notifications/settings"
             element={<NotificationSettingsPage />}
           />
+          <Route path="/settings" element={<Settings />} />
         </Route>
 
         <Route path="/catalog" element={<CatalogLayout />}>
@@ -148,6 +179,7 @@ export default function Router() {
 
         <Route path="/support" element={<SupportPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/contacts" element={<ContactsPage />} />
         <Route path="/warranty" element={<WarrantyPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/delivery-terms" element={<DeliveryTermsPage />} />

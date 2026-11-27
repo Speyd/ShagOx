@@ -58,3 +58,11 @@ export type ChangePasswordRequest = {
   oldPassword: string;
   newPassword: string;
 };
+
+export type ChangeEmailRequest = {
+  email: string;
+};
+
+export type ChangePhoneRequest = {
+  phone: string;
+};

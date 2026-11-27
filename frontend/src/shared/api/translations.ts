@@ -42,7 +42,7 @@ async function findTranslations(
         Language: language,
         page: 1,
         pageSize: 5,
-        status: "ActiveAndHidden",
+        status: "Active",
       },
     },
   );

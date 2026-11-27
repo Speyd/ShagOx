@@ -16,13 +16,13 @@ import SearchInput from "@/shared/ui/data-display/inputs/search-input/SearchInpu
 import { useDisclosure, useElementSize } from "@mantine/hooks";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import NavigationDrawer from "./NavigationDrawer";
-import CartDrawer from "./BasketDrawer";
 import Button from "@/shared/ui/buttons/button";
 import { CitySelector } from "@/entities/city";
 import { useAuthStore } from "@/features/auth";
 import { hasRole } from "@/shared/lib/auth";
 import { useBasketItemsCount } from "@/features/basket/model/hooks/useBasketItemsCount";
+import NavigationDrawer from "./NavigationDrawer";
+import BasketDrawer from "./BasketDrawer";
 
 interface ActionItem {
   id: string;
@@ -176,7 +176,7 @@ export default function Header() {
               </span>
             </button>
 
-            <CartDrawer opened={cartOpened} onClose={closeCart} />
+            <BasketDrawer opened={cartOpened} onClose={closeCart} />
           </div>
         </Container>
       </div>

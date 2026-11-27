@@ -30,7 +30,7 @@ function cleanFilters(filters: ListParams["filters"] = {}) {
 
 export async function fetchPage<T>(
   path: string,
-  { page = 1, pageSize = 20, status = "ActiveAndHidden", filters }: ListParams = {},
+  { page = 1, pageSize = 20, status = "Active", filters }: ListParams = {},
 ): Promise<PaginatedResponse<T>> {
   const activeFilters = cleanFilters(filters);
   const hasFilters = Object.keys(activeFilters).length > 0;
@@ -53,8 +53,10 @@ export async function fetchAll<T>(
 }
 
 export async function fetchById<T>(path: string, id: number) {
+  // Бекенд інвалідує кеш саме для статусу Active, тож читаємо з ним,
+  // щоб після редагування отримувати свіжі дані.
   const { data } = await api.get<T>(`${path}/${id}`, {
-    params: { status: "All" },
+    params: { status: "Active" },
   });
   return data;
 }
@@ -71,17 +73,15 @@ export async function updateEntity<TBody>(path: string, id: number, body: TBody)
   return data;
 }
 
+/**
+ * М'яке видалення (EntityStatus = Deleted): запис зникає з адмінки та сайту,
+ * але не ламає пов'язані дані (замовлення, оголошення), які посилаються на нього
+ * через зовнішні ключі з Restrict. Унікальні індекси в БД враховують лише активні
+ * записи, тож код/назву можна використати повторно.
+ */
 export async function deleteEntity(path: string, id: number) {
-  await api.delete(`${path}/${id}`);
-}
-
-export async function changeEntityStatus(
-  path: string,
-  id: number,
-  status: EntityStatus,
-) {
   await api.patch(`${path}/${id}/status`, {
-    changeStatus: status,
-    findStatus: "All",
+    changeStatus: "Deleted" satisfies EntityStatus,
+    findStatus: "Active" satisfies EntityStatus,
   });
 }

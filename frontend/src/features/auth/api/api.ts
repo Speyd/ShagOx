@@ -7,6 +7,8 @@ import type {
   RegisterResponse,
   ResetPasswordRequest,
   ChangePasswordRequest,
+  ChangeEmailRequest,
+  ChangePhoneRequest,
   VerifyRequest,
 } from "../model/types";
 import type { User } from "@/shared/lib/types/user";
@@ -48,5 +50,15 @@ export async function resetPassword(data: ResetPasswordRequest) {
 
 export async function changePassword(data: ChangePasswordRequest) {
   const response = await api.put("/users/password", data);
+  return response.data;
+}
+
+export async function changeEmail(data: ChangeEmailRequest) {
+  const response = await api.put("/users/email", data);
+  return response.data;
+}
+
+export async function changePhone(data: ChangePhoneRequest) {
+  const response = await api.put("/users/phone", data);
   return response.data;
 }

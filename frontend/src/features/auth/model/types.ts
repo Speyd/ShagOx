@@ -7,6 +7,10 @@ export type LoginRequest = {
   password: string;
 };
 
+export type LoginResponse = {
+  accessToken: string | null;
+};
+
 export type GoogleLoginRequest = {
   code: string;
 };

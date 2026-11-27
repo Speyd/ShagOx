@@ -11,4 +11,13 @@ export { default as ChangePasswordModal } from "./ui/change-password/ChangePassw
 export { default as ChangePasswordForm } from "./ui/change-password/ChangePasswordForm";
 export { default as ChangeContactForm } from "./ui/change-contact/ChangeContactForm";
 export { useLogout } from "./model/hooks/useLogout";
+export {
+  useRequestTwoFactorChange,
+  type TwoFactorAction,
+} from "./model/hooks/useTwoFactor";
+export {
+  useTwoFactorStore,
+  useTwoFactorStatus,
+} from "./model/store/useTwoFactorStore";
+export { default as CodeConfirmation } from "./ui/code-input/CodeConfirmation";
 export type { ContactKind } from "./model/schemas/changeContactSchema";

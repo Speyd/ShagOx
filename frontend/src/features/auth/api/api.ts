@@ -1,6 +1,7 @@
 import { api } from "@/shared/api/api";
 import type {
   LoginRequest,
+  LoginResponse,
   GoogleLoginRequest,
   LogoutResponse,
   RegisterRequest,
@@ -13,8 +14,21 @@ import type {
 } from "../model/types";
 import type { User } from "@/shared/lib/types/user";
 
-export async function login(data: LoginRequest) {
-  await api.post("/auth/login", data);
+export async function login(data: LoginRequest): Promise<LoginResponse> {
+  const response = await api.post<LoginResponse | null>("/auth/login", data);
+  return { accessToken: response.data?.accessToken ?? null };
+}
+
+export function isTwoFactorRequired(response: LoginResponse) {
+  return !response.accessToken;
+}
+
+export async function enableTwoFactor() {
+  await api.post("/auth/two-factor/enable");
+}
+
+export async function disableTwoFactor() {
+  await api.post("/auth/two-factor/disable");
 }
 
 export async function googleLogin(data: GoogleLoginRequest) {

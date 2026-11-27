@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Bell, Check, ShieldAlert, ShieldCheck, X } from "lucide-react";
 import clsx from "clsx";
-import { useAuthStore } from "@/features/auth";
+import { useAuthStore, useTwoFactorStatus } from "@/features/auth";
 import { SETTINGS_NAV, type SettingsSectionId } from "../model/sections";
 import { useActiveSection } from "../lib/useActiveSection";
 import styles from "./Settings.module.css";
@@ -10,13 +10,14 @@ const SECTION_IDS = SETTINGS_NAV.map((item) => item.id);
 
 export default function SettingsSidebar() {
   const user = useAuthStore((state) => state.user);
+  const twoFactorEnabled = useTwoFactorStatus(user?.id);
   const [active, setActive] = useActiveSection(SECTION_IDS);
 
   const checks = [
     { label: "Пароль встановлено", done: true },
     { label: "Пошту підтверджено", done: Boolean(user?.email) },
     { label: "Телефон додано", done: Boolean(user?.phone) },
-    { label: "Увімкнено 2FA", done: false },
+    { label: "Увімкнено 2FA", done: twoFactorEnabled === true },
   ];
   const score = checks.filter((check) => check.done).length;
   const percent = Math.round((score / checks.length) * 100);

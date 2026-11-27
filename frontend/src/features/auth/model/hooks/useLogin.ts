@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { login, me } from "../../api/api";
+import { isTwoFactorRequired, login, me } from "../../api/api";
 import { useAuthStore } from "../store/useAuthStore";
 
 export function useLogin() {
@@ -10,7 +10,9 @@ export function useLogin() {
   return useMutation({
     mutationFn: login,
 
-    onSuccess: async () => {
+    onSuccess: async (response) => {
+      if (isTwoFactorRequired(response)) return;
+
       const user = await queryClient.fetchQuery({
         queryKey: ["me"],
         queryFn: me,

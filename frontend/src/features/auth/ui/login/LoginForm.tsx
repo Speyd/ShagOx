@@ -16,14 +16,25 @@ import AuthTextField from "../fields/AuthTextField";
 import AuthPasswordField from "../fields/AuthPasswordField";
 import ServerError from "../fields/ServerError";
 import { useLogin } from "../../model/hooks/useLogin";
-import { register as registerUser } from "../../api/api";
+import { useTwoFactorStore } from "../../model/store/useTwoFactorStore";
+import type { LoginRequest } from "../../model/types";
+import { isTwoFactorRequired, register as registerUser } from "../../api/api";
+import TwoFactorLoginStep from "../two-factor/TwoFactorLoginStep";
 import { getByContanct } from "@/entities/user/api/api";
 import axios from "axios";
 import { toast } from "sonner";
 
+type TwoFactorChallenge = {
+  userId: number;
+  contact: string | null;
+  credentials: LoginRequest;
+};
+
 export default function LoginForm() {
   const [serverError, setServerError] = useState("");
+  const [twoFactor, setTwoFactor] = useState<TwoFactorChallenge | null>(null);
   const loginMutation = useLogin();
+  const setTwoFactorStatus = useTwoFactorStore((state) => state.setStatus);
 
   const navigate = useNavigate();
 
@@ -59,11 +70,28 @@ export default function LoginForm() {
     });
   };
 
+  const startTwoFactor = async (data: LoginFormData) => {
+    const user = await getByContanct(data.emailOrPhoneOrUserName);
+
+    setTwoFactorStatus(user.id, true);
+    setTwoFactor({
+      userId: user.id,
+      contact: user.email ?? user.phone,
+      credentials: data,
+    });
+  };
+
   const onSubmit = async (data: LoginFormData) => {
     setServerError("");
 
     try {
-      await loginMutation.mutateAsync(data);
+      const response = await loginMutation.mutateAsync(data);
+
+      if (isTwoFactorRequired(response)) {
+        await startTwoFactor(data);
+        return;
+      }
+
       navigate("/");
     } catch (error) {
       const isNotVerified =
@@ -81,6 +109,17 @@ export default function LoginForm() {
       }
     }
   };
+
+  if (twoFactor) {
+    return (
+      <TwoFactorLoginStep
+        userId={twoFactor.userId}
+        contact={twoFactor.contact}
+        credentials={twoFactor.credentials}
+        onBack={() => setTwoFactor(null)}
+      />
+    );
+  }
 
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>

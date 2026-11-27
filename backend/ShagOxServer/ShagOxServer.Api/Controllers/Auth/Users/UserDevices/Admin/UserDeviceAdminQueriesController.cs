@@ -13,9 +13,9 @@ namespace ShagOxServer.Api.Controllers.Auth.Users.UserDevices.Admin;
 
 [ApiController]
 [Route("api/admin/user-devices")]
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class UserDeviceAdminQueriesController
-    : BaseQueryController<UserDeviceDto,
+    : BaseAdminQueryController<UserDeviceDto,
         UserDeviceSearchFilter>
 {
     private readonly IUserDeviceQueryService _deviceQueryService;

@@ -65,7 +65,6 @@ export type CrudPageProps<T extends BaseEntity> = {
   canCreate?: boolean;
   canEdit?: boolean;
   canDelete?: boolean;
-  canHide?: boolean;
   pageSize?: number;
   minWidth?: number;
   modalSize?: string;

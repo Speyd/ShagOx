@@ -1,14 +1,12 @@
 import type { ReactNode } from "react";
 import { ActionIcon, Tooltip } from "@mantine/core";
-import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { confirmAction } from "../lib/confirmAction";
 import styles from "./RowActions.module.css";
 
 type RowActionsProps = {
   onEdit?: () => void;
   onDelete?: () => void;
-  onToggleVisibility?: () => void;
-  hidden?: boolean;
   deleteTitle?: string;
   deleteMessage?: string;
   children?: ReactNode;
@@ -17,8 +15,6 @@ type RowActionsProps = {
 export default function RowActions({
   onEdit,
   onDelete,
-  onToggleVisibility,
-  hidden,
   deleteTitle = "Видалити запис",
   deleteMessage = "Ви впевнені? Цю дію неможливо скасувати.",
   children,
@@ -36,20 +32,6 @@ export default function RowActions({
             aria-label="Редагувати"
           >
             <Pencil size={16} />
-          </ActionIcon>
-        </Tooltip>
-      )}
-      {onToggleVisibility && (
-        <Tooltip label={hidden ? "Показати" : "Приховати"}>
-          <ActionIcon
-            variant="light"
-            color={hidden ? "teal" : "gray"}
-            radius="md"
-            size="lg"
-            onClick={onToggleVisibility}
-            aria-label={hidden ? "Показати" : "Приховати"}
-          >
-            {hidden ? <Eye size={16} /> : <EyeOff size={16} />}
           </ActionIcon>
         </Tooltip>
       )}

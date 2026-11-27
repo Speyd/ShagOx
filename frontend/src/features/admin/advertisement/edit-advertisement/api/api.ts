@@ -9,7 +9,7 @@ import type {
 
 export async function getAdminAdvertisement(id: number) {
   const { data } = await api.get<AdminAdvertisement>(`/admin/advertisements/${id}`, {
-    params: { status: "All" },
+    params: { status: "Active" },
   });
   return data;
 }
@@ -90,6 +90,13 @@ export async function saveAdvertisement(
     buildUpdateForm(ad, values, changes, definitions),
   );
 
+  // Спершу видаляємо: якщо варіант прибрали й додали заново з тими самими
+  // опціями, бекенд інакше відхилить створення як дублікат. Створення йде після
+  // PUT, бо при зміні категорії атрибути варіантів перевіряються вже за новою.
+  for (const id of changes.deletedVariantIds) {
+    await api.delete(`/admin/advertisement-variants/${id}`);
+  }
+
   const newVariants = values.variants.filter((variant) => !variant.id);
 
   for (const variant of newVariants) {
@@ -100,9 +107,5 @@ export async function saveAdvertisement(
       stock: Number(variant.stock),
       attributes: toVariantAttributes(variant.options, definitions),
     });
-  }
-
-  for (const id of changes.deletedVariantIds) {
-    await api.delete(`/admin/advertisement-variants/${id}`);
   }
 }

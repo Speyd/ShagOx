@@ -3,19 +3,14 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { Text } from "@mantine/core";
 import { Plus } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
-import type { BaseEntity, EntityStatus } from "@/shared/api/crud";
-import {
-  useAdminDelete,
-  useAdminList,
-  useAdminVisibility,
-} from "@/shared/api/crudHooks";
+import type { BaseEntity } from "@/shared/api/crud";
+import { useAdminDelete, useAdminList } from "@/shared/api/crudHooks";
 import Button from "@/shared/ui/buttons/button";
 import DataTable from "@/shared/ui/data-display/data-table";
 import AppPagination from "@/shared/ui/navigation/pagination";
 import { AdminPageHeader } from "@/widgets/admin/page-header";
 import { ListToolbar } from "@/widgets/admin/list-toolbar";
 import { RowActions } from "@/widgets/admin/row-actions";
-import { StatusBadge } from "@/widgets/admin/status-badge";
 import type { CrudPageProps } from "../model/types";
 import EntityFormModal from "./EntityFormModal";
 import styles from "./CrudPage.module.css";
@@ -41,7 +36,6 @@ export default function CrudPage<T extends BaseEntity>(props: CrudPageProps<T>) 
     canCreate = true,
     canEdit = true,
     canDelete = true,
-    canHide = true,
     pageSize = 15,
     minWidth,
     embedded = false,
@@ -50,14 +44,12 @@ export default function CrudPage<T extends BaseEntity>(props: CrudPageProps<T>) 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebouncedValue(search.trim(), 350);
-  const [status, setStatus] = useState<EntityStatus>("ActiveAndHidden");
   const [editing, setEditing] = useState<T | undefined>();
   const [modalOpened, setModalOpened] = useState(false);
 
   const { data, isLoading, isFetching } = useAdminList<T>(endpoint, {
     page,
     pageSize,
-    status,
     filters: {
       ...filters,
       ...(searchParam && { [searchParam]: debouncedSearch }),
@@ -65,7 +57,6 @@ export default function CrudPage<T extends BaseEntity>(props: CrudPageProps<T>) 
   });
 
   const deleteMutation = useAdminDelete(commandEndpoint, entityName);
-  const visibilityMutation = useAdminVisibility(commandEndpoint);
 
   const openCreate = () => {
     if (onCreate) return onCreate();
@@ -82,29 +73,17 @@ export default function CrudPage<T extends BaseEntity>(props: CrudPageProps<T>) 
   const tableColumns: ColumnDef<T>[] = [
       ...columns,
       {
-        id: "entityStatus",
-        header: "Видимість",
-        size: 120,
-        cell: ({ row }) => <StatusBadge status={row.original.entityStatus} />,
-      },
-      {
         id: "actions",
         header: "",
         size: 160,
         cell: ({ row }) => {
           const item = row.original;
-          const hidden = item.entityStatus === "Hidden";
           return (
             <RowActions
               onEdit={canEdit ? () => openEdit(item) : undefined}
-              onToggleVisibility={
-                canHide
-                  ? () => visibilityMutation.mutate({ id: item.id, hidden })
-                  : undefined
-              }
               onDelete={canDelete ? () => deleteMutation.mutate(item.id) : undefined}
               deleteTitle={`Видалити ${entityName}`}
-              deleteMessage={`Запис #${item.id} буде видалено назавжди. Пов'язані дані можуть стати недоступними.`}
+              deleteMessage={`Запис #${item.id} буде видалено з адмін-панелі та сайту.`}
             >
               {rowExtra?.(item)}
             </RowActions>
@@ -166,11 +145,6 @@ export default function CrudPage<T extends BaseEntity>(props: CrudPageProps<T>) 
             : undefined
         }
         searchPlaceholder={searchPlaceholder}
-        status={status}
-        onStatusChange={(value) => {
-          setStatus(value);
-          setPage(1);
-        }}
       >
         {toolbarExtra}
       </ListToolbar>
@@ -180,9 +154,6 @@ export default function CrudPage<T extends BaseEntity>(props: CrudPageProps<T>) 
         columns={tableColumns}
         loading={isLoading || isFetching}
         minWidth={minWidth}
-        rowClassName={(item) =>
-          item.entityStatus === "Hidden" ? styles.hiddenRow : undefined
-        }
       />
 
       <div className={styles.footerRow}>

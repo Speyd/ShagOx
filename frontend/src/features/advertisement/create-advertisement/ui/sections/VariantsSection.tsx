@@ -20,12 +20,6 @@ type VariantsSectionProps = {
   currencySymbols: Record<string, string>;
 };
 
-/**
- * Ціна та наявність.
- * Без варіантних атрибутів: один набір полів (ціна, стара ціна, кількість).
- * З варіантними атрибутами: користувач обирає значення, а таблиця варіантів
- * будується з усіх їхніх комбінацій.
- */
 export default function VariantsSection({
   variantAttributes,
   optionsByKey,
@@ -130,7 +124,7 @@ export default function VariantsSection({
               index={0}
               name="previousPrice"
               label="Стара ціна"
-              description="Для показу знижки"
+           
               placeholder="—"
               rightSection={currencySymbol}
             />

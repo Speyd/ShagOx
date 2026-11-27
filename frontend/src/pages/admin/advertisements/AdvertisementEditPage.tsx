@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, Badge, Loader, Text } from "@mantine/core";
 import { ExternalLink } from "lucide-react";
-import { useAdminDelete, useAdminList, useAdminVisibility } from "@/shared/api/crudHooks";
+import { useAdminDelete, useAdminList } from "@/shared/api/crudHooks";
 import { formatDate } from "@/shared/lib/formatDate";
 import Button from "@/shared/ui/buttons/button";
 import {
@@ -26,12 +26,10 @@ export default function AdvertisementEditPage() {
 
   const { data: reviews } = useAdminList("/admin/review-comment", {
     pageSize: 1,
-    status: "All",
     filters: { CommentableEntityId: id },
   });
 
   const deleteAd = useAdminDelete("/admin/advertisements", "оголошення");
-  const visibility = useAdminVisibility("/admin/advertisements");
 
   if (isLoading) return <Loader mx="auto" display="block" mt="xl" />;
 
@@ -43,7 +41,6 @@ export default function AdvertisementEditPage() {
     );
   }
 
-  const hidden = ad.entityStatus === "Hidden";
   const stock = ad.variants.reduce((sum, variant) => sum + variant.stock, 0);
 
   return (
@@ -108,12 +105,6 @@ export default function AdvertisementEditPage() {
                   {ad.status?.label || ad.status?.code}
                 </Badge>
               </dd>
-              <dt>Видимість</dt>
-              <dd>
-                <Badge variant="light" color={hidden ? "gray" : "teal"} radius="sm">
-                  {hidden ? "Приховане" : "Активне"}
-                </Badge>
-              </dd>
               <dt>Варіантів</dt>
               <dd>{ad.variants.length}</dd>
               <dt>На складі</dt>
@@ -141,20 +132,13 @@ export default function AdvertisementEditPage() {
 
           <section className={`${styles.card} ${localStyles.danger}`}>
             <Text fw={700} c="red.8">
-              Модерація
+              Небезпечна зона
             </Text>
             <Text size="sm" c="dimmed">
-              Приховане оголошення не показується в каталозі. Видалення незворотне.
+              Видалене оголошення зникне з каталогу та адмін-панелі. Історія
+              замовлень за ним збережеться.
             </Text>
             <div className={localStyles.dangerActions}>
-              <Button
-                size="sm"
-                variant="outline"
-                loading={visibility.isPending}
-                onClick={() => visibility.mutate({ id: ad.id, hidden })}
-              >
-                {hidden ? "Показати" : "Приховати"}
-              </Button>
               <Button
                 size="sm"
                 variant="danger"
@@ -162,7 +146,7 @@ export default function AdvertisementEditPage() {
                 onClick={() =>
                   confirmAction({
                     title: "Видалити оголошення",
-                    message: `«${ad.title}» буде видалено разом з варіантами та фото.`,
+                    message: `«${ad.title}» буде видалено з каталогу та адмін-панелі.`,
                     onConfirm: () =>
                       deleteAd.mutate(ad.id, {
                         onSuccess: () => navigate("/admin/advertisements"),

@@ -40,14 +40,3 @@
   border-color: var(--color-primary);
   background-color: #ffffff;
 }
-
-.segmented {
-  margin-left: auto;
-}
-
-@media (max-width: 640px) {
-  .segmented {
-    width: 100%;
-    margin-left: 0;
-  }
-}

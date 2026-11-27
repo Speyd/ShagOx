@@ -3,12 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Avatar, Badge, Loader, Text } from "@mantine/core";
 import { CalendarDays, Clock, Megaphone, MessageSquare } from "lucide-react";
 import { api } from "@/shared/api/api";
-import { useAdminDelete, useAdminList, useAdminVisibility } from "@/shared/api/crudHooks";
+import { useAdminDelete, useAdminList } from "@/shared/api/crudHooks";
 import { formatDate } from "@/shared/lib/formatDate";
 import type { Advertisement } from "@/shared/lib/types/advertisements";
 import { getAdvertisementPrice } from "@/shared/lib/types/advertisements";
 import type { PaginatedResponse } from "@/shared/lib/types/paginatedResponse";
-import type { User } from "@/shared/lib/types/user";
 import { useGetUser } from "@/entities/user/model/hooks/useGetUser";
 import { AdminUpdateUserForm } from "@/features/admin/user/update-user";
 import Button from "@/shared/ui/buttons/button";
@@ -37,12 +36,10 @@ export default function UserEditPage() {
 
   const { data: reviews } = useAdminList("/admin/review-comment", {
     pageSize: 1,
-    status: "All",
     filters: { OwnerId: userId },
   });
 
   const deleteUser = useAdminDelete("/admin/users", "користувача");
-  const visibility = useAdminVisibility("/admin/users");
 
   if (isLoading) return <Loader mx="auto" display="block" mt="xl" />;
 
@@ -54,8 +51,6 @@ export default function UserEditPage() {
     );
   }
 
-  const adminUser = user as User & { entityStatus?: string };
-  const hidden = adminUser.entityStatus === "Hidden";
   const fullName = [user.firstName, user.lastName].filter(Boolean).join(" ");
 
   return (
@@ -124,9 +119,6 @@ export default function UserEditPage() {
                   {role.name}
                 </Badge>
               ))}
-              <Badge variant="light" color={hidden ? "gray" : "teal"} radius="sm">
-                {hidden ? "Прихований" : "Активний"}
-              </Badge>
             </div>
           </section>
 
@@ -178,18 +170,10 @@ export default function UserEditPage() {
               Небезпечна зона
             </Text>
             <Text size="sm" c="dimmed">
-              Прихований користувач не відображається на сайті. Видалення
-              незворотне.
+              Видалений користувач не зможе увійти й зникне з сайту та
+              адмін-панелі.
             </Text>
             <div className={localStyles.dangerActions}>
-              <Button
-                size="sm"
-                variant="outline"
-                loading={visibility.isPending}
-                onClick={() => visibility.mutate({ id: user.id, hidden })}
-              >
-                {hidden ? "Показати" : "Приховати"}
-              </Button>
               <Button
                 size="sm"
                 variant="danger"
@@ -197,7 +181,7 @@ export default function UserEditPage() {
                 onClick={() =>
                   confirmAction({
                     title: "Видалити користувача",
-                    message: `Користувача @${user.userName} та пов'язані дані буде видалено назавжди.`,
+                    message: `Користувача @${user.userName} буде видалено.`,
                     onConfirm: () =>
                       deleteUser.mutate(user.id, {
                         onSuccess: () => navigate("/admin/users"),

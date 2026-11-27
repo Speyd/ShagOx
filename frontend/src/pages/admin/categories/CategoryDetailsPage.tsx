@@ -52,12 +52,10 @@ export default function CategoryDetailsPage() {
   );
   const { data: adsCount } = useAdminList("/admin/advertisements", {
     pageSize: 1,
-    status: "All",
     filters: { CategoryId: categoryId },
   });
   const { data: attributesCount } = useAdminList("/admin/attribute-definitions", {
     pageSize: 1,
-    status: "ActiveAndHidden",
     filters: { CategoryId: categoryId },
   });
 

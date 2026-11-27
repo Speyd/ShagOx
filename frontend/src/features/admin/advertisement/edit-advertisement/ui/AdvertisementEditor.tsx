@@ -168,8 +168,16 @@ export default function AdvertisementEditor({
     return valid;
   };
 
+  // Без визначень атрибутів категорії на бекенд пішов би порожній JSON
+  // характеристик і затер би збережені значення.
+  const attributesReady = !category.isLoading && !category.isError;
+
   const onSubmit = form.handleSubmit(
     (values) => {
+      if (!attributesReady) {
+        toast.error("Характеристики категорії ще не завантажились");
+        return;
+      }
       if (!validateExtra(values)) {
         toast.error("Перевірте правильність заповнення полів");
         return;
@@ -370,7 +378,7 @@ export default function AdvertisementEditor({
               Скасувати
             </Button>
           )}
-          <Button type="submit" loading={save.isPending}>
+          <Button type="submit" loading={save.isPending} disabled={!attributesReady}>
             Зберегти зміни
           </Button>
         </div>

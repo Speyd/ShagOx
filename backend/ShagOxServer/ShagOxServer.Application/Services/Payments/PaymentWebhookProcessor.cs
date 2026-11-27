@@ -64,6 +64,8 @@ public class PaymentWebhookProcessor
 
         await _unitOfWork.SaveChangesAsync();
 
+        if (webhook.EnumStatus == PaymentStatus.Succeeded)
+            Console.Write("");
 
         return (webhook.EnumStatus switch
         {
@@ -85,6 +87,7 @@ public class PaymentWebhookProcessor
             _ => Result<bool>.Success(true)
         });
     }
+
 
     private async Task<Result<bool>> MarkProcessingAsync(
         long webhookId,
@@ -110,6 +113,8 @@ public class PaymentWebhookProcessor
         return Result<bool>.Success(true);
     }
 
+
+
     public async Task ProcessPendingAsync(
         int count,
         CancellationToken cancellationToken)
@@ -124,9 +129,7 @@ public class PaymentWebhookProcessor
                     webhook.InvoiceId, cancellationToken);
 
             if (!result.IsSuccess)
-            {
-
-            }
+                continue;
 
             await _webhookCommandRepository.MarkAsProcessedAsync(
                 webhook.Id, cancellationToken);
@@ -157,6 +160,8 @@ public class PaymentWebhookProcessor
             .ProcessSuccessfulPayment(
                 webhook.InvoiceId, cancellationToken);
     }
+
+
 
     public async Task<Result<bool>> ProcessCancelAsync(
         string invoiceId,

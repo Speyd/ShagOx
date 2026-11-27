@@ -58,8 +58,6 @@ public partial class AuthController
             userId.Value,
             cancellationToken);
 
-        DeleteTokens(Response);
-
         return Ok();
     }
 }

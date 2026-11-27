@@ -114,6 +114,40 @@ namespace ShagOxServer.Application.Resources.Verifications.Sms {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Hello!
         ///
+        ///Your verification code to confirm your new phone number for your Marketly account:
+        ///
+        ///{0}
+        ///
+        ///The code is valid for {1} minutes.
+        ///
+        ///If you did not request to change your phone number, please ignore this message..
+        /// </summary>
+        public static string NewPhoneConfirmation {
+            get {
+                return ResourceManager.GetString("NewPhoneConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hello!
+        ///
+        ///Your verification code to approve changing the phone number associated with your Marketly account:
+        ///
+        ///{0}
+        ///
+        ///The code is valid for {1} minutes.
+        ///
+        ///If you did not request this change, please ignore this message and secure your Marketly account..
+        /// </summary>
+        public static string PhoneChangeApproval {
+            get {
+                return ResourceManager.GetString("PhoneChangeApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hello!
+        ///
         ///Your verification code:
         ///
         ///{0}

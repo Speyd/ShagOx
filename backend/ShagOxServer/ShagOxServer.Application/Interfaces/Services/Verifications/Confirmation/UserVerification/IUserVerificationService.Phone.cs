@@ -10,7 +10,11 @@ public partial interface IUserVerificationService
         User user,
         VerificationCode verificationCode);
 
-    Task<Result<VerificationResponse>> ChangePhoneAsync(
+    Task<Result<VerificationResponse>> ChangeCurrentPhoneAsyncs(
+        User user,
+        VerificationCode verificationCode);
+
+    Task<Result<VerificationResponse>> ChangeNewPhoneAsync(
         User user,
         VerificationCode verificationCode);
 }

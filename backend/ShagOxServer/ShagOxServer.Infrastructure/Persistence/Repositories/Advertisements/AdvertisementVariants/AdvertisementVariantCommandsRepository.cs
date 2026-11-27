@@ -35,6 +35,7 @@ public class AdvertisementVariantCommandsRepository
         CancellationToken cancellationToken = default)
     {
         var query = _db.AdvertisementVariants
+            .AsNoTracking()
             .Where(x =>
                 x.Id == variantId &&
                 x.Stock >= quantity);
@@ -59,6 +60,7 @@ public class AdvertisementVariantCommandsRepository
             throw new ArgumentOutOfRangeException(nameof(quantity));
 
         var query = _db.AdvertisementVariants
+            .AsNoTracking()
             .Where(x => x.Id == variantId);
 
         return await query.ExecuteUpdateWithCacheAsync(

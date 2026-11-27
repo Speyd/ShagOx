@@ -68,4 +68,28 @@ public partial class UserSessionQueryService
             _cacheOptions.DefaultExpiration
         );
     }
+
+    public async Task<Result<List<UserSessionDto>>> GetAllActiveByUserAsync(
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+        var cacheKey = UserSessionCache.AllActiveByUser(
+            userId,
+            status);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var sessions = await _sessionQueryRepository
+                    .GetAllActiveByUserAsync(userId,
+                        cancellationToken, status);
+
+                return await sessions.ToResultListAsync(
+                    ApplyMapperAsync);
+            },
+            _cacheOptions.DefaultExpiration
+        );
+    }
 }

@@ -162,7 +162,7 @@ public class MonoBankPaymentProvider
             return Result<bool>.Fail(
                 payment.Error);
         }
-
+        Console.WriteLine(payment.Value.Status);
         return await _webhookProcessor.ReceiveAsync(
             payment.Value,
             body,

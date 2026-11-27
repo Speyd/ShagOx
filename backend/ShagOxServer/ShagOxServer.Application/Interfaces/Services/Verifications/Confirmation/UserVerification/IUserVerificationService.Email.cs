@@ -10,7 +10,11 @@ public partial interface IUserVerificationService
         User user,
         VerificationCode verificationCode);
 
-    Task<Result<VerificationResponse>> ChangeEmailAsync(
+    Task<Result<VerificationResponse>> ChangeCurrentEmailAsyncs(
+        User user,
+        VerificationCode verificationCode);
+
+    Task<Result<VerificationResponse>> ChangeNewEmailAsync(
         User user,
         VerificationCode verificationCode);
 }

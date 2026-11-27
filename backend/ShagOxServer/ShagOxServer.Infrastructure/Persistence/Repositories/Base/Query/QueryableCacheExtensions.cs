@@ -14,7 +14,9 @@ public static class QueryableCacheExtensions
         CancellationToken cancellationToken = default)
         where TEntity : BaseEntity, IEntityCache<TEntity, TContext>
     {
-        var entity = await query.FirstOrDefaultAsync(cancellationToken);
+        var entity = await query
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (entity is null)
             return false;
@@ -39,7 +41,9 @@ public static class QueryableCacheExtensions
         CancellationToken cancellationToken = default)
         where TEntity : BaseEntity, IEntityCache<TEntity, TContext>
     {
-        var entities = await query.ToListAsync(cancellationToken);
+        var entities = await query
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 
         if (entities.Count == 0)
             return 0;

@@ -150,6 +150,28 @@ Der Code ist {1} Minuten lang gültig.
 
 Wenn Sie die Aktivierung der Zwei-Faktor-Authentifizierung für Ihr Marketly-Konto nicht angefordert haben, ignorieren Sie bitte diese Nachricht.</value>
   </data>
+  <data name="NewPhoneConfirmation" xml:space="preserve">
+    <value>Hallo!
+
+Ihr Bestätigungscode zur Verifizierung Ihrer neuen Telefonnummer für Ihr Marketly-Konto:
+
+{0}
+
+Der Code ist {1} Minuten lang gültig.
+
+Wenn Sie keine Änderung Ihrer Telefonnummer angefordert haben, ignorieren Sie bitte diese Nachricht.</value>
+  </data>
+  <data name="PhoneChangeApproval" xml:space="preserve">
+    <value>Hallo!
+
+Ihr Bestätigungscode zur Genehmigung der Änderung der mit Ihrem Marketly-Konto verknüpften Telefonnummer:
+
+{0}
+
+Der Code ist {1} Minuten lang gültig.
+
+Wenn Sie diese Änderung nicht angefordert haben, ignorieren Sie bitte diese Nachricht und sichern Sie Ihr Marketly-Konto.</value>
+  </data>
   <data name="VerificationBody" xml:space="preserve">
     <value>Hallo!
 

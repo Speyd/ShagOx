@@ -9,7 +9,7 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Query;
 public partial class AdvertisementQueryRepository
     : SearchRepository<Advertisement, AdvertisementSearchFilter>,
-          IAdvertisementQueryRepository
+      IAdvertisementQueryRepository
 {
     public async Task<AdvertisementFacetsDto> GetFacetsAsync(
         long categoryId,
@@ -28,8 +28,6 @@ public partial class AdvertisementQueryRepository
             prices?.Max,
             attributes);
     }
-
-
 
     private async Task<List<AttributeFacetDto>> GetAttributeFacetsAsync(
         long categoryId,
@@ -66,23 +64,18 @@ public partial class AdvertisementQueryRepository
                 SELECT
                     a.id,
                     a.key,
-                    CASE
-                        WHEN jsonb_typeof(item.value) = 'string'
-                        THEN item.value #>> '{}'
-                        ELSE item.value::text
-                    END AS value
+                    COALESCE(item.value, a.value) AS value
                 FROM attributes a
-                CROSS JOIN LATERAL jsonb_array_elements(
+                LEFT JOIN LATERAL jsonb_array_elements(
                     CASE
                         WHEN jsonb_typeof(a.value) = 'array'
                         THEN a.value
-                        ELSE jsonb_build_array(a.value)
                     END
-                ) AS item
+                ) AS item ON TRUE
             )
             SELECT
                 key AS "Key",
-                value AS "Value",
+                value::text AS "Value",
                 COUNT(DISTINCT id)::int AS "Count"
             FROM flat
             GROUP BY key, value
@@ -90,7 +83,6 @@ public partial class AdvertisementQueryRepository
             """)
             .ToListAsync(cancellationToken);
     }
-
 
     private async Task<(decimal Min, decimal Max)?> GetPriceRangeAsync(
         long categoryId,

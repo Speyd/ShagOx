@@ -35,6 +35,7 @@ public class AdvertisementCommandsRepository
         CancellationToken cancellationToken = default)
     {
         var query = _db.Advertisements
+            .AsNoTracking()
             .Where(x =>
                 x.Id == advertId &&
                 x.Stock >= quantity);
@@ -59,6 +60,7 @@ public class AdvertisementCommandsRepository
             throw new ArgumentOutOfRangeException(nameof(quantity));
 
         var query = _db.Advertisements
+            .AsNoTracking()
             .Where(x => x.Id == advertId);
 
         return await query.ExecuteUpdateWithCacheAsync(

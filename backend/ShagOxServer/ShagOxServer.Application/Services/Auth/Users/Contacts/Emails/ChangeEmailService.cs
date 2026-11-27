@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Auth.Contacts.Emails;
+using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -35,8 +36,17 @@ public class ChangeEmailService
 
     public async Task<Result<bool>> ChangeEmail(
         long userId,
-        ChangeEmailRequest request)
+        ChangeEmailRequest request,
+        VerificationCodePurpose purpose)
     {
+        if (purpose is not (
+            VerificationCodePurpose.ChangeCurrentEmail or
+            VerificationCodePurpose.ChangeNewEmail))
+        {
+            return Result<bool>.Fail(
+                VerificationResources.UnsupportedVerificationPurpose);
+        }
+
         var user = await _userValidator
             .GetByIdAsync(userId);
         if (!user.IsSuccess)
@@ -59,8 +69,8 @@ public class ChangeEmailService
         try
         {
             var result = await _verificationSender
-                .SendAsync(user.Value!,
-                    VerificationCodePurpose.ChangeEmail,
+                .SendAsync(user.Value!, 
+                    purpose,
                     email
             );
 

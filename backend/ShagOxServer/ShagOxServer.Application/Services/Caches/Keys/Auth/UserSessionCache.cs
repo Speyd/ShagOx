@@ -35,6 +35,16 @@ public static class UserSessionCache
             => $"{Prefix}:*:user:{userId}";
 
 
+    public static string AllActiveByUser(
+       long userId,
+       EntityStatus status = EntityStatus.Active)
+           => $"{Prefix}:status:{status}:active:user:{userId}";
+
+    public static string AllActiveByUserPattern(
+        long userId)
+            => $"{Prefix}:*:active:user:{userId}";
+
+
 
 
     public static string ByUserDevice(

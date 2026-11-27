@@ -6,8 +6,6 @@ using ShagOxServer.Application.Services.Verifications.Sending.Email.Mapping.Orde
 using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing.Models;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System.Net;
-using System.Net.Mail;
 
 namespace ShagOxServer.Application.Services.Verifications.Sending.Email;
 public partial class EmailService

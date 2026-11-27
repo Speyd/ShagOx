@@ -1,55 +1,65 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.Domain.Cache.Devices;
+using ShagOxServer.Domain.Cache.Orders;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Entities.Orders.Enum;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Orders.Core;
 public class OrderCommandsRepository
     : CommandRepository<Order>,
     IOrderCommandsRepository
 {
+    private readonly ICacheInvalidationService<
+        Order, OrderCacheContext> _entityInvalid;
+
+
     public OrderCommandsRepository(
+        ICacheInvalidationService<
+            Order, OrderCacheContext> entityInvalid,
         AppDbContext db,
         IUserContext userContext
     )
         : base(db, userContext)
     {
+        _entityInvalid = entityInvalid;
     }
 
+
     public async Task<bool> TryMarkAsPaidAsync(
-        long orderId,
-        string? transactionId = null,
-        CancellationToken cancellationToken = default)
+    long orderId,
+    string? transactionId = null,
+    CancellationToken cancellationToken = default)
     {
         var now = DateTime.UtcNow;
 
-        var affectedRows = await _db.Orders
+        var query = _db.Orders
+            .AsNoTracking()
             .Where(x =>
                 x.Id == orderId &&
                 x.OrderStatus == OrderStatus.Pending &&
-                x.PaymentStatus == OrderPaymentStatus.Pending)
-            .ExecuteUpdateAsync(
+                x.PaymentStatus == OrderPaymentStatus.Pending);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
-                    .SetProperty(
-                        x => x.PaymentStatus,
-                        OrderPaymentStatus.Paid)
-                    .SetProperty(
-                        x => x.PaidAt,
-                        now)
+                    .SetProperty(x => x.PaymentStatus, OrderPaymentStatus.Paid)
+                    .SetProperty(x => x.PaidAt, now)
                     .SetProperty(
                         x => x.PaymentTransactionId,
                         x => transactionId ?? x.PaymentTransactionId)
-                    .SetProperty(
-                        x => x.UpdatedAt,
-                        now),
-                cancellationToken);
-
-        return affectedRows > 0;
+                    .SetProperty(x => x.UpdatedAt, now),
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 
 
@@ -57,18 +67,23 @@ public class OrderCommandsRepository
         long orderId,
         CancellationToken cancellationToken = default)
     {
-        var affectedRows = await _db.Orders
+        var query = _db.Orders
+            .AsNoTracking()
             .Where(x =>
                 x.Id == orderId &&
-                x.PaymentStatus == OrderPaymentStatus.Pending)
-            .ExecuteUpdateAsync(
+                x.PaymentStatus == OrderPaymentStatus.Pending);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
                     .SetProperty(x => x.PaymentStatus, OrderPaymentStatus.Failed)
                     .SetProperty(x => x.OrderStatus, OrderStatus.Cancelled),
-                cancellationToken);
-
-        return affectedRows > 0;
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
+
 
     public async Task<bool> TryConfirmAsync(
         long orderId,
@@ -76,21 +91,26 @@ public class OrderCommandsRepository
     {
         var now = DateTime.UtcNow;
 
-        var affectedRows = await _db.Orders
+        var query = _db.Orders
+            .AsNoTracking()
             .Where(x =>
                 x.Id == orderId &&
                 x.OrderStatus == OrderStatus.Pending &&
                 (x.PaymentMethod != PaymentMethod.Online ||
-                 x.PaymentStatus == OrderPaymentStatus.Paid))
-            .ExecuteUpdateAsync(
+                 x.PaymentStatus == OrderPaymentStatus.Paid));
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
                     .SetProperty(x => x.OrderStatus, OrderStatus.Confirmed)
                     .SetProperty(x => x.ConfirmedAt, now)
                     .SetProperty(x => x.UpdatedAt, now),
-                cancellationToken);
-
-        return affectedRows > 0;
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
+
 
     public async Task<bool> TryCloseAsync(
         long orderId,
@@ -109,20 +129,25 @@ public class OrderCommandsRepository
         var now = DateTime.UtcNow;
         var statuses = allowedFrom.ToList();
 
-        var affectedRows = await _db.Orders
+        var query = _db.Orders
+            .AsNoTracking()
             .Where(x =>
                 x.Id == orderId &&
                 x.PaymentStatus == expectedPaymentStatus &&
-                statuses.Contains(x.OrderStatus))
-            .ExecuteUpdateAsync(
+                statuses.Contains(x.OrderStatus));
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
                     .SetProperty(x => x.OrderStatus, newStatus)
                     .SetProperty(x => x.CancelledAt, now)
                     .SetProperty(x => x.UpdatedAt, now),
-                cancellationToken);
-
-        return affectedRows > 0;
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
+
 
     public async Task<bool> TryShipAsync(
         long orderId,
@@ -140,35 +165,44 @@ public class OrderCommandsRepository
 
         var now = DateTime.UtcNow;
 
-        var affectedRows = await _db.Orders
+        var query = _db.Orders
+            .AsNoTracking()
             .Where(x =>
                 x.Id == orderId &&
-                x.OrderStatus == OrderStatus.Confirmed)
-            .ExecuteUpdateAsync(
+                x.OrderStatus == OrderStatus.Confirmed);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
                     .SetProperty(x => x.OrderStatus, newStatus)
                     .SetProperty(x => x.DeliveryTrackingNumber, trackingNumber)
                     .SetProperty(x => x.DeliveryTrackingUrl, trackingUrl)
                     .SetProperty(x => x.ShippedAt, now)
                     .SetProperty(x => x.UpdatedAt, now),
-                cancellationToken);
-
-        return affectedRows > 0;
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
+
 
     public async Task<bool> TryCompleteAsync(
         long orderId,
         IReadOnlyCollection<OrderStatus> allowedFrom,
         CancellationToken cancellationToken = default)
     {
-        DateTime? now = DateTime.UtcNow;
+        var now = DateTime.UtcNow;
         var statuses = allowedFrom.ToList();
 
-        var affectedRows = await _db.Orders
+        var query = _db.Orders
+            .AsNoTracking()
             .Where(x =>
                 x.Id == orderId &&
-                statuses.Contains(x.OrderStatus))
-            .ExecuteUpdateAsync(
+                statuses.Contains(x.OrderStatus));
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
                     .SetProperty(x => x.OrderStatus, OrderStatus.Completed)
                     .SetProperty(x => x.DeliveredAt, x => x.DeliveredAt ?? now)
@@ -183,82 +217,62 @@ public class OrderCommandsRepository
                             ? now
                             : x.PaidAt)
                     .SetProperty(x => x.UpdatedAt, now),
-                cancellationToken);
-
-        return affectedRows > 0;
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 
+
     public async Task<bool> TryReopenForPaymentAsync(
-       long orderId,
-       CancellationToken cancellationToken = default)
+        long orderId,
+        CancellationToken cancellationToken = default)
     {
-        var affectedRows = await _db.Orders
+        var now = DateTime.UtcNow;
+
+        var query = _db.Orders
+            .AsNoTracking()
             .Where(x =>
                 x.Id == orderId &&
                 x.PaymentMethod == PaymentMethod.Online &&
                 x.OrderStatus == OrderStatus.Cancelled &&
-                x.PaymentStatus == OrderPaymentStatus.Failed)
-            .ExecuteUpdateAsync(
+                x.PaymentStatus == OrderPaymentStatus.Failed);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
-                    .SetProperty(
-                        x => x.OrderStatus,
-                        OrderStatus.Pending)
-                    .SetProperty(
-                        x => x.PaymentStatus,
-                        OrderPaymentStatus.Pending)
-                    .SetProperty(
-                        x => x.CancelledAt,
-                        (DateTime?)null)
-                    .SetProperty(
-                        x => x.UpdatedAt,
-                        DateTime.UtcNow),
-                cancellationToken);
-
-        return affectedRows > 0;
+                    .SetProperty(x => x.OrderStatus, OrderStatus.Pending)
+                    .SetProperty(x => x.PaymentStatus, OrderPaymentStatus.Pending)
+                    .SetProperty(x => x.CancelledAt, (DateTime?)null)
+                    .SetProperty(x => x.UpdatedAt, now),
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 
-    public async Task<Order?> GetForPaymentAsync(
-        long orderId,
-        CancellationToken cancellationToken = default)
-    {
-        return await _db.Orders
-            .AsSplitQuery()
-            .Include(x => x.Currency)
-            .Include(x => x.DeliveryProvider)
-            .Include(x => x.OrderItems
-                .Where(i => i.EntityStatus == EntityStatus.Active))
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Status)
-            .Include(x => x.OrderItems
-                .Where(i => i.EntityStatus == EntityStatus.Active))
-                .ThenInclude(x => x.Advertisement)
-                    .ThenInclude(x => x.Variants)
-            .Include(x => x.OrderItems
-                .Where(i => i.EntityStatus == EntityStatus.Active))
-                .ThenInclude(x => x.AdvertisementVariant)
-            .FirstOrDefaultAsync(x =>
-                x.Id == orderId &&
-                x.EntityStatus == EntityStatus.Active,
-                cancellationToken);
-    }
 
     public async Task<bool> TryMarkAsCancelledAsync(
         long orderId,
         CancellationToken cancellationToken = default)
     {
-        var affectedRows = await _db.Orders
+        var now = DateTime.UtcNow;
+
+        var query = _db.Orders
+            .AsNoTracking()
             .Where(x =>
                 x.Id == orderId &&
-                x.OrderStatus == OrderStatus.Cancelled)
-            .ExecuteUpdateAsync(
-                setters => setters
-                    .SetProperty(
-                        x => x.CancelledAt,
-                        DateTime.UtcNow),
-                cancellationToken);
+                x.OrderStatus == OrderStatus.Cancelled);
 
-        return affectedRows > 0;
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(x => x.CancelledAt, now),
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
+
 
     public async Task<bool> TryUpdatePaymentStatusAsync(
         long orderId,
@@ -266,20 +280,27 @@ public class OrderCommandsRepository
         CancellationToken cancellationToken = default)
     {
         if (newStatus is not (OrderPaymentStatus.Failed or OrderPaymentStatus.Refunded))
+        {
             throw new ArgumentException(
                 "Only Failed or Refunded statuses are allowed.",
                 nameof(newStatus));
+        }
 
-        var affectedRows = await _db.Orders
-            .Where(x => x.Id == orderId)
-            .ExecuteUpdateAsync(
+        var now = DateTime.UtcNow;
+
+        var query = _db.Orders
+            .AsNoTracking()
+            .Where(x => x.Id == orderId);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
-                    .SetProperty(
-                        x => x.PaymentStatus,
-                        newStatus),
-                cancellationToken);
-
-        return affectedRows > 0;
+                    .SetProperty(x => x.PaymentStatus, newStatus)
+                    .SetProperty(x => x.UpdatedAt, now),
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 
 
@@ -298,15 +319,20 @@ public class OrderCommandsRepository
                 nameof(newStatus));
         }
 
-        var affectedRows = await _db.Orders
-            .Where(x => x.Id == orderId)
-            .ExecuteUpdateAsync(
-                setters => setters
-                    .SetProperty(
-                        x => x.OrderStatus,
-                        newStatus),
-                cancellationToken);
+        var now = DateTime.UtcNow;
 
-        return affectedRows > 0;
+        var query = _db.Orders
+            .AsNoTracking()
+            .Where(x => x.Id == orderId);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(x => x.OrderStatus, newStatus)
+                    .SetProperty(x => x.UpdatedAt, now),
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 }

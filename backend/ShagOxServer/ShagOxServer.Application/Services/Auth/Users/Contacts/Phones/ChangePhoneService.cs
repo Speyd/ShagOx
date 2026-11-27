@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.Common.Validators.Enum;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.Interfaces.Services.Common.Validators;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Auth.Contacts.Phones;
+using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -35,8 +36,18 @@ public class ChangePhoneService
 
     public async Task<Result<bool>> ChangePhone(
         long userId,
-        ChangePhoneRequest request)
+        ChangePhoneRequest request,
+        VerificationCodePurpose purpose)
     {
+        if (purpose is not (
+            VerificationCodePurpose.ChangeCurrentPhone or
+            VerificationCodePurpose.ChangeNewPhone))
+        {
+            return Result<bool>.Fail(
+                VerificationResources.UnsupportedVerificationPurpose);
+        }
+
+
         var user = await _userValidator
             .GetByIdAsync(userId);
         if (!user.IsSuccess)
@@ -60,7 +71,7 @@ public class ChangePhoneService
         {
             var result = await _verificationSender
                 .SendAsync(user.Value!,
-                    VerificationCodePurpose.ChangePhone,
+                    purpose,
                     phone
                 );
 

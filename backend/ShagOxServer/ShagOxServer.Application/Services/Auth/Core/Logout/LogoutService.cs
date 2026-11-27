@@ -58,7 +58,7 @@ public class LogoutService
         CancellationToken cancellationToken)
     {
         var sessions = await _sessionQueryRepository
-            .GetAllByUserAsync(
+            .GetAllActiveByUserAsync(
                 userId,
                 cancellationToken);
 
@@ -78,7 +78,7 @@ public class LogoutService
         CancellationToken cancellationToken)
     {
         var sessions = await _sessionQueryRepository
-            .GetAllByUserAsync(
+            .GetAllActiveByUserAsync(
                 userId,
                 cancellationToken);
 

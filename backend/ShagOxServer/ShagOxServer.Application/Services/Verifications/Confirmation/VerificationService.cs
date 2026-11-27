@@ -95,15 +95,25 @@ public class VerificationService
                 return await _userVerifyService
                     .ConfirmPhoneAsync(user, verificationCode);
 
-            case VerificationCodePurpose.ChangeEmail:
+            case VerificationCodePurpose.ChangeNewEmail:
 
                 return await _userVerifyService
-                     .ChangeEmailAsync(user, verificationCode);
+                     .ChangeNewEmailAsync(user, verificationCode);
 
-            case VerificationCodePurpose.ChangePhone:
+            case VerificationCodePurpose.ChangeCurrentEmail:
 
                 return await _userVerifyService
-                     .ChangePhoneAsync(user, verificationCode);
+                     .ChangeCurrentEmailAsyncs(user, verificationCode);
+
+            case VerificationCodePurpose.ChangeNewPhone:
+
+                return await _userVerifyService
+                     .ChangeNewPhoneAsync(user, verificationCode);
+
+            case VerificationCodePurpose.ChangeCurrentPhone:
+
+                return await _userVerifyService
+                     .ChangeCurrentPhoneAsyncs(user, verificationCode);
 
             case VerificationCodePurpose.ChangePasswordEmail:
             case VerificationCodePurpose.ChangePasswordPhone:

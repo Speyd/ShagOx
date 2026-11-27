@@ -150,6 +150,28 @@ The code is valid for {1} minutes.
 
 If you did not request to enable Two-Factor Authentication for your Marketly account, please ignore this message.</value>
   </data>
+  <data name="NewPhoneConfirmation" xml:space="preserve">
+    <value>Hello!
+
+Your verification code to confirm your new phone number for your Marketly account:
+
+{0}
+
+The code is valid for {1} minutes.
+
+If you did not request to change your phone number, please ignore this message.</value>
+  </data>
+  <data name="PhoneChangeApproval" xml:space="preserve">
+    <value>Hello!
+
+Your verification code to approve changing the phone number associated with your Marketly account:
+
+{0}
+
+The code is valid for {1} minutes.
+
+If you did not request this change, please ignore this message and secure your Marketly account.</value>
+  </data>
   <data name="VerificationBody" xml:space="preserve">
     <value>Hello!
 

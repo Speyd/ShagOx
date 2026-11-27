@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -58,9 +59,9 @@ public partial class AdvertisementQueryRepository
         return await _db.BasketItems
             .AsNoTracking()
             .Where(x =>
+                x.EntityStatus == EntityStatus.Active &&
                 x.Parent.OwnerId == userId &&
-                advertisementIds.Contains(
-                    x.AdvertisementId))
+                advertisementIds.Contains(x.AdvertisementId))
             .Select(x => x.AdvertisementId)
             .ToHashSetAsync(cancellationToken);
     }

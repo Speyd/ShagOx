@@ -36,6 +36,7 @@ public class UserDeviceCommandsRepository
         var now = DateTime.UtcNow;
 
         var query = _db.UserDevices
+            .AsNoTracking()
             .Where(x => 
                 x.Id == Id);
 
@@ -54,6 +55,7 @@ public class UserDeviceCommandsRepository
         CancellationToken cancellationToken = default)
     {
         var query = _db.UserDevices
+            .AsNoTracking()
             .Where(x => x.Id == deviceId);
 
         return await query.ExecuteUpdateWithCacheAsync(
@@ -70,6 +72,7 @@ public class UserDeviceCommandsRepository
         CancellationToken cancellationToken = default)
     {
         var query = _db.UserDevices
+            .AsNoTracking()
             .Where(x => x.Id == deviceId);
 
         return await query.ExecuteUpdateWithCacheAsync(
@@ -89,6 +92,7 @@ public class UserDeviceCommandsRepository
         var now = DateTime.UtcNow;
 
         var query = _db.UserDevices
+            .AsNoTracking()
             .Where(x => x.Id == deviceId);
 
         return await query.ExecuteUpdateWithCacheAsync(
@@ -108,6 +112,7 @@ public class UserDeviceCommandsRepository
         CancellationToken cancellationToken = default)
     {
         var query = _db.UserDevices
+            .AsNoTracking()
             .Where(x => x.Id == deviceId);
 
         return await query.ExecuteUpdateWithCacheAsync(
@@ -126,6 +131,7 @@ public class UserDeviceCommandsRepository
         CancellationToken cancellationToken = default)
     {
         var query = _db.UserDevices
+            .AsNoTracking()
             .Where(x =>
                 x.Status == UserDeviceStatus.Blocked &&
                 x.BlockedUntil != null &&

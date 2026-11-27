@@ -51,7 +51,7 @@ public partial class VerificationSender : IVerificationSender
                 or VerificationCodePurpose.DisableTwoFactorEmail
                 or VerificationCodePurpose.InitiateTwoFactorEmail
                 => await SendCodeEmail(
-                    purpose, user.Email, code.Value!),
+                    purpose, user.Email, code.Value!, pendingValue),
 
             VerificationCodePurpose.RegistrationPhone
                 or VerificationCodePurpose.ChangePhone
@@ -62,7 +62,7 @@ public partial class VerificationSender : IVerificationSender
                 or VerificationCodePurpose.InitiateTwoFactorPhone
 
                 => await SendCodePhone(
-                    purpose, user.Phone, code.Value!),
+                    purpose, user.Phone, code.Value!, pendingValue),
 
             _ => Result<bool>.Fail(
                 VerificationResources.UnsupportedVerificationPurpose)

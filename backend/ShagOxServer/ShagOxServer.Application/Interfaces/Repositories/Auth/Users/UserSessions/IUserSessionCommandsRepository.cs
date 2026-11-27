@@ -11,4 +11,8 @@ public interface IUserSessionCommandsRepository
         long sessionId,
         SessionRevocationReason reason,
         CancellationToken cancellationToken = default);
+
+    Task<bool> RevokeInactiveSessionAsync(
+        long sessionId,
+        CancellationToken cancellationToken = default);
 }

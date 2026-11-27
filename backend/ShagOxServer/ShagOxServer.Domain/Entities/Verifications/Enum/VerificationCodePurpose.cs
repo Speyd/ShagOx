@@ -1,28 +1,29 @@
 namespace ShagOxServer.Domain.Entities.Verifications.Enum;
 public enum VerificationCodePurpose
 {
-    None = 0,
+    None,
 
-    RegistrationEmail = 1,
-    RegistrationPhone = 2,
+    RegistrationEmail,
+    RegistrationPhone,
 
-    ChangeEmail = 3,
-    ChangePhone = 4,
+    ChangeCurrentEmail,
+    ChangeNewEmail,
 
+    ChangeCurrentPhone,
+    ChangeNewPhone,
 
-    ChangePasswordEmail = 5,
-    ChangePasswordPhone = 6,
+    ChangePasswordEmail,
+    ChangePasswordPhone,
 
-    ResetPasswordEmail = 7,
-    ResetPasswordPhone = 8,
+    ResetPasswordEmail,
+    ResetPasswordPhone,
 
+    EnableTwoFactorEmail,
+    DisableTwoFactorEmail,
 
-    EnableTwoFactorEmail = 9,
-    DisableTwoFactorEmail = 10,
+    EnableTwoFactorPhone,
+    DisableTwoFactorPhone,
 
-    EnableTwoFactorPhone = 11,
-    DisableTwoFactorPhone = 12,
-
-    InitiateTwoFactorEmail = 13,
-    InitiateTwoFactorPhone = 14,
+    InitiateTwoFactorEmail,
+    InitiateTwoFactorPhone,
 }

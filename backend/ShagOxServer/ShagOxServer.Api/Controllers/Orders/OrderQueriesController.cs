@@ -41,7 +41,7 @@ public class OrderQueriesController
     {
         var myFilter = filter with 
         {
-            SellerId = UserId 
+            OwnerId = UserId 
         };
 
 

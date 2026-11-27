@@ -8,7 +8,8 @@ public partial class VerificationSender
     private async Task<Result<bool>> SendCodePhone(
         VerificationCodePurpose purpose,
         string? phone,
-        string code)
+        string code,
+        string? pendingValue = null)
     {
         if (string.IsNullOrWhiteSpace(phone))
         {
@@ -30,8 +31,17 @@ public partial class VerificationSender
                 await _smsService.SendInitiateTwoFactorCodeAsync(
                     phone, code),
 
+            VerificationCodePurpose.ChangeNewPhone 
+                when pendingValue is not null =>
+                await _smsService.SendNewPhoneConfirmationCodeAsync(
+                    pendingValue, code),
+
+            VerificationCodePurpose.ChangeApprovalPhone
+                when phone is not null =>
+                await _smsService.SendPhoneChangeApprovalCodeAsync(
+                    phone, code),
+
             VerificationCodePurpose.RegistrationPhone
-                or VerificationCodePurpose.ChangePhone
                 or VerificationCodePurpose.ResetPasswordPhone
                 or VerificationCodePurpose.ChangePasswordPhone
                 => await _smsService.SendVerificationCodeAsync(

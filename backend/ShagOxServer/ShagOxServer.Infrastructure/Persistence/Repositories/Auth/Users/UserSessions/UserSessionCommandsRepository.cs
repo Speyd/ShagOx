@@ -36,6 +36,7 @@ public class UserSessionCommandsRepository
         var now = DateTime.UtcNow;
 
         var query = _db.UserSessions
+            .AsNoTracking()
             .Where(x =>
                 x.Id == sessionId);
 
@@ -57,6 +58,7 @@ public class UserSessionCommandsRepository
         var now = DateTime.UtcNow;
 
         var query = _db.UserSessions
+            .AsNoTracking()
             .Where(x => x.Id == sessionId);
 
         return await query.ExecuteUpdateWithCacheAsync(
@@ -65,6 +67,50 @@ public class UserSessionCommandsRepository
                 setters => setters
                     .SetProperty(x => x.RevokedAt, now)
                     .SetProperty(x => x.RevocationReason, reason),
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
+    }
+
+    public async Task<bool> RevokeInactiveSessionAsync(
+        long sessionId,
+        CancellationToken cancellationToken = default)
+    {
+        var now = DateTime.UtcNow;
+
+        var session = await _db.UserSessions
+            .AsNoTracking()
+            .Where(x => x.Id == sessionId)
+            .Select(x => new
+            {
+                x.UserDeviceId,
+                x.Browser,
+                x.CreatedAt,
+                x.OwnerId
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (session is null)
+            return true;
+
+        var query = _db.UserSessions
+            .AsNoTracking()
+            .Where(x =>
+                x.OwnerId == session.OwnerId &&
+                x.UserDeviceId == session.UserDeviceId &&
+                x.Browser == session.Browser &&
+                x.CreatedAt < session.CreatedAt &&
+                x.RevokedAt == null &&
+                x.ExpiresAt > now);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(x => x.RevokedAt, now)
+                    .SetProperty(
+                        x => x.RevocationReason,
+                        SessionRevocationReason.UserRevoked),
                 cancellationToken),
             _entityInvalid,
             cancellationToken);

@@ -52,6 +52,9 @@ public class BlockedSessionMiddleware
 
                 await sessionCommands
                     .UpdateLastUsedAsync(sessionId, context.RequestAborted);
+
+                await sessionCommands
+                    .RevokeInactiveSessionAsync(sessionId, context.RequestAborted);
             }
         }
 

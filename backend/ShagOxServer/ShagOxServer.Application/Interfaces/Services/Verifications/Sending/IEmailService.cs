@@ -8,6 +8,14 @@ public interface IEmailService
         string email,
         string code);
 
+    Task<Result<bool>> SendNewEmailConfirmationCodeAsync(
+        string email,
+        string code);
+
+    Task<Result<bool>> SendEmailChangeApprovalCodeAsync(
+        string email,
+        string code);
+
     Task<Result<bool>> SendOrderPaidAsync(
         Order order);
 

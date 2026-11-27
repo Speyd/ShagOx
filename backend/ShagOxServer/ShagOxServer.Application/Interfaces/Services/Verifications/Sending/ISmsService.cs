@@ -7,6 +7,14 @@ public interface ISmsService
         string phone,
         string code);
 
+    Task<Result<bool>> SendPhoneChangeApprovalCodeAsync(
+        string phone,
+        string code);
+
+    Task<Result<bool>> SendNewPhoneConfirmationCodeAsync(
+        string phone,
+        string code);
+
     Task<Result<bool>> SendEnableTwoFactorCodeAsync(
         string phone,
         string code);

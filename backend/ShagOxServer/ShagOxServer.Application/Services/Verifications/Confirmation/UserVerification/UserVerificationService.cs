@@ -1,5 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Core.Login;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Emails;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Management.Trast;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation.UserVerification;
 
@@ -10,15 +12,19 @@ public partial class UserVerificationService
     private readonly IUserTrastManagementService _trastManagement;
     private readonly IUserDeviceCommandsRepository _deviceCommandsRepository;
     private readonly ILoginSessionService _sessionService;
+    private readonly IChangePhoneService _changePhoneService;
+    private readonly IChangeEmailService _changeEmailService;
 
 
     public UserVerificationService(
         IUserTrastManagementService trastManagement,
         IUserDeviceCommandsRepository deviceCommandsRepository,
-        ILoginSessionService sessionService)
+        ILoginSessionService sessionService,
+        IChangePhoneService changePhoneService)
     {
         _trastManagement = trastManagement;
         _deviceCommandsRepository = deviceCommandsRepository;
         _sessionService = sessionService;
+        _changePhoneService = changePhoneService;
     }
 }

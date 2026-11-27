@@ -13,7 +13,7 @@ public interface IPaymentWebhookProcessor
         int count,
         CancellationToken cancellationToken = default);
 
-    Task<Result<bool>> ProcessPendingAsync(
-        string invoiceId,
-        CancellationToken cancellationToken = default);
+    //Task<Result<bool>> ProcessPendingAsync(
+    //    string invoiceId,
+    //    CancellationToken cancellationToken = default);
 }

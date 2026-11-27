@@ -111,6 +111,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>EntityErrorResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Verifications\ChangeEmail\ChangeCurrency\EmailChangeApprovalResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EmailChangeApprovalResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Verifications\ChangeEmail\CreateNew\CreateNewEmailResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CreateNewEmailResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Verifications\Sms\SmsTemplatesResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -243,6 +253,14 @@
 		<EmbeddedResource Update="Resources\EntityErrorResourcess\EntityErrorResources.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>EntityErrorResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\ChangeEmail\ChangeCurrency\EmailChangeApprovalResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>EmailChangeApprovalResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\ChangeEmail\CreateNew\CreateNewEmailResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>CreateNewEmailResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Verifications\Sms\SmsTemplatesResources.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>

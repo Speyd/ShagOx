@@ -10,6 +10,7 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserSessio
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserSessions.Query;
 public partial class UserSessionQueryRepository
@@ -49,6 +50,23 @@ public partial class UserSessionQueryRepository
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.OwnerId == userId)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<UserSession>> GetAllActiveByUserAsync(
+        long userId,
+        CancellationToken cancellationToken,
+        EntityStatus? status = null)
+    {
+        var now = DateTime.UtcNow;
+
+        return await _db.UserSessions
+            .WithIncludes()
+            .WithStatusFilter(status)
+            .Where(x =>
+                x.OwnerId == userId &&
+                x.RevokedAt == null &&
+                x.ExpiresAt > now)
             .ToListAsync(cancellationToken);
     }
 

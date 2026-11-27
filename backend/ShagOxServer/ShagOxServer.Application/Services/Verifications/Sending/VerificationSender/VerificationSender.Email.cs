@@ -8,7 +8,8 @@ public partial class VerificationSender
     private async Task<Result<bool>> SendCodeEmail(
         VerificationCodePurpose purpose,
         string? email,
-        string code)
+        string code,
+        string? pendingValue = null)
     {
         if (string.IsNullOrWhiteSpace(email))
         {
@@ -18,6 +19,16 @@ public partial class VerificationSender
 
         return purpose switch
         {
+            VerificationCodePurpose.ChangeNewEmail
+               when pendingValue is not null =>
+               await _emailService.SendNewEmailConfirmationCodeAsync(
+                   pendingValue, code),
+
+            VerificationCodePurpose.ChangeApprovalEmail
+                when email is not null =>
+                await _emailService.SendEmailChangeApprovalCodeAsync(
+                    email, code),
+
             VerificationCodePurpose.EnableTwoFactorEmail =>
                 await _emailService.SendEnableTwoFactorCodeAsync(
                     email, code),
@@ -30,8 +41,14 @@ public partial class VerificationSender
                 await _emailService.SendInitiateTwoFactorCodeAsync(
                     email, code),
 
-            _ => await _emailService.SendVerificationCodeAsync(
-                email, code)
+            VerificationCodePurpose.RegistrationEmail
+               or VerificationCodePurpose.ResetPasswordEmail
+               or VerificationCodePurpose.ChangePasswordEmail
+               => await _emailService.SendVerificationCodeAsync(
+                   email, code),
+
+            _ => Result<bool>.Fail(
+                VerificationResources.UnsupportedVerificationPurpose)
         };
     }
 }

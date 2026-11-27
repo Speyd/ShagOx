@@ -29,7 +29,7 @@ public class UserUpdateService
     IUserUpdateService
 {
     private readonly IRepository<User> _userRepository;
-    private readonly IUserQueryRepository _userValidator;
+    private readonly UserValidator _userValidator;
 
     private readonly CityValidator _cityValidator;
     private readonly CurrencyValidator _currencyValidator;
@@ -43,8 +43,7 @@ public class UserUpdateService
 
     public UserUpdateService(
         IRepository<User> userRepository,
-        IUserQueryRepository userValidator,
-        UserValidator userValidator1,
+        UserValidator userValidator,
         IUserDeleteService userDeleteService,
         CityValidator cityValidator,
         CurrencyValidator currencyValidator,
@@ -53,7 +52,7 @@ public class UserUpdateService
         IUnitOfWork unitOfWork,
         ILogger<UserUpdateService> logger
     )
-        : base(userDeleteService, userValidator1, logger, unitOfWork)
+        : base(userDeleteService, userValidator, logger, unitOfWork)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
@@ -74,11 +73,8 @@ public class UserUpdateService
         var user = await _userValidator
             .GetByIdIncludeAsync(userId, cancellationToken);
 
-        //if (!user.IsSuccess)
-        //    return Result<UpdateResponse>.Fail(user.Error);
-
-        if (user is null)
-            return Result<UpdateResponse>.Fail("");
+        if (!user.IsSuccess)
+            return Result<UpdateResponse>.Fail(user.Error);
 
         var userName = request.UserName?.Trim();
         var normalizedRequest = request with
@@ -88,14 +84,14 @@ public class UserUpdateService
 
 
         var validation = await
-            ValidateUpdatesAsync(user, 
+            ValidateUpdatesAsync(user.Value!, 
                 normalizedRequest, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
         var updatedCount = UserUpdater
-            .ApplyUpdates(user, normalizedRequest);
+            .ApplyUpdates(user.Value!, normalizedRequest);
 
         var result = new UpdateResponse(
             updatedCount,
@@ -110,9 +106,7 @@ public class UserUpdateService
         PictureUpdateResponse? avatarResponse = null;
         try
         {    
-            _userRepository.Update(user);
-
-            var avatarResult = await UpdateAvatarAsync(user,
+            var avatarResult = await UpdateAvatarAsync(user.Value!,
                 normalizedRequest.Avatar, cancellationToken);
 
             avatarResponse = avatarResult.Value;
@@ -125,6 +119,8 @@ public class UserUpdateService
                     .Fail(avatarResult.Error);
             }
 
+            _userRepository.Update(user.Value!);
+
             await _unitOfWork.CommitAsync();
 
         }
@@ -133,10 +129,10 @@ public class UserUpdateService
             await _unitOfWork.RollbackAsync();
 
             if (avatarResponse is not null &&
-                user.Avatar is not null)
+                user.Value!.Avatar is not null)
             {
                 await _avatarUploadService.RollbackAsync(
-                    user.Avatar,
+                    user.Value!.Avatar,
                     avatarResponse
                 );
             }
@@ -155,10 +151,10 @@ public class UserUpdateService
             await _unitOfWork.RollbackAsync();
 
             if (avatarResponse is not null &&
-                user.Avatar is not null)
+                user.Value!.Avatar is not null)
             {
                 await _avatarUploadService.RollbackAsync(
-                    user.Avatar,
+                    user.Value!.Avatar,
                     avatarResponse
                 );
             }
@@ -202,16 +198,16 @@ public class UserUpdateService
                 return Result<bool>.Fail(currencyExists.Error);
         }
 
-        //if (request.UserName is not null &&
-        //    request.UserName != user.UserName)
-        //{
-        //    var userNameExists = await _userValidator
-        //        .NotExistsByUserNameAsync(request.UserName, 
-        //            cancellationToken);
+        if (request.UserName is not null &&
+            request.UserName != user.UserName)
+        {
+            var userNameExists = await _userValidator
+                .NotExistsByUserNameAsync(request.UserName,
+                    cancellationToken);
 
-        //    if (!userNameExists.IsSuccess)
-        //        return Result<bool>.Fail(userNameExists.Error);
-        //}
+            if (!userNameExists.IsSuccess)
+                return Result<bool>.Fail(userNameExists.Error);
+        }
 
         return Result<bool>.Success(true);
     }

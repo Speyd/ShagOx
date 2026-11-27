@@ -39,7 +39,7 @@ public class UpdateLastSeenMiddleware
             if (int.TryParse(userIdClaim?.Value, out var userId))
             {
                 var device = await deviceProvier
-                    .GetDeviceAsync(context.RequestAborted);
+                    .GetUserDeviceAsync(context.RequestAborted);
                 
                 var now = DateTime.UtcNow;
                 var cutoff = now - _updaterOptions.UpdateLastSeen;
@@ -51,7 +51,6 @@ public class UpdateLastSeenMiddleware
                 if (device is not null)
                 {
                     await deviceCommands.UpdateLastActiveAsync(
-                        userId,
                         device.Id,
                         context.RequestAborted);
                 }

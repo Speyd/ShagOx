@@ -17,17 +17,19 @@ public class OrderQueriesController
     : ApiOwnerExistsController
 {
     private readonly IOrderQueryService _queryService;
+    private readonly IOrderExistsRepository _existsRepository;
 
 
     public OrderQueriesController(
         IOrderQueryService queryService,
-        IOrderExistsRepository orderExistsRepository,
+        IOrderExistsRepository existsRepository,
         IUserAdminQueryService userQueryService,
         IUserContext userContext
     )
-        : base(orderExistsRepository, userQueryService, userContext)
+        : base(existsRepository, userQueryService, userContext)
     {
         _queryService = queryService;
+        _existsRepository = existsRepository;
     }
 
 
@@ -39,7 +41,7 @@ public class OrderQueriesController
     {
         var myFilter = filter with 
         {
-            OwnerId = UserId 
+            SellerId = UserId 
         };
 
 
@@ -57,10 +59,35 @@ public class OrderQueriesController
     {
         var forbidden = await CheckOwnershipAsync(id);
         if (forbidden is not null)
-            return forbidden;
+        {
+            var isSeller = await _existsRepository
+                .IsSellerAsync(id, UserId!.Value, cancellationToken);
 
+            if(!isSeller)
+                return forbidden;
+        }
+        
         var result = await _queryService
             .GetByIdAsync(id, cancellationToken);
+
+        return result.ToActionResult();
+    }
+
+    [HttpGet("sales")]
+    public async Task<IActionResult> GetMySales(
+       [FromQuery] OrderSearchFilter filter,
+       [FromQuery] PaginationParams pagination,
+       CancellationToken cancellationToken)
+    {
+        var salesFilter = filter with
+        {
+            SellerId = UserId,
+            HideUnpaidOnline = true
+        };
+
+        var result = await _queryService
+            .SearchAsync(salesFilter, pagination,
+                cancellationToken);
 
         return result.ToActionResult();
     }

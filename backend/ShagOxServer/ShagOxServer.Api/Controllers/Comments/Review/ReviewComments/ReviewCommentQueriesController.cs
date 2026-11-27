@@ -5,7 +5,7 @@ using ShagOxServer.Application.DTOs.Comments.ReviewComments.Query;
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Filters.Comments;
-using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Comments.Review.ReviewComments;
 
@@ -16,20 +16,29 @@ public class ReviewCommentQueriesController
     : BaseQueryController<ReviewCommentDto,
         ReviewCommentSearchFilter>
 {
+    private readonly IReviewCommentQueryService _reviewService;
+
+
     public ReviewCommentQueriesController(
         IReviewCommentQueryService queryService,
         IUserContext userContext
     )
         : base(queryService, userContext)
     {
+        _reviewService = queryService;
     }
 
-    [HttpGet("search")]
-    public override async Task<IActionResult> Search(
-       [FromQuery] ReviewCommentSearchFilter filter,
-       [FromQuery] PaginationParams pagination,
-        CancellationToken cancellationToken)
+
+    [HttpGet("ratings")]
+    public async Task<IActionResult> GetRatings(
+        [FromQuery] long[] advertisementIds,
+        CancellationToken cancellationToken,
+        [FromQuery] int maxRatingsRequest = 100)
     {
-        return Ok();
+        var result = await _reviewService
+            .GetRatingsAsync(advertisementIds,
+                maxRatingsRequest, cancellationToken);
+
+        return result.ToActionResult();
     }
 }

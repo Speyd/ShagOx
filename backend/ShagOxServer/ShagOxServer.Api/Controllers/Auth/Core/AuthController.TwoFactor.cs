@@ -24,7 +24,7 @@ public partial class AuthController
         CancellationToken cancellationToken)
     {
         var result = await _twoFactor
-            .EnableAsync(cancellationToken);
+            .DisableAsync(cancellationToken);
 
         return result.ToActionResult();
     }

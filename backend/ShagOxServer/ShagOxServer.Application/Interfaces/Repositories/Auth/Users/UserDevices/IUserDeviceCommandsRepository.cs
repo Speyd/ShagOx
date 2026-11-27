@@ -2,8 +2,7 @@ namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevice
 public interface IUserDeviceCommandsRepository
 {
     Task<bool> UpdateLastActiveAsync(
-        long userId,
-        long deviceId,
+        long Id,
         CancellationToken cancellationToken = default);
 
     Task<bool> MarkAsTrasteAsync(

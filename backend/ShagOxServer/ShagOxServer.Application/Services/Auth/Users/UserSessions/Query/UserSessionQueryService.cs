@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Caches;
 using ShagOxServer.Application.DTOs.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Services.Auth.Users.UserSessions.Mapping;
@@ -24,6 +25,7 @@ public partial class UserSessionQueryService
     IUserSessionQueryService
 {
     private readonly IUserSessionQueryRepository _sessionQueryRepository;
+    private readonly IUserDeviceQueryService _deviceQueryService;
 
     protected override bool CacheBySearch => false;
 
@@ -32,6 +34,7 @@ public partial class UserSessionQueryService
 
     public UserSessionQueryService(
         IUserSessionQueryRepository sessionQueryRepository,
+        IUserDeviceQueryService deviceQueryService,
         IDataCacheService cacheService,
         IOptions<CacheOptions> cacheOptions
     )
@@ -40,13 +43,18 @@ public partial class UserSessionQueryService
             cacheOptions)
     {
         _sessionQueryRepository = sessionQueryRepository;
+        _deviceQueryService = deviceQueryService;
     }
 
 
     public override async Task<UserSessionDto> ApplyMapperAsync(
         UserSession entity)
     {
-        return UserSessionMapper.ToDto(entity);
+        var deviceDto = await _deviceQueryService
+            .ApplyMapperAsync(entity.UserDevice);
+        
+        return UserSessionMapper.ToDto(
+            entity, deviceDto);
     }
 
     public async Task<Result<PagedResult<UserSessionDto>>> GetByIpAddressAsync(

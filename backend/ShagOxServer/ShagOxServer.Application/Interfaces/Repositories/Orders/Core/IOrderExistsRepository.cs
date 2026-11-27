@@ -8,6 +8,12 @@ public interface IOrderExistsRepository
     : IExistsRepository<Order>,
     IExistsOwnerRepository
 {
+    Task<bool>  IsSellerAsync(
+        long id,
+        long userId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<bool> ExistsByOrderNumberAsync(
         string orderNumber,
         CancellationToken cancellationToken = default,

@@ -2,10 +2,12 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Auth.Registrations;
@@ -14,7 +16,6 @@ using ShagOxServer.Application.Services.Auth.Users.Contacts;
 using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
 using ShagOxServer.Application.Services.Auth.Users.Roles;
-using ShagOxServer.Application.Services.Devices.Core.Validator;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -34,8 +35,9 @@ public partial class RegisterService
     private readonly UserPasswordService _passwordService;
     private readonly UserContactApplier _contactApplier;
 
-    private readonly DeviceValidator _deviceValidator;
+    private readonly IDeviceProvider _deviceProvider;
     private readonly IUserDeviceCreateService _userDeviceService;
+    private readonly IUserDeviceQueryService _userQueryDeviceService;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RegisterService> _logger;
@@ -50,8 +52,9 @@ public partial class RegisterService
         UserPasswordService passwordService,
         UserContactApplier contactApplier,
         IVerificationSender senderVerification,
-        DeviceValidator deviceValidator,
+        IDeviceProvider deviceProvider,
         IUserDeviceCreateService userDeviceService,
+        IUserDeviceQueryService userQueryDeviceService,
         IUnitOfWork unitOfWork,
         ILogger<RegisterService> logger)
     {
@@ -63,8 +66,9 @@ public partial class RegisterService
         _passwordService = passwordService;
         _contactApplier = contactApplier;
         _senderVerification = senderVerification;
-        _deviceValidator = deviceValidator;
+        _deviceProvider = deviceProvider;
         _userDeviceService = userDeviceService;
+        _userQueryDeviceService = userQueryDeviceService;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -75,16 +79,13 @@ public partial class RegisterService
     {
         try
         {
-            var device = await _deviceValidator
-                .GetByIdentifierAsync(request.DeviceIdentifier);
+            var device = await _deviceProvider
+                .GetDeviceAsync();
 
-            if (!device.IsSuccess ||
-                device.Value is null)
+            if (device is null)
             {
-                return device.Error is null ?
-                    Result<RegisterResponse>.Fail(device.Error) :
-                    Result<RegisterResponse>.Fail(
-                        EntityNamesResources.Device);
+                return Result<RegisterResponse>.Fail(
+                    EntityNamesResources.Device);
             }
 
 
@@ -117,19 +118,13 @@ public partial class RegisterService
                             .Fail(createResult.Error);
                     }
                 }
+                var userDevice = await EnsureUserDeviceAsync(
+                    user.Id, device.Id);
 
-                var deviceResult = await _userDeviceService.CreateInternalAsync(
-                    new UserDeviceCreateRequest(
-                        user.Id,
-                        device.Value!.Id
-                ));
-
-                if (!deviceResult.IsSuccess)
+                if (!userDevice.IsSuccess)
                 {
-                    await _unitOfWork.RollbackAsync();
-
-                    return Result<RegisterResponse>
-                        .Fail(deviceResult.Error);
+                    return Result<RegisterResponse>.Fail(
+                        userDevice.Error);   
                 }
 
                 await _userCreater.SetDefaultName(user);

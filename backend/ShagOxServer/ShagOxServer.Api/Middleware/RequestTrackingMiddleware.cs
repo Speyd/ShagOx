@@ -147,10 +147,5 @@ public sealed class RequestTrackingMiddleware
         context.Response.Headers.RetryAfter =
             Math.Max(1, (int)Math.Ceiling(
                 remainingTime.TotalSeconds)).ToString();
-
-        await context.Response.WriteAsJsonAsync(new
-        {
-            message = "Too many requests. Try again later."
-        });
     }
 }

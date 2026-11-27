@@ -30,16 +30,14 @@ public class UserDeviceCommandsRepository
 
 
     public async Task<bool> UpdateLastActiveAsync(
-        long userId,
-        long deviceId,
+        long Id,
         CancellationToken cancellationToken = default)
     {
         var now = DateTime.UtcNow;
 
         var query = _db.UserDevices
             .Where(x => 
-                x.Id == userId &&
-                x.DeviceId == deviceId);
+                x.Id == Id);
 
         return await query.ExecuteUpdateWithCacheAsync(
             x => x.GetCacheContext(),

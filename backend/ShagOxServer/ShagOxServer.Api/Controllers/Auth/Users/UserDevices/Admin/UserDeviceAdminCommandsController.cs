@@ -26,8 +26,8 @@ public class UserDeviceAdminCommandsController
     }
 
 
-    [HttpPost("{id:long}/revoke")]
-    public async Task<IActionResult> RevokeSession(
+    [HttpPost("{id:long}/untrus")]
+    public async Task<IActionResult> UntrustDevice(
         [FromRoute] long id,
         CancellationToken cancellationToken)
     {

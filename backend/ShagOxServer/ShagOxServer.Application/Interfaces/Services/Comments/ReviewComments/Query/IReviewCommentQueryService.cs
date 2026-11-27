@@ -2,6 +2,7 @@ using ShagOxServer.Application.DTOs.Comments.ReviewComments.Query;
 using ShagOxServer.Application.Interfaces.Services.Base.Query;
 using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Domain.Filters.Comments;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Query;
 public interface IReviewCommentQueryService
@@ -9,4 +10,8 @@ public interface IReviewCommentQueryService
         ReviewComment,
         ReviewCommentSearchFilter>
 {
+    Task<Result<List<ReviewRatingDto>>> GetRatingsAsync(
+        IReadOnlyCollection<long> advertisementIds,
+        int maxRatingsRequest,
+        CancellationToken cancellationToken = default);
 }

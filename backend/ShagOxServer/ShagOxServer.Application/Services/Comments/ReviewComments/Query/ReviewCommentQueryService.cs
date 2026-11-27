@@ -10,6 +10,7 @@ using ShagOxServer.Application.Services.Comments.Core.Mapping;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Mapping;
 using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Domain.Filters.Comments;
+using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Comments.ReviewComments.Query;
 public class ReviewCommentQueryService
@@ -21,6 +22,8 @@ public class ReviewCommentQueryService
     IReviewCommentQueryService
 {
     private readonly IAvatarQueryService _avatarService;
+    private readonly IReviewCommentQueryRepository _commentRepository;
+
     protected override bool CacheBySearch => false;
 
     protected override bool CacheByPaged => false;
@@ -37,6 +40,7 @@ public class ReviewCommentQueryService
             cacheOptions)
     {
         _avatarService = avatarService;
+        _commentRepository = commentQueryRepository;
     }
 
 
@@ -50,5 +54,24 @@ public class ReviewCommentQueryService
             .ToUserCommentDto(entity, avatar);
 
         return ReviewCommentMapper.ToDto(entity, user);
+    }
+
+    public async Task<Result<List<ReviewRatingDto>>> GetRatingsAsync(
+        IReadOnlyCollection<long> advertisementIds,
+        int maxRatingsRequest,
+        CancellationToken cancellationToken = default)
+    {
+        var ids = advertisementIds
+            .Distinct()
+            .Take(maxRatingsRequest)
+            .ToList();
+
+        if (ids.Count == 0)
+            return Result<List<ReviewRatingDto>>.Success([]);
+
+        var ratings = await _commentRepository
+            .GetRatingsAsync(ids, cancellationToken);
+
+        return Result<List<ReviewRatingDto>>.Success(ratings);
     }
 }

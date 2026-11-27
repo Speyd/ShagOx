@@ -5,7 +5,7 @@ using ShagOxServer.Domain.Entities.Payments.Enum;
 namespace ShagOxServer.Domain.Filters.Orders.Core;
 public sealed record OrderSearchFilter
 (
-    long? OwnerId,
+    long? SellerId,
     string? SearchTerm,
     string? OrderNumber,
 
@@ -35,5 +35,6 @@ public sealed record OrderSearchFilter
     DateTime? ShippedFrom,
     DateTime? ShippedTo,
     DateTime? DeliveredFrom,
-    DateTime? DeliveredTo
+    DateTime? DeliveredTo,
+    bool? HideUnpaidOnline = null
 ) : BaseFilter();

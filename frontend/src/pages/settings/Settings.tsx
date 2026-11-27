@@ -7,6 +7,7 @@ import {
   TwoFactorSection,
 } from "@/widgets/settings";
 import styles from "./Settings.module.css";
+import SessionsSection from "@/widgets/settings/ui/SessionsSection";
 
 export function Settings() {
   return (
@@ -30,6 +31,7 @@ export function Settings() {
               <PasswordSection />
               <ContactsSection />
               <TwoFactorSection />
+              <SessionsSection />
               <DeleteAccountSection />
             </div>
           </div>

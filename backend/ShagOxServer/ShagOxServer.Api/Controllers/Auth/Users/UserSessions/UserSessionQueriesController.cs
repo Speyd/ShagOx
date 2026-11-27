@@ -39,5 +39,4 @@ public class UserSessionQueriesController
 
         return result.ToActionResult();
     }
-
 }

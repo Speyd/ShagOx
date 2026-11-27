@@ -22,7 +22,7 @@ public partial class AuthController
 
         DeleteTokens(Response);
 
-        return Ok(new { message = "Logged out successfully" });
+        return Ok();
     }
 
     [HttpPost("logout-all")]
@@ -41,7 +41,7 @@ public partial class AuthController
 
         DeleteTokens(Response);
 
-        return Ok(new { message = "Logged out from all devices successfully" });
+        return Ok();
     }
 
     [HttpPost("logout-other")]
@@ -60,6 +60,6 @@ public partial class AuthController
 
         DeleteTokens(Response);
 
-        return Ok(new { message = "Logged out from other devices successfully" });
+        return Ok();
     }
 }

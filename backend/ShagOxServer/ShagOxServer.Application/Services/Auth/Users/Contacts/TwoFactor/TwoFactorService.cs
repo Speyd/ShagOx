@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Login;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Contacts.TwoFactor;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;

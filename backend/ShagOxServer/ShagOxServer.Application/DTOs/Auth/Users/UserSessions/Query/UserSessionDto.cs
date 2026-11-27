@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.DTOs.Base;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
@@ -8,7 +9,7 @@ public sealed record UserSessionDto
     long Id,
     EntityStatus EntityStatus,
     long OwnerId,
-    long UserDeviceId,
+    UserDeviceDto UserDevice,
     string Browser,
     string? BrowserVersion,
     string? IpAddress,

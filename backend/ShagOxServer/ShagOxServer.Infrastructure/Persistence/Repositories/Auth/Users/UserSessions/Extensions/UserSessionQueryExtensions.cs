@@ -10,7 +10,9 @@ public static class UserSessionQueryExtensions
         this IQueryable<UserSession> query)
     {
         return query
-            .AsSplitQuery();
+            .AsSplitQuery()
+            .Include(x => x.UserDevice)
+                .ThenInclude(x => x.Device);
     }
 
     public static IQueryable<UserSessionCacheContext> SelectCacheInfo(

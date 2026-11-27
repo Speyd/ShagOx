@@ -13,9 +13,9 @@ namespace ShagOxServer.Api.Controllers.Auth.Users.UserSessions.Admin;
 
 [ApiController]
 [Route("api/admin/user-sessions")]
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class UserSessionAdminQueriesController
-    : BaseQueryController<UserSessionDto,
+    : BaseAdminQueryController<UserSessionDto,
         UserSessionSearchFilter>
 {
     private readonly IUserSessionQueryService _sessionQueryService;

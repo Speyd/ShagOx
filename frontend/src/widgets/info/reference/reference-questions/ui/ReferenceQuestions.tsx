@@ -35,9 +35,13 @@ export default function ReferenceQuestions() {
             <Text fz={15} fw={400}>
               {item.question}
             </Text>
-            <Button onClick={() => navigate(item.to)} className={styles.button}>
+            <Button
+              onClick={() => navigate(item.to)}
+              className={styles.button}
+              rightSection={ArrowRight}
+              variant="default"
+            >
               {item.buttonLabel}
-              <ArrowRight size={20} />
             </Button>
           </div>
         ))}

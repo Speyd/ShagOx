@@ -52,11 +52,15 @@ export default function ReferenceNeedHelp() {
           </React.Fragment>
         ))}
       </div>
-      <Button onClick={() => navigate("/support")} className={styles.button}>
+      <Button
+        onClick={() => navigate("/support")}
+        className={styles.button}
+        variant="light"
+        rightSection={ArrowRight}
+      >
         <Text fz={15} fw={400}>
           Зв'язок з підтримкою
         </Text>
-        <ArrowRight size={20} />
       </Button>
     </section>
   );

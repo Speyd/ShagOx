@@ -1,0 +1,503 @@
+.page {
+  width: 100%;
+  padding: 40px 0 80px;
+  background-color: var(--bg-base);
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5vw, 56px);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: clamp(24px, 5vw, 56px);
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.heroContent {
+  flex: 1;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background-color: rgba(50, 99, 157, 0.1);
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(28px, 4.5vw, 46px);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--color-base);
+}
+
+.highlight {
+  color: var(--color-primary);
+}
+
+.description {
+  margin: 0;
+  font-size: clamp(15px, 2vw, 17px);
+  line-height: 1.6;
+  color: var(--text-base);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.heroStats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 240px;
+}
+
+.heroStat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background-color: var(--bg-base);
+}
+
+.heroStatValue {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-base);
+}
+
+.heroStatLabel {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ---------- Channels ---------- */
+
+.channels {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.channelCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.channelCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(12, 35, 63, 0.06);
+}
+
+.channelTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--color-base);
+  color: #ffffff;
+}
+
+.copyButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.copyButton:hover {
+  background-color: var(--bg-base);
+  color: var(--color-base);
+}
+
+.channelTitle {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.channelValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-base);
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.channelValue:hover {
+  color: var(--color-primary);
+}
+
+.channelNote {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ---------- Schedule & office ---------- */
+
+.officeGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(20px, 3vw, 32px);
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-base);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-base);
+}
+
+.cardNote {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.schedule {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.scheduleRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--color-border);
+  font-size: 15px;
+  color: var(--text-base);
+}
+
+.scheduleRow:last-child {
+  border-bottom: none;
+}
+
+.scheduleHours {
+  font-weight: 600;
+  color: var(--color-base);
+}
+
+.officeCard {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 24px;
+}
+
+.officeInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.address {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  font-weight: 500;
+  color: var(--color-base);
+}
+
+.map {
+  position: relative;
+  flex: 1.2;
+  min-height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #e7eff9;
+  background-image:
+    linear-gradient(rgba(50, 99, 157, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(50, 99, 157, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.mapRoadH,
+.mapRoadV {
+  position: absolute;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 1px rgba(50, 99, 157, 0.12);
+}
+
+.mapRoadH {
+  left: -10%;
+  right: -10%;
+  top: 58%;
+  height: 14px;
+  transform: rotate(-8deg);
+}
+
+.mapRoadV {
+  top: -10%;
+  bottom: -10%;
+  left: 38%;
+  width: 12px;
+  transform: rotate(12deg);
+}
+
+.mapPin {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50% 50% 50% 0;
+  rotate: -45deg;
+  background-color: var(--color-base);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(12, 35, 63, 0.3);
+}
+
+.mapPin svg {
+  rotate: 45deg;
+}
+
+.mapLabel {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-base);
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(12, 35, 63, 0.1);
+}
+
+/* ---------- Departments ---------- */
+
+.departments {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700;
+  color: var(--color-base);
+}
+
+.sectionSubtitle {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.departmentGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.departmentCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.departmentCard:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 12px 24px rgba(12, 35, 63, 0.06);
+}
+
+.departmentCard .iconWrapper {
+  background-color: var(--bg-base);
+  color: var(--color-base);
+}
+
+.departmentTitle {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-base);
+}
+
+.departmentDescription {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.departmentEmail {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* ---------- CTA ---------- */
+
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: clamp(24px, 4vw, 40px);
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--color-base) 0%, #1e4a7d 100%);
+  color: #ffffff;
+}
+
+.ctaTitle {
+  margin: 0 0 6px;
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 700;
+}
+
+.ctaText {
+  margin: 0;
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+.ctaButton {
+  background-color: #ffffff !important;
+  color: var(--color-base) !important;
+}
+
+.ctaButton:hover {
+  background-color: #e7eff9 !important;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1200px) {
+  .channels,
+  .departmentGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .officeGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .heroStats {
+    flex-direction: row;
+    min-width: 0;
+  }
+
+  .heroStat {
+    flex: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .channels,
+  .departmentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroStats,
+  .officeCard {
+    flex-direction: column;
+  }
+}

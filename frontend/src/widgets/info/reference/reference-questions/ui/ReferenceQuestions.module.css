@@ -25,22 +25,6 @@
 }
 
 .button {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  border-radius: 10px;
   max-width: 250px;
   width: 100%;
-  gap: 8px;
-  background-color: white;
-  color: var(--text-base);
-
-  transition:
-    background-color 0.3s,
-    color 0.3s;
-}
-
-.button:hover {
-  background-color: var(--color-border);
 }

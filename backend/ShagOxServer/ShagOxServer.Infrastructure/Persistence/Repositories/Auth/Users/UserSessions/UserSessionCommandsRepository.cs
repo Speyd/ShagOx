@@ -29,6 +29,25 @@ public class UserSessionCommandsRepository
         _entityInvalid = entityInvalid;
     }
 
+    public async Task<bool> UpdateLastUsedAsync(
+        long sessionId,
+        CancellationToken cancellationToken = default)
+    {
+        var now = DateTime.UtcNow;
+
+        var query = _db.UserSessions
+            .Where(x =>
+                x.Id == sessionId);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(x => x.LastUsedAt, now),
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
+    }
 
     public async Task<bool> RevokeSessionAsync(
         long sessionId,

@@ -31,11 +31,11 @@ public class UserDeviceValidator
 
     public async Task<Result<bool>> ExistsAsync(
         long userId,
-        long deviceId,
+        long userDeviceId,
         CancellationToken cancellationToken = default)
     {
         if (!await _deviceExistsRepository
-            .ExistsAsync(userId, deviceId,
+            .ExistsAsync(userId, userDeviceId,
                 cancellationToken))
         {
             return Result<bool>.NotFound(
@@ -54,7 +54,7 @@ public class UserDeviceValidator
             .ExistsAsync(userId, deviceId,
                 cancellationToken))
         {
-            return Result<bool>.NotFound(
+            return Result<bool>.AlreadyExists(
                 EntityNamesResources.UserDevice);
         }
 

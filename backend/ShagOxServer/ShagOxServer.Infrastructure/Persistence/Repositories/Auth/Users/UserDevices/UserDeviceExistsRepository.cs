@@ -37,7 +37,7 @@ public class UserDeviceExistsRepository
 
     public async Task<bool> ExistsAsync(
         long userId,
-        long deviceId,
+        long userDeviceId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null)
     {
@@ -45,7 +45,7 @@ public class UserDeviceExistsRepository
            .WithStatusFilter(status)
            .AnyAsync(x =>
                 x.OwnerId == userId &&
-                x.DeviceId == deviceId,
+                x.Id == userDeviceId,
                 cancellationToken
        );
     }

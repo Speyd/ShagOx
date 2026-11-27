@@ -11,4 +11,8 @@ public interface IUserSessionExistsRepository
         int userId,
         string refreshToken,
         CancellationToken cancellationToken = default);
+
+    Task<bool> IsActiveAsync(
+        long sessionId,
+        CancellationToken cancellationToken = default);
 }

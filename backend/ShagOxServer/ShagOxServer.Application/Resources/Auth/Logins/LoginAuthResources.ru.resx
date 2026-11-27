@@ -135,6 +135,9 @@
   <data name="RefreshTokenExpired" xml:space="preserve">
     <value>Срок действия токена обновления истёк.</value>
   </data>
+  <data name="SessionInactiveOrExpired" xml:space="preserve">
+    <value>Ваша сессия неактивна или истекла.</value>
+  </data>
   <data name="SessionRevoked" xml:space="preserve">
     <value>Сессия была отозвана.</value>
   </data>

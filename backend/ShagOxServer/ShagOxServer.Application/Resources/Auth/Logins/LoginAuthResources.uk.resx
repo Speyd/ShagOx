@@ -135,6 +135,9 @@
   <data name="RefreshTokenExpired" xml:space="preserve">
     <value>Термін дії токена оновлення минув.</value>
   </data>
+  <data name="SessionInactiveOrExpired" xml:space="preserve">
+    <value>Ваша сесія неактивна або завершилася.</value>
+  </data>
   <data name="SessionRevoked" xml:space="preserve">
     <value>Сесію було відкликано.</value>
   </data>

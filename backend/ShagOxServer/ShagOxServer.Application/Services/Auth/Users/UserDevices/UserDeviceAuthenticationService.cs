@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Resources.Auth.Logins;
 using ShagOxServer.Application.Resources.EntityNames;
@@ -18,16 +19,19 @@ public class UserDeviceAuthenticationService
     private readonly IDeviceProvider _deviceProvider;
     private readonly IUserContext _userContext;
     private readonly IUserDeviceCreateService _deviceCreateService;
+    private readonly IUserDeviceQueryService _deviceQueryService;
 
 
     public UserDeviceAuthenticationService(
         IDeviceProvider deviceProvider,
         IUserContext userContext,
-        IUserDeviceCreateService deviceCreateService)
+        IUserDeviceCreateService deviceCreateService,
+        IUserDeviceQueryService deviceQueryService)
     {
         _deviceProvider = deviceProvider;
         _userContext = userContext;
         _deviceCreateService = deviceCreateService;
+        _deviceQueryService = deviceQueryService;
     }
 
 
@@ -49,12 +53,15 @@ public class UserDeviceAuthenticationService
 
 
 
-        var userDevice = await _deviceProvider.GetUserDeviceAsync();
+        var userDevice = await _deviceQueryService
+            .GetByUserAndDeviceAsync(user.Id, device.Id);
 
-        if (userDevice is not null)
+        if (userDevice.IsSuccess)
         {
-            if (userDevice.Status != UserDeviceStatus.Active ||
-                userDevice.DeviceId != device.Id)
+            var deviceValue = userDevice.Value;
+
+            if (deviceValue!.Status != UserDeviceStatus.Active ||
+                deviceValue!.Device.Id != device.Id)
             {
                 return Result<UserDeviceAuthenticationResponse>.Fail(
                     LoginAuthResources.DeviceBlocked);
@@ -62,8 +69,8 @@ public class UserDeviceAuthenticationService
 
             return Result<UserDeviceAuthenticationResponse>.Success(
                 new UserDeviceAuthenticationResponse(
-                    userDevice.Id,
-                    userDevice.IsTrusted));
+                    deviceValue!.Id,
+                    deviceValue!.IsTrusted));
         }      
 
 

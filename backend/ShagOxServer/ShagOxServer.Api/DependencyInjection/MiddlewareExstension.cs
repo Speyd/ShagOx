@@ -13,7 +13,7 @@ public static class MiddlewareExstension
 
         app.UseMiddleware<BlockedDeviceMiddleware>();
 
-        app.UseMiddleware<RevokedSessionMiddleware>();
+        app.UseMiddleware<BlockedSessionMiddleware>();
 
         app.UseMiddleware<UpdateLastSeenMiddleware>();
 

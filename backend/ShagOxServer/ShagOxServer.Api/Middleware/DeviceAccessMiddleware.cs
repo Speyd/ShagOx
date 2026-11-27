@@ -23,7 +23,8 @@ public class DeviceAccessMiddleware
         IDeviceCommandsRepository deviceCommands,
         IDeviceExistsRepository deviceExists)
     {
-        var device = await deviceProvider.GetDeviceAsync();
+        var device = await deviceProvider
+            .GetDeviceAsync(context.RequestAborted);
 
         var deviceIdentifier = device?.DeviceIdentifier
             ?? userContext.DeviceIdentifier;
@@ -31,7 +32,9 @@ public class DeviceAccessMiddleware
         if (!string.IsNullOrEmpty(deviceIdentifier))
         {
             var isBlocked = await deviceExists
-                .IsBlockedAsync(deviceIdentifier);
+                .IsBlockedAsync(
+                    deviceIdentifier,
+                    context.RequestAborted);
 
             if (isBlocked)
             {
@@ -56,7 +59,8 @@ public class DeviceAccessMiddleware
             else
             {
                 await deviceCommands.UpdateLastActiveAsync(
-                    device.Id);
+                    device.Id,
+                    context.RequestAborted);
             }
         }
 

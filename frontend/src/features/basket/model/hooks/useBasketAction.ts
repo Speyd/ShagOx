@@ -6,12 +6,18 @@ import { useCreateBasketItem } from "./useCreateBasketItem";
 import { useUpdateBasketItem } from "./useUpdateBasketItem";
 import { useGetBasket } from "./useGetBasket";
 import { getBasketItemStock, isSameBasketProduct } from "../types";
+import axios from "axios";
 
 type BasketActionOptions = {
   advertisementId: number;
   variantId?: number | null;
   quantity?: number;
   availableStock?: number | null;
+};
+
+type ApiErrorResponse = {
+  detail?: string;
+  message?: string;
 };
 
 export function useBasketAction({
@@ -94,10 +100,24 @@ export function useBasketAction({
         advertisementVariantId: variantId,
         quantity: itemQuantity,
       });
-    } catch {
+    } catch (error) {
       if (!mutationStarted) {
         toast.error("Не вдалося підготувати кошик");
+        return;
       }
+
+      let message = "Не вдалося додати товар до кошика";
+
+      if (axios.isAxiosError<ApiErrorResponse | string>(error)) {
+        const data = error.response?.data;
+        if (typeof data === "string" && data) {
+          message = data;
+        } else if (data && typeof data === "object") {
+          message = data.detail || data.message || message;
+        }
+      }
+
+      toast.error(message);
     } finally {
       pendingRef.current = false;
       setIsAdding(false);

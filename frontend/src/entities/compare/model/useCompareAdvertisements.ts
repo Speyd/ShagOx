@@ -2,7 +2,6 @@ import { useQueries } from "@tanstack/react-query";
 import { getAdvertisement } from "@/entities/advertisement/api/api";
 import type { Advertisement } from "@/shared/lib/types/advertisements";
 
-/** Актуальні дані товарів для порівняння (кеш спільний зі сторінкою товару). */
 export function useCompareAdvertisements(ids: number[]) {
   return useQueries({
     queries: ids.map((id) => ({

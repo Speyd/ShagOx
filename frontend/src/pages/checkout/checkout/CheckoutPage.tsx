@@ -32,8 +32,6 @@ export default function CheckoutPage() {
     return splitBySeller(selected.length > 0 ? selected : basketItems);
   }, [basket, selectedIds]);
 
-  // Одне замовлення = один продавець. Якщо сюди потрапили товари кількох
-  // продавців, оформлюємо першого, решта лишається в кошику.
   const items = groups[0]?.items ?? [];
   const otherSellers = groups.length - 1;
   const sellerName = useUserDisplayName(groups[0]?.sellerId);
@@ -44,7 +42,7 @@ export default function CheckoutPage() {
 
   return (
     <div className={styles.checkoutPage}>
-      <Container>
+      <Container className={styles.container}>
         {items.length === 0 ? (
           <div className={styles.empty}>
             <Text fw={600} fz={22}>

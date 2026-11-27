@@ -98,13 +98,9 @@ export function AdvertisementInfo({ advertisement }: AdvertisementInfoProps) {
 
   return (
     <div className={styles.wrapper}>
-      <Text className={styles.title}>
-        {advertisement.title}
-      </Text>
+      <Text className={styles.title}>{advertisement.title}</Text>
 
-      <Text className={styles.description}>
-        {advertisement.description}
-      </Text>
+      <Text className={styles.description}>{advertisement.description}</Text>
 
       <RatingSummary
         advertisementId={advertisement.id}

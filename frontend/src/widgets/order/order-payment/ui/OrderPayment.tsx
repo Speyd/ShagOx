@@ -24,21 +24,16 @@ import type { Order } from "@/entities/order/model/types";
 import { usePayOrder } from "@/features/order/pay-order";
 import styles from "./OrderPayment.module.css";
 
-/** Скільки чекаємо вебхук банку після повернення зі сторінки оплати. */
 const PAYMENT_CHECK_WINDOW = 60_000;
 
 type Tone = "warning" | "danger" | "success" | "neutral";
 
 type OrderPaymentProps = {
   order: Order;
-  /** Користувач щойно повернувся зі сторінки оплати банку. */
   returnedFromPayment?: boolean;
 };
 
-/**
- * Картка оплати: з'являється, лише коли від користувача потрібна дія
- * (оплатити, оплатити повторно) або щоб підтвердити щойно здійснену оплату.
- */
+
 export function OrderPayment({
   order,
   returnedFromPayment = false,
@@ -51,11 +46,9 @@ export function OrderPayment({
   );
   const checkingLeft = useCountdown(checkUntil);
 
-  // Перераховується щосекунди: useCountdown викликає ререндер.
   const state = getOrderPaymentState(order);
   const linkExpiresAt = state.kind === "awaiting" ? state.expiresAt : null;
 
-  // Коли посилання закінчилося — оновлюємо замовлення з сервера.
   const linkLeft = useCountdown(linkExpiresAt, () =>
     queryClient.invalidateQueries({ queryKey: orderQueryKey(order.id) }),
   );
@@ -192,7 +185,6 @@ function PaymentCard({
   );
 }
 
-/** Короткий статус оплати для блоку «Оплата» в деталях замовлення. */
 export function PaymentStatusBadge({ state }: { state: OrderPaymentState }) {
   const badge = getBadge(state);
   if (!badge) return null;

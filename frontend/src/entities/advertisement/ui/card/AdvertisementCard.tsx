@@ -35,7 +35,8 @@ export function AdvertisementCard(props: AdvertisementCardProps) {
   const cover = "pictures" in props ? props.pictures[0] : props.picture;
   const imageUrl = cover?.url || "/placeholder-image.png";
   const href = `/advertisement/${props.id}`;
-  const fallbackSymbol = "currency" in props ? props.currency?.symbol : undefined;
+  const fallbackSymbol =
+    "currency" in props ? props.currency?.symbol : undefined;
   const conversion = props.priceConversion;
   const price = toDisplayPrice(
     variant?.price ?? props.price ?? 0,
@@ -116,6 +117,7 @@ export function AdvertisementCard(props: AdvertisementCardProps) {
               {isInBasket ? "У кошику" : "У кошик"}
             </span>
           </Button>
+
           <FavoriteButton
             variant="card"
             advertisementId={props.id}

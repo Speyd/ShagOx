@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Loader, SegmentedControl } from "@mantine/core";
+import { Button, SegmentedControl } from "@mantine/core";
 import { Scale } from "lucide-react";
 import clsx from "clsx";
 import Container from "@/shared/ui/layout/container";
@@ -11,6 +11,7 @@ import {
 } from "@/entities/compare";
 import { CompareBoard, getCategoryLabel } from "@/widgets/compare";
 import styles from "./ComparePage.module.css";
+import { ComparePageSkeleton } from "./ComparePageSkeleton";
 
 type ViewMode = "all" | "diff";
 
@@ -23,31 +24,41 @@ export default function ComparePage() {
     useMemo(() => items.map((i) => i.id), [items]),
   );
 
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null,
+  );
   const [mode, setMode] = useState<ViewMode>("all");
 
-  /** Вкладки категорій у порядку додавання товарів. */
   const categories = useMemo(() => {
-    const map = new Map<number, { id: number; code: string; label: string; count: number }>();
+    const map = new Map<
+      number,
+      { id: number; code: string; label: string; count: number }
+    >();
     for (const ad of advertisements) {
       const entry = map.get(ad.category.id);
       if (entry) entry.count++;
-      else map.set(ad.category.id, { id: ad.category.id, code: ad.category.code, label: getCategoryLabel(ad.category), count: 1 });
+      else
+        map.set(ad.category.id, {
+          id: ad.category.id,
+          code: ad.category.code,
+          label: getCategoryLabel(ad.category),
+          count: 1,
+        });
     }
     return [...map.values()];
   }, [advertisements]);
 
-  // якщо обрану категорію очистили — показуємо першу доступну
-  const active = categories.find((c) => c.id === selectedCategoryId) ?? categories[0];
-  const activeItems = advertisements.filter((ad) => ad.category.id === active?.id);
+  const active =
+    categories.find((c) => c.id === selectedCategoryId) ?? categories[0];
+  const activeItems = advertisements.filter(
+    (ad) => ad.category.id === active?.id,
+  );
   const canAdd = activeItems.length < MAX_COMPARE_PER_CATEGORY;
 
   if (isLoading && advertisements.length === 0) {
     return (
       <section className={styles.page}>
-        <div className={styles.loader}>
-          <Loader />
-        </div>
+        <ComparePageSkeleton />
       </section>
     );
   }
@@ -89,7 +100,10 @@ export default function ComparePage() {
               <button
                 key={category.id}
                 type="button"
-                className={clsx(styles.tab, category.id === active?.id && styles.tabActive)}
+                className={clsx(
+                  styles.tab,
+                  category.id === active?.id && styles.tabActive,
+                )}
                 onClick={() => setSelectedCategoryId(category.id)}
               >
                 {category.label}
@@ -113,9 +127,15 @@ export default function ComparePage() {
             <p>
               Натисніть «Порівняти» на сторінці товару, щоб додати його сюди.
               <br />
-              Порівнювати можна до {MAX_COMPARE_PER_CATEGORY} товарів однієї категорії.
+              Порівнювати можна до {MAX_COMPARE_PER_CATEGORY} товарів однієї
+              категорії.
             </p>
-            <Button component={Link} to="/catalog" bg="var(--color-base)" radius="md">
+            <Button
+              component={Link}
+              to="/catalog"
+              bg="var(--color-base)"
+              radius="md"
+            >
               Перейти до каталогу
             </Button>
           </div>

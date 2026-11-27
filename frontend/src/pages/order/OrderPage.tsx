@@ -249,7 +249,7 @@ export default function OrderPage() {
               </div>
               <div className={styles.row}>
                 <Text c="dimmed">Доставка</Text>
-                <Text>{deliveryPrice}</Text>
+                <Text c="green">{deliveryPrice}</Text>
               </div>
               <div className={styles.row}>
                 <Text fw={700} fz={18}>

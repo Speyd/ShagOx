@@ -10,7 +10,7 @@ export default defineConfig({
     },
   },
   server: {
-    host: "127.0.0.1",
+    host: true,
     port: 5173,
     strictPort: true,
     allowedHosts: ["www.dmarketly.com", "dmarketly.com", "dev.dmarketly.com"],

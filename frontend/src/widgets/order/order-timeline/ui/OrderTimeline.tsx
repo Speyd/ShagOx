@@ -109,7 +109,6 @@ function buildSteps(order: Order): Step[] {
 
   if (!closed) return steps;
 
-  // Скасоване замовлення: лишаємо пройдені кроки й додаємо фінальний.
   const reached = steps.filter((step) => step.done);
   reached.push({
     key: "closed",
@@ -128,7 +127,6 @@ function buildSteps(order: Order): Step[] {
   return reached;
 }
 
-/** Хронологія замовлення: які етапи пройдено і коли. */
 export function OrderTimeline({ order }: { order: Order }) {
   const steps = buildSteps(order);
   const active = steps.reduce(

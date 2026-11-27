@@ -34,6 +34,14 @@
   background-color: var(--color-primary-hover);
 }
 
+.container {
+  max-width: 1140px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .contentWrapper {
   display: grid;
   grid-template-columns: 1fr;
@@ -60,6 +68,7 @@
 
 .notice {
   margin-bottom: 20px;
+  text-align: center;
   padding: 14px 18px;
   border: 1px solid #fed7aa;
   border-radius: 12px;

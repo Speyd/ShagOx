@@ -32,6 +32,7 @@ public partial class AdvertisementQueryRepository
         EntityStatus? status = null)
     {
         return await _db.Advertisements
+            .AsNoTracking()
             .ShortWithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.Status.Code == AdvertisementStatus.Active)

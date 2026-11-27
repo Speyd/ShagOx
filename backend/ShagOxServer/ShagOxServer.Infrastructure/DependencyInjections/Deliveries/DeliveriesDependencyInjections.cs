@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using ShagOxServer.Infrastructure.DependencyInjections.Deliveries.Providers;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Deliveries;
 public static class DeliveriesDependencyInjections
@@ -8,8 +7,6 @@ public static class DeliveriesDependencyInjections
         this IServiceCollection services)
     {
         services.AddDeliveryProviderInfrastructure();
-
-        services.AddPovidersInfrastructure();
 
         return services;
     }

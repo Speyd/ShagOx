@@ -59,11 +59,14 @@ public partial class PaymentProcessingService
             order = payment.Order;
 
             var isPaid = await _orderCommandRepository
-                .TryMarkAsPaidAsync(order.Id, cancellationToken);
+                .TryMarkAsPaidAsync(order.Id, null, cancellationToken);
 
             if (!isPaid)
             {
                 await _unitOfWork.RollbackAsync();
+
+                await _orderCommandRepository
+                    .TryMarkAsFailedAsync(order.Id);
 
                 return Result<bool>.Success(true);
             }
@@ -75,6 +78,9 @@ public partial class PaymentProcessingService
             if (!deleteResult.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
+
+                await _orderCommandRepository
+                    .TryMarkAsFailedAsync(order.Id);
 
                 return Result<bool>
                     .Fail(deleteResult.Error);
@@ -92,8 +98,21 @@ public partial class PaymentProcessingService
 
             await _unitOfWork.CommitAsync();
 
-            return await _emailService
+            var emailResult = await _emailService
                 .SendOrderPaidAsync(order);
+
+            if(!emailResult.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                await _orderCommandRepository
+                    .TryMarkAsFailedAsync(order.Id);
+
+                return Result<bool>
+                    .Fail(emailResult.Error);
+            }
+
+            return Result<bool>.Success(true);
         }
         catch
         {

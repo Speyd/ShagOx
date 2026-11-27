@@ -9,6 +9,8 @@ public sealed class NovaPoshtaOptions
 
     public string BaseUrl { get; set; } = "";
 
+    public string TrackingUrl { get; set; } = "";
+
     public string CurrencyCode { get; set; } = "UAH";
     public string ProviderCode  { get; set; } = "NOVA_POSHTA";
 

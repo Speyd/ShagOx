@@ -124,7 +124,9 @@ public class PaymentWebhookProcessor
                     webhook.InvoiceId, cancellationToken);
 
             if (!result.IsSuccess)
-                continue;
+            {
+
+            }
 
             await _webhookCommandRepository.MarkAsProcessedAsync(
                 webhook.Id, cancellationToken);

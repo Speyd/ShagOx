@@ -13,6 +13,11 @@ public interface ICurrencyQueryRepository
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
+    Task<Currency?> GetByCodeNoTrackingAsync(
+        string code,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<Currency?> GetBySymbolAsync(
         string symbol,
         CancellationToken cancellationToken = default,

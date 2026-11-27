@@ -22,12 +22,11 @@ public class DeliveryProviderTranslationDeleteService
 
     public DeliveryProviderTranslationDeleteService(
         IRepository<DeliveryProviderTranslation> deliveryRepository,
-        ICommandRepository<DeliveryProviderTranslation> deliveryCommand,
         DeliveryProviderTranslationValidator deliveryValidator,
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderTranslationDeleteService> logger
     )
-        : base(deliveryCommand, deliveryValidator, unitOfWork, logger)
+        : base(deliveryRepository, deliveryValidator, unitOfWork, logger)
     {
         _deliveryRepository = deliveryRepository;
         _deliveryValidator = deliveryValidator;

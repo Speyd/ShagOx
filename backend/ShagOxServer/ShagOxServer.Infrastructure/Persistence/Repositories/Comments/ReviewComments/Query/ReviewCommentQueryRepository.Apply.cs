@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Comments.ReviewComments;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Comments.Review;
 using ShagOxServer.Domain.Filters.Comments;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Comments.Core.Query;
@@ -11,9 +12,10 @@ public partial class ReviewCommentQueryRepository
       IReviewCommentQueryRepository
 {
     protected override IQueryable<ReviewComment> ApplyIncludes(
-        IQueryable<ReviewComment> query)
+        IQueryable<ReviewComment> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<ReviewComment> ApplyFilter(

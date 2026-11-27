@@ -7,7 +7,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Repositories.LineItems.LineIte
 public static class LineItemAttributeQueryExtensions
 {
     public static IQueryable<LineItemAttribute> WithIncludes(
-       this IQueryable<LineItemAttribute> query)
+       this IQueryable<LineItemAttribute> query,
+        EntityStatus? status = null)
     {
         return query
             .AsSplitQuery()

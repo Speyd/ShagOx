@@ -12,8 +12,8 @@ public static class OrderFilterExtensions
         if (filter is null)
             return query;
 
-        if (filter.OwnerId.HasValue)
-            query = query.Where(x => x.OwnerId == filter.OwnerId);
+        if (filter.SellerId.HasValue)
+            query = query.Where(x => x.OwnerId == filter.SellerId);
 
         if (!string.IsNullOrWhiteSpace(filter.SearchTerm))
         {

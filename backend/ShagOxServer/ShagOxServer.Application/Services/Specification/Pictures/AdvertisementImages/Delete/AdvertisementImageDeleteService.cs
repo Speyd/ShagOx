@@ -17,14 +17,12 @@ public class AdvertisementImageDeleteService
 {
     public AdvertisementImageDeleteService(
         IRepository<AdvertisementImage> imageRepository,
-        ICommandRepository<AdvertisementImage> imageCommand,
         AdvertisementImageValidator imageValidator,
         PictureValidator pictureValidator,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementImageDeleteService> logger
     )
         : base(imageRepository,
-            imageCommand,
             imageValidator, 
             pictureValidator, 
             unitOfWork, 

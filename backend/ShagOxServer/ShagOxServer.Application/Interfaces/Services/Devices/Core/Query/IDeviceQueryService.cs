@@ -20,4 +20,9 @@ public interface IDeviceQueryService
         string identifier,
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
+
+    Task<Result<Device?>> GetEntityByIdentifierNoTrackingAsync(
+        string identifier,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
 }

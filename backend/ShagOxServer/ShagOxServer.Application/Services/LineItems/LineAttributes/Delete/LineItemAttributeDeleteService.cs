@@ -24,12 +24,11 @@ public class LineItemAttributeDeleteService
 
     public LineItemAttributeDeleteService(
         IRepository<LineItemAttribute> attributeRepository,
-        ICommandRepository<LineItemAttribute> attributeCommand,
         LineItemAttributeValidator attributeValidator,
         IUnitOfWork unitOfWork,
         ILogger<LineItemAttributeDeleteService> logger
     )
-        : base(attributeCommand, attributeValidator, unitOfWork, logger)
+        : base(attributeRepository, attributeValidator, unitOfWork, logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;

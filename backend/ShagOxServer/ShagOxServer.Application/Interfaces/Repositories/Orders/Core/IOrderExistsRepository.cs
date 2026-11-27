@@ -11,8 +11,7 @@ public interface IOrderExistsRepository
     Task<bool>  IsSellerAsync(
         long id,
         long userId,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByOrderNumberAsync(
         string orderNumber,

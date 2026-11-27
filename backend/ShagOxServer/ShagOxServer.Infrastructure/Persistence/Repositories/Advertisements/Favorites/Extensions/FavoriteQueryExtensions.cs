@@ -7,8 +7,10 @@ namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Fa
 public static class FavoriteQueryExtensions
 {
     public static IQueryable<Favorite> WithIncludes(
-        this IQueryable<Favorite> query)
+        this IQueryable<Favorite> query,
+        EntityStatus? status = null)
     {
+
         return query
             .AsSplitQuery()
 
@@ -22,7 +24,11 @@ public static class FavoriteQueryExtensions
             .Include(x => x.Advertisement)
                 .ThenInclude(a => a.Currency)
             .Include(x => x.Advertisement)
-                .ThenInclude(a => a.Pictures);
+                .ThenInclude(a => a.Status)
+            .Include(x => x.Advertisement)
+                .ThenInclude(a => a.Pictures)
+            .Include(x => x.Advertisement)
+                .ThenInclude(a => a.Variants);
     }
 
     public static IQueryable<FavoriteCacheContext> SelectCacheInfo(

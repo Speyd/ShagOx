@@ -7,12 +7,12 @@ public static class OrderEmailItemMapper
     public static OrderEmailItem ToDto(
         OrderItem item)
     {
+        var advert = item.Advertisement;
+
         return new OrderEmailItem(
-            item.AdvertisementVariant?.Advertisement.Title
-                ?? item.Advertisement.Title,
-            item.AdvertisementVariant?.Advertisement.Pictures.FirstOrDefault()?.Url
-                ?? item.Advertisement.Pictures.FirstOrDefault()?.Url,
+            advert.Title,
+            advert.Pictures.FirstOrDefault()?.Url,
             item.Price,
-           item.Quantity);
+            item.Quantity);
     }
 }

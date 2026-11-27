@@ -21,6 +21,7 @@ public partial class PictureQueryRepository<TEntity, TFilter>
         EntityStatus status = EntityStatus.Active)
     {
         var picture = await _db.Set<TEntity>()
+            .AsNoTracking()
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(x => x.OwnerId == ownerId,
                 cancellationToken);

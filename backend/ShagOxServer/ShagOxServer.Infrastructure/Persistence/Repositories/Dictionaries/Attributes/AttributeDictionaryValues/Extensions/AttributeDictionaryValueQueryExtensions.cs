@@ -7,7 +7,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attr
 public static class AttributeDictionaryValueQueryExtensions
 {
     public static IQueryable<AttributeDictionaryValue> WithIncludes(
-        this IQueryable<AttributeDictionaryValue> query)
+        this IQueryable<AttributeDictionaryValue> query,
+        EntityStatus? status = null)
     {
         return query
             .AsSplitQuery()

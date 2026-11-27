@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDefinitions.Translations;
@@ -25,9 +26,10 @@ public class AttributeDefinitionTranslationQueryRepository
 
 
     protected override IQueryable<AttributeDefinitionTranslation> ApplyIncludes(
-         IQueryable<AttributeDefinitionTranslation> query)
+         IQueryable<AttributeDefinitionTranslation> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<AttributeDefinitionTranslation> ApplyFilter(

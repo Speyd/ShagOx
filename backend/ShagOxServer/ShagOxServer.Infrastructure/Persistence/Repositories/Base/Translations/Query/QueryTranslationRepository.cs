@@ -98,6 +98,7 @@ public class QueryTranslationRepository<TEntity, Translation>
         IQueryable<Translation> query = _db.Set<Translation>();
 
         return await query
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.TranslatableId == translatableId)
             .Select(x => new TranslationCacheContext(

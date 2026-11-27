@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Favorites.Extensions;
@@ -10,7 +11,8 @@ public partial class FavoriteQueryRepository
       IFavoriteQueryRepository
 {
     protected override IQueryable<Favorite> ApplyIncludes(
-         IQueryable<Favorite> query)
+         IQueryable<Favorite> query,
+        EntityStatus? status = null)
     {
         return query.WithIncludes();
     }

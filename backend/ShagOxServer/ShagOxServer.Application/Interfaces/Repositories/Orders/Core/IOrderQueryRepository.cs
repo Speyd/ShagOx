@@ -26,4 +26,13 @@ public interface IOrderQueryRepository
         string trackingNumber,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
+
+    Task<Order?> GetForPaymentAsync(
+        long orderId,
+        CancellationToken cancellationToken = default);
+
+    Task<List<long>> GetSellerIdsAsync(
+        long orderId,
+        CancellationToken cancellationToken = default);
+
 }

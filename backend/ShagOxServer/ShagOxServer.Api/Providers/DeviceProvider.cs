@@ -37,7 +37,7 @@ public class DeviceProvider
             return null;
 
         var result = await _userDeviceService
-            .GetEntityByUserAndDeviceAsync(
+            .GetEntityByUserAndDeviceNoTrackingAsync(
                 userId.Value, device.Id,
                 cancellationToken, status);
 
@@ -52,7 +52,8 @@ public class DeviceProvider
             return null;
 
         var result = await _deviceService
-            .GetEntityByIdentifierAsync(_userContext.DeviceIdentifier,
+            .GetEntityByIdentifierNoTrackingAsync(
+                _userContext.DeviceIdentifier,
                 cancellationToken, status);
 
         return result.IsSuccess ? result.Value : null;

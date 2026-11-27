@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Attributes.AttributeDictionaries.Extensions;
 public static class AttributeDictionaryQueryExtensions
 {
     public static IQueryable<AttributeDictionary> WithIncludes(
-        this IQueryable<AttributeDictionary> query)
+        this IQueryable<AttributeDictionary> query,
+        EntityStatus? status = null)
     {
         return query
             .AsSplitQuery()

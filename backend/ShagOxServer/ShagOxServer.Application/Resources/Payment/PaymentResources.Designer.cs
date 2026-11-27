@@ -61,6 +61,42 @@ namespace ShagOxServer.Application.Resources.Payment {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The order has already been paid..
+        /// </summary>
+        public static string OrderAlreadyPaid {
+            get {
+                return ResourceManager.GetString("OrderAlreadyPaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The payment is being processed by the bank. Please refresh the page in a few minutes..
+        /// </summary>
+        public static string OrderPaymentInProgress {
+            get {
+                return ResourceManager.GetString("OrderPaymentInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This order is paid upon delivery and does not require online payment..
+        /// </summary>
+        public static string OrderPaymentNotRequired {
+            get {
+                return ResourceManager.GetString("OrderPaymentNotRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This order can no longer be paid. Please place a new order..
+        /// </summary>
+        public static string OrderPaymentUnavailable {
+            get {
+                return ResourceManager.GetString("OrderPaymentUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Payment has already been successfully completed and cannot be changed..
         /// </summary>
         public static string PaymentAlreadySucceeded {
@@ -75,6 +111,15 @@ namespace ShagOxServer.Application.Resources.Payment {
         public static string PaymentProviderInvalidResponse {
             get {
                 return ResourceManager.GetString("PaymentProviderInvalidResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Failed to refund the buyer. The order status has not been changed. Please try again later..
+        /// </summary>
+        public static string PaymentRefundFailed {
+            get {
+                return ResourceManager.GetString("PaymentRefundFailed", resourceCulture);
             }
         }
         

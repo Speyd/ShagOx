@@ -19,6 +19,7 @@ public partial class AdvertisementQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         var advert = await _db.Advertisements
+            .AsNoTracking()
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -31,6 +32,7 @@ public partial class AdvertisementQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Advertisements
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.StatusId == statusId)
             .SelectCacheInfo(status)
@@ -43,6 +45,7 @@ public partial class AdvertisementQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Advertisements
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.OwnerId == userId ||
                 x.BuyerId == userId)
@@ -56,6 +59,7 @@ public partial class AdvertisementQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Advertisements
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.CategoryId == categoryId)
             .SelectCacheInfo(status)
@@ -68,6 +72,7 @@ public partial class AdvertisementQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Advertisements
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.ConditionId == conditionId)
             .SelectCacheInfo(status)

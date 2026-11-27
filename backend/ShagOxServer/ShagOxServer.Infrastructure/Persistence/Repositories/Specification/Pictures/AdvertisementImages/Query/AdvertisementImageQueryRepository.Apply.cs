@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Images;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.AdvertisementImages;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Core.Multiple.Query;
@@ -10,9 +11,10 @@ public partial class AdvertisementImageQueryRepository
       IAdvertisementImageQueryRepository
 {
     protected override IQueryable<AdvertisementImage> ApplyIncludes(
-        IQueryable<AdvertisementImage> query)
+        IQueryable<AdvertisementImage> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<AdvertisementImage> ApplyFilter(

@@ -39,6 +39,21 @@ public partial class UserDeviceQueryRepository
                 x.DeviceId == deviceId);
     }
 
+    public async Task<UserDevice?> GetByUserAndDeviceNoTrackingAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.UserDevices
+            .AsNoTracking()
+            .WithIncludes()
+            .WithStatusFilter(status)
+            .FirstOrDefaultAsync(x =>
+                x.OwnerId == userId &&
+                x.DeviceId == deviceId);
+    }
+
     public async Task<PagedResult<UserDevice>> GetByUserAsync(
         long userId,
         PaginationParams pagination,

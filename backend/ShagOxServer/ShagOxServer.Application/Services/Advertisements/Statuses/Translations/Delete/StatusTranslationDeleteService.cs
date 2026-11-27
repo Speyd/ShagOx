@@ -23,13 +23,12 @@ public class StatusTranslationDeleteService
 
     public StatusTranslationDeleteService(
         IRepository<StatusTranslation> statusRepository,
-        ICommandRepository<StatusTranslation> statusCommand,
         StatusTranslationValidator statusValidator,
         StatusTranslationInvalidationService transInvalid,
         IUnitOfWork unitOfWork,
         ILogger<StatusTranslationDeleteService> logger
     )
-        : base(statusCommand, statusValidator, unitOfWork, logger)
+        : base(statusRepository, statusValidator, unitOfWork, logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;

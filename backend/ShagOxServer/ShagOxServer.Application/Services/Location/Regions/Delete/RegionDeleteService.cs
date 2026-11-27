@@ -25,12 +25,11 @@ public class RegionDeleteService
 
     public RegionDeleteService(
         IRepository<Region> regionRepository,
-        ICommandRepository<Region> regionCommand,
         RegionValidator regionValidator,
         IUnitOfWork unitOfWork,
         ILogger<RegionDeleteService> logger
     )
-        : base(regionCommand, regionValidator, unitOfWork, logger)
+        : base(regionRepository, regionValidator, unitOfWork, logger)
     {
         _regionRepository = regionRepository;
         _regionValidator = regionValidator;

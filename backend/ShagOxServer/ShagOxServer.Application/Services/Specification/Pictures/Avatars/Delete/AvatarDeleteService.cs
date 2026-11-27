@@ -18,7 +18,6 @@ public class AvatarDeleteService
 {
     public AvatarDeleteService(
         IRepository<Avatar> avatarRepository,
-        ICommandRepository<Avatar> avatarCommand,
         AvatarValidator avatarValidator,
         PictureValidator pictureValidator,
         AvatarInvalidationService avatarInvalid,
@@ -26,7 +25,6 @@ public class AvatarDeleteService
         ILogger<AvatarDeleteService> logger
     )
         : base(avatarRepository,
-            avatarCommand,
             avatarValidator, 
             pictureValidator, 
             unitOfWork, 

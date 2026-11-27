@@ -9,7 +9,9 @@ public class DeliveryProviderResolver
     public DeliveryProviderResolver(
         IEnumerable<IDeliveryProviderClient> providers)
     {
-        _providers = providers.ToDictionary(
+        var providerList = providers.ToList();
+
+        _providers = providerList.ToDictionary(
             x => x.ProviderCode,
             StringComparer.OrdinalIgnoreCase);
     }

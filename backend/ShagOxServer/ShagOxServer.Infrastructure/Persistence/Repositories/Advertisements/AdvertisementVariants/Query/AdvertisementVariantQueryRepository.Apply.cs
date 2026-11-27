@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants.Extensions;
@@ -11,9 +12,10 @@ public partial class AdvertisementVariantQueryRepository
 {
 
     protected override IQueryable<AdvertisementVariant> ApplyIncludes(
-        IQueryable<AdvertisementVariant> query)
+        IQueryable<AdvertisementVariant> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<AdvertisementVariant> ApplyFilter(

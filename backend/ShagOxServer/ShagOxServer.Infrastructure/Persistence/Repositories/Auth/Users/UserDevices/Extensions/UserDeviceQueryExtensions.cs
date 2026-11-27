@@ -1,15 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Domain.Base.Cache;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth.Users;
-using System.Linq.Expressions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserDevices.Extensions;
 public static class UserDeviceQueryExtensions
 {
     public static IQueryable<UserDevice> WithIncludes(
-        this IQueryable<UserDevice> query)
+        this IQueryable<UserDevice> query,
+        EntityStatus? status = null)
     {
         return query
             .AsSplitQuery()

@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Filters.Auth.Users.Core;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.Core.Extensions;
@@ -10,9 +11,10 @@ public partial class UserQueryRepository
       IUserQueryRepository
 {
     protected override IQueryable<User> ApplyIncludes(
-        IQueryable<User> query)
+        IQueryable<User> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<User> ApplyFilter(

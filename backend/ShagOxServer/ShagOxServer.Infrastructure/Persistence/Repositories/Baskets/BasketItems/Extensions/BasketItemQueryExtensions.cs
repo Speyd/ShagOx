@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Baskets.BasketItems.Extensions;
 public static class BasketItemQueryExtensions
 {
     public static IQueryable<BasketItem> WithIncludes(
-       this IQueryable<BasketItem> query)
+       this IQueryable<BasketItem> query,
+        EntityStatus? status = null)
     {
         return query
             .AsSplitQuery()

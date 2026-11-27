@@ -123,10 +123,43 @@
   <data name="InvalidPrice" xml:space="preserve">
     <value>The product '{0}' price is invalid.</value>
   </data>
+  <data name="OrderCancelNotAllowed" xml:space="preserve">
+    <value>The order can no longer be cancelled: it has already been handed over for delivery.</value>
+  </data>
+  <data name="OrderCompleteNotAllowed" xml:space="preserve">
+    <value>Only a shipped order can be completed.</value>
+  </data>
+  <data name="OrderConfirmNotAllowed" xml:space="preserve">
+    <value>Only a new order can be confirmed.</value>
+  </data>
+  <data name="OrderConfirmUnpaid" xml:space="preserve">
+    <value>The buyer has not paid for the order yet. You can confirm it after the payment.</value>
+  </data>
+  <data name="OrderHasOtherSellersItems" xml:space="preserve">
+    <value>The order contains products of other sellers and can be managed only by an administrator.</value>
+  </data>
+  <data name="OrderMultipleSellers" xml:space="preserve">
+    <value>An order can contain products of only one seller. Please place orders with different sellers separately.</value>
+  </data>
+  <data name="OrderNotSellerOrder" xml:space="preserve">
+    <value>This order does not contain your products.</value>
+  </data>
   <data name="OrderPaymentStatusUpdateFailed" xml:space="preserve">
     <value>Failed to update the order payment status.</value>
   </data>
+  <data name="OrderRejectNotAllowed" xml:space="preserve">
+    <value>Only an order that has not been shipped yet can be rejected.</value>
+  </data>
+  <data name="OrderShipNotAllowed" xml:space="preserve">
+    <value>Only a confirmed order can be shipped.</value>
+  </data>
+  <data name="OrderStatusChanged" xml:space="preserve">
+    <value>The order status has just changed. Please refresh the page.</value>
+  </data>
   <data name="OrderStatusUpdateFailed" xml:space="preserve">
     <value>Failed to update the order status.</value>
+  </data>
+  <data name="OrderTrackingNumberRequired" xml:space="preserve">
+    <value>Enter the waybill number so the buyer can track the parcel.</value>
   </data>
 </root>

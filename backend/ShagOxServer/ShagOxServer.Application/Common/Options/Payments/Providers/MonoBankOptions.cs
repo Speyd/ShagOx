@@ -13,4 +13,9 @@ public sealed class MonoBankOptions
     public string WebHookUrl { get; set; } = "";
 
     public TimeSpan PaymentExpiresAt { get; set; }
+
+    public TimeSpan MinRefreshInterval { get; set; }
+    public TimeSpan HttpClientTimeout { get; set; }
+
+    public bool VerifyWebhookSignature { get; set; } = true;
 }

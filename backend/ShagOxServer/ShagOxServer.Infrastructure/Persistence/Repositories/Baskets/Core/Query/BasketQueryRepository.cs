@@ -30,7 +30,7 @@ public partial class BasketQueryRepository
         EntityStatus? status = null)
     {
         return await _db.Baskets
-            .WithIncludes()
+            .WithIncludes(status)
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(c =>
                 c.OwnerId == userId,

@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Filters.Location.Cities;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -10,9 +11,10 @@ public partial class CityQueryRepository
       ICityQueryRepository
 {
     protected override IQueryable<City> ApplyIncludes(
-        IQueryable<City> query)
+        IQueryable<City> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<City> ApplyFilter(

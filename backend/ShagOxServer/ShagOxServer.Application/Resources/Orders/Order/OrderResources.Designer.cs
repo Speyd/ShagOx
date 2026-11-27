@@ -79,6 +79,69 @@ namespace ShagOxServer.Application.Resources.Orders.Order {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The order can no longer be cancelled: it has already been handed over for delivery..
+        /// </summary>
+        public static string OrderCancelNotAllowed {
+            get {
+                return ResourceManager.GetString("OrderCancelNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Only a shipped order can be completed..
+        /// </summary>
+        public static string OrderCompleteNotAllowed {
+            get {
+                return ResourceManager.GetString("OrderCompleteNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Only a new order can be confirmed..
+        /// </summary>
+        public static string OrderConfirmNotAllowed {
+            get {
+                return ResourceManager.GetString("OrderConfirmNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The buyer has not paid for the order yet. You can confirm it after the payment..
+        /// </summary>
+        public static string OrderConfirmUnpaid {
+            get {
+                return ResourceManager.GetString("OrderConfirmUnpaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The order contains products of other sellers and can be managed only by an administrator..
+        /// </summary>
+        public static string OrderHasOtherSellersItems {
+            get {
+                return ResourceManager.GetString("OrderHasOtherSellersItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на An order can contain products of only one seller. Please place orders with different sellers separately..
+        /// </summary>
+        public static string OrderMultipleSellers {
+            get {
+                return ResourceManager.GetString("OrderMultipleSellers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This order does not contain your products..
+        /// </summary>
+        public static string OrderNotSellerOrder {
+            get {
+                return ResourceManager.GetString("OrderNotSellerOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update the order payment status..
         /// </summary>
         public static string OrderPaymentStatusUpdateFailed {
@@ -88,11 +151,47 @@ namespace ShagOxServer.Application.Resources.Orders.Order {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Only an order that has not been shipped yet can be rejected..
+        /// </summary>
+        public static string OrderRejectNotAllowed {
+            get {
+                return ResourceManager.GetString("OrderRejectNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Only a confirmed order can be shipped..
+        /// </summary>
+        public static string OrderShipNotAllowed {
+            get {
+                return ResourceManager.GetString("OrderShipNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The order status has just changed. Please refresh the page..
+        /// </summary>
+        public static string OrderStatusChanged {
+            get {
+                return ResourceManager.GetString("OrderStatusChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Failed to update the order status..
         /// </summary>
         public static string OrderStatusUpdateFailed {
             get {
                 return ResourceManager.GetString("OrderStatusUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter the waybill number so the buyer can track the parcel..
+        /// </summary>
+        public static string OrderTrackingNumberRequired {
+            get {
+                return ResourceManager.GetString("OrderTrackingNumberRequired", resourceCulture);
             }
         }
     }

@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Enum;
+using System.Linq.Expressions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 public static class EntityStatusExtensions
@@ -53,6 +53,31 @@ public static class EntityStatusExtensions
             EntityStatus.All => query,
 
             _ => query.Where(x => x.EntityStatus == EntityStatus.Active)
+        };
+    }
+
+    public static Expression<Func<TEntity, bool>> GetStatusFilter<TEntity>(
+        EntityStatus? filter)
+        where TEntity : BaseEntity
+    {
+        return filter switch
+        {
+            EntityStatus.Active =>
+                x => x.EntityStatus == EntityStatus.Active,
+
+            EntityStatus.Hidden =>
+                x => x.EntityStatus == EntityStatus.Hidden,
+
+            EntityStatus.Deleted =>
+                x => x.EntityStatus == EntityStatus.Deleted,
+
+            EntityStatus.ActiveAndHidden =>
+                x => x.EntityStatus == EntityStatus.Active ||
+                     x.EntityStatus == EntityStatus.Hidden,
+
+            EntityStatus.All => x => true,
+
+            _ => x => x.EntityStatus == EntityStatus.Active
         };
     }
 }

@@ -28,14 +28,13 @@ public class ReviewCommentDeleteService
 
     public ReviewCommentDeleteService(
         IRepository<ReviewComment> commentRepository,
-        ICommandRepository<ReviewComment> commentCommand,
         ReviewCommentValidator commentValidator,
         IAdvertisementImageDeleteService imageDeleteService,
         IPictureLoaderService loaderService,
         IUnitOfWork unitOfWork,
         ILogger<ReviewCommentDeleteService> logger
     )
-        : base(commentCommand, commentValidator, unitOfWork, logger)
+        : base(commentRepository, commentValidator, unitOfWork, logger)
     {
         _commentRepository = commentRepository;
         _commentValidator = commentValidator;

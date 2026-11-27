@@ -171,15 +171,11 @@ public class OrderItemCreateService
             convertedPrice.Value);
 
         item.TotalWeight = CalculateItemWeight(details, request);
-        
 
-        _itemRepository.Add(item);
 
-        item.Advertisement = validationResult.Value?.Advertisement!;
-        item.AdvertisementVariant = validationResult.Value?.Variant;
+        _itemRepository.Add(item); 
 
         await _unitOfWork.SaveChangesAsync();
-
 
         return Result<OrderItem>.Success(item);
     }

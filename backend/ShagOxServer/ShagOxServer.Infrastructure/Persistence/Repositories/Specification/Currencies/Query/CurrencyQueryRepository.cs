@@ -35,6 +35,18 @@ public partial class CurrencyQueryRepository
                 cancellationToken);
     }
 
+    public async Task<Currency?> GetByCodeNoTrackingAsync(
+        string code,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Currencies
+            .AsNoTracking()
+            .WithStatusFilter(status)
+            .FirstOrDefaultAsync(c => c.Code == code,
+                cancellationToken);
+    }
+
     public async Task<Currency?> GetBySymbolAsync(
         string symbol,
         CancellationToken cancellationToken = default,

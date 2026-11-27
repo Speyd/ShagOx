@@ -55,7 +55,7 @@ public class NovaPoshtaTypeResolver
                 var json = JsonSerializer.Serialize(body);
 
                 using var response = await _httpClient.PostAsync(
-                    "",
+                    "v2.0/json/",
                     new StringContent(json, Encoding.UTF8, "application/json"),
                     cancellationToken);
 

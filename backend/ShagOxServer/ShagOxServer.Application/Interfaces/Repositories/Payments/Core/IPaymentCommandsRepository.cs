@@ -11,4 +11,12 @@ public interface IPaymentCommandsRepository
         string invoiceId,
         PaymentStatus newStatus,
         CancellationToken cancellationToken = default);
+
+    Task<bool> TryMarkAsFailedAsync(
+        string invoiceId,
+        CancellationToken cancellationToken = default);
+
+    Task<bool> TryMarkAsProcessingAsync(
+        string invoiceId,
+        CancellationToken cancellationToken = default);
 }

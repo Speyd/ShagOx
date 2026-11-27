@@ -7,7 +7,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserSe
 public static class UserSessionQueryExtensions
 {
     public static IQueryable<UserSession> WithIncludes(
-        this IQueryable<UserSession> query)
+        this IQueryable<UserSession> query,
+        EntityStatus? status = null)
     {
         return query
             .AsSplitQuery()

@@ -19,6 +19,7 @@ public partial class UserQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Users
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.CityId == cityId)
             .SelectCacheInfo(status)
@@ -31,6 +32,7 @@ public partial class UserQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         var user = await _db.Users
+            .AsNoTracking()
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(x => x.Id == id);
 

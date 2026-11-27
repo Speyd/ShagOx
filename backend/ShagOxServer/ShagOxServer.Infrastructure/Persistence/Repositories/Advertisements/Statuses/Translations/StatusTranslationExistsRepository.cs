@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Statuses.Translations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -22,8 +23,9 @@ public class StatusTranslationExistsRepository
 
 
     protected override IQueryable<StatusTranslation> ApplyIncludes(
-         IQueryable<StatusTranslation> query)
+         IQueryable<StatusTranslation> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 }

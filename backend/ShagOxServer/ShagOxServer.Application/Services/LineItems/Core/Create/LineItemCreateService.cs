@@ -12,7 +12,6 @@ using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements.Enum;
 using ShagOxServer.Domain.Entities.LineItems.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using Twilio.Rest.Trunking.V1;
 
 namespace ShagOxServer.Application.Services.LineItems.Core.Create;
 public abstract class LineItemCreateService<TEntity>
@@ -119,7 +118,7 @@ public abstract class LineItemCreateService<TEntity>
             LineItemCreateRequest request,
             CancellationToken cancellationToken)
     {
-        var variantResult = await _advertVariantValidator.GetByIdIncludeAsync(
+        var variantResult = await _advertVariantValidator.GetByIdNoTrackingAsync(
             request.AdvertisementVariantId!.Value,
             cancellationToken);
 
@@ -145,7 +144,8 @@ public abstract class LineItemCreateService<TEntity>
     {
         if (advert is null)
         {
-            return Result<bool>.NotFound(EntityNamesResources.Advertisement);
+            return Result<bool>.NotFound(
+                EntityNamesResources.Advertisement);
         }
 
         if (_userContext.UserId == advert.OwnerId)

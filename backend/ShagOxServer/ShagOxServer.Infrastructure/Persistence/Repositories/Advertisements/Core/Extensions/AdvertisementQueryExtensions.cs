@@ -7,7 +7,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Co
 public static class AdvertisementQueryExtensions
 {
     public static IQueryable<Advertisement> WithIncludes(
-        this IQueryable<Advertisement> query)
+        this IQueryable<Advertisement> query,
+        EntityStatus? status = null)
     {
         // Варіанти, які вже є в замовленнях, видаляються м'яко
         // (EntityStatus.Deleted) і в оголошенні не показуються.

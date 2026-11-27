@@ -4,6 +4,7 @@ using ShagOxServer.Domain.Base;
 using ShagOxServer.Domain.Base.Cache;
 
 namespace ShagOxServer.Application.Services.Caches.Core.Invalidation;
+
 public class CacheInvalidationHandler<TEntity, TContext>
     : ICacheInvalidationHandler
     where TEntity : BaseEntity, IEntityCache<TEntity, TContext>

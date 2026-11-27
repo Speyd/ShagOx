@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Deliveries.DeliveryProviders.Translations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Deliveries.Translations;
 using ShagOxServer.Domain.Filters.Deliveries.Translations;
@@ -23,9 +24,10 @@ public class DeliveryProviderTranslationQueryRepository
     }
 
     protected override IQueryable<DeliveryProviderTranslation> ApplyIncludes(
-         IQueryable<DeliveryProviderTranslation> query)
+         IQueryable<DeliveryProviderTranslation> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<DeliveryProviderTranslation> ApplyFilter(

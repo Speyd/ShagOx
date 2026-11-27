@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDictionaries;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Filters.Dictionaries.Attributes.AttributeDictionaries;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -11,9 +12,10 @@ public partial class AttributeDictionaryQueryRepository
       IAttributeDictionaryQueryRepository
 {
     protected override IQueryable<AttributeDictionary> ApplyIncludes(
-        IQueryable<AttributeDictionary> query)
+        IQueryable<AttributeDictionary> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<AttributeDictionary> ApplyFilter(

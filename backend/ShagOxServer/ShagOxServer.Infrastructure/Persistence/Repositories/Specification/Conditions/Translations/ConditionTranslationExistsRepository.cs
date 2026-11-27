@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Conditions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.Domain.Entities.Specification.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -22,9 +23,10 @@ public class ConditionTranslationExistsRepository
 
 
     protected override IQueryable<ConditionTranslation> ApplyIncludes(
-         IQueryable<ConditionTranslation> query)
+         IQueryable<ConditionTranslation> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     protected override IQueryable<ConditionTranslation> ApplyIdentificatorFilter(

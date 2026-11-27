@@ -23,12 +23,11 @@ public class CategoryTranslationDeleteService
 
     public CategoryTranslationDeleteService(
         IRepository<CategoryTranslation> categoryRepository,
-        ICommandRepository<CategoryTranslation> categoryCommand,
         CategoryTranslationValidator categoryValidator,
         IUnitOfWork unitOfWork,
         ILogger<CategoryTranslationDeleteService> logger
     )
-        : base(categoryCommand, categoryValidator, unitOfWork, logger)
+        : base(categoryRepository, categoryValidator, unitOfWork, logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;

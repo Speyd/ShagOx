@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Filters.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.Core.Extensions;
@@ -10,9 +11,10 @@ public partial class AdvertisementQueryRepository
       IAdvertisementQueryRepository
 {
     protected override IQueryable<Advertisement> ApplyIncludes(
-        IQueryable<Advertisement> query)
+        IQueryable<Advertisement> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     protected override IQueryable<Advertisement> ApplyShortIncludes(

@@ -117,11 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="OrderAlreadyPaid" xml:space="preserve">
+    <value>The order has already been paid.</value>
+  </data>
+  <data name="OrderPaymentInProgress" xml:space="preserve">
+    <value>The payment is being processed by the bank. Please refresh the page in a few minutes.</value>
+  </data>
+  <data name="OrderPaymentNotRequired" xml:space="preserve">
+    <value>This order is paid upon delivery and does not require online payment.</value>
+  </data>
+  <data name="OrderPaymentUnavailable" xml:space="preserve">
+    <value>This order can no longer be paid. Please place a new order.</value>
+  </data>
   <data name="PaymentAlreadySucceeded" xml:space="preserve">
     <value>Payment has already been successfully completed and cannot be changed.</value>
   </data>
   <data name="PaymentProviderInvalidResponse" xml:space="preserve">
     <value>Payment provider returned an invalid response.</value>
+  </data>
+  <data name="PaymentRefundFailed" xml:space="preserve">
+    <value>Failed to refund the buyer. The order status has not been changed. Please try again later.</value>
   </data>
   <data name="PaymentStatusUpdateFailed" xml:space="preserve">
     <value> Failed to update the payment status.</value>

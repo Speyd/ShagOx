@@ -20,6 +20,7 @@ public partial class AttributeDictionaryValueQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.AttributeDictionaryValues
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.DictionaryId == dictionaryId)
             .SelectCacheInfo(status)

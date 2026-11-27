@@ -26,13 +26,12 @@ public class AttributeDefinitionDeleteService
 
     public AttributeDefinitionDeleteService(
         IRepository<AttributeDefinition> attributeRepository,
-        ICommandRepository<AttributeDefinition> attributeCommand,
         AttributeDefinitionValidator attributeValidator,
         AttributeDefinitionInvalidationService attribureInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AttributeDefinitionDeleteService> logger
     )
-        : base(attributeCommand, attributeValidator, unitOfWork, logger)
+        : base(attributeRepository, attributeValidator, unitOfWork, logger)
     {
         _attributeRepository = attributeRepository;
         _attributeValidator = attributeValidator;

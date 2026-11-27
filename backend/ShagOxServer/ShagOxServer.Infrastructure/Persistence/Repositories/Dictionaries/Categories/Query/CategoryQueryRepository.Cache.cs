@@ -20,6 +20,7 @@ public partial class CategoryQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Categories
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(c => c.ProductTypeId == productTypeId)
             .SelectCacheInfo(status)

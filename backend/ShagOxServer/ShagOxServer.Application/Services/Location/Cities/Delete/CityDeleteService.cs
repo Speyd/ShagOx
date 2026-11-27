@@ -25,12 +25,11 @@ public class CityDeleteService
 
     public CityDeleteService(
         IRepository<City> cityRepository,
-        ICommandRepository<City> cityCommand,
         CityValidator cityValidator,
         IUnitOfWork unitOfWork,
         ILogger<CityDeleteService> logger
     )
-        : base(cityCommand, cityValidator, unitOfWork, logger)
+        : base(cityRepository, cityValidator, unitOfWork, logger)
     {
         _cityRepository = cityRepository;
         _cityValidator = cityValidator;

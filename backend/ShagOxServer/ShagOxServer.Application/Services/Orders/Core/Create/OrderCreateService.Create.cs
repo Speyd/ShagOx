@@ -28,10 +28,10 @@ public partial class OrderCreateService
 
         _orderRepository.Add(order);
 
+        await _unitOfWork.SaveChangesAsync();
+
         order.Currency = currency;
         order.DeliveryProvider = deliveryProvider;
-
-        await _unitOfWork.SaveChangesAsync();
 
         return order;
     }

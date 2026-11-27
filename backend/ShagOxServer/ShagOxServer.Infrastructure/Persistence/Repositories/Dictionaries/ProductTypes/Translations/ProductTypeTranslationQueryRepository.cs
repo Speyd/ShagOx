@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.ProductTypes.Translations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Entities.Dictionaries.Translations;
 using ShagOxServer.Domain.Filters.Dictionaries.ProductTypes.Translations;
@@ -26,9 +27,10 @@ public class ProductTypeTranslationQueryRepository
 
 
     protected override IQueryable<ProductTypeTranslation> ApplyIncludes(
-         IQueryable<ProductTypeTranslation> query)
+         IQueryable<ProductTypeTranslation> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<ProductTypeTranslation> ApplyFilter(

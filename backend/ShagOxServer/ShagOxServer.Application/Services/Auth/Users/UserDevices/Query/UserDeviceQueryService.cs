@@ -106,4 +106,29 @@ public partial class UserDeviceQueryService
             _cacheOptions.DefaultExpiration
         );
     }
+
+    public async Task<Result<UserDevice?>> GetEntityByUserAndDeviceNoTrackingAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+        var cacheKey = UserDeviceCache.EntityByUserAndDevice(
+          userId,
+          deviceId,
+          status);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var devices = await _userDeviceQueryRepository
+                    .GetByUserAndDeviceNoTrackingAsync(userId, deviceId,
+                        cancellationToken, status);
+
+                return Result<UserDevice?>.Success(devices);
+            },
+            _cacheOptions.DefaultExpiration
+        );
+    }
 }

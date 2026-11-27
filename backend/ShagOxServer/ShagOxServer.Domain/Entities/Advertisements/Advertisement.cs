@@ -101,7 +101,11 @@ public class Advertisement
             Id,
             OwnerId,
             BuyerId,
-            Variants.Select(x => new AdvertisementVariantCacheContext(x.Id, x.EntityStatus)).ToList(),
+            Variants?
+                .Select(x => new AdvertisementVariantCacheContext(
+                    x.Id,
+                    x.EntityStatus))
+                .ToList() ?? new(),
             EntityStatus);
     }
 

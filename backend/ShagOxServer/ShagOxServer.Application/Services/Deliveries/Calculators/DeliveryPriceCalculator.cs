@@ -14,7 +14,7 @@ public class DeliveryPriceCalculator
 {
     private readonly ICurrencyConverter _converter;
     private readonly DeliveryProviderResolver _resolver;
-    
+
 
     public DeliveryPriceCalculator(
         ICurrencyConverter converter,
@@ -29,7 +29,6 @@ public class DeliveryPriceCalculator
         Order order,
         CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(order);
 
         if (order.DeliveryType == DeliveryType.Pickup)
             return Result<decimal>.Success(0m);

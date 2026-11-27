@@ -4,6 +4,7 @@ using ShagOxServer.Domain.Cache;
 using System.Data.Common;
 
 namespace ShagOxServer.Application.Services.Caches.Core.Invalidation;
+
 public class CacheTransactionInterceptor : DbTransactionInterceptor
 {
     private readonly ICacheInvalidationState _state;

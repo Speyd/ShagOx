@@ -8,6 +8,7 @@ using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Exists;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Extensions;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Orders.Core;
+
 public class OrderExistsRepository
     : ExistsOwnerRepository<Order>,
       IOrderExistsRepository
@@ -67,7 +68,7 @@ public class OrderExistsRepository
     {
         return await _db.Orders
             .WithStatusFilter(status)
-            .AnyAsync(c => 
+            .AnyAsync(c =>
                 c.PaymentTransactionId == paymentTransactionId,
                 cancellationToken);
     }

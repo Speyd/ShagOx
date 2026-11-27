@@ -13,7 +13,7 @@ public static class OrderFilterExtensions
             return query;
 
         if (filter.SellerId.HasValue)
-            query = query.Where(x => x.OwnerId == filter.SellerId);
+            query = query.Where(x => x.OwnerId == filter.SellerId.Value);
 
         if (!string.IsNullOrWhiteSpace(filter.SearchTerm))
         {

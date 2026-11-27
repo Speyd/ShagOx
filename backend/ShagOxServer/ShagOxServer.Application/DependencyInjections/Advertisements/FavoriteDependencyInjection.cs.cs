@@ -37,6 +37,8 @@ public static class FavoriteDependencyInjection
             ICacheInvalidationService<Favorite, FavoriteCacheContext>,
             FavoriteInvalidationService>();
 
+        services.AddScoped<FavoriteInvalidationService>();
+
 
         services.AddScoped<FavoriteUpdateValidator>();
 

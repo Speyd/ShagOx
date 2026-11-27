@@ -24,6 +24,10 @@ public class DeviceQueryService
 {
     private readonly IDeviceQueryRepository _deviceQueryRepository;
 
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
+
 
     public DeviceQueryService(
         IDeviceQueryRepository deviceQueryRepository,

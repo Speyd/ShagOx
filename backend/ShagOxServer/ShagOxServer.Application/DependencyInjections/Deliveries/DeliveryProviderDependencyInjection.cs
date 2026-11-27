@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries;
+using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries.Translations;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Create;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Delete;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Query;
@@ -40,6 +41,8 @@ public static class DeliveryProviderDependencyInjection
         services.AddScoped<
             ICacheInvalidationService<DeliveryProvider, DeliveryProviderCacheContext>,
             DeliveryProviderInvalidationService>();
+
+        services.AddScoped<DeliveryProviderInvalidationService>();
 
         services.AddDeliveryProviderTranslationApplication();
 

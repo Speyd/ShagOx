@@ -10,7 +10,7 @@ namespace ShagOxServer.Api.Controllers.Auth.Users.UserSessions.Admin;
 
 [ApiController]
 [Route("api/admin/user-sessions")]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class UserSessionAdminCommandsController
     : ApiController
 {

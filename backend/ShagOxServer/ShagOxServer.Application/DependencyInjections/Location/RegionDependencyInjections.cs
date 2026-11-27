@@ -38,6 +38,8 @@ public static class RegionDependencyInjections
             ICacheInvalidationService<Region, RegionCacheContext>,
             RegionInvalidationService>();
 
+        services.AddScoped<RegionInvalidationService>();
+
         services.AddRegionTranslationApplication();
 
         return services;

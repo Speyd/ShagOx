@@ -45,6 +45,7 @@ public static class ReviewRepliCommentDependencyInjections
             ICacheInvalidationService<ReviewRepliComment, CommentCacheContext>,
             ReviewRepliCommentInvalidationService>();
 
+        services.AddScoped<ReviewRepliCommentInvalidationService>();
 
         return services;
     }

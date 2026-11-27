@@ -59,6 +59,8 @@ public static class ReviewImageDependencyInjection
             ICacheInvalidationService<ReviewImage, PictureCacheContext>,
             ReviewImageInvalidationService>();
 
+        services.AddScoped<ReviewImageInvalidationService>();
+
         services.AddScoped<ReviewImageValidator>();
 
         return services;

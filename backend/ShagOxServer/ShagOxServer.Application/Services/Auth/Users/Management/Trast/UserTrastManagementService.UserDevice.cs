@@ -32,22 +32,12 @@ public partial class UserTrastManagementService
         bool checkOwner,
         CancellationToken cancellationToken)
     {
-        if (_userContext.UserId is null)
+        if (checkOwner && !_userContext.UserId.HasValue)
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.User);
         }
-
-        var userDto = await _userService.GetByIdAsync(
-            _userContext.UserId.Value,
-            cancellationToken);
-
-        if (!userDto.IsSuccess)
-        {
-            return Result<bool>.NotFound(
-                EntityNamesResources.User);
-        }
-
+ 
         var usedDevice = await _deviceQueryService
             .GetByIdAsync(deviceId, cancellationToken);
 
@@ -57,7 +47,7 @@ public partial class UserTrastManagementService
         }
 
         if (checkOwner &&
-            userDto.Value!.Id != usedDevice.Value!.OwnerId)
+            _userContext.UserId!.Value != usedDevice.Value!.OwnerId)
         {
             return Result<bool>.NotFound(
                 EntityNamesResources.UserDevice);

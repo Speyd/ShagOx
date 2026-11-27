@@ -37,6 +37,8 @@ public static class AttributeDictionaryDependencyInjections
             ICacheInvalidationService<AttributeDictionary, AttributeDictionaryCacheContext>,
             AttributeDictionaryInvalidationService>();
 
+        services.AddScoped<AttributeDictionaryInvalidationService>();
+
         return services;
     }
 }

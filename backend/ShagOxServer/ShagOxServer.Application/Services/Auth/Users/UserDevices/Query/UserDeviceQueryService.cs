@@ -26,6 +26,10 @@ public partial class UserDeviceQueryService
     private readonly IUserDeviceQueryRepository _userDeviceQueryRepository;
     private readonly IDeviceQueryService _deviceQueryService;
 
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
+
 
     public UserDeviceQueryService(
         IUserDeviceQueryRepository userDeviceQueryRepository,

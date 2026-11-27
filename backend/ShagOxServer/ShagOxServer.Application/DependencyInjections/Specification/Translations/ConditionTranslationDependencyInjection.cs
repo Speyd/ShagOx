@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Tran
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Query;
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Translations.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Translations;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Create;
 using ShagOxServer.Application.Services.Specification.Conditions.Translations.Delete;
@@ -36,6 +37,8 @@ public static class ConditionTranslationDependencyInjection
         services.AddScoped<
             ICacheInvalidationService<ConditionTranslation, TranslationCacheContext>,
             ConditionTranslationInvalidationService>();
+
+        services.AddScoped<ConditionTranslationInvalidationService>();
 
         services.AddScoped<ConditionTranslationValidator>();
 

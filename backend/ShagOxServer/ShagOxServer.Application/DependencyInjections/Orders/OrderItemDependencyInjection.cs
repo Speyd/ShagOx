@@ -35,7 +35,9 @@ public static class OrderItemDependencyInjection
             OrderItemOrderInvalidationService>();
 
         services.AddScoped<IOrderItemDeleteService,
-            OrderItemDeleteService>();  
+            OrderItemDeleteService>();
+
+        services.AddScoped<OrderItemDeleteService>();
 
         services.AddScoped<OrderItemValidator>();
 

@@ -17,7 +17,7 @@ public interface IDeviceCommandsRepository
     Task UnbanExpiredDevicesAsync(
         CancellationToken cancellationToken = default);
 
-    Task<bool> UpdateLastSeenAsync(
+    Task<bool> UpdateLastActiveAsync(
         long deviceId,
         CancellationToken cancellationToken = default);
 }

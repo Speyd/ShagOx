@@ -35,6 +35,8 @@ public static class ProductTypeTranslationDependencyInjections
             ICacheInvalidationService<ProductTypeTranslation, TranslationCacheContext>,
             ProductTypeTranslationInvalidationService>();
 
+        services.AddScoped<ProductTypeTranslationInvalidationService>();
+
         services.AddScoped<ProductTypeTranslationValidator>();
 
         return services;

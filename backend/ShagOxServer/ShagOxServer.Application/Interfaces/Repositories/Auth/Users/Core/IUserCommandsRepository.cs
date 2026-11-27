@@ -1,6 +1,10 @@
 namespace ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Core;
 public interface IUserCommandsRepository
 {
+    Task<bool> UpdateLastSeenAsync(
+        long userId,
+        CancellationToken cancellationToken = default);
+
     Task<bool> BanUserAsync(
         long userId,
         DateTime? blockedUntil,

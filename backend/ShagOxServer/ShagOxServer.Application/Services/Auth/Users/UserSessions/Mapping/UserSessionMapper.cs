@@ -1,4 +1,3 @@
-using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.DTOs.Auth.Users.UserSessions.Query;
 using ShagOxServer.Domain.Entities.Auth.Users;
 
@@ -11,6 +10,7 @@ public static class UserSessionMapper
         return new UserSessionDto(
             session.Id,
             session.EntityStatus,
+            session.OwnerId,
             session.UserDeviceId,
             session.Browser,
             session.BrowserVersion,

@@ -8,6 +8,7 @@ using ShagOxServer.Application.Services.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Services.Auth.Users.UserDevices.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth.UserInvalid;
 using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth.Users;
 
@@ -29,6 +30,8 @@ public static class UserDeviceDependencyInjection
         services.AddScoped<
             ICacheInvalidationService<UserDevice, UserDeviceCacheContext>,
             UserDeviceInvalidationService>();
+
+        services.AddScoped<UserDeviceInvalidationService>();
 
         services.AddScoped<UserDeviceValidator>();  
 

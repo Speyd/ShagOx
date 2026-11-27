@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Query
 using ShagOxServer.Application.Interfaces.Services.Comments.ReviewComments.Update;
 using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
+using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Comments.Core.Validator;
 using ShagOxServer.Application.Services.Comments.ReviewComments.Create;
@@ -48,6 +49,8 @@ public static class ReviewCommentDependencyInjections
         services.AddScoped<
             ICacheInvalidationService<ReviewComment, CommentCacheContext>,
             ReviewCommentInvalidationService>();
+
+        services.AddScoped<ReviewCommentInvalidationService>();
 
 
         return services;

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Db;
+using ShagOxServer.Application.Services.Caches.Core.Invalidation;
 using ShagOxServer.Infrastructure.Persistence.Db;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 
@@ -33,6 +34,11 @@ public static class DbDependencyInjection
                         QuerySplittingBehavior.SplitQuery
                     )
                 );
+
+            options.AddInterceptors(
+               sp.GetRequiredService<CacheInvalidationInterceptor>(),
+               sp.GetRequiredService<CacheTransactionInterceptor>()
+           );
         });
 
         return services;

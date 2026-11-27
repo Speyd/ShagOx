@@ -43,7 +43,7 @@ public class UserSessionInvalidationService
         var id = entityInfo.Id;
 
         await _cache.RemoveAsync(CacheKeys.
-             Entity<UserDevice>(id));
+             Entity<UserSession>(id));
 
         await InvalidatePatternAsync(entityInfo);
     }
@@ -51,13 +51,6 @@ public class UserSessionInvalidationService
     private async Task InvalidatePatternAsync(
         UserSessionCacheContext entityInfo)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys.
-            SearchPattern<UserSession>(entityInfo.Status));
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             EntityPagedPattern<UserSession>(entityInfo.Status));
-
-
         await _cache.RemoveByPatternAsync(UserSessionCache.
              ByUserPattern(entityInfo.OwnerId));
 

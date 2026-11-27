@@ -10,9 +10,9 @@ namespace ShagOxServer.Api.Controllers.Devices;
 
 [ApiController]
 [Route("api/admin/devices")]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class DeviceAdminQueriesController
-    : BaseAdminQueryController<DeviceDto,
+    : BaseQueryController<DeviceDto,
         DeviceSearchFilter>
 {
     public DeviceAdminQueriesController(

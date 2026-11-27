@@ -13,9 +13,9 @@ namespace ShagOxServer.Api.Controllers.Auth.Users.UserDevices.Admin;
 
 [ApiController]
 [Route("api/admin/user-devices")]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class UserDeviceAdminQueriesController
-    : BaseAdminQueryController<UserDeviceDto,
+    : BaseQueryController<UserDeviceDto,
         UserDeviceSearchFilter>
 {
     private readonly IUserDeviceQueryService _deviceQueryService;
@@ -32,7 +32,7 @@ public class UserDeviceAdminQueriesController
 
 
     [HttpGet("user/{userId:long}/device/{deviceId:long}")]
-    public async Task<IActionResult> GetByUserAndDeviceAsync(
+    public async Task<IActionResult> GetByUserAndDevice(
         [FromRoute] long userId,
         [FromRoute] long deviceId,
         [FromQuery] EntityStatus status,
@@ -46,7 +46,7 @@ public class UserDeviceAdminQueriesController
     }
 
     [HttpGet("user/{userId:long}")]
-    public async Task<IActionResult> GetByUserAsync(
+    public async Task<IActionResult> GetByUser(
         [FromRoute] long userId,
         [FromQuery] PaginationParams pagination,
         [FromQuery] EntityStatus status,
@@ -60,7 +60,7 @@ public class UserDeviceAdminQueriesController
     }
 
     [HttpGet("device/{deviceId:long}")]
-    public async Task<IActionResult> GetByDeviceAsync(
+    public async Task<IActionResult> GetByDevice(
         [FromRoute] long deviceId,
         [FromQuery] PaginationParams pagination,
         [FromQuery] EntityStatus status,

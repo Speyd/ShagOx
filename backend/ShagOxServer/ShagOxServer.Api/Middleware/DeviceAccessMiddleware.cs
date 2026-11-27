@@ -55,7 +55,7 @@ public class DeviceAccessMiddleware
             }
             else
             {
-                await deviceCommands.UpdateLastSeenAsync(
+                await deviceCommands.UpdateLastActiveAsync(
                     device.Id);
             }
         }

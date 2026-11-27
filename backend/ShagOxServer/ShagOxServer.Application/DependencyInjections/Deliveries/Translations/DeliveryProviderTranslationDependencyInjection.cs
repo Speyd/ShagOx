@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Translations.Delete;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Translations.Query;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Translations.Update;
+using ShagOxServer.Application.Services.Caches.Invalidations.Comments.Review;
 using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries.Translations;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Create;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Translations.Delete;
@@ -34,6 +35,8 @@ public static class DeliveryProviderTranslationDependencyInjection
         services.AddScoped<
             ICacheInvalidationService<DeliveryProviderTranslation, TranslationCacheContext>,
             DeliveryProviderTranslationInvalidationService>();
+
+        services.AddScoped<DeliveryProviderTranslationInvalidationService>();
 
         services.AddScoped<DeliveryProviderTranslationValidator>();
 

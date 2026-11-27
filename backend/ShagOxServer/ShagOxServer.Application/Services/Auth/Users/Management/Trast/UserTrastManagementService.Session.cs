@@ -37,7 +37,7 @@ public partial class UserTrastManagementService
         bool checkOwner,
         CancellationToken cancellationToken)
     {
-        if (!_userContext.UserId.HasValue)
+        if (checkOwner && !_userContext.UserId.HasValue)
         {
             return Result<bool>.NotFound(EntityNamesResources.User);
         }
@@ -51,7 +51,7 @@ public partial class UserTrastManagementService
         }
 
         if (checkOwner &&
-            userSession.Value!.OwnerId != _userContext.UserId.Value)
+            userSession.Value!.OwnerId != _userContext.UserId!.Value)
         {
             return Result<bool>.NotFound(EntityNamesResources.UserSession);
         }

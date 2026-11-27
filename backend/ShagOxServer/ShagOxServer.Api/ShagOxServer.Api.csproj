@@ -42,24 +42,19 @@
 
   <ItemGroup>
     <Folder Include="Controllers\AttributeDefinitions\Translations\" />
-    <Folder Include="Controllers\Avatars\" />
-    <Folder Include="Controllers\BasketAttributes\" />
     <Folder Include="Controllers\BasketItems\Admin\" />
     <Folder Include="Controllers\Categories\Admin\" />
     <Folder Include="Controllers\Categories\Translations\" />
     <Folder Include="Controllers\Cities\Admin\" />
     <Folder Include="Controllers\Cities\Translations\" />
-    <Folder Include="Controllers\Common\" />
     <Folder Include="Controllers\Conditions\Admin\" />
     <Folder Include="Controllers\Conditions\Translations\" />
     <Folder Include="Controllers\Currencies\Admin\" />
     <Folder Include="Controllers\Favorites\Admin\" />
-    <Folder Include="Controllers\Images\" />
     <Folder Include="Controllers\ProductTypes\Admin\" />
     <Folder Include="Controllers\ProductTypes\Translations\" />
     <Folder Include="Controllers\Regions\Admin\" />
     <Folder Include="Controllers\Regions\Translations\" />
-    <Folder Include="Controllers\Roles\" />
     <Folder Include="Controllers\Statuses\Translations\" />
     <Folder Include="Controllers\Users\Admin\" />
     <Folder Include="Controllers\Users\Advertisements\" />

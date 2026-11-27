@@ -25,10 +25,10 @@ public static class DependencyInjection
     {
         return services
             .AddCacheApplication()
-            .AddCacheInvalidationApplication()
-            .AddDeviceApplication()
+            .AddCacheInvalidationApplication()  
             .AddVerificationApplication()
             .AddAuthApplication()
+            .AddDeviceApplication()
             .AddBasketApplication()
             .AddLocationApplication()
             .AddCommentsApplication()

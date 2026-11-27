@@ -11,8 +11,8 @@ public static class UserDependencyInjection
         services.AddUserStatisticsApplication();
         services.AddUserRolesApplication();
 
-        services.AddUserDeviceApplication();
         services.AddUserSessionApplication();
+        services.AddUserDeviceApplication();
 
         services.AddUserTwoFactorApplication();
 

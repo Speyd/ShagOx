@@ -30,6 +30,8 @@ public static class UserSessionDependencyInjection
             ICacheInvalidationService<UserSession, UserSessionCacheContext>,
             UserSessionInvalidationService>();
 
+        services.AddScoped<UserSessionInvalidationService>();
+
         services.AddScoped<UserSessionValidator>();
 
         return services;

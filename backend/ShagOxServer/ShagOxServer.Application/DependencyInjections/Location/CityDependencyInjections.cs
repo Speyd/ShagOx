@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Location.Cities.Query;
 using ShagOxServer.Application.Interfaces.Services.Location.Cities.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Caches.Invalidations.Location;
+using ShagOxServer.Application.Services.Caches.Invalidations.Location.Translation;
 using ShagOxServer.Application.Services.Location.Cities.Create;
 using ShagOxServer.Application.Services.Location.Cities.Delete;
 using ShagOxServer.Application.Services.Location.Cities.Query;
@@ -42,6 +43,8 @@ public static class CityDependencyInjections
         services.AddScoped<
             ICacheInvalidationService<City, CityCacheContext>,
             CityInvalidationService>();
+
+        services.AddScoped<CityInvalidationService>();
 
         services.AddCityTranslationApplication();
 

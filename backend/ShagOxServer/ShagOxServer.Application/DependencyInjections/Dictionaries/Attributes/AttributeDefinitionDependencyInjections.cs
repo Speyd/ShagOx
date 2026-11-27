@@ -6,6 +6,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.Attri
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries;
+using ShagOxServer.Application.Services.Caches.Invalidations.Devices;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Create;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Delete;
@@ -42,6 +43,8 @@ public static class AttributeDefinitionDependencyInjections
         services.AddScoped<
             ICacheInvalidationService<AttributeDefinition, AttributeDefinitionCacheContext>,
             AttributeDefinitionInvalidationService>();
+
+        services.AddScoped<AttributeDefinitionInvalidationService>();
 
         services.AddAttributeTranslationApplication();
 

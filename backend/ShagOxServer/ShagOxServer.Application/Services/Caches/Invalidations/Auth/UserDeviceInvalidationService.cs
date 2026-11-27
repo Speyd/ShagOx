@@ -67,13 +67,6 @@ public class UserDeviceInvalidationService
     private async Task InvalidatePatternAsync(
         UserDeviceCacheContext entityInfo)
     {
-        await _cache.RemoveByPatternAsync(CacheKeys.
-            SearchPattern<UserDevice>(entityInfo.Status));
-
-        await _cache.RemoveByPatternAsync(CacheKeys.
-             EntityPagedPattern<UserDevice>(entityInfo.Status));
-
-
         await _cache.RemoveByPatternAsync(UserDeviceCache.
              ByUserAndDevicePattern(
                 entityInfo.OwnerId, entityInfo.DeviceId));

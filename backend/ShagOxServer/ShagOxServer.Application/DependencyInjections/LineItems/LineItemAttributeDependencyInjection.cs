@@ -4,6 +4,7 @@ using ShagOxServer.Application.Interfaces.Services.LineItems.BasketAttributes.Cr
 using ShagOxServer.Application.Interfaces.Services.LineItems.BasketAttributes.Delete;
 using ShagOxServer.Application.Interfaces.Services.LineItems.BasketAttributes.Query;
 using ShagOxServer.Application.Interfaces.Services.LineItems.BasketAttributes.Update;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Caches.Invalidations.LineItems;
 using ShagOxServer.Application.Services.LineItems.LineItemAttributes.Create;
 using ShagOxServer.Application.Services.LineItems.LineItemAttributes.Delete;
@@ -35,6 +36,8 @@ public static class LineItemAttributeDependencyInjection
         services.AddScoped<
             ICacheInvalidationService<LineItemAttribute, LineItemAttributeCacheContext>,
             LineItemAttributeInvalidationService>();
+
+        services.AddScoped<LineItemAttributeInvalidationService>();
 
         services.AddScoped<LineItemAttributeValidator>();
 

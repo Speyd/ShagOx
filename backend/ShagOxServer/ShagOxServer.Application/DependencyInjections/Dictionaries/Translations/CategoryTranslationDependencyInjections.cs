@@ -37,6 +37,8 @@ public static class CategoryTranslationDependencyInjections
             ICacheInvalidationService<CategoryTranslation, TranslationCacheContext>,
             CategoryTranslationInvalidationService>();
 
+        services.AddScoped<CategoryTranslationInvalidationService>();
+
         services.AddScoped<CategoryTranslationValidator>();
 
         return services;

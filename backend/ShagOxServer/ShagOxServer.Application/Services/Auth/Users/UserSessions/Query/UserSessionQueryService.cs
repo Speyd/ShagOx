@@ -25,6 +25,10 @@ public partial class UserSessionQueryService
 {
     private readonly IUserSessionQueryRepository _sessionQueryRepository;
 
+    protected override bool CacheBySearch => false;
+
+    protected override bool CacheByPaged => false;
+
 
     public UserSessionQueryService(
         IUserSessionQueryRepository sessionQueryRepository,

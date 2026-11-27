@@ -36,6 +36,8 @@ public static class StatusDependencyInjection
             ICacheInvalidationService<Status, StatusCacheContext>,
             StatusInvalidationService>();
 
+        services.AddScoped<StatusInvalidationService>();
+
         services.AddScoped<StatusValidator>();
 
         services.AddStatusTranslationApplication();

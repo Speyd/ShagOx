@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
 using ShagOxServer.Application.Interfaces.Providers.Devices;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Core;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
@@ -26,6 +27,8 @@ public class UpdateLastSeenMiddleware
         HttpContext context,
         AppDbContext dbContext,
         IDeviceProvider deviceProvier,
+        IUserCommandsRepository userCommands,
+        IUserDeviceCommandsRepository deviceCommands,
         IRefreshTokenService refreshTokenService)
     {
 
@@ -41,27 +44,14 @@ public class UpdateLastSeenMiddleware
                 var now = DateTime.UtcNow;
                 var cutoff = now - _updaterOptions.UpdateLastSeen;
 
-                await dbContext.Users
-                    .Where(u => u.Id == userId &&
-                        (u.LastSeenAt == null ||
-                         u.LastSeenAt <= cutoff))
-                    .ExecuteUpdateAsync(
-                        setters => setters.SetProperty(
-                            u => u.LastSeenAt,
-                            now),
-                        context.RequestAborted);
+                await userCommands
+                    .UpdateLastSeenAsync(userId);
 
                 if (device is not null)
                 {
-                    await dbContext.UserDevices
-                        .Where(d =>
-                            d.DeviceId == device.Id &&
-                            d.OwnerId == userId)
-                        .ExecuteUpdateAsync(
-                            setters => setters.SetProperty(
-                                d => d.LastActiveAt,
-                                now),
-                            context.RequestAborted);
+                    await deviceCommands.UpdateLastActiveAsync(
+                        userId,
+                        device.Id);
                 }
             }
         }

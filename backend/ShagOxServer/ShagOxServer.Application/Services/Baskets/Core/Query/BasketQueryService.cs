@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Services.Base.Localized;
 using ShagOxServer.Application.Services.Baskets.Core.Mapping;
 using ShagOxServer.Application.Services.Caches.Keys.Baskets;
@@ -27,15 +28,23 @@ public class BasketQueryService
 {
     private readonly IBasketQueryRepository _basketQueryRepository;
     private readonly IBasketItemQueryService _basketItemService;
+    private readonly IPriceConversionService _priceConversion;
 
     protected override bool CacheBySearch => false;
 
     protected override bool CacheByPaged => false;
 
 
+    // Ціни в DTO конвертуються у валюту користувача, тому кеш
+    // має розділятися за валютою.
+    protected override async Task<string?> GetCacheCurrencyAsync(
+        CancellationToken cancellationToken = default)
+        => await _priceConversion.GetCacheSegmentAsync(cancellationToken);
+
     public BasketQueryService(
         IBasketQueryRepository basketQueryRepository,
         IBasketItemQueryService basketItemService,
+        IPriceConversionService priceConversion,
         IDataCacheService cacheService,
         IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
@@ -47,6 +56,7 @@ public class BasketQueryService
     {
         _basketQueryRepository = basketQueryRepository;
         _basketItemService = basketItemService;
+        _priceConversion = priceConversion;
     }
 
 
@@ -73,7 +83,7 @@ public class BasketQueryService
     {
         var cacheKey = BasketCache.ByUser(
             userId,
-            _language.Language,
+            await GetCacheLanguageAsync(cancellationToken),
             status);
 
         return await _cache.GetOrCreateAsync(

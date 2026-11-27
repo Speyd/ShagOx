@@ -23,7 +23,7 @@ using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.Update;
-public class UserUpdateService 
+public class UserUpdateService
     : BaseUpdateService<User>,
     IUserUpdateService
 {
@@ -74,10 +74,11 @@ public class UserUpdateService
         if (!user.IsSuccess)
             return Result<UpdateResponse>.Fail(user.Error);
 
-        var userName = request.UserName?.Trim();
         var normalizedRequest = request with
         {
-            UserName = userName
+            FirstName = NormalizeOptional(request.FirstName),
+            LastName = NormalizeOptional(request.LastName),
+            UserName = NormalizeOptional(request.UserName)
         };
 
 
@@ -168,6 +169,9 @@ public class UserUpdateService
 
         return Result<UpdateResponse>.Success(result);
     }
+
+    private static string? NormalizeOptional(string? value)
+        => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 
     private async Task<Result<bool>> ValidateUpdatesAsync(
         User user,

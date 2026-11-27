@@ -73,6 +73,12 @@ public partial class AdvertisementQueryService
     }
 
 
+    // Ціни в DTO конвертуються у валюту користувача, тому кеш
+    // має розділятися за валютою.
+    protected override async Task<string?> GetCacheCurrencyAsync(
+        CancellationToken cancellationToken = default)
+        => await _priceConversion.GetCacheSegmentAsync(cancellationToken);
+
     public override async Task<AdvertisementDto> ApplyMapperAsync(
         Advertisement entity)
     {
@@ -84,8 +90,11 @@ public partial class AdvertisementQueryService
             variants.Add(variantDto);
         }
 
-        var categoryDto = await _categoryService
-            .ApplyMapperAsync(entity.Category);
+        // Category може бути не завантажена (короткі вибірки без Include),
+        // тому мапимо лише за наявності.
+        var categoryDto = entity.Category is null
+            ? null
+            : await _categoryService.ApplyMapperAsync(entity.Category);
 
         var statusDto = await _statusService
             .ApplyMapperAsync(entity.Status);
@@ -120,7 +129,7 @@ public partial class AdvertisementQueryService
     {
         var cacheKey = AdvertisementCache.BySeller(
            userId,
-           _language.Language,
+           await GetCacheLanguageAsync(cancellationToken),
            pagination.Page,
            pagination.PageSize,
            status);
@@ -148,7 +157,7 @@ public partial class AdvertisementQueryService
     {
         var cacheKey = AdvertisementCache.ByBuyer(
            userId,
-           _language.Language,
+           await GetCacheLanguageAsync(cancellationToken),
            pagination.Page,
            pagination.PageSize,
            status);

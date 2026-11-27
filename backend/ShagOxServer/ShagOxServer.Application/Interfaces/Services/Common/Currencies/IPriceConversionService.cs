@@ -15,4 +15,11 @@ public interface IPriceConversionService
        decimal? previousPrice,
        Currency sourceCurrency,
        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Сегмент ключа кешу для відповідей з конвертованими цінами:
+    /// валюта, у яку конвертуються ціни для поточного користувача.
+    /// </summary>
+    Task<string> GetCacheSegmentAsync(
+        CancellationToken cancellationToken = default);
 }

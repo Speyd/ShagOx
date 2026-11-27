@@ -47,7 +47,7 @@ public abstract class BaseUpdateService<TEntity>
         CancellationToken cancellationToken = default)
     {
         var entityResult = await _validator
-            .GetByIdAsync(entityId, 
+            .GetByIdAttachAsync(entityId,
                 cancellationToken, request.FindStatus);
 
         if (!entityResult.IsSuccess || entityResult.Value is null)
@@ -63,13 +63,19 @@ public abstract class BaseUpdateService<TEntity>
 
         try 
         { 
-            return request.ChangeStatus switch
+            var result = request.ChangeStatus switch
             {
-                EntityStatus.Deleted => await DeleteStatus(entity),
+                EntityStatus.Deleted => await DeleteStatus(
+                    entityId, request.FindStatus, cancellationToken),
                 EntityStatus.Active => await ActiveStatus(entity),
                 EntityStatus.Hidden => await HiddenStatus(entity),
                 _ => Result<bool>.Fail(EntityErrorResources.InvalidStatusValue)
             };
+
+            if (!result.IsSuccess)
+                await _unitOfWork.RollbackAsync();
+
+            return result;
         }
         catch (Exception ex)
         {
@@ -89,10 +95,21 @@ public abstract class BaseUpdateService<TEntity>
     }
 
     private async Task<Result<bool>> DeleteStatus(
-        TEntity entity)
+        long entityId,
+        EntityStatus findStatus,
+        CancellationToken cancellationToken)
     {
+        // М'яке видалення каскадно обробляє пов'язані дані (фото, позиції тощо)
+        // і скидає кеш за ними, тому сутність потрібна разом з навігаціями:
+        // без Include колекції лишаються null.
+        var entityResult = await _validator
+            .GetByIdIncludeAsync(entityId, cancellationToken, findStatus);
+
+        if (!entityResult.IsSuccess || entityResult.Value is null)
+            return Result<bool>.Fail(entityResult.Error);
+
         var delete = await _deleteService
-            .SoftDeleteRecordAsync(entity);
+            .SoftDeleteRecordAsync(entityResult.Value, cancellationToken);
 
         if (!delete.IsSuccess)
             return Result<bool>.Fail(delete.Error);

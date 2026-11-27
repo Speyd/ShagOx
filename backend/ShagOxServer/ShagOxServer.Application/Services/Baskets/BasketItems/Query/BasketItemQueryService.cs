@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping.Items;
 using ShagOxServer.Application.Services.Baskets.BasketItems.Mapping;
@@ -31,6 +32,7 @@ public class BasketItemQueryService
     private readonly IBasketQueryRepository _basketQueryRepository;
 
     private readonly IAdvertisementQueryService _advertisementService;
+    private readonly IPriceConversionService _priceConversion;
     private readonly IStatusQueryService _statusService;
 
 
@@ -40,10 +42,17 @@ public class BasketItemQueryService
     protected override bool CacheByPaged => false;
 
 
+    // Ціни в DTO конвертуються у валюту користувача, тому кеш
+    // має розділятися за валютою.
+    protected override async Task<string?> GetCacheCurrencyAsync(
+        CancellationToken cancellationToken = default)
+        => await _priceConversion.GetCacheSegmentAsync(cancellationToken);
+
     public BasketItemQueryService(
         IBasketItemQueryRepository itemQueryRepository,
         IBasketQueryRepository basketQueryRepository,
         IAdvertisementQueryService advertisementService,
+        IPriceConversionService priceConversion,
         IStatusQueryService statusService,
         ILineItemAttributeExistsRepository attributeRepository,
         IDataCacheService cacheService,
@@ -59,6 +68,7 @@ public class BasketItemQueryService
         _basketQueryRepository = basketQueryRepository;
         _statusService = statusService;
         _advertisementService = advertisementService;
+        _priceConversion = priceConversion;
     }
 
 
@@ -68,7 +78,6 @@ public class BasketItemQueryService
         await PrepareAttributesForMappingAsync(
             entity.Advertisement,
             entity.AdvertisementVariant);
-
 
         var converts = await _advertisementService
             .ConvertPricesAsync(entity.Advertisement);

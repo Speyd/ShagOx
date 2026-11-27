@@ -55,7 +55,7 @@ public abstract class LineItemQueryService<TDto, TEntity, TFilter>
     {
         var cacheKey = LineItemsCache<TEntity>.ByParent(
            parentId,
-           _language.Language,
+           await GetCacheLanguageAsync(cancellationToken),
            pagination.Page,
            pagination.PageSize,
            status);

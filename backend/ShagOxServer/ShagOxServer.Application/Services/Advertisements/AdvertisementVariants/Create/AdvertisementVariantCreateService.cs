@@ -2,12 +2,15 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.AdvertisementVariants.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -18,6 +21,9 @@ public class AdvertisementVariantCreateService
     private readonly IRepository<AdvertisementVariant> _variantRepository;
     private readonly AdvertisementVariantValidator _variantValidator;
 
+    private readonly IAdvertisementQueryRepository _advertRepository;
+    private readonly AdvertisementInvalidationService _advertInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementVariantCreateService> _logger;
 
@@ -27,9 +33,13 @@ public class AdvertisementVariantCreateService
         AdvertisementVariantValidator variantValidator,
         AdvertisementValidator advertValidator,
         IAttributeDefinitionQueryRepository attributeRepository,
+        IAdvertisementQueryRepository advertRepository,
+        AdvertisementInvalidationService advertInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantCreateService> logger)
     {
+        _advertRepository = advertRepository;
+        _advertInvalid = advertInvalid;
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;
         _logger = logger;
@@ -41,22 +51,22 @@ public class AdvertisementVariantCreateService
         AdvertisementVariantCreateRequest request,
         CancellationToken cancellationToken = default)
     {
+        Result<CreateResponse> createResult;
+
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
-            var result = await CreateInternalAsync(
+            createResult = await CreateInternalAsync(
                 request, cancellationToken);
 
-            if (!result.IsSuccess)
+            if (!createResult.IsSuccess)
             {
                 await _unitOfWork.RollbackAsync();
-                return result;
+                return createResult;
             }
 
             await _unitOfWork.CommitAsync();
-
-            return result;
         }
         catch (Exception ex)
         {
@@ -71,6 +81,16 @@ public class AdvertisementVariantCreateService
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.AdvertisementVariantCreateFailed);
         }
+
+        // Оголошення кешується разом зі списком варіантів.
+        var advertInfo = await _advertRepository
+            .GetCacheInfoByIdAsync(request.AdvertisementId,
+                cancellationToken, EntityStatus.All);
+
+        if (advertInfo is not null)
+            await _advertInvalid.InvalidateUpdateAsync(advertInfo);
+
+        return createResult;
     }
 
     public async Task<Result<CreateResponse>> CreateInternalAsync(

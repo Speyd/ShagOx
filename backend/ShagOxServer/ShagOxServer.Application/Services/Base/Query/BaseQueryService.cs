@@ -37,6 +37,15 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
     public abstract Task<TDto> ApplyMapperAsync(
         TEntity entity);
 
+    /// <summary>
+    /// Викликається перед побудовою ключів кешу. Дає змогу один раз
+    /// асинхронно визначити дані запиту, від яких залежить відповідь
+    /// (наприклад, валюту користувача для конвертованих цін).
+    /// </summary>
+    protected virtual Task PrepareCacheKeyAsync(
+        CancellationToken cancellationToken = default)
+        => Task.CompletedTask;
+
 
     public virtual async Task<Result<long>> GetCountAsync(
         CancellationToken cancellationToken = default,
@@ -64,6 +73,8 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
             return await entity.ToResultAsync(
                 ApplyMapperAsync);
         }
+
+        await PrepareCacheKeyAsync(cancellationToken);
 
         var cache = await GetByCache(id, status);
 
@@ -98,6 +109,8 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
                 ApplyMapperAsync);
         }
 
+        await PrepareCacheKeyAsync(cancellationToken);
+
         var cache = await GetByPagedCache(pagination, status);
 
         if (cache is not null)
@@ -130,6 +143,8 @@ public abstract partial class BaseQueryService<TDto, TEntity, TFilter>
             return await entity.ToResultPagedAsync(
                 ApplyMapperAsync);
         }
+
+        await PrepareCacheKeyAsync(cancellationToken);
 
         var cache = await GetBySearchCache(filter,
             pagination, status);

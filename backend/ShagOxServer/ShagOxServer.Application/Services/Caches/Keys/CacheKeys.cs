@@ -175,7 +175,10 @@ public static class CacheKeys
 
     public static string LanguageSearchPattern<TEntity>(
         EntityStatus status = EntityStatus.Active)
-        => $"{LanguagePrefix<TEntity>()}:status:{status}:*:search:*";
+        // Ключ має вигляд {prefix}:language:{lang}:status:{status}:search:{hash},
+        // тож мова стоїть перед статусом (раніше патерн ні з чим не збігався
+        // і результати пошуку не інвалідувались після змін).
+        => $"{LanguagePrefix<TEntity>()}:*:status:{status}:search:*";
 
     public static string LanguageSearchPattern<TEntity>(
         string language,

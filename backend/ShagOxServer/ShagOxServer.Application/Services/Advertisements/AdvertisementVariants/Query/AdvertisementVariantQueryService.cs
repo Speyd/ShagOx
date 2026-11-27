@@ -36,6 +36,12 @@ public partial class AdvertisementVariantQueryService
     protected override bool CacheByPaged => false;
 
 
+    // Ціни в DTO конвертуються у валюту користувача, тому кеш
+    // має розділятися за валютою.
+    protected override async Task<string?> GetCacheCurrencyAsync(
+        CancellationToken cancellationToken = default)
+        => await _priceConversion.GetCacheSegmentAsync(cancellationToken);
+
     public AdvertisementVariantQueryService(
         IAdvertisementVariantQueryRepository variantRepository,
         IAttributeValueService attributeValueService,

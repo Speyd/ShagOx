@@ -8,6 +8,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Orders.OrderItems;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Query;
 using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Advertisements.Core.Mapping.Items;
@@ -32,6 +33,7 @@ public class OrderItemQueryService
     private readonly IOrderQueryRepository _orderQueryRepository;
 
     private readonly IAdvertisementQueryService _advertisementService;
+    private readonly IPriceConversionService _priceConversion;
     private readonly IStatusQueryService _statusService;
 
 
@@ -41,10 +43,17 @@ public class OrderItemQueryService
     protected override bool CacheByPaged => false;
 
 
+    // Ціни в DTO конвертуються у валюту користувача, тому кеш
+    // має розділятися за валютою.
+    protected override async Task<string?> GetCacheCurrencyAsync(
+        CancellationToken cancellationToken = default)
+        => await _priceConversion.GetCacheSegmentAsync(cancellationToken);
+
     public OrderItemQueryService(
         IOrderItemQueryRepository itemQueryRepository,
         IOrderQueryRepository orderQueryRepository,
         IAdvertisementQueryService advertisementService,
+        IPriceConversionService priceConversion,
         IStatusQueryService statusService,
         ILineItemAttributeExistsRepository attributeRepository,
         IDataCacheService cacheService,
@@ -60,6 +69,7 @@ public class OrderItemQueryService
         _orderQueryRepository = orderQueryRepository;
         _statusService = statusService;
         _advertisementService = advertisementService;
+        _priceConversion = priceConversion;
     }
 
 

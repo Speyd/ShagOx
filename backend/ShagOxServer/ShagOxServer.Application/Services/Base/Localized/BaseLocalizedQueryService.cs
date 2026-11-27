@@ -20,6 +20,10 @@ public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
 {
     protected readonly ILanguageProvider _language;
 
+    // Сегмент валюти для поточного запиту (сервіс scoped, тож це дані
+    // одного користувача). null — відповідь від валюти не залежить.
+    private string? _cacheCurrency;
+
 
     public BaseLocalizedQueryService(
         ISearchRepository<TEntity, TFilter> localizedRepository,
@@ -34,13 +38,46 @@ public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
         _language = language;
     }
 
+    /// <summary>
+    /// Сервіси, чиї DTO містять ціни, конвертовані у валюту користувача,
+    /// повертають тут сегмент валюти, щоб кеш розділявся за валютою.
+    /// </summary>
+    protected virtual Task<string?> GetCacheCurrencyAsync(
+        CancellationToken cancellationToken = default)
+        => Task.FromResult<string?>(null);
+
+    protected override async Task PrepareCacheKeyAsync(
+        CancellationToken cancellationToken = default)
+    {
+        _cacheCurrency = await GetCacheCurrencyAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Мовний сегмент ключа: мова, а для цінових відповідей ще й валюта
+    /// ("uk:currency:UAH"). Валюта стоїть до статусу, тож патерни
+    /// інвалідації виду "{prefix}:*:status:..." її покривають.
+    /// </summary>
+    protected string CacheLanguage => _cacheCurrency is null
+        ? _language.Language
+        : $"{_language.Language}:{_cacheCurrency}";
+
+    /// <summary>
+    /// Для власних ключів кешу (GetOrCreateAsync) у похідних сервісах.
+    /// </summary>
+    protected async Task<string> GetCacheLanguageAsync(
+        CancellationToken cancellationToken = default)
+    {
+        await PrepareCacheKeyAsync(cancellationToken);
+        return CacheLanguage;
+    }
+
     public override string GetCacheKey(
         long id,
         EntityStatus status = EntityStatus.Active)
     {
         return CacheKeys.EntityLanguage<TEntity>(
             id,
-            _language.Language,
+            CacheLanguage,
             status);
     }
 
@@ -49,7 +86,7 @@ public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
         EntityStatus status = EntityStatus.Active)
     {
         return CacheKeys.EntityLanguagePaged<TEntity>(
-           _language.Language,
+           CacheLanguage,
            pagination.Page,
            pagination.PageSize,
            status);
@@ -62,7 +99,7 @@ public abstract class BaseLocalizedQueryService<TDto, TEntity, TFilter>
     {
         return CacheKeys.ByLanguageSearch<TEntity, TFilter>(
             filter,
-            _language.Language,
+            CacheLanguage,
             pagination.Page,
             pagination.PageSize,
             status);

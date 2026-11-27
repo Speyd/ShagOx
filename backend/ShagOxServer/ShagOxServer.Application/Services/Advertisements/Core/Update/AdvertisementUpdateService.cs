@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Advertisements.Core.Update;
+using ShagOxServer.Application.DTOs.Base.Requests;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Favorites;
@@ -13,7 +14,9 @@ using ShagOxServer.Application.Services.Advertisements.AdvertisementVariants.Val
 using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Base.Update;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
 using ShagOxServer.Application.Services.Specification.Pictures.Core.PictureOrdering;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.SharedKernel.Abstractions.Results;
@@ -35,6 +38,8 @@ public partial class AdvertisementUpdateService
 
     private readonly IAdvertisementVariantUpdateService _variantUpdateService;
 
+    private readonly AdvertisementInvalidationService _advertInvalid;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AdvertisementUpdateService> _logger;
 
@@ -49,6 +54,7 @@ public partial class AdvertisementUpdateService
         IAdvertisementDeleteService deleteService,
         IAdvertisementVariantUpdateService variantUpdateService,
         IFavoriteQueryRepository favoriteRepository,
+        AdvertisementInvalidationService advertInvalid,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementUpdateService> logger
     )
@@ -60,10 +66,34 @@ public partial class AdvertisementUpdateService
         _variantValidator = variantValidator;
         _executor = executor;
         _variantUpdateService = variantUpdateService;
+        _advertInvalid = advertInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
+
+    public override async Task<Result<bool>> ChangeStatusAsync(
+        long entityId,
+        ChangeStatusRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await base.ChangeStatusAsync(
+            entityId, request, cancellationToken);
+
+        if (!result.IsSuccess)
+            return result;
+
+        var advert = await _validator.GetByIdIncludeAsync(
+            entityId, cancellationToken, EntityStatus.All);
+
+        if (advert.IsSuccess && advert.Value is not null)
+        {
+            await _advertInvalid.InvalidateUpdateAsync(
+                advert.Value.GetCacheContext());
+        }
+
+        return result;
+    }
 
     public async Task<Result<UpdateResponse>> UpdateAsync(
         long advertId,

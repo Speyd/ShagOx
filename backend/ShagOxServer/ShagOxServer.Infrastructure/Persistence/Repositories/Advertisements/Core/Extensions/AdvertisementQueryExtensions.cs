@@ -9,9 +9,12 @@ public static class AdvertisementQueryExtensions
     public static IQueryable<Advertisement> WithIncludes(
         this IQueryable<Advertisement> query)
     {
+        // Варіанти, які вже є в замовленнях, видаляються м'яко
+        // (EntityStatus.Deleted) і в оголошенні не показуються.
         return query
             .AsSplitQuery()
-            .Include(x => x.Variants)
+            .Include(x => x.Variants
+                .Where(v => v.EntityStatus != EntityStatus.Deleted))
             .Include(x => x.Status)
             .Include(x => x.Currency)
             .Include(x => x.Condition)
@@ -26,7 +29,8 @@ public static class AdvertisementQueryExtensions
     {
         return query
             .AsSplitQuery()
-            .Include(x => x.Variants)
+            .Include(x => x.Variants
+                .Where(v => v.EntityStatus != EntityStatus.Deleted))
             .Include(x => x.Pictures
                 .OrderBy(p => p.Order)
                 .Take(1))

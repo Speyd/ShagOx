@@ -20,7 +20,8 @@ using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Register;
-public partial class RegisterService 
+
+public partial class RegisterService
     : IRegisterService
 {
     private readonly IRepository<User> _userRepository;
@@ -105,7 +106,7 @@ public partial class RegisterService
 
             try
             {
-                if (prepareResult is not null && 
+                if (prepareResult is not null &&
                     !prepareResult.Value.IsExisting)
                 {
                     var createResult = await CreateUserAggregateAsync(user);
@@ -129,7 +130,7 @@ public partial class RegisterService
 
                 await _userCreater.SetDefaultName(user);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(
                     ex,
@@ -158,7 +159,7 @@ public partial class RegisterService
                new RegisterResponse(user)
             );
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError(
                 ex,

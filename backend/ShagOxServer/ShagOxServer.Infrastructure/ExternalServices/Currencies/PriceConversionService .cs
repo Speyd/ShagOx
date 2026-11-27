@@ -68,4 +68,13 @@ public class PriceConversionService
         return new ConvertedPricesDto(convertedPrice,
             convertedPreviousPrice);
     }
+
+    public async Task<string> GetCacheSegmentAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var userCurrency = await _currencyProvider
+            .GetCurrencyAsync(cancellationToken);
+
+        return $"currency:{userCurrency?.Code ?? "source"}";
+    }
 }

@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Advertisements.Favorites.Quer
 using ShagOxServer.Application.Interfaces.Services.Advertisements.Statuses.Query;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Services.Advertisements.Favorites.Mapping;
 using ShagOxServer.Application.Services.Base.Query;
 using ShagOxServer.Domain.Base.Enum;
@@ -28,6 +29,7 @@ public class FavoriteQueryService
 {
     private readonly IFavoriteQueryRepository _favoriteRepository;
     private readonly IUserQueryService _userService;
+    private readonly IPriceConversionService _priceConversion;
 
     protected readonly IAdvertisementQueryService _advertService;
     protected readonly IStatusQueryService _statusService;
@@ -36,11 +38,16 @@ public class FavoriteQueryService
 
     protected override bool CacheByPaged => false;
 
+    // FavoriteDto містить ціни у валюті користувача, а ключ за id
+    // спільний для всіх, тому за id не кешуємо.
+    protected override bool CacheById => false;
+
 
     public FavoriteQueryService(
         IFavoriteQueryRepository favoriteRepository,
         IUserQueryService userService,
         IAdvertisementQueryService advertService,
+        IPriceConversionService priceConversion,
         IStatusQueryService statusService,
         IDataCacheService cacheService,
         IOptions<CacheOptions> cacheOptions
@@ -49,6 +56,7 @@ public class FavoriteQueryService
     {
         _favoriteRepository = favoriteRepository;
         _userService = userService;
+        _priceConversion = priceConversion;
         _advertService = advertService;
         _statusService = statusService;
     }
@@ -94,7 +102,9 @@ public class FavoriteQueryService
         var cacheKey = FavoriteCache.ByUser(
             userId,
             pagination.Page,
-            pagination.PageSize, status);
+            pagination.PageSize,
+            await _priceConversion.GetCacheSegmentAsync(cancellationToken),
+            status);
 
         return await _cache.GetOrCreateAsync(
             cacheKey,

@@ -71,4 +71,22 @@ public class AdvertisementVariantCommandsRepository
             _entityInvalid,
             cancellationToken);
     }
+
+    public async Task<bool> HasOrderItemsAsync(
+        long variantId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _db.OrderItems
+            .AnyAsync(x => x.AdvertisementVariantId == variantId,
+                cancellationToken);
+    }
+
+    public async Task<int> RemoveFromBasketsAsync(
+        long variantId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _db.BasketItems
+            .Where(x => x.AdvertisementVariantId == variantId)
+            .ExecuteDeleteAsync(cancellationToken);
+    }
 }

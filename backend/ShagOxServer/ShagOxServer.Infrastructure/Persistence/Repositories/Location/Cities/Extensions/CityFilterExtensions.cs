@@ -14,8 +14,12 @@ public static class CityFilterExtensions
 
         if (!string.IsNullOrWhiteSpace(filter.Code))
         {
-            query = query.Where(u => u.Code != null &&
-                EF.Functions.ILike(u.Code, $"%{filter.Code}%"));
+            var term = $"%{filter.Code.Trim()}%";
+
+            query = query.Where(u =>
+                EF.Functions.ILike(u.Code, term) ||
+                u.Translations.Any(t =>
+                    EF.Functions.ILike(t.Name, term)));
         }
 
         if (filter.RegionId.HasValue)

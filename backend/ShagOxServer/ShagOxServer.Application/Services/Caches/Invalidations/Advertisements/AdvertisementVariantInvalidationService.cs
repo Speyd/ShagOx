@@ -38,7 +38,9 @@ public class AdvertisementVariantInvalidationService
     private async Task InvalidateAsync(
        AdvertisementVariantCacheContext entityInfo)
     {
-        await _cache.RemoveAsync(CacheKeys
-            .Entity<AdvertisementVariant>(entityInfo.Id));
+        // Сервіс варіантів локалізований: ключі мають вигляд
+        // {prefix}:language:{lang}[:currency:X]:status:{s}:entity:{id}.
+        await _cache.RemoveByPatternAsync(CacheKeys
+            .EntityLanguagePattern<AdvertisementVariant>(entityInfo.Id));
     }
 }

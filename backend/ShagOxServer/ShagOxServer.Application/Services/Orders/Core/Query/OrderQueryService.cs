@@ -6,6 +6,7 @@ using ShagOxServer.Application.DTOs.Orders.OrderItems.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Query;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Query;
@@ -33,6 +34,7 @@ public class OrderQueryService
 
     private readonly IDeliveryProviderQueryService _deliveryService;
     private readonly ICurrencyQueryService _currencyService;
+    private readonly IPriceConversionService _priceConversion;
 
 
     protected override bool CacheBySearch => false;
@@ -40,11 +42,18 @@ public class OrderQueryService
     protected override bool CacheByPaged => false;
 
 
+    // Ціни в DTO конвертуються у валюту користувача, тому кеш
+    // має розділятися за валютою.
+    protected override async Task<string?> GetCacheCurrencyAsync(
+        CancellationToken cancellationToken = default)
+        => await _priceConversion.GetCacheSegmentAsync(cancellationToken);
+
     public OrderQueryService(
         IOrderQueryRepository orderQueryRepository,
         IOrderItemQueryService orderItemService,
         IDeliveryProviderQueryService deliveryService,
         ICurrencyQueryService currencyService,
+        IPriceConversionService priceConversion,
         IDataCacheService cacheService,
         IOptions<CacheOptions> cacheOptions,
         ILanguageProvider language
@@ -58,6 +67,7 @@ public class OrderQueryService
         _orderItemService = orderItemService;
         _deliveryService = deliveryService;
         _currencyService = currencyService;
+        _priceConversion = priceConversion;
     }
 
 
@@ -98,7 +108,7 @@ public class OrderQueryService
     {
         var cacheKey = OrderCache.ByOrderNumber(
             orderNumber,
-            _language.Language,
+            await GetCacheLanguageAsync(cancellationToken),
             status);
 
         return await _cache.GetOrCreateAsync(
@@ -123,7 +133,7 @@ public class OrderQueryService
     {
         var cacheKey = OrderCache.ByPaymentTransaction(
             paymentTransactionId,
-            _language.Language,
+            await GetCacheLanguageAsync(cancellationToken),
             status);
 
         return await _cache.GetOrCreateAsync(
@@ -150,7 +160,7 @@ public class OrderQueryService
     {
         var cacheKey = OrderCache.ByTrackingNumber(
             trackingNumber,
-            _language.Language,
+            await GetCacheLanguageAsync(cancellationToken),
             status);
 
         return await _cache.GetOrCreateAsync(

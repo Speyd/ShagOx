@@ -16,7 +16,7 @@ public static class AdvertisementMapper
     public static AdvertisementDto ToDto(
         Advertisement x,
         List<AdvertisementVariantDto> variants,
-        CategoryDto category,
+        CategoryDto? category,
         StatusDto status,
         List<AttributeDto> attributes,
         ConvertedPricesDto priceConversion,

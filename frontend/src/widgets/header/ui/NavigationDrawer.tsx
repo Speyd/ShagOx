@@ -19,6 +19,7 @@ import { useLogout } from "@/features/auth/model/hooks/useLogout";
 import ConfirmModal from "@/shared/ui/feedback/confirm-modal";
 import { NavLink } from "react-router-dom";
 import clsx from "clsx";
+import { useAuthStore } from "@/features/auth";
 
 type NavigationDrawerProps = {
   opened: boolean;
@@ -42,6 +43,8 @@ export default function NavigationDrawer({
   const [languageOpened, setLanguageOpened] = useState(false);
   const [logoutModalOpened, setLogoutModalOpened] = useState(false);
   const logoutMutation = useLogout();
+
+  const user = useAuthStore((state) => state.user);
 
   const handleLogout = () => {
     logoutMutation.mutate();
@@ -133,16 +136,17 @@ export default function NavigationDrawer({
 
             <Divider />
           </div>
+          {user && (
+            <button
+              type="button"
+              className={styles.menuItem}
+              onClick={() => setLogoutModalOpened(true)}
+            >
+              <LogOut />
 
-          <button
-            type="button"
-            className={styles.menuItem}
-            onClick={() => setLogoutModalOpened(true)}
-          >
-            <LogOut />
-
-            <Text fz={14}>Вийти</Text>
-          </button>
+              <Text fz={14}>Вийти</Text>
+            </button>
+          )}
         </div>
       </div>
 

@@ -8,7 +8,6 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Create;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Update;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
-using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 
 namespace ShagOxServer.Api.Controllers.Auth.Roles;

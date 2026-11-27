@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Infrastructure.BackgroundServices.Auth;
 using ShagOxServer.Infrastructure.BackgroundServices.Db;
+using ShagOxServer.Infrastructure.BackgroundServices.Devices;
 using ShagOxServer.Infrastructure.BackgroundServices.Payments;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.BackgroundServices;
@@ -33,6 +34,12 @@ public static class BackgroundServiceDependencyInjection
         #region Payments
 
         services.AddHostedService<PaymentExpirationWorker>();
+
+        #endregion
+
+        #region Devices
+
+        services.AddHostedService<DeviceBanBackgroundService>();
 
         #endregion
 

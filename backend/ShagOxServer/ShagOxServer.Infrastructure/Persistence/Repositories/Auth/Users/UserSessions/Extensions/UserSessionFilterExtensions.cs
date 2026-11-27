@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Filters.Auth.Users.UserSessions;
 
@@ -17,10 +18,22 @@ public static class UserSessionFilterExtensions
                 u.OwnerId == filter.UserId.Value);
         }
 
-        if (filter.DeviceId.HasValue)
+        if (filter.UserDeviceId.HasValue)
         {
             query = query.Where(u =>
-                u.DeviceId == filter.DeviceId.Value);
+                u.UserDeviceId == filter.UserDeviceId.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.Browser))
+        {
+            query = query.Where(u =>
+                EF.Functions.ILike(u.Browser, $"%{filter.Browser}%"));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.BrowserVersion))
+        {
+            query = query.Where(u => u.BrowserVersion != null &&
+                EF.Functions.ILike(u.BrowserVersion, $"%{filter.BrowserVersion}%"));
         }
 
         if (filter.RevocationReason.HasValue)

@@ -135,6 +135,9 @@
   <data name="RefreshTokenExpired" xml:space="preserve">
     <value>Das Refresh-Token ist abgelaufen.</value>
   </data>
+  <data name="SessionInactiveOrExpired" xml:space="preserve">
+    <value>Deine Sitzung ist inaktiv oder abgelaufen.</value>
+  </data>
   <data name="SessionRevoked" xml:space="preserve">
     <value>Die Sitzung wurde widerrufen.</value>
   </data>

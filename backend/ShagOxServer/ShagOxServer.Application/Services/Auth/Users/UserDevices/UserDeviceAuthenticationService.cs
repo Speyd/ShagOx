@@ -1,12 +1,15 @@
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices;
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
-using ShagOxServer.Application.Interfaces.Providers.User;
+using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Application.Resources.Auth.Logins;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
+using ShagOxServer.Domain.Entities.Devices.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Auth.Users.UserDevices;
@@ -16,16 +19,19 @@ public class UserDeviceAuthenticationService
     private readonly IDeviceProvider _deviceProvider;
     private readonly IUserContext _userContext;
     private readonly IUserDeviceCreateService _deviceCreateService;
+    private readonly IUserDeviceQueryService _deviceQueryService;
 
 
     public UserDeviceAuthenticationService(
         IDeviceProvider deviceProvider,
         IUserContext userContext,
-        IUserDeviceCreateService deviceCreateService)
+        IUserDeviceCreateService deviceCreateService,
+        IUserDeviceQueryService deviceQueryService)
     {
         _deviceProvider = deviceProvider;
         _userContext = userContext;
         _deviceCreateService = deviceCreateService;
+        _deviceQueryService = deviceQueryService;
     }
 
 
@@ -34,9 +40,28 @@ public class UserDeviceAuthenticationService
     {
         var device = await _deviceProvider.GetDeviceAsync();
 
-        if (device is not null)
+        if (device is null)
         {
-            if (device.Status != UserDeviceStatus.Active)
+            return Result<UserDeviceAuthenticationResponse>.NotFound(
+                EntityNamesResources.Device);
+        }
+        else if (device.Status != DeviceStatus.Active)
+        {
+            return Result<UserDeviceAuthenticationResponse>.Fail(
+                LoginAuthResources.DeviceBlocked);
+        }
+
+
+
+        var userDevice = await _deviceQueryService
+            .GetByUserAndDeviceAsync(user.Id, device.Id);
+
+        if (userDevice.IsSuccess)
+        {
+            var deviceValue = userDevice.Value;
+
+            if (deviceValue!.Status != UserDeviceStatus.Active ||
+                deviceValue!.Device.Id != device.Id)
             {
                 return Result<UserDeviceAuthenticationResponse>.Fail(
                     LoginAuthResources.DeviceBlocked);
@@ -44,9 +69,10 @@ public class UserDeviceAuthenticationService
 
             return Result<UserDeviceAuthenticationResponse>.Success(
                 new UserDeviceAuthenticationResponse(
-                    device.Id,
-                    device.IsTrusted));
-        }
+                    deviceValue!.Id,
+                    deviceValue!.IsTrusted));
+        }      
+
 
         var identifier = _userContext.DeviceIdentifier;
 
@@ -59,7 +85,7 @@ public class UserDeviceAuthenticationService
         var result = await _deviceCreateService.CreateAsync(
             new UserDeviceCreateRequest(
                 user.Id,
-                identifier));
+                device.Id));
 
         if (!result.IsSuccess)
         {

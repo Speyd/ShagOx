@@ -5,6 +5,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.Attri
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Query;
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Deliveries.Translations;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Create;
 using ShagOxServer.Application.Services.Dictionaries.Attributes.AttributeDefinitions.Translations.Delete;
@@ -36,6 +37,8 @@ public static class AttributeDefinitionTranslationDependencyInjection
         services.AddScoped<
             ICacheInvalidationService<AttributeDefinitionTranslation, TranslationCacheContext>,
             AttributeDefinitionTranslationInvalidationService>();
+
+        services.AddScoped<AttributeDefinitionTranslationInvalidationService>();
 
         services.AddScoped<AttributeDefinitionTranslationValidator>();
 

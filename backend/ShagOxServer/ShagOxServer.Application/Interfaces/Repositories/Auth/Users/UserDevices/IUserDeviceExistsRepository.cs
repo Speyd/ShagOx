@@ -9,15 +9,9 @@ public interface IUserDeviceExistsRepository
     IExistsOwnerRepository
 {
     Task<bool> IsBlockedAsync(
-        int userId,
-        string deviceIdentifier,
-        CancellationToken cancellationToken = default);
-
-    Task<bool> ExistsAsync(
         long userId,
-        string deviceIdentifier,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null);
+        long deviceId,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsAsync(
         long userId,

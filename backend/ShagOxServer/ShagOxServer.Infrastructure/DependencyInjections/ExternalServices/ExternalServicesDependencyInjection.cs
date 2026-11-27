@@ -15,6 +15,8 @@ public static class ExternalServicesDependencyInjection
 
         services.AddDeviceInfosInfrastructure();
 
+        services.AddSessionInfosInfrastructure();
+
         return services;
     }
 }

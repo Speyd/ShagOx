@@ -31,7 +31,7 @@ public partial class UserVerificationService
             .UntrustDevicesAsync(user);
 
         await _trastManagement.RevokeSessionsByUserAsync(
-            user,
+            user.Id,
             SessionRevocationReason.ContactChanged);
 
         return Result<VerificationResponse>.Success(
@@ -57,7 +57,7 @@ public partial class UserVerificationService
             .UntrustDevicesAsync(user);
 
         await _trastManagement.RevokeSessionsByUserAsync(
-            user,
+            user.Id,
             SessionRevocationReason.ContactChanged);
 
         return Result<VerificationResponse>.Success(

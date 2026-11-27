@@ -29,7 +29,7 @@ public partial class UserVerificationService
             .UntrustDevicesAsync(user);
 
         await _trastManagement.RevokeSessionsByUserAsync(
-            user,
+            user.Id,
             SessionRevocationReason.PasswordChanged);
 
         return Result<VerificationResponse>.Success(

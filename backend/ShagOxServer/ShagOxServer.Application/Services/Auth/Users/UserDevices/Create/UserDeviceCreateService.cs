@@ -2,12 +2,13 @@ using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.DTOs.Base.Responses;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Providers.User;
+using ShagOxServer.Application.Interfaces.Providers.Devices;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Auth.Users.UserDevices.Validator;
+using ShagOxServer.Application.Services.Devices.Core.Validator;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -16,10 +17,10 @@ public class UserDeviceCreateService
     : IUserDeviceCreateService
 {
     private readonly IRepository<UserDevice> _deviceRepository;
-    private readonly UserDeviceValidator _deviceValidator;
+    private readonly UserDeviceValidator _userDeviceValidator;
+    private readonly DeviceValidator _deviceValidator;
     private readonly UserValidator _userValidator;
 
-    //private readonly RoleInvalidationService _roleInvalid;
     private readonly IDeviceInfoProvider _deviceInfo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UserDeviceCreateService> _logger;
@@ -27,18 +28,18 @@ public class UserDeviceCreateService
 
     public UserDeviceCreateService(
         IRepository<UserDevice> deviceRepository,
-        UserDeviceValidator deviceValidator,
+        UserDeviceValidator userDeviceValidator,
+        DeviceValidator deviceValidator,
         UserValidator userValidator,
         IDeviceInfoProvider deviceInfo,
-        //RoleInvalidationService roleInvalid,
         IUnitOfWork unitOfWork,
         ILogger<UserDeviceCreateService> logger)
     {
         _deviceRepository = deviceRepository;
+        _userDeviceValidator = userDeviceValidator;
         _deviceValidator = deviceValidator;
         _userValidator = userValidator;
         _deviceInfo = deviceInfo;
-        //_roleInvalid = roleInvalid;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -81,10 +82,6 @@ public class UserDeviceCreateService
             return Result<CreateResponse>
                 .Fail(EntityErrorResources.UserDeviceCreateFailed);
         }
-
-        //await _roleInvalid.InvalidateCreateAsync(
-        //    RoleCacheMapper.ToInfo(role));
-        
     }
 
     public async Task<Result<UserDevice>> CreateInternalAsync(
@@ -97,19 +94,22 @@ public class UserDeviceCreateService
         if (!userValidation.IsSuccess)
             return Result<UserDevice>.Fail(userValidation.Error);
 
-        var validation = await _deviceValidator
+        var deviceValidation = await _deviceValidator
+            .ExistsByIdAsync(request.DeviceId);
+
+        if (!deviceValidation.IsSuccess)
+            return Result<UserDevice>.Fail(deviceValidation.Error);
+
+        var validation = await _userDeviceValidator
             .NotExistsAsync(request.OwnerId,
-                request.DeviceIdentifier,
+                request.DeviceId,
                 cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UserDevice>.Fail(validation.Error);
 
-        var deviceInfo = _deviceInfo
-            .GetDeviceInfo(request.DeviceIdentifier);
-
         var device = UserDeviceCreater
-            .Create(request, deviceInfo);
+            .Create(request);
 
         _deviceRepository.Add(device);
 

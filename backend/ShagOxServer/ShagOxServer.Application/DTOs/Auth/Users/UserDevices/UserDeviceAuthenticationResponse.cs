@@ -1,6 +1,6 @@
 namespace ShagOxServer.Application.DTOs.Auth.Users.UserDevices;
 public record UserDeviceAuthenticationResponse
 (
-    long DeviceId,
+    long UserDeviceId,
     bool IsTrusted
 );

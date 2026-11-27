@@ -13,6 +13,7 @@ using ShagOxServer.Application.Services.Advertisements.Core.Update.Validator;
 using ShagOxServer.Application.Services.Advertisements.Core.Validator;
 using ShagOxServer.Application.Services.Base.Validator;
 using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements;
+using ShagOxServer.Application.Services.Caches.Invalidations.Advertisements.Translations;
 using ShagOxServer.Domain.Cache.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 
@@ -38,6 +39,8 @@ public static class AdvertisementsDependencyInjection
         services.AddScoped<
             ICacheInvalidationService<Advertisement, AdvertisementCacheContext>,
             AdvertisementInvalidationService>();
+
+        services.AddScoped<AdvertisementInvalidationService>();
 
         services.AddFavoriteApplication();
 

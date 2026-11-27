@@ -15,7 +15,7 @@ namespace ShagOxServer.Api.Controllers.Advertisements.Core;
 
 [ApiController]
 [Route("api/advertisements")]
-//[Authorize]
+[Authorize]
 public class AdvertisementCommandsController 
     : ApiOwnerExistsController
 {

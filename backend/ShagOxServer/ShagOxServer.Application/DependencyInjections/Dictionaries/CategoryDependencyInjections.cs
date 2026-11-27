@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Query
 using ShagOxServer.Application.Interfaces.Services.Dictionaries.Categories.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries;
 using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Attributes;
+using ShagOxServer.Application.Services.Caches.Invalidations.Dictionaries.Translation;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Create;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Delete;
 using ShagOxServer.Application.Services.Dictionaries.Categories.Query;
@@ -41,6 +42,8 @@ public static class CategoryDependencyInjections
         services.AddScoped<
             ICacheInvalidationService<Category, CategoryCacheContext>,
             CategoryInvalidationService>();
+
+        services.AddScoped<CategoryInvalidationService>();
 
         services.AddCategoryTranslationApplication();
 

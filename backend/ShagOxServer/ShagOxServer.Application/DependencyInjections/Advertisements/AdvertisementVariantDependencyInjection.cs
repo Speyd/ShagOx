@@ -35,6 +35,8 @@ public static class AdvertisementVariantDependencyInjection
             ICacheInvalidationService<AdvertisementVariant, AdvertisementVariantCacheContext>,
             AdvertisementVariantInvalidationService>();
 
+        services.AddScoped<AdvertisementVariantInvalidationService>();
+
         services.AddScoped<AdvertisementVariantValidator>();
 
         return services;

@@ -35,6 +35,8 @@ public static class AttributeDictionaryValueTranslationDependencyInjections
             ICacheInvalidationService<AttributeDictionaryValueTranslation, TranslationCacheContext>,
             AttributeDictionaryValueTranslationInvalidationService>();
 
+        services.AddScoped<AttributeDictionaryValueTranslationInvalidationService>();
+
         services.AddScoped<AttributeDictionaryValueTranslationValidator>();
 
         return services;

@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Auth.Users.UserSessions;
 using ShagOxServer.Application.DTOs.Auth.Users.UserSessions.Create;
 using ShagOxServer.Domain.Entities.Auth.Users;
 
@@ -6,6 +7,7 @@ public static class UserSessionCreater
 {
     public static UserSession Create(
        UserSessionCreateRequest request,
+       SessionInfo info,
        int expireDays,
        string tokenHash)
     {
@@ -14,8 +16,11 @@ public static class UserSessionCreater
         return new UserSession
         {
             OwnerId = request.OwnerId,
-            DeviceId = request.DeviceId,
+            UserDeviceId = request.UserDeviceId,
             RefreshTokenHash = tokenHash,
+            IpAddress = info.IpAddress,
+            Browser = info.Browser,
+            BrowserVersion = info.BrowserVerison,
             ExpiresAt = now.AddDays(expireDays),
             CreatedAt = now,
             LastUsedAt = now,

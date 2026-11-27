@@ -1,8 +1,9 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Systems.Middleware;
+using ShagOxServer.Application.Interfaces.Providers.Devices;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Core;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;
-using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using System.Security.Claims;
 
@@ -25,7 +26,9 @@ public class UpdateLastSeenMiddleware
     public async Task InvokeAsync(
         HttpContext context,
         AppDbContext dbContext,
-        IUserContext userContext,
+        IDeviceProvider deviceProvier,
+        IUserCommandsRepository userCommands,
+        IUserDeviceCommandsRepository deviceCommands,
         IRefreshTokenService refreshTokenService)
     {
 
@@ -35,32 +38,22 @@ public class UpdateLastSeenMiddleware
 
             if (int.TryParse(userIdClaim?.Value, out var userId))
             {
-                var deviceIdentifier = userContext.DeviceIdentifier;
+                var device = await deviceProvier
+                    .GetDeviceAsync(context.RequestAborted);
                 
                 var now = DateTime.UtcNow;
                 var cutoff = now - _updaterOptions.UpdateLastSeen;
 
-                await dbContext.Users
-                    .Where(u => u.Id == userId &&
-                        (u.LastSeenAt == null ||
-                         u.LastSeenAt <= cutoff))
-                    .ExecuteUpdateAsync(
-                        setters => setters.SetProperty(
-                            u => u.LastSeenAt,
-                            now),
-                        context.RequestAborted);
+                await userCommands.UpdateLastSeenAsync(
+                    userId,
+                    context.RequestAborted);
 
-                if (!string.IsNullOrWhiteSpace(deviceIdentifier))
+                if (device is not null)
                 {
-                    await dbContext.UserDevices
-                        .Where(d =>
-                            d.DeviceIdentifier == deviceIdentifier &&
-                            d.OwnerId == userId)
-                        .ExecuteUpdateAsync(
-                            setters => setters.SetProperty(
-                                d => d.LastActiveAt,
-                                now),
-                            context.RequestAborted);
+                    await deviceCommands.UpdateLastActiveAsync(
+                        userId,
+                        device.Id,
+                        context.RequestAborted);
                 }
             }
         }

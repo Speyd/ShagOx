@@ -45,22 +45,30 @@ public partial class GoogleLoginService
                 LoginAuthResources.LoginNotAllowed);
         }
 
-        var device = await _deviceProvider
-            .GetDeviceAsync();
+        var deviceResult = await _deviceAuthentication
+                .AuthenticateDeviceAsync(user);
 
-        if(device is null)
+        if (!deviceResult.IsSuccess)
         {
-            return Result<LoginResponse>.Fail(
-                EntityNamesResources.UserDevice);
+            return Result<LoginResponse>
+                .Fail(deviceResult.Error);
         }
 
-        if (!device.IsTrusted)
+        if (deviceResult.Value is null)
         {
-            await _deviceCommands.MarkAsTrasteAsync(device.Id);
+            return Result<LoginResponse>
+                .NotFound(EntityNamesResources.UserDevice);
         }
 
-        return await _sessionService
-            .CreateSessionAsync(user, device.Id);
+
+        if (!deviceResult.Value.IsTrusted)
+        {
+            await _deviceCommands.MarkAsTrasteAsync(
+                deviceResult.Value.UserDeviceId);
+        }
+
+        return await _sessionService.CreateSessionAsync(
+            user, deviceResult.Value.UserDeviceId);
     }
 
 

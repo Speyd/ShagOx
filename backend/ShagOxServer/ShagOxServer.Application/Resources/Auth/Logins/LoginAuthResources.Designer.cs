@@ -115,6 +115,15 @@ namespace ShagOxServer.Application.Resources.Auth.Logins {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Your session is inactive or has expired..
+        /// </summary>
+        public static string SessionInactiveOrExpired {
+            get {
+                return ResourceManager.GetString("SessionInactiveOrExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Session has been revoked..
         /// </summary>
         public static string SessionRevoked {

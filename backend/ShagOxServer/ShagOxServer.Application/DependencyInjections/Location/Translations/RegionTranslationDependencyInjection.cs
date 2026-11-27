@@ -35,6 +35,8 @@ public static class RegionTranslationDependencyInjection
             ICacheInvalidationService<RegionTranslation, TranslationCacheContext>,
             RegionTranslationInvalidationService>();
 
+        services.AddScoped<RegionTranslationInvalidationService>();
+
         services.AddScoped<RegionTranslationValidator>();
 
         return services;

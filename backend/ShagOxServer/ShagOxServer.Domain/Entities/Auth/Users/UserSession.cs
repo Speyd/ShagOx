@@ -1,14 +1,23 @@
+using ShagOxServer.Domain.Base.Cache;
 using ShagOxServer.Domain.Base.Owner;
+using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 
 namespace ShagOxServer.Domain.Entities.Auth.Users;
 public class UserSession
-    : OwnedEntity<User>
+    : OwnedEntity<User>,
+    IEntityCache<UserSession, UserSessionCacheContext>
 {
-    public long DeviceId { get; set; }
-    public UserDevice Device { get; set; } = null!;
+    public long UserDeviceId { get; set; }
+    public UserDevice UserDevice { get; set; } = null!;
 
     public string RefreshTokenHash { get; set; } = null!;
+
+
+    public string Browser { get; set; } = "";
+    public string? BrowserVersion { get; set; }
+    public string? IpAddress { get; set; }
+
 
     public DateTime CreatedAt { get; set; }
 
@@ -22,8 +31,24 @@ public class UserSession
     public bool IsActive =>
         RevokedAt == null && ExpiresAt > DateTime.UtcNow;
 
+
+    public UserSessionCacheContext GetCacheContext()
+    {
+        return new UserSessionCacheContext(
+            Id,
+            OwnerId,
+            UserDeviceId,
+            IpAddress,
+            EntityStatus);
+    }
+
     public override string ToString()
     {
-        return $"User: {OwnerId} | Device: {DeviceId}";
+        return $"User: {OwnerId} | UserDevice: {UserDeviceId}";
+    }
+
+    object IEntityCache.GetCacheContext()
+    {
+        return GetCacheContext();
     }
 }

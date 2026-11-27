@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
@@ -25,8 +25,9 @@ public partial class UserDeviceQueryRepository
     }
 
 
-    public async Task<UserDevice?> GetByIdentifierAsync(
-        string deviceIdentifier, 
+    public async Task<UserDevice?> GetByUserAndDeviceAsync(
+        long userId,
+        long deviceId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null)
     {
@@ -34,23 +35,8 @@ public partial class UserDeviceQueryRepository
             .WithIncludes()
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(x => 
-                x.DeviceIdentifier == deviceIdentifier,
-                cancellationToken);
-    }
-
-    public async Task<PagedResult<UserDevice>> GetByIpAsync(
-        string ipAddress,
-        PaginationParams pagination,
-        CancellationToken cancellationToken = default,
-        EntityStatus? status = null)
-    {
-        return await _db.UserDevices
-            .WithIncludes()
-            .WithStatusFilter(status)
-            .Where(x => x.IpAddress == ipAddress)
-            .ToPagedResultAsync(pagination,
-                x => x.Id,
-                cancellationToken);
+                x.OwnerId == userId &&
+                x.DeviceId == deviceId);
     }
 
     public async Task<PagedResult<UserDevice>> GetByUserAsync(
@@ -77,6 +63,33 @@ public partial class UserDeviceQueryRepository
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.OwnerId == userId)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<PagedResult<UserDevice>> GetByDeviceAsync(
+        long deviceId,
+        PaginationParams pagination,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.UserDevices
+            .WithIncludes()
+            .WithStatusFilter(status)
+            .Where(x => x.DeviceId == deviceId)
+            .ToPagedResultAsync(pagination,
+                x => x.Id,
+                cancellationToken);
+    }
+
+    public async Task<List<UserDevice>> GetAllByDeviceAsync(
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.UserDevices
+            .WithIncludes()
+            .WithStatusFilter(status)
+            .Where(x => x.DeviceId == deviceId)
             .ToListAsync(cancellationToken);
     }
 }

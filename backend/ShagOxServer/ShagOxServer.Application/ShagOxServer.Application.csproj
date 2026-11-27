@@ -233,7 +233,7 @@
 		  <LastGenOutput>NovaPoshtaErrors.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\EntityErrors\EntityErrorResources.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
+		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>EntityErrorResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.resx">
@@ -304,6 +304,17 @@
 
 	<ItemGroup>
 	  <Folder Include="Common\Context\" />
+	  <Folder Include="Common\Results\Extensions\" />
+	  <Folder Include="Common\Settings\Auth\" />
+	  <Folder Include="Common\Settings\Caches\" />
+	  <Folder Include="Common\Settings\Currencies\Fx\" />
+	  <Folder Include="Common\Settings\Db\PgBouncer\" />
+	  <Folder Include="Common\Settings\Db\Postgres\" />
+	  <Folder Include="Common\Settings\Systems\BackgroundServices\" />
+	  <Folder Include="Common\Settings\Systems\Middleware\" />
+	  <Folder Include="Common\Settings\Verifivations\" />
+	  <Folder Include="Interfaces\Repositories\Admin\Dashboard\" />
+	  <Folder Include="Interfaces\Services\Admin\Dashboard\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
 	  <Folder Include="Templates\EmailTemplates\Verification\" />
 	</ItemGroup>

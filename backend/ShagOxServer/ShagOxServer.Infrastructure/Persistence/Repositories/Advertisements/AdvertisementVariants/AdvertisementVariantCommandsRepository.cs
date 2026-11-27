@@ -1,39 +1,53 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Cache.Advertisements;
 using ShagOxServer.Domain.Entities.Advertisements;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Advertisements.AdvertisementVariants;
 public class AdvertisementVariantCommandsRepository
     : CommandRepository<AdvertisementVariant>,
     IAdvertisementVariantCommandsRepository
 {
+    private readonly ICacheInvalidationService<
+        AdvertisementVariant, AdvertisementVariantCacheContext> _entityInvalid;
+
+
     public AdvertisementVariantCommandsRepository(
         AppDbContext db,
-        IUserContext userContext
+        IUserContext userContext,
+        ICacheInvalidationService<
+            AdvertisementVariant, AdvertisementVariantCacheContext> entityInvalid
     )
         : base(db, userContext)
     {
+        _entityInvalid = entityInvalid;
     }
+
 
     public async Task<bool> DecreaseStockAsync(
         long variantId,
         int quantity,
         CancellationToken cancellationToken = default)
     {
-        var affected = await _db.AdvertisementVariants
+        var query = _db.AdvertisementVariants
             .Where(x =>
                 x.Id == variantId &&
-                x.Stock >= quantity)
-            .ExecuteUpdateAsync(
+                x.Stock >= quantity);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters.SetProperty(
                     x => x.Stock,
                     x => x.Stock - quantity),
-                cancellationToken);
-
-        return affected > 0;
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 
     public async Task<bool> IncreaseStockAsync(
@@ -44,14 +58,17 @@ public class AdvertisementVariantCommandsRepository
         if (quantity <= 0)
             throw new ArgumentOutOfRangeException(nameof(quantity));
 
-        var affected = await _db.AdvertisementVariants
-            .Where(x => x.Id == variantId)
-            .ExecuteUpdateAsync(
+        var query = _db.AdvertisementVariants
+            .Where(x => x.Id == variantId);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters.SetProperty(
                     x => x.Stock,
                     x => x.Stock + quantity),
-                cancellationToken);
-
-        return affected > 0;
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 }

@@ -1,6 +1,7 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.UserRoles.Query;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth.UserInvalid;
 using ShagOxServer.Application.Services.Caches.Keys;
 using ShagOxServer.Application.Services.Caches.Keys.Auth;
 using ShagOxServer.Domain.Cache.Auth;
@@ -36,7 +37,7 @@ public class RoleInvalidationService
     public async Task InvalidateDeleteAsync(
         RoleCacheContext entityInfo)
     {
-        var userInfos = await GetUserInfos(
+        var userInfos = await GetUserContexts(
             entityInfo.Id);
 
         foreach (var userInfo in userInfos)
@@ -54,7 +55,7 @@ public class RoleInvalidationService
     public async Task InvalidateUpdateAsync(
         RoleCacheContext entityInfo)
     {
-        var userInfos = await GetUserInfos(
+        var userInfos = await GetUserContexts(
             entityInfo.Id);
 
         foreach (var userInfo in userInfos)
@@ -95,7 +96,7 @@ public class RoleInvalidationService
         await InvalidateUserRoleAsync(entityInfo);
     }
 
-    private async Task<List<UserCacheContext>> GetUserInfos(
+    private async Task<List<UserCacheContext>> GetUserContexts(
         long entityId)
     {
         return await _userRoleRepository

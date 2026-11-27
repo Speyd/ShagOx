@@ -40,6 +40,8 @@ public static class CategoryImageDependencyInjection
             ICacheInvalidationService<CategoryImage, PictureCacheContext>,
             CategoryImageInvalidationService>();
 
+        services.AddScoped<CategoryImageInvalidationService>();
+
         services.AddScoped<CategoryImageValidator>();
 
         return services;

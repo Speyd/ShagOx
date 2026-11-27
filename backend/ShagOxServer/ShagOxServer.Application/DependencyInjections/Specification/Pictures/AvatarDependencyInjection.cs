@@ -41,6 +41,8 @@ public static class AvatarDependencyInjection
             ICacheInvalidationService<Avatar, PictureCacheContext>,
             AvatarInvalidationService>();
 
+        services.AddScoped<AvatarInvalidationService>();
+
         services.AddScoped<AvatarValidator>();
 
         return services;

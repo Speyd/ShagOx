@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Quer
 using ShagOxServer.Application.Interfaces.Services.Specification.Conditions.Update;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification;
 using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Pictures;
+using ShagOxServer.Application.Services.Caches.Invalidations.Specification.Translations;
 using ShagOxServer.Application.Services.Specification.Conditions.Create;
 using ShagOxServer.Application.Services.Specification.Conditions.Delete;
 using ShagOxServer.Application.Services.Specification.Conditions.Query;
@@ -39,6 +40,8 @@ public static class ConditionDependencyInjection
         services.AddScoped<
             ICacheInvalidationService<Condition, ConditionCacheContext>,
             ConditionInvalidationService>();
+
+        services.AddScoped<ConditionInvalidationService>();
 
         services.AddConditionTranslationApplication();
 

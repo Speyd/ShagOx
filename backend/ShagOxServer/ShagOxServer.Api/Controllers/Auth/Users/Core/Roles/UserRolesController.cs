@@ -1,0 +1,61 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ShagOxServer.Api.Controllers.Api;
+using ShagOxServer.Application.Interfaces.Services.Auth.Roles.Query;
+using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Query;
+using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
+using ShagOxServer.SharedKernel.Abstractions.Paginations;
+using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
+
+namespace ShagOxServer.Api.Controllers.Auth.Users.Core.Roles;
+
+[ApiController]
+[Route("api/users")]
+public class UserRolesController 
+    : ApiController
+{
+    private readonly IUserQueryService _userService;
+    private readonly IRoleQueryService _roleService;
+
+
+    public UserRolesController(
+        IUserQueryService queryService,
+        IRoleQueryService roleService,
+        IUserContext userContext
+    )
+        : base(userContext)
+    {
+        _userService = queryService;
+        _roleService = roleService;
+    }
+
+
+    [Authorize]
+    [HttpGet("me/role")]
+    public async Task<IActionResult> GetMyRole(
+        [FromQuery] PaginationParams pagination,
+        CancellationToken cancellationToken)
+    {
+        var result = await _userService
+            .GetMyRoleAsync(pagination,
+                cancellationToken);
+
+        return result.ToActionResult();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("{userId:long}/roles")]
+    public async Task<IActionResult> GetUserRoles(
+        [FromRoute] long userId,
+        [FromQuery] PaginationParams pagination,
+        [FromQuery] EntityStatus status,
+        CancellationToken cancellationToken)
+    {
+        var result = await _roleService
+            .GetByUserAsync(userId, pagination,
+                cancellationToken, status);
+
+        return result.ToActionResult();
+    }
+}

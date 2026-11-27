@@ -37,6 +37,8 @@ public static class CurrencyDependencyInjection
             ICacheInvalidationService<Currency, CurrencyCacheContext>,
             CurrencyInvalidationService>();
 
+        services.AddScoped<CurrencyInvalidationService>();
+
         return services;
     }
 }

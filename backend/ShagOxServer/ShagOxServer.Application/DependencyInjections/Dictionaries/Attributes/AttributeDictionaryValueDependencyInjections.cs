@@ -42,6 +42,8 @@ public static class AttributeDictionaryValueDependencyInjections
             AttributeDictionaryValueCacheContext>,
             AttributeDictionaryValueInvalidationService>();
 
+        services.AddScoped<AttributeDictionaryValueInvalidationService>();
+
         services.AddAttributeValueTranslationApplication();
 
         return services;

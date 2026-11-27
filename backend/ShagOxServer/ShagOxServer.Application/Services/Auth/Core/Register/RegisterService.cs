@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Logging;
 using ShagOxServer.Application.DTOs.Auth.Register;
 using ShagOxServer.Application.DTOs.Auth.Users.UserDevices.Create;
-using ShagOxServer.Application.DTOs.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
@@ -10,12 +9,12 @@ using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserDevices.Create
 using ShagOxServer.Application.Interfaces.Services.Baskets.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Auth.Registrations;
+using ShagOxServer.Application.Resources.EntityNames;
 using ShagOxServer.Application.Services.Auth.Users.Contacts;
 using ShagOxServer.Application.Services.Auth.Users.Contacts.Passwords;
 using ShagOxServer.Application.Services.Auth.Users.Core.Create;
-using ShagOxServer.Application.Services.Auth.Users.Core.Mapping;
 using ShagOxServer.Application.Services.Auth.Users.Roles;
-using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
+using ShagOxServer.Application.Services.Devices.Core.Validator;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -35,6 +34,7 @@ public partial class RegisterService
     private readonly UserPasswordService _passwordService;
     private readonly UserContactApplier _contactApplier;
 
+    private readonly DeviceValidator _deviceValidator;
     private readonly IUserDeviceCreateService _userDeviceService;
 
     private readonly IUnitOfWork _unitOfWork;
@@ -50,6 +50,7 @@ public partial class RegisterService
         UserPasswordService passwordService,
         UserContactApplier contactApplier,
         IVerificationSender senderVerification,
+        DeviceValidator deviceValidator,
         IUserDeviceCreateService userDeviceService,
         IUnitOfWork unitOfWork,
         ILogger<RegisterService> logger)
@@ -62,6 +63,7 @@ public partial class RegisterService
         _passwordService = passwordService;
         _contactApplier = contactApplier;
         _senderVerification = senderVerification;
+        _deviceValidator = deviceValidator;
         _userDeviceService = userDeviceService;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -73,6 +75,19 @@ public partial class RegisterService
     {
         try
         {
+            var device = await _deviceValidator
+                .GetByIdentifierAsync(request.DeviceIdentifier);
+
+            if (!device.IsSuccess ||
+                device.Value is null)
+            {
+                return device.Error is null ?
+                    Result<RegisterResponse>.Fail(device.Error) :
+                    Result<RegisterResponse>.Fail(
+                        EntityNamesResources.Device);
+            }
+
+
             var prepareResult =
                 await PrepareUserForRegistrationAsync(
                     request);
@@ -105,8 +120,8 @@ public partial class RegisterService
 
                 var deviceResult = await _userDeviceService.CreateInternalAsync(
                     new UserDeviceCreateRequest(
-                        user.Id, 
-                        request.DeviceIdentifier
+                        user.Id,
+                        device.Value!.Id
                 ));
 
                 if (!deviceResult.IsSuccess)

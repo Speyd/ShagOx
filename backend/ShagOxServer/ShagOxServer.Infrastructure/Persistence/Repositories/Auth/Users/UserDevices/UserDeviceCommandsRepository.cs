@@ -1,88 +1,86 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices;
+using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Cache.Auth.User;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Auth.Users.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base;
+using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserDevices;
 public class UserDeviceCommandsRepository
     : CommandRepository<UserDevice>,
     IUserDeviceCommandsRepository
 {
+    private readonly ICacheInvalidationService<
+        UserDevice, UserDeviceCacheContext> _entityInvalid;
+
     public UserDeviceCommandsRepository(
         AppDbContext db,
-        IUserContext userContext
+        IUserContext userContext,
+        ICacheInvalidationService<
+        UserDevice, UserDeviceCacheContext> entityInvalid
     )
         : base(db, userContext)
     {
+        _entityInvalid = entityInvalid;
     }
 
+
+    public async Task<bool> UpdateLastActiveAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default)
+    {
+        var now = DateTime.UtcNow;
+
+        var query = _db.UserDevices
+            .Where(x => 
+                x.Id == userId &&
+                x.DeviceId == deviceId);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(x => x.LastActiveAt, now),
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
+    }
 
     public async Task<bool> MarkAsTrasteAsync(
         long deviceId,
         CancellationToken cancellationToken = default)
     {
-        var affected = await _db.UserDevices
-            .Where(x => x.Id == deviceId)
-            .ExecuteUpdateAsync(
-                setters => setters.SetProperty(
-                    x => x.IsTrusted,
-                    true),
-                cancellationToken);
+        var query = _db.UserDevices
+            .Where(x => x.Id == deviceId);
 
-        return affected > 0;
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
+                setters => setters.SetProperty(x => x.IsTrusted, true),
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 
     public async Task<bool> UnmarkAsTrasteAsync(
         long deviceId,
         CancellationToken cancellationToken = default)
     {
-        var affected = await _db.UserDevices
-           .Where(x => x.Id == deviceId)
-           .ExecuteUpdateAsync(
-               setters => setters.SetProperty(
-                   x => x.IsTrusted,
-                   false),
-               cancellationToken);
+        var query = _db.UserDevices
+            .Where(x => x.Id == deviceId);
 
-        return affected > 0;
-    }
-
-    public async Task<bool> BanDeviceByIpAsync(
-        string ip,
-        DateTime? blockedUntil,
-        CancellationToken cancellationToken = default)
-    {
-        var now = DateTime.UtcNow;
-
-        var affected = await _db.UserDevices
-            .Where(x => x.IpAddress == ip)
-            .ExecuteUpdateAsync(
-                setters => setters
-                    .SetProperty(x => x.Status, UserDeviceStatus.Blocked)
-                    .SetProperty(x => x.BlockedAt, now)
-                    .SetProperty(x => x.BlockedUntil, blockedUntil),
-                cancellationToken);
-
-        return affected > 0;
-    }
-
-    public async Task<bool> UnbanDeviceByIpAsync(
-        string ip,
-        CancellationToken cancellationToken = default)
-    {
-        var affected = await _db.UserDevices
-            .Where(x => x.IpAddress == ip)
-            .ExecuteUpdateAsync(
-                setters => setters
-                    .SetProperty(x => x.Status, UserDeviceStatus.Active)
-                    .SetProperty(x => x.BlockedAt, (DateTime?)null)
-                    .SetProperty(x => x.BlockedUntil, (DateTime?)null),
-                cancellationToken);
-
-        return affected > 0;
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
+                setters => setters.SetProperty(x => x.IsTrusted, false),
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 
     public async Task<bool> BanDeviceAsync(
@@ -92,47 +90,58 @@ public class UserDeviceCommandsRepository
     {
         var now = DateTime.UtcNow;
 
-        var affected = await _db.UserDevices
-            .Where(x => x.Id == deviceId)
-            .ExecuteUpdateAsync(
+        var query = _db.UserDevices
+            .Where(x => x.Id == deviceId);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
                     .SetProperty(x => x.Status, UserDeviceStatus.Blocked)
                     .SetProperty(x => x.BlockedAt, now)
                     .SetProperty(x => x.BlockedUntil, blockedUntil),
-                cancellationToken);
-
-        return affected > 0;
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 
     public async Task<bool> UnbanDeviceAsync(
         long deviceId,
         CancellationToken cancellationToken = default)
     {
-        var affected = await _db.UserDevices
-            .Where(x => x.Id == deviceId)
-            .ExecuteUpdateAsync(
+        var query = _db.UserDevices
+            .Where(x => x.Id == deviceId);
+
+        return await query.ExecuteUpdateWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
                     .SetProperty(x => x.Status, UserDeviceStatus.Active)
                     .SetProperty(x => x.BlockedAt, (DateTime?)null)
                     .SetProperty(x => x.BlockedUntil, (DateTime?)null),
-                cancellationToken);
-
-        return affected > 0;
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 
     public async Task UnbanExpiredDevicesAsync(
         CancellationToken cancellationToken = default)
     {
-        await _db.UserDevices
+        var query = _db.UserDevices
             .Where(x =>
                 x.Status == UserDeviceStatus.Blocked &&
                 x.BlockedUntil != null &&
-                x.BlockedUntil <= DateTime.UtcNow)
-            .ExecuteUpdateAsync(
+                x.BlockedUntil <= DateTime.UtcNow);
+
+        await  query.ExecuteUpdatesWithCacheAsync(
+            x => x.GetCacheContext(),
+            () => query.ExecuteUpdateAsync(
                 setters => setters
                     .SetProperty(x => x.Status, UserDeviceStatus.Active)
                     .SetProperty(x => x.BlockedAt, (DateTime?)null)
                     .SetProperty(x => x.BlockedUntil, (DateTime?)null),
-                cancellationToken);
+                cancellationToken),
+            _entityInvalid,
+            cancellationToken);
     }
 }

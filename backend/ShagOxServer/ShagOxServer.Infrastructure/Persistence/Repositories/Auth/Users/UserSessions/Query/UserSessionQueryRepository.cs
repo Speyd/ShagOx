@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
 using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
@@ -52,7 +52,7 @@ public partial class UserSessionQueryRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<PagedResult<UserSession>> GetByDeviceAsync(
+    public async Task<PagedResult<UserSession>> GetByUserDeviceAsync(
         long deviceId,
         PaginationParams pagination,
         CancellationToken cancellationToken = default,
@@ -61,13 +61,13 @@ public partial class UserSessionQueryRepository
         return await _db.UserSessions
             .WithIncludes()
             .WithStatusFilter(status)
-            .Where(x => x.DeviceId == deviceId)
+            .Where(x => x.UserDeviceId == deviceId)
             .ToPagedResultAsync(pagination,
                 x => x.Id,
                 cancellationToken);
     }
 
-    public async Task<List<UserSession>> GetAllByDeviceAsync(
+    public async Task<List<UserSession>> GetAllByUserDeviceAsync(
         long deviceId,
         CancellationToken cancellationToken = default,
         EntityStatus? status = null)
@@ -75,10 +75,24 @@ public partial class UserSessionQueryRepository
         return await _db.UserSessions
            .WithIncludes()
            .WithStatusFilter(status)
-           .Where(x => x.DeviceId == deviceId)
+           .Where(x => x.UserDeviceId == deviceId)
            .ToListAsync(cancellationToken);
     }
 
+    public async Task<PagedResult<UserSession>> GetByIpAddressAsync(
+       string ipAddress,
+       PaginationParams pagination,
+       CancellationToken cancellationToken = default,
+       EntityStatus? status = null)
+    {
+        return await _db.UserSessions
+            .WithIncludes()
+            .WithStatusFilter(status)
+            .Where(x => x.IpAddress == ipAddress)
+            .ToPagedResultAsync(pagination,
+                x => x.Id,
+                cancellationToken);
+    }
     public async Task<UserSession?> GetByRefreshTokenHashAsync(
         string refreshTokenHash,
         CancellationToken cancellationToken = default,

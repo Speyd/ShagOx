@@ -58,6 +58,8 @@ public static class ImageDependencyInjection
             ICacheInvalidationService<AdvertisementImage, PictureCacheContext>,
             AdvertisementImageInvalidationService>();
 
+        services.AddScoped<AdvertisementImageInvalidationService>();
+
         services.AddScoped<AdvertisementImageValidator>();
 
         return services;

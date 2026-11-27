@@ -3,7 +3,7 @@ using ShagOxServer.Application.Common.Options.Auth;
 using ShagOxServer.Application.Common.Options.Systems.Cookies;
 using ShagOxServer.Application.DTOs.Auth.Login;
 using ShagOxServer.Application.Interfaces.Persistences;
-using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserSessions.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Tokens.Jwt;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.UserSessions;

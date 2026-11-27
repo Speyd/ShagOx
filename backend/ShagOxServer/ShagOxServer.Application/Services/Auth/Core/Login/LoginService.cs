@@ -113,11 +113,11 @@ public class LoginService
                 return await _twoFactorService
                     .InitiateAsync(
                         user,
-                        device.DeviceId);
+                        device.UserDeviceId);
             }
 
             return await _sessionService
-                .CreateSessionAsync(user, device.DeviceId);
+                .CreateSessionAsync(user, device.UserDeviceId);
         }
         catch (Exception ex)
         {

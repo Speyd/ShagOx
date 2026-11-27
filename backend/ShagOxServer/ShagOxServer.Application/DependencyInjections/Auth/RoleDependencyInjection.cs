@@ -29,6 +29,8 @@ public static class RoleDependencyInjection
             ICacheInvalidationService<Role, RoleCacheContext>,
             RoleInvalidationService>();
 
+        services.AddScoped<RoleInvalidationService>();
+
         services.AddScoped<RoleValidator>();
 
         services.AddScoped<UserRoleService>();

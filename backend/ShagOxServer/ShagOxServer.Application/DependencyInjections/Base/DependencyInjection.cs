@@ -8,6 +8,7 @@ using ShagOxServer.Application.DependencyInjections.Caches.Invalidations;
 using ShagOxServer.Application.DependencyInjections.Comments;
 using ShagOxServer.Application.DependencyInjections.Dashboards;
 using ShagOxServer.Application.DependencyInjections.Deliveries;
+using ShagOxServer.Application.DependencyInjections.Devices;
 using ShagOxServer.Application.DependencyInjections.Dictionary;
 using ShagOxServer.Application.DependencyInjections.LineItems;
 using ShagOxServer.Application.DependencyInjections.Location;
@@ -24,9 +25,10 @@ public static class DependencyInjection
     {
         return services
             .AddCacheApplication()
-            .AddCacheInvalidationApplication()
+            .AddCacheInvalidationApplication()  
             .AddVerificationApplication()
             .AddAuthApplication()
+            .AddDeviceApplication()
             .AddBasketApplication()
             .AddLocationApplication()
             .AddCommentsApplication()

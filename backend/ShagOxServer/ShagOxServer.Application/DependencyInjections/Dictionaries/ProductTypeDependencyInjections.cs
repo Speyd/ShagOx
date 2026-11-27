@@ -38,6 +38,8 @@ public static class ProductTypeDependencyInjections
             ICacheInvalidationService<ProductType, ProductTypeCacheContext>,
             ProductTypeInvalidationService>();
 
+        services.AddScoped<ProductTypeInvalidationService>();
+
         services.AddProductTypeTranslationApplication();
 
         return services;

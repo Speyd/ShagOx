@@ -9,6 +9,7 @@ using ShagOxServer.Application.Services.Baskets.Core.Delete;
 using ShagOxServer.Application.Services.Baskets.Core.Query;
 using ShagOxServer.Application.Services.Baskets.Core.Update;
 using ShagOxServer.Application.Services.Baskets.Core.Validator;
+using ShagOxServer.Application.Services.Caches.Invalidations.Auth;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets;
 using ShagOxServer.Application.Services.Caches.Invalidations.Baskets.BasketItems;
 using ShagOxServer.Domain.Cache.Baskets;
@@ -38,6 +39,8 @@ public static class BasketDependencyInjection
         services.AddScoped<
             ICacheInvalidationService<Basket, BasketCacheContext>,
                 BasketInvalidationService>();
+
+        services.AddScoped<BasketInvalidationService>();
 
         services.AddBasketItemApplication();
 

@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.BasketAttributes.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.LineItems;
 using ShagOxServer.Domain.Filters.LineItems.LineItemAttributes;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -10,9 +11,10 @@ public partial class LineItemAttributeQueryRepository
       ILineItemAttributeQueryRepository
 {
     protected override IQueryable<LineItemAttribute> ApplyIncludes(
-        IQueryable<LineItemAttribute> query)
+        IQueryable<LineItemAttribute> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<LineItemAttribute> ApplyFilter(

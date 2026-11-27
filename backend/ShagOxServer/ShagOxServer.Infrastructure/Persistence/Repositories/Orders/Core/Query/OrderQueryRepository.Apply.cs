@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Orders;
 using ShagOxServer.Domain.Filters.Orders.Core;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -10,9 +11,10 @@ public partial class OrderQueryRepository
       IOrderQueryRepository
 {
     protected override IQueryable<Order> ApplyIncludes(
-        IQueryable<Order> query)
+        IQueryable<Order> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<Order> ApplyFilter(

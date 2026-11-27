@@ -19,6 +19,26 @@ public class PaymentCommandsRepository
     {
     }
 
+
+    public async Task<bool> TryMarkAsFailedAsync(
+        string invoiceId,
+        CancellationToken cancellationToken = default)
+    {
+        var affectedRows = await _db.Payments
+            .Where(x =>
+                x.InvoiceId == invoiceId &&
+                (x.Status == PaymentStatus.Pending ||
+                 x.Status == PaymentStatus.Processing))
+            .ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(
+                        x => x.Status,
+                        PaymentStatus.Failed),
+                cancellationToken);
+
+        return affectedRows > 0;
+    }
+
     public async Task<bool> TryMarkAsPaidAsync(
         string invoiceId,
         CancellationToken cancellationToken = default)
@@ -32,6 +52,24 @@ public class PaymentCommandsRepository
                     .SetProperty(
                         x => x.Status,
                         PaymentStatus.Succeeded),
+                cancellationToken);
+
+        return affectedRows > 0;
+    }
+
+    public async Task<bool> TryMarkAsProcessingAsync(
+        string invoiceId,
+        CancellationToken cancellationToken = default)
+    {
+        var affectedRows = await _db.Payments
+            .Where(x =>
+                x.InvoiceId == invoiceId &&
+                x.Status == PaymentStatus.Pending)
+            .ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(
+                        x => x.Status,
+                        PaymentStatus.Processing),
                 cancellationToken);
 
         return affectedRows > 0;

@@ -14,6 +14,12 @@ public partial interface IUserDeviceQueryRepository
         CancellationToken cancellationToken = default,
         EntityStatus? status = null);
 
+    Task<UserDevice?> GetByUserAndDeviceNoTrackingAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null);
+
     Task<PagedResult<UserDevice>> GetByUserAsync(
         long userId,
         PaginationParams pagination,

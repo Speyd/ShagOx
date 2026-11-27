@@ -41,6 +41,7 @@ public partial class AdvertisementVariantQueryRepository
     {
         return await _db.AdvertisementVariants
             .AsNoTracking()
+            .WithIncludes()
             .WithStatusFilter(status)
             .Where(x =>
                 x.Advertisement.OwnerId == _userContext.UserId ||

@@ -3,6 +3,7 @@ using ShagOxServer.Application.DTOs.Cache;
 using ShagOxServer.Application.Interfaces.Services.Caches.Invalidations;
 
 namespace ShagOxServer.Application.Services.Caches.Core.Invalidation;
+
 public class CacheInvalidationState : ICacheInvalidationState
 {
     private readonly Dictionary<DbContext,

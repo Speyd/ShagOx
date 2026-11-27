@@ -24,4 +24,8 @@ public interface IDeliveryQueriesService
         DeliveryPointSearchRequest request,
         PaginationParams pagination,
         CancellationToken cancellationToken);
+
+    string GetTrackingUrl(
+        string providerCode,
+        string number);
 }

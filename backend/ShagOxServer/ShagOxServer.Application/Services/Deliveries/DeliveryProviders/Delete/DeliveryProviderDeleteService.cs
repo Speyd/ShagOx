@@ -25,12 +25,11 @@ public class DeliveryProviderDeleteService
 
     public DeliveryProviderDeleteService(
         IRepository<DeliveryProvider> deliveryRepository,
-        ICommandRepository<DeliveryProvider> deliveryCommand,
         DeliveryProviderValidator deliveryValidator,
         IUnitOfWork unitOfWork,
         ILogger<DeliveryProviderDeleteService> logger
     )
-        : base(deliveryCommand, deliveryValidator, unitOfWork, logger)
+        : base(deliveryRepository, deliveryValidator, unitOfWork, logger)
     {
         _deliveryRepository = deliveryRepository;
         _deliveryValidator = deliveryValidator;

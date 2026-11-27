@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Review.ReviewRepliImages;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification.Pictures.Review;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Review;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Core.Multiple.Query;
@@ -11,9 +12,10 @@ public partial class ReviewRepliImageQueryRepository
       IReviewRepliImageQueryRepository
 {
     protected override IQueryable<ReviewRepliImage> ApplyIncludes(
-        IQueryable<ReviewRepliImage> query)
+        IQueryable<ReviewRepliImage> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<ReviewRepliImage> ApplyFilter(

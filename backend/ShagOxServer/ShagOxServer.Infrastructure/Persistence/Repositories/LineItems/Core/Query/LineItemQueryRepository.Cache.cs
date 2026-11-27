@@ -21,6 +21,7 @@ public abstract partial class LineItemQueryRepository<TEntity, TFilter>
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Set< TEntity>()
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.ParentId == parentId)
             .SelectCacheInfo(status)
@@ -33,6 +34,7 @@ public abstract partial class LineItemQueryRepository<TEntity, TFilter>
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Set<TEntity>()
+            .AsNoTracking()
             .WithStatusFilter(status)
            .Where(x =>
                 x.AdvertisementId == advertisementId)
@@ -46,6 +48,7 @@ public abstract partial class LineItemQueryRepository<TEntity, TFilter>
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Set<TEntity>()
+            .AsNoTracking()
             .WithStatusFilter(status)
            .Where(x =>
                 x.AdvertisementVariantId == advertisementVariantId)

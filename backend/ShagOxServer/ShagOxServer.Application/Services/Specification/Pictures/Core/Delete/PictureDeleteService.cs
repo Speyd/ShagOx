@@ -27,13 +27,12 @@ public abstract class PictureDeleteService<TPicture>
 
     public PictureDeleteService(
         IRepository<TPicture> pictureRepository,
-        ICommandRepository<TPicture> pictureCommand,
         BaseValidator<TPicture> pictureBaseValidator,
         PictureValidator pictureValidator,
         IUnitOfWork unitOfWork,
         ILogger<PictureDeleteService<TPicture>> logger
     )
-        : base(pictureCommand, pictureBaseValidator, unitOfWork, logger)
+        : base(pictureRepository, pictureBaseValidator, unitOfWork, logger)
     {
         _pictureRepository = pictureRepository;
         _pictureBaseValidator = pictureBaseValidator;

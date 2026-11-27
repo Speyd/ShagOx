@@ -32,7 +32,7 @@ public class SearchRepository<TEntity, TFilter>
     {
         IQueryable<TEntity> query = _db.Set<TEntity>();
 
-        query = ApplyIncludes(query);
+        query = ApplyIncludes(query, status);
         query = ApplyFilter(query, filter);
 
         return await query

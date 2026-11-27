@@ -25,12 +25,11 @@ public class CurrencyDeleteService
 
     public CurrencyDeleteService(
         IRepository<Currency> currencyRepository,
-        ICommandRepository<Currency> currencyCommand,
         CurrencyValidator currencyValidator,
         IUnitOfWork unitOfWork,
         ILogger<CurrencyDeleteService> logger
     )
-        : base(currencyCommand, currencyValidator, unitOfWork, logger)
+        : base(currencyRepository, currencyValidator, unitOfWork, logger)
     {
         _currencyRepository = currencyRepository;
         _currencyValidator = currencyValidator;

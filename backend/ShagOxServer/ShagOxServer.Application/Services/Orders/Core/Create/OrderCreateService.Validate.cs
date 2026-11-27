@@ -27,7 +27,7 @@ public partial class OrderCreateService
         if (request.DeliveryProviderId.HasValue)
         {
             var deliveryResult = await _deliveryValidator
-                .GetByIdAsync(
+                .GetByIdNoTrackingAsync(
                     request.DeliveryProviderId.Value,
                     cancellationToken);
 
@@ -55,7 +55,16 @@ public partial class OrderCreateService
             }
         }
 
+        var currency = await _currencyValidator
+            .GetByIdNoTrackingAsync(currencyResult.Id, cancellationToken);
+
+        if (!currency.IsSuccess)
+        {
+            return Result<(Currency, DeliveryProvider?)>
+                .Fail(currency.Error);
+        }
+
         return Result<(Currency, DeliveryProvider?)>.Success(
-            (currencyResult, deliveryProvider));
+            (currency.Value, deliveryProvider)!);
     }
 }

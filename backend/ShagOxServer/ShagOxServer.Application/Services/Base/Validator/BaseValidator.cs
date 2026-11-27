@@ -62,7 +62,25 @@ public abstract class BaseValidator<TEntity>
 
         return Result<TEntity>.Success(entity);
     }
-    
+
+    public async Task<Result<TEntity>> GetByIdNoTrackingAsync(
+       long entityId,
+       CancellationToken cancellationToken = default,
+       EntityStatus findStatus = EntityStatus.ActiveAndHidden)
+    {
+        var entity = await _objectRepository
+            .GetByIdNoTrackingAsync(entityId, 
+                cancellationToken, findStatus);
+
+        if (entity is null)
+        {
+            return Result<TEntity>.NotFound(
+                EntityNameExtensions.GetLocalizedName<TEntity>());
+        }
+
+        return Result<TEntity>.Success(entity);
+    }
+
     public async Task<Result<TEntity>> GetByIdIncludeAsync(
         long entityId,
         CancellationToken cancellationToken = default,

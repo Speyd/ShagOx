@@ -28,13 +28,12 @@ public class CategoryDeleteService
 
     public CategoryDeleteService(
         IRepository<Category> categoryRepository,
-        ICommandRepository<Category> categoryCommand,
         CategoryValidator categoryValidator,
         ICategoryImageDeleteService imageDeleteService,
         IUnitOfWork unitOfWork,
         ILogger<CategoryDeleteService> logger
     )
-        : base(categoryCommand, categoryValidator, unitOfWork, logger)
+        : base(categoryRepository, categoryValidator, unitOfWork, logger)
     {
         _categoryRepository = categoryRepository;
         _categoryValidator = categoryValidator;

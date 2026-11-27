@@ -29,14 +29,13 @@ public class AdvertisementDeleteService
 
     public AdvertisementDeleteService(
         IRepository<Advertisement> advertRepository,
-        ICommandRepository<Advertisement> advertCommand,
         AdvertisementValidator advertValidator,
         IAdvertisementImageDeleteService imageDeleteService,
         IPictureLoaderService loaderService,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementDeleteService> logger
     )
-        : base(advertCommand, advertValidator, unitOfWork, logger)
+        : base(advertRepository, advertValidator, unitOfWork, logger)
     {
         _advertRepository = advertRepository;
         _advertValidator = advertValidator;

@@ -20,6 +20,22 @@ public class OrderExistsRepository
     {
     }
 
+    public async Task<bool> IsSellerAsync(
+        long id,
+        long userId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _db.Orders
+            .Where(x => x.Id == id)
+            .AnyAsync(x =>
+                x.OrderItems.Any(i =>
+                    i.EntityStatus == EntityStatus.Active &&
+                    i.Advertisement.OwnerId == userId) &&
+                x.OrderItems.All(i =>
+                    i.EntityStatus != EntityStatus.Active ||
+                    i.Advertisement.OwnerId == userId),
+                cancellationToken);
+    }
     public async Task<bool> ExistsByDeliveryTrackingNumberAsync(
         string trackingNumber,
         CancellationToken cancellationToken = default,

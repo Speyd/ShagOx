@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Base;
@@ -16,7 +17,8 @@ public abstract class RepositoryContext<TEntity>
     }
 
     protected virtual IQueryable<TEntity> ApplyIncludes(
-        IQueryable<TEntity> query)
+        IQueryable<TEntity> query,
+        EntityStatus? status = null)
     {
         return query;
     }

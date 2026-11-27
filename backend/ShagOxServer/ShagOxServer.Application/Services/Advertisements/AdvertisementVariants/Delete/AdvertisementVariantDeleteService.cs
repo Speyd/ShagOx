@@ -24,12 +24,11 @@ public class AdvertisementVariantDeleteService
 
     public AdvertisementVariantDeleteService(
         IRepository<AdvertisementVariant> variantRepository,
-        ICommandRepository<AdvertisementVariant> variantCommand,
         AdvertisementVariantValidator variantValidator,
         IUnitOfWork unitOfWork,
         ILogger<AdvertisementVariantDeleteService> logger
     )
-        : base(variantCommand, variantValidator, unitOfWork, logger)
+        : base(variantRepository, variantValidator, unitOfWork, logger)
     {
         _variantRepository = variantRepository;
         _variantValidator = variantValidator;

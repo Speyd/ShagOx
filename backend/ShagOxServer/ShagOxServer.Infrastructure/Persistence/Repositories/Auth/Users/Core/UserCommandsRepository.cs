@@ -37,6 +37,7 @@ public class UserCommandsRepository
         var now = DateTime.UtcNow;
 
         var query = _db.Users
+            .AsNoTracking()
             .Where(x => x.Id == userId);
 
         return await query.ExecuteUpdateWithCacheAsync(
@@ -57,6 +58,7 @@ public class UserCommandsRepository
         var now = DateTime.UtcNow;
 
         var query = _db.Users
+            .AsNoTracking()
             .Where(x => x.Id == userId);
 
         return await query.ExecuteUpdateWithCacheAsync(
@@ -76,6 +78,7 @@ public class UserCommandsRepository
         CancellationToken cancellationToken = default)
     {
         var query = _db.Users
+            .AsNoTracking()
             .Where(x => x.Id == userId);
 
         return await query.ExecuteUpdateWithCacheAsync(
@@ -96,6 +99,7 @@ public class UserCommandsRepository
         var now = DateTime.UtcNow;
 
         var query = _db.Users
+            .AsNoTracking()
             .Where(x =>
                 x.Status == UserStatus.Blocked &&
                 x.BlockedUntil != null &&

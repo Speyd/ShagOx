@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Location.Cities.Translations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -21,9 +22,10 @@ public class CityTranslationExistsRepository
 
 
     protected override IQueryable<CityTranslation> ApplyIncludes(
-         IQueryable<CityTranslation> query)
+         IQueryable<CityTranslation> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     protected override IQueryable<CityTranslation> ApplyIdentificatorFilter(

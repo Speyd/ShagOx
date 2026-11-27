@@ -19,6 +19,7 @@ public partial class CityQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Cities
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.RegionId == regionId)
             .SelectCacheInfo(status)

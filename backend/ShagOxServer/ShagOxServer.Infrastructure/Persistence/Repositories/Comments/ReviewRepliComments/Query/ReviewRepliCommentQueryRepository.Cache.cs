@@ -20,6 +20,7 @@ public partial class ReviewRepliCommentQueryRepository
        EntityStatus? status = null)
     {
         return await _db.ReviewRepliComments
+            .AsNoTracking()
            .WithStatusFilter(status)
            .Where(x =>
                x.ParentReplyId == repliId)

@@ -10,6 +10,7 @@ using ShagOxServer.Infrastructure.DependencyInjections.Deliveries;
 using ShagOxServer.Infrastructure.DependencyInjections.Devices;
 using ShagOxServer.Infrastructure.DependencyInjections.Dictionaries;
 using ShagOxServer.Infrastructure.DependencyInjections.ExternalServices;
+using ShagOxServer.Infrastructure.DependencyInjections.ExternalServices.Delivery;
 using ShagOxServer.Infrastructure.DependencyInjections.LineItems;
 using ShagOxServer.Infrastructure.DependencyInjections.Location;
 using ShagOxServer.Infrastructure.DependencyInjections.Monitoring;
@@ -18,7 +19,6 @@ using ShagOxServer.Infrastructure.DependencyInjections.Payments;
 using ShagOxServer.Infrastructure.DependencyInjections.Specification;
 using ShagOxServer.Infrastructure.DependencyInjections.Verifications;
 using ShagOxServer.Infrastructure.Persistence.DbContexts;
-using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Replica;
 
 namespace ShagOxServer.Infrastructure.DependencyInjections.Base;
@@ -29,7 +29,7 @@ public static class DependencyInjection
     {
         services.AddScoped<BaseAppDbContext>(
             provider => provider.GetRequiredService<ReplicaDbContext>());
-        
+
 
 
         return services

@@ -3,8 +3,11 @@ using ShagOxServer.Application.DTOs.Orders.Core.Create;
 using ShagOxServer.Application.DTOs.Payment;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
 using ShagOxServer.Application.Resources.EntityErrors;
+using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.Domain.Entities.Orders.Enum;
 using ShagOxServer.Domain.Entities.Payments.Enum;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Create;
@@ -22,6 +25,9 @@ public partial class OrderCreateService
 
             if (!emailResult.IsSuccess)
             {
+                await _orderCommands.TryMarkAsFailedAsync(order.Id);
+
+                
                 return Result<OrderCreateResponse>
                     .Fail(emailResult.Error);
             }
@@ -41,10 +47,11 @@ public partial class OrderCreateService
 
             if (!paymentResult.IsSuccess)
             {
+                await _orderCommands.TryMarkAsFailedAsync(order.Id);
+
                 return Result<OrderCreateResponse>
                     .Fail(paymentResult.Error);
             }
-
 
             return Result<OrderCreateResponse>.Success(
                 new OrderCreateResponse(
@@ -54,6 +61,8 @@ public partial class OrderCreateService
         }
         catch (Exception ex)
         {
+            await _orderCommands.TryMarkAsFailedAsync(order.Id);
+
             _logger.LogError(
                 ex,
                 "Payment failed. OrderId: {OrderId}",
@@ -84,13 +93,7 @@ public partial class OrderCreateService
 
         order.PaymentStatus = OrderPaymentStatus.Pending;
 
-        _orderRepository.Update(order);
-
         await _unitOfWork.SaveChangesAsync();
-
-        await _webhookProcessor.ProcessPendingAsync(
-            result.Value.InvoiceId,
-            cancellationToken);
 
         return Result<string>.Success(result.Value.PaymentUrl);
     }

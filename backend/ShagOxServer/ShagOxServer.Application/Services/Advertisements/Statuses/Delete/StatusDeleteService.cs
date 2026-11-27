@@ -25,12 +25,11 @@ public class StatusDeleteService
 
     public StatusDeleteService(
         IRepository<Status> statusRepository,
-        ICommandRepository<Status> statusCommand,
         StatusValidator statusValidator,
         IUnitOfWork unitOfWork,
         ILogger<StatusDeleteService> logger
     )
-        : base(statusCommand, statusValidator, unitOfWork, logger)
+        : base(statusRepository, statusValidator, unitOfWork, logger)
     {
         _statusRepository = statusRepository;
         _statusValidator = statusValidator;

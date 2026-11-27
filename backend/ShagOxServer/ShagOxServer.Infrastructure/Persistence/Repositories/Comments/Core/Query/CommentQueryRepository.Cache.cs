@@ -21,6 +21,7 @@ public partial class CommentQueryRepository<TEntity, TFilter>
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Set<TEntity>()
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x =>
                 x.CommentableEntityId == commentableId)
@@ -34,6 +35,7 @@ public partial class CommentQueryRepository<TEntity, TFilter>
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Set<TEntity>()
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x =>
                 x.OwnerId == ownerId)
@@ -47,6 +49,7 @@ public partial class CommentQueryRepository<TEntity, TFilter>
         EntityStatus status = EntityStatus.Active)
     {
         var comment = await _db.Set<TEntity>()
+            .AsNoTracking()
             .WithStatusFilter(status)
             .FirstOrDefaultAsync(x => x.Id == id);
 

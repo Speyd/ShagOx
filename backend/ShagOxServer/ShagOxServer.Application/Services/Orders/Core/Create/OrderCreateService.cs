@@ -10,18 +10,22 @@ using ShagOxServer.Application.Interfaces.Providers.Payment;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.AdvertisementVariants;
 using ShagOxServer.Application.Interfaces.Repositories.Advertisements.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
+using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Calculators;
 using ShagOxServer.Application.Interfaces.Services.Orders;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
 using ShagOxServer.Application.Interfaces.Services.Payments;
+using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
-using ShagOxServer.Application.Services.Caches.Invalidations.Orders;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;
-using ShagOxServer.Application.Services.Orders.Core.Mapping;
+using ShagOxServer.Application.Services.Orders.Core.Validator;
+using ShagOxServer.Application.Services.Specification.Currencies.Validator;
+using ShagOxServer.Domain.Entities.Deliveries;
 using ShagOxServer.Domain.Entities.Orders;
+using ShagOxServer.Domain.Entities.Specification;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
 namespace ShagOxServer.Application.Services.Orders.Core.Create;
@@ -30,6 +34,8 @@ public partial class OrderCreateService
     : IOrderCreateService
 {
     private readonly IRepository<Order> _orderRepository;
+    private readonly OrderValidator _orderValidator;
+    private readonly IOrderCommandsRepository _orderCommands;
 
     private readonly UserValidator _userValidator;
     private readonly DeliveryProviderValidator _deliveryValidator;
@@ -41,6 +47,7 @@ public partial class OrderCreateService
     private readonly IPaymentWebhookProcessor _webhookProcessor;
 
     private readonly ICurrencyProvider _currencyProvider;
+    private readonly CurrencyValidator _currencyValidator;
 
     private readonly IAdvertisementCommandRepository _advertCommand;
     private readonly IAdvertisementVariantCommandsRepository _variantProvider;
@@ -54,6 +61,8 @@ public partial class OrderCreateService
 
     public OrderCreateService(
         IRepository<Order> orderRepository,
+        OrderValidator orderValidator,
+        IOrderCommandsRepository orderCommands,
         UserValidator userValidator,
         DeliveryProviderValidator deliveryValidator,
         IDeliveryPriceCalculator deliveryCalculator,
@@ -64,11 +73,14 @@ public partial class OrderCreateService
         IAdvertisementVariantCommandsRepository variantProvider,
         IOrderNumberGenerator orderNumberGenerator,
         ICurrencyProvider currencyProvider,
+        CurrencyValidator currencyValidator,
         IEmailService emailService,
         IUnitOfWork unitOfWork,
         ILogger<OrderCreateService> logger)
     {
         _orderRepository = orderRepository;
+        _orderValidator = orderValidator;
+        _orderCommands = orderCommands;
 
         _userValidator = userValidator;
         _deliveryValidator = deliveryValidator;
@@ -81,6 +93,7 @@ public partial class OrderCreateService
         _webhookProcessor = webhookProcessor;
 
         _currencyProvider = currencyProvider;
+        _currencyValidator = currencyValidator;
 
         _advertCommand = advertCommand;
         _variantProvider = variantProvider;
@@ -160,7 +173,7 @@ public partial class OrderCreateService
         }
 
         var paymentResult = await InitiateOrderPaymentAsync(
-            order, 
+            order,
             cancellationToken);
 
         if(!paymentResult.IsSuccess)

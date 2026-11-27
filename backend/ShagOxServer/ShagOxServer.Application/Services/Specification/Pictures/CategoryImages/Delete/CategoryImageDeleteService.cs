@@ -17,14 +17,12 @@ public class CategoryImageDeleteService
 {
     public CategoryImageDeleteService(
         IRepository<CategoryImage> imageRepository,
-        ICommandRepository<CategoryImage> imageCommand,
         CategoryImageValidator imageValidator,
         PictureValidator pictureValidator,
         IUnitOfWork unitOfWork,
         ILogger<CategoryImageDeleteService> logger
     )
         : base(imageRepository,
-            imageCommand,
             imageValidator,
             pictureValidator,
             unitOfWork,

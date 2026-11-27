@@ -23,12 +23,11 @@ public class OrderItemDeleteService
 
     public OrderItemDeleteService(
         IRepository<OrderItem> itemRepository,
-        ICommandRepository<OrderItem> itemCommand,
         OrderItemValidator itemValidator,
         IUnitOfWork unitOfWork,
         ILogger<OrderItemDeleteService> logger
     )
-        : base(itemCommand, itemValidator, unitOfWork, logger)
+        : base(itemRepository, itemValidator, unitOfWork, logger)
     {
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;

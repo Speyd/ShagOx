@@ -95,4 +95,27 @@ public class DeviceQueryService
             _cacheOptions.DefaultExpiration
         );
     }
+
+    public async Task<Result<Device?>> GetEntityByIdentifierNoTrackingAsync(
+        string identifier,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active)
+    {
+        var cacheKey = DeviceCache.EntityByIdentifier(
+          identifier,
+          status);
+
+        return await _cache.GetOrCreateAsync(
+            cacheKey,
+            async () =>
+            {
+                var device = await _deviceQueryRepository
+                    .GetByIdentifierAsync(identifier,
+                        cancellationToken, status);
+
+                return Result<Device?>.Success(device);
+            },
+            _cacheOptions.DefaultExpiration
+        );
+    }
 }

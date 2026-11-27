@@ -7,7 +7,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Repositories.Dictionaries.Cate
 public static class CategoryQueryExtensions
 {
     public static IQueryable<Category> WithIncludes(
-       this IQueryable<Category> query)
+       this IQueryable<Category> query,
+        EntityStatus? status = null)
     {
         return query
             .AsSplitQuery()

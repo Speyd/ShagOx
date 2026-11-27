@@ -117,11 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="OrderAlreadyPaid" xml:space="preserve">
+    <value>Заказ уже оплачен.</value>
+  </data>
+  <data name="OrderPaymentInProgress" xml:space="preserve">
+    <value>Платёж обрабатывается банком. Обновите страницу через несколько минут.</value>
+  </data>
+  <data name="OrderPaymentNotRequired" xml:space="preserve">
+    <value>Этот заказ оплачивается при получении и не требует онлайн-оплаты.</value>
+  </data>
+  <data name="OrderPaymentUnavailable" xml:space="preserve">
+    <value>Этот заказ больше нельзя оплатить. Пожалуйста, оформите новый заказ.</value>
+  </data>
   <data name="PaymentAlreadySucceeded" xml:space="preserve">
     <value>Платёж уже успешно завершён и не может быть изменён.</value>
   </data>
   <data name="PaymentProviderInvalidResponse" xml:space="preserve">
     <value>Платёжный провайдер вернул некорректный ответ.</value>
+  </data>
+  <data name="PaymentRefundFailed" xml:space="preserve">
+    <value>Не удалось вернуть деньги покупателю, поэтому статус заказа не изменён. Попробуйте позже.</value>
   </data>
   <data name="PaymentStatusUpdateFailed" xml:space="preserve">
     <value>Не удалось обновить статус платежа.</value>

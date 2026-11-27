@@ -24,13 +24,12 @@ public class FavoriteDeleteService
 
     public FavoriteDeleteService(
         IRepository<Favorite> favoriteRepository,
-        ICommandRepository<Favorite> favoriteCommand,
         FavoriteValidator favoriteValidator,
         FavoriteInvalidationService favoriteInvalid,
         IUnitOfWork unitOfWork,
         ILogger<FavoriteDeleteService> logger
     )
-        : base(favoriteCommand, favoriteValidator, unitOfWork, logger)
+        : base(favoriteRepository, favoriteValidator, unitOfWork, logger)
     {
         _favoriteRepository = favoriteRepository;
         _favoriteValidator = favoriteValidator;

@@ -81,7 +81,7 @@ public class BasketQueryService
             async () =>
             {
                 var basket = await _basketQueryRepository
-                    .GetByUserAsync(userId, 
+                    .GetByUserAsync(userId,
                         cancellationToken, status);
 
                 return await basket.ToResultAsync(ApplyMapperAsync);

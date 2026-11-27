@@ -22,27 +22,18 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task CommitAsync()
     {
-        await _db.SaveChangesAsync();
-        if(_transaction is not null)
+        var saved = await _db.SaveChangesAsync();
+        Console.WriteLine($"Saved rows: {saved}");
+
+        Console.WriteLine($"UoW context: {_db.ContextId}");
+        Console.WriteLine(_db.ChangeTracker.DebugView.LongView);
+
+        if (_transaction is not null)
             await _transaction!.CommitAsync();
     }
 
     public void DebugTrackedEntities()
     {
-        foreach (var entry in _db.ChangeTracker.Entries())
-        {
-            Console.WriteLine(
-                $"Entity: {entry.Entity.GetType().Name} | State: {entry.State}");
-
-            foreach (var property in entry.Properties)
-            {
-                Console.WriteLine(
-                    $"  {property.Metadata.Name}: " +
-                    $"Current={property.CurrentValue}, " +
-                    $"Original={property.OriginalValue}, " +
-                    $"Modified={property.IsModified}");
-            }
-        }
     }
 
     public async Task<int> SaveChangesAsync()

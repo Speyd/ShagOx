@@ -20,6 +20,7 @@ public partial class FavoriteQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Favorites
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.AdvertisementId == advertId)
             .SelectCacheInfo(status)

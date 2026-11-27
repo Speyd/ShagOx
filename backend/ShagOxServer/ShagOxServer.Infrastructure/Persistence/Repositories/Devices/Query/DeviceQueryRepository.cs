@@ -33,4 +33,17 @@ public partial class DeviceQueryRepository
                 x.DeviceIdentifier == deviceIdentifier,
                 cancellationToken);
     }
+
+    public async Task<Device?> GetByIdentifierNoTrackingAsync(
+        string deviceIdentifier,
+        CancellationToken cancellationToken = default,
+        EntityStatus? status = null)
+    {
+        return await _db.Devices
+            .AsNoTracking()
+            .WithStatusFilter(status)
+            .FirstOrDefaultAsync(x =>
+                x.DeviceIdentifier == deviceIdentifier,
+                cancellationToken);
+    }
 }

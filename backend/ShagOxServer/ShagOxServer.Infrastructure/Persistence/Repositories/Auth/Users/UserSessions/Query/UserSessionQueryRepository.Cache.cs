@@ -20,6 +20,7 @@ public partial class UserSessionQueryRepository
         EntityStatus? status = null)
     {
         return await _db.UserSessions
+            .AsNoTracking()
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.OwnerId == userId)
@@ -33,6 +34,7 @@ public partial class UserSessionQueryRepository
         EntityStatus? status = null)
     {
         return await _db.UserSessions
+            .AsNoTracking()
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.UserDeviceId == deviceId)
@@ -46,6 +48,7 @@ public partial class UserSessionQueryRepository
         EntityStatus? status = null)
     {
         return await _db.UserSessions
+            .AsNoTracking()
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.IpAddress == ipAddress)

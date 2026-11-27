@@ -21,6 +21,7 @@ public partial class PictureOrderQueryRepository<TEntity, TFilter>
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.AdvertisementImages
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.OwnerId == advertId)
             .SelectCacheInfo(status)

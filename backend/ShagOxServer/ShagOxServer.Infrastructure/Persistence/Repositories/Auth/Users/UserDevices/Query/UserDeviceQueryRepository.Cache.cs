@@ -20,6 +20,7 @@ public partial class UserDeviceQueryRepository
         EntityStatus? status = null)
     {
         return await _db.UserDevices
+            .AsNoTracking()
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.OwnerId == userId)
@@ -33,6 +34,7 @@ public partial class UserDeviceQueryRepository
         EntityStatus? status = null)
     {
         return await _db.UserDevices
+            .AsNoTracking()
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.DeviceId == deviceId)

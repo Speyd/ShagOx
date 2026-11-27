@@ -9,6 +9,7 @@ using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Services.Caches;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.Providers.NovaPoshta;
 using ShagOxServer.Application.Resources.Delivery.Providers.NovaPoshta;
+using ShagOxServer.Application.Resources.Orders.Order;
 using ShagOxServer.Application.Services.Caches.Keys.Deliveries.Providers.NovaPoshta;
 using ShagOxServer.Application.Services.Deliveries.Providers.NovaPoshta.Mapping;
 using ShagOxServer.Domain.Entities.Deliveries.Enum;
@@ -240,5 +241,18 @@ public class NovaPoshtaDeliveryClient
                 );
             },
             _casheOptions.DefaultExpiration);
+    }
+
+    public string GetTrackingUrl(
+        string? number)
+    {
+        if (string.IsNullOrEmpty(number))
+            return "";
+
+        string cargo = string.Format(
+            _deliveryOptions.TrackingUrl, 
+            number);
+
+        return _deliveryOptions.BaseUrl + cargo;
     }
 }

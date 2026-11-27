@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Baskets.Core;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Baskets;
 using ShagOxServer.Domain.Filters.Baskets.Core;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -10,9 +11,10 @@ public partial class BasketQueryRepository
       IBasketQueryRepository
 {
     protected override IQueryable<Basket> ApplyIncludes(
-        IQueryable<Basket> query)
+        IQueryable<Basket> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<Basket> ApplyFilter(

@@ -67,5 +67,14 @@ public class DeliveryQueriesService
 
         return result;
     }
+
+    public string GetTrackingUrl(
+        string providerCode,
+        string number)
+    {
+        var delivaery = _resolver.Resolve(providerCode);
+
+        return delivaery.GetTrackingUrl(number);
+    }
 }
 

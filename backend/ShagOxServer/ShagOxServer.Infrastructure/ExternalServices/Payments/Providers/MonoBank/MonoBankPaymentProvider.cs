@@ -10,6 +10,7 @@ using ShagOxServer.Application.Resources.Payment;
 using ShagOxServer.Domain.Entities.Payments;
 using ShagOxServer.Domain.Entities.Payments.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
+using ShagOxServer.SharedKernel.Abstractions.Results.Enum;
 using System.Text;
 using System.Text.Json;
 
@@ -20,6 +21,7 @@ public class MonoBankPaymentProvider
     private readonly IPaymentWebhookProcessor _webhookProcessor;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly MonoWebhookDeserializer _deserializer;
+    private readonly MonoBankSignatureVerifier _signatureVerifier;
     private readonly HttpClient _httpClient;
     private readonly MonoBankOptions _options;
     private readonly IUnitOfWork _unitOfWork;
@@ -35,6 +37,7 @@ public class MonoBankPaymentProvider
         IPaymentWebhookProcessor webhookProcessor,
         IRepository<Payment> paymentRepository,
         MonoWebhookDeserializer deserializer,
+        MonoBankSignatureVerifier signatureVerifier,
         HttpClient httpClient,
         IOptions<MonoBankOptions> options,
         IUnitOfWork unitOfWork)
@@ -42,25 +45,30 @@ public class MonoBankPaymentProvider
         _webhookProcessor = webhookProcessor;
         _paymentRepository = paymentRepository;
         _deserializer = deserializer;
+        _signatureVerifier = signatureVerifier;
         _httpClient = httpClient;
         _options = options.Value;
         _unitOfWork = unitOfWork;
     }
 
+
     public async Task<Result<PaymentResponse>> PaymentRequest(
-        PaymentRequest request, 
+        PaymentRequest request,
         CancellationToken cancellationToken = default)
     {
         var trueAmount = MoneyConverter.ToMinorUnits(
-            request.Amount, 
+            request.Amount,
             request.DecimalPlaces);
+
+        var expiresIn = _options.PaymentExpiresAt;
 
         var data = new
         {
             amount = trueAmount,
             ccy = request.Ccy,
-            redirectUrl = _options.RedirectUrl,
-            webHookUrl = _options.WebHookUrl
+            redirectUrl = BuildRedirectUrl(request.OrderId),
+            webHookUrl = _options.WebHookUrl,
+            validity = (long)expiresIn.TotalSeconds
         };
 
         var json = JsonSerializer.Serialize(data);
@@ -86,7 +94,7 @@ public class MonoBankPaymentProvider
             .Deserialize<PaymentResponse>
                 (result, JsonOptions);
 
-        if(responce is null)
+        if (responce is null)
         {
             return Result<PaymentResponse>.Fail(
                PaymentResources.PaymentProviderInvalidResponse);
@@ -100,7 +108,7 @@ public class MonoBankPaymentProvider
             InvoiceId = responce.InvoiceId,
             PaymentUrl = responce.PaymentUrl,
             Amount = request.Amount,
-            ExpiresAt = DateTime.UtcNow + _options.PaymentExpiresAt,
+            ExpiresAt = DateTime.UtcNow + expiresIn,
             Status = PaymentStatus.Pending
         };
 
@@ -109,6 +117,14 @@ public class MonoBankPaymentProvider
         await _unitOfWork.SaveChangesAsync();
 
         return Result<PaymentResponse>.Success(responce);
+    }
+
+    private string BuildRedirectUrl(long orderId)
+    {
+        return _options.RedirectUrl.Replace(
+            "{orderId}",
+            orderId.ToString(),
+            StringComparison.OrdinalIgnoreCase);
     }
 
     public async Task<Result<bool>> WebHook(
@@ -123,6 +139,20 @@ public class MonoBankPaymentProvider
         {
             return Result<bool>.Fail(
                 PaymentResources.WebhookEmptyBody);
+        }
+
+        var signature = request.Headers["X-Sign"].FirstOrDefault();
+
+        var isSigned = await _signatureVerifier.VerifyAsync(
+            body,
+            signature,
+            cancellationToken);
+
+        if (!isSigned)
+        {
+            return Result<bool>.Fail(
+                PaymentResources.WebhookInvalidPayload,
+                ResultErrorType.Unauthorized);
         }
 
         var payment = _deserializer.Deserialize(body);

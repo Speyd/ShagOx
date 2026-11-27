@@ -17,14 +17,12 @@ public class ReviewRepliImageDeleteService
 {
     public ReviewRepliImageDeleteService(
         IRepository<ReviewRepliImage> imageRepository,
-        ICommandRepository<ReviewRepliImage> imageCommand,
         ReviewRepliImageValidator imageValidator,
         PictureValidator pictureValidator,
         IUnitOfWork unitOfWork,
         ILogger<ReviewRepliImageDeleteService> logger
     )
         : base(imageRepository,
-            imageCommand,
             imageValidator,
             pictureValidator,
             unitOfWork,

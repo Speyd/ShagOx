@@ -25,12 +25,11 @@ public class ConditionDeleteService
 
     public ConditionDeleteService(
         IRepository<Condition> conditionRepository,
-        ICommandRepository<Condition> conditionCommand,
         ConditionValidator conditionValidator,
         IUnitOfWork unitOfWork,
         ILogger<ConditionDeleteService> logger
     )
-        : base(conditionCommand, conditionValidator, unitOfWork, logger)
+        : base(conditionRepository, conditionValidator, unitOfWork, logger)
     {
         _conditionRepository = conditionRepository;
         _conditionValidator = conditionValidator;

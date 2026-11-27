@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Payments;
 
 namespace ShagOxServer.Infrastructure.Persistence.Repositories.Payments.Core.Extensions;
 public static class PaymentQueryExtensions
 {
     public static IQueryable<Payment> WithIncludes(
-        this IQueryable<Payment> query)
+        this IQueryable<Payment> query,
+        EntityStatus? status = null)
     {
         return query
             .AsSplitQuery()

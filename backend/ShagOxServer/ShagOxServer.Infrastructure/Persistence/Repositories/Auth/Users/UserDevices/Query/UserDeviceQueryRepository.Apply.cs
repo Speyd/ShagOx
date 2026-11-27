@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.UserDevices.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Filters.Auth.Users.UserDevices;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Auth.Users.UserDevices.Extensions;
@@ -10,9 +11,10 @@ public partial class UserDeviceQueryRepository
       IUserDeviceQueryRepository
 {
     protected override IQueryable<UserDevice> ApplyIncludes(
-        IQueryable<UserDevice> query)
+        IQueryable<UserDevice> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<UserDevice> ApplyFilter(

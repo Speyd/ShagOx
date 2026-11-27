@@ -7,6 +7,7 @@ using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Create.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Request;
 using ShagOxServer.Application.DTOs.Specification.Pictures.Core.Update.Response;
 using ShagOxServer.Application.Interfaces.Persistences;
+using ShagOxServer.Application.Interfaces.Repositories.Auth.Users.Query;
 using ShagOxServer.Application.Interfaces.Repositories.Base;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Delete;
 using ShagOxServer.Application.Interfaces.Services.Auth.Users.Core.Update;
@@ -28,7 +29,7 @@ public class UserUpdateService
     IUserUpdateService
 {
     private readonly IRepository<User> _userRepository;
-    private readonly UserValidator _userValidator;
+    private readonly IUserQueryRepository _userValidator;
 
     private readonly CityValidator _cityValidator;
     private readonly CurrencyValidator _currencyValidator;
@@ -42,7 +43,8 @@ public class UserUpdateService
 
     public UserUpdateService(
         IRepository<User> userRepository,
-        UserValidator userValidator,
+        IUserQueryRepository userValidator,
+        UserValidator userValidator1,
         IUserDeleteService userDeleteService,
         CityValidator cityValidator,
         CurrencyValidator currencyValidator,
@@ -51,7 +53,7 @@ public class UserUpdateService
         IUnitOfWork unitOfWork,
         ILogger<UserUpdateService> logger
     )
-        : base(userDeleteService, userValidator, logger, unitOfWork)
+        : base(userDeleteService, userValidator1, logger, unitOfWork)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;
@@ -71,8 +73,12 @@ public class UserUpdateService
     {
         var user = await _userValidator
             .GetByIdIncludeAsync(userId, cancellationToken);
-        if (!user.IsSuccess)
-            return Result<UpdateResponse>.Fail(user.Error);
+
+        //if (!user.IsSuccess)
+        //    return Result<UpdateResponse>.Fail(user.Error);
+
+        if (user is null)
+            return Result<UpdateResponse>.Fail("");
 
         var userName = request.UserName?.Trim();
         var normalizedRequest = request with
@@ -82,15 +88,14 @@ public class UserUpdateService
 
 
         var validation = await
-            ValidateUpdatesAsync(user.Value!, 
+            ValidateUpdatesAsync(user, 
                 normalizedRequest, cancellationToken);
 
         if (!validation.IsSuccess)
             return Result<UpdateResponse>.Fail(validation.Error);
 
-
         var updatedCount = UserUpdater
-            .ApplyUpdates(user.Value!, normalizedRequest);
+            .ApplyUpdates(user, normalizedRequest);
 
         var result = new UpdateResponse(
             updatedCount,
@@ -105,9 +110,9 @@ public class UserUpdateService
         PictureUpdateResponse? avatarResponse = null;
         try
         {    
-            _userRepository.Update(user.Value!);
+            _userRepository.Update(user);
 
-            var avatarResult = await UpdateAvatarAsync(user.Value!,
+            var avatarResult = await UpdateAvatarAsync(user,
                 normalizedRequest.Avatar, cancellationToken);
 
             avatarResponse = avatarResult.Value;
@@ -121,16 +126,17 @@ public class UserUpdateService
             }
 
             await _unitOfWork.CommitAsync();
+
         }
         catch (DbUpdateConcurrencyException ex)
         {
             await _unitOfWork.RollbackAsync();
 
             if (avatarResponse is not null &&
-                user.Value!.Avatar is not null)
+                user.Avatar is not null)
             {
                 await _avatarUploadService.RollbackAsync(
-                    user.Value!.Avatar,
+                    user.Avatar,
                     avatarResponse
                 );
             }
@@ -149,10 +155,10 @@ public class UserUpdateService
             await _unitOfWork.RollbackAsync();
 
             if (avatarResponse is not null &&
-                user.Value!.Avatar is not null)
+                user.Avatar is not null)
             {
                 await _avatarUploadService.RollbackAsync(
-                    user.Value!.Avatar,
+                    user.Avatar,
                     avatarResponse
                 );
             }
@@ -196,16 +202,16 @@ public class UserUpdateService
                 return Result<bool>.Fail(currencyExists.Error);
         }
 
-        if (request.UserName is not null &&
-            request.UserName != user.UserName)
-        {
-            var userNameExists = await _userValidator
-                .NotExistsByUserNameAsync(request.UserName, 
-                    cancellationToken);
+        //if (request.UserName is not null &&
+        //    request.UserName != user.UserName)
+        //{
+        //    var userNameExists = await _userValidator
+        //        .NotExistsByUserNameAsync(request.UserName, 
+        //            cancellationToken);
 
-            if (!userNameExists.IsSuccess)
-                return Result<bool>.Fail(userNameExists.Error);
-        }
+        //    if (!userNameExists.IsSuccess)
+        //        return Result<bool>.Fail(userNameExists.Error);
+        //}
 
         return Result<bool>.Success(true);
     }

@@ -29,14 +29,13 @@ public class UserDeleteService
 
     public UserDeleteService(
         IRepository<User> userRepository,
-        ICommandRepository<User> userCommand,
         UserValidator userValidator,
         IAvatarDeleteService avatarDeleteService,
         UserInvalidationService userInvalid,
         IUnitOfWork unitOfWork,
         ILogger<UserDeleteService> logger
     )
-        : base(userCommand, userValidator, unitOfWork, logger)
+        : base(userRepository, userValidator, unitOfWork, logger)
     {
         _userRepository = userRepository;
         _userValidator = userValidator;

@@ -23,12 +23,11 @@ public class ProductTypeTranslationDeleteService
 
     public ProductTypeTranslationDeleteService(
         IRepository<ProductTypeTranslation> typeRepository,
-        ICommandRepository<ProductTypeTranslation> typeCommand,
         ProductTypeTranslationValidator typeValidator,
         IUnitOfWork unitOfWork,
         ILogger<ProductTypeTranslationDeleteService> logger
     )
-        : base(typeCommand, typeValidator, unitOfWork, logger)
+        : base(typeRepository, typeValidator, unitOfWork, logger)
     {
         _typeRepository = typeRepository;
         _typeValidator = typeValidator;

@@ -20,6 +20,7 @@ public partial class UserRoleQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Roles
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(u => u.UserRoles
                 .Any(ur => ur.UserId == userId))
@@ -33,6 +34,7 @@ public partial class UserRoleQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.Users
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(u => u.UserRoles
                 .Any(ur => ur.RoleId == roleId))

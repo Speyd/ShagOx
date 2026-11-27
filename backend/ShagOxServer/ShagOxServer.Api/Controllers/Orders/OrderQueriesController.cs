@@ -81,6 +81,7 @@ public class OrderQueriesController
     {
         var salesFilter = filter with
         {
+            OwnerId = null,
             SellerId = UserId,
             HideUnpaidOnline = true
         };

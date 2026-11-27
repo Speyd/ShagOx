@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.Avatars;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.Avatars;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.Avatars.Extensions;
@@ -10,9 +11,10 @@ public partial class AvatarQueryRepository
       IAvatarQueryRepository
 {
     protected override IQueryable<Avatar> ApplyIncludes(
-        IQueryable<Avatar> query)
+        IQueryable<Avatar> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<Avatar> ApplyFilter(

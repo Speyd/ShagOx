@@ -5,6 +5,7 @@ using ShagOxServer.Domain.Base.Cache;
 using ShagOxServer.Domain.Cache;
 
 namespace ShagOxServer.Application.Services.Caches.Core.Invalidation;
+
 public class CacheInvalidationDispatcher
     : ICacheInvalidationDispatcher
 {

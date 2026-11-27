@@ -1,5 +1,6 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Attributes.AttributeDefinitions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes;
 using ShagOxServer.Domain.Entities.Dictionaries.Attributes.Translations;
 using ShagOxServer.Infrastructure.Persistence.DbContexts.Primary;
@@ -21,9 +22,10 @@ public class AttributeDefinitionTranslationExistsRepository
     }
 
     protected override IQueryable<AttributeDefinitionTranslation> ApplyIncludes(
-        IQueryable<AttributeDefinitionTranslation> query)
+        IQueryable<AttributeDefinitionTranslation> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     protected override IQueryable<AttributeDefinitionTranslation> ApplyIdentificatorFilter(

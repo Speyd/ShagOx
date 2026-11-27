@@ -9,6 +9,29 @@ export const api = axios.create({
   },
 });
 
+
+const DEVICE_ID_KEY = "deviceIdentifier";
+
+export function getDeviceIdentifier(): string {
+  let deviceIdentifier = localStorage.getItem(DEVICE_ID_KEY);
+
+  if (!deviceIdentifier) {
+    deviceIdentifier = crypto.randomUUID();
+
+    localStorage.setItem(DEVICE_ID_KEY, deviceIdentifier);
+  }
+
+  return deviceIdentifier;
+}
+api.interceptors.request.use((config) => {
+  config.headers.set(
+    "X-Device-Identifier",
+    getDeviceIdentifier()
+  );
+
+  return config;
+});
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {

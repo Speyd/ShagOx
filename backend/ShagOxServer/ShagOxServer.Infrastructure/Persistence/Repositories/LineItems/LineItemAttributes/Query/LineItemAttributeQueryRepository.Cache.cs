@@ -19,6 +19,7 @@ public partial class LineItemAttributeQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.LineItemAttributes
+            .AsNoTracking()
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(c =>
@@ -33,6 +34,7 @@ public partial class LineItemAttributeQueryRepository
         EntityStatus status = EntityStatus.Active)
     {
         return await _db.LineItemAttributes
+            .AsNoTracking()
             .WithIncludes()
             .WithStatusFilter(status)
             .Where(x => x.AttributeDefinitionId == attributeDefinitionId)

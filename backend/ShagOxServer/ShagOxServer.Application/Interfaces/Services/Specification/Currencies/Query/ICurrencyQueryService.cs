@@ -19,6 +19,11 @@ public interface ICurrencyQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
+    Task<Result<Currency?>> GetEntityByCodeNoTrackingAsync(
+        string code,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+
     Task<Result<CurrencyDto>> GetBySymbolAsync(
         string symbol,
         CancellationToken cancellationToken = default,

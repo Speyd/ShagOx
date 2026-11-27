@@ -11,7 +11,8 @@ using ShagOxServer.Application.Services.Orders.Core.Create;
 using ShagOxServer.Application.Services.Orders.Core.Delete;
 using ShagOxServer.Application.Services.Orders.Core.Query;
 using ShagOxServer.Application.Services.Orders.Core.Validator;
-using ShagOxServer.Application.Services.Orders.OrderItems.Delete;
+using ShagOxServer.Application.Services.Orders.Payment;
+using ShagOxServer.Application.Services.Orders.Status;
 using ShagOxServer.Domain.Cache.Orders;
 using ShagOxServer.Domain.Entities.Orders;
 
@@ -29,6 +30,14 @@ public static class OrdersDependencyInjection
 
         services.AddScoped<IOrderDeleteService,
             OrderDeleteService>();
+
+
+        services.AddScoped<IOrderPaymentService,
+            OrderPaymentService>();
+
+        services.AddScoped<IOrderStatusService,
+            OrderStatusService>();
+        
 
 
 

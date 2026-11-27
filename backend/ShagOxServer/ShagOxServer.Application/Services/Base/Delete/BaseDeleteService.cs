@@ -15,14 +15,14 @@ public abstract class BaseDeleteService<TEntity>
     : ISoftDeleteService<TEntity, DeleteResponse>
     where TEntity : BaseEntity
 {
-    protected readonly ICommandRepository<TEntity> _repository;
+    protected readonly IRepository<TEntity> _repository;
     protected readonly BaseValidator<TEntity> _queryRepository;
     private readonly ILogger<BaseDeleteService<TEntity>> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
 
     public BaseDeleteService(
-        ICommandRepository<TEntity> repository,
+        IRepository<TEntity> repository,
         BaseValidator<TEntity> queryRepository,
         IUnitOfWork unitOfWork,
         ILogger<BaseDeleteService<TEntity>> logger)
@@ -37,6 +37,7 @@ public abstract class BaseDeleteService<TEntity>
         long id,
         CancellationToken cancellationToken = default)
     {
+       
         var entity = await _queryRepository
             .GetByIdIncludeAsync(id, cancellationToken);
 
@@ -53,8 +54,46 @@ public abstract class BaseDeleteService<TEntity>
             return Result<DeleteResponse>.Success(
                 new DeleteResponse(entity.Value.Id, DateTime.UtcNow));
 
-        return await SoftDeleteInternalAsync(entity.Value, 
-            cancellationToken);
+        await _unitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            var result =  await SoftDeleteInternalAsync(
+                entity.Value, 
+                cancellationToken);
+
+            if (!result.IsSuccess)
+            {
+                await _unitOfWork.RollbackAsync();
+
+                return result;
+            }
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch (Exception ex)
+        {
+            await _unitOfWork.RollbackAsync();
+
+            _logger.LogError(
+                ex,
+                "Failed to delete item. Id: {Id}",
+                id);
+
+            return Result<DeleteResponse>.Fail(
+                EntityErrorResources.BasketItemDeleteFailed);
+        }
+
+        _logger.LogInformation(
+            "Item deleted successfully. Id: {Id}",
+            id);
+
+        return Result<DeleteResponse>.Success(
+           new DeleteResponse(
+               id,
+               DateTime.UtcNow
+           )
+       );
     }
 
     public virtual async Task<Result<DeleteResponse>> SoftDeleteInternalAsync(
@@ -122,7 +161,10 @@ public abstract class BaseDeleteService<TEntity>
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
-        await _repository.SoftDeleteAsync(entity.Id);
+        entity.EntityStatus = EntityStatus.Deleted;
+        entity.DeletedAt = DateTime.UtcNow;
+
+        _repository.Update(entity);
 
         return Result<bool>.Success(true);
     }

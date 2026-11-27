@@ -22,12 +22,11 @@ public class BasketItemDeleteService
 
     public BasketItemDeleteService(
         IRepository<BasketItem> itemRepository,
-        ICommandRepository<BasketItem> itemCommand,
         BasketItemValidator itemValidator,
         IUnitOfWork unitOfWork,
         ILogger<BasketItemDeleteService> logger
     )
-        : base(itemCommand, itemValidator, unitOfWork, logger)
+        : base(itemRepository, itemValidator, unitOfWork, logger)
     {
         _itemRepository = itemRepository;
         _itemValidator = itemValidator;

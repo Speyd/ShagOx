@@ -5,6 +5,7 @@ using ShagOxServer.Domain.Entities.Payments.Enum;
 namespace ShagOxServer.Domain.Filters.Orders.Core;
 public sealed record OrderSearchFilter
 (
+    long? OwnerId,
     long? SellerId,
     string? SearchTerm,
     string? OrderNumber,

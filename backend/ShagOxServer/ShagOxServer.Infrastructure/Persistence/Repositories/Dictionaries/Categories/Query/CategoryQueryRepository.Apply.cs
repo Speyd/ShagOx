@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Dictionaries.Categories.Query;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Dictionaries;
 using ShagOxServer.Domain.Filters.Dictionaries.Categories;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Base.Query;
@@ -10,9 +11,10 @@ public partial class CategoryQueryRepository
       ICategoryQueryRepository
 {
     protected override IQueryable<Category> ApplyIncludes(
-        IQueryable<Category> query)
+        IQueryable<Category> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<Category> ApplyFilter(

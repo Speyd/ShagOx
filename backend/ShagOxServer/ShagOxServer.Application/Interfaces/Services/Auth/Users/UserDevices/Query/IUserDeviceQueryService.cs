@@ -24,6 +24,13 @@ public interface IUserDeviceQueryService
         CancellationToken cancellationToken = default,
         EntityStatus status = EntityStatus.Active);
 
+    Task<Result<UserDevice?>> GetEntityByUserAndDeviceNoTrackingAsync(
+        long userId,
+        long deviceId,
+        CancellationToken cancellationToken = default,
+        EntityStatus status = EntityStatus.Active);
+    
+
 
     Task<Result<PagedResult<UserDeviceDto>>> GetByUserAsync(
         long userId,

@@ -17,6 +17,7 @@ public partial class AdvertisementVariantQueryRepository
         EntityStatus? status = null)
     {
         return await _db.AdvertisementVariants
+            .AsNoTracking()
             .WithStatusFilter(status)
             .Where(x => x.AdvertisementId == advertId)
             .Select(x => x.Id)

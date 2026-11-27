@@ -7,7 +7,8 @@ namespace ShagOxServer.Infrastructure.Persistence.Repositories.Location.Cities.E
 public static class CityQueryExtensions
 {
     public static IQueryable<City> WithIncludes(
-       this IQueryable<City> query)
+       this IQueryable<City> query,
+        EntityStatus? status = null)
     {
         return query
             .AsSplitQuery()

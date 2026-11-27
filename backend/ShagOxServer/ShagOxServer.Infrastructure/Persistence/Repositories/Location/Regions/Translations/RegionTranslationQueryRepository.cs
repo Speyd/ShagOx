@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShagOxServer.Application.Interfaces.Repositories.Location.Regions.Translations;
 using ShagOxServer.Application.Interfaces.Services.Common.Context;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Location;
 using ShagOxServer.Domain.Entities.Location.Translations;
 using ShagOxServer.Domain.Filters.Location.Regions.Translations;
@@ -27,9 +28,10 @@ public class RegionTranslationQueryRepository
 
 
     protected override IQueryable<RegionTranslation> ApplyIncludes(
-         IQueryable<RegionTranslation> query)
+         IQueryable<RegionTranslation> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<RegionTranslation> ApplyFilter(

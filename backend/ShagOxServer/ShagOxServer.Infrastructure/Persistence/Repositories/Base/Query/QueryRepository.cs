@@ -65,7 +65,7 @@ public class QueryRepository<TEntity>
     {
         IQueryable<TEntity> query = _db.Set<TEntity>();
 
-        query = ApplyIncludes(query);
+        query = ApplyIncludes(query, status);
 
         return await query
             .WithStatusFilter(status)
@@ -81,7 +81,7 @@ public class QueryRepository<TEntity>
     {
         IQueryable<TEntity> query = _db.Set<TEntity>();
            
-        query = ApplyIncludes(query);
+        query = ApplyIncludes(query, status);
 
         return await query
             .AsNoTracking()

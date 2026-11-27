@@ -123,10 +123,43 @@
   <data name="InvalidPrice" xml:space="preserve">
     <value>Ціна товару '{0}' недійсна.</value>
   </data>
+  <data name="OrderCancelNotAllowed" xml:space="preserve">
+    <value>Замовлення вже не можна скасувати: його передано в доставку.</value>
+  </data>
+  <data name="OrderCompleteNotAllowed" xml:space="preserve">
+    <value>Завершити можна лише відправлене замовлення.</value>
+  </data>
+  <data name="OrderConfirmNotAllowed" xml:space="preserve">
+    <value>Підтвердити можна лише нове замовлення.</value>
+  </data>
+  <data name="OrderConfirmUnpaid" xml:space="preserve">
+    <value>Покупець ще не оплатив замовлення — підтвердити його можна після оплати.</value>
+  </data>
+  <data name="OrderHasOtherSellersItems" xml:space="preserve">
+    <value>Замовлення містить товари інших продавців — ним може керувати лише адміністратор.</value>
+  </data>
+  <data name="OrderMultipleSellers" xml:space="preserve">
+    <value>Одне замовлення може містити товари лише одного продавця. Оформіть товари різних продавців окремо.</value>
+  </data>
+  <data name="OrderNotSellerOrder" xml:space="preserve">
+    <value>Це замовлення не містить ваших товарів.</value>
+  </data>
   <data name="OrderPaymentStatusUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити статус оплати замовлення.</value>
   </data>
+  <data name="OrderRejectNotAllowed" xml:space="preserve">
+    <value>Відхилити можна лише замовлення, яке ще не відправлено.</value>
+  </data>
+  <data name="OrderShipNotAllowed" xml:space="preserve">
+    <value>Відправити можна лише підтверджене замовлення.</value>
+  </data>
+  <data name="OrderStatusChanged" xml:space="preserve">
+    <value>Статус замовлення щойно змінився. Оновіть сторінку.</value>
+  </data>
   <data name="OrderStatusUpdateFailed" xml:space="preserve">
     <value>Не вдалося оновити статус замовлення.</value>
+  </data>
+  <data name="OrderTrackingNumberRequired" xml:space="preserve">
+    <value>Вкажіть номер ТТН, щоб покупець міг відстежити посилку.</value>
   </data>
 </root>

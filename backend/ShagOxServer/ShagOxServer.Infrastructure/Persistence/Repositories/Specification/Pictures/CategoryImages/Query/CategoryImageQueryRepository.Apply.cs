@@ -1,4 +1,5 @@
 using ShagOxServer.Application.Interfaces.Repositories.Specification.Pictures.CategoryImages;
+using ShagOxServer.Domain.Base.Enum;
 using ShagOxServer.Domain.Entities.Specification.Pictures;
 using ShagOxServer.Domain.Filters.Specification.Pictures.CategoryImages;
 using ShagOxServer.Infrastructure.Persistence.Repositories.Specification.Pictures.CategoryImages.Extensions;
@@ -10,9 +11,10 @@ public partial class CategoryImageQueryRepository
       ICategoryImageQueryRepository
 {
     protected override IQueryable<CategoryImage> ApplyIncludes(
-        IQueryable<CategoryImage> query)
+        IQueryable<CategoryImage> query,
+        EntityStatus? status = null)
     {
-        return query.WithIncludes();
+        return query.WithIncludes(status);
     }
 
     public override IQueryable<CategoryImage> ApplyFilter(

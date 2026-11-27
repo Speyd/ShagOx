@@ -16,7 +16,7 @@ namespace ShagOxServer.Api.Controllers.Auth.Roles;
 [Route("api/admin/roles")]
 [Authorize(Roles = "Admin")]
 public class RoleQueriesController 
-    : BaseQueryController<RoleDto,
+    : BaseAdminQueryController<RoleDto,
         RoleSearchFilter>
 {
     private readonly IUserRoleQueryService _queryUserRoleService;

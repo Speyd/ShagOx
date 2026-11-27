@@ -9,7 +9,7 @@ using ShagOxServer.SharedKernel.Abstractions.Results.Extensions;
 namespace ShagOxServer.Api.Controllers.Auth.Users.UserSessions.Admin;
 
 [ApiController]
-[Route("api/user-sessions")]
+[Route("api/admin/user-sessions")]
 [Authorize(Roles = "Admin")]
 public class UserSessionAdminCommandsController
     : ApiController

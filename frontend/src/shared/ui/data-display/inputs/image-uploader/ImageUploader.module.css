@@ -5,21 +5,64 @@
 }
 
 .dropzone {
-  border: 2px dashed #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 16px;
+  border: 2px dashed var(--color-border);
   border-radius: 12px;
-  padding: 32px;
+  background: #fafcff;
   text-align: center;
   cursor: pointer;
-  transition: 0.2s;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .dropzone:hover {
-  border-color: #2563eb;
+  border-color: var(--color-primary);
+  background: #f0f7ff;
+}
+
+.dropzoneError {
+  border-color: #ef4444;
+}
+
+.iconCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #e8f0fe;
+  color: var(--color-primary);
+}
+
+.mainText {
+  font-size: var(--font-sm);
+  color: var(--text-base);
+}
+
+.link {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.subText {
+  font-size: var(--font-xs);
+  color: #94a3b8;
 }
 
 .images {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--font-xs);
+  color: #94a3b8;
 }

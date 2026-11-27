@@ -1,17 +1,22 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import styles from "./SortableImage.module.css";
-import IconButton from "../../../buttons/icon-button";
 import { X } from "lucide-react";
+import clsx from "clsx";
 import type { ImageItem } from "@/shared/lib/types/image";
 
 type SortableImageProps = {
   image: ImageItem;
+  isMain?: boolean;
   onDelete: () => void;
 };
 
-export default function SortableImage({ image, onDelete }: SortableImageProps) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
+export default function SortableImage({
+  image,
+  isMain,
+  onDelete,
+}: SortableImageProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({
       id: image.id,
     });
@@ -22,18 +27,25 @@ export default function SortableImage({ image, onDelete }: SortableImageProps) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} className={styles.item}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={clsx(styles.item, isDragging && styles.dragging)}
+    >
       <div {...attributes} {...listeners} className={styles.dragHandle}>
         <img src={image.url} alt="" className={styles.image} />
       </div>
 
-      <IconButton
+      {isMain && <span className={styles.mainBadge}>Головне</span>}
+
+      <button
         type="button"
         onClick={onDelete}
         className={styles.deleteButton}
+        aria-label="Видалити фото"
       >
-        <X />
-      </IconButton>
+        <X size={12} />
+      </button>
     </div>
   );
 }

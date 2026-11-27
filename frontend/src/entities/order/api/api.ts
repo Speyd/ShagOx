@@ -27,7 +27,6 @@ export async function getOrder(id: number): Promise<Order> {
   return data;
 }
 
-/** Повертає діюче посилання на оплату або створює нове (у т.ч. повторна оплата). */
 export async function payOrder(id: number): Promise<OrderPaymentResponse> {
   const { data } = await api.post<OrderPaymentResponse>(
     `/orders/${id}/payment`,
@@ -35,7 +34,6 @@ export async function payOrder(id: number): Promise<OrderPaymentResponse> {
   return data;
 }
 
-/** Замовлення моїх товарів (я — продавець). Неоплачені онлайн-замовлення не повертаються. */
 export async function getMySales(): Promise<Order[]> {
   const { data } = await api.get<PaginatedResponse<Order>>("/orders/sales", {
     params: { page: 1, pageSize: 50 },
@@ -51,18 +49,13 @@ async function changeStatus(id: number, action: string, body?: unknown) {
   return data;
 }
 
-/** Покупець скасовує замовлення (до відправки). */
 export const cancelOrder = (id: number) => changeStatus(id, "cancel");
 
-/** Продавець підтверджує замовлення. */
 export const confirmOrder = (id: number) => changeStatus(id, "confirm");
 
-/** Продавець відхиляє замовлення (оплачене — з поверненням коштів). */
 export const rejectOrder = (id: number) => changeStatus(id, "reject");
 
-/** Продавець відправляє замовлення (ТТН) або готує його до самовивозу. */
 export const shipOrder = (id: number, trackingNumber: string | null) =>
   changeStatus(id, "ship", { trackingNumber });
 
-/** Покупець або продавець підтверджує отримання. */
 export const completeOrder = (id: number) => changeStatus(id, "complete");

@@ -107,7 +107,6 @@ export async function getProductTypes(): Promise<ProductTypeItem[]> {
   }));
 }
 
-/** Атрибути категорії разом зі значеннями їхніх словників (один запит). */
 export async function getAttributeDictionaryValues(
   categoryId?: number,
 ): Promise<CategoryAttributeValueResponse[]> {

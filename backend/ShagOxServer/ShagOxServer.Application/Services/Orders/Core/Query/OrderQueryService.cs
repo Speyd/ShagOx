@@ -1,11 +1,14 @@
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Caches;
+using ShagOxServer.Application.DTOs.Common.Currencies;
 using ShagOxServer.Application.DTOs.Deliveries.DeliveryProviders.Query;
 using ShagOxServer.Application.DTOs.Orders.Core.Query;
 using ShagOxServer.Application.DTOs.Orders.OrderItems.Query;
+using ShagOxServer.Application.DTOs.Specification.Currencies.Query;
 using ShagOxServer.Application.Interfaces.Providers;
 using ShagOxServer.Application.Interfaces.Repositories.Orders.Core;
 using ShagOxServer.Application.Interfaces.Services.Caches;
+using ShagOxServer.Application.Interfaces.Services.Common.Currencies;
 using ShagOxServer.Application.Interfaces.Services.Deliveries.DeliveryProviders.Query;
 using ShagOxServer.Application.Interfaces.Services.Orders.Core.Query;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Query;
@@ -31,6 +34,8 @@ public class OrderQueryService
     private readonly IOrderQueryRepository _orderQueryRepository;
     private readonly IOrderItemQueryService _orderItemService;
 
+    protected readonly IPriceConversionService _priceConversion;
+
     private readonly IDeliveryProviderQueryService _deliveryService;
     private readonly ICurrencyQueryService _currencyService;
 
@@ -43,6 +48,7 @@ public class OrderQueryService
     public OrderQueryService(
         IOrderQueryRepository orderQueryRepository,
         IOrderItemQueryService orderItemService,
+        IPriceConversionService priceConversion,
         IDeliveryProviderQueryService deliveryService,
         ICurrencyQueryService currencyService,
         IDataCacheService cacheService,
@@ -56,6 +62,7 @@ public class OrderQueryService
     {
         _orderQueryRepository = orderQueryRepository;
         _orderItemService = orderItemService;
+        _priceConversion = priceConversion;
         _deliveryService = deliveryService;
         _currencyService = currencyService;
     }
@@ -83,12 +90,16 @@ public class OrderQueryService
         {
             delivery = await _deliveryService
                 .ApplyMapperAsync(entity.DeliveryProvider);
-        }     
+        }
 
-        return OrderMapper.ToDto(entity, 
+        var convertPrices = await ConvertPricesAsync(entity);
+
+        return OrderMapper.ToDto(
+            entity, 
             items, 
             currency, 
-            delivery);
+            delivery,
+            convertPrices);
     }
 
     public async Task<Result<OrderDto>> GetByOrderNumberAsync(
@@ -168,5 +179,32 @@ public class OrderQueryService
             },
             _cacheOptions.DefaultExpiration
         );
+    }
+
+    public async Task<ConvertedOrderPricesDto> ConvertPricesAsync(
+        Order order,
+        CancellationToken cancellationToken = default)
+    {
+        var subtotal = await _priceConversion.ConvertPriceAsync(
+            order.Subtotal,
+            order.Currency,
+            cancellationToken);
+
+        var deliveryPrice = new CurrencyConvertDto(
+            subtotal.From,
+            subtotal.To,
+            order.DeliveryPrice * subtotal.Coefficient,
+            subtotal.Coefficient);
+
+        var totalPrice = new CurrencyConvertDto(
+            subtotal.From,
+            subtotal.To,
+            order.TotalPrice * subtotal.Coefficient,
+            subtotal.Coefficient);
+
+        return new ConvertedOrderPricesDto(
+            subtotal,
+            deliveryPrice,
+            totalPrice);
     }
 }

@@ -11,7 +11,8 @@ public static class OrderMapper
         Order order,
         List<OrderItemDto> items,
         CurrencyDto currency,
-        DeliveryProviderDto? delivery)
+        DeliveryProviderDto? delivery,
+        ConvertedOrderPricesDto convertedPrices)
     {
         return new OrderDto(
             order.Id,
@@ -24,8 +25,11 @@ public static class OrderMapper
             items,
             order.Comment,
             order.Subtotal,
+            convertedPrices.SubtotalConversion,
             order.DeliveryPrice,
+            convertedPrices.DeliveryPriceConversion,
             order.TotalPrice,
+            convertedPrices.TotalPriceConversion,
             currency,
             order.DeliveryType,
             delivery,

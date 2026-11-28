@@ -1,3 +1,4 @@
+using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Emails;
 using ShagOxServer.Application.DTOs.Auth.Users.Contacts.Phones;
 using ShagOxServer.Application.DTOs.Verifications.Create;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Confirmation.UserVerification;
@@ -51,9 +52,9 @@ public partial class UserVerificationService
                 VerificationResources.PendingEmailNotFound);
         }
 
-        await _changePhoneService.ChangePhone(
+        await _changeEmailService.ChangeEmail(
             user.Id,
-            new ChangePhoneRequest(verificationCode.PendingValue),
+            new ChangeEmailRequest(verificationCode.PendingValue),
             VerificationCodePurpose.ChangeNewEmail);
 
         return Result<VerificationResponse>.Success(
@@ -65,7 +66,7 @@ public partial class UserVerificationService
         VerificationCode verificationCode)
     {
         if (string.IsNullOrWhiteSpace(
-                   verificationCode.PendingValue))
+                verificationCode.PendingValue))
         {
             return Result<VerificationResponse>.Fail(
                 VerificationResources.PendingEmailNotFound);

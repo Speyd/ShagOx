@@ -20,11 +20,13 @@ public partial class UserVerificationService
         IUserTrastManagementService trastManagement,
         IUserDeviceCommandsRepository deviceCommandsRepository,
         ILoginSessionService sessionService,
-        IChangePhoneService changePhoneService)
+        IChangePhoneService changePhoneService,
+        IChangeEmailService changeEmailService)
     {
         _trastManagement = trastManagement;
         _deviceCommandsRepository = deviceCommandsRepository;
         _sessionService = sessionService;
         _changePhoneService = changePhoneService;
+        _changeEmailService = changeEmailService;
     }
 }

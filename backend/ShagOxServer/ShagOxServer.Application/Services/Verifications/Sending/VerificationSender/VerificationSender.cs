@@ -1,6 +1,8 @@
 using ShagOxServer.Application.Interfaces.Persistences;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Codes;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Email;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Sms;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Domain.Entities.Auth.Users;
@@ -44,7 +46,8 @@ public partial class VerificationSender : IVerificationSender
         Result<bool> sendResult = purpose switch
         {
             VerificationCodePurpose.RegistrationEmail
-                or VerificationCodePurpose.ChangeEmail
+                or VerificationCodePurpose.ChangeCurrentEmail
+                or VerificationCodePurpose.ChangeNewEmail
                 or VerificationCodePurpose.ResetPasswordEmail
                 or VerificationCodePurpose.ChangePasswordEmail
                 or VerificationCodePurpose.EnableTwoFactorEmail
@@ -54,7 +57,8 @@ public partial class VerificationSender : IVerificationSender
                     purpose, user.Email, code.Value!, pendingValue),
 
             VerificationCodePurpose.RegistrationPhone
-                or VerificationCodePurpose.ChangePhone
+                or VerificationCodePurpose.ChangeCurrentPhone
+                or VerificationCodePurpose.ChangeNewPhone
                 or VerificationCodePurpose.ResetPasswordPhone
                 or VerificationCodePurpose.ChangePasswordPhone
                 or VerificationCodePurpose.EnableTwoFactorPhone

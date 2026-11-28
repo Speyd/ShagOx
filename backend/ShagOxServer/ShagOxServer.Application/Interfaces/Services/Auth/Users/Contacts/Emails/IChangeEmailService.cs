@@ -7,6 +7,10 @@ public interface IChangeEmailService
 {
     Task<Result<bool>> ChangeEmail(
         long userId,
+        ChangeEmailRequest request);
+
+    Task<Result<bool>> ChangeEmail(
+        long userId,
         ChangeEmailRequest request,
         VerificationCodePurpose purpose);
 }

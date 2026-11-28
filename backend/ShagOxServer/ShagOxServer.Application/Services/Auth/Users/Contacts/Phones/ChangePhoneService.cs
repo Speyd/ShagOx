@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Auth.Contacts.Phones;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -34,6 +35,32 @@ public class ChangePhoneService
         _logger = logger;
     }
 
+
+    public async Task<Result<bool>> ChangePhone(
+        long userId,
+        ChangePhoneRequest request)
+    {
+        var user = await _userValidator
+            .GetByIdAsync(userId);
+        if (!user.IsSuccess)
+            return Result<bool>.Fail(user.Error);
+
+        if (string.IsNullOrEmpty(user.Value?.Phone))
+        {
+            return await ChangePhone(
+                user.Value!,
+                request,
+                VerificationCodePurpose.ChangeNewPhone);
+        }
+        else
+        {
+            return await ChangePhone(
+                user.Value!,
+                request,
+                VerificationCodePurpose.ChangeCurrentPhone);
+        }
+    }
+
     public async Task<Result<bool>> ChangePhone(
         long userId,
         ChangePhoneRequest request,
@@ -47,12 +74,22 @@ public class ChangePhoneService
                 VerificationResources.UnsupportedVerificationPurpose);
         }
 
-
         var user = await _userValidator
             .GetByIdAsync(userId);
         if (!user.IsSuccess)
             return Result<bool>.Fail(user.Error);
 
+        return await ChangePhone(
+            user.Value!,
+            request,
+            purpose);
+    }
+
+    private async Task<Result<bool>> ChangePhone(
+        User user,
+        ChangePhoneRequest request,
+        VerificationCodePurpose purpose)
+    {
         var phone = request.Phone.Replace(" ", "");
 
         var type = _contactValidator.Detect(phone);
@@ -70,14 +107,14 @@ public class ChangePhoneService
         try
         {
             var result = await _verificationSender
-                .SendAsync(user.Value!,
+                .SendAsync(user,
                     purpose,
                     phone
                 );
 
             _logger.LogInformation(
                 "Phone changed successfully. UserId: {UserId}",
-                user.Value!.Id);
+                user.Id);
 
             return result;
         }
@@ -87,7 +124,7 @@ public class ChangePhoneService
                 ex,
                 "Failed to send verification code for phone change. " +
                 "UserId: {UserId}",
-                userId);
+                user.Id);
 
             return Result<bool>.Fail(
                 PhoneAuthResources.FailedToSendVerificationCode);

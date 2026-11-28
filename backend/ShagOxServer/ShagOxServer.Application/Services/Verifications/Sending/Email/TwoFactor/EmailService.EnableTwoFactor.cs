@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Email;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Resources.Verifications.TwoFactor.Enable;
 using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing.Models;

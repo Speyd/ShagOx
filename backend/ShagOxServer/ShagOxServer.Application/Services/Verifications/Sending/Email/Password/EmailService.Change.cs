@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
-using ShagOxServer.Application.Resources.Verifications.ChangeEmail.ChangeCurrency;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Email;
 using ShagOxServer.Application.Resources.Verifications.Core;
+using ShagOxServer.Application.Resources.Verifications.Password.Change;
 using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing.Models;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -9,34 +9,31 @@ namespace ShagOxServer.Application.Services.Verifications.Sending.Email;
 public partial class EmailService
     : IEmailService
 {
-    private const string EmailChangeApprovalEmailFileName = "Order/EmailChangeApproval.cshtml";
+    private const string ChangePasswordEmailFileName = "Password/ChangePassword.cshtml";
 
 
-    public async Task<Result<bool>> SendEmailChangeApprovalCodeAsync(
+    public async Task<Result<bool>> SendChangePasswordCodeAsync(
         string email,
-        string newEmail,
         string code)
     {
         try
         {
             var dynamicModel = EmailViewModelFactory
-                .CreateChangeApprovalEmailConfirmation(
+                .ChangePasswordConfirmation(
                     code,
-                    _codeOptions.ExpirationMinutes,
-                    email,
-                    newEmail);
+                    _codeOptions.ExpirationMinutes);
 
             var htmlBody = await _renderer.RenderAsync(
-                EmailChangeApprovalEmailFileName,
+                ChangePasswordEmailFileName,
                 dynamicModel);
 
             await SendEmailAsync(
                 email,
-                EmailChangeApprovalResources.Title,
+                ChangePasswordEmail.Title,
                 htmlBody);
 
             _logger.LogInformation(
-                "Change email approval sent. email: {email}",
+                "Change password sent. email: {email}",
                 email);
 
             return Result<bool>.Success(true);
@@ -45,7 +42,7 @@ public partial class EmailService
         {
             _logger.LogError(
                 ex,
-                "Failed to email change approval.");
+                "Failed to email password.");
 
             return Result<bool>.Fail(
                 VerificationResources.FailedToSendVerificationEmail);

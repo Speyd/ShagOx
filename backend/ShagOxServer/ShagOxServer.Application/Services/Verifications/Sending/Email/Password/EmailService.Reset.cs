@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
-using ShagOxServer.Application.Resources.Verifications.ChangeEmail.CreateNew;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Email;
 using ShagOxServer.Application.Resources.Verifications.Core;
+using ShagOxServer.Application.Resources.Verifications.Password.Reset;
 using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing.Models;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -9,31 +9,31 @@ namespace ShagOxServer.Application.Services.Verifications.Sending.Email;
 public partial class EmailService
     : IEmailService
 {
-    private const string NewEmailFileName = "Change/NewEmailConfirmation.cshtml";
+    private const string ResetPasswordEmailFileName = "Password/ResetPassword.cshtml";
 
 
-    public async Task<Result<bool>> SendNewEmailConfirmationCodeAsync(
+    public async Task<Result<bool>> SendResetPasswordCodeAsync(
         string email,
         string code)
     {
         try
         {
             var dynamicModel = EmailViewModelFactory
-                .CreateNewEmailConfirmation(
-                    code, 
+                .ResetPasswordConfirmation(
+                    code,
                     _codeOptions.ExpirationMinutes);
 
             var htmlBody = await _renderer.RenderAsync(
-                NewEmailFileName,
+                ResetPasswordEmailFileName,
                 dynamicModel);
 
             await SendEmailAsync(
                 email,
-                CreateNewEmailResources.Title,
+                ResetPasswordEmail.Title,
                 htmlBody);
 
             _logger.LogInformation(
-                "New email sent. email: {email}",
+                "Reset password sent. email: {email}",
                 email);
 
             return Result<bool>.Success(true);
@@ -42,7 +42,7 @@ public partial class EmailService
         {
             _logger.LogError(
                 ex,
-                "Failed to new email.");
+                "Failed to password reset approval.");
 
             return Result<bool>.Fail(
                 VerificationResources.FailedToSendVerificationEmail);

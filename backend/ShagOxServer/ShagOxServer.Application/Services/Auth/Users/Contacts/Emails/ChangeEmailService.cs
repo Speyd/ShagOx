@@ -7,6 +7,7 @@ using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
 using ShagOxServer.Application.Resources.Auth.Contacts.Emails;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
+using ShagOxServer.Domain.Entities.Auth.Users;
 using ShagOxServer.Domain.Entities.Verifications.Enum;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 
@@ -34,6 +35,32 @@ public class ChangeEmailService
         _logger = logger;
     }
 
+
+    public async Task<Result<bool>> ChangeEmail(
+        long userId,
+        ChangeEmailRequest request)
+    {
+        var user = await _userValidator
+            .GetByIdAsync(userId);
+        if (!user.IsSuccess)
+            return Result<bool>.Fail(user.Error);
+
+        if (string.IsNullOrEmpty(user.Value?.Email))
+        {
+            return await ChangeEmail(
+                user.Value!,
+                request,
+                VerificationCodePurpose.ChangeNewEmail);
+        }
+        else
+        {
+            return await ChangeEmail(
+                user.Value!,
+                request,
+                VerificationCodePurpose.ChangeCurrentEmail);
+        }
+    }
+
     public async Task<Result<bool>> ChangeEmail(
         long userId,
         ChangeEmailRequest request,
@@ -52,6 +79,14 @@ public class ChangeEmailService
         if (!user.IsSuccess)
             return Result<bool>.Fail(user.Error);
 
+        return await ChangeEmail(user.Value!, request, purpose);
+    }
+
+    private async Task<Result<bool>> ChangeEmail(
+        User user,
+        ChangeEmailRequest request,
+        VerificationCodePurpose purpose)
+    {
         var email = request.Email.Replace(" ", "");
 
         var type = _contactValidator.Detect(email);
@@ -64,19 +99,19 @@ public class ChangeEmailService
         var emailExists = await _userValidator
             .NotExistsByEmailAsync(email);
         if (!emailExists.IsSuccess)
-            return Result<bool>.Fail(emailExists.Error); 
+            return Result<bool>.Fail(emailExists.Error);
 
         try
         {
             var result = await _verificationSender
-                .SendAsync(user.Value!, 
+                .SendAsync(user,
                     purpose,
                     email
             );
 
             _logger.LogInformation(
                 "Email changed successfully. UserId: {UserId}",
-                user.Value!.Id);
+                user.Id);
 
             return result;
         }
@@ -85,7 +120,7 @@ public class ChangeEmailService
             _logger.LogError(
                 ex,
                 "Failed to send verification code for email change. UserId: {UserId}",
-                userId);
+                user.Id);
 
             return Result<bool>.Fail(
                 EmailAuthResources.FailedToSendVerificationEmail);

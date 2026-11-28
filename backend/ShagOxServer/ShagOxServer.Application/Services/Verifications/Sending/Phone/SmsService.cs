@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShagOxServer.Application.Common.Options.Verifivations;
-using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Sms;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 using Twilio;

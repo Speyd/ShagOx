@@ -47,7 +47,7 @@ public partial class UserVerificationService
                 VerificationResources.PendingPhoneNotFound);
         }
         
-        await _changeEmailService.ChangeEmail(
+        await _changePhoneService.ChangePhone(
             user.Id,
             new ChangePhoneRequest(verificationCode.PendingValue),
             VerificationCodePurpose.ChangeNewPhone);

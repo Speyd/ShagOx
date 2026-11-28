@@ -64,5 +64,12 @@ public class UserSessionConfiguration
             x.OwnerId,
             x.RevokedAt
         });
+
+        builder.HasIndex(x => new
+        {
+            x.OwnerId,
+            x.RevokedAt,
+            x.ExpiresAt
+        });
     }
 }

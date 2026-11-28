@@ -7,6 +7,10 @@ public interface IChangePhoneService
 {
     Task<Result<bool>> ChangePhone(
         long userId,
+        ChangePhoneRequest request);
+
+    Task<Result<bool>> ChangePhone(
+        long userId,
         ChangePhoneRequest request,
         VerificationCodePurpose purpose);
 }

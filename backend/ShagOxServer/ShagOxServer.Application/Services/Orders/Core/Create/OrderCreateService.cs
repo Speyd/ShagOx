@@ -17,7 +17,7 @@ using ShagOxServer.Application.Interfaces.Services.Orders.Core.Create;
 using ShagOxServer.Application.Interfaces.Services.Orders.OrderItems.Create;
 using ShagOxServer.Application.Interfaces.Services.Payments;
 using ShagOxServer.Application.Interfaces.Services.Specification.Currencies.Query;
-using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Email;
 using ShagOxServer.Application.Resources.EntityErrors;
 using ShagOxServer.Application.Services.Auth.Users.Core.Validator;
 using ShagOxServer.Application.Services.Deliveries.DeliveryProviders.Validator;

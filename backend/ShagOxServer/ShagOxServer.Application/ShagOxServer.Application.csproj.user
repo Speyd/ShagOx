@@ -17,5 +17,20 @@
     <EmbeddedResource Update="Resources\EntityNames\EntityNamesResources.uk.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Verifications\Password\Change\ChangePasswordEmail.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Verifications\Password\Change\ChangePasswordEmail.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Verifications\Password\Change\ChangePasswordEmail.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Verifications\Password\Change\ChangePasswordEmail.ru.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Verifications\Password\Change\ChangePasswordEmail.uk.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

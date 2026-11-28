@@ -45,5 +45,10 @@ public class UserDeviceConfiguration
             x.OwnerId,
             x.DeviceId
         });
+
+        builder.HasIndex(x => x.DeviceId);
+
+        builder.HasIndex(x => x.BlockedUntil)
+            .HasFilter("\"Status\" = 'Blocked' AND \"BlockedUntil\" IS NOT NULL");
     }
 }

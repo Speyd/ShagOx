@@ -4,12 +4,12 @@ using ShagOxServer.Application.Resources.Auth.Security;
 using System.Security.Claims;
 
 namespace ShagOxServer.Api.Middleware.Users;
-public class BlockedDeviceMiddleware
+public class BlockedUserDeviceMiddleware
 {
     private readonly RequestDelegate _next;
 
 
-    public BlockedDeviceMiddleware(
+    public BlockedUserDeviceMiddleware(
         RequestDelegate next)
     {
         _next = next;

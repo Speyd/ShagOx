@@ -8,7 +8,7 @@ using ShagOxServer.Application.Interfaces.Repositories.Payments.Core;
 using ShagOxServer.Application.Interfaces.Repositories.Payments.PaymentWebhooks;
 using ShagOxServer.Application.Interfaces.Services.Baskets.BasketItems.Delete;
 using ShagOxServer.Application.Interfaces.Services.Payments;
-using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Email;
 
 namespace ShagOxServer.Application.Services.Payments.PaymentProcessing;
 public partial class PaymentProcessingService

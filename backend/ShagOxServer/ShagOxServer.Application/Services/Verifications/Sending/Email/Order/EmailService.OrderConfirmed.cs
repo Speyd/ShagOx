@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Email;
 using ShagOxServer.Application.Resources.Orders.OrderConfirmedEmail;
 using ShagOxServer.Application.Resources.Verifications.Core;
 using ShagOxServer.Application.Services.Verifications.Sending.Email.Mapping.Order.Confirmed;

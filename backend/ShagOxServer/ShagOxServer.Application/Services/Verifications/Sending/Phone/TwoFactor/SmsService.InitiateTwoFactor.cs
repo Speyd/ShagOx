@@ -1,4 +1,4 @@
-using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Sms;
 using ShagOxServer.Application.Resources.Verifications.Sms;
 using ShagOxServer.SharedKernel.Abstractions.Results;
 

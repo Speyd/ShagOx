@@ -11,7 +11,7 @@ public static class MiddlewareExstension
 
         app.UseMiddleware<DeviceAccessMiddleware>();
 
-        app.UseMiddleware<BlockedDeviceMiddleware>();
+        app.UseMiddleware<BlockedUserDeviceMiddleware>();
 
         app.UseMiddleware<BlockedSessionMiddleware>();
 

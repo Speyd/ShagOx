@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Email;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Sms;
 using ShagOxServer.Application.Services.Verifications.Sending.Email;
 using ShagOxServer.Application.Services.Verifications.Sending.Email.Processing;
 using ShagOxServer.Application.Services.Verifications.Sending.Phone;

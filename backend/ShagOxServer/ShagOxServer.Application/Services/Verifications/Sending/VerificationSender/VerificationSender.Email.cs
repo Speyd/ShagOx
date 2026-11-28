@@ -24,10 +24,10 @@ public partial class VerificationSender
                await _emailService.SendNewEmailConfirmationCodeAsync(
                    pendingValue, code),
 
-            VerificationCodePurpose.ChangeApprovalEmail
-                when email is not null =>
+            VerificationCodePurpose.ChangeCurrentEmail
+                when email is not null && pendingValue is not null =>
                 await _emailService.SendEmailChangeApprovalCodeAsync(
-                    email, code),
+                    email, pendingValue, code),
 
             VerificationCodePurpose.EnableTwoFactorEmail =>
                 await _emailService.SendEnableTwoFactorCodeAsync(
@@ -41,9 +41,15 @@ public partial class VerificationSender
                 await _emailService.SendInitiateTwoFactorCodeAsync(
                     email, code),
 
+            VerificationCodePurpose.ResetPasswordEmail =>
+                await _emailService.SendResetPasswordCodeAsync(
+                    email, code),
+
+            VerificationCodePurpose.ChangePasswordEmail =>
+                await _emailService.SendChangePasswordCodeAsync(
+                    email, code),
+
             VerificationCodePurpose.RegistrationEmail
-               or VerificationCodePurpose.ResetPasswordEmail
-               or VerificationCodePurpose.ChangePasswordEmail
                => await _emailService.SendVerificationCodeAsync(
                    email, code),
 

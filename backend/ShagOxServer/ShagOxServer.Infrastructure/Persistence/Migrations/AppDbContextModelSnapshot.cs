@@ -550,6 +550,10 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BlockedUntil")
+                        .HasDatabaseName("IX_UserDevices_BlockedUntil")
+                        .HasFilter("\"Status\" = 'Blocked' AND \"BlockedUntil\" IS NOT NULL");
+
                     b.HasIndex("DeviceId")
                         .HasDatabaseName("IX_UserDevices_DeviceId");
 
@@ -628,6 +632,9 @@ namespace ShagOxServer.Infrastructure.Migrations
 
                     b.HasIndex("OwnerId", "RevokedAt")
                         .HasDatabaseName("IX_UserSessions_OwnerId_RevokedAt");
+
+                    b.HasIndex("OwnerId", "RevokedAt", "ExpiresAt")
+                        .HasDatabaseName("IX_UserSessions_OwnerId_RevokedAt_ExpiresAt");
 
                     b.ToTable("UserSessions");
                 });
@@ -914,10 +921,10 @@ namespace ShagOxServer.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime?>("BlockedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.Property<DateTime?>("BlockedUntil")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamptz");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamptz");
@@ -953,10 +960,15 @@ namespace ShagOxServer.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DeviceIdentifier")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Devices_DeviceIdentifier");
 
                     b.ToTable("Devices");
                 });

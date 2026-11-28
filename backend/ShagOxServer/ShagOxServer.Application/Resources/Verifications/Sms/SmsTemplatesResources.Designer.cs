@@ -63,6 +63,23 @@ namespace ShagOxServer.Application.Resources.Verifications.Sms {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Hello!
         ///
+        ///Your verification code to change your Marketly account password:
+        ///
+        ///{0}
+        ///
+        ///The code is valid for {1} minutes.
+        ///
+        ///If you did not request to change your Marketly account password, please ignore this message..
+        /// </summary>
+        public static string ChangePasswordBody {
+            get {
+                return ResourceManager.GetString("ChangePasswordBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hello!
+        ///
         ///Your verification code to disable Two-Factor Authentication:
         ///
         ///{0}
@@ -142,6 +159,23 @@ namespace ShagOxServer.Application.Resources.Verifications.Sms {
         public static string PhoneChangeApproval {
             get {
                 return ResourceManager.GetString("PhoneChangeApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hello!
+        ///
+        ///Your verification code to reset your Marketly account password:
+        ///
+        ///{0}
+        ///
+        ///The code is valid for {1} minutes.
+        ///
+        ///If you did not request a password reset for your Marketly account, please ignore this message..
+        /// </summary>
+        public static string ResetPasswordBody {
+            get {
+                return ResourceManager.GetString("ResetPasswordBody", resourceCulture);
             }
         }
         

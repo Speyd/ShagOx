@@ -117,6 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChangePasswordBody" xml:space="preserve">
+    <value>Здравствуйте!
+
+Ваш код подтверждения для изменения пароля учётной записи Marketly:
+
+{0}
+
+Код действителен в течение {1} минут.
+
+Если вы не запрашивали изменение пароля своей учётной записи Marketly, пожалуйста, проигнорируйте это сообщение.</value>
+  </data>
   <data name="DisableTwoFactorBody" xml:space="preserve">
     <value>Здравствуйте!
 
@@ -171,6 +182,17 @@
 Код действителен в течение {1} минут.
 
 Если вы не запрашивали изменение номера телефона, проигнорируйте это сообщение и позаботьтесь о безопасности своей учётной записи Marketly.</value>
+  </data>
+  <data name="ResetPasswordBody" xml:space="preserve">
+    <value>Здравствуйте!
+
+Ваш код подтверждения для сброса пароля учётной записи Marketly:
+
+{0}
+
+Код действителен в течение {1} минут.
+
+Если вы не запрашивали сброс пароля своей учётной записи Marketly, пожалуйста, проигнорируйте это сообщение.</value>
   </data>
   <data name="VerificationBody" xml:space="preserve">
     <value>Здравствуйте!

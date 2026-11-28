@@ -36,14 +36,20 @@ public partial class VerificationSender
                 await _smsService.SendNewPhoneConfirmationCodeAsync(
                     pendingValue, code),
 
-            VerificationCodePurpose.ChangeApprovalPhone
+            VerificationCodePurpose.ChangeCurrentPhone
                 when phone is not null =>
                 await _smsService.SendPhoneChangeApprovalCodeAsync(
                     phone, code),
 
+            VerificationCodePurpose.ResetPasswordPhone =>
+                await _smsService.SendResetPasswordCodeAsync(
+                    phone, code),
+
+            VerificationCodePurpose.ChangePasswordPhone =>
+                await _smsService.SendChangePasswordCodeAsync(
+                    phone, code),
+
             VerificationCodePurpose.RegistrationPhone
-                or VerificationCodePurpose.ResetPasswordPhone
-                or VerificationCodePurpose.ChangePasswordPhone
                 => await _smsService.SendVerificationCodeAsync(
                     phone, code),
 

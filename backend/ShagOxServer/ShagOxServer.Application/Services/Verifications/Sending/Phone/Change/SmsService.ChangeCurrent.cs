@@ -1,9 +1,6 @@
-using ShagOxServer.Application.Interfaces.Services.Verifications.Sending;
+using ShagOxServer.Application.Interfaces.Services.Verifications.Sending.Sms;
 using ShagOxServer.Application.Resources.Verifications.Sms;
 using ShagOxServer.SharedKernel.Abstractions.Results;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ShagOxServer.Application.Services.Verifications.Sending.Phone;
 public partial class SmsService

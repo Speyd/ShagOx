@@ -121,6 +121,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CreateNewEmailResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Verifications\Password\Change\ChangePasswordEmail.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChangePasswordEmail.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Verifications\Password\Reset\ResetPasswordEmail.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResetPasswordEmail.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Verifications\Sms\SmsTemplatesResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -262,6 +272,14 @@
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>CreateNewEmailResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\Password\Change\ChangePasswordEmail.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ChangePasswordEmail.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Verifications\Password\Reset\ResetPasswordEmail.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ResetPasswordEmail.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Verifications\Sms\SmsTemplatesResources.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>SmsTemplatesResources.Designer.cs</LastGenOutput>
@@ -335,6 +353,7 @@
 	  <Folder Include="Interfaces\Services\Admin\Dashboard\" />
 	  <Folder Include="Interfaces\Services\Orders\OrderItems\Update\" />
 	  <Folder Include="Templates\EmailTemplates\Verification\" />
+	  <Folder Include="Templates\EmailTemplates\Password\" />
 	</ItemGroup>
 	
 </Project>
